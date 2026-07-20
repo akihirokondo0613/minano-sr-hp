@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<script src="page-enter.js"></script>
+<style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@700;800;900&family=Zen+Maru+Gothic:wght@700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>公式情報｜労務手続きの公的窓口リンク集｜みなの社会保険労務士事務所</title>
+<meta name="description" content="年金事務所（日本年金機構）・ハローワーク・労働基準監督署・協会けんぽ・厚生労働省・e-Govなど、労務手続きでよく使う公的機関の公式サイトを分野別にまとめたリンク集です。">
+
+<link rel="canonical" href="https://minano-sr.com/portal.html">
+<meta property="og:url" content="https://minano-sr.com/portal.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="公式情報｜労務手続きの公的窓口リンク集｜みなの社会保険労務士事務所">
+<meta property="og:description" content="年金事務所（日本年金機構）・ハローワーク・労働基準監督署・協会けんぽ・厚生労働省・e-Govなど、労務手続きでよく使う公的機関の公式サイトを分野別にまとめたリンク集です。">
+<meta property="og:site_name" content="みなの社会保険労務士事務所">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://minano-sr.com/assets/og/minano-og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="みなの社会保険労務士事務所のトップページ｜会社の労務を、まるごと任せられる。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://minano-sr.com/assets/og/minano-og.png">
+<meta name="theme-color" content="#123F30">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
+
+<style id="fs-portal">
+/* 公式情報リンク集：分野ごとに色分けしたカードグリッド */
+.lk-sec{--ct:var(--moegi-t);--cl:var(--moegi-l)}
+#cat-nenkin{--ct:#3E6883;--cl:var(--sora-l)}
+#cat-rodo{--ct:var(--moegi-t);--cl:var(--moegi-l)}
+#cat-josei{--ct:#8A5D0E;--cl:#F8ECD7}
+.lk-sec .cat-icon{background:var(--cl);color:var(--ct)}
+.lk-sec .cat-icon svg{stroke:currentColor}
+.lk-sec .cat-icon svg *{stroke:currentColor}
+.lk-sec .cat-title{display:flex;align-items:center;gap:10px}
+.lk-sec .cat-title::after{content:'';flex:0 0 26px;height:3px;border-radius:2px;background:var(--ct);opacity:.55}
+.lk-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.lk-grid{grid-template-columns:1fr}}
+.lk-card{display:flex;flex-direction:column;gap:9px;background:var(--shiro);border:1px solid var(--line);border-radius:14px;padding:18px 20px 16px;text-decoration:none;transition:border-color .34s cubic-bezier(.22,.61,.36,1),transform .34s cubic-bezier(.22,.61,.36,1),box-shadow .34s cubic-bezier(.22,.61,.36,1)}
+.lk-card:hover{transform:translateY(-3px);border-color:var(--ct);box-shadow:0 14px 30px -14px rgba(11,42,31,.18)}
+.lk-top{display:flex;align-items:center;gap:12px}
+.lk-chip{flex-shrink:0;width:42px;height:42px;border-radius:11px;display:grid;place-items:center;background:var(--cl);color:var(--ct);font-family:var(--disp);font-weight:800;font-size:12px;letter-spacing:.02em}
+.lk-name{font-family:var(--disp);font-weight:800;font-size:14.5px;line-height:1.55;color:var(--iwa);letter-spacing:.02em}
+.lk-desc{font-size:12.5px;line-height:1.95;color:var(--ink3);margin:0}
+.lk-foot{margin-top:auto;padding-top:8px;border-top:1px solid var(--line2);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.lk-domain{font-family:var(--mono);font-size:11px;color:var(--ink4)}
+.lk-go{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--ct);white-space:nowrap;transition:transform .34s cubic-bezier(.22,.61,.36,1);display:inline-block}
+.lk-card:hover .lk-go{transform:translateX(3px)}
+/* よくある手続き（クイックリンク） */
+.qk-list{display:flex;flex-wrap:wrap;gap:10px}
+.qk{display:inline-flex;align-items:center;gap:8px;background:var(--shiro);border:1px solid var(--line);border-radius:999px;padding:10px 18px;font-size:13.5px;font-weight:700;color:var(--ink2);letter-spacing:.03em;text-decoration:none;transition:border-color .34s cubic-bezier(.22,.61,.36,1),transform .34s cubic-bezier(.22,.61,.36,1)}
+.qk::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--moegi);flex-shrink:0}
+.qk i{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--ink4)}
+.qk:hover{border-color:var(--moegi-t);transform:translateY(-2px);color:var(--sugi)}
+.qk-note{margin-top:14px;font-size:12px;color:var(--ink4);line-height:1.9}
+</style>
+<link rel="stylesheet" href="skin-v2.css?v=20260717">
+</head>
+<body>
+<a class="skip-link" href="#main">本文へスキップ</a>
+<div id="prog"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark"><span>み</span></div>
+      <div class="logo-text"><b>みなの社会保険労務士事務所</b><small>複雑な労務を、シンプルに。</small></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#why">理念</a></li>
+      <li><a href="index.html#services">サービス</a></li>
+      <li><a href="index.html#cases">支援の進め方</a></li>
+      <li><a href="index.html#pricing">料金</a></li>
+      <li><a href="blog.html">ブログ</a></li>
+      <li><a href="infographic.html">社労士とは</a></li>
+      <li><a href="portal.html" class="active">公式情報</a></li>
+    </ul>
+    <a href="uploads/contact.html" class="nav-cta">無料で相談する</a>
+    <button class="nav-burger" onclick="toggleNav()" aria-label="メニュー">
+      <svg width="20" height="14" viewBox="0 0 20 14" fill="currentColor"><rect width="20" height="2" rx="1"/><rect y="6" width="20" height="2" rx="1"/><rect y="12" width="20" height="2" rx="1"/></svg>
+    </button>
+  </div>
+</nav>
+<div class="mob-nav" id="mobNav">
+  <a href="index.html#why" onclick="closeNav()">理念</a>
+  <a href="index.html#services" onclick="closeNav()">サービス</a>
+  <a href="index.html#cases" onclick="closeNav()">支援の進め方</a>
+  <a href="index.html#pricing" onclick="closeNav()">料金</a>
+  <a href="blog.html" onclick="closeNav()">ブログ</a>
+  <a href="portal.html" onclick="closeNav()">公式情報</a>
+  <a href="infographic.html" onclick="closeNav()">社労士とは</a>
+  <a href="uploads/contact.html" class="mob-cta">→ 無料相談を申し込む</a>
+</div>
+
+<!-- PAGE HERO -->
+<header class="page-hero">
+  <div class="page-hero-inner">
+    <nav class="breadcrumb"><a href="index.html">ホーム</a><span class="sep">›</span><span>公式情報</span></nav>
+    <div class="page-label">Official Links</div>
+    <h1 class="page-h">労務手続きでよく使う<br><strong>公式情報・窓口リンク集</strong></h1>
+    <p class="page-sub">年金事務所・ハローワーク・労働基準監督署・協会けんぽなど、日々の手続きや調べものでよく使う公的機関の公式サイトを分野別にまとめました。ブックマーク代わりにご活用ください。</p>
+  </div>
+
+  <div class="notice">
+    <span class="notice-icon">!</span>
+    <div>
+      <b>ご利用にあたって</b>リンク先はいずれも公的機関の公式サイトです（外部サイトが開きます）。「どの窓口に出せばよいか分からない」「様式の書き方に迷う」ときは、探し回る前に担当者へお気軽にご連絡ください。手続きそのものの代行も承ります。
+    </div>
+  </div>
+</header>
+
+<!-- CONTENT -->
+<main id="main" class="content">
+
+  <!-- よくある手続きから探す -->
+  <section class="cat rv lk-sec" id="cat-quick">
+    <div class="cat-head">
+      <div class="cat-icon kmono" aria-hidden="true">窓口</div>
+      <h2 class="cat-title">よくある手続きから探す</h2>
+    </div>
+    <p class="cat-desc">普段の手続きはここから。それぞれの公式解説・様式ページへ直接飛べます。</p>
+    <div class="qk-list">
+      <a class="qk" href="https://www.nenkin.go.jp/service/kounen/index.html" target="_blank" rel="noopener noreferrer">入退社の社会保険手続き <i>年金機構↗</i></a>
+      <a class="qk" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/hoken/index.html" target="_blank" rel="noopener noreferrer">年度更新（労働保険） <i>厚労省↗</i></a>
+      <a class="qk" href="https://www.nenkin.go.jp/service/kounen/hokenryo/santei/index.html" target="_blank" rel="noopener noreferrer">算定基礎届 <i>年金機構↗</i></a>
+      <a class="qk" href="https://www.nta.go.jp/users/gensen/nencho/index.htm" target="_blank" rel="noopener noreferrer">年末調整 <i>国税庁↗</i></a>
+      <a class="qk" href="https://www.kyoukaikenpo.or.jp/g7/cat330/" target="_blank" rel="noopener noreferrer">給与計算（保険料額表） <i>協会けんぽ↗</i></a>
+      <a class="qk" href="https://www.kyoukaikenpo.or.jp/g2/" target="_blank" rel="noopener noreferrer">傷病手当金などの給付申請 <i>協会けんぽ↗</i></a>
+      <a class="qk" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/rousai/index.html" target="_blank" rel="noopener noreferrer">労災の手続き <i>厚労省↗</i></a>
+      <a class="qk" href="https://www.nenkin.go.jp/service/kounen/tekiyo/index.html" target="_blank" rel="noopener noreferrer">健康保険の扶養（被扶養者） <i>年金機構↗</i></a>
+      <a class="qk" href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1180.htm" target="_blank" rel="noopener noreferrer">税金の扶養（扶養控除） <i>国税庁↗</i></a>
+    </div>
+    <p class="qk-note">※ 掲載先のページ構成は各機関の都合で変わることがあります。リンク切れに気づかれた際はお知らせください。手続きそのものの代行はいつでも承ります。</p>
+  </section>
+
+  <!-- 年金・健康保険（山影ブルー） -->
+  <section class="cat rv lk-sec" id="cat-nenkin">
+    <div class="cat-head">
+      <div class="cat-icon kmono" aria-hidden="true">年金</div>
+      <h2 class="cat-title">年金・健康保険</h2>
+    </div>
+    <p class="cat-desc">社会保険（厚生年金・健康保険）の手続き・保険料・給付に関する公式窓口です。</p>
+    <div class="lk-grid">
+      <a href="https://www.nenkin.go.jp/" class="lk-card" target="_blank" rel="noopener noreferrer">
+        <div class="lk-top"><span class="lk-chip">年金</span><span class="lk-name">日本年金機構（年金事務所）</span></div>
+        <p class="lk-desc">入退社時の資格取得・喪失、算定基礎届、賞与支払届など社会保険手続きの中心窓口。届書様式のダウンロードもこちら。</p>
+        <div class="lk-foot"><span class="lk-domain">nenkin.go.jp</span><span class="lk-go">公式サイトへ ↗</span></div>
+      </a>
+      <a href="https://www.kyoukaikenpo.or.jp/" class="lk-card" target="_blank" rel="noopener noreferrer">
+        <div class="lk-top"><span class="lk-chip">健保</span><span class="lk-name">全国健康保険協会（協会けんぽ）</span></div>
+        <p class="lk-desc">健康保険証・傷病手当金・出産手当金などの給付申請、保険料率の確認はこちら。</p>
+        <div class="lk-foot"><span class="lk-domain">kyoukaikenpo.or.jp</span><span class="lk-go">公式サイトへ ↗</span></div>
+      </a>
+      <a href="https://www.kyoukaikenpo.or.jp/shibu/toyama/" class="lk-card" target="_blank" rel="noopener noreferrer">
+        <div class="lk-top"><span class="lk-chip">富山</span><span class="lk-name">協会けんぽ 富山支部</span></div>
+        <p class="lk-desc">富山県の保険料率・支部からのお知らせ・健診（生活習慣病予防健診）の案内。</p>
+        <div class="lk-foot"><span class="lk-domain">kyoukaikenpo.or.jp</span><span class="lk-go">公式サイトへ ↗</span></div>
+      </a>
+      <a href="https://www.kyoukaikenpo.or.jp/shibu/ishikawa/" class="lk-card" target="_blank" rel="noopener noreferrer">
+        <div class="lk-top"><span class="lk-chip">石川</span><span class="lk-name">協会けんぽ 石川支部</span></div>
+        <p class="lk-desc">石川県の保険料率・支部からのお知らせ・健診の案内。</p>
+        <div class="lk-foot"><span class="lk-domain">kyoukaikenpo.or.jp</span><span class="lk-go">公式サイトへ ↗</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 雇用保険・労働基準（萌木グリーン） -->
+  <section class="cat rv lk-sec" id="cat-rodo">
+    <div class="cat-head">
+      <div class="cat-icon kmono" aria-hidden="true">労働</div>
+      <h2 class="cat-title">雇用保険・労働基準</h2>
+    </div>
+    <p class="cat-desc">求人・雇用保険の手続き、労働時間や安全衛生など労働基準に関する公式窓口です。</p>
+    <div class="lk-grid">
+      <a href="https://www.hellowork.mhlw.go.jp/" class="lk-card" target="_blank" rel="noopener noreferrer">
+        <div class="lk-top"><span class="lk-chip">HW</span><span class="lk-name">ハローワーク インターネットサービス</span></div>
+        <p class="lk-desc">求人の申込み・雇用保険手続きの案内・離職票関係。求人票の作成もオンラインでできます。</p>
+        <div class="lk-foot"><span class="lk-domain">hellowork.mhlw.go.jp</span><span class="lk-go">公式サイトへ ↗</span></div>
+      </a>
+      <a href="https://jsite.mhlw.go.jp/toyama-roudoukyoku/" class="lk-card" target="_blank" rel="noopener noreferrer">
+        <div class="lk-top"><span class="lk-chip">労基</span><span class="lk-name">富山労働局（労基署・HW一覧）</span></div>
+        <p class="lk-desc">県内の労働基準監督署・ハローワークの所在地と管轄、36協定など届出の案内はこちら。</p>
+        <div class="lk-foot"><span class="lk-domain">jsite.mhlw.go.jp</span><span class="lk-go">公式サイトへ ↗</span></div>
+      </a>
+      <a href="https://jsite.mhlw.go.jp/ishikawa-roudoukyoku/" class="lk-card" target="_blank" rel="noopener noreferrer">
+        <div class="lk-top"><span class="lk-chip">労基</span><span class="lk-name">石川労働局（労基署・HW一覧）</span></div>
+        <p class="lk-desc">石川県内の労働基準監督署・ハローワークの所在地と管轄、各種届出の案内。</p>
+        <div class="lk-foot"><span class="lk-domain">jsite.mhlw.go.jp</span><span class="lk-go">公式サイトへ ↗</span></div>
+      </a>
+      <a href="https://www.mhlw.go.jp/" class="lk-card" target="_blank" rel="noopener noreferrer">
+        <div class="lk-top"><span class="lk-chip">厚労</span><span class="lk-name">厚生労働省</span></div>
+        <p class="lk-desc">法改正情報・通達・統計など労務の一次情報。迷ったらまずここで原文を確認。</p>
+        <div class="lk-foot"><span class="lk-domain">mhlw.go.jp</span><span class="lk-go">公式サイトへ ↗</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 助成金・電子申請・様式（朝日アンバー） -->
+  <section class="cat rv lk-sec" id="cat-josei">
+    <div class="cat-head">
+      <div class="cat-icon kmono" aria-hidden="true">助成</div>
+      <h2 class="cat-title">助成金・電子申請・様式</h2>
+    </div>
+    <p class="cat-desc">助成金の公式情報と、オンライン申請・法令・様式の確認に使う窓口です。</p>
+    <div class="lk-grid">
+      <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/index.html" class="lk-card" target="_blank" rel="noopener noreferrer">
+        <div class="lk-top"><span class="lk-chip">助成</span><span class="lk-name">雇用関係助成金（厚生労働省）</span></div>
+        <p class="lk-desc">キャリアアップ助成金など雇用関係助成金の一覧・支給要件・様式の公式ページ。申請は当事務所がサポートします。</p>
+        <div class="lk-foot"><span class="lk-domain">mhlw.go.jp</span><span class="lk-go">公式サイトへ ↗</span></div>
+      </a>
+      <a href="https://shinsei.e-gov.go.jp/" class="lk-card" target="_blank" rel="noopener noreferrer">
+        <div class="lk-top"><span class="lk-chip">e-G</span><span class="lk-name">e-Gov 電子申請</span></div>
+        <p class="lk-desc">社会保険・労働保険の各種届出をオンラインで行う政府の電子申請窓口。</p>
+        <div class="lk-foot"><span class="lk-domain">shinsei.e-gov.go.jp</span><span class="lk-go">公式サイトへ ↗</span></div>
+      </a>
+      <a href="https://laws.e-gov.go.jp/" class="lk-card" target="_blank" rel="noopener noreferrer">
+        <div class="lk-top"><span class="lk-chip">法令</span><span class="lk-name">e-Gov 法令検索</span></div>
+        <p class="lk-desc">労働基準法・育児介護休業法など、法律の条文原文を確認できる公式データベース。</p>
+        <div class="lk-foot"><span class="lk-domain">laws.e-gov.go.jp</span><span class="lk-go">公式サイトへ ↗</span></div>
+      </a>
+      <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/format_index.html" class="lk-card" target="_blank" rel="noopener noreferrer">
+        <div class="lk-top"><span class="lk-chip">様式</span><span class="lk-name">主要様式ダウンロードコーナー</span></div>
+        <p class="lk-desc">労働条件通知書・36協定届など、労働基準法関係の様式を無料でダウンロードできます。</p>
+        <div class="lk-foot"><span class="lk-domain">mhlw.go.jp</span><span class="lk-go">公式サイトへ ↗</span></div>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<!-- BOTTOM CTA -->
+<div class="bottom-cta">
+  <div class="bottom-cta-card">
+    <div class="bcc-text">
+      <h3>「どこに・何を出せばいいか」から、お任せください</h3>
+      <p>リンク先で迷ったとき、手続きに時間を取られたくないときは、担当者までご連絡ください。届出の作成・提出まで代行します。</p>
+    </div>
+    <a href="uploads/contact.html" class="bcc-btn">お問い合わせフォームへ →</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <div class="logo-mark"><span>み</span></div>
+          <div class="logo-text"><b>みなの社会保険労務士事務所</b><small>複雑な労務を、シンプルに。</small></div>
+        </div>
+        <p class="footer-desc">助成金活用・手続き代行・DX支援で、中小企業の労務コストを最適化します。</p>
+        <p class="footer-addr" style="margin-top:14px"><span class="addr-line">〒931-8333 富山県富山市蓮町1丁目7-7</span><span class="addr-sep"> / </span><span class="addr-line">TEL: 090-2838-8252　平日 9:00–18:00</span></p>
+      </div>
+      <div>
+        <p class="footer-h">サービス</p>
+        <ul class="footer-ul">
+          <li><a href="uploads/service-joseikin.html">助成金申請</a></li>
+          <li><a href="uploads/service-shugyo-kisoku.html">就業規則作成</a></li>
+          <li><a href="uploads/service-shakai-hoken.html">社会保険手続き</a></li>
+          <li><a href="uploads/service-kyuyo-keisan.html">給与計算</a></li>
+          <li><a href="uploads/service-romu-sodan.html">労務相談</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-h">支援の進め方</p>
+        <ul class="footer-ul">
+          <li><a href="uploads/case-seizogyo.html">製造業</a></li>
+          <li><a href="uploads/case-inshoku.html">飲食業</a></li>
+          <li><a href="uploads/case-kaigo.html">介護業</a></li>
+          <li><a href="uploads/case-kensetsu.html">建設業</a></li>
+          <li><a href="uploads/case-shika.html">歯科・クリニック</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-h">コンテンツ</p>
+        <ul class="footer-ul">
+          <li><a href="blog.html">コラム・ブログ</a></li>
+          <li><a href="joseikin.html">令和8年度 助成金5選</a></li>
+          <li><a href="infographic.html">社労士とは？</a></li>
+          <li><a href="recruit.html">採用情報</a></li>
+          <li><a href="portal.html">公式情報</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-h">お問い合わせ</p>
+        <ul class="footer-ul">
+          <li><a href="uploads/contact.html">無料相談フォーム</a></li>
+          <li><a href="tel:090-2838-8252">電話: 090-2838-8252</a></li>
+          <li><a href="privacy-policy.html">プライバシーポリシー</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 みなの社会保険労務士事務所. All rights reserved.</p>
+      <div class="footer-badges">
+        <span class="footer-badge">社労士登録 第16◯◯◯◯号</span>
+        <span class="footer-badge">富山県社会保険労務士会</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// nav scroll
+var ticking=false;
+if(window.__pgScroll)window.removeEventListener('scroll',window.__pgScroll);
+window.__pgScroll=function(){
+  if(ticking)return;ticking=true;
+  requestAnimationFrame(function(){
+    var prog=document.getElementById('prog'),nav=document.getElementById('nav');
+    var p=scrollY/(document.documentElement.scrollHeight-innerHeight||1);
+    if(prog)prog.style.width=(p*100)+'%';
+    if(nav)nav.classList.toggle('solid',scrollY>60);
+    ticking=false;
+  });
+};
+window.addEventListener('scroll',window.__pgScroll,{passive:true});
+
+function toggleNav(){document.getElementById('mobNav').classList.toggle('open')}
+function closeNav(){document.getElementById('mobNav').classList.remove('open')}
+
+// Reveal
+var ro=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target)}});
+},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach(function(el){ro.observe(el)});
+</script>
+<script src="link-keep.js"></script>
+<script src="mascot.js"></script>
+<script src="header-motion.js"></script>
+<script id="pf-hover">(function(){var d={};function pf(u){if(d[u])return;d[u]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u;document.head.appendChild(l);}function h(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var hr=a.getAttribute("href");if(!hr||hr[0]==="#"||/^(mailto:|tel:|https?:)/.test(hr))return;if(a.target==="_blank")return;pf(a.href);}document.addEventListener("mouseover",h,{passive:true});document.addEventListener("touchstart",h,{passive:true});})();</script>
+<script data-goatcounter="https://minano-sr.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

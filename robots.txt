@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://minano-sr.com/sitemap.xml

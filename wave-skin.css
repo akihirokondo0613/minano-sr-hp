@@ -1,0 +1,106 @@
+/* ════════════════════════════════════════════
+   なみせん（波形区切り）+ 親しみスキン 共通CSS
+   全下層ページで読み込む。index.html と同じ世界観。
+   ════════════════════════════════════════════ */
+
+/* フォーム要素はフォントを継承しない（ブラウザ既定値 Arial 対策） */
+button,input,select,textarea{font-family:inherit}
+
+/* 全体を90%表示に（index.html と統一） */
+html{zoom:.9}
+
+/* 遷移カーテン中はスクロールを即時に（smooth だと位置リセットがめくり後まで続く「見える滑り」になる） */
+html.pv-on, html.pv-mark, html.pv-lift { scroll-behavior: auto !important; }
+
+/* これ以下は横スクロールにしてレイアウト破綻を防ぐ（skin-v2.css と統一） */
+html{min-width:320px}
+body{min-width:320px}
+
+/* 淡緑（--g25）セクションの上端に稜線ギザギザ（ルートページ skin-v2.css の .final-cta::before と同モチーフに統一） */
+.sec-alt,.final-cta,.cta-sec,.news-sec{position:relative;border-top:none!important}
+:is(section,div,header,main):has(+ .sec-alt,+ .final-cta,+ .cta-sec,+ .news-sec){border-bottom:none!important}
+.sec-alt::before,.final-cta::before,.cta-sec::before,.news-sec::before{
+  content:'';position:absolute;top:-2px;left:0;right:0;height:48px;
+  background:#fff;
+  clip-path:polygon(0 0,100% 0,100% 20%,80% 64%,63% 28%,48% 76%,31% 38%,15% 68%,0 32%);
+  pointer-events:none;z-index:3;
+}
+
+/* ページヒーロー（淡緑）の下端：稜線ギザギザで次セクションへつなぐ（上記の上下反転） */
+.page-hero{position:relative;border-bottom:none!important}
+.page-hero::after{
+  content:'';position:absolute;bottom:-2px;left:0;right:0;height:48px;
+  background:#fff;
+  clip-path:polygon(0 100%,100% 100%,100% 80%,80% 36%,63% 72%,48% 24%,31% 62%,15% 32%,0 68%);
+  pointer-events:none;z-index:3;
+}
+
+/* 強調部分のマーカー（index と同じ描画演出・CSSのみ） */
+.sec-h strong,.page-hero h1 strong{
+  background-image:linear-gradient(0deg,var(--g100,#D6EBDD),var(--g100,#D6EBDD));
+  background-repeat:no-repeat;
+  background-size:100% 40%;
+  background-position:0 88%;
+}
+@keyframes mk-draw{from{background-size:0% 40%}to{background-size:100% 40%}}
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion: no-preference){
+    .sec-h strong{
+      animation:mk-draw 1.9s cubic-bezier(.45,.05,.35,.95) both;
+      animation-timeline:view();
+      animation-range:entry 60% cover 55%;
+    }
+  }
+}
+@media print{.sec-h strong,.page-hero h1 strong{animation:none;background-size:100% 40%}}
+
+/* 緑の強調フレーズ（マーカー部分）は途中で改行しない */
+.sec-h strong,.page-hero h1 strong{white-space:nowrap}
+/* nowrapでも收まるようモバイルの見出しサイズを補正 */
+@media(max-width:640px){
+  .page-hero h1{font-size:clamp(24px,6.6vw,30px)}
+  .sec-h{font-size:clamp(20px,5.6vw,25px)}
+}
+
+/* やわらかい角丸・ホバー（index と統一） */
+.faq-item,.line-cell,.dl-card,.post-card,.art-card{border-radius:12px}
+
+/* 右下CTA：呼吸するハロー（全ページ共通のライブ演出） */
+.fl-primary{position:relative}
+.fl-primary::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  border:2px solid rgba(0,160,64,.55);opacity:0;pointer-events:none;
+  animation:flHalo 3.4s cubic-bezier(.22,.61,.36,1) infinite;
+}
+.fl-primary:hover::after{animation-play-state:paused;opacity:0}
+@keyframes flHalo{
+  0%,58%{opacity:0;transform:scale(1)}
+  64%{opacity:.8;transform:scale(1.02)}
+  100%{opacity:0;transform:scale(1.12,1.3)}
+}
+@media(prefers-reduced-motion:reduce){.fl-primary::after{animation:none;opacity:0}}
+
+
+/* ═══ 2026-07 大画面プレゼンス層（全下層共通）… 1559px以下の見え方は変えない ═══ */
+/* ブログ記事（article.post）は本文の読みやすい行長（--max:760px）を維持するため除外 */
+@media(min-width:1560px){
+  :root:not(:has(article.post)){--max:1240px}
+}
+@media(min-width:1900px){
+  :root:not(:has(article.post)){--max:1320px}
+}
+/* 27インチ級：さらに一段拡大（index.html と同じ値。下層は svh 補正がないのでこれだけでよい） */
+@media(min-width:2000px){
+  html{zoom:1.15}
+}
+
+
+/* ── ryosen-palette-bridge（2026-07-12）──
+   uploads配下（service-*・case-*・contact）の配色をルート20ページの新デザイン
+   「稜線」パレットに揃える。旧トークン名の値だけを差し替える（レイアウト・フォント不変）。
+   wave-skin.css は service.css の後に読まれるため、この再定義が有効になる。 */
+:root{
+  --g900:#0B2A1F;--g800:#123F30;--g700:#123F30;--g600:#1C5842;--g500:#2E9E63;
+  --g400:#57B07F;--g300:#8FCBA8;--g200:#BFE0CD;--g100:#DCEEE3;--g50:#EDF6F0;--g25:#F6FAF7;
+  --ink:#1E2721;--ink2:#37423B;--ink3:#5D6962;--ink4:#7E8981;
+}

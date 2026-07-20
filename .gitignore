@@ -1,0 +1,5 @@
+.DS_Store
+.image-slots.state.json
+.thumbnail
+_backup_*/
+*.zip
