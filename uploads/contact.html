@@ -915,8 +915,13 @@ function handleSubmit(event) {
       showError();
     });
 }
-const urlParams = new URLSearchParams(window.location.search);
-const fromPlan = urlParams.get('from');
+// ★SPA遷移対策：このインラインscriptは page-enter.js が遷移のたびに再実行する。トップレベルの
+//   const/let は global lexical scope に残り、2回目の再実行でパース時 Syntax（重複宣言）となって
+//   script全体が破棄される→業種チェックのリスナーが張られず「業種を選んでも先が出ない」不具合の原因。
+//   トップレベルは必ず var（再宣言可）にすること。※if内の const（fromBase/entry/cb）はブロック
+//   スコープなので毎回新規＝再実行しても安全。
+var urlParams = new URLSearchParams(window.location.search);
+var fromPlan = urlParams.get('from');
 if (fromPlan) {
   const fromBase = fromPlan.replace(/-(price|final)$/, '');
   const entry = {

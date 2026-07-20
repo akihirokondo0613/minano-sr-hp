@@ -349,9 +349,24 @@
     else setTimeout(loadMascotFrames, 400);
   }
 
+  // マスコットは SPA遷移で「作り直さず移動」されるため、初期ページ基準の相対href（uploads/contact.html 等）が
+  // uploads/・blog/ 配下で uploads/uploads/… に化けて404になり、遷移カーテンが空振りする。現在地からプレフィックスを
+  // 都度計算して mn-act の href を貼り直す。page-enter.js の swapBody 後に __mnMascotRelink() を呼ぶ。
+  function mnRelink() {
+    var pre = /\/(uploads|blog)\/[^\/]*$/.test(location.pathname) ? '../' : '';
+    var primary = root.querySelector('.mn-act.primary');
+    if (primary) primary.setAttribute('href', pre + 'uploads/contact.html');
+    var ghosts = root.querySelectorAll('.mn-act.ghost');
+    for (var i = 0; i < ghosts.length; i++) {
+      if (!/^tel:/.test(ghosts[i].getAttribute('href') || '')) ghosts[i].setAttribute('href', pre + 'index.html#services');
+    }
+  }
+  window.__mnMascotRelink = mnRelink;
+
   function mount() {
     document.body.appendChild(root);
     document.body.appendChild(recall);
+    mnRelink();
     scheduleFrameLoad();         // フレーム画像はここからアイドル時に遅延読み込み
     applySize(getSize());
     if (!restorePos()) requestAnimationFrame(applyDefaultPos);

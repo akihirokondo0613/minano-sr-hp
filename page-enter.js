@@ -417,6 +417,7 @@ function mnSplitLabel(el, text) {
     return execScriptsSeq(newBody).then(function () {
       if (window.__hmReinit) { try { window.__hmReinit(); } catch (e) {} }
       if (window.__mnJbreak) { try { window.__mnJbreak(); } catch (e) {} }
+      if (window.__mnMascotRelink) { try { window.__mnMascotRelink(); } catch (e) {} }   // 猫の相談/サービス導線を現在地基準へ貼り直す（uploads/blog で404化を防ぐ）
       // アクセス解析：SPA遷移は通常のページ読み込みが起きないため、手動でページビューを記録する
       try {
         if (window.goatcounter && window.goatcounter.count) {
