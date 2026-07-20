@@ -135,18 +135,17 @@ function mnSplitLabel(el, text) {
     if (merged.length && (/^[、。・！？）」』〜…ー]/.test(c) || /[（「『]$/.test(prev))) merged[merged.length - 1] = prev + c;
     else merged.push(c);
   });
+  // 実機（特にモバイル）でのカクつき対策：文字を1字ずつ独立レイヤー化すると、ラベルが長いほど
+  // will-change:transform の合成レイヤーが並び、遷移のたびに新規生成されるレイヤー昇格コストが
+  // メインスレッドの他処理（scriptの再実行等）と重なってフレーム落ちの原因になっていた。
+  // 単語（かたまり）単位のアニメーションに変更し、レイヤー数を大幅に削減する（見た目は継続して漂う）。
   var idx = 0;
   merged.forEach(function (c) {
     var w = document.createElement('span');
     w.className = 'pv-w';
-    for (var i = 0; i < c.length; i++) {
-      var s = document.createElement('span');
-      s.className = 'pv-c';
-      s.textContent = c.charAt(i) === ' ' ? ' ' : c.charAt(i);
-      s.style.animationDelay = (idx * 0.085).toFixed(3) + 's';
-      idx++;
-      w.appendChild(s);
-    }
+    w.textContent = c;
+    w.style.animationDelay = (idx * 0.09).toFixed(3) + 's';
+    idx++;
     el.appendChild(w);
   });
 }
@@ -185,8 +184,7 @@ function mnSplitLabel(el, text) {
       '#pg-veil .pv-in{position:relative;display:inline-block}' +
       '#pg-veil .pv-in::after{content:"";position:absolute;left:-5px;right:-5px;bottom:2px;height:9px;background:rgba(255,255,255,.2);' +
       '  border-radius:2px;transform:scaleX(0);transform-origin:left center;z-index:-1}' +
-      '#pg-veil .pv-w{display:inline-block;white-space:nowrap}' +
-      '#pg-veil .pv-in .pv-c{display:inline-block;animation:pvBob 2.9s ease-in-out infinite;will-change:transform}' +
+      '#pg-veil .pv-w{display:inline-block;white-space:nowrap;animation:pvBob 2.9s ease-in-out infinite;will-change:transform}' +
       '@keyframes pvBob{0%,100%{transform:translate3d(0,2.2px,0)}50%{transform:translate3d(0,-2.2px,0)}}' +
       '#pg-veil .pv-paws{position:absolute;left:50%;top:calc(50% + 32px);transform:translateX(-50%);opacity:0;' +
       '  transition:opacity .28s ease;will-change:opacity}' +
