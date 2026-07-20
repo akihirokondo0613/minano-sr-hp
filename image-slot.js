@@ -54,8 +54,12 @@
   // → どのページで写真を差し替えても、その場で自動的にルートの状態ファイルへ保存され、
   //   他ページにもそのまま反映される（旧：読み込みだけページ相対でズレ→「保存して」が必要だった）。
   const ROOT_PREFIX = /\/(uploads|blog)\/[^\/]*$/.test(location.pathname) ? '../' : '';
-  const STATE_FILE = ROOT_PREFIX + STATE_BASENAME; // fetch（読み込み）用：ルートへ解決
-  const STATE_WRITE = STATE_BASENAME;              // writeFile（保存）用：常にルート直下
+  const STATE_FILE = ROOT_PREFIX + STATE_BASENAME;  // fetch（読み込み）用：ルートへ解決
+  const STATE_WRITE = ROOT_PREFIX + STATE_BASENAME; // 書き込み（window.omelette.writeFile）も同じくルートへ解決。
+  // 旧実装は STATE_WRITE を常にルート直下のベース名のみにしていたが、writeFile はホストが
+  // 「現在ページのディレクトリ」を基準に解決するため、blog/・uploads/ 配下のページで書き込むと
+  // 実際には blog/.image-slots.state.json 等、存在しない別ファイルへ書き込もうとして失敗し続けていた
+  // （"saving for this file is paused after repeated failures" 警告の原因）。読み込みと同じ ../ 解決に統一。
   // localStorage mirror so user drops survive page-to-page navigation even in
   // viewing environments where the file-write bridge (window.omelette) isn't
   // available — the sidecar write may silently no-op, localStorage never does.

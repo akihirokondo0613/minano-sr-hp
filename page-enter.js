@@ -536,7 +536,22 @@ function mnSplitLabel(el, text) {
           de.style.scrollBehavior = 'auto';
           window.scrollTo(0, y);
           requestAnimationFrame(function () { de.style.scrollBehavior = ''; });
-          return readiness();
+          return readiness().then(function () {
+            // バグ修正（サービス詳細→トップ#services 等）：トップのヒーロー画像のcap3.5s遅延読み込みで、
+            // readiness()待機中にレイアウトが伸びて hash ターゲットの絶対位置がズレる（最悪フッター付近までズレる）。
+            // readiness()完了（＝レイアウト確定後）に同じ計算をやり直して微調整する。
+            if (hash) {
+              var tg2 = document.getElementById(decodeURIComponent(hash.slice(1)));
+              if (tg2) {
+                var y2 = Math.max(0, tg2.getBoundingClientRect().top + (window.scrollY || 0) - 76);
+                if (Math.abs(y2 - window.scrollY) > 4) {
+                  de.style.scrollBehavior = 'auto';
+                  window.scrollTo(0, y2);
+                  requestAnimationFrame(function () { de.style.scrollBehavior = ''; });
+                }
+              }
+            }
+          });
         });
       });
 

@@ -10,7 +10,7 @@ button,input,select,textarea{font-family:inherit}
 html{zoom:.9}
 
 /* 遷移カーテン中はスクロールを即時に（smooth だと位置リセットがめくり後まで続く「見える滑り」になる） */
-html.pv-on, html.pv-mark, html.pv-lift { scroll-behavior: auto !important; }
+html.pv-on, html.pv-mark, html.pv-lift { scroll-behavior: auto !important; overflow-anchor: none; }
 
 /* これ以下は横スクロールにしてレイアウト破綻を防ぐ（skin-v2.css と統一） */
 html{min-width:320px}
