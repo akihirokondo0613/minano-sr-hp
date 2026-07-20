@@ -14,9 +14,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: メンテナンスモード判定・適用
+        run: |
+          if [ -f .maintenance ]; then
+            cp .github/maintenance.html index.html
+          fi
+
       - name: 非公開ファイルを除外
         run: |
-          rm -f CLAUDE.md icon-catalog.html
+          rm -f CLAUDE.md icon-catalog.html .maintenance
           rm -rf _backup_* .github
           rm -f *.zip
           find . -name ".DS_Store" -delete
