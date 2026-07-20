@@ -1,0 +1,30 @@
+name: Deploy public branch
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 非公開ファイルを除外
+        run: |
+          rm -f CLAUDE.md icon-catalog.html
+          rm -rf _backup_* .github
+          rm -f *.zip
+          find . -name ".DS_Store" -delete
+
+      - name: publicブランチへ反映
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Deploy ${{ github.sha }}" --allow-empty
+          git push origin HEAD:public --force
