@@ -558,6 +558,14 @@ function mnSplitLabel(el, text) {
     // この順序で「文字→線→（保持）→めくり」が毎回同じになり、線が途中で切れない。
     Promise.all([markP, readyP])
       .then(function () { return wait(120); })          // 一拍
+      // ★めくり直前のペイント沈静化（カクツキ対策）：無料相談(uploads/contact.html)だけは root→uploads で
+      //   スタイルシート一式が skin-v2.css→service.css+wave-skin.css に総入れ替えになり、新DOMへの
+      //   スタイル再計算＋全面リフローが「めくりのtransformが走る瞬間」に重なってメインスレッドが飽和し、
+      //   コンポジットのフレームが落ちて“カクつく”（同一CSSを使い回す root→root 遷移では起きない）。
+      //   readiness はCSSの network load までしか待たないため、ここで2フレーム待って実レイアウト/描画を
+      //   確定させてから、静止した面をGPUのtransformだけで滑らかにめくる。軽いページでは約2フレームぶん
+      //   （体感差なし）。cap は rAF 停止環境（非表示タブ等）で固まらないための保険。
+      .then(function () { return Promise.race([raf2(), wait(120)]); })
       .then(function () { clearTimeout(watchdog); return doLift(); })
       .catch(function () { clearTimeout(watchdog); hardGo(url); });   // 何かあれば素の遷移（カーテンごと破棄）
   }

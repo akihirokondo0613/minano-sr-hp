@@ -3,6 +3,12 @@
 このサイトは **通常のHTML/CSS/JSの静的サイト**（Reactではない）。
 プレビューに出る「empty #root」警告は**無害**。エラーではないので無視してよい。
 
+## ⚠ .github/ フォルダは削除しないこと（デプロイ設定・2026-07-20 追加）
+ルート直下の隠しフォルダ `.github/` は GitHub Actions による自動デプロイの設定で、**Webページのコンテンツではない**。
+- `.github/workflows/deploy-public.yml`（自動デプロイ設定・YAML）／`.github/maintenance.html`（メンテナンス表示用の静的HTML）。
+- **中身を書き換え・整形・ページ化しない**（パス・ファイル名・拡張子・内容をそのまま保持）。
+- **保存・書き出し（ダウンロード提供）のたびに、この `.github/` と中の2ファイルを必ず含める**（削除・除外しない）。sitemap やページ監査の対象にもしない。
+
 ## 2026-07-11 デザイン全面刷新「稜線（りょうせん）」適用済み
 
 **（2026-07-16）区切り線は全ページ「なみなみ線」に統一済み**：skin-v2.css の `.final-sec::before`／`.final-cta::before` のギザギザ多角形（clip-path）と、`.page-hero::after`・`.about-sec::before` の空装飾（background:none の残骸）を撤去し、wave-skin.css と同一の白波タイル（120px周期 repeat-x・26px高）に置換。加えて `.sec-alt::before`（infographic の4セクション）と `.footer::before`（明るい面に接するフッター上端）にも同じ波を追加。フッター直前が暗いCTA（`.final-sec`/`.final-cta`）のページは `+ .footer::before{content:none}` で波を出さず従来の border-top を維持。**引き伸ばし1枚SVGは Android で壊れるため、波は必ずこのタイル方式で書くこと。**
