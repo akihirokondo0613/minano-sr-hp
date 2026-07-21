@@ -6,6 +6,7 @@ const base = process.argv[2] || 'http://127.0.0.1:8765/';
 const viewports = [
   { width: 375, height: 812 },
   { width: 768, height: 1024 },
+  { width: 1298, height: 900 },
   { width: 1440, height: 900 },
   { width: 2560, height: 1440 },
 ];
@@ -84,8 +85,24 @@ function recordConsoleError(target) {
   });
   if (slotState.broken.length) failures.push(`トップ画像スロット: 読込失敗 ${slotState.broken.join(', ')}`);
   if (slotState.cropFailures.length) failures.push(`トップ画像スロット: 手調整の反映失敗 ${slotState.cropFailures.join(', ')}`);
+  const illustrationIds = [
+    'svc-ill-joseikin', 'svc-ill-kisoku', 'svc-ill-shaho', 'svc-ill-kyuyo', 'svc-ill-sodan', 'svc-ill-dx',
+    'stage-startup', 'stage-growth', 'stage-org',
+    'news-thumb-1', 'news-thumb-2', 'news-thumb-3', 'news-thumb-4',
+  ];
+  const illustrationFailures = await imagePage.evaluate(ids => ids.flatMap(id => {
+    const slot = document.getElementById(id);
+    const img = slot?.querySelector('img[data-image-slot-public]');
+    const hasCrop = ['crop-scale', 'crop-x', 'crop-y'].some(name => slot?.hasAttribute(name));
+    if (!slot || !img || slot.getAttribute('fit') !== 'contain' || getComputedStyle(img).objectFit !== 'contain' || hasCrop) {
+      return [id];
+    }
+    return [];
+  }), illustrationIds);
+  if (illustrationFailures.length) failures.push(`トップのイラスト全体表示: 設定不正 ${illustrationFailures.join(', ')}`);
   results.push({ publicImageSlots: slotState.total, broken: slotState.broken.length,
-    adjusted: slotState.adjusted, cropFailures: slotState.cropFailures.length });
+    adjusted: slotState.adjusted, cropFailures: slotState.cropFailures.length,
+    containedIllustrations: illustrationIds.length - illustrationFailures.length });
   await imagePage.close();
 
   const cropPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
@@ -220,7 +237,7 @@ function recordConsoleError(target) {
     failures.forEach(failure => console.error(`- ${failure}`));
     process.exit(1);
   }
-  console.log('画面検証合格: 4画面幅、公開時通信、無料相談後のSPA遷移を確認しました。');
+  console.log('画面検証合格: 5画面幅、公開時通信、無料相談後のSPA遷移を確認しました。');
 })().catch(error => {
   console.error(error);
   process.exit(1);
