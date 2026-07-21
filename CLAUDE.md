@@ -68,6 +68,7 @@
 - 差し込んだ画像は **localStorage**（サイト全体で共有）と **ルート直下の `.image-slots.state.json`** の両方に保存。
   → 別ページに移動しても保持される。
 - すべての `<image-slot>` は `fit="cover"` に統一済み。**ダブルクリックで拡大・位置調整（リフレーム）**できる。
+- Claude Designで確定した位置調整は `.image-slots.state.json` の `s/x/y` を正本にし、公開HTMLの `crop-scale/crop-x/crop-y` にも焼き込む。公開側は状態ファイルを取得せず、この3属性だけで同じ構図を軽量再現する。手調整後は状態ファイルだけ更新して終わらないこと。
 - **状態ファイルは「ルート直下の1つ」に統一済み。** どのページ（`uploads/` 配下含む）も読み込み時に
   `../` を付けてルートの `.image-slots.state.json` を参照し、書き込みも常にルートへ行う。
   → **差し替えるとその場で自動的にルートの状態ファイルへ保存される**ので、もう手動コピーは不要。
@@ -96,7 +97,8 @@ fetch はローカルファイルではブロックされ、待ち状態（pendi
 
 - `window.omelette.writeFile` が使える環境だけを編集モードとする。編集モードでは従来どおり `.image-slots.state.json` と localStorage を利用する。
 - 通常の公開サイトでは `.image-slots.state.json` を取得せず、HTMLの `src/srcset` をそのまま表示する。約1.6MBの編集用JSONが二重取得される問題を再発させない。
-- 公開時の `<image-slot>` は編集UI・ghost画像・ドラッグ処理を作らない軽量クラスで表示する。編集用の重いShadow DOMを公開側へ戻さない。読込URLは `image-slot.js?v=20260721-perf2`。
+- 公開時の `<image-slot>` は編集UI・ghost画像・ドラッグ処理を作らない軽量クラスで表示する。編集用の重いShadow DOMを公開側へ戻さない。読込URLは `image-slot.js?v=20260722-crop1`。
+- `<a>` や `onclick` 付きカード内の画像をClaude Designで調整できるよう、画像の直接ラッパーに編集環境だけ作動する `onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"` を置き、`page-enter.js` も編集環境の image-slot 操作をSPA遷移より優先する。公開時のリンク挙動は変えない。
 - 軽量版が追加する `#mn-image-slot-public-style` は、`page-enter.js` の `KEEP_HEAD_IDS` でSPA遷移をまたいで保持する。これが無いとトップ→無料相談などの遷移後に画像の100%幅・高さ・cover指定が消え、画像と枠の大きさがずれる（2026-07-21に再現・修正）。
 - `deploy-public.yml` は `.image-slots.state.json` と検証用 `scripts/` を public ブランチから除外する。隠しファイルを公開へ戻さない。
 - 大きなイラストは `-480.webp` / `-960.webp` を `image-slot.js` が公開時に選択する。対象を増やすときは本体画像と同じ構図で両方を生成する。
@@ -145,7 +147,7 @@ fetch はローカルファイルではブロックされ、待ち状態（pendi
 
 ### v6 の変更（2026-07-21・遷移文字の途中拡大を修正）
 `window.__mnSpa.v===6`。ルートページは `html` の実効 `zoom=1`、uploads配下は `wave-skin.css` により通常 `zoom=.9`（2000px以上では1.15）。SPAのカーテンは `<html>` 直下に残したまま `swapHead()` でページCSSだけを交換するため、**無料相談→トップ系ページでは表示中のカーテンも .9→1 に切り替わり、文字が途中で約11%拡大していた**。`syncVeilZoom()` がカーテンへルートの逆倍率を与え、表示開始時・head交換直後・新規CSS適用時・表示中のリサイズ時に同期する。これにより本文側の既存倍率は変えず、カーテンの文字・波・足あとだけを常に同じ実寸で表示する。
-- **本番キャッシュ対策**：サーバーがJavaScriptへ `max-age=604800`（7日）を付けるため、全HTMLと記事生成テンプレートの読込URLを `page-enter.js?v=20260721-8` に統一。修正版公開時に既存端末が旧版を保持し続けるのを防ぐ。次回 `page-enter.js` を変更して本番公開するときも、このクエリ版番号を全ページ＋`admin-post.html`の生成テンプレートで更新する。
+- **本番キャッシュ対策**：サーバーがJavaScriptへ `max-age=604800`（7日）を付けるため、全HTMLと記事生成テンプレートの読込URLを `page-enter.js?v=20260722-1` に統一。修正版公開時に既存端末が旧版を保持し続けるのを防ぐ。次回 `page-enter.js` を変更して本番公開するときも、このクエリ版番号を全ページ＋`admin-post.html`の生成テンプレートで更新する。
 
 ### v4 の変更（2026-07-19・ブログ行きは演出なし＋文字/線の同フェーズ化）
 `window.__mnSpa.v===4`。ユーザー要望「別ページへ行くときだけ遷移演出を出す（理念→サービス等は出す／ブログは続けて読めるよう出さない）」＋「文字とアンダーラインのズレ・文字なしアンダーラインの根絶」に対応。**判定は原則『移動先』**：
@@ -291,7 +293,7 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 - **下層ページの大画面対応は wave-skin.css 末尾に共通層**：1560px以上 `--max:1240px`、1900px以上 `--max:1320px`（各ページのインラインCSSより後に読まれるので勝つ）。**ブログ記事（article.post）は :has() で除外**して本文幅760pxを維持。
 
 同ブラッシュアップでの主な変更（すべて index.html）：
-- **サービス一覧は従来の横長・行型リスト（6行・01〜06）**（一度「主要3サービスの写真カード化 .svc-top3」を入れたがユーザー判断で撤回・削除済み）。各行の線画アイコンの代わりに **イラスト用 `<image-slot>`（id: svc-ill-joseikin / kisoku / shaho / kyuyo / sodan / dx、`.svc-ill` ラッパー）** を設置。行は `<a>` なのでラッパー span に `onclick="event.preventDefault();event.stopPropagation()"` を付けてクリックナビと衝突しないようにしてある（ドロップ差替・ダブルクリックのリフレームは可）。イラスト確定後は他の写真同様に `assets/photos/svc-ill-*.webp` へ本ファイル化すること。
+- **サービス一覧は従来の横長・行型リスト（6行・01〜06）**（一度「主要3サービスの写真カード化 .svc-top3」を入れたがユーザー判断で撤回・削除済み）。各行の線画アイコンの代わりに **イラスト用 `<image-slot>`（id: svc-ill-joseikin / kisoku / shaho / kyuyo / sodan / dx、`.svc-ill` ラッパー）** を設置。表示幅はPC 112px・モバイル72px。行は `<a>` なのでラッパー span に編集環境限定のクリックガードを付け、公開時のリンク操作とClaude Designのリフレームを両立している。イラスト確定後は他の写真同様に `assets/photos/svc-ill-*.webp` へ本ファイル化すること。
 - **助成金タイムライン**（`.sub-timeline`）：STEP1〜5。「実施前の計画提出が必要」を強調、受給保証ではない注記付き。文言変更時もこの注記は残すこと。
 - **CASE段階ハイライトは削除済み**（2026-07 ユーザー判断で機能ごと撤去。復活させないこと。`#stg-highlight` はコメントのみ残存）。
 - FVサブコピーを「富山の中小企業に向けて…」に変更、FAQの「当日対応が可能」を断定しない表現に緩和。
