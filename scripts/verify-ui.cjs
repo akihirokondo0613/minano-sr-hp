@@ -10,6 +10,16 @@ const viewports = [
   { width: 2560, height: 1440 },
 ];
 
+function recordConsoleError(target) {
+  return msg => {
+    if (msg.type() !== 'error') return;
+    const url = msg.location().url || 'unknown';
+    // GoatCounterは自動ブラウザの計測リクエストを400で拒否する。画面機能とは無関係。
+    if (/minano-sr\.goatcounter\.com\/count/.test(url)) return;
+    target.push(`console ${url}: ${msg.text()}`);
+  };
+}
+
 (async () => {
   const browser = await chromium.launch({ headless: true });
   const failures = [];
@@ -18,7 +28,7 @@ const viewports = [
   for (const viewport of viewports) {
     const page = await browser.newPage({ viewport });
     const errors = [];
-    page.on('console', msg => { if (msg.type() === 'error') errors.push(`console: ${msg.text()}`); });
+    page.on('console', recordConsoleError(errors));
     page.on('pageerror', error => errors.push(`pageerror: ${error.message}`));
     await page.goto(base, { waitUntil: 'load' });
     await page.waitForTimeout(700);
@@ -77,7 +87,7 @@ const viewports = [
     const errors = [];
     sweepPage.removeAllListeners('console');
     sweepPage.removeAllListeners('pageerror');
-    sweepPage.on('console', msg => { if (msg.type() === 'error') errors.push(`console: ${msg.text()}`); });
+    sweepPage.on('console', recordConsoleError(errors));
     sweepPage.on('pageerror', error => errors.push(`pageerror: ${error.message}`));
     const response = await sweepPage.goto(new URL(rel, base).href, { waitUntil: 'load' });
     await sweepPage.waitForTimeout(100);
@@ -91,7 +101,7 @@ const viewports = [
 
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   const spaErrors = [];
-  page.on('console', msg => { if (msg.type() === 'error') spaErrors.push(`console: ${msg.text()}`); });
+  page.on('console', recordConsoleError(spaErrors));
   page.on('pageerror', error => spaErrors.push(`pageerror: ${error.message}`));
   await page.goto(base, { waitUntil: 'load' });
   await page.click('.btn-primary');
