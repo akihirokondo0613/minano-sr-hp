@@ -240,7 +240,7 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 
 ## 問い合わせフォーム（uploads/contact.html）
 
-- 送信先メール：**akihirokondo0613@gmail.com**。
+- 送信先メール：**contact@minano-sr.com**（2026-07-21変更）。FormSubmitは宛先変更後の初回送信時に、このアドレスへ届く確認メールのリンクから再有効化が必要。
 - 静的サイト単体ではメール送信できないため、外部フォーム送信サービス連携が将来必要。
   （現状の方式はユーザーと相談しながら変更してきた。直近の実装を必ず確認してから触る。）
 - 業種・従業員数のチェックボックスあり。「空欄でも〜」のような圧迫感ある文言は使わない。
@@ -263,7 +263,7 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 
 - ルート直下 `recruit.html`。営業スタッフをメイン募集（目的＝困っている人を助ける／社労士とアウトソーシングという選択肢を広める）。
 - 本番公開用に整備済み（「仮（準備中）」バナー・各所の「（仮）」表記を撤去、`robots` を `index,follow` に変更、`sitemap.xml` に登録）。給与・勤務地などの数値は確定値として掲載中（公開前に最終確認推奨）。確定済み：完全週休2日制・有給初年度15日付与。ホームのフッター「コンテンツ」からリンク済み。
-- 電話番号は実値（090-2838-8252）・代表名は近藤 昭宏に反映済み（2026-07-12）。**残プレースホルダ＝社労士登録番号（第16◯◯◯◯号・未定）／canonical・OGP URL・sitemap・robots の example.com（ドメイン未定）／privacyの info@rash.jp（未確認）**。OGP画像本体 `assets/og/minano-og.png` は、AI生成イラストではなく実際のトップページ上部を撮影した1200×630画像として、2026-07-16に公開ページへ設定済み。LINE導線はサイト全体から撤去済み（アカウント開設後に復活させる場合は footer の「お問い合わせ」欄・.fl-mini・最終CTAに追加し直す）。
+- 電話番号は実値（090-2838-8252）・代表名は近藤 昭宏に反映済み（2026-07-12）。**残プレースホルダ＝社労士登録番号（第16◯◯◯◯号・未定）**。ドメインは `minano-sr.com`、連絡先メールは `contact@minano-sr.com` に確定済み。OGP画像本体 `assets/og/minano-og.png` は、AI生成イラストではなく実際のトップページ上部を撮影した1200×630画像として、2026-07-16に公開ページへ設定済み。LINE導線はサイト全体から撤去済み（アカウント開設後に復活させる場合は footer の「お問い合わせ」欄・.fl-mini・最終CTAに追加し直す）。
 
 ## 2026-07 ブラッシュアップ（大画面対応・トップ強化）
 
@@ -283,7 +283,7 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 - **TOOLSに図解**（`.tflow`）：勤怠→給与→手続き→年末調整の4ステップ。
 - **ヒーローCTAの「光が走る」演出（ctaSheen）は削除済み**（ユーザー要望。復活させないこと）。
 
-本番前要確認（2026-07-16更新）：電話・代表名・LINE撤去・OGP画像は反映済み。残り＝登録番号（第16◯◯◯◯号）／canonical・OGP URL・sitemap・robots の example.com（ドメイン確定後に一括置換）／privacy・contactの info@rash.jp（実アドレス未確認）／FormSubmit初回有効化／GoatCounterアカウント登録。
+本番前要確認（2026-07-21更新）：電話・代表名・LINE撤去・OGP画像・ドメイン・連絡先メール（`contact@minano-sr.com`）は反映済み。残り＝登録番号（第16◯◯◯◯号）／FormSubmitの新アドレスでの再有効化・受信テスト／GoatCounterアカウント登録。
 
 ## レスポンシブの徹底（このプロジェクトで繰り返し発生した問題。編集後は必ず守る）
 
