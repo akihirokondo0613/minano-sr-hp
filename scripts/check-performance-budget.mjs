@@ -38,7 +38,7 @@ for (const { full, rel } of publicHtml) {
     }
   }
   const pageEnter = html.match(/page-enter\.js\?v=([^"']+)/i);
-  if (pageEnter && pageEnter[1] !== '20260721-7') {
+  if (pageEnter && pageEnter[1] !== '20260721-8') {
     fail(`${rel}: page-enter.jsのキャッシュ版が不一致です（${pageEnter[1]}）`);
   }
   const imageSlotVersion = html.match(/image-slot\.js\?v=([^"']+)/i);
