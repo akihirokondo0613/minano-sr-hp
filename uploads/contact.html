@@ -85,10 +85,16 @@ img{max-width:100%;display:block}
 .footer-logo .logo-text b{color:#fff;font-size:13px}
 .footer-logo .logo-text small{color:rgba(255,255,255,.3)}
 .footer-desc{font-size:13px;line-height:1.9;max-width:260px;margin-bottom:16px;font-weight:300;letter-spacing:.03em}
-.footer-addr{font-size:11.5px;line-height:2;color:rgba(255,255,255,.3);font-weight:300;letter-spacing:.03em}
+.footer-contact{display:grid;gap:2px;margin-top:14px;font-size:11.5px;line-height:1.75;color:rgba(255,255,255,.45);font-style:normal;font-weight:300;letter-spacing:.03em}
+.footer-contact-row{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.8em;row-gap:0}
+.footer-contact-row>*{white-space:nowrap}
+.footer-contact-address{white-space:nowrap}
+.footer-contact a{display:inline-flex;align-items:center;min-height:27px;color:inherit}
+.footer-contact-hours{color:rgba(255,255,255,.38)}
 .footer-h{font-size:12px;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:12px;letter-spacing:.06em;text-transform:uppercase}
 .footer-ul{list-style:none;display:flex;flex-direction:column;gap:9px}
 .footer-ul a{font-size:13px;color:rgba(255,255,255,.45);transition:color .15s;font-weight:300;letter-spacing:.03em}
+.footer-ul a[href^="tel:"],.footer-ul a[href^="mailto:"]{white-space:nowrap;letter-spacing:0;font-variant-numeric:tabular-nums}
 .footer-ul a:hover{color:#fff}
 .footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
 .footer-copy{font-size:11px;color:rgba(255,255,255,.22);font-weight:300;letter-spacing:.05em}
@@ -139,7 +145,11 @@ textarea.form-input{min-height:120px;resize:vertical}
   .footer-ul{gap:8px}
   .form-grid{grid-template-columns:1fr;gap:40px}
 }
-@media(max-width:480px){.grid-2{grid-template-columns:1fr}}
+@media(max-width:480px){
+  .footer-grid{gap:28px 16px}
+  .footer-ul a[href^="tel:"],.footer-ul a[href^="mailto:"]{font-size:11.5px}
+  .grid-2{grid-template-columns:1fr}
+}
 </style><style id="brand-v2">
 :root{--r:16px}
 body{font-family:"BIZ UDPGothic","Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic Medium",YuGothic,Meiryo,sans-serif}
@@ -601,7 +611,10 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
           <div class="logo-text"><b>みなの社会保険労務士事務所</b><small>複雑な労務を、シンプルに。</small></div>
         </div>
         <p class="footer-desc">富山県・石川県を中心に北陸全域に対応。助成金活用・手続き代行・DX支援で中小企業の労務コストを最適化します。</p>
-        <p class="footer-addr">〒931-8333 富山県富山市蓮町1丁目7-7<br>TEL: 090-2838-8252　平日 9:00–18:00</p>
+        <address class="footer-contact">
+          <span class="footer-contact-row footer-contact-address">〒931-8333 富山県富山市蓮町1丁目7-7</span>
+          <span class="footer-contact-row"><a href="tel:090-2838-8252">TEL: 090-2838-8252</a><span class="footer-contact-hours">平日 9:00–18:00</span></span>
+        </address>
       </div>
       <div>
         <p class="footer-h">サービス</p>
@@ -631,6 +644,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
         <ul class="footer-ul">
           <li><a href="contact.html">無料相談フォーム</a></li>
           <li><a href="tel:090-2838-8252">電話: 090-2838-8252</a></li>
+          <li><a href="mailto:contact@minano-sr.com">contact@minano-sr.com</a></li>
           <li><a href="../portal.html">公式情報</a></li>
           <li><a href="../privacy-policy.html">プライバシーポリシー</a></li>
         </ul>

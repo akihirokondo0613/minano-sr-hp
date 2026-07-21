@@ -196,10 +196,16 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--g500);outline-offse
 .footer-logo .logo-text b{color:#fff;font-size:13px}
 .footer-logo .logo-text small{color:rgba(255,255,255,.5)}
 .footer-desc{font-size:13px;line-height:1.95;max-width:260px;margin-bottom:16px;letter-spacing:.03em}
-.footer-addr{font-size:11.5px;line-height:2;color:rgba(255,255,255,.55);letter-spacing:.03em}
+.footer-contact{display:grid;gap:2px;margin-top:14px;font-size:11.5px;line-height:1.75;color:rgba(255,255,255,.55);font-style:normal;letter-spacing:.03em}
+.footer-contact-row{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.8em;row-gap:0}
+.footer-contact-row>*{white-space:nowrap}
+.footer-contact-address{white-space:nowrap}
+.footer-contact a{display:inline-flex;align-items:center;min-height:27px;color:inherit}
+.footer-contact-hours{color:rgba(255,255,255,.48)}
 .footer-h{font-size:12px;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:14px;letter-spacing:.06em;text-transform:uppercase}
 .footer-ul{list-style:none;display:flex;flex-direction:column;gap:10px}
 .footer-ul a{font-size:13px;color:rgba(255,255,255,.6);transition:color .3s var(--ease-soft);letter-spacing:.03em}
+.footer-ul a[href^="tel:"],.footer-ul a[href^="mailto:"]{white-space:nowrap;letter-spacing:0;font-variant-numeric:tabular-nums}
 @media(hover:hover){.footer-ul a:hover{color:#fff}}
 .footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
 .footer-copy{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.05em}
@@ -255,6 +261,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--g500);outline-offse
   .footer-ul{gap:8px}
 }
 @media(max-width:480px){
+  .footer-grid{gap:28px 16px}
+  .footer-ul a[href^="tel:"],.footer-ul a[href^="mailto:"]{font-size:11.5px}
   .nav-cta{padding:8px 14px;font-size:12px}
   .page-hero-cta{flex-direction:column;align-items:stretch}
   .page-hero-cta .btn-primary,.page-hero-cta .btn-secondary{justify-content:center}
@@ -369,4 +377,3 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--g500);outline-offse
 @view-transition{navigation:none}
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}
 @media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}
-
