@@ -245,6 +245,12 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
   （現状の方式はユーザーと相談しながら変更してきた。直近の実装を必ず確認してから触る。）
 - 業種・従業員数のチェックボックスあり。「空欄でも〜」のような圧迫感ある文言は使わない。
 
+## 共通フッターの連絡先・改行（2026-07-21統一）
+
+- 全33公開ページの「お問い合わせ」欄に `mailto:contact@minano-sr.com` を追加済み。`admin-post.html` の記事生成テンプレートも同じ内容に同期してある。
+- 所在地と電話・営業時間は `address.footer-contact` の2行構造に統一。旧 `.footer-addr` の固定`<br>`や `.addr-sep` の「 / 」区切りへ戻さない。電話番号とメールアドレスは途中で分割しない。
+- 共通スタイルはルート系=`skin-v2.css`、uploads系=`uploads/service.css`、問い合わせページ=`uploads/contact.html` 内のCSS。キャッシュ回避の読込版は `20260721-footer`。
+
 ## ホバー・アニメーションの作法（カクつき防止）
 
 - ホバーやトランジションで **`padding` / `width` / `margin` などレイアウトを動かすプロパティを animate しない**
