@@ -41,6 +41,27 @@ const viewports = [
     await page.close();
   }
 
+  const imagePage = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  await imagePage.goto(base, { waitUntil: 'load' });
+  const slotLocator = imagePage.locator('image-slot[src]');
+  const slotCount = await slotLocator.count();
+  for (let i = 0; i < slotCount; i++) {
+    await slotLocator.nth(i).scrollIntoViewIfNeeded();
+    await imagePage.waitForTimeout(80);
+  }
+  await imagePage.waitForTimeout(500);
+  const slotState = await imagePage.evaluate(() => {
+    const slots = [...document.querySelectorAll('image-slot[src]')];
+    const broken = slots.filter(slot => {
+      const img = slot.querySelector('img[data-image-slot-public]');
+      return !img || !img.complete || img.naturalWidth === 0;
+    }).map(slot => slot.id || slot.getAttribute('src'));
+    return { total: slots.length, broken };
+  });
+  if (slotState.broken.length) failures.push(`トップ画像スロット: 読込失敗 ${slotState.broken.join(', ')}`);
+  results.push({ publicImageSlots: slotState.total, broken: slotState.broken.length });
+  await imagePage.close();
+
   const publicPages = [];
   for (const dir of ['', 'uploads', 'blog']) {
     const fullDir = path.join(process.cwd(), dir);

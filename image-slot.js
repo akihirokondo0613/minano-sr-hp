@@ -108,6 +108,74 @@
     return stem + '-480.webp 480w, ' + stem + '-960.webp 960w';
   }
 
+  // 公開サイトは編集UI・ghost画像・ドラッグ処理を一切生成しない軽量版を使う。
+  // 同じページに多数あるスロットごとにShadow DOM一式を組み立てるコストを避け、
+  // native imgの遅延読込・srcset・object-fitだけで表示する。
+  if (!EDIT_MODE) {
+    if (!document.getElementById('mn-image-slot-public-style')) {
+      const style = document.createElement('style');
+      style.id = 'mn-image-slot-public-style';
+      style.textContent =
+        'image-slot{display:inline-block;position:relative;vertical-align:top;width:240px;height:160px;overflow:hidden;background:rgba(0,0,0,.04)}' +
+        'image-slot>img[data-image-slot-public]{display:block;width:100%;height:100%;max-width:none;-webkit-user-drag:none;user-select:none}';
+      document.head.appendChild(style);
+    }
+
+    class PublicImageSlot extends HTMLElement {
+      static get observedAttributes() {
+        return ['shape', 'radius', 'mask', 'fit', 'position', 'src', 'srcset', 'sizes', 'eager'];
+      }
+
+      connectedCallback() { this._renderPublic(); }
+      attributeChangedCallback() { if (this.isConnected) this._renderPublic(); }
+
+      _renderPublic() {
+        if (!this._img) {
+          this._img = document.createElement('img');
+          this._img.alt = '';
+          this._img.draggable = false;
+          this._img.decoding = 'async';
+          this._img.setAttribute('data-image-slot-public', '');
+          this.appendChild(this._img);
+        }
+
+        const src = this.getAttribute('src') || '';
+        const srcset = this.getAttribute('srcset') || responsiveSrcset(src);
+        const sizes = this.getAttribute('sizes') || '(max-width: 760px) 92vw, 50vw';
+        const eager = this.hasAttribute('eager');
+        this._img.loading = eager ? 'eager' : 'lazy';
+        if (eager) this._img.fetchPriority = 'high';
+        else this._img.removeAttribute('fetchpriority');
+        if (srcset) {
+          this._img.srcset = srcset;
+          this._img.sizes = sizes;
+        } else {
+          this._img.removeAttribute('srcset');
+          this._img.removeAttribute('sizes');
+        }
+        if (src && this._img.getAttribute('src') !== src) this._img.src = src;
+        if (!src) this._img.removeAttribute('src');
+        this._img.style.objectFit = this.getAttribute('fit') || 'cover';
+        this._img.style.objectPosition = this.getAttribute('position') || '50% 50%';
+
+        const mask = this.getAttribute('mask') || '';
+        const shape = (this.getAttribute('shape') || 'rounded').toLowerCase();
+        let radius = '';
+        if (shape === 'circle') radius = '50%';
+        else if (shape === 'pill') radius = '9999px';
+        else if (shape === 'rounded') {
+          const n = Number.parseFloat(this.getAttribute('radius'));
+          radius = (Number.isFinite(n) ? n : 12) + 'px';
+        }
+        this.style.borderRadius = mask ? '' : radius;
+        this.style.clipPath = mask;
+      }
+    }
+
+    customElements.define('image-slot', PublicImageSlot);
+    return;
+  }
+
   // ── Shared sidecar store ────────────────────────────────────────────────
   // One fetch + immediate write-on-change for every <image-slot> on the
   // page. Reads via fetch() so viewing works anywhere the HTML and sidecar

@@ -96,6 +96,7 @@ fetch はローカルファイルではブロックされ、待ち状態（pendi
 
 - `window.omelette.writeFile` が使える環境だけを編集モードとする。編集モードでは従来どおり `.image-slots.state.json` と localStorage を利用する。
 - 通常の公開サイトでは `.image-slots.state.json` を取得せず、HTMLの `src/srcset` をそのまま表示する。約1.6MBの編集用JSONが二重取得される問題を再発させない。
+- 公開時の `<image-slot>` は編集UI・ghost画像・ドラッグ処理を作らない軽量クラスで表示する。編集用の重いShadow DOMを公開側へ戻さない。読込URLは `image-slot.js?v=20260721-perf2`。
 - `deploy-public.yml` は `.image-slots.state.json` と検証用 `scripts/` を public ブランチから除外する。隠しファイルを公開へ戻さない。
 - 大きなイラストは `-480.webp` / `-960.webp` を `image-slot.js` が公開時に選択する。対象を増やすときは本体画像と同じ構図で両方を生成する。
 

@@ -41,6 +41,10 @@ for (const { full, rel } of publicHtml) {
   if (pageEnter && pageEnter[1] !== '20260721-7') {
     fail(`${rel}: page-enter.jsのキャッシュ版が不一致です（${pageEnter[1]}）`);
   }
+  const imageSlotVersion = html.match(/image-slot\.js\?v=([^"']+)/i);
+  if (imageSlotVersion && imageSlotVersion[1] !== '20260721-perf2') {
+    fail(`${rel}: image-slot.jsのキャッシュ版が不一致です（${imageSlotVersion[1]}）`);
+  }
 }
 
 const index = await readFile(join(root, 'index.html'), 'utf8');
