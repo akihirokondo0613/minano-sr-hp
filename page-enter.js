@@ -511,6 +511,32 @@ function mnSplitLabel(el, text) {
       return r.text();
     });
 
+    // ★遷移先CSSの先読み（カクツキ対策）：swapHead は覆いきり後まで実行されないため、CSSが
+    // 総入れ替えになるページ（無料相談 uploads/contact.html 等、skin-v2.css→service.css+wave-skin.css）
+    // では、swapHead時点でゼロからネットワーク取得が始まり、それが「めくりのtransformが動く瞬間」と
+    // 重なってコンポジットが飽和し“カクつく”。カーテンで覆っている間（＝画面には見えない間）に
+    // preloadだけ先に済ませておけば、swapHead時点ではブラウザキャッシュから即座に適用でき、
+    // 新規ネットワーク取得ぶんの遅延が消える。見た目に影響しない資源ヒントなので coverDone を待たず
+    // fetch完了後すぐ実行する。
+    fetchP.then(function (html) {
+      try {
+        var links = new DOMParser().parseFromString(html, 'text/html').head.querySelectorAll('link[rel="stylesheet"]');
+        Array.prototype.forEach.call(links, function (n) {
+          var href = n.getAttribute('href');
+          if (!href) return;
+          var u = abs(href);
+          var already = false;
+          Array.prototype.forEach.call(document.head.querySelectorAll('link[href]'), function (ex) {
+            if (abs(ex.getAttribute('href')) === u) already = true;
+          });
+          if (already) return;
+          var pl = document.createElement('link');
+          pl.rel = 'preload'; pl.as = 'style'; pl.href = href;
+          document.head.appendChild(pl);
+        });
+      } catch (e) {}
+    });
+
     // ── 文字と線を「覆いきり」基準の同じフェーズに固定する（原因2/3の修正） ──
     // アンダーラインは移動先の読み込み完了(readiness)ではなく、カーテンが降りきって文字が出た直後に引く。
     // これで線の開始タイミングが遷移先の重さに左右されず毎回同じになり、
