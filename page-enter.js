@@ -698,6 +698,9 @@ function mnSplitLabel(el, text) {
   // 本番では従来と同一挙動（stopPropagation で link-keep 等に渡さない点も不変）。
   window.addEventListener('click', function (e) {
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    // 編集画面では、リンク内の image-slot の手動調整をSPA遷移より優先する。
+    // 公開画面には書き込みブリッジが無いため、通常のリンク挙動は変わらない。
+    if (window.omelette && window.omelette.writeFile && e.target && e.target.closest && e.target.closest('image-slot')) return;
     var a = e.target && e.target.closest ? e.target.closest('a') : null;
     if (eligible(a)) {
       e.preventDefault();
@@ -710,7 +713,7 @@ function mnSplitLabel(el, text) {
     // 素通すとカーテンなしの生リロードになる（capture段階の stopPropagation で
     // ターゲットのインライン onclick は発火しない）。
     var oc = e.target && e.target.closest ? e.target.closest('[onclick]') : null;
-    if (oc) {
+    while (oc) {
       var m = /location\.href\s*=\s*['"]([^'"]+)['"]/.exec(oc.getAttribute('onclick') || '');
       if (m) {
         var u; try { u = new URL(m[1], location.href); } catch (err) { u = null; }
@@ -722,7 +725,10 @@ function mnSplitLabel(el, text) {
           if (t.length > 20) t = t.slice(0, 20) + '…';
           navigate(withQuery(u.href), { label: mnIsHomePath(u.pathname) ? mnGreeting() : t });
         }
+        break;
       }
+      // 編集専用ガードのonclickが画像ラッパーにある場合は、外側の遷移カードまで探す。
+      oc = oc.parentElement && oc.parentElement.closest ? oc.parentElement.closest('[onclick]') : null;
     }
   }, true);
 

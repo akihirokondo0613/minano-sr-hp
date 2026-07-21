@@ -30,6 +30,9 @@
  *                corner-drag to scale. The crop persists alongside the image
  *                in the sidecar. contain/fill stay static.
  *   position     object-position for fit=contain|fill.     (default '50% 50%')
+ *   crop-scale   Public/edit fallback crop scale for fit=cover. (default 1)
+ *   crop-x       Public/edit fallback horizontal offset in frame %. (default 0)
+ *   crop-y       Public/edit fallback vertical offset in frame %.   (default 0)
  *   placeholder  Empty-state caption.                      (default 'Drop an image')
  *   src          Optional initial/fallback image URL. A user drop overrides
  *                it; clearing the drop reveals src again.
@@ -121,12 +124,27 @@
       document.head.appendChild(style);
     }
 
+    const publicCropObserver = typeof ResizeObserver === 'function'
+      ? new ResizeObserver((entries) => {
+          entries.forEach((entry) => entry.target._applyPublicCrop());
+        })
+      : null;
+
     class PublicImageSlot extends HTMLElement {
       static get observedAttributes() {
-        return ['shape', 'radius', 'mask', 'fit', 'position', 'src', 'srcset', 'sizes', 'eager'];
+        return ['shape', 'radius', 'mask', 'fit', 'position', 'src', 'srcset', 'sizes', 'eager',
+          'crop-scale', 'crop-x', 'crop-y'];
       }
 
-      connectedCallback() { this._renderPublic(); }
+      connectedCallback() {
+        this._renderPublic();
+        if (publicCropObserver) publicCropObserver.observe(this);
+      }
+
+      disconnectedCallback() {
+        if (publicCropObserver) publicCropObserver.unobserve(this);
+      }
+
       attributeChangedCallback() { if (this.isConnected) this._renderPublic(); }
 
       _renderPublic() {
@@ -136,6 +154,7 @@
           this._img.draggable = false;
           this._img.decoding = 'async';
           this._img.setAttribute('data-image-slot-public', '');
+          this._img.addEventListener('load', () => this._applyPublicCrop());
           this.appendChild(this._img);
         }
 
@@ -155,9 +174,6 @@
         }
         if (src && this._img.getAttribute('src') !== src) this._img.src = src;
         if (!src) this._img.removeAttribute('src');
-        this._img.style.objectFit = this.getAttribute('fit') || 'cover';
-        this._img.style.objectPosition = this.getAttribute('position') || '50% 50%';
-
         const mask = this.getAttribute('mask') || '';
         const shape = (this.getAttribute('shape') || 'rounded').toLowerCase();
         let radius = '';
@@ -169,6 +185,53 @@
         }
         this.style.borderRadius = mask ? '' : radius;
         this.style.clipPath = mask;
+        this._applyPublicCrop();
+      }
+
+      _applyPublicCrop() {
+        if (!this._img) return;
+        const fit = this.getAttribute('fit') || 'cover';
+        const position = this.getAttribute('position') || '50% 50%';
+        const rawScale = Number.parseFloat(this.getAttribute('crop-scale'));
+        const rawX = Number.parseFloat(this.getAttribute('crop-x'));
+        const rawY = Number.parseFloat(this.getAttribute('crop-y'));
+        const s = Number.isFinite(rawScale) ? Math.max(1, Math.min(5, rawScale)) : 1;
+        let x = Number.isFinite(rawX) ? rawX : 0;
+        let y = Number.isFinite(rawY) ? rawY : 0;
+        const iw = this._img.naturalWidth;
+        const ih = this._img.naturalHeight;
+        const fw = this.clientWidth;
+        const fh = this.clientHeight;
+        const hasCrop = Math.abs(s - 1) > 0.000001 || Math.abs(x) > 0.000001 || Math.abs(y) > 0.000001;
+
+        if (fit !== 'cover' || !hasCrop || !iw || !ih || !fw || !fh) {
+          this._img.style.position = '';
+          this._img.style.width = '100%';
+          this._img.style.height = '100%';
+          this._img.style.left = '';
+          this._img.style.top = '';
+          this._img.style.transform = '';
+          this._img.style.objectFit = fit;
+          this._img.style.objectPosition = position;
+          return;
+        }
+
+        // 編集モードと同じ cover 基準の寸法・移動量で描画する。
+        // 状態ファイルを公開側で取得せず、HTMLに焼き込んだ調整値だけを使う。
+        const base = Math.max(fw / iw, fh / ih);
+        const mx = Math.max(0, (iw * base * s / fw - 1) * 50);
+        const my = Math.max(0, (ih * base * s / fh - 1) * 50);
+        x = Math.max(-mx, Math.min(mx, x));
+        y = Math.max(-my, Math.min(my, y));
+        const k = base * s;
+        this._img.style.position = 'absolute';
+        this._img.style.width = (iw * k / fw * 100) + '%';
+        this._img.style.height = (ih * k / fh * 100) + '%';
+        this._img.style.left = (50 + x) + '%';
+        this._img.style.top = (50 + y) + '%';
+        this._img.style.transform = 'translate(-50%,-50%)';
+        this._img.style.objectFit = '';
+        this._img.style.objectPosition = '';
       }
     }
 
@@ -368,7 +431,8 @@
 
   class ImageSlot extends HTMLElement {
     static get observedAttributes() {
-      return ['shape', 'radius', 'mask', 'fit', 'position', 'placeholder', 'src', 'srcset', 'sizes', 'id'];
+      return ['shape', 'radius', 'mask', 'fit', 'position', 'placeholder', 'src', 'srcset', 'sizes', 'id',
+        'crop-scale', 'crop-x', 'crop-y'];
     }
 
     constructor() {
@@ -768,10 +832,14 @@
       const url = this._userUrl || (pending ? '' : srcAttr);
       // Don't clobber an in-flight reframe with a store-triggered re-render.
       if (!this.hasAttribute('data-reframe')) {
+        const attrS = Number.parseFloat(this.getAttribute('crop-scale'));
+        const attrX = Number.parseFloat(this.getAttribute('crop-x'));
+        const attrY = Number.parseFloat(this.getAttribute('crop-y'));
         this._view = {
-          s: stored && Number.isFinite(stored.s) ? clampS(stored.s) : 1,
-          x: stored && Number.isFinite(stored.x) ? stored.x : 0,
-          y: stored && Number.isFinite(stored.y) ? stored.y : 0,
+          s: stored && Number.isFinite(stored.s) ? clampS(stored.s) :
+            (Number.isFinite(attrS) ? clampS(attrS) : 1),
+          x: stored && Number.isFinite(stored.x) ? stored.x : (Number.isFinite(attrX) ? attrX : 0),
+          y: stored && Number.isFinite(stored.y) ? stored.y : (Number.isFinite(attrY) ? attrY : 0),
         };
       }
       this._cap.textContent = this.getAttribute('placeholder') || 'Drop an image';

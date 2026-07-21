@@ -66,11 +66,78 @@ function recordConsoleError(target) {
       const img = slot.querySelector('img[data-image-slot-public]');
       return !img || !img.complete || img.naturalWidth === 0;
     }).map(slot => slot.id || slot.getAttribute('src'));
-    return { total: slots.length, broken };
+    const adjusted = slots.filter(slot => {
+      const s = Number.parseFloat(slot.getAttribute('crop-scale')) || 1;
+      const x = Number.parseFloat(slot.getAttribute('crop-x')) || 0;
+      const y = Number.parseFloat(slot.getAttribute('crop-y')) || 0;
+      return Math.abs(s - 1) > 0.000001 || Math.abs(x) > 0.000001 || Math.abs(y) > 0.000001;
+    });
+    const cropFailures = adjusted.filter(slot => {
+      const img = slot.querySelector('img[data-image-slot-public]');
+      if (!img || img.style.position !== 'absolute') return true;
+      const frame = slot.getBoundingClientRect();
+      const image = img.getBoundingClientRect();
+      return image.left > frame.left + 1 || image.top > frame.top + 1 ||
+        image.right < frame.right - 1 || image.bottom < frame.bottom - 1;
+    }).map(slot => slot.id || slot.getAttribute('src'));
+    return { total: slots.length, broken, adjusted: adjusted.length, cropFailures };
   });
   if (slotState.broken.length) failures.push(`トップ画像スロット: 読込失敗 ${slotState.broken.join(', ')}`);
-  results.push({ publicImageSlots: slotState.total, broken: slotState.broken.length });
+  if (slotState.cropFailures.length) failures.push(`トップ画像スロット: 手調整の反映失敗 ${slotState.cropFailures.join(', ')}`);
+  results.push({ publicImageSlots: slotState.total, broken: slotState.broken.length,
+    adjusted: slotState.adjusted, cropFailures: slotState.cropFailures.length });
   await imagePage.close();
+
+  const cropPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  let adjustedSubpageSlots = 0;
+  for (const rel of ['joseikin.html', 'uploads/service-joseikin.html', 'uploads/service-shugyo-kisoku.html']) {
+    await cropPage.goto(new URL(rel, base).href, { waitUntil: 'load' });
+    const adjustedSlots = cropPage.locator('image-slot[crop-scale], image-slot[crop-x], image-slot[crop-y]');
+    const count = await adjustedSlots.count();
+    adjustedSubpageSlots += count;
+    for (let i = 0; i < count; i++) {
+      await adjustedSlots.nth(i).scrollIntoViewIfNeeded();
+      await cropPage.waitForTimeout(80);
+    }
+    const bad = await cropPage.evaluate(() => [...document.querySelectorAll('image-slot[crop-scale], image-slot[crop-x], image-slot[crop-y]')]
+      .filter(slot => {
+        const img = slot.querySelector('img[data-image-slot-public]');
+        if (!img || !img.complete || !img.naturalWidth || img.style.position !== 'absolute') return true;
+        const frame = slot.getBoundingClientRect();
+        const image = img.getBoundingClientRect();
+        return image.left > frame.left + 1 || image.top > frame.top + 1 ||
+          image.right < frame.right - 1 || image.bottom < frame.bottom - 1;
+      }).map(slot => slot.id || slot.getAttribute('src')));
+    if (bad.length) failures.push(`${rel}: 手調整の反映失敗 ${bad.join(', ')}`);
+  }
+  results.push({ adjustedSubpageSlots });
+  await cropPage.close();
+
+  const publicLinkPage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await publicLinkPage.goto(base, { waitUntil: 'load' });
+  await publicLinkPage.locator('#how-img-1').scrollIntoViewIfNeeded();
+  await publicLinkPage.locator('#how-img-1').click();
+  await publicLinkPage.waitForURL(/\/uploads\/service-joseikin\.html$/, { timeout: 10000 });
+  results.push({ imageLinkPublic: true });
+  await publicLinkPage.close();
+
+  const editPage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await editPage.addInitScript(() => {
+    window.omelette = { writeFile: () => Promise.resolve() };
+  });
+  await editPage.goto(base, { waitUntil: 'load' });
+  const editSlot = editPage.locator('#how-img-2');
+  await editSlot.scrollIntoViewIfNeeded();
+  await editSlot.dblclick();
+  const editState = await editSlot.evaluate(slot => ({
+    reframe: slot.hasAttribute('data-reframe'),
+    path: location.pathname,
+  }));
+  if (!editState.reframe || !/\/$/.test(editState.path)) {
+    failures.push(`編集画面: リンク内画像を手調整できません ${JSON.stringify(editState)}`);
+  }
+  results.push({ imageReframeEdit: editState.reframe, stayedOnHome: /\/$/.test(editState.path) });
+  await editPage.close();
 
   const publicPages = [];
   for (const dir of ['', 'uploads', 'blog']) {

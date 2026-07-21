@@ -38,12 +38,16 @@ for (const { full, rel } of publicHtml) {
     }
   }
   const pageEnter = html.match(/page-enter\.js\?v=([^"']+)/i);
-  if (pageEnter && pageEnter[1] !== '20260721-8') {
+  if (pageEnter && pageEnter[1] !== '20260722-1') {
     fail(`${rel}: page-enter.jsのキャッシュ版が不一致です（${pageEnter[1]}）`);
   }
   const imageSlotVersion = html.match(/image-slot\.js\?v=([^"']+)/i);
-  if (imageSlotVersion && imageSlotVersion[1] !== '20260721-perf2') {
+  if (imageSlotVersion && imageSlotVersion[1] !== '20260722-crop1') {
     fail(`${rel}: image-slot.jsのキャッシュ版が不一致です（${imageSlotVersion[1]}）`);
+  }
+  const skinVersion = html.match(/skin-v2\.css\?v=([^"']+)/i);
+  if (skinVersion && skinVersion[1] !== '20260722-design1') {
+    fail(`${rel}: skin-v2.cssのキャッシュ版が不一致です（${skinVersion[1]}）`);
   }
 }
 
