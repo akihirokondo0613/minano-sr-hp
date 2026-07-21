@@ -22,9 +22,9 @@
   var p = location.pathname;
   var rootPrefix = /\/(uploads|blog)\/[^\/]*$/.test(p) ? '../' : '';
   var FRAMES = [
-    rootPrefix + 'assets/cat-walk-1.webp', // 立ち（小走り）= 待機
-    rootPrefix + 'assets/cat-walk-2.webp', // 沈み込み
-    rootPrefix + 'assets/cat-walk-3.webp'  // 伸び
+    rootPrefix + 'assets/cat-walk-1-256.webp', // 立ち（小走り）= 待機
+    rootPrefix + 'assets/cat-walk-2-256.webp', // 沈み込み
+    rootPrefix + 'assets/cat-walk-3-256.webp'  // 伸び
   ];
   var SPRITE_RATIO = 0.8; // 画像の高さ / 幅
   var URL_CONTACT = rootPrefix + 'uploads/contact.html';

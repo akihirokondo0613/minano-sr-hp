@@ -1,0 +1,50 @@
+name: Performance checks
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 静的な性能チェック
+        run: node scripts/check-performance-budget.mjs
+
+      - name: ローカル公開サーバーを起動
+        run: |
+          python3 -m http.server 8765 >/tmp/minano-http.log 2>&1 &
+          for i in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8765/ >/dev/null; then break; fi
+            sleep 0.25
+          done
+          curl --fail --silent http://127.0.0.1:8765/ >/dev/null
+
+      - name: Lighthouse（モバイル）
+        run: npx --yes lighthouse@13.0.1 http://127.0.0.1:8765/ --quiet --chrome-flags="--headless --no-sandbox" --output=json --output-path=/tmp/lighthouse-mobile.json --only-categories=performance
+
+      - name: Lighthouse（PC）
+        run: npx --yes lighthouse@13.0.1 http://127.0.0.1:8765/ --quiet --chrome-flags="--headless --no-sandbox" --output=json --output-path=/tmp/lighthouse-desktop.json --only-categories=performance --preset=desktop
+
+      - name: 性能基準を判定
+        run: |
+          node scripts/assert-lighthouse-budget.mjs ci-mobile /tmp/lighthouse-mobile.json
+          node scripts/assert-lighthouse-budget.mjs ci-desktop /tmp/lighthouse-desktop.json
+
+      - name: 計測結果を保存
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: /tmp/lighthouse-*.json
+          retention-days: 14

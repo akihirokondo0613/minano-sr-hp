@@ -81,8 +81,8 @@
 
 → 対策として、差し替え済み18枚を **`assets/photos/<スロットid>.webp`** に書き出し、各ページの
 `<image-slot>` に `src="(…/)assets/photos/<id>.webp"` を直接指定済み（uploads配下は `../assets/photos/`）。
-これで **file://・どのサーバー・オフラインでも確実に表示**される。隠しファイルは残してあるので、
-公開後（サーバー上）はサイドカーの正確なリフレーム位置が優先表示され、プレビューのドラッグ差し替えも従来どおり。
+これで **file://・どのサーバー・オフラインでも確実に表示**される。隠しファイルは編集環境にだけ残し、
+公開サイトは `src` で指定した本ファイルを表示する。プレビューのドラッグ差し替え・位置調整は従来どおり編集環境で利用できる。
 **新たに写真を差し替えて確定したい場合**は、同じ手順で `assets/photos/<id>.webp` を上書き再書き出しすること。
 
 （2026-07-15 追記）当初の18枚に加え、未file化のままだったイラスト12枚も `assets/photos/<id>.webp` へ本ファイル化＋`src` 指定済み＝計30枚。追加分は index の `svc-ill-joseikin/kisoku/shaho/kyuyo/sodan/dx`（サービス一覧6行）と joseikin の `jk-hero-ill`＋こんな会社に5枚（`jk-ill-career/gyomu/ryoritsu/jinzai/trial`）。これで全 `<image-slot>` が本ファイルを持ち、DL・公開・オフラインで確実に表示される。
@@ -91,6 +91,14 @@
 fetch はローカルファイルではブロックされ、待ち状態（pending）のまま画像が出ないため。これで file:// でも
 すぐ `src`（本ファイル）にフォールバックして表示される。**ダウンロード時は `assets/`（特に `assets/photos/`）・
 `image-slot.js`・各HTMLをフォルダ構造ごと一式**保存すること（フォルダが欠けると当然画像は出ない）。
+
+### 公開表示と編集表示の分離（2026-07-21・性能改善）
+
+- `window.omelette.writeFile` が使える環境だけを編集モードとする。編集モードでは従来どおり `.image-slots.state.json` と localStorage を利用する。
+- 通常の公開サイトでは `.image-slots.state.json` を取得せず、HTMLの `src/srcset` をそのまま表示する。約1.6MBの編集用JSONが二重取得される問題を再発させない。
+- 公開時の `<image-slot>` は編集UI・ghost画像・ドラッグ処理を作らない軽量クラスで表示する。編集用の重いShadow DOMを公開側へ戻さない。読込URLは `image-slot.js?v=20260721-perf2`。
+- `deploy-public.yml` は `.image-slots.state.json` と検証用 `scripts/` を public ブランチから除外する。隠しファイルを公開へ戻さない。
+- 大きなイラストは `-480.webp` / `-960.webp` を `image-slot.js` が公開時に選択する。対象を増やすときは本体画像と同じ構図で両方を生成する。
 
 ## 画像の「ブラウザ内と本ファイルの食い違い」対策（2026-07-20 発覚・再発防止ルール）
 
@@ -136,7 +144,7 @@ fetch はローカルファイルではブロックされ、待ち状態（pendi
 
 ### v6 の変更（2026-07-21・遷移文字の途中拡大を修正）
 `window.__mnSpa.v===6`。ルートページは `html` の実効 `zoom=1`、uploads配下は `wave-skin.css` により通常 `zoom=.9`（2000px以上では1.15）。SPAのカーテンは `<html>` 直下に残したまま `swapHead()` でページCSSだけを交換するため、**無料相談→トップ系ページでは表示中のカーテンも .9→1 に切り替わり、文字が途中で約11%拡大していた**。`syncVeilZoom()` がカーテンへルートの逆倍率を与え、表示開始時・head交換直後・新規CSS適用時・表示中のリサイズ時に同期する。これにより本文側の既存倍率は変えず、カーテンの文字・波・足あとだけを常に同じ実寸で表示する。
-- **本番キャッシュ対策**：サーバーがJavaScriptへ `max-age=604800`（7日）を付けるため、全HTMLと記事生成テンプレートの読込URLを `page-enter.js?v=20260721-6` に統一。修正版公開時に既存端末が旧v5を保持し続けるのを防ぐ。次回 `page-enter.js` を変更して本番公開するときも、このクエリ版番号を全ページ＋`admin-post.html`の生成テンプレートで更新する。
+- **本番キャッシュ対策**：サーバーがJavaScriptへ `max-age=604800`（7日）を付けるため、全HTMLと記事生成テンプレートの読込URLを `page-enter.js?v=20260721-7` に統一。修正版公開時に既存端末が旧版を保持し続けるのを防ぐ。次回 `page-enter.js` を変更して本番公開するときも、このクエリ版番号を全ページ＋`admin-post.html`の生成テンプレートで更新する。
 
 ### v4 の変更（2026-07-19・ブログ行きは演出なし＋文字/線の同フェーズ化）
 `window.__mnSpa.v===4`。ユーザー要望「別ページへ行くときだけ遷移演出を出す（理念→サービス等は出す／ブログは続けて読めるよう出さない）」＋「文字とアンダーラインのズレ・文字なしアンダーラインの根絶」に対応。**判定は原則『移動先』**：
@@ -343,6 +351,16 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 - **アイコン・丸チェックは従来どおり**（.chk 緑丸＋白チェック、plan-features の丸チェック、checklist の緑角チェック、各種線画アイコン）。
 - **例外＝行政機関のみ漢字チップを使用**（ユーザー承認のシグネチャー）：infographicの行政機関カード（年金/雇用/労基/助成、`.kmono.kmono-sm`）と portal のカテゴリ（`.cat-icon.kmono`、セクション色継承）。`.kmono` は skin-v2.css に定義（40px角丸・淡緑地・Zen Maru Gothic 700 13px・#007B43）。Zen Maru Gothic の font link は infographic / portal のみにある（他ページに足さないこと）。
 - **注意：削除された旧SVGの原本はどこにも残っていなかった**ため、巻き戻し時に同じ作法（viewBox 24・stroke currentColor 1.5・round）で再描画している。CSSは編集記録から完全復元。見た目は旧デザイン相当だがバイト一致ではない。今後大規模な見た目変更をする前は、必ずファイル一式のバックアップ（フォルダコピー）を取ってから行うこと。
+
+## 表示速度の設計と性能ゲート（2026-07-21）
+
+- Google Fontsは使用しない。和文はヒラギノ／游ゴシック／メイリオ等の端末内フォントを使い、分割フォントの大量通信を避ける。
+- トップのLCP画像は native `<picture>`。AVIF/WebPの 720/800/1200/1600px を用意し、`preload`・`fetchpriority="high"`・width/heightを維持する。公開トップを `<image-slot>` に戻さない（preload scannerが画像を早期発見できなくなる）。
+- トップの初回ロゴローダーは撤去済み。サイト内移動の緑カーテンはブランド演出として残す。
+- トップは `#critical-home` にファーストビュー用CSSを置き、全量 `skin-v2.css` は `data-async-style` で後から適用する。両者を片方だけ変更しない。ファーストビューの規則を変更したらインライン側も同期する。
+- 画面外の大きなsectionは `content-visibility:auto` で描画計算を遅延する。アンカー移動・SPA遷移で位置ずれがないことをモバイル実測する。
+- CSS/JSを変更して公開するときはクエリ版を更新する。ヒーロー等の最適化画像は寸法入りの別名にして、7日キャッシュ中の旧資産と混同させない。サーバーはHTML/CSSをBrotli圧縮し、静的資産へ `max-age=604800` を付与している。
+- 変更前後で `node scripts/check-performance-budget.mjs` を実行する。PRでは `.github/workflows/performance.yml` がモバイル／PCのLighthouseを計測してレポートを保存し、共有ランナーでも安定する転送量（モバイル600KiB・PC700KiB）とCLS 0.1を合否判定する。点数・LCP・TBTは共有ランナーのCPU混雑で大きく変動するため、ローカル同一条件の比較に使う。
 
 ## sitemap.xml は自動生成に切り替え済み（2026-07-19 `gen-sitemap.js` 追加）
 

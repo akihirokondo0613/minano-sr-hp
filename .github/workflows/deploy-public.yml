@@ -14,6 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: 公開前の性能チェック
+        run: node scripts/check-performance-budget.mjs
+
       - name: メンテナンスモード判定・適用
         run: |
           if [ -f .maintenance ]; then
@@ -23,8 +26,9 @@ jobs:
       - name: 非公開ファイルを除外
         run: |
           rm -f CLAUDE.md icon-catalog.html .maintenance
-          rm -rf _backup_* .github
+          rm -rf _backup_* .github scripts
           rm -f *.zip
+          find . -name ".image-slots.state.json" -delete
           find . -name ".DS_Store" -delete
 
       - name: publicブランチへ反映

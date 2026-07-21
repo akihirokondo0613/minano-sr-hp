@@ -48,6 +48,10 @@
 
 (() => {
   const STATE_BASENAME = '.image-slots.state.json';
+  // 公開サイトでは assets/ 配下の画像ファイルが正本。編集用の data URL を含む
+  // sidecar（約1.6MB）と localStorage は、書き込みブリッジがある編集画面だけで使う。
+  // これにより公開ページでは src/srcset を即座に描画し、sidecar の二重取得を防ぐ。
+  const EDIT_MODE = !!(window.omelette && window.omelette.writeFile);
   // 読み込みは常に「サイトのルート」の状態ファイルを見る。uploads/ ・ blog/ 配下の
   // ページは ../ を付けてルートへ解決する。書き込み（window.omelette.writeFile）は
   // ホストが常にルート直下へ保存するので、これで全ページが“同じ1ファイル”を読み書きする。
@@ -90,6 +94,87 @@
   // re-encode keeps only the first frame, so an animated GIF would silently
   // go still — better to reject than surprise.
   const ACCEPT = ['image/png', 'image/jpeg', 'image/webp', 'image/avif'];
+  const RESPONSIVE_BASENAMES = new Set([
+    '02_hokuriku_region_wide', '03_why_meeting_male', '04_subsidy_support_female',
+    '06_system_pc_operation', '08_office_work', '14_punctual_deadline',
+    '16_local_office_building', '17_admin_work_female',
+    '18_payroll_calculation', '21_remote_work',
+  ]);
+
+  function responsiveSrcset(src) {
+    const m = src.match(/(?:^|\/)([^\/]+)\.webp(?:[?#].*)?$/i);
+    if (!m || !RESPONSIVE_BASENAMES.has(m[1])) return '';
+    const stem = src.replace(/\.webp(?:[?#].*)?$/i, '');
+    return stem + '-480.webp 480w, ' + stem + '-960.webp 960w';
+  }
+
+  // 公開サイトは編集UI・ghost画像・ドラッグ処理を一切生成しない軽量版を使う。
+  // 同じページに多数あるスロットごとにShadow DOM一式を組み立てるコストを避け、
+  // native imgの遅延読込・srcset・object-fitだけで表示する。
+  if (!EDIT_MODE) {
+    if (!document.getElementById('mn-image-slot-public-style')) {
+      const style = document.createElement('style');
+      style.id = 'mn-image-slot-public-style';
+      style.textContent =
+        'image-slot{display:inline-block;position:relative;vertical-align:top;width:240px;height:160px;overflow:hidden;background:rgba(0,0,0,.04)}' +
+        'image-slot>img[data-image-slot-public]{display:block;width:100%;height:100%;max-width:none;-webkit-user-drag:none;user-select:none}';
+      document.head.appendChild(style);
+    }
+
+    class PublicImageSlot extends HTMLElement {
+      static get observedAttributes() {
+        return ['shape', 'radius', 'mask', 'fit', 'position', 'src', 'srcset', 'sizes', 'eager'];
+      }
+
+      connectedCallback() { this._renderPublic(); }
+      attributeChangedCallback() { if (this.isConnected) this._renderPublic(); }
+
+      _renderPublic() {
+        if (!this._img) {
+          this._img = document.createElement('img');
+          this._img.alt = '';
+          this._img.draggable = false;
+          this._img.decoding = 'async';
+          this._img.setAttribute('data-image-slot-public', '');
+          this.appendChild(this._img);
+        }
+
+        const src = this.getAttribute('src') || '';
+        const srcset = this.getAttribute('srcset') || responsiveSrcset(src);
+        const sizes = this.getAttribute('sizes') || '(max-width: 760px) 92vw, 50vw';
+        const eager = this.hasAttribute('eager');
+        this._img.loading = eager ? 'eager' : 'lazy';
+        if (eager) this._img.fetchPriority = 'high';
+        else this._img.removeAttribute('fetchpriority');
+        if (srcset) {
+          this._img.srcset = srcset;
+          this._img.sizes = sizes;
+        } else {
+          this._img.removeAttribute('srcset');
+          this._img.removeAttribute('sizes');
+        }
+        if (src && this._img.getAttribute('src') !== src) this._img.src = src;
+        if (!src) this._img.removeAttribute('src');
+        this._img.style.objectFit = this.getAttribute('fit') || 'cover';
+        this._img.style.objectPosition = this.getAttribute('position') || '50% 50%';
+
+        const mask = this.getAttribute('mask') || '';
+        const shape = (this.getAttribute('shape') || 'rounded').toLowerCase();
+        let radius = '';
+        if (shape === 'circle') radius = '50%';
+        else if (shape === 'pill') radius = '9999px';
+        else if (shape === 'rounded') {
+          const n = Number.parseFloat(this.getAttribute('radius'));
+          radius = (Number.isFinite(n) ? n : 12) + 'px';
+        }
+        this.style.borderRadius = mask ? '' : radius;
+        this.style.clipPath = mask;
+      }
+    }
+
+    customElements.define('image-slot', PublicImageSlot);
+    return;
+  }
 
   // ── Shared sidecar store ────────────────────────────────────────────────
   // One fetch + immediate write-on-change for every <image-slot> on the
@@ -107,6 +192,11 @@
 
   function load() {
     if (loadP) return loadP;
+    if (!EDIT_MODE) {
+      loaded = true;
+      loadP = Promise.resolve().then(() => { subs.forEach((fn) => fn()); });
+      return loadP;
+    }
     // file://（DLして直接開く）では、ブラウザがローカルファイルへの fetch をブロックする。
     // その場合は fetch を試みず即解決して loaded を立て、src（本ファイル化した画像）へ
     // 確実にフォールバックさせる。これをしないと「サイドカー読み込み待ち(pending)」のまま
@@ -278,7 +368,7 @@
 
   class ImageSlot extends HTMLElement {
     static get observedAttributes() {
-      return ['shape', 'radius', 'mask', 'fit', 'position', 'placeholder', 'src', 'id'];
+      return ['shape', 'radius', 'mask', 'fit', 'position', 'placeholder', 'src', 'srcset', 'sizes', 'id'];
     }
 
     constructor() {
@@ -448,8 +538,10 @@
       // re-seeds _view from stored before clamp/apply, so a shrink→grow
       // cycle round-trips instead of ratcheting x/y toward the narrower
       // frame's clamp range.
-      this._ro = new ResizeObserver(() => this._render());
-      this._ro.observe(this);
+      if (EDIT_MODE) {
+        this._ro = new ResizeObserver(() => this._render());
+        this._ro.observe(this);
+      }
       load();
       this._render();
     }
@@ -587,8 +679,17 @@
     }
 
     _applyView() {
-      const g = this._geom();
       const fit = this.getAttribute('fit') || 'cover';
+      if (!EDIT_MODE) {
+        this._img.style.width = '100%';
+        this._img.style.height = '100%';
+        this._img.style.left = '50%';
+        this._img.style.top = '50%';
+        this._img.style.objectFit = fit;
+        this._img.style.objectPosition = this.getAttribute('position') || '50% 50%';
+        return;
+      }
+      const g = this._geom();
       if (fit !== 'cover' || !g) {
         // Non-cover, or dimensions not known yet (before img load).
         this._img.style.width = '100%';
@@ -645,7 +746,7 @@
       this._ring.style.display = mask ? 'none' : '';
 
       // Controls and reframe entry gate on this so share links stay read-only.
-      const editable = !!(window.omelette && window.omelette.writeFile);
+      const editable = EDIT_MODE;
       this.toggleAttribute('data-editable', editable);
       this._sub.style.display = editable ? '' : 'none';
 
@@ -656,6 +757,8 @@
       let stored = this.id ? getSlot(this.id) : this._local;
       if (stored && stored.u && !/^data:image\//i.test(stored.u)) stored = null;
       const srcAttr = this.getAttribute('src') || '';
+      const srcsetAttr = this.getAttribute('srcset') || responsiveSrcset(srcAttr);
+      const sizesAttr = this.getAttribute('sizes') || '(max-width: 760px) 92vw, 50vw';
       this._userUrl = (stored && stored.u) || null;
       // For a persistable slot, wait for the sidecar to finish loading before
       // falling back to the author `src` — otherwise the default image flashes
@@ -681,10 +784,19 @@
         this._img.setAttribute('loading', 'lazy');
       }
       if (url) {
-        this._setLqip(url);
+        // LQIP生成は別の Image() で全画像を先読みするため、公開画面では
+        // native lazy-loading を優先する。編集画面だけ従来のプレビューを残す。
+        if (EDIT_MODE) this._setLqip(url);
+        if (!this._userUrl && srcsetAttr) {
+          this._img.setAttribute('srcset', srcsetAttr);
+          if (sizesAttr) this._img.setAttribute('sizes', sizesAttr);
+        } else {
+          this._img.removeAttribute('srcset');
+          this._img.removeAttribute('sizes');
+        }
         if (this._img.getAttribute('src') !== url) {
           this._img.src = url;
-          this._ghost.src = url;
+          if (EDIT_MODE) this._ghost.src = url;
         }
         this._img.style.display = 'block';
         this._empty.style.display = 'none';
@@ -694,6 +806,8 @@
       } else {
         this._img.style.display = 'none';
         this._img.removeAttribute('src');
+        this._img.removeAttribute('srcset');
+        this._img.removeAttribute('sizes');
         this._ghost.removeAttribute('src');
         // While the sidecar is still loading, show just the frame background —
         // not the "drop an image" placeholder — so a saved slot doesn't flash

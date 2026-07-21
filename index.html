@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script src="page-enter.js?v=20260721-6"></script>
+<script defer src="page-enter.js?v=20260721-7"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>富山・石川の社労士｜みなの社会保険労務士事務所｜助成金・就業規則・労務相談</title>
@@ -29,13 +29,276 @@
 <!-- Theme + Favicon (inline SVG avoids extra asset) -->
 <meta name="theme-color" content="#123F30">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
+<link rel="preload" as="image" type="image/avif"
+      href="assets/photos/hero-main-800.avif"
+      imagesrcset="assets/photos/hero-main-720.avif 720w, assets/photos/hero-main-800.avif 800w, assets/photos/hero-main-1200.avif 1200w, assets/photos/hero-main-1600.avif 1600w"
+      imagesizes="100vw" fetchpriority="high">
+<style id="critical-home">
+/* ============================================================
+   skin-v2.css — みなの社労士HP 共通デザインCSS「稜線（りょうせん）」
+   立山連峰の稜線＝「労務の見晴らしを良くする」。
+   雪白 × 深杉 × 山影ブルー。角ゴ強ウェイト＋UD本文＋mono欧文。
+   シグネチャー: ページを貫く一本の稜線。成長段階＝標高が上がる。
+   ============================================================ */
 
-<!-- UDフォント（BIZ UDPゴシック）― 読みやすさ優先の本文フォント -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://unpkg.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@700;800;900&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+/* ---------- base（web-front-kit base.css 統合） ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+/* 遷移カーテン中はスクロールを即時に（smooth だと位置リセットがめくり後まで続く「見える滑り」になる） */
+html.pv-on, html.pv-mark, html.pv-lift { scroll-behavior: auto !important; overflow-anchor: none; }
+body { margin: 0; line-break: strict; }
+img, picture, video, canvas, svg { max-width: 100%; }
+table { max-width: 100%; }
+h1, h2, h3 { line-height: 1.5; text-wrap: balance; word-break: auto-phrase; }
+p, li { text-wrap: pretty; }
+.nobr, .nw { white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
+/* ---------- tokens ---------- */
+:root {
+  /* 色 — 雪白・深杉・萌木・山影・朝日 */
+  --yuki:   #F9FAF7;   /* 雪白（地） */
+  --shiro:  #FFFFFF;
+  --sugi:   #123F30;   /* 深杉（主色） */
+  --sugi-9: #0B2A1F;   /* 最深（footer） */
+  --sugi-7: #1C5842;   /* hover */
+  --moegi:  #2E9E63;   /* 萌木（図形・下線など装飾専用） */
+  --moegi-t: #1E7A4B;   /* 萌木・文字用（白地でコントラスト4.5+） */
+  --moegi-b: #43C17E;   /* 萌木・明（濃地の上の文字用） */
+  --moegi-l:#E3F2E9;
+  --iwa:    #1E2721;   /* 岩（本文墨） */
+  --ink2:   #37423B;
+  --ink3:   #5D6962;
+  --ink4:   #7E8981;
+  --sora:   #5E87A6;   /* 山影ブルー */
+  --sora-l: #E2EBF2;
+  --asahi:  #E5A63C;   /* 朝日（極小アクセント） */
+  --line:   #E0E4DE;
+  --line2:  #ECEFEA;
+
+  /* 旧トークン互換（body内インラインstyleが参照） */
+  --g600: #1C5842;
+  --g700: #123F30;
+  --g500: #2E9E63;
+  --g300: #8FCBA8;
+  --ink: #1E2721;
+  --g900: #0B2A1F;
+  --g800: #123F30;
+  --g400: #57B07F;
+  --g200: #BFE0CD;
+  --g100: #DCEEE3;
+  --g50:  #EDF6F0;
+  --g25:  #F6FAF7;
+  --bg:   #F9FAF7;
+  --max: 1200px;
+  --nav-h: 74px;
+  --sh-xs: 0 1px 2px rgba(11,42,31,.05), 0 6px 18px -10px rgba(11,42,31,.10);
+  --sh-sm: 0 2px 4px rgba(11,42,31,.06), 0 12px 28px -12px rgba(11,42,31,.14);
+  --shade: rgba(11,42,31,.10);
+  --tr: .3s cubic-bezier(.33,0,.2,1);
+
+  /* 書体 */
+  --disp: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", YuGothic, Meiryo, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", YuGothic, Meiryo, sans-serif;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --serif: var(--disp);
+
+  /* 形 */
+  --r: 8px;
+  --r-lg: 14px;
+  --ease: cubic-bezier(.22,1,.36,1);
+  --ease-soft: cubic-bezier(.33,0,.2,1);
+
+  /* 稜線（データURI・1本線） */
+  --ridge: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14' preserveAspectRatio='none'%3E%3Cpath d='M0 12h16l14-8 8 5 14-8 10 7 12-4 8 3h38' fill='none' stroke='%232E9E63' stroke-width='1.6' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+html { font-size: 16px; min-width: 320px; /* これ以下は横スクロールにしてレイアウト破綻を防ぐ */ }
+body {
+  font-family: var(--font-body);
+  background: var(--yuki);
+  color: var(--iwa);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  line-height: 1.9;
+  font-size: 15.5px;
+  font-weight: 400;
+  letter-spacing: .02em;
+  min-width: 320px;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; }
+:focus-visible { outline: 2px solid var(--moegi); outline-offset: 3px; border-radius: 4px; }
+::selection { background: var(--moegi-l); }
+
+/* ---------- 共通 ---------- */
+.w { max-width: 1200px; margin-inline: auto; padding-inline: clamp(20px, 4.5vw, 48px); }
+.sec { padding-block: clamp(68px, 9.5vw, 136px); }
+.sec-sm { padding-block: clamp(56px, 7vw, 100px); }
+.sec-white { background: var(--shiro); }
+.sp-br { display: none; }
+@media (max-width: 640px) { .sp-br { display: inline; } }
+
+.rv, .rvl { opacity: 0; transform: translateY(16px); transition: opacity .85s var(--ease), transform .85s var(--ease); }
+.rv.on, .rvl.on { opacity: 1; transform: none; }
+.rv.d1 { transition-delay: .07s; } .rv.d2 { transition-delay: .14s; }
+.rv.d3 { transition-delay: .21s; } .rv.d4 { transition-delay: .28s; }
+
+/* strong マーカー（萌木の太アンダーライン） */
+.sec-h strong, .why-h strong {
+  color: var(--sugi);
+  background: linear-gradient(color-mix(in srgb, var(--moegi) 42%, transparent), color-mix(in srgb, var(--moegi) 42%, transparent)) no-repeat left 88% / 0% 30%;
+  transition: background-size .9s var(--ease) .1s;
+}
+.sec-h strong.mk-on, .why-h strong.mk-on { background-size: 100% 30%; }
+
+.skip-link { position: fixed; top: -48px; left: 12px; z-index: 300; background: var(--sugi); color: #fff; padding: 10px 18px; font-size: 13px; border-radius: 6px; transition: top .2s; }
+.skip-link:focus { top: 12px; }
+#prog { position: fixed; top: 0; left: 0; height: 2.5px; width: 0; background: var(--moegi); z-index: 260; }
+
+/* ---------- ナビ ---------- */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 240; background: transparent; transition: background .4s var(--ease-soft), box-shadow .4s var(--ease-soft); }
+.nav.solid { background: color-mix(in srgb, var(--yuki) 90%, transparent); backdrop-filter: blur(12px); box-shadow: 0 1px 0 var(--line); }
+.nav-inner { max-width: 1280px; margin-inline: auto; display: flex; align-items: center; gap: 26px; padding: 16px clamp(18px, 3.5vw, 40px); transition: padding .35s var(--ease-soft); }
+.nav.shrink .nav-inner { padding-block: 9px; }
+.logo { display: flex; align-items: center; gap: 11px; min-width: 0; }
+.logo-mark { width: 42px; height: 42px; flex-shrink: 0; background: var(--sugi); border-radius: 11px; display: grid; place-items: center; }
+.logo-mark span { font-family: var(--disp); font-size: 20px; font-weight: 900; color: #fff; }
+.logo-text b { display: block; font-family: var(--disp); font-size: 15px; font-weight: 800; letter-spacing: .02em; color: var(--iwa); line-height: 1.3; }
+.logo-text small { display: block; font-family: var(--mono); font-size: 9.5px; letter-spacing: .18em; color: var(--ink3); margin-top: 2px; }
+.nav-links { display: flex; list-style: none; gap: clamp(12px, 1.8vw, 24px); margin-left: auto; }
+.nav-links a { font-size: 13.5px; font-weight: 700; letter-spacing: .05em; color: var(--ink2); padding: 8px 2px; position: relative; }
+.nav-links a::after { content: ''; position: absolute; left: 2px; right: 2px; bottom: 0; height: 2.5px; border-radius: 2px; background: var(--moegi); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
+.nav-links a:hover::after { transform: scaleX(1); }
+.nav-cta { flex-shrink: 0; background: var(--sugi); color: #fff; font-size: 13.5px; font-weight: 700; letter-spacing: .06em; padding: 12px 24px; border-radius: var(--r); transition: background .3s; }
+.nav-cta:hover { background: var(--sugi-7); }
+.nav-burger { display: none; background: none; border: 0; cursor: pointer; color: var(--iwa); padding: 10px; }
+@media (max-width: 1080px) {
+  .nav-links { display: none; }
+  .nav-burger { display: block; margin-left: auto; }
+  .nav-cta { display: none; }
+}
+.mob-nav { position: fixed; inset: 0; z-index: 230; background: var(--yuki); display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 90px clamp(28px, 8vw, 56px) 40px; opacity: 0; pointer-events: none; transition: opacity .35s var(--ease-soft); }
+.mob-nav.open { opacity: 1; pointer-events: auto; }
+.mob-nav a { font-family: var(--disp); font-size: 22px; font-weight: 800; letter-spacing: .03em; color: var(--iwa); padding: 13px 4px; border-bottom: 1px solid var(--line); }
+.mob-nav .mob-cta { border: 0; margin-top: 26px; background: var(--sugi); color: #fff; font-family: var(--font-body); font-size: 15px; font-weight: 700; text-align: center; padding: 17px; border-radius: var(--r); }
+
+/* ---------- HERO（写真オーバーレイ＋深杉ベール。PCは帯込みで100svhに収める） ---------- */
+:root { --hs-h: 76px; }  /* PCのサマリー帯の高さ */
+.hero { position: relative; background: var(--yuki); display: flex; align-items: stretch; overflow: hidden; }
+@media (min-width: 1024px) {
+  .hero { height: auto; min-height: max(600px, calc(100svh - var(--hs-h))); }
+}
+@media (max-width: 1023px) {
+  .hero { min-height: clamp(560px, 88svh, 840px); }
+}
+.hero-stage { position: relative; flex: 1; display: flex; background-color: var(--yuki) !important; }
+/* 写真は全面カバー（image-slot.jsのインライン縦横比は絶対配置で無効化される） */
+.hero-stage > :is(image-slot, .hero-media) {
+  position: absolute !important; inset: 0 !important;
+  width: 100% !important; height: 100% !important;
+  aspect-ratio: auto !important; border-radius: 0 !important; margin: 0 !important;
+  display: block !important; z-index: 0;
+}
+.hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.hero-veil { display: block; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(97deg, rgba(249,250,247,.66) 0%, rgba(249,250,247,.5) 30%, rgba(249,250,247,.24) 58%, rgba(249,250,247,0) 82%),
+              linear-gradient(to bottom, rgba(249,250,247,.34), transparent 140px); }
+.hero-overlay {
+  position: relative; z-index: 2;
+  width: 100%; max-width: 1280px; margin-inline: auto;
+  padding: clamp(110px, 15vh, 170px) clamp(20px, 4.5vw, 48px) clamp(100px, 13vh, 150px);
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+}
+.why-label.hero-label { display: inline-flex; align-items: center; gap: 10px; font-size: 12.5px; font-weight: 700; letter-spacing: .14em; color: var(--sugi); background: var(--moegi-l); padding: 8px 18px; border-radius: 999px; margin-bottom: clamp(22px, 3vw, 34px); }
+.why-label.hero-label::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--moegi-b); }
+.hero-h1 { font-family: var(--disp); font-weight: 900; font-size: clamp(30px, 4.8vw, 56px); line-height: 1.44; letter-spacing: .015em; color: var(--iwa); }
+.hero-h1 strong { color: var(--sugi); background: linear-gradient(color-mix(in srgb, var(--moegi) 38%, transparent), color-mix(in srgb, var(--moegi) 38%, transparent)) no-repeat left 90% / 100% 26%; }
+.hero-sub { margin-top: clamp(18px, 2.4vw, 28px); font-size: clamp(13.5px, 1.3vw, 16px); line-height: 2.15; letter-spacing: .03em; color: var(--ink2); max-width: 44em; }
+.hero-btns { display: flex; align-items: center; gap: 24px; margin-top: clamp(26px, 3.4vw, 40px); flex-wrap: wrap; }
+.btn-primary { display: inline-block; background: var(--sugi); color: #fff; font-size: 15.5px; font-weight: 700; letter-spacing: .08em; padding: 18px 44px; border-radius: var(--r); box-shadow: 0 8px 24px rgba(18,63,48,.22); transition: background .3s, transform .3s var(--ease); }
+.btn-primary:hover { background: var(--sugi-7); transform: translateY(-2px); }
+.hero-sub-link { font-family: var(--mono); font-size: 13px; letter-spacing: .06em; color: var(--sugi); border-bottom: 2px solid var(--moegi); padding-bottom: 3px; transition: opacity .3s; }
+.hero-sub-link:hover { opacity: .75; }
+.hero-trust { display: flex; gap: 10px; margin-top: clamp(26px, 3.4vw, 40px); flex-wrap: wrap; }
+.trust-item { display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 500; letter-spacing: .05em; color: var(--ink2); border: 1px solid var(--line); background: rgba(255,255,255,.85); padding: 8px 16px; border-radius: 999px; }
+.live-dot-w, .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--moegi); display: inline-block; position: relative; flex-shrink: 0; }
+.live-dot-w::after, .live-dot::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1px solid var(--moegi); animation: pulse 2s infinite; }
+@keyframes pulse { 0% { transform: scale(.6); opacity: 1; } 100% { transform: scale(1.4); opacity: 0; } }
+.hero-eng-cap { position: absolute; z-index: 3; top: clamp(88px, 12vh, 128px); right: clamp(20px, 4vw, 48px); font-family: var(--mono); font-size: 10px; letter-spacing: .34em; color: rgba(255,255,255,.75); text-shadow: 0 1px 10px rgba(30,39,33,.45); }
+.hero-scroll { display: none; }
+
+
+/* 稜線（写真の裾は深杉の山なみ→最前面の1枚だけ雪白で次の帯へつなぐ） */
+.hero-ridge { position: absolute; left: 0; right: 0; bottom: -1px; z-index: 2; pointer-events: none; }
+.hero-ridge > div { position: absolute; bottom: 0; left: 0; right: 0; }
+.hero-ridge svg { width: 100%; height: 100%; display: block; }
+.hero-ridge .mt-sky   { height: 88px; color: rgba(249,250,247,.3); }
+.hero-ridge .mt-back  { height: 64px; color: rgba(249,250,247,.55); }
+.hero-ridge .mt       { height: 46px; color: rgba(249,250,247,.92); }
+.hero-ridge .sea      { height: 24px; color: var(--yuki); }
+.hero-ridge .sea-front{ height: 12px; color: var(--yuki); }
+@media (max-width: 640px) {
+  .hero-eng-cap { display: none; }
+  .hero-ridge .mt-sky { height: 48px; } .hero-ridge .mt-back { height: 36px; }
+  .hero-ridge .mt { height: 26px; } .hero-ridge .sea { height: 14px; } .hero-ridge .sea-front { height: 8px; }
+}
+/* モバイル: nowrap指定（.nw）をほどいて横はみ出しを防ぐ */
+@media (max-width: 700px) {
+  .hero-h1 .nw, .hero-sub .nw { white-space: normal; }
+  .hero-h1 { font-size: clamp(26px, 7.4vw, 34px); }
+  /* スマホは写真をほぼそのまま見せる。文字の可読性のため上端だけ薄く持ち上げ、下はほぼ透明。 */
+  .hero-veil {
+    background: linear-gradient(to bottom,
+      rgba(249,250,247,.34) 0%,
+      rgba(249,250,247,.22) 38%,
+      rgba(249,250,247,.1) 70%,
+      rgba(249,250,247,0) 100%);
+  }
+}
+
+/* ---------- 3秒サマリー帯（PCではファーストビュー最下端にぴったり） ---------- */
+.hero-summary { background: var(--yuki); padding: clamp(18px, 2.6vw, 30px) clamp(20px, 4.5vw, 48px) clamp(10px, 1.6vw, 18px); }
+@media (min-width: 1024px) {
+  .hero-summary { height: var(--hs-h); padding-block: 0; display: flex; align-items: center; }
+  .hero-summary .hs-inner { width: 100%; }
+}
+.hs-inner { max-width: 1160px; margin-inline: auto; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px clamp(8px, 1.2vw, 16px); }
+.hs-item { display: flex; align-items: center; gap: 9px; font-size: 12.5px; font-weight: 700; letter-spacing: .04em; color: var(--ink2); padding: 6px 2px; white-space: nowrap; }
+.hs-item svg { width: 17px; height: 17px; stroke-width: 1.7; color: var(--moegi); flex-shrink: 0; }
+.hs-sep { width: 16px; height: 10px; background: none no-repeat center / 100% 100%; opacity: .55; flex-shrink: 0; }
+/* 中間幅：1行に収まるよう少し詰める（改行の乱れ防止） */
+@media (min-width: 1024px) and (max-width: 1200px) {
+  .hs-item { font-size: 11.5px; letter-spacing: .02em; }
+}
+/* タブレット帯：中途半端な折り返しではなく2列グリッドで整列 */
+@media (max-width: 1023px) {
+  .hs-inner { display: grid; grid-template-columns: auto auto; justify-content: center; gap: 6px 36px; }
+  .hs-sep { display: none; }
+}
+@media (max-width: 640px) {
+  .hs-inner { grid-template-columns: auto; justify-content: flex-start; gap: 2px; }
+  .hs-item { white-space: normal; }
+}
+/* 中途半端な位置での折り返し防止（チップ・ヒーローCTA・STEP説明） */
+.hero-trust .trust-item { white-space: nowrap; }
+.hero-btns .btn-primary { white-space: nowrap; }
+.subt-step span, .subt-step b { word-break: auto-phrase; }
+
+/* ファーストビュー外の巨大セクションは、見える直前まで描画計算を省く。 */
+main > section:not(.hero) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+</style>
+<link rel="stylesheet" href="skin-v2.css?v=20260721-perf1" media="print" data-async-style onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="skin-v2.css?v=20260721-perf1"></noscript>
 <!-- Structured Data: LocalBusiness / ProfessionalService -->
 <script type="application/ld+json">
 {
@@ -51,107 +314,8 @@
 }
 </script>
 
-<link rel="stylesheet" href="skin-v2.css?v=20260721-footer">
-
-
-
-
-
-
-
-
 </head>
 <body data-nav="B">
-<div id="mn-load" role="status" aria-label="読み込み中">
-  <div class="mn-load-mark"><span>み</span></div>
-  <div class="mn-load-name">MINANO</div>
-  <div class="mn-load-sub">社会保険労務士事務所</div>
-</div>
-<script>
-(function(){
-  var el=document.getElementById('mn-load');
-  if(!el)return;
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(reduce){ el.parentNode&&el.parentNode.removeChild(el); return; }
-  // 表示する条件：ブラウザの再読み込み or 外部サイト/直接アクセスでの到着。
-  // サイト内リンクからの回遊では出さない。
-  var navType='navigate';
-  try{
-    var nav=performance.getEntriesByType&&performance.getEntriesByType('navigation')[0];
-    navType=nav?nav.type:(performance.navigation&&performance.navigation.type===1?'reload':'navigate');
-  }catch(e){}
-  var internalReferrer=false;
-  try{ internalReferrer=document.referrer&&new URL(document.referrer).origin===location.origin; }catch(e){}
-  var show=(navType==='reload')||(navType!=='reload'&&!internalReferrer);
-  if(!show){ el.parentNode&&el.parentNode.removeChild(el); return; }
-  // ローダー表示中に重い読み込み（ヒーロー画像など）を待つ。
-  // 最低表示時間でアニメを完走 → window load かつ ヒーロー写真の表示準備が整ったら消す → 最大時間でフェイルセーフ。
-  var MIN=1500, MAX=6000, start=Date.now(), done=false;
-  function dismiss(){
-    if(done)return; done=true;
-    var wait=Math.max(0, MIN-(Date.now()-start));
-    setTimeout(function(){
-      // 揺れを止めて整える小モーション（.settle）→ その完了後にフェードアウト
-      el.classList.add('settle');
-      setTimeout(function(){
-        el.classList.add('out');
-        setTimeout(function(){ el.parentNode&&el.parentNode.removeChild(el); }, 520);
-      }, 560);
-    }, wait);
-  }
-  // ヒーロー写真が「実際に表示できる状態」になるまでローダーを保つ。
-  // window load だけだと、image-slot が後から差し込むヒーロー写真の表示前に
-  // ローダーが消えてしまう（＝演出がヒーローまで続かない原因）。そこで
-  //   ① window load 完了  ② ヒーロー写真のデコード完了
-  // の両方がそろってから退場する（写真が無ければ②は即時クリア）。最大時間で必ず退場。
-  var hero=document.getElementById('hero-main');
-  var gWin=false, gHero=false;
-  function maybe(){ if(gWin&&gHero) dismiss(); }
-  function winReady(){ gWin=true; maybe(); }
-  function heroReady(){ gHero=true; maybe(); }
-  // ① window load
-  if(document.readyState==='complete'){ winReady(); }
-  else{ window.addEventListener('load', winReady); }
-  // ② ヒーロー写真：detached な new Image() のデコードではなく、実際の <image-slot> 自身が
-  //    描画し終える（data-filled が付き、内部 <img> が complete + decode 完了）まで待つ。
-  //    detached Image は別経路で先にデコードしてしまうため、実スロットの描画前にローダーが
-  //    消え「画像のない緑の画面」が一瞬見える原因になっていた。共有ファイル（正本）＞
-  //    localStorage ＞ src 属性 で“写真が在るはず”かを判定し、在るなら実スロットの描画を待つ。
-  function hasHero(state){
-    try{ var v=state&&state['hero-main']; if(!v)return false;
-      var u=(typeof v==='string')?v:v.u; return !!u; }catch(e){ return false; }
-  }
-  function imgDone(img, cb){
-    if(!img){ cb(); return; }                         // 内部imgが取れない＝data-filledは付いている。十分。
-    var fin=function(){ img.decode?img.decode().then(cb,cb):cb(); };
-    if(img.complete && img.naturalWidth){ fin(); return; }
-    img.addEventListener('load', fin, {once:true});
-    img.addEventListener('error', cb, {once:true});
-  }
-  function watchHeroSlot(){
-    if(!hero){ heroReady(); return; }
-    function tryNow(){
-      if(!hero.hasAttribute('data-filled')) return false; // まだ写真が差し込まれていない
-      imgDone(hero.shadowRoot && hero.shadowRoot.querySelector('img'), heroReady);
-      return true;
-    }
-    if(tryNow()) return;
-    // data-filled はあとから付く。属性変化を監視して、付いた瞬間に内部imgの完了を待つ。
-    var mo=new MutationObserver(function(){ if(tryNow()) mo.disconnect(); });
-    mo.observe(hero, {attributes:true, attributeFilter:['data-filled']});
-  }
-  (function resolveHero(){
-    var done2=false, decide=function(expect){ if(done2)return; done2=true; if(expect) watchHeroSlot(); else heroReady(); };
-    var local=false; try{ local=hasHero(JSON.parse(localStorage.getItem('mn-image-slots-state-v1')||'{}')); }catch(e){}
-    fetch('.image-slots.state.json')
-      .then(function(r){ return r.ok?r.json():null; }).catch(function(){ return null; })
-      .then(function(j){ decide(hasHero(j)||local||!!(hero&&hero.getAttribute('src'))); });
-    // localStorage に既に在れば、共有ファイルの取得を待たず実スロットの監視を先行開始。
-    if(local){ decide(true); }
-  })();
-  setTimeout(dismiss, MAX); // フェイルセーフ：何があっても必ず退場
-})();
-</script>
 <a class="skip-link" href="#main">本文へスキップ</a>
 <div id="prog"></div>
 
@@ -222,7 +386,18 @@
     </div>
   </div>
   <div class="hero-stage">
-    <image-slot id="hero-main" src="assets/photos/hero-main.webp" eager placeholder="立山連峰と街並みなど、事務所を象徴する横長の風景写真（推奨 16:9 以上の横長・高解像度）"></image-slot>
+    <picture class="hero-media" aria-hidden="true">
+      <source type="image/avif"
+              srcset="assets/photos/hero-main-720.avif 720w, assets/photos/hero-main-800.avif 800w, assets/photos/hero-main-1200.avif 1200w, assets/photos/hero-main-1600.avif 1600w"
+              sizes="100vw">
+      <source type="image/webp"
+              srcset="assets/photos/hero-main-720.webp 720w, assets/photos/hero-main-800.webp 800w, assets/photos/hero-main-1200.webp 1200w, assets/photos/hero-main-1600.webp 1600w"
+              sizes="100vw">
+      <img src="assets/photos/hero-main-1200.webp"
+           srcset="assets/photos/hero-main-720.webp 720w, assets/photos/hero-main-800.webp 800w, assets/photos/hero-main-1200.webp 1200w, assets/photos/hero-main-1600.webp 1600w"
+           sizes="100vw" width="1600" height="1424" alt=""
+           fetchpriority="high" decoding="sync">
+    </picture>
     <div class="hero-veil" aria-hidden="true"></div>
     <div class="hero-overlay">
       <div class="why-label hero-label">富山の社会保険労務士事務所</div>
@@ -1398,13 +1573,17 @@
 // Open modal handlers removed — 詳細モーダルは未使用のため削除済み
 
 
-// Scroll progress + nav (rAF throttled)
-function updateFloat(){
-  var fl=document.getElementById('fl');if(!fl)return;
-  var _heroCta=document.querySelector('.hero-btns');
-  var _heroVisible=_heroCta?_heroCta.getBoundingClientRect().bottom>0:scrollY<300;
-  fl.classList.toggle('hidden',_heroVisible);
-}
+// 固定相談ボタンはスクロールごとの位置計測を避け、ヒーローCTAの交差状態だけで切り替える。
+if(window.__heroCtaObserver)window.__heroCtaObserver.disconnect();
+(function(){
+  var fl=document.getElementById('fl'),heroCta=document.querySelector('.hero-btns');
+  if(!fl)return;
+  if(!heroCta||!('IntersectionObserver' in window)){fl.classList.toggle('hidden',scrollY<300);return;}
+  window.__heroCtaObserver=new IntersectionObserver(function(entries){
+    var e=entries[0];if(e)fl.classList.toggle('hidden',e.isIntersecting);
+  },{threshold:0});
+  window.__heroCtaObserver.observe(heroCta);
+})();
 var ticking=false;
 if(window.__pgScroll)window.removeEventListener('scroll',window.__pgScroll);
 window.__pgScroll=function(){
@@ -1415,12 +1594,10 @@ window.__pgScroll=function(){
     var p=scrollY/(document.documentElement.scrollHeight-innerHeight||1);
     if(prog)prog.style.width=(p*100)+'%';
     if(nav){nav.classList.toggle('solid',scrollY>60);nav.classList.toggle('shrink',scrollY>240);}
-    updateFloat();
     ticking=false;
   });
 };
 window.addEventListener('scroll',window.__pgScroll,{passive:true});
-updateFloat();
 
 // Nav toggle
 function toggleNav(){document.getElementById('mobNav').classList.toggle('open')}
@@ -1444,14 +1621,6 @@ var ro=new IntersectionObserver(function(entries){
   entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target)}});
 },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.rv,.rvl').forEach(function(el){ro.observe(el)});
-// 堅牢化：画面内は即時表示し、万一 IntersectionObserver が発火しない環境でも
-// コンテンツが透明のまま消えないよう、最終フォールバックで必ず表示する。
-requestAnimationFrame(function(){
-  document.querySelectorAll('.rv,.rvl').forEach(function(el){
-    if(el.getBoundingClientRect().top < innerHeight*0.94){el.classList.add('on');ro.unobserve(el);}
-  });
-});
-setTimeout(function(){document.querySelectorAll('.rv,.rvl').forEach(function(el){el.classList.add('on');});},2600);
 
 // Marker draw（マーカーをペンで引くように描画）
 var mko=new IntersectionObserver(function(entries){
@@ -1478,45 +1647,10 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
 
 // 受付時間ブロックはJS不要（静的なリスト表示）
 </script>
-<script id="hero-lqip">
-/* blur-up（ぼかしプレビュー）：いま表示中のヒーロー写真から極小のぼかし版を作り、
-   下地に敷く。これで読み込み中も“ぼんやりした写真”が見え、黒や無地が出ない。
-   写真を差し替えても、保存先(localStorage)を見て常に最新の写真から作り直す。 */
-(function(){
-  var stage=document.querySelector('.hero-stage');
-  var slot=document.getElementById('hero-main');
-  if(!stage||!slot)return;
-  function heroSrc(){
-    try{
-      var s=localStorage.getItem('mn-image-slots-state-v1');
-      if(s){var j=JSON.parse(s),v=j&&j['hero-main'];
-        if(v){var u=(typeof v==='string')?v:v.u; if(u&&/^data:image\//i.test(u))return u;}}
-    }catch(e){}
-    return slot.getAttribute('src')||'';
-  }
-  function apply(url){
-    if(!url)return;
-    var img=new Image();
-    img.onload=function(){
-      try{
-        var w=40,h=Math.max(1,Math.round(w*img.height/img.width));
-        var c=document.createElement('canvas');c.width=w;c.height=h;
-        var x=c.getContext('2d');x.drawImage(img,0,0,w,h);
-        var lqip=c.toDataURL('image/jpeg',0.6);
-        stage.style.setProperty('background-image',"url("+lqip+"),linear-gradient(155deg,#0d3a23,#06210f)",'important');
-        stage.style.setProperty('background-size','cover','important');
-        stage.style.setProperty('background-position','center','important');
-      }catch(e){}
-    };
-    img.src=url;
-  }
-  apply(heroSrc());
-})();
-</script>
-<script src="image-slot.js"></script>
-<script src="link-keep.js"></script>
-<script src="mascot.js"></script>
-<script src="header-motion.js"></script>
+<script defer src="image-slot.js?v=20260721-perf2"></script>
+<script defer src="link-keep.js"></script>
+<script defer src="mascot.js?v=20260721-perf1"></script>
+<script defer src="header-motion.js"></script>
 <script id="pf-hover">(function(){var d={};function pf(u){if(d[u])return;d[u]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u;document.head.appendChild(l);}function h(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var hr=a.getAttribute("href");if(!hr||hr[0]==="#"||/^(mailto:|tel:|https?:)/.test(hr))return;if(a.target==="_blank")return;pf(a.href);}document.addEventListener("mouseover",h,{passive:true});document.addEventListener("touchstart",h,{passive:true});})();</script>
 <style id="brushup-2026">/* skin-v2.css に統合済み */</style>
 <script id="stg-highlight">/* CASE段階ハイライトは 2026-07 にユーザー判断で削除（復活させないこと） */</script>
