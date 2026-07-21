@@ -38,8 +38,8 @@ jobs:
 
       - name: 性能基準を判定
         run: |
-          node scripts/assert-lighthouse-budget.mjs mobile /tmp/lighthouse-mobile.json
-          node scripts/assert-lighthouse-budget.mjs desktop /tmp/lighthouse-desktop.json
+          node scripts/assert-lighthouse-budget.mjs ci-mobile /tmp/lighthouse-mobile.json
+          node scripts/assert-lighthouse-budget.mjs ci-desktop /tmp/lighthouse-desktop.json
 
       - name: 計測結果を保存
         if: always()
