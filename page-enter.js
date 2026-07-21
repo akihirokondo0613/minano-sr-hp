@@ -331,7 +331,13 @@ function mnSplitLabel(el, text) {
   var lastPath = location.pathname;                           // 直近に表示していたページ（popstateの同一ページ判定用）
 
   /* ---- <head> の差し替え（style / link[rel=stylesheet] / meta / title） ---- */
-  var KEEP_HEAD_IDS = { 'pg-veil-style': 1, 'hm-css': 1, 'mn-mascot-style': 1, '__om-edit-overrides': 1 };
+  var KEEP_HEAD_IDS = {
+    'pg-veil-style': 1,
+    'hm-css': 1,
+    'mn-mascot-style': 1,
+    'mn-image-slot-public-style': 1,
+    '__om-edit-overrides': 1
+  };
   function headKey(n) {
     if (n.tagName === 'LINK') return 'L:' + abs(n.getAttribute('href') || '');
     var t = n.textContent || '';

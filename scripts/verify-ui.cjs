@@ -126,13 +126,25 @@ function recordConsoleError(target) {
   }
   await page.waitForURL(/\/infographic\.html$/, { timeout: 10000 });
   await page.waitForFunction(() => !document.documentElement.matches('.pv-on,.pv-mark,.pv-lift'), null, { timeout: 10000 });
+  const imageStyleState = await page.evaluate(() => {
+    const slot = document.querySelector('image-slot[src]');
+    const img = slot && slot.querySelector('img[data-image-slot-public]');
+    const slotBox = slot && slot.getBoundingClientRect();
+    const imgBox = img && img.getBoundingClientRect();
+    return {
+      kept: !!document.getElementById('mn-image-slot-public-style'),
+      boxMatches: !!(slotBox && imgBox && Math.abs(slotBox.width - imgBox.width) <= 1 && Math.abs(slotBox.height - imgBox.height) <= 1),
+    };
+  });
   const uniqueScales = [...new Set(scaleSamples)];
   if (!scaleSamples.length) failures.push('SPA遷移: カーテン表示を採取できませんでした');
   if (uniqueScales.some(scale => Math.abs(scale - 1) > 0.015)) {
     failures.push(`SPA遷移: カーテン実効倍率が変動 ${uniqueScales.join(', ')}`);
   }
+  if (!imageStyleState.kept) failures.push('SPA遷移: 軽量画像用スタイルがhead差し替えで失われました');
+  if (!imageStyleState.boxMatches) failures.push('SPA遷移: 画像とスロット枠の大きさが一致しません');
   if (spaErrors.length) failures.push(`SPA遷移: ${spaErrors.join(' / ')}`);
-  results.push({ spa: 'contact→infographic', samples: scaleSamples.length, effectiveScales: uniqueScales, errors: spaErrors.length });
+  results.push({ spa: 'contact→infographic', samples: scaleSamples.length, effectiveScales: uniqueScales, imageStyleKept: imageStyleState.kept, imageBoxMatches: imageStyleState.boxMatches, errors: spaErrors.length });
 
   await browser.close();
   console.log(JSON.stringify(results, null, 2));
