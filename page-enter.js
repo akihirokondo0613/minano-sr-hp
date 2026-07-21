@@ -164,8 +164,17 @@ function mnSplitLabel(el, text) {
   /* ---- カーテン（単一・使い回し。<html>直下に置くので body 差し替えの影響を受けない） ---- */
   var WAVE_URL = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 24' preserveAspectRatio='none'%3E%3Cpath d='M0 12Q30 0 60 12T120 12L120 0L0 0Z' fill='%23123F30'/%3E%3C/svg%3E";
   var veil = null, veilStyle = null;
+  // ルート⇄uploads 間ではページCSSが html の zoom を 1⇄.9（超ワイドでは1.15）へ切り替える。
+  // カーテンは <html> 直下に残り続けるため、その倍率を受けたままだと表示途中で文字まで拡縮する。
+  // カーテン側に逆倍率を与え、ページCSSの交換中も画面上の大きさを一定に保つ。
+  function syncVeilZoom() {
+    if (!veil) return;
+    var z = parseFloat(window.getComputedStyle(de).zoom);
+    if (!isFinite(z) || z <= 0) z = 1;
+    veil.style.zoom = String(1 / z);
+  }
   function ensureVeil() {
-    if (veil) return veil;
+    if (veil) { syncVeilZoom(); return veil; }
     veilStyle = document.createElement('style');
     veilStyle.id = 'pg-veil-style';
     veilStyle.textContent =
@@ -211,8 +220,12 @@ function mnSplitLabel(el, text) {
     veil.setAttribute('aria-hidden', 'true');
     veil.innerHTML = '<div class="pv-body"></div><div class="pv-wave"></div><div class="pv-lbl"><span class="pv-in"></span></div><div class="pv-paws"></div>';
     de.appendChild(veil);   // body ではなく <html> 直下（差し替えの影響を受けない）
+    syncVeilZoom();
     return veil;
   }
+  window.addEventListener('resize', function () {
+    if (veil && veil.classList.contains('show')) syncVeilZoom();
+  }, { passive: true });
   function themeColor() {
     var m = document.querySelector('meta[name="theme-color"]');
     return (m && m.getAttribute('content')) || '#123F30';
@@ -358,9 +371,10 @@ function mnSplitLabel(el, text) {
       ad.setAttribute('data-pg', k);
       if (ad.tagName === 'LINK') {
         pendingCss.push(new Promise(function (res) {
-          ad.addEventListener('load', res);
-          ad.addEventListener('error', res);
-          if (ad.sheet) res();   // 既に適用済み（キャッシュ即時）
+          var applied = function () { syncVeilZoom(); res(); };
+          ad.addEventListener('load', applied);
+          ad.addEventListener('error', applied);
+          if (ad.sheet) applied();   // 既に適用済み（キャッシュ即時）
         }));
       }
       document.head.appendChild(ad);
@@ -369,6 +383,7 @@ function mnSplitLabel(el, text) {
     Object.keys(existing).forEach(function (k) {
       if (!used[k]) existing[k].parentNode && existing[k].parentNode.removeChild(existing[k]);
     });
+    syncVeilZoom();
   }
 
   /* ---- <body> の差し替え＋スクリプト再実行 ---- */
@@ -530,14 +545,17 @@ function mnSplitLabel(el, text) {
         Array.prototype.forEach.call(links, function (n) {
           var href = n.getAttribute('href');
           if (!href) return;
-          var u = abs(href);
+          // fetchで得たHTML内の相対URLは「現在地」ではなく遷移先URLを基準に解決する。
+          // uploads→ルート時に skin-v2.css を /uploads/skin-v2.css と誤って先読みする404を防ぐ。
+          var u;
+          try { u = new URL(href, url).href; } catch (e) { u = abs(href); }
           var already = false;
           Array.prototype.forEach.call(document.head.querySelectorAll('link[href]'), function (ex) {
             if (abs(ex.getAttribute('href')) === u) already = true;
           });
           if (!already) {
             var pl = document.createElement('link');
-            pl.rel = 'preload'; pl.as = 'style'; pl.href = href;
+            pl.rel = 'preload'; pl.as = 'style'; pl.href = u;
             document.head.appendChild(pl);
           }
           // ★Webフォント本体の先読み（「文字が終盤に大きくなる」対策）：Googleフォントの<link>を
@@ -738,8 +756,8 @@ function mnSplitLabel(el, text) {
   });
   try { history.replaceState({ mn: 1, y: window.scrollY || 0 }, '', location.href); } catch (e) {}
 
-  // デバッグ・検証用フック（v5：記事のみ除外＝ブログ一覧は演出あり）
-  window.__mnSpa = { navigate: navigate, v: 5, isArticleDest: isArticleDest };
+  // デバッグ・検証用フック（v6：ページCSSの html zoom 変更からカーテンを分離）
+  window.__mnSpa = { navigate: navigate, v: 6, isArticleDest: isArticleDest };
 })();
 
 /* ============================================================
