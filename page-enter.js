@@ -471,7 +471,13 @@ function mnSplitLabel(el, text) {
     // なる。250msでタイムボックス化して rAF停止環境でも先へ進める。
     var ps = [Promise.race([raf2(), wait(250)])];
     if (document.fonts && document.fonts.status !== 'loaded') {
-      ps.push(Promise.race([document.fonts.ready, wait(800)]));   // 全ページ同一フォント＝通常は即
+      // 遷移先で初めて使う見出し用Webフォント（Zen Kaku Gothic New 等）は、fetchP直後から
+      // document.fonts.load() で前倒し取得を始めている（上のCSS先読み処理）が、初回・低速回線では
+      // それでも間に合わないことがある。旧cap 800msは代替フォント（一回り小さく見える）のまま
+      // カーテンが上がり、直後に本フォントへ切り替わって「終盤で文字が大きくなる」原因になっていた。
+      // 2200msまで待てるようにして、その不一致が見える機会を減らす（それでも間に合わなければ
+      // 従来どおり代替フォントのまま進む＝転換が遅れるだけで遷移自体は止まらない）。
+      ps.push(Promise.race([document.fonts.ready, wait(2200)]));
     }
     if (pendingCss.length) {   // 新規CSSの適用待ち—待たないと素のHTML（縦一列の狭いレイアウト）がめくり後に一瞬見える
       ps.push(Promise.race([Promise.all(pendingCss), wait(2500)]));
@@ -529,10 +535,32 @@ function mnSplitLabel(el, text) {
           Array.prototype.forEach.call(document.head.querySelectorAll('link[href]'), function (ex) {
             if (abs(ex.getAttribute('href')) === u) already = true;
           });
-          if (already) return;
-          var pl = document.createElement('link');
-          pl.rel = 'preload'; pl.as = 'style'; pl.href = href;
-          document.head.appendChild(pl);
+          if (!already) {
+            var pl = document.createElement('link');
+            pl.rel = 'preload'; pl.as = 'style'; pl.href = href;
+            document.head.appendChild(pl);
+          }
+          // ★Webフォント本体の先読み（「文字が終盤に大きくなる」対策）：Googleフォントの<link>を
+          // preloadしても取得されるのはCSS（@font-face定義）だけで、実際のフォントファイルは
+          // そのCSSが適用されテキストの描画に必要になった時点で初めて取得される。見出し等が使う
+          // 表示用フォント（Zen Kaku Gothic New 等）が遷移先ページで初めて使われる場合、swapBody後の
+          // document.fonts.ready 待ち（cap 800ms）に間に合わず、代替フォント（Hiragino等・一回り
+          // 小さく見える）でカーテンが上がってしまい、直後に本フォントへ切り替わって「終盤で文字が
+          // 大きくなる」ように見える。ここでURLの family= からフォント名・太さを読み取り、
+          // document.fonts.load() でカーテンが覆っている間に前倒しで取得を始めておく。
+          if (/fonts\.googleapis\.com/.test(u) && document.fonts && document.fonts.load) {
+            try {
+              var params = new URL(u).searchParams.getAll('family');
+              params.forEach(function (spec) {
+                var parts = spec.split(':wght@');
+                var fam = parts[0];
+                var weights = parts[1] ? parts[1].split(';') : ['400'];
+                weights.forEach(function (w) {
+                  try { document.fonts.load(w.trim() + 'px "' + fam + '"'); } catch (e) {}
+                });
+              });
+            } catch (e) {}
+          }
         });
       } catch (e) {}
     });
