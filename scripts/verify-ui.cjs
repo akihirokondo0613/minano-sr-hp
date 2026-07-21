@@ -89,6 +89,7 @@ function recordConsoleError(target) {
     'svc-ill-joseikin', 'svc-ill-kisoku', 'svc-ill-shaho', 'svc-ill-kyuyo', 'svc-ill-sodan', 'svc-ill-dx',
     'stage-startup', 'stage-growth', 'stage-org',
     'news-thumb-1', 'news-thumb-2', 'news-thumb-3', 'news-thumb-4',
+    'rep-portrait', 'office-exterior', 'office-interior', 'office-staff', 'office-area',
   ];
   const illustrationFailures = await imagePage.evaluate(ids => ids.flatMap(id => {
     const slot = document.getElementById(id);
@@ -129,6 +130,32 @@ function recordConsoleError(target) {
   }
   results.push({ adjustedSubpageSlots });
   await cropPage.close();
+
+  const grantPage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await grantPage.goto(new URL('joseikin.html', base).href, { waitUntil: 'load' });
+  const grantIllustrationIds = [
+    'jk-hero-ill', 'jk-ill-career', 'jk-ill-gyomu', 'jk-ill-ryoritsu', 'jk-ill-jinzai', 'jk-ill-trial',
+  ];
+  for (const id of grantIllustrationIds) {
+    await grantPage.locator(`#${id}`).scrollIntoViewIfNeeded();
+    await grantPage.waitForTimeout(80);
+  }
+  await grantPage.waitForTimeout(300);
+  const grantFailures = await grantPage.evaluate(ids => ids.flatMap(id => {
+    const slot = document.getElementById(id);
+    const img = slot?.querySelector('img[data-image-slot-public]');
+    const hasCrop = ['crop-scale', 'crop-x', 'crop-y'].some(name => slot?.hasAttribute(name));
+    const frame = slot?.parentElement?.getBoundingClientRect();
+    const ratio = frame && frame.height ? frame.width / frame.height : 0;
+    if (!slot || !img || slot.getAttribute('fit') !== 'contain' || getComputedStyle(img).objectFit !== 'contain' ||
+        hasCrop || !img.complete || img.naturalWidth < 960 || Math.abs(ratio - 4 / 3) > 0.02) {
+      return [id];
+    }
+    return [];
+  }), grantIllustrationIds);
+  if (grantFailures.length) failures.push(`助成金ページの4:3イラスト: 設定不正 ${grantFailures.join(', ')}`);
+  results.push({ grantIllustrations: grantIllustrationIds.length - grantFailures.length });
+  await grantPage.close();
 
   const publicLinkPage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await publicLinkPage.goto(base, { waitUntil: 'load' });
