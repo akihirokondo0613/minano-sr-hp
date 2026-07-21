@@ -452,7 +452,14 @@ function mnSplitLabel(el, text) {
         // style.backgroundImage」に敷く実装。shadowRoot 内の _img.src には確定画像しか
         // 入らない（差し込み写真は localStorage/state.json 保存の data:URL がそのまま本画像）。
         // よって data:URL を除外してはいけない（除外すると本画像を永遠に待ち、毎回CAPで強制めくり）。
-        if (img && img.style.display !== 'none' && img.complete && img.naturalWidth > 0) return end();
+        // 大きなヒーロー画像（2100px）はカーテンの裏で GPU デコードまで済ませてから解決する。
+        // decode を待たずにめくると、めくり(transform)中に初回ラスタライズが走ってコンポジットが
+        // 飽和し「無料相談→トップ」でカクつく。ただし decode() が解決しない実装もあるため必ず上限付き
+        // （最大400ms）でレースし、めくりが固まらないようにする。
+        if (img && img.style.display !== 'none' && img.complete && img.naturalWidth > 0) {
+          if (img.decode) { Promise.race([img.decode().catch(function () {}), wait(400)]).then(end); return; }
+          return end();
+        }
         requestAnimationFrame(poll);
       })();
       setTimeout(end, cap);
