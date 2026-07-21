@@ -24,8 +24,8 @@ html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 24px);font-si
   --nav-h:64px;--max:1080px;--r:16px;
   --ease:cubic-bezier(.22,1,.36,1); /* @kind other */
   --ease-soft:cubic-bezier(.33,0,.2,1); /* @kind other */
-  --sans:"BIZ UDPGothic","BIZ UDP Fallback","Hiragino Kaku Gothic ProN","ヒラギノ角ゴ ProN W3","Hiragino Sans","Noto Sans JP","Yu Gothic Medium",YuGothic,Meiryo,sans-serif; /* @kind font */
-  --serif:"Zen Maru Gothic","Zen Maru Fallback","BIZ UDPGothic","Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif; /* @kind font */
+  --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",YuGothic,Meiryo,sans-serif; /* @kind font */
+  --serif:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",YuGothic,Meiryo,sans-serif; /* @kind font */
 }
 body{font-family:var(--sans);background:#fff;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.85;font-weight:400;letter-spacing:.02em;line-break:strict}
 a{color:inherit;text-decoration:none}

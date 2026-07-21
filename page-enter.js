@@ -371,7 +371,15 @@ function mnSplitLabel(el, text) {
       ad.setAttribute('data-pg', k);
       if (ad.tagName === 'LINK') {
         pendingCss.push(new Promise(function (res) {
-          var applied = function () { syncVeilZoom(); res(); };
+          var applied = function () {
+            // トップページの全量CSSは、ファーストビュー用CSSの後から非同期で有効化する。
+            if (ad.hasAttribute('data-async-style')) {
+              ad.media = 'all';
+              ad.onload = null;
+            }
+            syncVeilZoom();
+            res();
+          };
           ad.addEventListener('load', applied);
           ad.addEventListener('error', applied);
           if (ad.sheet) applied();   // 既に適用済み（キャッシュ即時）
@@ -446,28 +454,21 @@ function mnSplitLabel(el, text) {
   function waitHero(cap) {
     return new Promise(function (res) {
       var done = false;
-      // 到着時、ヒーロー写真を即・全表示にする。緑カーテンのめくり自体が“出現”の演出なので、
-      // index.html の hero-intro フェード（.hero-stage>image-slot の opacity:0→1・1.3s）は
-      // SPA遷移では二重になり、めくれた瞬間に写真がまだ薄い（＝「読み込み後に表示されない」）。
-      // 差し替え直後の要素では fill:both が backwards（opacity:0）のまま張り付くこともある。
-      // カーテンがまだ覆っている段階で opacity:1 / animation:none を焼き込み、めくった時には
-      // 写真が確定表示になっているようにする。初回の直接読み込みでは waitHero は走らない
-      // （navigate 内でのみ呼ばれる）ので hero-intro のフェードはそのまま活きる。
+      // 到着時、ヒーロー写真のデコードまでをカーテンの裏で待つ。
+      // 公開トップは preload scanner が発見できる native picture、編集画面は従来の
+      // image-slot のため、どちらの構造でも同じ準備待ちを行う。
       function revealHero() {
-        var s = document.querySelector('.hero-stage>image-slot');
+        var s = document.querySelector('.hero-stage>:is(.hero-media,image-slot)');
         if (s) { s.style.animation = 'none'; s.style.opacity = '1'; }
       }
       var end = function () { if (!done) { done = true; revealHero(); res(); } };
       (function poll() {
         if (done) return;
-        var slot = document.querySelector('.hero-stage>image-slot');
+        var slot = document.querySelector('.hero-stage>:is(.hero-media,image-slot)');
         if (!slot) return end();
-        var img = slot.shadowRoot && slot.shadowRoot.querySelector('img');
-        // 注意：blur-upのぼかし下地は image-slot.js が _setLqip() で「ホスト要素の
-        // style.backgroundImage」に敷く実装。shadowRoot 内の _img.src には確定画像しか
-        // 入らない（差し込み写真は localStorage/state.json 保存の data:URL がそのまま本画像）。
-        // よって data:URL を除外してはいけない（除外すると本画像を永遠に待ち、毎回CAPで強制めくり）。
-        // 大きなヒーロー画像（2100px）はカーテンの裏で GPU デコードまで済ませてから解決する。
+        var img = slot.matches('.hero-media') ? slot.querySelector('img') :
+          (slot.shadowRoot && slot.shadowRoot.querySelector('img'));
+        // カーテンの裏で GPU デコードまで済ませてから解決する。
         // decode を待たずにめくると、めくり(transform)中に初回ラスタライズが走ってコンポジットが
         // 飽和し「無料相談→トップ」でカクつく。ただし decode() が解決しない実装もあるため必ず上限付き
         // （最大400ms）でレースし、めくりが固まらないようにする。
