@@ -68,7 +68,7 @@
 .jg h3::before{content:'';width:18px;height:3px;background:var(--moegi);border-radius:2px;flex-shrink:0}
 
 /* こんな会社に × いくら */
-.jg-ill{margin:0 0 16px;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:var(--yuki);border:1px solid var(--line2)}
+.jg-ill{margin:0 0 16px;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:var(--yuki);border:1px solid var(--line2)}
 .jg-ill image-slot{display:block;width:100%;height:100%}
 .jg-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:clamp(16px,2.4vw,24px);margin-bottom:clamp(18px,2.6vw,24px)}
 .jg-block{background:var(--shiro);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(20px,2.8vw,28px)}
@@ -139,7 +139,7 @@
   .jk-cta .btn-primary{padding:16px 22px;font-size:14px}
 }
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20260722-fit1">
+<link rel="stylesheet" href="skin-v2.css?v=20260722-ill1">
 <meta name="theme-color" content="#123F30">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3E%E3%81%BF%3C/text%3E%3C/svg%3E">
 </head>
@@ -189,7 +189,7 @@
       <h1>令和8年度<br>使いやすい助成金5選</h1>
       <p class="lead">助成金は種類が多く、どれが自社に関係あるのか分かりにくいものです。このページでは、業種を問わず使う場面が多い5つを、『どんな会社に向くか・いくら・何に注意するか』に絞ってご紹介します。すべてに共通する鉄則はひとつ、<strong>取組を始める前の準備が必要</strong>なことです。</p>
       </div>
-      <div class="jk-hero-ill"><image-slot id="jk-hero-ill" src="assets/photos/jk-hero-ill.webp" placeholder="イラスト：助成金・申請のイメージ（推奨 4:3）"></image-slot></div>
+      <div class="jk-hero-ill"><image-slot id="jk-hero-ill" src="assets/illustrations/grant-overview.webp" fit="contain" placeholder="イラスト：助成金の申請支援（推奨 4:3）"></image-slot></div>
     </div>
   </header>
 
@@ -221,7 +221,7 @@
       <div class="jg-grid">
         <div class="jg-block jg-fit">
           <h3>こんな会社に</h3>
-          <div class="jg-ill"><image-slot id="jk-ill-career" src="assets/photos/jk-ill-career.webp" crop-scale="1.127395" crop-x="-0.133478" crop-y="3.166919" placeholder="イラスト：パートから正社員へのステップアップ（推奨 16:9）"></image-slot></div>
+          <div class="jg-ill"><image-slot id="jk-ill-career" src="assets/illustrations/grant-career-up.webp" fit="contain" placeholder="イラスト：パートから正社員へのステップアップ（推奨 4:3）"></image-slot></div>
           <ul>
             <li>パートや契約社員を長く雇っている会社</li>
             <li>頑張っている人を正社員にしてあげたい会社</li>
@@ -280,7 +280,7 @@
       <div class="jg-grid">
         <div class="jg-block jg-fit">
           <h3>こんな会社に</h3>
-          <div class="jg-ill"><image-slot id="jk-ill-gyomu" src="assets/photos/jk-ill-gyomu.webp" crop-scale="1" crop-x="0" crop-y="5.887930" placeholder="イラスト：賃上げ＋機械・システム導入（推奨 16:9）"></image-slot></div>
+          <div class="jg-ill"><image-slot id="jk-ill-gyomu" src="assets/illustrations/grant-productivity.webp" fit="contain" placeholder="イラスト：賃上げと生産性向上（推奨 4:3）"></image-slot></div>
           <ul>
             <li>パートや社員の時給を上げたいと考えている会社</li>
             <li>機械やソフトを入れて作業を効率化したい会社</li>
@@ -339,7 +339,7 @@
       <div class="jg-grid">
         <div class="jg-block jg-fit">
           <h3>こんな会社に</h3>
-          <div class="jg-ill"><image-slot id="jk-ill-ryoritsu" src="assets/photos/jk-ill-ryoritsu.webp" crop-scale="1.197056" crop-x="-0.808609" crop-y="6.305410" placeholder="イラスト：育休を取る社員と職場のカバー（推奨 16:9）"></image-slot></div>
+          <div class="jg-ill"><image-slot id="jk-ill-ryoritsu" src="assets/illustrations/grant-parental-leave.webp" fit="contain" placeholder="イラスト：男性の育児休業（推奨 4:3）"></image-slot></div>
           <ul>
             <li>男性社員に初めて育休を取ってもらう会社</li>
             <li>社員から妊娠・出産の報告を受けたばかりの会社</li>
@@ -398,7 +398,7 @@
       <div class="jg-grid">
         <div class="jg-block jg-fit">
           <h3>こんな会社に</h3>
-          <div class="jg-ill"><image-slot id="jk-ill-jinzai" src="assets/photos/jk-ill-jinzai.webp" crop-scale="1" crop-x="0" crop-y="8.236939" placeholder="イラスト：研修・学びのイメージ（推奨 16:9）"></image-slot></div>
+          <div class="jg-ill"><image-slot id="jk-ill-jinzai" src="assets/illustrations/grant-training.webp" fit="contain" placeholder="イラスト：研修・人材育成（推奨 4:3）"></image-slot></div>
           <ul>
             <li>社員を外部の研修や講習に行かせている会社</li>
             <li>講師を招いた社内研修を計画している会社</li>
@@ -457,7 +457,7 @@
       <div class="jg-grid">
         <div class="jg-block jg-fit">
           <h3>こんな会社に</h3>
-          <div class="jg-ill"><image-slot id="jk-ill-trial" src="assets/photos/jk-ill-trial.webp" placeholder="イラスト：お試し雇用からの正式採用（推奨 16:9）"></image-slot></div>
+          <div class="jg-ill"><image-slot id="jk-ill-trial" src="assets/illustrations/grant-trial-employment.webp" fit="contain" placeholder="イラスト：トライアル雇用からの採用（推奨 4:3）"></image-slot></div>
           <ul>
             <li>未経験者を採用したいが定着が不安な会社</li>
             <li>人手不足で採用のハードルを下げたい会社</li>
