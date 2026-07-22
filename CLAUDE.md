@@ -363,7 +363,7 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 - トップは `#critical-home` にファーストビュー用CSSを置き、全量 `skin-v2.css` は `data-async-style` で後から適用する。両者を片方だけ変更しない。ファーストビューの規則を変更したらインライン側も同期する。
 - 画面外の大きなsectionは `content-visibility:auto` で描画計算を遅延する。アンカー移動・SPA遷移で位置ずれがないことをモバイル実測する。
 - CSS/JSを変更して公開するときはクエリ版を更新する。ヒーロー等の最適化画像は寸法入りの別名にして、7日キャッシュ中の旧資産と混同させない。サーバーはHTML/CSSをBrotli圧縮し、静的資産へ `max-age=604800` を付与している。
-- 変更前後で `node scripts/check-performance-budget.mjs` を実行する。PRでは `.github/workflows/performance.yml` が日本語フォント（Noto Sans CJK JP）を準備したうえで、モバイル／PCのLighthouseを各3回計測する。性能点は中央値でモバイル91以上・PC99以上、CLSは全試行0.1以下、転送量は全試行でモバイル600KiB以下・PC700KiB以下を合否判定し、全レポートを14日間保存する。単発値では判定しない。
+- 変更前後で `node scripts/check-performance-budget.mjs` を実行する。PRでは `.github/workflows/performance.yml` が日本語フォント（Noto Sans CJK JP）を準備し、判定対象外のウォームアップを1回行ったうえで、モバイル／PCのLighthouseを各3回計測する。性能点は中央値でモバイル91以上・PC99以上、CLSは全試行0.1以下、転送量は全試行でモバイル600KiB以下・PC700KiB以下を合否判定し、全レポートを14日間保存する。単発値では判定しない。
 
 ## sitemap.xml は自動生成に切り替え済み（2026-07-19 `gen-sitemap.js` 追加）
 
