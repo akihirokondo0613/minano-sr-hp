@@ -140,6 +140,8 @@ img { display: block; }
 .nav-links a { font-size: 13.5px; font-weight: 700; letter-spacing: .05em; color: var(--ink2); padding: 8px 2px; position: relative; white-space: nowrap; }
 .nav-links a::after { content: ''; position: absolute; left: 2px; right: 2px; bottom: 0; height: 2.5px; border-radius: 2px; background: var(--moegi); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
 .nav-links a:hover::after { transform: scaleX(1); }
+.nav-links a.active, .nav-links a[aria-current="page"] { color: var(--sugi); }
+.nav-links a.active::after, .nav-links a[aria-current="page"]::after { transform: scaleX(1); }
 .nav-cta { flex-shrink: 0; background: var(--sugi); color: #fff; font-size: 13.5px; font-weight: 700; letter-spacing: .06em; padding: 12px 24px; border-radius: var(--r); transition: background .3s; }
 .nav-cta:hover { background: var(--sugi-7); }
 .nav-burger { display: none; background: none; border: 0; cursor: pointer; color: var(--iwa); padding: 10px; }
@@ -1130,3 +1132,92 @@ article.post .note { font-size: 12.5px; color: var(--ink3); margin-top: -1em; ma
 .proc-ic { color: var(--moegi); display: flex; align-items: center; }
 .proc-ic svg { width: 24px; height: 24px; }
 .svc-feat-badge svg { width: 11px; height: 11px; }
+
+/* ============================================================
+   2026-07-23 情報設計の分割
+   トップは短い入口、詳細は services / pricing / support / about へ。
+   ============================================================ */
+.home-compact-section { padding-block: clamp(58px, 7.5vw, 104px); }
+.home-compact-section .sec-head { margin-bottom: clamp(28px, 4vw, 46px); }
+.home-compact-section .sec-sub { max-width: 42em; }
+.home-section-more { margin-top: clamp(24px, 3vw, 36px); text-align: right; }
+.home-section-more .link-more { color: var(--sugi); }
+
+.home-why-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(240px, .8fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+}
+.home-why-copy { display: grid; gap: 18px; }
+.home-why-copy p { color: var(--ink2); font-size: 15px; line-height: 2.05; max-inline-size: 42em; }
+.home-why-points { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 8px; }
+.home-why-point { border-top: 2px solid var(--moegi); padding-top: 12px; color: var(--iwa); font-size: 13px; font-weight: 700; line-height: 1.7; }
+.home-why-photo { min-width: 0; }
+.home-why-photo .ph-frame { aspect-ratio: 4 / 3; }
+
+.home-service-list .svc-row { grid-template-columns: 52px 92px minmax(0, 1fr) 36px; padding-block: 13px; }
+.home-service-list .svc-ill { width: 92px; }
+.home-service-list .svc-info-desc { white-space: normal; }
+
+.home-phase-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 22px); }
+.home-phase-card { background: var(--shiro); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; }
+.home-phase-media { aspect-ratio: 4 / 3; background: #fefefe; }
+.home-phase-media image-slot { display: block; width: 100%; height: 100%; background: #fefefe; }
+.home-phase-body { padding: 20px 22px 22px; }
+.home-phase-label { font-family: var(--mono); font-size: 10.5px; font-weight: 600; letter-spacing: .14em; color: var(--moegi-t); }
+.home-phase-title { margin-top: 6px; font-family: var(--disp); font-size: 18px; font-weight: 800; color: var(--iwa); }
+.home-phase-scale { margin-top: 3px; color: var(--ink3); font-size: 12px; }
+.home-phase-desc { margin-top: 12px; color: var(--ink2); font-size: 13px; line-height: 1.85; }
+
+.home-plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: clamp(14px, 2vw, 22px); }
+.home-plan-card { min-height: 100%; background: var(--shiro); border: 1px solid var(--line); border-radius: var(--r-lg); padding: clamp(22px, 3vw, 32px); display: flex; flex-direction: column; }
+.home-plan-card.is-main { border-color: var(--moegi); box-shadow: 0 14px 34px rgba(18,63,48,.08); }
+.home-plan-en { font-family: var(--mono); color: var(--moegi-t); font-size: 10px; font-weight: 600; letter-spacing: .17em; }
+.home-plan-name { margin-top: 8px; font-family: var(--disp); color: var(--iwa); font-size: 19px; font-weight: 800; }
+.home-plan-desc { margin-top: 10px; color: var(--ink3); font-size: 13px; line-height: 1.9; }
+.home-plan-note { margin-top: clamp(22px, 3vw, 30px); color: var(--ink3); font-size: 12.5px; line-height: 1.9; }
+
+.home-about-card { display: grid; grid-template-columns: minmax(220px, .7fr) minmax(0, 1.3fr); gap: clamp(26px, 5vw, 58px); align-items: center; }
+.home-about-photo { aspect-ratio: 4 / 3; border-radius: var(--r-lg); overflow: hidden; background: #fefefe; }
+.home-about-photo image-slot { display: block; width: 100%; height: 100%; background: #fefefe; }
+.home-about-copy { display: grid; gap: 15px; }
+.home-about-copy p { color: var(--ink2); font-size: 14px; line-height: 2; max-inline-size: 42em; }
+.home-about-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; color: var(--ink3); font-size: 12.5px; }
+
+.hub-page .page-hero { padding-bottom: clamp(48px, 7vw, 76px); }
+.hub-page > section:not(.final-sec) { content-visibility: auto; contain-intrinsic-size: auto 860px; }
+.hub-intro-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 10px; margin-top: 28px; }
+.hub-intro-nav a { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 52px; padding: 13px 16px; color: var(--sugi); background: var(--shiro); border: 1px solid var(--line); border-radius: var(--r); font-size: 13px; font-weight: 700; transition: border-color .3s, transform .3s var(--ease); }
+.hub-intro-nav a:hover { border-color: var(--moegi); transform: translateY(-2px); }
+.hub-intro-nav a::after { content: '\2193'; font-family: var(--mono); color: var(--moegi-t); }
+.service-catalog .svc-num::before { content: 'SERVICE'; display: block; color: var(--moegi-t); -webkit-text-stroke: 0; font-size: 8px; font-weight: 600; letter-spacing: .12em; margin-bottom: 2px; }
+.service-catalog .svc-num { line-height: 1.1; }
+.hub-page .proc-dot { width: auto; min-width: 64px; padding-inline: 10px; border-radius: 999px; }
+html { scroll-padding-top: 88px; }
+[id] { scroll-margin-top: 88px; }
+.hub-page .price-sec,
+.hub-page .case-sec,
+.hub-page .voice-sec,
+.hub-page .about-sec { padding-top: clamp(62px, 8vw, 112px); }
+
+@media (max-width: 820px) {
+  .home-why-grid, .home-about-card { grid-template-columns: 1fr; }
+  .home-why-photo, .home-about-photo { width: min(100%, 420px); margin-inline: auto; }
+  .home-why-points { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .home-phase-grid { grid-template-columns: 1fr; }
+  .home-phase-card { display: grid; grid-template-columns: minmax(0, 1fr) clamp(118px, 34vw, 172px); align-items: stretch; }
+  .home-phase-body { grid-column: 1; grid-row: 1; align-self: center; padding: 18px 16px 18px 20px; }
+  .home-phase-media { grid-column: 2; grid-row: 1; align-self: center; width: 100%; }
+}
+@media (max-width: 640px) {
+  .home-service-list .svc-row { grid-template-columns: 34px 72px minmax(0, 1fr) 20px; gap: 10px; padding: 12px 11px; }
+  .home-service-list .svc-ill { width: 72px; }
+  .home-service-list .svc-info-name { font-size: 14px; }
+  .home-service-list .svc-info-desc { display: none; }
+  .home-service-list .svc-num { font-size: 17px; }
+  .home-section-more { text-align: left; }
+  .hub-intro-nav { grid-template-columns: 1fr; }
+}
