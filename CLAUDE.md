@@ -293,7 +293,7 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 - **下層ページの大画面対応は wave-skin.css 末尾に共通層**：1560px以上 `--max:1240px`、1900px以上 `--max:1320px`（各ページのインラインCSSより後に読まれるので勝つ）。**ブログ記事（article.post）は :has() で除外**して本文幅760pxを維持。
 
 同ブラッシュアップでの主な変更（すべて index.html）：
-- **サービス一覧は従来の横長・行型リスト（6行・01〜06）**（一度「主要3サービスの写真カード化 .svc-top3」を入れたがユーザー判断で撤回・削除済み）。各行の線画アイコンの代わりに **4:3イラスト用 `<image-slot>`（id: svc-ill-joseikin / kisoku / shaho / kyuyo / sodan / dx、`.svc-ill` ラッパー）** を設置。表示幅はPC 112px・モバイル72px。行は `<a>` なのでラッパー span に編集環境限定のクリックガードを付け、公開時のリンク操作とClaude Designの編集を両立している。正本画像は `assets/illustrations/service-*.webp`。成長段階・記事一覧・事務所紹介・`joseikin.html` も4:3画像＋`fit="contain"`で統一し、画像内の人物・小物を切らない。
+- **サービス一覧は従来の横長・行型リスト（6行・01〜06）**（一度「主要3サービスの写真カード化 .svc-top3」を入れたがユーザー判断で撤回・削除済み）。各行の線画アイコンの代わりに **4:3イラスト用 `<image-slot>`（id: svc-ill-joseikin / kisoku / shaho / kyuyo / sodan / dx、`.svc-ill` ラッパー）** を設置。表示幅はPC 112px・モバイル72px。行は `<a>` なのでラッパー span に編集環境限定のクリックガードを付け、公開時のリンク操作とClaude Designの編集を両立している。正本画像は `assets/illustrations/service-*.webp`。画像内の実色 `#fefefe` との境界が見えないよう、行・画像枠・`image-slot` の背景は同色に統一する。成長段階・記事一覧・事務所紹介・`joseikin.html` も4:3画像＋`fit="contain"`で統一し、画像内の人物・小物を切らない。事務所紹介の4枚は画像内に意味があるため、重複する説明ラベルを重ねない。
 - **助成金タイムライン**（`.sub-timeline`）：STEP1〜5。「実施前の計画提出が必要」を強調、受給保証ではない注記付き。文言変更時もこの注記は残すこと。
 - **CASE段階ハイライトは削除済み**（2026-07 ユーザー判断で機能ごと撤去。復活させないこと。`#stg-highlight` はコメントのみ残存）。
 - FVサブコピーを「富山の中小企業に向けて…」に変更、FAQの「当日対応が可能」を断定しない表現に緩和。

@@ -101,9 +101,34 @@ function recordConsoleError(target) {
     return [];
   }), illustrationIds);
   if (illustrationFailures.length) failures.push(`トップのイラスト全体表示: 設定不正 ${illustrationFailures.join(', ')}`);
+  const visualCleanup = await imagePage.evaluate(() => {
+    const startup = document.getElementById('stage-startup');
+    const serviceRows = [...document.querySelectorAll('.svc-row')];
+    const serviceBackgroundFailures = serviceRows.flatMap((row, index) => {
+      const frame = row.querySelector('.svc-ill');
+      const slot = frame?.querySelector('image-slot');
+      const colors = [row, frame, slot].map(el => el && getComputedStyle(el).backgroundColor);
+      return colors.every(color => color === 'rgb(254, 254, 254)') ? [] : [index + 1];
+    });
+    return {
+      startupSource: startup?.getAttribute('src') || '',
+      aboutCaptions: document.querySelectorAll('.trio-cap').length,
+      serviceRows: serviceRows.length,
+      serviceBackgroundFailures,
+    };
+  });
+  if (visualCleanup.startupSource !== 'assets/illustrations/stage-startup-v2.webp') {
+    failures.push(`創業期イラスト: 差し替え元が不正 ${visualCleanup.startupSource}`);
+  }
+  if (visualCleanup.aboutCaptions) failures.push(`事務所紹介: 説明ラベルが${visualCleanup.aboutCaptions}件残っています`);
+  if (visualCleanup.serviceRows !== 6 || visualCleanup.serviceBackgroundFailures.length) {
+    failures.push(`サービス一覧: 画像背景の継ぎ目対策が不正 ${visualCleanup.serviceBackgroundFailures.join(', ')}`);
+  }
   results.push({ publicImageSlots: slotState.total, broken: slotState.broken.length,
     adjusted: slotState.adjusted, cropFailures: slotState.cropFailures.length,
-    containedIllustrations: illustrationIds.length - illustrationFailures.length });
+    containedIllustrations: illustrationIds.length - illustrationFailures.length,
+    aboutCaptions: visualCleanup.aboutCaptions,
+    seamlessServiceRows: visualCleanup.serviceRows - visualCleanup.serviceBackgroundFailures.length });
   await imagePage.close();
 
   const cropPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
