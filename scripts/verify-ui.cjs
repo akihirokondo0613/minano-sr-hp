@@ -110,11 +110,20 @@ function recordConsoleError(target) {
       const colors = [row, frame, slot].map(el => el && getComputedStyle(el).backgroundColor);
       return colors.every(color => color === 'rgb(254, 254, 254)') ? [] : [index + 1];
     });
+    const newsRows = [...document.querySelectorAll('.news-row')];
+    const newsBackgroundFailures = newsRows.flatMap((row, index) => {
+      const frame = row.querySelector('.news-thumb');
+      const slot = frame?.querySelector('image-slot');
+      const colors = [row, frame, slot].map(el => el && getComputedStyle(el).backgroundColor);
+      return colors.every(color => color === 'rgb(254, 254, 254)') ? [] : [index + 1];
+    });
     return {
       startupSource: startup?.getAttribute('src') || '',
       aboutCaptions: document.querySelectorAll('.trio-cap').length,
       serviceRows: serviceRows.length,
       serviceBackgroundFailures,
+      newsRows: newsRows.length,
+      newsBackgroundFailures,
     };
   });
   if (visualCleanup.startupSource !== 'assets/illustrations/stage-startup-v2.webp') {
@@ -124,11 +133,15 @@ function recordConsoleError(target) {
   if (visualCleanup.serviceRows !== 6 || visualCleanup.serviceBackgroundFailures.length) {
     failures.push(`サービス一覧: 画像背景の継ぎ目対策が不正 ${visualCleanup.serviceBackgroundFailures.join(', ')}`);
   }
+  if (visualCleanup.newsRows !== 4 || visualCleanup.newsBackgroundFailures.length) {
+    failures.push(`記事一覧: 画像背景の継ぎ目対策が不正 ${visualCleanup.newsBackgroundFailures.join(', ')}`);
+  }
   results.push({ publicImageSlots: slotState.total, broken: slotState.broken.length,
     adjusted: slotState.adjusted, cropFailures: slotState.cropFailures.length,
     containedIllustrations: illustrationIds.length - illustrationFailures.length,
     aboutCaptions: visualCleanup.aboutCaptions,
-    seamlessServiceRows: visualCleanup.serviceRows - visualCleanup.serviceBackgroundFailures.length });
+    seamlessServiceRows: visualCleanup.serviceRows - visualCleanup.serviceBackgroundFailures.length,
+    seamlessNewsRows: visualCleanup.newsRows - visualCleanup.newsBackgroundFailures.length });
   await imagePage.close();
 
   const cropPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
