@@ -34,6 +34,10 @@ const DIRS = ['.', 'uploads', 'blog'];
 // priority / changefreq のルール（先にマッチしたものを採用）
 const RULES = [
   { test: p => p === 'index.html',            loc: '',                     changefreq: 'monthly', priority: '1.0' },
+  { test: p => p === 'services.html',         changefreq: 'monthly', priority: '0.9' },
+  { test: p => p === 'pricing.html',          changefreq: 'monthly', priority: '0.9' },
+  { test: p => p === 'support.html',          changefreq: 'monthly', priority: '0.8' },
+  { test: p => p === 'about.html',            changefreq: 'yearly',  priority: '0.7' },
   { test: p => p === 'blog.html',             changefreq: 'weekly',  priority: '0.8' },
   { test: p => p === 'joseikin.html',         changefreq: 'monthly', priority: '0.8' },
   { test: p => p === 'portal.html',           changefreq: 'monthly', priority: '0.6' },

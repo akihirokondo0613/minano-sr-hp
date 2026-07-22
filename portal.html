@@ -56,7 +56,7 @@
 .qk:hover{border-color:var(--moegi-t);transform:translateY(-2px);color:var(--sugi)}
 .qk-note{margin-top:14px;font-size:12px;color:var(--ink4);line-height:1.9}
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20260722-ill3">
+<link rel="stylesheet" href="skin-v2.css?v=20260723-split1">
 </head>
 <body>
 <a class="skip-link" href="#main">本文へスキップ</a>
@@ -70,13 +70,13 @@
       <div class="logo-text"><b>みなの社会保険労務士事務所</b><small>複雑な労務を、シンプルに。</small></div>
     </a>
     <ul class="nav-links">
-      <li><a href="index.html#why">理念</a></li>
-      <li><a href="index.html#services">サービス</a></li>
-      <li><a href="index.html#cases">支援の進め方</a></li>
-      <li><a href="index.html#pricing">料金</a></li>
+      <li><a href="services.html">サービス</a></li>
+      <li><a href="pricing.html">料金</a></li>
+      <li><a href="support.html">支援の進め方</a></li>
+      <li><a href="about.html">事務所案内</a></li>
       <li><a href="blog.html">ブログ</a></li>
       <li><a href="infographic.html">社労士とは</a></li>
-      <li><a href="portal.html" class="active">公式情報</a></li>
+      <li><a href="portal.html" class="active" aria-current="page">公式情報</a></li>
     </ul>
     <a href="uploads/contact.html" class="nav-cta">無料で相談する</a>
     <button class="nav-burger" onclick="toggleNav()" aria-label="メニュー">
@@ -85,13 +85,13 @@
   </div>
 </nav>
 <div class="mob-nav" id="mobNav">
-  <a href="index.html#why" onclick="closeNav()">理念</a>
-  <a href="index.html#services" onclick="closeNav()">サービス</a>
-  <a href="index.html#cases" onclick="closeNav()">支援の進め方</a>
-  <a href="index.html#pricing" onclick="closeNav()">料金</a>
+  <a href="services.html" onclick="closeNav()">サービス</a>
+  <a href="pricing.html" onclick="closeNav()">料金</a>
+  <a href="support.html" onclick="closeNav()">支援の進め方</a>
+  <a href="about.html" onclick="closeNav()">事務所案内</a>
   <a href="blog.html" onclick="closeNav()">ブログ</a>
-  <a href="portal.html" onclick="closeNav()">公式情報</a>
   <a href="infographic.html" onclick="closeNav()">社労士とは</a>
+  <a href="portal.html" onclick="closeNav()" aria-current="page">公式情報</a>
   <a href="uploads/contact.html" class="mob-cta">→ 無料相談を申し込む</a>
 </div>
 
@@ -260,6 +260,7 @@
       <div>
         <p class="footer-h">サービス</p>
         <ul class="footer-ul">
+          <li><a href="services.html">サービス一覧</a></li>
           <li><a href="uploads/service-joseikin.html">助成金申請</a></li>
           <li><a href="uploads/service-shugyo-kisoku.html">就業規則作成</a></li>
           <li><a href="uploads/service-shakai-hoken.html">社会保険手続き</a></li>
@@ -270,6 +271,7 @@
       <div>
         <p class="footer-h">支援の進め方</p>
         <ul class="footer-ul">
+          <li><a href="support.html">支援全体を見る</a></li>
           <li><a href="uploads/case-seizogyo.html">製造業</a></li>
           <li><a href="uploads/case-inshoku.html">飲食業</a></li>
           <li><a href="uploads/case-kaigo.html">介護業</a></li>
@@ -280,6 +282,8 @@
       <div>
         <p class="footer-h">コンテンツ</p>
         <ul class="footer-ul">
+          <li><a href="pricing.html">料金・顧問プラン</a></li>
+          <li><a href="about.html">事務所案内</a></li>
           <li><a href="blog.html">コラム・ブログ</a></li>
           <li><a href="joseikin.html">令和8年度 助成金5選</a></li>
           <li><a href="infographic.html">社労士とは？</a></li>
@@ -300,7 +304,6 @@
     <div class="footer-bottom">
       <p class="footer-copy">© 2026 みなの社会保険労務士事務所. All rights reserved.</p>
       <div class="footer-badges">
-        <span class="footer-badge">社労士登録 第16◯◯◯◯号</span>
         <span class="footer-badge">富山県社会保険労務士会</span>
       </div>
     </div>

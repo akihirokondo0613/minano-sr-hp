@@ -28,7 +28,7 @@
   ];
   var SPRITE_RATIO = 0.8; // 画像の高さ / 幅
   var URL_CONTACT = rootPrefix + 'uploads/contact.html';
-  var URL_SERVICE = rootPrefix + 'index.html#services';
+  var URL_SERVICE = rootPrefix + 'services.html';
   var TEL = '090-2838-8252';
 
   // ---- 大きさ ---------------------------------------------------------------
@@ -358,7 +358,7 @@
     if (primary) primary.setAttribute('href', pre + 'uploads/contact.html');
     var ghosts = root.querySelectorAll('.mn-act.ghost');
     for (var i = 0; i < ghosts.length; i++) {
-      if (!/^tel:/.test(ghosts[i].getAttribute('href') || '')) ghosts[i].setAttribute('href', pre + 'index.html#services');
+      if (!/^tel:/.test(ghosts[i].getAttribute('href') || '')) ghosts[i].setAttribute('href', pre + 'services.html');
     }
   }
   window.__mnMascotRelink = mnRelink;
