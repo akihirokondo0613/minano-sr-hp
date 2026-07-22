@@ -10,7 +10,7 @@ permissions:
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -20,6 +20,13 @@ jobs:
 
       - name: 静的な性能チェック
         run: node scripts/check-performance-budget.mjs
+
+      - name: 日本語フォントを準備
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends fonts-noto-cjk
+          fc-cache -f
+          fc-match 'Noto Sans CJK JP'
 
       - name: ローカル公開サーバーを起動
         run: |
@@ -31,15 +38,32 @@ jobs:
           curl --fail --silent http://127.0.0.1:8765/ >/dev/null
 
       - name: Lighthouse（モバイル）
-        run: npx --yes lighthouse@13.0.1 http://127.0.0.1:8765/ --quiet --chrome-flags="--headless --no-sandbox" --output=json --output-path=/tmp/lighthouse-mobile.json --only-categories=performance
+        run: |
+          for attempt in 1 2 3; do
+            npx --yes lighthouse@13.0.1 http://127.0.0.1:8765/ \
+              --quiet \
+              --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+              --output=json \
+              --output-path="/tmp/lighthouse-mobile-${attempt}.json" \
+              --only-categories=performance
+          done
 
       - name: Lighthouse（PC）
-        run: npx --yes lighthouse@13.0.1 http://127.0.0.1:8765/ --quiet --chrome-flags="--headless --no-sandbox" --output=json --output-path=/tmp/lighthouse-desktop.json --only-categories=performance --preset=desktop
+        run: |
+          for attempt in 1 2 3; do
+            npx --yes lighthouse@13.0.1 http://127.0.0.1:8765/ \
+              --quiet \
+              --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+              --output=json \
+              --output-path="/tmp/lighthouse-desktop-${attempt}.json" \
+              --only-categories=performance \
+              --preset=desktop
+          done
 
       - name: 性能基準を判定
         run: |
-          node scripts/assert-lighthouse-budget.mjs ci-mobile /tmp/lighthouse-mobile.json
-          node scripts/assert-lighthouse-budget.mjs ci-desktop /tmp/lighthouse-desktop.json
+          node scripts/assert-lighthouse-budget.mjs ci-mobile /tmp/lighthouse-mobile-*.json
+          node scripts/assert-lighthouse-budget.mjs ci-desktop /tmp/lighthouse-desktop-*.json
 
       - name: 計測結果を保存
         if: always()
