@@ -1147,12 +1147,16 @@ article.post .note { font-size: 12.5px; color: var(--ink3); margin-top: -1em; ma
 .home-section-more .link-more { color: var(--sugi); }
 
 .home-compact-section .home-why-head { margin-bottom: 0; align-items: center; }
-.home-why-copy { display: grid; gap: 18px; }
-.home-why-copy p { color: var(--ink2); font-size: 15px; line-height: 2.05; max-inline-size: 42em; }
-.home-why-points { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 8px; }
-.home-why-point { border-top: 2px solid var(--moegi); padding-top: 12px; color: var(--iwa); font-size: 13px; font-weight: 700; line-height: 1.7; }
+.home-why-copy { display: grid; gap: clamp(20px, 2.4vw, 30px); }
+.home-why-copy .sec-h { font-size: clamp(30px, 3.7vw, 44px); line-height: 1.48; }
+.home-why-intro { display: grid; gap: 10px; }
+.home-why-copy p { color: var(--ink2); font-size: clamp(15px, 1.2vw, 16px); line-height: 2; max-inline-size: 42em; }
 .home-why-photo { min-width: 0; }
 .home-why-photo .ph-frame { aspect-ratio: 4 / 3; }
+.home-why-beliefs { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(28px, 3.5vw, 42px); }
+.home-why-beliefs .belief-card { padding: clamp(22px, 2.4vw, 30px); }
+.home-why-more { margin-top: clamp(22px, 2.8vw, 32px); text-align: left; }
+.home-why-more .link-more { color: var(--sugi); }
 
 .home-service-list .svc-row { grid-template-columns: 52px 92px minmax(0, 1fr) 36px; padding-block: 13px; }
 .home-service-list .svc-ill { width: 92px; }
@@ -1211,9 +1215,14 @@ html { scroll-padding-top: 88px; }
 @media (max-width: 820px) {
   .home-about-card { grid-template-columns: 1fr; }
   .home-about-photo { width: min(100%, 420px); margin-inline: auto; }
-  .home-why-points { grid-template-columns: 1fr; }
 }
 @media (max-width: 760px) {
+  .home-why-beliefs { grid-template-columns: 1fr; gap: 0; margin-top: 22px; border-top: 1px solid var(--line); }
+  .home-why-beliefs .belief-card { display: grid; grid-template-columns: 36px minmax(0, 1fr); grid-template-areas: "num title" ". desc"; column-gap: 12px; padding: 16px 2px; background: transparent; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; }
+  .home-why-beliefs .belief-card:hover { transform: none; box-shadow: none; }
+  .home-why-beliefs .bc-num { grid-area: num; margin: 0; font-size: 19px; }
+  .home-why-beliefs .bc-title { grid-area: title; margin: 0; font-size: 16px; line-height: 1.7; }
+  .home-why-beliefs .bc-desc { grid-area: desc; margin-top: 5px; line-height: 1.85; }
   .home-phase-grid { grid-template-columns: 1fr; }
   .home-phase-card { display: grid; grid-template-columns: minmax(0, 1fr) clamp(118px, 34vw, 172px); align-items: stretch; }
   .home-phase-body { grid-column: 1; grid-row: 1; align-self: center; padding: 18px 16px 18px 20px; }
@@ -1222,6 +1231,9 @@ html { scroll-padding-top: 88px; }
 @media (max-width: 640px) {
   .home-compact-section { padding-block: 30px; }
   .home-compact-section .sec-head { margin-bottom: 22px; }
+  .home-why-copy { gap: 18px; }
+  .home-why-intro { gap: 6px; }
+  .home-why-copy p { font-size: 14.5px; line-height: 1.9; }
   .home-service-list .svc-row { grid-template-columns: 34px 72px minmax(0, 1fr) 20px; gap: 10px; padding: 12px 11px; }
   .home-service-list .svc-ill { width: 72px; }
   .home-service-list .svc-info-name { font-size: 14px; }
@@ -1236,5 +1248,6 @@ html { scroll-padding-top: 88px; }
   .home-plan-link { padding-top: 14px; }
   .final-sec { padding-block: 48px; }
   .hub-intro-nav { grid-template-columns: 1fr; }
-  .home-why-head .home-why-photo { max-width: 210px; }
+  .home-why-head { position: relative; }
+  .sec-head.has-photo .home-why-photo { position: absolute; top: 0; right: 0; display: block; width: 72px; margin: 0; }
 }
