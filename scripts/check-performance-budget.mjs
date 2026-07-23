@@ -42,7 +42,7 @@ for (const { full, rel } of publicHtml) {
     fail(`${rel}: page-enter.jsのキャッシュ版が不一致です（${pageEnter[1]}）`);
   }
   const mascotVersion = html.match(/mascot\.js\?v=([^"']+)/i);
-  if (mascotVersion && mascotVersion[1] !== '20260723-mobile1') {
+  if (mascotVersion && mascotVersion[1] !== '20260723-hidden1') {
     fail(`${rel}: mascot.jsのキャッシュ版が不一致です（${mascotVersion[1]}）`);
   }
   const imageSlotVersion = html.match(/image-slot\.js\?v=([^"']+)/i);

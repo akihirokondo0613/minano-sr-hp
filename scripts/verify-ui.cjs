@@ -39,7 +39,9 @@ function recordConsoleError(target) {
     await page.waitForTimeout(700);
     const state = await page.evaluate(() => {
       const rect = el => el?.getBoundingClientRect();
-      const cat = rect(document.querySelector('.mn-mascot'));
+      const catEl = document.querySelector('.mn-mascot');
+      const recallEl = document.querySelector('.mn-recall');
+      const cat = rect(catEl);
       const aboutPhoto = rect(document.querySelector('.home-about-photo'));
       const aboutCopy = rect(document.querySelector('.home-about-copy'));
       const footerLinks = [...document.querySelectorAll('.footer-ul a')];
@@ -63,6 +65,8 @@ function recordConsoleError(target) {
         protectedPlan: !![...document.querySelectorAll('.faq-q-text .nobr')].find(el => el.textContent === 'プラン'),
         footerObserver: !!window.__footerUiObserver,
         catInside: !!(cat && cat.left >= 0 && cat.top >= 0 && cat.right <= innerWidth && cat.bottom <= innerHeight),
+        catDisplay: catEl ? getComputedStyle(catEl).display : null,
+        recallDisplay: recallEl ? getComputedStyle(recallEl).display : null,
       };
     });
     if (state.overflow > 1) failures.push(`${viewport.width}px: 横はみ出し ${state.overflow}px`);
@@ -72,6 +76,7 @@ function recordConsoleError(target) {
     if (state.googleFontRequests) failures.push(`${viewport.width}px: Google Fontsを取得しています`);
     if (!state.footerObserver) failures.push(`${viewport.width}px: 固定UIのObserverが初期化されていません`);
     if (!state.catInside) failures.push(`${viewport.width}px: 猫の初期位置が画面外です`);
+    if (state.catDisplay !== 'none' || state.recallDisplay === 'none') failures.push(`${viewport.width}px: 猫が初期状態で収納されていません`);
     if (viewport.width <= 640) {
       if (state.summaryColumns !== 2) failures.push(`${viewport.width}px: ヒーロー直下サマリーが2列ではありません`);
       if (state.planListDisplay !== 'none' || state.planFeatureDisplay === 'none') failures.push(`${viewport.width}px: スマホ料金カードの情報量が不正です`);

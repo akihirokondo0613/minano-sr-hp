@@ -216,9 +216,9 @@
   }
 
   // ---- 非表示の記憶（その訪問の間だけ畳む） --------------------------------
-  // 既定は「表示」。ページを開いた直後から猫本体を画面内に表示し、
-  // 訪問者が明示的に隠したときだけ、そのページの間は呼び戻しタブに畳む。
-  var hiddenState = false;
+  // 既定は「収納」。初回表示では呼び戻しタブだけを出し、
+  // 訪問者が明示的に開いた後は、その訪問中のページ遷移でも表示を維持する。
+  var hiddenState = true;
   function isHidden() { return hiddenState; }
   function setHidden(v) { hiddenState = !!v; }
 
