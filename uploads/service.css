@@ -62,7 +62,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--g500);outline-offse
 .nav-links a.active,.nav-links a[aria-current]{color:var(--g600);font-weight:700}
 .nav-cta{min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:7px;background:var(--g600);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:8px;letter-spacing:.045em;transition:background .45s var(--ease-soft),transform .45s var(--ease);flex-shrink:0;white-space:nowrap}
 @media(hover:hover){.nav-cta:hover{background:var(--g700);transform:translateY(-1px);color:#fff}}
-.nav-burger{width:46px;height:46px;flex:0 0 46px;display:none;align-items:center;justify-content:center;background:#fff;border:1px solid var(--line);border-radius:8px;cursor:pointer;padding:0;color:var(--ink)}
+.nav-burger{width:50px;height:50px;flex:0 0 50px;display:none;align-items:center;justify-content:center;background:#fff;border:1px solid var(--line);border-radius:8px;cursor:pointer;padding:0;color:var(--ink)}
 .nav-burger svg rect{transform-box:fill-box;transform-origin:center;transition:transform .3s var(--ease),opacity .2s}
 html.nav-menu-open .nav-burger svg rect:nth-child(1){transform:translateY(6px) rotate(45deg)}
 html.nav-menu-open .nav-burger svg rect:nth-child(2){opacity:0}
@@ -289,7 +289,7 @@ html.nav-menu-open :is(.mn-mascot,.mn-recall,.floating){opacity:0!important;poin
   .logo-mark{width:40px;height:40px}
   .logo-text b{font-size:clamp(12px,3.7vw,14px);letter-spacing:0}
   .logo-text small{font-size:8.5px;letter-spacing:.1em}
-  .nav-burger{margin-left:auto;width:44px;height:44px;flex-basis:44px}
+  .nav-burger{margin-left:auto;width:50px;height:50px;flex-basis:50px}
   .mob-nav{padding:84px 22px max(28px,env(safe-area-inset-bottom))}
 }
 @media(max-width:480px){
