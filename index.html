@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="page-enter.js?v=20260722-1"></script>
+<script defer src="page-enter.js?v=20260723-layout1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>みなの社会保険労務士事務所｜富山・石川の社労士</title>
@@ -299,8 +299,8 @@ main > section:not(.hero) {
   contain-intrinsic-size: auto 900px;
 }
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20260723-split1" media="print" data-async-style onload="this.media='all';this.onload=null">
-<noscript><link rel="stylesheet" href="skin-v2.css?v=20260723-split1"></noscript>
+<link rel="stylesheet" href="skin-v2.css?v=20260723-layout1" media="print" data-async-style onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="skin-v2.css?v=20260723-layout1"></noscript>
 <!-- Structured Data: LocalBusiness / ProfessionalService -->
 <script type="application/ld+json">
 {
@@ -439,12 +439,10 @@ main > section:not(.hero) {
 <!-- 01 理念 -->
 <section class="sec sec-white home-compact-section" id="why">
   <div class="w">
-    <div class="sec-head rv">
+    <div class="sec-head has-photo home-why-head rv">
       <div class="sec-head-idx"><span class="idx-num">01</span><span class="idx-lat">MISSION</span><span class="idx-jp">理念</span></div>
-      <div class="sec-head-body"><h2 class="sec-h">複雑になった労務を、<br><strong>シンプルで、使える形に。</strong></h2></div>
-    </div>
-    <div class="home-why-grid">
-      <div class="home-why-copy rv">
+      <div class="sec-head-body home-why-copy">
+        <h2 class="sec-h">複雑になった労務を、<br><strong>シンプルで、使える形に。</strong></h2>
         <p>企業が成長するにつれて、規程・手続き・勤怠・給与のルールは複雑になります。私たちは、絡み合った実務を一つずつほどき、現場で続けられる仕組みへ整えます。</p>
         <div class="home-why-points">
           <span class="home-why-point">コストを意識した経営支援</span>
@@ -453,7 +451,7 @@ main > section:not(.hero) {
         </div>
         <div><a href="services.html#approach" class="link-more">私たちの支援姿勢を見る →</a></div>
       </div>
-      <div class="home-why-photo rv d1"><div class="ph-frame"><image-slot id="home-why-main" src="assets/photos/why-main.webp" placeholder="経営者との打ち合わせシーン"></image-slot></div></div>
+      <div class="sec-photo home-why-photo"><div class="ph-frame"><image-slot id="home-why-main" src="assets/photos/why-main.webp" placeholder="経営者との打ち合わせシーン"></image-slot></div></div>
     </div>
   </div>
 </section>
@@ -528,14 +526,32 @@ main > section:not(.hero) {
   <div class="w">
     <div class="sec-head rv">
       <div class="sec-head-idx"><span class="idx-num">04</span><span class="idx-lat">PRICING</span><span class="idx-jp">料金</span></div>
-      <div class="sec-head-body"><h2 class="sec-h">業務範囲がわかる、<strong>3つの選び方。</strong></h2><p class="sec-sub">手続き中心、給与計算まで、必要な業務だけ。詳しい金額・追加料金・計算機は料金ページにまとめています。</p></div>
+      <div class="sec-head-body"><h2 class="sec-h">業務範囲と料金がわかる、<strong>3つの選び方。</strong></h2><p class="sec-sub">手続き中心、給与計算まで、必要な業務だけ。主な内容と月額の目安を掲載しています。</p></div>
     </div>
     <div class="home-plan-grid">
-      <article class="home-plan-card"><p class="home-plan-en">BASIC</p><h3 class="home-plan-name">スタート顧問プラン</h3><p class="home-plan-desc">社会保険・雇用保険の手続きと、法改正への対応を中心に。</p></article>
-      <article class="home-plan-card is-main"><p class="home-plan-en">STANDARD</p><h3 class="home-plan-name">スタンダードプラン</h3><p class="home-plan-desc">手続きに加えて、給与計算・労務相談までまとめて。</p></article>
-      <article class="home-plan-card"><p class="home-plan-en">CUSTOM</p><h3 class="home-plan-name">カスタムプラン</h3><p class="home-plan-desc">助成金、就業規則、個別相談など、必要な支援を選択。</p></article>
+      <article class="home-plan-card">
+        <p class="home-plan-en">BASIC</p><h3 class="home-plan-name">スタート顧問プラン</h3>
+        <p class="home-plan-price">¥35,000<small>〜／月（税抜）</small></p><p class="home-plan-unit">従業員5名まで目安</p>
+        <p class="home-plan-founder">創業3年以内：¥25,000〜／月</p>
+        <ul class="home-plan-list"><li>社会保険・雇用保険の入退社手続き</li><li>年度更新・算定基礎届・労使協定</li><li>助成金・法改正情報のご案内</li></ul>
+        <a href="pricing.html#plan-basic" class="home-plan-link">詳しい内容を見る →</a>
+      </article>
+      <article class="home-plan-card is-main">
+        <span class="home-plan-recommend">おすすめ</span><p class="home-plan-en">STANDARD</p><h3 class="home-plan-name">スタンダードプラン</h3>
+        <p class="home-plan-price">¥55,000<small>〜／月（税抜）</small></p><p class="home-plan-unit">従業員10名まで目安</p>
+        <p class="home-plan-founder">創業3年以内：¥45,000〜／月</p>
+        <ul class="home-plan-list"><li>スタート顧問プランの全業務</li><li>給与・賞与計算と個別労務相談</li><li>就業規則の年次レビュー</li></ul>
+        <a href="pricing.html#plan-standard" class="home-plan-link">詳しい内容を見る →</a>
+      </article>
+      <article class="home-plan-card">
+        <p class="home-plan-en">CUSTOM</p><h3 class="home-plan-name">カスタムプラン</h3>
+        <p class="home-plan-price is-estimate">お見積もり</p><p class="home-plan-unit">内容・規模に応じてご提示</p>
+        <p class="home-plan-founder">月額契約は創業割の対象</p>
+        <ul class="home-plan-list"><li>雇用関係助成金の申請</li><li>就業規則・人事制度の整備</li><li>労務トラブルなどの個別相談</li></ul>
+        <a href="pricing.html#plan-custom" class="home-plan-link">詳しい内容を見る →</a>
+      </article>
     </div>
-    <p class="home-plan-note">料金は従業員数・業務範囲により変わります。初回相談後、着手前にお見積もりをご提示します。</p>
+    <p class="home-plan-note">料金は従業員数・業務範囲により変わります。表示は目安（税抜）です。初回相談後、着手前にお見積もりをご提示します。</p>
     <div class="home-section-more rv"><a href="pricing.html" class="link-more">料金・顧問プランを詳しく見る →</a></div>
   </div>
 </section>
@@ -840,7 +856,7 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
 </script>
 <script defer src="image-slot.js?v=20260722-crop1"></script>
 <script defer src="link-keep.js"></script>
-<script defer src="mascot.js?v=20260721-perf1"></script>
+<script defer src="mascot.js?v=20260723-layout1"></script>
 <script defer src="header-motion.js"></script>
 <script id="pf-hover">(function(){var d={};function pf(u){if(d[u])return;d[u]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u;document.head.appendChild(l);}function h(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var hr=a.getAttribute("href");if(!hr||hr[0]==="#"||/^(mailto:|tel:|https?:)/.test(hr))return;if(a.target==="_blank")return;pf(a.href);}document.addEventListener("mouseover",h,{passive:true});document.addEventListener("touchstart",h,{passive:true});})();</script>
 <style id="brushup-2026">/* skin-v2.css に統合済み */</style>
