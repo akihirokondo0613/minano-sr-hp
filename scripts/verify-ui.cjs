@@ -44,6 +44,7 @@ function recordConsoleError(target) {
       const cat = rect(catEl);
       const aboutPhoto = rect(document.querySelector('.home-about-photo'));
       const aboutCopy = rect(document.querySelector('.home-about-copy'));
+      const whyPhoto = rect(document.querySelector('.home-why-photo'));
       const footerLinks = [...document.querySelectorAll('.footer-ul a')];
       const summaryColumns = getComputedStyle(document.querySelector('.hs-inner')).gridTemplateColumns.split(' ').filter(Boolean).length;
       return {
@@ -58,6 +59,7 @@ function recordConsoleError(target) {
         planFeatureDisplay: getComputedStyle(document.querySelector('.home-plan-feature')).display,
         aboutPhotoWidth: Math.round(aboutPhoto?.width || 0),
         aboutCopyFirst: !!(aboutPhoto && aboutCopy && aboutCopy.top < aboutPhoto.top),
+        whyPhotoWidth: Math.round(whyPhoto?.width || 0),
         footerTapMin: Math.min(...footerLinks.map(link => Math.round(rect(link)?.height || 0))),
         footerFontSize: Number.parseFloat(getComputedStyle(footerLinks[0]).fontSize),
         faqWrap: getComputedStyle(document.querySelector('.faq-q-text')).textWrap,
@@ -81,6 +83,7 @@ function recordConsoleError(target) {
       if (state.summaryColumns !== 2) failures.push(`${viewport.width}px: ヒーロー直下サマリーが2列ではありません`);
       if (state.planListDisplay !== 'none' || state.planFeatureDisplay === 'none') failures.push(`${viewport.width}px: スマホ料金カードの情報量が不正です`);
       if (state.aboutPhotoWidth < 220 || state.aboutPhotoWidth > 240 || !state.aboutCopyFirst) failures.push(`${viewport.width}px: 事務所案内の順序・画像幅が不正です`);
+      if (state.whyPhotoWidth < 230 || state.whyPhotoWidth > 250) failures.push(`${viewport.width}px: 理念イラストの画像幅が不正です（${state.whyPhotoWidth}px）`);
       if (state.footerTapMin < 32 || state.footerFontSize < 13) failures.push(`${viewport.width}px: フッターリンクの文字・タップ領域が不足しています`);
       if (state.faqWrap !== 'pretty' || state.faqWordBreak !== 'auto-phrase' || !state.protectedPlan) failures.push(`${viewport.width}px: FAQの日本語改行保護が不正です`);
     }
@@ -370,7 +373,16 @@ function recordConsoleError(target) {
   });
   await adminPage.locator('#btn-dl').evaluate(button => button.click());
   const generatedArticle = await adminPage.evaluate(() => window.__verificationArticleBlob.text());
-  const expectedTemplateFragments = ['../services.html', '../pricing.html', '../support.html', '../about.html', 'skin-v2.css?v=20260723-header3', 'href="#" class="to-top"'];
+  const expectedTemplateFragments = [
+    '../services.html',
+    '../pricing.html',
+    '../support.html',
+    '../about.html',
+    'skin-v2.css?v=20260723-density1',
+    'link-keep.js?v=20260723-conversion1',
+    'data-goatcounter-settings="{&quot;path&quot;:&quot;/blog/verification-only.html&quot;}"',
+    'href="#" class="to-top"',
+  ];
   const templateMissing = expectedTemplateFragments.filter(fragment => !generatedArticle.includes(fragment));
   if (templateMissing.length || /index\.html#(?:services|pricing|cases|about)|16◯/.test(generatedArticle) || adminErrors.length) {
     failures.push(`記事投稿テンプレート: ${JSON.stringify({ templateMissing, adminErrors })}`);
@@ -434,7 +446,11 @@ function recordConsoleError(target) {
       await sweepPage.waitForTimeout(60);
       const state = await sweepPage.evaluate(() => ({
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-        brokenImages: [...document.images].filter(img => img.complete && img.naturalWidth === 0).map(img => img.currentSrc || img.src),
+        brokenImages: [...document.images]
+          // 猫は初期収納時、重要描画を妨げないようdata-frameだけを持ちidle時にsrcを設定する。
+          .filter(img => !(img.hasAttribute('data-frame') && !img.getAttribute('src')))
+          .filter(img => img.complete && img.naturalWidth === 0)
+          .map(img => img.currentSrc || img.src),
       }));
       if (!response?.ok()) failures.push(`${rel}: HTTP ${response?.status() || '応答なし'}`);
       if (state.overflow > 1) failures.push(`${rel}: ${width}px幅で横はみ出し ${state.overflow}px`);

@@ -38,7 +38,7 @@ for (const { full, rel } of publicHtml) {
     }
   }
   const pageEnter = html.match(/page-enter\.js\?v=([^"']+)/i);
-  if (pageEnter && pageEnter[1] !== '20260723-mobile1') {
+  if (pageEnter && pageEnter[1] !== '20260723-privacy1') {
     fail(`${rel}: page-enter.jsのキャッシュ版が不一致です（${pageEnter[1]}）`);
   }
   const mascotVersion = html.match(/mascot\.js\?v=([^"']+)/i);
@@ -50,8 +50,15 @@ for (const { full, rel } of publicHtml) {
     fail(`${rel}: image-slot.jsのキャッシュ版が不一致です（${imageSlotVersion[1]}）`);
   }
   const skinVersion = html.match(/skin-v2\.css\?v=([^"']+)/i);
-  if (skinVersion && skinVersion[1] !== '20260723-header3') {
+  if (skinVersion && skinVersion[1] !== '20260723-density1') {
     fail(`${rel}: skin-v2.cssのキャッシュ版が不一致です（${skinVersion[1]}）`);
+  }
+  if (/data-goatcounter=/i.test(html)) {
+    const expectedPath = rel === 'index.html' ? '/' : `/${rel}`;
+    const trackingPath = html.match(/data-goatcounter-settings='\{"path":"([^"]+)"\}'/i);
+    if (!trackingPath || trackingPath[1] !== expectedPath) {
+      fail(`${rel}: GoatCounterの送信パスが固定されていません`);
+    }
   }
 }
 
