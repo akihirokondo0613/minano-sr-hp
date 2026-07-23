@@ -268,10 +268,9 @@ html.nav-menu-open :is(.mn-mascot, .mn-recall, .floating) { opacity: 0 !importan
   .trust-item { padding: 7px 12px; background: rgba(255,255,255,.94); }
   .hero-veil {
     background: linear-gradient(to bottom,
-      rgba(249,250,247,.98) 0%,
-      rgba(249,250,247,.96) 52%,
-      rgba(249,250,247,.82) 72%,
-      rgba(249,250,247,.28) 88%,
+      rgba(249,250,247,.34) 0%,
+      rgba(249,250,247,.22) 38%,
+      rgba(249,250,247,.1) 70%,
       rgba(249,250,247,0) 100%);
   }
 }
