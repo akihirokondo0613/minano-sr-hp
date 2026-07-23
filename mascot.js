@@ -29,7 +29,7 @@
   var SPRITE_RATIO = 0.8; // 画像の高さ / 幅
   var URL_CONTACT = rootPrefix + 'uploads/contact.html';
   var URL_SERVICE = rootPrefix + 'services.html';
-  var TEL = '090-2838-8252';
+  var TEL = '090-8259-8774';
 
   // ---- 大きさ ---------------------------------------------------------------
   var DEFAULT_SIZE = 'auto';                 // 'auto'（画面幅で自動）| 'sm' | 'md' | 'lg'
