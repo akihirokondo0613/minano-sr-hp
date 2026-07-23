@@ -127,33 +127,63 @@ img { display: block; }
 #prog { position: fixed; top: 0; left: 0; height: 2.5px; width: 0; background: var(--moegi); z-index: 260; }
 
 /* ---------- ナビ ---------- */
-.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 240; background: transparent; transition: background .4s var(--ease-soft), box-shadow .4s var(--ease-soft); }
-.nav.solid { background: color-mix(in srgb, var(--yuki) 90%, transparent); backdrop-filter: blur(12px); box-shadow: 0 1px 0 var(--line); }
-.nav-inner { max-width: 1280px; margin-inline: auto; display: flex; align-items: center; gap: 26px; padding: 16px clamp(18px, 3.5vw, 40px); transition: padding .35s var(--ease-soft); }
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 240; background: color-mix(in srgb, var(--yuki) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid color-mix(in srgb, var(--line) 72%, transparent); transition: background .4s var(--ease-soft), box-shadow .4s var(--ease-soft); }
+.nav.solid { background: color-mix(in srgb, var(--yuki) 96%, transparent); backdrop-filter: blur(14px); box-shadow: 0 6px 22px rgba(18,63,48,.07); }
+.nav-inner { max-width: 1280px; min-height: 74px; margin-inline: auto; display: flex; align-items: center; gap: clamp(14px, 1.6vw, 22px); padding: 12px clamp(18px, 3.5vw, 40px); transition: padding .35s var(--ease-soft); }
 .nav.shrink .nav-inner { padding-block: 9px; }
-.logo { display: flex; align-items: center; gap: 11px; min-width: 0; }
+.logo { display: flex; flex: 0 0 auto; align-items: center; gap: 11px; min-width: 0; }
 .logo-mark { width: 42px; height: 42px; flex-shrink: 0; background: var(--sugi); border-radius: 11px; display: grid; place-items: center; }
 .logo-mark span { font-family: var(--disp); font-size: 20px; font-weight: 900; color: #fff; }
-.logo-text b { display: block; font-family: var(--disp); font-size: 15px; font-weight: 800; letter-spacing: .02em; color: var(--iwa); line-height: 1.3; }
+.logo-text b { display: block; font-family: var(--disp); font-size: 15px; font-weight: 800; letter-spacing: .02em; color: var(--iwa); line-height: 1.3; white-space: nowrap; }
 .logo-text small { display: block; font-family: var(--mono); font-size: 9.5px; letter-spacing: .18em; color: var(--ink3); margin-top: 2px; }
-.nav-links { display: flex; list-style: none; gap: clamp(12px, 1.8vw, 24px); margin-left: auto; }
-.nav-links a { font-size: 13.5px; font-weight: 700; letter-spacing: .05em; color: var(--ink2); padding: 8px 2px; position: relative; white-space: nowrap; }
+.nav-links { display: flex; align-items: center; list-style: none; gap: clamp(10px, 1.35vw, 18px); margin-left: auto; }
+.nav-links a { display: inline-flex; align-items: center; min-height: 44px; font-size: 13px; font-weight: 700; letter-spacing: .035em; color: var(--ink2); padding: 8px 2px; position: relative; white-space: nowrap; }
 .nav-links a::after { content: ''; position: absolute; left: 2px; right: 2px; bottom: 0; height: 2.5px; border-radius: 2px; background: var(--moegi); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
 .nav-links a:hover::after { transform: scaleX(1); }
 .nav-links a.active, .nav-links a[aria-current="page"] { color: var(--sugi); }
 .nav-links a.active::after, .nav-links a[aria-current="page"]::after { transform: scaleX(1); }
-.nav-cta { flex-shrink: 0; background: var(--sugi); color: #fff; font-size: 13.5px; font-weight: 700; letter-spacing: .06em; padding: 12px 24px; border-radius: var(--r); transition: background .3s; }
+.nav-cta { min-height: 46px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: var(--sugi); color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .045em; padding: 10px 20px; border-radius: var(--r); transition: background .3s, transform .3s var(--ease); white-space: nowrap; }
 .nav-cta:hover { background: var(--sugi-7); }
-.nav-burger { display: none; background: none; border: 0; cursor: pointer; color: var(--iwa); padding: 10px; }
-@media (max-width: 960px) {
+.nav-burger { width: 46px; height: 46px; flex: 0 0 46px; display: none; align-items: center; justify-content: center; background: var(--shiro); border: 1px solid var(--line); border-radius: var(--r); cursor: pointer; color: var(--iwa); padding: 0; }
+.nav-burger svg rect { transform-box: fill-box; transform-origin: center; transition: transform .3s var(--ease), opacity .2s; }
+html.nav-menu-open .nav-burger svg rect:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+html.nav-menu-open .nav-burger svg rect:nth-child(2) { opacity: 0; }
+html.nav-menu-open .nav-burger svg rect:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+@media (max-width: 1120px) {
   .nav-links { display: none; }
-  .nav-burger { display: block; margin-left: auto; }
-  .nav-cta { display: none; }
+  .nav-burger { display: inline-flex; }
+  .nav-cta { margin-left: auto; }
 }
-.mob-nav { position: fixed; inset: 0; z-index: 230; background: var(--yuki); display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 90px clamp(28px, 8vw, 56px) 40px; opacity: 0; pointer-events: none; transition: opacity .35s var(--ease-soft); }
-.mob-nav.open { opacity: 1; pointer-events: auto; }
-.mob-nav a { font-family: var(--disp); font-size: 22px; font-weight: 800; letter-spacing: .03em; color: var(--iwa); padding: 13px 4px; border-bottom: 1px solid var(--line); }
-.mob-nav .mob-cta { border: 0; margin-top: 26px; background: var(--sugi); color: #fff; font-family: var(--font-body); font-size: 15px; font-weight: 700; text-align: center; padding: 17px; border-radius: var(--r); }
+.mob-nav { position: fixed; inset: 0; z-index: 230; background: var(--yuki); display: flex; flex-direction: column; justify-content: flex-start; gap: 0; padding: 96px clamp(24px, 8vw, 64px) 32px; overflow-y: auto; overscroll-behavior: contain; opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-8px); transition: opacity .3s var(--ease-soft), transform .3s var(--ease-soft), visibility 0s linear .3s; }
+.mob-nav.open { opacity: 1; visibility: visible; pointer-events: auto; transform: none; transition-delay: 0s; }
+.mob-nav a { display: flex; align-items: center; min-height: 52px; font-family: var(--disp); font-size: 17px; font-weight: 800; letter-spacing: .025em; color: var(--iwa); padding: 10px 4px; border-bottom: 1px solid var(--line); }
+.mob-nav > a:nth-child(5) { margin-top: 14px; border-top: 1px solid var(--line); }
+.mob-nav a[aria-current="page"] { color: var(--sugi); }
+.mob-nav a[aria-current="page"]::after { content: ''; width: 26px; height: 2px; margin-left: auto; border-radius: 2px; background: var(--moegi); }
+.mob-nav .mob-cta { min-height: 50px; justify-content: center; border: 0; margin-top: 22px; background: var(--sugi); color: #fff; font-family: var(--font-body); font-size: 14.5px; font-weight: 700; text-align: center; padding: 14px 18px; border-radius: var(--r); }
+html.nav-menu-open { overflow: hidden; }
+html.nav-menu-open :is(.mn-mascot, .mn-recall, .floating) { opacity: 0 !important; pointer-events: none !important; }
+@media (min-width: 701px) and (max-width: 1120px) {
+  .mob-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(4, 54px); align-content: center; column-gap: clamp(36px, 7vw, 80px); padding: 90px clamp(48px, 8vw, 96px) 40px; }
+  .mob-nav > a:nth-child(1) { grid-area: 1 / 1; }
+  .mob-nav > a:nth-child(2) { grid-area: 2 / 1; }
+  .mob-nav > a:nth-child(3) { grid-area: 3 / 1; }
+  .mob-nav > a:nth-child(4) { grid-area: 4 / 1; }
+  .mob-nav > a:nth-child(5) { grid-area: 1 / 2; margin-top: 0; border-top: 0; }
+  .mob-nav > a:nth-child(6) { grid-area: 2 / 2; }
+  .mob-nav > a:nth-child(7) { grid-area: 3 / 2; }
+  .mob-nav .mob-cta { grid-area: 4 / 2; min-width: 0; margin-top: 4px; }
+}
+@media (max-width: 700px) {
+  .nav-inner { min-height: 68px; gap: 10px; padding: 10px 16px; }
+  .nav-cta { display: none; }
+  .logo { gap: 9px; }
+  .logo-mark { width: 40px; height: 40px; border-radius: 10px; }
+  .logo-text b { font-size: clamp(12px, 3.7vw, 14px); letter-spacing: 0; }
+  .logo-text small { font-size: 8.5px; letter-spacing: .1em; }
+  .nav-burger { margin-left: auto; width: 44px; height: 44px; flex-basis: 44px; }
+  .mob-nav { padding: 84px 22px max(28px, env(safe-area-inset-bottom)); }
+}
 
 /* ---------- HERO（写真オーバーレイ＋深杉ベール。PCは帯込みで100svhに収める） ---------- */
 :root { --hs-h: 76px; }  /* PCのサマリー帯の高さ */
