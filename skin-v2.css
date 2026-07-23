@@ -1309,5 +1309,6 @@ html { scroll-padding-top: 88px; }
   .final-sec { padding-block: 48px; }
   .hub-intro-nav { grid-template-columns: 1fr; }
   .home-why-head { position: relative; }
-  .sec-head.has-photo .home-why-photo { position: absolute; top: 0; right: 0; display: block; width: 72px; margin: 0; }
+  .home-why-head .sec-head-idx { min-height: clamp(93px, 27vw, 117px); align-content: start; }
+  .sec-head.has-photo .home-why-photo { position: absolute; top: 0; right: 0; display: block; width: clamp(124px, 36vw, 156px); max-width: none; margin: 0; }
 }
