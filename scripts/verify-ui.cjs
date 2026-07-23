@@ -423,6 +423,14 @@ function recordConsoleError(target) {
       publicPages.push(rel);
     }
   }
+  const upperGuidePages = publicPages.filter(rel =>
+    /\bclass=(["'])[^"']*\b(?:hub-snapshot|hub-intro-nav)\b[^"']*\1/.test(
+      fs.readFileSync(path.join(process.cwd(), rel), 'utf8'),
+    ),
+  );
+  if (upperGuidePages.length) {
+    failures.push(`撤去済みのページ上部案内帯が再配置されています: ${upperGuidePages.join(', ')}`);
+  }
   const sweepWidths = [360, 390, 430, 640, 768, 900, 1024, 1200, 1440, 1560, 1920, 2560];
   const sweepPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
   for (const width of sweepWidths) {
