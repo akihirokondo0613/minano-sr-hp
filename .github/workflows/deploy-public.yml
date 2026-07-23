@@ -25,7 +25,7 @@ jobs:
 
       - name: 非公開ファイルを除外
         run: |
-          rm -f CLAUDE.md icon-catalog.html .maintenance
+          rm -f AGENTS.md CLAUDE.md icon-catalog.html .maintenance
           rm -rf _backup_* .github scripts
           rm -f *.zip
           find . -name ".image-slots.state.json" -delete

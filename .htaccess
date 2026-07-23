@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# トップページの重複URLを正規URLへ統一する。
+RewriteCond %{THE_REQUEST} \s/+index\.html(?:[?\s]) [NC]
+RewriteRule ^index\.html$ https://minano-sr.com/ [R=301,L,NE]
+
+# 独自SSLを利用するすべての公開ページをHTTPSへ統一する。
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://minano-sr.com%{REQUEST_URI} [R=301,L,NE]

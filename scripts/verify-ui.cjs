@@ -373,7 +373,16 @@ function recordConsoleError(target) {
   });
   await adminPage.locator('#btn-dl').evaluate(button => button.click());
   const generatedArticle = await adminPage.evaluate(() => window.__verificationArticleBlob.text());
-  const expectedTemplateFragments = ['../services.html', '../pricing.html', '../support.html', '../about.html', 'skin-v2.css?v=20260723-whyill2', 'href="#" class="to-top"'];
+  const expectedTemplateFragments = [
+    '../services.html',
+    '../pricing.html',
+    '../support.html',
+    '../about.html',
+    'skin-v2.css?v=20260723-density1',
+    'link-keep.js?v=20260723-conversion1',
+    'data-goatcounter-settings="{&quot;path&quot;:&quot;/blog/verification-only.html&quot;}"',
+    'href="#" class="to-top"',
+  ];
   const templateMissing = expectedTemplateFragments.filter(fragment => !generatedArticle.includes(fragment));
   if (templateMissing.length || /index\.html#(?:services|pricing|cases|about)|16◯/.test(generatedArticle) || adminErrors.length) {
     failures.push(`記事投稿テンプレート: ${JSON.stringify({ templateMissing, adminErrors })}`);
@@ -437,7 +446,11 @@ function recordConsoleError(target) {
       await sweepPage.waitForTimeout(60);
       const state = await sweepPage.evaluate(() => ({
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-        brokenImages: [...document.images].filter(img => img.complete && img.naturalWidth === 0).map(img => img.currentSrc || img.src),
+        brokenImages: [...document.images]
+          // 猫は初期収納時、重要描画を妨げないようdata-frameだけを持ちidle時にsrcを設定する。
+          .filter(img => !(img.hasAttribute('data-frame') && !img.getAttribute('src')))
+          .filter(img => img.complete && img.naturalWidth === 0)
+          .map(img => img.currentSrc || img.src),
       }));
       if (!response?.ok()) failures.push(`${rel}: HTTP ${response?.status() || '応答なし'}`);
       if (state.overflow > 1) failures.push(`${rel}: ${width}px幅で横はみ出し ${state.overflow}px`);

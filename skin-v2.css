@@ -1255,6 +1255,47 @@ article.post .note { font-size: 12.5px; color: var(--ink3); margin-top: -1em; ma
 
 .hub-page .page-hero { padding: clamp(96px, 10vh, 116px) 0 clamp(34px, 4.5vw, 52px); }
 .hub-page .page-hero h1 { font-size: clamp(26px, 3.4vw, 38px); }
+.hub-snapshot {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px clamp(16px, 2.5vw, 32px);
+  max-width: 980px;
+  margin-top: clamp(22px, 3vw, 30px);
+  list-style: none;
+}
+.hub-snapshot li {
+  min-width: 0;
+  padding-top: 11px;
+  border-top: 2px solid color-mix(in srgb, var(--moegi) 72%, var(--line));
+}
+.hub-snapshot span,
+.hub-snapshot b,
+.hub-snapshot small { display: block; }
+.hub-snapshot span {
+  color: var(--moegi-t);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  line-height: 1.5;
+}
+.hub-snapshot b {
+  margin-top: 4px;
+  color: var(--iwa);
+  font-family: var(--disp);
+  font-size: 13.5px;
+  font-weight: 800;
+  line-height: 1.65;
+  text-wrap: balance;
+  word-break: auto-phrase;
+}
+.hub-snapshot small {
+  margin-top: 3px;
+  color: var(--ink3);
+  font-size: 11px;
+  line-height: 1.65;
+  text-wrap: pretty;
+}
 .hub-page > section:not(.final-sec) { content-visibility: auto; contain-intrinsic-size: auto 860px; }
 .hub-intro-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 10px; margin-top: 28px; }
 .hub-intro-nav a { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 52px; padding: 13px 16px; color: var(--sugi); background: var(--shiro); border: 1px solid var(--line); border-radius: var(--r); font-size: 13px; font-weight: 700; transition: border-color .3s, transform .3s var(--ease); }
@@ -1287,6 +1328,23 @@ html { scroll-padding-top: 88px; }
   .home-phase-media { grid-column: 2; grid-row: 1; align-self: center; width: 100%; }
 }
 @media (max-width: 640px) {
+  .hub-page .page-hero { padding-bottom: 29px; }
+  .hub-snapshot { gap: 12px; margin-top: 20px; }
+  .hub-snapshot-services { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hub-snapshot-plans,
+  .hub-snapshot-phases,
+  .hub-snapshot-office { grid-template-columns: 1fr; }
+  .hub-snapshot li { padding-top: 9px; }
+  .hub-snapshot b { font-size: 13px; line-height: 1.55; }
+  .hub-snapshot small { margin-top: 1px; font-size: 10.5px; }
+  .hub-page .sec { padding-block: 58px; }
+  .hub-page .sec-sm { padding-block: 48px; }
+  .hub-page .sec-head { margin-bottom: 34px; }
+  .hub-page .price-sec,
+  .hub-page .case-sec,
+  .hub-page .voice-sec,
+  .hub-page .about-sec { padding-top: 53px; }
+  .hub-page .about-sec { padding-bottom: 61px; }
   .home-compact-section { padding-block: 28px; }
   .home-compact-section .sec-head { margin-bottom: 22px; }
   .home-why-copy { gap: 18px; }

@@ -539,7 +539,8 @@ function mnSplitLabel(el, text) {
       // アクセス解析：SPA遷移は通常のページ読み込みが起きないため、手動でページビューを記録する
       try {
         if (window.goatcounter && window.goatcounter.count) {
-          window.goatcounter.count({ path: location.pathname + location.search + location.hash });
+          // プレビュー用トークンやフォーム流入値を解析サービスへ送らない。
+          window.goatcounter.count({ path: location.pathname || '/' });
         }
       } catch (e) {}
     });
@@ -759,11 +760,14 @@ function mnSplitLabel(el, text) {
     if (isArticleDest(url)) return false;                  // ★記事(/blog/配下)行きは演出なし＝素のリンク遷移（一覧blog.htmlは演出あり）
     return true;
   }
-  function withQuery(url) {   // プレビュー用トークン等の現在クエリを行き先に引き継ぐ
+  function withQuery(url) {   // プレビュー・流入計測に必要な値だけを行き先に引き継ぐ
     try {
       var u = new URL(url, location.href);
       var cur = new URLSearchParams(location.search);
-      cur.forEach(function (v, k) { if (!u.searchParams.has(k)) u.searchParams.set(k, v); });
+      var keep = /^(?:t|from|utm_source|utm_medium|utm_campaign|utm_content|utm_term|gclid|fbclid)$/i;
+      cur.forEach(function (v, k) {
+        if (keep.test(k) && !u.searchParams.has(k)) u.searchParams.set(k, v);
+      });
       return u.href;
     } catch (e) { return url; }
   }
@@ -794,6 +798,12 @@ function mnSplitLabel(el, text) {
     if (window.omelette && window.omelette.writeFile && e.target && e.target.closest && e.target.closest('image-slot')) return;
     var a = e.target && e.target.closest ? e.target.closest('a') : null;
     if (eligible(a)) {
+      try {
+        var contactUrl = new URL(a.href, location.href);
+        if (/\/uploads\/contact\.html$/i.test(contactUrl.pathname)) {
+          document.dispatchEvent(new CustomEvent('mn:contact-navigate', { detail: { href: contactUrl.href } }));
+        }
+      } catch (err) {}
       e.preventDefault();
       e.stopImmediatePropagation();
       e.stopPropagation();                  // link-keep等の後続ハンドラに渡さない（クエリは自前で引き継ぐ）
@@ -810,6 +820,9 @@ function mnSplitLabel(el, text) {
       if (m) {
         var u; try { u = new URL(m[1], location.href); } catch (err) { u = null; }
         if (u && u.origin === location.origin && !samePage(u) && !isArticleDest(u)) {
+          if (/\/uploads\/contact\.html$/i.test(u.pathname)) {
+            document.dispatchEvent(new CustomEvent('mn:contact-navigate', { detail: { href: u.href } }));
+          }
           e.preventDefault();
           e.stopImmediatePropagation();
           e.stopPropagation();
