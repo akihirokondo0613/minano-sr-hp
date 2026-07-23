@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="page-enter.js?v=20260723-layout1"></script>
+<script defer src="page-enter.js?v=20260723-mobile1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>みなの社会保険労務士事務所｜富山・石川の社労士</title>
@@ -251,16 +251,25 @@ img { display: block; }
   .hero-ridge .mt-sky { height: 48px; } .hero-ridge .mt-back { height: 36px; }
   .hero-ridge .mt { height: 26px; } .hero-ridge .sea { height: 14px; } .hero-ridge .sea-front { height: 8px; }
 }
-/* モバイル: nowrap指定（.nw）をほどいて横はみ出しを防ぐ */
+/* モバイル: 文節単位を保ったまま、写真上の文字を読みやすくする */
 @media (max-width: 700px) {
-  .hero-h1 .nw, .hero-sub .nw { white-space: normal; }
-  .hero-h1 { font-size: clamp(26px, 7.4vw, 34px); }
-  /* スマホは写真をほぼそのまま見せる。文字の可読性のため上端だけ薄く持ち上げ、下はほぼ透明。 */
+  .hero { min-height: 0; }
+  .hero-overlay { padding: 92px 20px 58px; justify-content: flex-start; }
+  .hero-h1 .nw, .hero-sub .nw { white-space: nowrap; }
+  .hero-h1 { font-size: clamp(26px, 7.2vw, 30px); line-height: 1.4; }
+  .why-label.hero-label { margin-bottom: 18px; padding: 7px 15px; }
+  .hero-sub { margin-top: 16px; font-size: 13.5px; line-height: 1.95; }
+  .hero-btns { gap: 12px; margin-top: 22px; flex-wrap: nowrap; }
+  .hero-btns .btn-primary { padding: 15px 27px; font-size: 14px; }
+  .hero-sub-link { display: inline-flex; align-items: center; min-height: 44px; padding: 0 5px; background: rgba(249,250,247,.94); }
+  .hero-trust { gap: 7px; margin-top: 18px; }
+  .trust-item { padding: 7px 12px; background: rgba(255,255,255,.94); }
   .hero-veil {
     background: linear-gradient(to bottom,
-      rgba(249,250,247,.34) 0%,
-      rgba(249,250,247,.22) 38%,
-      rgba(249,250,247,.1) 70%,
+      rgba(249,250,247,.98) 0%,
+      rgba(249,250,247,.96) 52%,
+      rgba(249,250,247,.82) 72%,
+      rgba(249,250,247,.28) 88%,
       rgba(249,250,247,0) 100%);
   }
 }
@@ -285,8 +294,10 @@ img { display: block; }
   .hs-sep { display: none; }
 }
 @media (max-width: 640px) {
-  .hs-inner { grid-template-columns: auto; justify-content: flex-start; gap: 2px; }
-  .hs-item { white-space: normal; }
+  .hero-summary { padding-block: 12px 10px; }
+  .hs-inner { grid-template-columns: repeat(2, minmax(0, 1fr)); justify-content: stretch; gap: 6px 14px; }
+  .hs-item { align-items: flex-start; white-space: normal; font-size: 11.5px; line-height: 1.55; letter-spacing: .01em; }
+  .hs-item svg { width: 15px; height: 15px; margin-top: 1px; }
 }
 /* 中途半端な位置での折り返し防止（チップ・ヒーローCTA・STEP説明） */
 .hero-trust .trust-item { white-space: nowrap; }
@@ -299,8 +310,8 @@ main > section:not(.hero) {
   contain-intrinsic-size: auto 900px;
 }
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20260723-links1" media="print" data-async-style onload="this.media='all';this.onload=null">
-<noscript><link rel="stylesheet" href="skin-v2.css?v=20260723-links1"></noscript>
+<link rel="stylesheet" href="skin-v2.css?v=20260723-mobile1" media="print" data-async-style onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="skin-v2.css?v=20260723-mobile1"></noscript>
 <!-- Structured Data: LocalBusiness / ProfessionalService -->
 <script type="application/ld+json">
 {
@@ -422,13 +433,13 @@ main > section:not(.hero) {
 <!-- 3秒サマリー帯（ヒーロー直下：事業の要点を一目で） -->
 <div class="hero-summary">
   <div class="hs-inner">
-    <span class="hs-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="1"/><path d="M7.5 9.5h9M7.5 13h6"/></svg>助成金・手続き・労務相談まで一括対応</span>
+    <span class="hs-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="1"/><path d="M7.5 9.5h9M7.5 13h6"/></svg>助成金・手続き・労務相談</span>
     <span class="hs-sep" aria-hidden="true"></span>
-    <span class="hs-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.7 7-11a7 7 0 1 0-14 0c0 5.3 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>富山・石川を中心に全国対応</span>
+    <span class="hs-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.7 7-11a7 7 0 1 0-14 0c0 5.3 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>富山・石川中心／全国対応</span>
     <span class="hs-sep" aria-hidden="true"></span>
-    <span class="hs-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9.5" cy="8" r="3.2"/><path d="M3.5 19c0-3.2 2.7-5.2 6-5.2M16 7.6a2.8 2.8 0 0 1 0 5.3M20.5 19c0-2.2-1.3-3.9-3.2-4.7"/></svg>従業員1名規模から対応</span>
+    <span class="hs-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9.5" cy="8" r="3.2"/><path d="M3.5 19c0-3.2 2.7-5.2 6-5.2M16 7.6a2.8 2.8 0 0 1 0 5.3M20.5 19c0-2.2-1.3-3.9-3.2-4.7"/></svg>従業員1名から対応</span>
     <span class="hs-sep" aria-hidden="true"></span>
-    <span class="hs-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20.5h16M5 17.5h14"/><path d="M6.5 17.5v-7M10.3 17.5v-7M13.7 17.5v-7M17.5 17.5v-7"/><path d="M4 10.5L12 4l8 6.5z"/></svg>富山県社会保険労務士会 所属</span>
+    <span class="hs-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20.5h16M5 17.5h14"/><path d="M6.5 17.5v-7M10.3 17.5v-7M13.7 17.5v-7M17.5 17.5v-7"/><path d="M4 10.5L12 4l8 6.5z"/></svg>富山県社労士会所属</span>
   </div>
 </div>
 
@@ -548,6 +559,7 @@ main > section:not(.hero) {
         <p class="home-plan-en">BASIC</p><h3 class="home-plan-name">スタート顧問プラン</h3>
         <p class="home-plan-price">¥35,000<small>〜／月（税抜）</small></p><p class="home-plan-unit">従業員5名まで目安</p>
         <p class="home-plan-founder">創業3年以内：¥25,000〜／月</p>
+        <p class="home-plan-feature">入退社手続き・年度更新など</p>
         <ul class="home-plan-list"><li>社会保険・雇用保険の入退社手続き</li><li>年度更新・算定基礎届・労使協定</li><li>助成金・法改正情報のご案内</li></ul>
         <a href="pricing.html#plan-basic" class="home-plan-link">詳しい内容を見る →</a>
       </article>
@@ -555,6 +567,7 @@ main > section:not(.hero) {
         <span class="home-plan-recommend">おすすめ</span><p class="home-plan-en">STANDARD</p><h3 class="home-plan-name">スタンダードプラン</h3>
         <p class="home-plan-price">¥55,000<small>〜／月（税抜）</small></p><p class="home-plan-unit">従業員10名まで目安</p>
         <p class="home-plan-founder">創業3年以内：¥45,000〜／月</p>
+        <p class="home-plan-feature">手続きに加えて給与・賞与計算まで</p>
         <ul class="home-plan-list"><li>スタート顧問プランの全業務</li><li>給与・賞与計算と個別労務相談</li><li>就業規則の年次レビュー</li></ul>
         <a href="pricing.html#plan-standard" class="home-plan-link">詳しい内容を見る →</a>
       </article>
@@ -562,6 +575,7 @@ main > section:not(.hero) {
         <p class="home-plan-en">CUSTOM</p><h3 class="home-plan-name">カスタムプラン</h3>
         <p class="home-plan-price is-estimate">お見積もり</p><p class="home-plan-unit">内容・規模に応じてご提示</p>
         <p class="home-plan-founder">月額契約は創業割の対象</p>
+        <p class="home-plan-feature">助成金・就業規則・個別相談など</p>
         <ul class="home-plan-list"><li>雇用関係助成金の申請</li><li>就業規則・人事制度の整備</li><li>労務トラブルなどの個別相談</li></ul>
         <a href="pricing.html#plan-custom" class="home-plan-link">詳しい内容を見る →</a>
       </article>
@@ -590,35 +604,35 @@ main > section:not(.hero) {
       </div>
       <div class="faq-item">
         <button class="faq-btn" onclick="faqToggle(this)" aria-expanded="false">
-          <span class="faq-q-wrap"><span class="faq-q-tag">Q</span><span class="faq-q-text">従業員が少ない小さな会社でも依頼できますか？</span></span>
+          <span class="faq-q-wrap"><span class="faq-q-tag">Q</span><span class="faq-q-text">従業員が少ない<span class="nobr">小さな会社</span>でも依頼できますか？</span></span>
           <span class="faq-plus"></span>
         </button>
         <div class="faq-a"><div class="faq-a-in">従業員1名様からご対応しています。「これから人を雇う」「初めて社会保険に加入する」という段階も、よくあるご相談です。</div></div>
       </div>
       <div class="faq-item">
         <button class="faq-btn" onclick="faqToggle(this)" aria-expanded="false">
-          <span class="faq-q-wrap"><span class="faq-q-tag">Q</span><span class="faq-q-text">契約期間の縛りはありますか？プランは途中で変えられますか？</span></span>
+          <span class="faq-q-wrap"><span class="faq-q-tag">Q</span><span class="faq-q-text">契約期間の縛りはありますか？<span class="nobr">プラン</span>は途中で変えられますか？</span></span>
           <span class="faq-plus"></span>
         </button>
         <div class="faq-a"><div class="faq-a-in">プランの変更・見直しはいつでもご相談いただけます。契約期間や解約のお取り扱いは、ご契約前に書面でご説明し、ご納得いただいたうえで開始します。</div></div>
       </div>
       <div class="faq-item">
         <button class="faq-btn" onclick="faqToggle(this)" aria-expanded="false">
-          <span class="faq-q-wrap"><span class="faq-q-tag">Q</span><span class="faq-q-text">オンラインだけで完結しますか？</span></span>
+          <span class="faq-q-wrap"><span class="faq-q-tag">Q</span><span class="faq-q-text"><span class="nobr">オンライン</span>だけで完結しますか？</span></span>
           <span class="faq-plus"></span>
         </button>
         <div class="faq-a"><div class="faq-a-in">はい。Zoom等でのオンライン相談、書類の電子データでのやり取りに対応しています。近県は訪問も可能です。</div></div>
       </div>
       <div class="faq-item">
         <button class="faq-btn" onclick="faqToggle(this)" aria-expanded="false">
-          <span class="faq-q-wrap"><span class="faq-q-tag">Q</span><span class="faq-q-text">他の社労士から乗り換えたいのですが。</span></span>
+          <span class="faq-q-wrap"><span class="faq-q-tag">Q</span><span class="faq-q-text">他の<span class="nobr">社労士</span>から乗り換えたいのですが。</span></span>
           <span class="faq-plus"></span>
         </button>
         <div class="faq-a"><div class="faq-a-in">もちろん可能です。引き継ぎ手続きもサポートします。乗り換え時の不安や懸念点もヒアリングしたうえで対応します。</div></div>
       </div>
       <div class="faq-item">
         <button class="faq-btn" onclick="faqToggle(this)" aria-expanded="false">
-          <span class="faq-q-wrap"><span class="faq-q-tag">Q</span><span class="faq-q-text">急なトラブル対応もお願いできますか？</span></span>
+          <span class="faq-q-wrap"><span class="faq-q-tag">Q</span><span class="faq-q-text">急な<span class="nobr">トラブル対応</span>もお願いできますか？</span></span>
           <span class="faq-plus"></span>
         </button>
         <div class="faq-a"><div class="faq-a-in">急なご相談も、まずはお電話（090-2838-8252）またはお問い合わせフォームからご連絡ください。状況をうかがったうえで、できる限り速やかに対応します。</div></div>
@@ -679,8 +693,8 @@ main > section:not(.hero) {
       <div class="sec-head-body"><h2 class="sec-h">経営者と、<strong>同じ景色を見ながら。</strong></h2><p class="sec-sub">富山を拠点に、訪問とオンラインの両方で支援します。</p></div>
     </div>
     <div class="home-about-card">
-      <div class="home-about-photo rv"><image-slot id="home-representative" src="assets/illustrations/about-representative.webp" fit="contain" placeholder="代表イラスト"></image-slot></div>
       <div class="home-about-copy rv d1"><h3 class="rep-h">複雑なルールを、<strong>運用しやすい形に。</strong></h3><p>むずかしい言葉をそのまま使わず、明日からの現場で使える形にしてお渡しします。地域に根ざした相談相手として、会社の状況を一緒に整理します。</p><div class="home-about-meta"><span>代表　近藤 昭宏</span><span>富山県富山市蓮町1丁目7-7</span><span>平日 9:00–18:00</span></div><div><a href="about.html" class="link-more">代表・事務所情報を見る →</a></div></div>
+      <div class="home-about-photo rv"><image-slot id="home-representative" src="assets/illustrations/about-representative.webp" fit="contain" placeholder="代表イラスト"></image-slot></div>
     </div>
   </div>
 </section>
@@ -871,7 +885,7 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
 </script>
 <script defer src="image-slot.js?v=20260722-crop1"></script>
 <script defer src="link-keep.js"></script>
-<script defer src="mascot.js?v=20260723-layout1"></script>
+<script defer src="mascot.js?v=20260723-mobile1"></script>
 <script defer src="header-motion.js"></script>
 <script id="pf-hover">(function(){var d={};function pf(u){if(d[u])return;d[u]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u;document.head.appendChild(l);}function h(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var hr=a.getAttribute("href");if(!hr||hr[0]==="#"||/^(mailto:|tel:|https?:)/.test(hr))return;if(a.target==="_blank")return;pf(a.href);}document.addEventListener("mouseover",h,{passive:true});document.addEventListener("touchstart",h,{passive:true});})();</script>
 <style id="brushup-2026">/* skin-v2.css に統合済み */</style>

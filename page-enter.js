@@ -78,6 +78,89 @@ function mnGreeting() {
 }
 function mnIsHomePath(p) { return /(^|\/)(index\.html)?$/.test(p || ''); }
 
+/* ── 固定相談UIと猫：ヒーロー／最終CTA／フッターとの重なりを防ぐ ── */
+(function () {
+  var style = document.getElementById('mn-footer-ui-style');
+  if (!style) {
+    style = document.createElement('style');
+    style.id = 'mn-footer-ui-style';
+    style.textContent =
+      'html.mn-fixed-ui-hidden .floating{opacity:0!important;visibility:hidden!important;pointer-events:none!important;transform:translateY(12px)!important}' +
+      'html.mn-mascot-footer-hidden .mn-mascot,html.mn-mascot-footer-hidden .mn-recall{opacity:0!important;visibility:hidden!important;pointer-events:none!important}';
+    document.head.appendChild(style);
+  }
+
+  function isInViewport(el) {
+    if (!el) return false;
+    var rect = el.getBoundingClientRect();
+    return rect.bottom > 0 && rect.top < window.innerHeight;
+  }
+
+  function cleanup() {
+    if (window.__footerUiObserver) {
+      window.__footerUiObserver.disconnect();
+      window.__footerUiObserver = null;
+    }
+    if (window.__footerUiFallback) {
+      window.removeEventListener('scroll', window.__footerUiFallback);
+      window.removeEventListener('resize', window.__footerUiFallback);
+      window.__footerUiFallback = null;
+    }
+  }
+
+  function init() {
+    cleanup();
+    var html = document.documentElement;
+    var hero = document.querySelector('.hero, .page-hero');
+    var finalArea = document.querySelector('.final-sec, .final-cta');
+    var footer = document.querySelector('.footer');
+    var state = {
+      hero: isInViewport(hero),
+      finalArea: isInViewport(finalArea),
+      footer: isInViewport(footer)
+    };
+
+    function render() {
+      var footerSide = state.finalArea || state.footer;
+      var fixedHidden = state.hero || footerSide;
+      var floating = document.querySelector('.floating');
+      html.classList.toggle('mn-fixed-ui-hidden', fixedHidden);
+      html.classList.toggle('mn-mascot-footer-hidden', footerSide);
+      if (floating) floating.classList.toggle('hidden', fixedHidden);
+    }
+    render();
+
+    var targets = [hero, finalArea, footer].filter(Boolean);
+    if (!targets.length) return;
+    if (!('IntersectionObserver' in window)) {
+      window.__footerUiFallback = function () {
+        state.hero = isInViewport(hero);
+        state.finalArea = isInViewport(finalArea);
+        state.footer = isInViewport(footer);
+        render();
+      };
+      window.addEventListener('scroll', window.__footerUiFallback, { passive: true });
+      window.addEventListener('resize', window.__footerUiFallback, { passive: true });
+      return;
+    }
+
+    window.__footerUiObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.target === hero) state.hero = entry.isIntersecting;
+        if (entry.target === finalArea) state.finalArea = entry.isIntersecting;
+        if (entry.target === footer) state.footer = entry.isIntersecting;
+      });
+      render();
+    }, { threshold: 0 });
+    targets.forEach(function (target) { window.__footerUiObserver.observe(target); });
+  }
+
+  window.__mnFooterUiCleanup = cleanup;
+  window.__mnFooterUiReinit = init;
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+  else init();
+})();
+
 /* ── 猫の足あと（採用案 1h）：登り方6パターン。[x, y(上へ), 回転deg]、intは歩間隔（秒） ── */
 var MN_PAWS = [
   { steps: [[0, 0, 26], [24, 20, 26], [48, 40, 26], [72, 60, 26]], int: .34 },
@@ -333,6 +416,7 @@ function mnSplitLabel(el, text) {
   /* ---- <head> の差し替え（style / link[rel=stylesheet] / meta / title） ---- */
   var KEEP_HEAD_IDS = {
     'pg-veil-style': 1,
+    'mn-footer-ui-style': 1,
     'hm-css': 1,
     'mn-mascot-style': 1,
     'mn-image-slot-public-style': 1,
@@ -437,6 +521,9 @@ function mnSplitLabel(el, text) {
   function swapBody(doc) {
     var keep = Array.prototype.slice.call(document.querySelectorAll('.mn-mascot, .mn-recall'));
     var newBody = document.adoptNode(doc.body);
+    if (window.__heroCtaObserver) { try { window.__heroCtaObserver.disconnect(); } catch (e) {} window.__heroCtaObserver = null; }
+    if (window.__mnFooterUiCleanup) { try { window.__mnFooterUiCleanup(); } catch (e) {} }
+    if (window.__mnMascotCleanup) { try { window.__mnMascotCleanup(); } catch (e) {} }
     // ロゴローダー(#mn-load)はページを最初に開いた時だけの演出。SPA遷移で来た body にも
     // 静的に含まれているため、除去せずに残すと「トップに戻る」たびに再表示されてしまう。
     var loader = newBody.querySelector('#mn-load');
@@ -446,7 +533,9 @@ function mnSplitLabel(el, text) {
     return execScriptsSeq(newBody).then(function () {
       if (window.__hmReinit) { try { window.__hmReinit(); } catch (e) {} }
       if (window.__mnJbreak) { try { window.__mnJbreak(); } catch (e) {} }
-      if (window.__mnMascotRelink) { try { window.__mnMascotRelink(); } catch (e) {} }   // 猫の相談/サービス導線を現在地基準へ貼り直す（uploads/blog で404化を防ぐ）
+      if (window.__mnMascotReinit) { try { window.__mnMascotReinit(); } catch (e) {} }
+      else if (window.__mnMascotRelink) { try { window.__mnMascotRelink(); } catch (e) {} }
+      if (window.__mnFooterUiReinit) { try { window.__mnFooterUiReinit(); } catch (e) {} }
       // アクセス解析：SPA遷移は通常のページ読み込みが起きないため、手動でページビューを記録する
       try {
         if (window.goatcounter && window.goatcounter.count) {

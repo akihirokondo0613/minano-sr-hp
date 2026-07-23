@@ -192,6 +192,15 @@
   var TIPS  = MSG.tips;
   var MENU_PROMPT = MSG.menu || 'どちらにご案内しましょう？';
 
+  function refreshPageContext() {
+    p = location.pathname;
+    PAGE = detectPage();
+    MSG = MESSAGES[PAGE] || MESSAGES._default;
+    GREET = MSG.greet;
+    TIPS = MSG.tips;
+    MENU_PROMPT = MSG.menu || 'どちらにご案内しましょう？';
+  }
+
   // 現在ページの種別を判定（ファイル名から）
   function detectPage() {
     var f = (p.split('/').pop() || 'index.html').toLowerCase();
@@ -452,11 +461,18 @@
 
   // ---- セクション案内（トップのみ）：見ている場所に合わせて一言 -------------
   var sectionsObserved = false;
+  var sectionObserver = null;
+  function cleanupSections() {
+    if (sectionObserver) sectionObserver.disconnect();
+    sectionObserver = null;
+    window.__mnMascotSectionObserver = null;
+    sectionsObserved = false;
+  }
   function observeSections() {
     if (sectionsObserved || PAGE !== 'index' || !('IntersectionObserver' in window)) return;
     sectionsObserved = true;
     var seen = {};
-    var io = new IntersectionObserver(function (entries) {
+    sectionObserver = new IntersectionObserver(function (entries) {
       // 起動直後（最初の挨拶中）は割り込まない
       if (Date.now() - startedAt < 6500) return;
       entries.forEach(function (en) {
@@ -472,9 +488,30 @@
     }, { threshold: 0.5 });
     Object.keys(SECTION_MSG).forEach(function (id) {
       var el = document.getElementById(id);
-      if (el) io.observe(el);
+      if (el) sectionObserver.observe(el);
     });
+    window.__mnMascotSectionObserver = sectionObserver;
   }
+
+  function mnMascotCleanup() {
+    cleanupSections();
+    clearTimeout(bubbleTimer);
+    clearTimeout(tipTimer);
+  }
+  function mnMascotReinit() {
+    mnMascotCleanup();
+    refreshPageContext();
+    mnRelink();
+    closeMenu();
+    bubble.classList.remove('show');
+    startedAt = Date.now();
+    if (!isHidden()) {
+      observeSections();
+      scheduleTip();
+    }
+  }
+  window.__mnMascotCleanup = mnMascotCleanup;
+  window.__mnMascotReinit = mnMascotReinit;
 
   // ---- メニュー（案内役） ---------------------------------------------------
   function openMenu() { menuOpen = true; clearTimeout(bubbleTimer); bubbleTx.textContent = MENU_PROMPT; bubble.classList.add('menu'); placeBubble(); bubble.classList.add('show'); }
