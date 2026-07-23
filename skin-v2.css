@@ -363,6 +363,9 @@ main > section:not(.hero) {
 .svc-list { display: flex; flex-direction: column; gap: 12px; }
 .svc-row { display: grid; grid-template-columns: 56px 112px 1fr 48px; align-items: center; gap: clamp(14px, 2vw, 28px); padding: clamp(16px, 2.2vw, 22px) clamp(16px, 2.4vw, 28px); background: #fefefe; border: 1px solid var(--line); border-radius: var(--r-lg); transition: border-color .3s, box-shadow .35s var(--ease), transform .3s var(--ease); position: relative; }
 .svc-row:hover { border-color: var(--moegi); box-shadow: 0 14px 34px rgba(18,63,48,.09); transform: translateX(4px); }
+.svc-row:active { border-color: var(--moegi); transform: translateX(6px) scale(.992); }
+.svc-row.is-selected { border-color: var(--moegi); animation: svc-card-selected .48s var(--ease) both; }
+@keyframes svc-card-selected { 0% { transform: translateX(0) scale(1); } 45% { transform: translateX(9px) scale(.992); box-shadow: 0 16px 38px rgba(18,63,48,.12); } 100% { transform: translateX(5px) scale(1); box-shadow: 0 14px 34px rgba(18,63,48,.09); } }
 .svc-num { font-family: var(--mono); font-size: 24px; font-weight: 500; color: transparent; -webkit-text-stroke: 1px var(--ink3); letter-spacing: .02em; transition: -webkit-text-stroke-color .3s; }
 @supports not (-webkit-text-stroke: 1px black) { .svc-num { color: var(--ink3); } }
 .svc-row:hover .svc-num { -webkit-text-stroke-color: var(--moegi); }
@@ -1143,12 +1146,7 @@ article.post .note { font-size: 12.5px; color: var(--ink3); margin-top: -1em; ma
 .home-section-more { margin-top: clamp(24px, 3vw, 36px); text-align: right; }
 .home-section-more .link-more { color: var(--sugi); }
 
-.home-why-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(240px, .8fr);
-  gap: clamp(28px, 5vw, 64px);
-  align-items: center;
-}
+.home-compact-section .home-why-head { margin-bottom: 0; align-items: center; }
 .home-why-copy { display: grid; gap: 18px; }
 .home-why-copy p { color: var(--ink2); font-size: 15px; line-height: 2.05; max-inline-size: 42em; }
 .home-why-points { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 8px; }
@@ -1171,11 +1169,20 @@ article.post .note { font-size: 12.5px; color: var(--ink3); margin-top: -1em; ma
 .home-phase-desc { margin-top: 12px; color: var(--ink2); font-size: 13px; line-height: 1.85; }
 
 .home-plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: clamp(14px, 2vw, 22px); }
-.home-plan-card { min-height: 100%; background: var(--shiro); border: 1px solid var(--line); border-radius: var(--r-lg); padding: clamp(22px, 3vw, 32px); display: flex; flex-direction: column; }
+.home-plan-card { min-height: 100%; background: var(--shiro); border: 1px solid var(--line); border-radius: var(--r-lg); padding: clamp(22px, 3vw, 32px); display: flex; flex-direction: column; position: relative; }
 .home-plan-card.is-main { border-color: var(--moegi); box-shadow: 0 14px 34px rgba(18,63,48,.08); }
+.home-plan-recommend { position: absolute; top: -12px; right: 20px; padding: 5px 12px; border-radius: 999px; color: #fff; background: var(--sugi); font-size: 10.5px; font-weight: 700; letter-spacing: .06em; }
 .home-plan-en { font-family: var(--mono); color: var(--moegi-t); font-size: 10px; font-weight: 600; letter-spacing: .17em; }
 .home-plan-name { margin-top: 8px; font-family: var(--disp); color: var(--iwa); font-size: 19px; font-weight: 800; }
-.home-plan-desc { margin-top: 10px; color: var(--ink3); font-size: 13px; line-height: 1.9; }
+.home-plan-price { margin-top: 16px; color: var(--sugi); font-family: var(--disp); font-size: clamp(25px, 2.6vw, 34px); font-weight: 900; line-height: 1.25; }
+.home-plan-price small { display: block; margin-top: 4px; color: var(--ink3); font-family: var(--font-body); font-size: 11.5px; font-weight: 500; }
+.home-plan-price.is-estimate { font-size: clamp(22px, 2.2vw, 29px); }
+.home-plan-unit { margin-top: 5px; color: var(--ink3); font-size: 11.5px; }
+.home-plan-founder { margin-top: 13px; padding: 8px 10px; border-radius: 8px; color: var(--sugi); background: var(--moegi-l); font-size: 11.5px; font-weight: 700; line-height: 1.55; }
+.home-plan-list { display: grid; gap: 8px; margin-top: 18px; padding-top: 17px; border-top: 1px solid var(--line); list-style: none; }
+.home-plan-list li { position: relative; padding-left: 17px; color: var(--ink2); font-size: 12px; line-height: 1.7; }
+.home-plan-list li::before { content: ''; position: absolute; left: 0; top: .62em; width: 7px; height: 4px; border-left: 2px solid var(--moegi); border-bottom: 2px solid var(--moegi); transform: rotate(-45deg); }
+.home-plan-link { align-self: flex-start; margin-top: auto; padding-top: 20px; color: var(--sugi); border-bottom: 2px solid var(--moegi); font-size: 12px; font-weight: 700; }
 .home-plan-note { margin-top: clamp(22px, 3vw, 30px); color: var(--ink3); font-size: 12.5px; line-height: 1.9; }
 
 .home-about-card { display: grid; grid-template-columns: minmax(220px, .7fr) minmax(0, 1.3fr); gap: clamp(26px, 5vw, 58px); align-items: center; }
@@ -1202,8 +1209,8 @@ html { scroll-padding-top: 88px; }
 .hub-page .about-sec { padding-top: clamp(62px, 8vw, 112px); }
 
 @media (max-width: 820px) {
-  .home-why-grid, .home-about-card { grid-template-columns: 1fr; }
-  .home-why-photo, .home-about-photo { width: min(100%, 420px); margin-inline: auto; }
+  .home-about-card { grid-template-columns: 1fr; }
+  .home-about-photo { width: min(100%, 420px); margin-inline: auto; }
   .home-why-points { grid-template-columns: 1fr; }
 }
 @media (max-width: 760px) {
@@ -1213,11 +1220,21 @@ html { scroll-padding-top: 88px; }
   .home-phase-media { grid-column: 2; grid-row: 1; align-self: center; width: 100%; }
 }
 @media (max-width: 640px) {
+  .home-compact-section { padding-block: 30px; }
+  .home-compact-section .sec-head { margin-bottom: 22px; }
   .home-service-list .svc-row { grid-template-columns: 34px 72px minmax(0, 1fr) 20px; gap: 10px; padding: 12px 11px; }
   .home-service-list .svc-ill { width: 72px; }
   .home-service-list .svc-info-name { font-size: 14px; }
   .home-service-list .svc-info-desc { display: none; }
   .home-service-list .svc-num { font-size: 17px; }
   .home-section-more { text-align: left; }
+  .home-plan-grid { gap: 11px; }
+  .home-plan-card { padding: 18px 20px; }
+  .home-plan-price { margin-top: 12px; }
+  .home-plan-founder { margin-top: 10px; padding-block: 7px; }
+  .home-plan-list { gap: 6px; margin-top: 14px; padding-top: 13px; }
+  .home-plan-link { padding-top: 14px; }
+  .final-sec { padding-block: 48px; }
   .hub-intro-nav { grid-template-columns: 1fr; }
+  .home-why-head .home-why-photo { max-width: 210px; }
 }

@@ -683,7 +683,9 @@ function mnSplitLabel(el, text) {
   function destLabel(a) {
     var url; try { url = new URL(a.href, location.href); } catch (e) { url = null; }
     if (url && mnIsHomePath(url.pathname)) return mnGreeting();
-    var t = safeLabel(a.textContent);
+    // サービスカードは番号・説明・矢印まで含むため、遷移ラベルにはサービス名だけを使う。
+    var serviceName = a.matches && a.matches('.svc-row') && a.querySelector('.svc-info-name');
+    var t = safeLabel(serviceName ? serviceName.textContent : a.textContent);
     if (!t) t = safeLabel(a.getAttribute('aria-label'));
     if (!t) { var img = a.querySelector && a.querySelector('img[alt]'); if (img) t = safeLabel(img.getAttribute('alt')); }
     if (!t) t = safeLabel(a.getAttribute('title'));
@@ -706,6 +708,7 @@ function mnSplitLabel(el, text) {
       e.preventDefault();
       e.stopImmediatePropagation();
       e.stopPropagation();                  // link-keep等の後続ハンドラに渡さない（クエリは自前で引き継ぐ）
+      if (a.matches && a.matches('.svc-row')) a.classList.add('is-selected');
       navigate(withQuery(a.href), { label: destLabel(a) });
       return;
     }

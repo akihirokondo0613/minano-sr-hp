@@ -207,9 +207,9 @@
   }
 
   // ---- 非表示の記憶（その訪問の間だけ畳む） --------------------------------
-  // 既定は「隠れている」。表示は「このページを開いている間だけ」で、
-  // 再読み込み・ページ遷移のたびに既定の非表示へ戻る（記憶しない）。
-  var hiddenState = true;
+  // 既定は「表示」。ページを開いた直後から猫本体を画面内に表示し、
+  // 訪問者が明示的に隠したときだけ、そのページの間は呼び戻しタブに畳む。
+  var hiddenState = false;
   function isHidden() { return hiddenState; }
   function setHidden(v) { hiddenState = !!v; }
 
@@ -370,7 +370,7 @@
     scheduleFrameLoad();         // フレーム画像はここからアイドル時に遅延読み込み
     applySize(getSize());
     if (!restorePos()) requestAnimationFrame(applyDefaultPos);
-    // 既定は隠れた状態（左端の小さなタブ＝呼び戻しのみ表示）。クリックで登場する。
+    // このページ内で隠されている場合のみ、呼び戻しタブを表示する。
     if (isHidden()) { hide(true); return; }
     activate();
   }
@@ -553,7 +553,7 @@
   if (!reduce && !isTouch) { window.addEventListener('mousemove', onMove, { passive: true }); document.addEventListener('mouseleave', onLeave); }
 
   // ---- ドラッグで位置を移動 ---------------------------------------------
-  var POS_KEY = 'mn-mascot-pos-v11';
+  var POS_KEY = 'mn-mascot-pos-v12';
   var dragging = false, justDragged = false, dStartX = 0, dStartY = 0, dBaseL = 0, dBaseT = 0, dPid = null;
   function clampPos(x, y) {
     var w = root.offsetWidth, h = root.offsetHeight;
