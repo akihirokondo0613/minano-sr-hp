@@ -365,7 +365,7 @@ function recordConsoleError(target) {
   });
   await adminPage.locator('#btn-dl').evaluate(button => button.click());
   const generatedArticle = await adminPage.evaluate(() => window.__verificationArticleBlob.text());
-  const expectedTemplateFragments = ['../services.html', '../pricing.html', '../support.html', '../about.html', 'skin-v2.css?v=20260723-header1', 'href="#" class="to-top"'];
+  const expectedTemplateFragments = ['../services.html', '../pricing.html', '../support.html', '../about.html', 'skin-v2.css?v=20260723-header3', 'href="#" class="to-top"'];
   const templateMissing = expectedTemplateFragments.filter(fragment => !generatedArticle.includes(fragment));
   if (templateMissing.length || /index\.html#(?:services|pricing|cases|about)|16◯/.test(generatedArticle) || adminErrors.length) {
     failures.push(`記事投稿テンプレート: ${JSON.stringify({ templateMissing, adminErrors })}`);
