@@ -48,8 +48,76 @@
       + 'transition:transform .12s linear;pointer-events:none;z-index:2;will-change:transform';
     nav.appendChild(bar);
 
-    var lastY = window.scrollY || 0, hidden = false;
     var mob = document.getElementById('mobNav');
+    var burger = nav.querySelector('.nav-burger');
+    var lastY = window.scrollY || 0, hidden = false;
+
+    function setMenu(open, returnFocus) {
+      if (!mob || !burger) return;
+      mob.classList.toggle('open', open);
+      mob.setAttribute('aria-hidden', open ? 'false' : 'true');
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      burger.setAttribute('aria-label', open ? 'メニューを閉じる' : 'メニューを開く');
+      document.documentElement.classList.toggle('nav-menu-open', open);
+      if (open) {
+        nav.classList.remove('nav--hidden');
+        window.setTimeout(function () {
+          var first = mob.querySelector('a[href]');
+          if (first) first.focus();
+        }, 20);
+      } else if (returnFocus) {
+        burger.focus();
+      }
+    }
+
+    if (mob && burger) {
+      mob.setAttribute('role', 'navigation');
+      mob.setAttribute('aria-label', 'サイトメニュー');
+      mob.setAttribute('aria-hidden', mob.classList.contains('open') ? 'false' : 'true');
+      document.documentElement.classList.toggle('nav-menu-open', mob.classList.contains('open'));
+      burger.setAttribute('aria-controls', mob.id || 'mobNav');
+      burger.setAttribute('aria-expanded', mob.classList.contains('open') ? 'true' : 'false');
+      burger.setAttribute('aria-label', mob.classList.contains('open') ? 'メニューを閉じる' : 'メニューを開く');
+      window.toggleNav = function () { setMenu(!mob.classList.contains('open'), false); };
+      window.closeNav = function () { setMenu(false, false); };
+
+      if (window.__hmKeydown) document.removeEventListener('keydown', window.__hmKeydown);
+      window.__hmKeydown = function (e) {
+        if (e.key === 'Escape' && mob.classList.contains('open')) setMenu(false, true);
+        if (e.key === 'Tab' && mob.classList.contains('open')) {
+          var items = [burger].concat(Array.prototype.slice.call(mob.querySelectorAll('a[href]')));
+          var first = items[0], last = items[items.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      };
+      document.addEventListener('keydown', window.__hmKeydown);
+
+      if (window.__hmResize) window.removeEventListener('resize', window.__hmResize);
+      window.__hmResize = function () {
+        if (window.innerWidth > 1120 && mob.classList.contains('open')) setMenu(false, false);
+      };
+      window.addEventListener('resize', window.__hmResize, { passive: true });
+    }
+
+    var currentPath = location.pathname.replace(/\/index\.html$/, '/');
+    if (/^\/blog\//.test(currentPath)) currentPath = '/blog.html';
+    else if (/^\/uploads\/service-/.test(currentPath)) currentPath = '/services.html';
+    else if (/^\/uploads\/case-/.test(currentPath)) currentPath = '/support.html';
+    [nav, mob].forEach(function (root) {
+      if (!root) return;
+      root.querySelectorAll('a[href]').forEach(function (a) {
+        if (a.classList.contains('logo') || a.classList.contains('nav-cta') || a.classList.contains('mob-cta')) return;
+        var path = new URL(a.href, location.href).pathname.replace(/\/index\.html$/, '/');
+        if (path === currentPath) a.setAttribute('aria-current', 'page');
+        else a.removeAttribute('aria-current');
+      });
+    });
 
     function update() {
       var y = window.scrollY || 0;
