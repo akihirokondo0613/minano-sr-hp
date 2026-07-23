@@ -4,9 +4,13 @@ const path = require('node:path');
 
 const base = process.argv[2] || 'http://127.0.0.1:8765/';
 const viewports = [
-  { width: 375, height: 812 },
+  { width: 360, height: 844 },
+  { width: 390, height: 844 },
+  { width: 430, height: 844 },
+  { width: 640, height: 900 },
   { width: 768, height: 1024 },
-  { width: 1298, height: 900 },
+  { width: 900, height: 900 },
+  { width: 1024, height: 900 },
   { width: 1440, height: 900 },
   { width: 2560, height: 1440 },
 ];
@@ -33,19 +37,48 @@ function recordConsoleError(target) {
     page.on('pageerror', error => errors.push(`pageerror: ${error.message}`));
     await page.goto(base, { waitUntil: 'load' });
     await page.waitForTimeout(700);
-    const state = await page.evaluate(() => ({
-      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-      heroHeight: Math.round(document.querySelector('.hero')?.getBoundingClientRect().height || 0),
-      heroImage: document.querySelector('.hero-media img')?.currentSrc || '',
-      asyncCssMedia: document.querySelector('link[data-async-style]')?.media || '',
-      stateRequests: performance.getEntriesByType('resource').filter(r => r.name.includes('.image-slots.state.json')).length,
-      googleFontRequests: performance.getEntriesByType('resource').filter(r => /fonts\.(googleapis|gstatic)\.com/.test(r.name)).length,
-    }));
+    const state = await page.evaluate(() => {
+      const rect = el => el?.getBoundingClientRect();
+      const cat = rect(document.querySelector('.mn-mascot'));
+      const aboutPhoto = rect(document.querySelector('.home-about-photo'));
+      const aboutCopy = rect(document.querySelector('.home-about-copy'));
+      const footerLinks = [...document.querySelectorAll('.footer-ul a')];
+      const summaryColumns = getComputedStyle(document.querySelector('.hs-inner')).gridTemplateColumns.split(' ').filter(Boolean).length;
+      return {
+        overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        heroHeight: Math.round(rect(document.querySelector('.hero'))?.height || 0),
+        heroImage: document.querySelector('.hero-media img')?.currentSrc || '',
+        asyncCssMedia: document.querySelector('link[data-async-style]')?.media || '',
+        stateRequests: performance.getEntriesByType('resource').filter(r => r.name.includes('.image-slots.state.json')).length,
+        googleFontRequests: performance.getEntriesByType('resource').filter(r => /fonts\.(googleapis|gstatic)\.com/.test(r.name)).length,
+        summaryColumns,
+        planListDisplay: getComputedStyle(document.querySelector('.home-plan-list')).display,
+        planFeatureDisplay: getComputedStyle(document.querySelector('.home-plan-feature')).display,
+        aboutPhotoWidth: Math.round(aboutPhoto?.width || 0),
+        aboutCopyFirst: !!(aboutPhoto && aboutCopy && aboutCopy.top < aboutPhoto.top),
+        footerTapMin: Math.min(...footerLinks.map(link => Math.round(rect(link)?.height || 0))),
+        footerFontSize: Number.parseFloat(getComputedStyle(footerLinks[0]).fontSize),
+        faqWrap: getComputedStyle(document.querySelector('.faq-q-text')).textWrap,
+        faqWordBreak: getComputedStyle(document.querySelector('.faq-q-text')).wordBreak,
+        protectedPlan: !![...document.querySelectorAll('.faq-q-text .nobr')].find(el => el.textContent === 'プラン'),
+        footerObserver: !!window.__footerUiObserver,
+        catInside: !!(cat && cat.left >= 0 && cat.top >= 0 && cat.right <= innerWidth && cat.bottom <= innerHeight),
+      };
+    });
     if (state.overflow > 1) failures.push(`${viewport.width}px: 横はみ出し ${state.overflow}px`);
     if (state.heroHeight < 500) failures.push(`${viewport.width}px: ヒーロー高さが不正 ${state.heroHeight}px`);
     if (state.asyncCssMedia !== 'all') failures.push(`${viewport.width}px: 全量CSSが有効化されていません`);
     if (state.stateRequests) failures.push(`${viewport.width}px: 編集用JSONを${state.stateRequests}回取得しています`);
     if (state.googleFontRequests) failures.push(`${viewport.width}px: Google Fontsを取得しています`);
+    if (!state.footerObserver) failures.push(`${viewport.width}px: 固定UIのObserverが初期化されていません`);
+    if (!state.catInside) failures.push(`${viewport.width}px: 猫の初期位置が画面外です`);
+    if (viewport.width <= 640) {
+      if (state.summaryColumns !== 2) failures.push(`${viewport.width}px: ヒーロー直下サマリーが2列ではありません`);
+      if (state.planListDisplay !== 'none' || state.planFeatureDisplay === 'none') failures.push(`${viewport.width}px: スマホ料金カードの情報量が不正です`);
+      if (state.aboutPhotoWidth < 220 || state.aboutPhotoWidth > 240 || !state.aboutCopyFirst) failures.push(`${viewport.width}px: 事務所案内の順序・画像幅が不正です`);
+      if (state.footerTapMin < 32 || state.footerFontSize < 13) failures.push(`${viewport.width}px: フッターリンクの文字・タップ領域が不足しています`);
+      if (state.faqWrap !== 'pretty' || state.faqWordBreak !== 'auto-phrase' || !state.protectedPlan) failures.push(`${viewport.width}px: FAQの日本語改行保護が不正です`);
+    }
     if (errors.length) failures.push(`${viewport.width}px: ${errors.join(' / ')}`);
     await page.screenshot({ path: `/tmp/minano-home-${viewport.width}.png`, fullPage: false });
     results.push({ viewport: viewport.width, ...state, errors: errors.length });
@@ -332,7 +365,7 @@ function recordConsoleError(target) {
   });
   await adminPage.locator('#btn-dl').evaluate(button => button.click());
   const generatedArticle = await adminPage.evaluate(() => window.__verificationArticleBlob.text());
-  const expectedTemplateFragments = ['../services.html', '../pricing.html', '../support.html', '../about.html', 'skin-v2.css?v=20260723-links1', 'href="#" class="to-top"'];
+  const expectedTemplateFragments = ['../services.html', '../pricing.html', '../support.html', '../about.html', 'skin-v2.css?v=20260723-mobile1', 'href="#" class="to-top"'];
   const templateMissing = expectedTemplateFragments.filter(fragment => !generatedArticle.includes(fragment));
   if (templateMissing.length || /index\.html#(?:services|pricing|cases|about)|16◯/.test(generatedArticle) || adminErrors.length) {
     failures.push(`記事投稿テンプレート: ${JSON.stringify({ templateMissing, adminErrors })}`);

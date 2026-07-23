@@ -215,16 +215,25 @@ img { display: block; }
   .hero-ridge .mt-sky { height: 48px; } .hero-ridge .mt-back { height: 36px; }
   .hero-ridge .mt { height: 26px; } .hero-ridge .sea { height: 14px; } .hero-ridge .sea-front { height: 8px; }
 }
-/* モバイル: nowrap指定（.nw）をほどいて横はみ出しを防ぐ */
+/* モバイル: 文節単位を保ったまま、写真上の文字を読みやすくする */
 @media (max-width: 700px) {
-  .hero-h1 .nw, .hero-sub .nw { white-space: normal; }
-  .hero-h1 { font-size: clamp(26px, 7.4vw, 34px); }
-  /* スマホは写真をほぼそのまま見せる。文字の可読性のため上端だけ薄く持ち上げ、下はほぼ透明。 */
+  .hero { min-height: 0; }
+  .hero-overlay { padding: 92px 20px 58px; justify-content: flex-start; }
+  .hero-h1 .nw, .hero-sub .nw { white-space: nowrap; }
+  .hero-h1 { font-size: clamp(26px, 7.2vw, 30px); line-height: 1.4; }
+  .why-label.hero-label { margin-bottom: 18px; padding: 7px 15px; }
+  .hero-sub { margin-top: 16px; font-size: 13.5px; line-height: 1.95; }
+  .hero-btns { gap: 12px; margin-top: 22px; flex-wrap: nowrap; }
+  .hero-btns .btn-primary { padding: 15px 27px; font-size: 14px; }
+  .hero-sub-link { display: inline-flex; align-items: center; min-height: 44px; padding: 0 5px; background: rgba(249,250,247,.94); }
+  .hero-trust { gap: 7px; margin-top: 18px; }
+  .trust-item { padding: 7px 12px; background: rgba(255,255,255,.94); }
   .hero-veil {
     background: linear-gradient(to bottom,
-      rgba(249,250,247,.34) 0%,
-      rgba(249,250,247,.22) 38%,
-      rgba(249,250,247,.1) 70%,
+      rgba(249,250,247,.98) 0%,
+      rgba(249,250,247,.96) 52%,
+      rgba(249,250,247,.82) 72%,
+      rgba(249,250,247,.28) 88%,
       rgba(249,250,247,0) 100%);
   }
 }
@@ -249,8 +258,10 @@ img { display: block; }
   .hs-sep { display: none; }
 }
 @media (max-width: 640px) {
-  .hs-inner { grid-template-columns: auto; justify-content: flex-start; gap: 2px; }
-  .hs-item { white-space: normal; }
+  .hero-summary { padding-block: 12px 10px; }
+  .hs-inner { grid-template-columns: repeat(2, minmax(0, 1fr)); justify-content: stretch; gap: 6px 14px; }
+  .hs-item { align-items: flex-start; white-space: normal; font-size: 11.5px; line-height: 1.55; letter-spacing: .01em; }
+  .hs-item svg { width: 15px; height: 15px; margin-top: 1px; }
 }
 /* 中途半端な位置での折り返し防止（チップ・ヒーローCTA・STEP説明） */
 .hero-trust .trust-item { white-space: nowrap; }
@@ -555,7 +566,7 @@ main > section:not(.hero) {
 .faq-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 18px; background: none; border: 0; cursor: pointer; padding: 18px 22px; text-align: left; font-family: var(--font-body); }
 .faq-q-wrap { display: flex; align-items: baseline; gap: 14px; }
 .faq-q-tag { font-family: var(--mono); font-size: 14px; font-weight: 600; color: var(--moegi-t); flex-shrink: 0; }
-.faq-q-text { font-size: 15px; font-weight: 700; color: var(--iwa); line-height: 1.8; }
+.faq-q-text { font-size: 15px; font-weight: 700; color: var(--iwa); line-height: 1.8; text-wrap: pretty; word-break: auto-phrase; }
 .faq-plus { position: relative; width: 22px; height: 22px; flex-shrink: 0; border-radius: 50%; background: var(--moegi-l); }
 .faq-plus::before, .faq-plus::after { content: ''; position: absolute; top: 50%; left: 50%; background: var(--sugi); transition: transform .35s var(--ease); }
 .faq-plus::before { width: 10px; height: 1.6px; transform: translate(-50%, -50%); }
@@ -700,14 +711,21 @@ main > section:not(.hero) {
 .footer-badges { display: flex; gap: 10px; flex-wrap: wrap; }
 .footer-badge { font-size: 10.5px; color: rgba(255,255,255,.66); border: 1px solid rgba(255,255,255,.22); border-radius: 999px; padding: 5px 14px; }
 @media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; } .footer-grid > div:first-child { grid-column: 1 / -1; } }
+@media (max-width: 900px) {
+  .footer-contact { font-size: 13px; }
+  .footer-contact-row > *, .footer-contact-address { white-space: normal; }
+  .footer-contact a { min-height: 32px; overflow-wrap: anywhere; }
+  .footer-ul li { margin-bottom: 2px; }
+  .footer-ul a { display: flex; align-items: center; min-height: 32px; font-size: 13.5px; line-height: 1.45; }
+  .footer-ul a[href^="tel:"], .footer-ul a[href^="mailto:"] { white-space: normal; overflow-wrap: anywhere; }
+}
 @media (max-width: 480px) {
   .footer-grid { gap: 28px 16px; }
-  .footer-ul a[href^="tel:"], .footer-ul a[href^="mailto:"] { font-size: 11.5px; }
 }
 
 /* ---------- フローティング ---------- */
 .floating { position: fixed; right: clamp(14px, 2vw, 26px); bottom: clamp(14px, 2vw, 26px); z-index: 220; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; transition: opacity .4s, transform .4s var(--ease); }
-.floating.hidden { opacity: 0; pointer-events: none; transform: translateY(12px); }
+.floating.hidden { opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(12px); }
 .fl-mini { display: flex; gap: 8px; }
 .fl-icon { width: 46px; height: 46px; border-radius: 50%; background: var(--shiro); border: 1px solid var(--line); display: grid; place-items: center; box-shadow: 0 8px 22px rgba(18,63,48,.14); transition: transform .3s var(--ease); }
 .fl-icon:hover { transform: translateY(-2px); }
@@ -954,7 +972,7 @@ article.post .note { font-size: 12.5px; color: var(--ink3); margin-top: -1em; ma
 .cat-title { font-family: var(--disp); font-size: clamp(18px, 2vw, 21px); font-weight: 800; color: var(--iwa); }
 .cat-count { font-family: var(--mono); font-size: 11px; color: var(--ink4); margin-left: auto; }
 /* ---------- 文字の偏り対策（見出し=balance / 本文=pretty） ---------- */
-.sec-h, .why-h, .hc-title, .bc-title, .promise-t, .plan-name, .stg-prog-name, .faq-q-text, .tflow-step b { text-wrap: balance; }
+.sec-h, .why-h, .hc-title, .bc-title, .promise-t, .plan-name, .stg-prog-name, .tflow-step b { text-wrap: balance; }
 .sec-sub, .why-p p, .hc-desc, .bc-desc, .voice-text, .svc-info-desc, .tflow-note, .tools-note, .stg-issues li, .stg-props li, .plan-tagline, .faq-a-in { text-wrap: pretty; }
 .cat-desc { font-size: 13px; line-height: 1.95; color: var(--ink3); margin-bottom: 16px; }
 .file-list { display: flex; flex-direction: column; gap: 10px; }
@@ -1140,7 +1158,7 @@ article.post .note { font-size: 12.5px; color: var(--ink3); margin-top: -1em; ma
    2026-07-23 情報設計の分割
    トップは短い入口、詳細は services / pricing / support / about へ。
    ============================================================ */
-.home-compact-section { padding-block: clamp(58px, 7.5vw, 104px); }
+.home-compact-section { padding-block: clamp(54px, 6.8vw, 92px); }
 .home-compact-section .sec-head { margin-bottom: clamp(28px, 4vw, 46px); }
 .home-compact-section .sec-sub { max-width: 42em; }
 .home-section-more { margin-top: clamp(24px, 3vw, 36px); text-align: right; }
@@ -1183,20 +1201,22 @@ article.post .note { font-size: 12.5px; color: var(--ink3); margin-top: -1em; ma
 .home-plan-price.is-estimate { font-size: clamp(22px, 2.2vw, 29px); }
 .home-plan-unit { margin-top: 5px; color: var(--ink3); font-size: 11.5px; }
 .home-plan-founder { margin-top: 13px; padding: 8px 10px; border-radius: 8px; color: var(--sugi); background: var(--moegi-l); font-size: 11.5px; font-weight: 700; line-height: 1.55; }
+.home-plan-feature { display: none; }
 .home-plan-list { display: grid; gap: 8px; margin-top: 18px; padding-top: 17px; border-top: 1px solid var(--line); list-style: none; }
 .home-plan-list li { position: relative; padding-left: 17px; color: var(--ink2); font-size: 12px; line-height: 1.7; }
 .home-plan-list li::before { content: ''; position: absolute; left: 0; top: .62em; width: 7px; height: 4px; border-left: 2px solid var(--moegi); border-bottom: 2px solid var(--moegi); transform: rotate(-45deg); }
 .home-plan-link { align-self: flex-start; margin-top: auto; padding-top: 20px; color: var(--sugi); border-bottom: 2px solid var(--moegi); font-size: 12px; font-weight: 700; }
 .home-plan-note { margin-top: clamp(22px, 3vw, 30px); color: var(--ink3); font-size: 12.5px; line-height: 1.9; }
 
-.home-about-card { display: grid; grid-template-columns: minmax(220px, .7fr) minmax(0, 1.3fr); gap: clamp(26px, 5vw, 58px); align-items: center; }
-.home-about-photo { aspect-ratio: 4 / 3; border-radius: var(--r-lg); overflow: hidden; background: #fefefe; }
+.home-about-card { display: grid; grid-template-columns: minmax(220px, .7fr) minmax(0, 1.3fr); grid-template-areas: "photo copy"; gap: clamp(26px, 5vw, 58px); align-items: center; }
+.home-about-photo { grid-area: photo; aspect-ratio: 4 / 3; border-radius: var(--r-lg); overflow: hidden; background: #fefefe; }
 .home-about-photo image-slot { display: block; width: 100%; height: 100%; background: #fefefe; }
-.home-about-copy { display: grid; gap: 15px; }
+.home-about-copy { grid-area: copy; display: grid; gap: 15px; }
 .home-about-copy p { color: var(--ink2); font-size: 14px; line-height: 2; max-inline-size: 42em; }
 .home-about-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; color: var(--ink3); font-size: 12.5px; }
 
-.hub-page .page-hero { padding-bottom: clamp(48px, 7vw, 76px); }
+.hub-page .page-hero { padding: clamp(96px, 10vh, 116px) 0 clamp(34px, 4.5vw, 52px); }
+.hub-page .page-hero h1 { font-size: clamp(26px, 3.4vw, 38px); }
 .hub-page > section:not(.final-sec) { content-visibility: auto; contain-intrinsic-size: auto 860px; }
 .hub-intro-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 10px; margin-top: 28px; }
 .hub-intro-nav a { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 52px; padding: 13px 16px; color: var(--sugi); background: var(--shiro); border: 1px solid var(--line); border-radius: var(--r); font-size: 13px; font-weight: 700; transition: border-color .3s, transform .3s var(--ease); }
@@ -1213,7 +1233,7 @@ html { scroll-padding-top: 88px; }
 .hub-page .about-sec { padding-top: clamp(62px, 8vw, 112px); }
 
 @media (max-width: 820px) {
-  .home-about-card { grid-template-columns: 1fr; }
+  .home-about-card { grid-template-columns: 1fr; grid-template-areas: "copy" "photo"; }
   .home-about-photo { width: min(100%, 420px); margin-inline: auto; }
 }
 @media (max-width: 760px) {
@@ -1229,7 +1249,7 @@ html { scroll-padding-top: 88px; }
   .home-phase-media { grid-column: 2; grid-row: 1; align-self: center; width: 100%; }
 }
 @media (max-width: 640px) {
-  .home-compact-section { padding-block: 30px; }
+  .home-compact-section { padding-block: 28px; }
   .home-compact-section .sec-head { margin-bottom: 22px; }
   .home-why-copy { gap: 18px; }
   .home-why-intro { gap: 6px; }
@@ -1244,8 +1264,10 @@ html { scroll-padding-top: 88px; }
   .home-plan-card { padding: 18px 20px; }
   .home-plan-price { margin-top: 12px; }
   .home-plan-founder { margin-top: 10px; padding-block: 7px; }
-  .home-plan-list { gap: 6px; margin-top: 14px; padding-top: 13px; }
+  .home-plan-feature { display: block; margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--line); color: var(--ink2); font-size: 13px; line-height: 1.7; text-wrap: pretty; }
+  .home-plan-list { display: none; }
   .home-plan-link { padding-top: 14px; }
+  .home-about-photo { width: min(100%, 230px); }
   .final-sec { padding-block: 48px; }
   .hub-intro-nav { grid-template-columns: 1fr; }
   .home-why-head { position: relative; }
