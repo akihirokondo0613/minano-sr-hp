@@ -29,7 +29,7 @@
 <!-- Theme + Favicon (inline SVG avoids extra asset) -->
 <meta name="theme-color" content="#123F30">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="skin-v2.css?v=20260723-mission1">
+<link rel="stylesheet" href="skin-v2.css?v=20260723-links1">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"サービス｜みなの社会保険労務士事務所","description":"みなの社会保険労務士事務所のサービス一覧。助成金、就業規則、社会保険・労働保険手続き、給与計算、労務相談、勤怠・人事労務DXを一つの窓口で支援します。","url":"https://minano-sr.com/services.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://minano-sr.com/"},{"@type":"ListItem","position":2,"name":"サービス","item":"https://minano-sr.com/services.html"}]}]}
 </script>
@@ -96,7 +96,7 @@
       </div>
     </div>
     <div class="how-grid">
-      <div class="how-card rv d1" onclick="location.href='uploads/service-joseikin.html'">
+      <a class="how-card rv d1" href="uploads/service-joseikin.html" aria-label="雇用関係助成金申請サポートの詳細を見る">
         <div class="hc-img" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="how-img-1" src="assets/illustrations/04_subsidy_support_female.webp" placeholder="助成金サポートのイメージ写真（推奨 16:9）"></image-slot></div>
         <span class="hc-num">01</span>
         <div class="hc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M9.2 8l2.8 4 2.8-4M12 12v5M9.6 13.5h4.8M9.6 15.7h4.8"/></svg></div>
@@ -105,20 +105,20 @@
         <div class="hc-tags">
           <span class="hc-tag">無料相談</span><span class="hc-tag">成功報酬制</span><span class="hc-tag">受給支援</span>
         </div>
-        <span class="hc-link">詳細を見る →</span>
-      </div>
-      <div class="how-card rv d2" onclick="location.href='#services'">
+        <span class="hc-link">助成金支援を見る →</span>
+      </a>
+      <a class="how-card rv d2" href="uploads/service-kyuyo-keisan.html" aria-label="給与計算アウトソーシングの詳細を見る">
         <div class="hc-img" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="how-img-2" src="assets/illustrations/17_admin_work_female.webp" crop-scale="1.127395" crop-x="0.317899" crop-y="6.479879" placeholder="手続き代行・事務作業のイメージ写真（推奨 16:9）"></image-slot></div>
         <span class="hc-num">02</span>
         <div class="hc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></div>
-        <div class="hc-title">管理コスト・時間の負担を軽減</div>
-        <p class="hc-desc">社会保険手続き・給与計算を代行し、年末調整は税理士と連携。担当者の業務時間と運用負荷を軽減します。</p>
+        <div class="hc-title">給与計算を任せ、管理の負担を軽減</div>
+        <p class="hc-desc">毎月の給与計算・賞与計算を代行し、年末調整は税理士と連携。担当者の業務時間と運用負荷を軽減します。</p>
         <div class="hc-tags">
-          <span class="hc-tag">手続き代行</span><span class="hc-tag">給与計算</span><span class="hc-tag">電子申請</span>
+          <span class="hc-tag">給与計算</span><span class="hc-tag">賞与計算</span><span class="hc-tag">税理士連携</span>
         </div>
-        <span class="hc-link">詳細を見る →</span>
-      </div>
-      <div class="how-card rv d3" onclick="location.href='uploads/service-romu-sodan.html'">
+        <span class="hc-link">給与計算支援を見る →</span>
+      </a>
+      <a class="how-card rv d3" href="uploads/service-dx.html" aria-label="労務システム導入・DX支援の詳細を見る">
         <div class="hc-img" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="how-img-3" src="assets/illustrations/06_system_pc_operation.webp" crop-scale="1.127395" crop-x="-0.129336" crop-y="-0.661048" placeholder="システム導入・PC操作のイメージ写真（推奨 16:9）"></image-slot></div>
         <span class="hc-num">03</span>
         <div class="hc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="12" rx="1.5"/><path d="M9 20.5h6M12 17v3.5"/></svg></div>
@@ -127,8 +127,8 @@
         <div class="hc-tags">
           <span class="hc-tag">勤怠システム</span><span class="hc-tag">人事DX</span><span class="hc-tag">運用サポート</span>
         </div>
-        <span class="hc-link">詳細を見る →</span>
-      </div>
+        <span class="hc-link">DX支援を見る →</span>
+      </a>
     </div>
   </div>
 </section>

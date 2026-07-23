@@ -220,6 +220,47 @@ function recordConsoleError(target) {
   results.push({ imageLinkPublic: true });
   await publicLinkPage.close();
 
+  const approachPage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await approachPage.goto(new URL('services.html', base).href, { waitUntil: 'load' });
+  const approachLinks = await approachPage.locator('.how-grid .how-card').evaluateAll(cards => cards.map(card => ({
+    href: card.getAttribute('href'),
+    title: card.querySelector('.hc-title')?.textContent.trim() || '',
+  })));
+  const expectedApproachLinks = [
+    'uploads/service-joseikin.html',
+    'uploads/service-kyuyo-keisan.html',
+    'uploads/service-dx.html',
+  ];
+  if (JSON.stringify(approachLinks.map(card => card.href)) !== JSON.stringify(expectedApproachLinks)) {
+    failures.push(`サービス支援カード: リンク先が不正 ${JSON.stringify(approachLinks)}`);
+  }
+  results.push({ approachLinks });
+  await approachPage.close();
+
+  const supportCardResults = [];
+  for (const width of [390, 1200, 1440]) {
+    const supportPage = await browser.newPage({ viewport: { width, height: width === 390 ? 844 : 900 } });
+    await supportPage.goto(new URL('support.html', base).href, { waitUntil: 'load' });
+    const supportCards = await supportPage.locator('.proc-title').evaluateAll(titles => titles.map(title => {
+      const style = getComputedStyle(title);
+      return {
+        title: title.textContent.trim(),
+        overflow: Math.round(title.scrollWidth - title.clientWidth),
+        height: Math.round(title.getBoundingClientRect().height),
+        lineHeight: Number.parseFloat(style.lineHeight) || 0,
+        whiteSpace: style.whiteSpace,
+      };
+    }));
+    const pageOverflow = await supportPage.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    const badCards = supportCards.filter(card => card.overflow > 1 || card.whiteSpace !== 'nowrap' || (card.lineHeight && card.height > card.lineHeight * 1.2));
+    if (badCards.length || pageOverflow > 1) {
+      failures.push(`${width}px 支援手順カード: 改行・横はみ出しが不正 ${JSON.stringify({ badCards, pageOverflow })}`);
+    }
+    supportCardResults.push({ width, cards: supportCards, pageOverflow });
+    await supportPage.close();
+  }
+  results.push({ supportCards: supportCardResults });
+
   const journeyPage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   const journeyErrors = [];
   journeyPage.on('console', recordConsoleError(journeyErrors));
@@ -291,7 +332,7 @@ function recordConsoleError(target) {
   });
   await adminPage.locator('#btn-dl').evaluate(button => button.click());
   const generatedArticle = await adminPage.evaluate(() => window.__verificationArticleBlob.text());
-  const expectedTemplateFragments = ['../services.html', '../pricing.html', '../support.html', '../about.html', 'skin-v2.css?v=20260723-mission1', 'href="#" class="to-top"'];
+  const expectedTemplateFragments = ['../services.html', '../pricing.html', '../support.html', '../about.html', 'skin-v2.css?v=20260723-links1', 'href="#" class="to-top"'];
   const templateMissing = expectedTemplateFragments.filter(fragment => !generatedArticle.includes(fragment));
   if (templateMissing.length || /index\.html#(?:services|pricing|cases|about)|16◯/.test(generatedArticle) || adminErrors.length) {
     failures.push(`記事投稿テンプレート: ${JSON.stringify({ templateMissing, adminErrors })}`);
