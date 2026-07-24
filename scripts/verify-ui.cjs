@@ -334,22 +334,115 @@ function recordConsoleError(target) {
 
   const simulatorPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await simulatorPage.goto(new URL('pricing.html', base).href, { waitUntil: 'load' });
+  const pricingStructure = await simulatorPage.evaluate(() => {
+    const rowText = Array.from(document.querySelectorAll('#retainer-extra-fees .sf-row, #spot-fees .sf-row'))
+      .map(row => row.textContent.replace(/\s+/g, ' ').trim())
+      .join('\n');
+    const basicText = document.getElementById('plan-basic')?.textContent.replace(/\s+/g, ' ').trim() || '';
+    const retainerText = document.getElementById('retainer-extra-fees')?.textContent.replace(/\s+/g, ' ').trim() || '';
+    const spotText = document.getElementById('spot-fees')?.textContent.replace(/\s+/g, ' ').trim() || '';
+    return { rowText, basicText, retainerText, spotText };
+  });
+  const forbiddenPriceRows = [
+    '就業規則の新規作成・全面改定',
+    '人事・賃金・評価制度',
+    '労基署、年金事務所の調査対応',
+    '勤怠・給与システム導入',
+    '複雑な労災',
+    '第三者行為',
+    '障害・遺族給付',
+  ].filter(term => pricingStructure.rowText.includes(term));
+  const includedRetainerItems = ['出産手当金', '育児休業', '介護休業', '高年齢雇用継続給付']
+    .filter(term => pricingStructure.basicText.includes(term));
+  const pricingRulesOk =
+    /賞与支払届.*¥10,000＋対象者1名¥500/.test(pricingStructure.retainerText) &&
+    /成功報酬：受給額の15％/.test(pricingStructure.retainerText) &&
+    /賞与支払届.*¥20,000＋対象者1名¥1,000/.test(pricingStructure.spotText) &&
+    /成功報酬：受給額の20％/.test(pricingStructure.spotText) &&
+    /税理士法上職務外の処理については、提携の税理士に依頼します/.test(pricingStructure.spotText);
+  if (forbiddenPriceRows.length || includedRetainerItems.length !== 4 || !pricingRulesOk) {
+    failures.push(`料金体系: 指示内容との不整合 ${JSON.stringify({ forbiddenPriceRows, includedRetainerItems, pricingRulesOk })}`);
+  }
+  results.push({ pricingStructure: { forbiddenPriceRows, includedRetainerItems, pricingRulesOk } });
   await simulatorPage.locator('#simulator > summary').click();
   await simulatorPage.waitForTimeout(350);
   await simulatorPage.locator('#ksEmpN').fill('8');
   await simulatorPage.locator('label:has(#ksPayroll)').click();
-  await simulatorPage.locator('.ks-q[data-gate="1"]').click();
-  await simulatorPage.locator('.ks-q[data-name="キャリアアップ助成金"]').click();
   const simulatorState = await simulatorPage.evaluate(() => ({
     price: document.getElementById('ksPrice')?.textContent.trim() || '',
-    count: document.getElementById('ksCount')?.textContent.trim() || '',
-    total: document.getElementById('ksTotal')?.textContent.trim() || '',
+    plan: document.getElementById('ksBreak')?.textContent.trim() || '',
+    year: document.getElementById('ksYear')?.textContent.trim() || '',
+    grantControls: document.querySelectorAll('.ks-q, #ksCount, #ksTotal').length,
+    grantText: /助成金/.test(document.getElementById('simulator')?.textContent || ''),
   }));
-  if (!/¥/.test(simulatorState.price) || !/1件/.test(simulatorState.count) || !/40万円/.test(simulatorState.total)) {
+  if (!/¥55,000/.test(simulatorState.price) || !/スタンダードプラン/.test(simulatorState.plan) || !/¥660,000/.test(simulatorState.year) || simulatorState.grantControls !== 0 || simulatorState.grantText) {
     failures.push(`料金シミュレーター: 計算結果が不正 ${JSON.stringify(simulatorState)}`);
   }
   await simulatorPage.locator('.ks-cta').click();
   await simulatorPage.waitForFunction(() => location.pathname.endsWith('/uploads/contact.html') && new URLSearchParams(location.search).get('from') === 'sim', null, { timeout: 10000 });
+  const contactInitial = await simulatorPage.evaluate(() => {
+    const details = document.getElementById('optionalDetails');
+    const note = document.getElementById('contactNote');
+    const privacy = document.querySelector('.privacy-consent');
+    const timeField = document.getElementById('contactTimeField');
+    return {
+      simPrefill: document.getElementById('message')?.value || '',
+      detailsSummary: details?.querySelector('summary')?.textContent.replace(/\s+/g, ' ').trim() || '',
+      finalNoteAfterDetails: !!(details && note && (details.compareDocumentPosition(note) & Node.DOCUMENT_POSITION_FOLLOWING)),
+      finalNoteBeforePrivacy: !!(note && privacy && (note.compareDocumentPosition(privacy) & Node.DOCUMENT_POSITION_FOLLOWING)),
+      timeInitiallyHidden: !!timeField?.hidden,
+      contactMethodVisible: !!document.querySelector('input[name="pref_contact"]:not([disabled])') &&
+        document.querySelector('input[name="pref_contact"]')?.getBoundingClientRect().height > 0,
+    };
+  });
+  await simulatorPage.locator('input[name="pref_contact"][value="電話"]').check();
+  await simulatorPage.waitForFunction(() => !document.getElementById('contactTimeField')?.hidden);
+  await simulatorPage.locator('input[name="pref_time"][value="平日 15:00〜18:00"]').check();
+  await simulatorPage.locator('input[name="pref_contact"][value="メール"]').check();
+  const contactPreferenceState = await simulatorPage.evaluate(() => ({
+    timeHiddenForEmail: !!document.getElementById('contactTimeField')?.hidden,
+    timeSelectionCleared: !document.querySelector('input[name="pref_time"]:checked'),
+  }));
+  const contactFormOk =
+    /料金シミュレーター/.test(contactInitial.simPrefill) &&
+    /任意/.test(contactInitial.detailsSummary) &&
+    /ご相談前の確認/.test(contactInitial.detailsSummary) &&
+    /4項目/.test(contactInitial.detailsSummary) &&
+    contactInitial.finalNoteAfterDetails &&
+    contactInitial.finalNoteBeforePrivacy &&
+    contactInitial.timeInitiallyHidden &&
+    contactInitial.contactMethodVisible &&
+    contactPreferenceState.timeHiddenForEmail &&
+    contactPreferenceState.timeSelectionCleared;
+  if (!contactFormOk) {
+    failures.push(`問い合わせフォーム: 導線・任意項目・連絡希望の表示が不正 ${JSON.stringify({ contactInitial, contactPreferenceState })}`);
+  }
+  let submittedContactPayload = null;
+  await simulatorPage.route('https://formsubmit.co/**', async route => {
+    try {
+      submittedContactPayload = JSON.parse(route.request().postData() || '{}');
+    } catch {
+      submittedContactPayload = {};
+    }
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true }) });
+  });
+  await simulatorPage.locator('#name').fill('検証 太郎');
+  await simulatorPage.locator('#email').fill('verification@example.com');
+  await simulatorPage.locator('#contactNote').fill('平日16時以降の電話を希望します。');
+  await simulatorPage.locator('input[name="pref_contact"][value="電話"]').check();
+  await simulatorPage.locator('input[name="pref_time"][value="平日 15:00〜18:00"]').check();
+  await simulatorPage.locator('#privacy').check();
+  await simulatorPage.locator('#contactForm .form-submit').click();
+  await simulatorPage.locator('#formSuccess').waitFor({ state: 'visible' });
+  const contactPayloadOk =
+    submittedContactPayload?.['希望の連絡方法'] === '電話' &&
+    submittedContactPayload?.['つながりやすい時間帯'] === '平日 15:00〜18:00' &&
+    submittedContactPayload?.['補足・連絡事項'] === '平日16時以降の電話を希望します。';
+  if (!contactPayloadOk) {
+    failures.push(`問い合わせフォーム: 送信内容への反映が不正 ${JSON.stringify(submittedContactPayload)}`);
+  }
+  results.push({ contactForm: { ...contactInitial, ...contactPreferenceState, ok: contactFormOk } });
+  results.push({ contactPayload: { ok: contactPayloadOk } });
   results.push({ simulator: simulatorState, contactParameter: 'from=sim' });
   await simulatorPage.close();
 

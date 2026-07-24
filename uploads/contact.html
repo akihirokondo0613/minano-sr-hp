@@ -134,19 +134,46 @@ textarea.form-input{min-height:120px;resize:vertical}
 .checkbox-label input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
 .checkbox-label:has(input:focus-visible){outline:2px solid var(--g500);outline-offset:2px;border-color:var(--g400)}
 .checkbox-label:has(input:checked){background:var(--g50);border-color:var(--g400);color:var(--g700);font-weight:500}
-.form-submit{width:100%;min-height:50px;padding:15px;font-size:16px;font-weight:700;background:var(--g600);color:#fff;border:none;border-radius:5px;cursor:pointer;transition:background .2s}
-.form-submit:hover{background:var(--g700)}
-.optional-details{margin:4px 0 22px;border:1px solid var(--g100);border-radius:12px;background:var(--g25);overflow:hidden}
-.optional-details summary{position:relative;display:block;cursor:pointer;padding:18px 52px 18px 18px;color:var(--g700)}
+.form-submit{width:100%;min-height:50px;padding:15px;font-size:16px;font-weight:700;background:var(--g600);color:#fff;border:none;border-radius:5px;cursor:pointer;box-shadow:0 7px 18px rgba(18,63,48,.16);transition:background .2s,transform .2s,box-shadow .2s}
+.form-submit:hover{background:var(--g700);transform:translateY(-1px);box-shadow:0 9px 22px rgba(18,63,48,.22)}
+.form-submit:active{transform:translateY(0) scale(.995);box-shadow:0 4px 12px rgba(18,63,48,.16)}
+.form-submit:focus-visible{outline:3px solid color-mix(in srgb,var(--g400) 65%,#fff);outline-offset:3px}
+.checkbox-label:has(input:focus-visible){outline:2px solid var(--g400);outline-offset:2px}
+.form-help{display:block;margin-top:7px;font-size:12.5px;line-height:1.65;color:var(--ink3);text-wrap:pretty}
+.form-label small{color:var(--ink3)!important}
+.optional-details{margin:4px 0 26px;border:1.5px solid var(--g100);border-radius:12px;background:var(--g25);overflow:hidden;box-shadow:0 7px 22px rgba(18,63,48,.055);transition:border-color .2s,box-shadow .2s}
+.optional-details:has(summary:hover),.optional-details:has(summary:focus-visible){border-color:var(--g400);box-shadow:0 9px 26px rgba(18,63,48,.09)}
+.optional-details summary{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;cursor:pointer;padding:19px 18px;color:var(--g700)}
 .optional-details summary::-webkit-details-marker{display:none}
-.optional-details summary::after{content:"＋";position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:22px;font-weight:400;line-height:1}
-.optional-details[open] summary::after{content:"－"}
-.optional-details-title{display:block;font-size:15px;font-weight:700}
-.optional-details-lead{display:block;margin-top:3px;font-size:12.5px;font-weight:400;color:var(--ink3);line-height:1.6}
+.optional-details summary::marker{content:""}
+.optional-details-copy{min-width:0}
+.optional-details-kicker{display:inline-flex;align-items:center;min-height:24px;margin-bottom:7px;padding:3px 9px;border-radius:999px;background:var(--g600);color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em}
+.optional-details-title{display:block;font-size:16px;font-weight:700;line-height:1.55}
+.optional-details-lead{display:block;margin-top:3px;max-width:48em;font-size:12.5px;font-weight:400;color:var(--ink3);line-height:1.65;text-wrap:pretty}
+.optional-details-state{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:108px;min-height:40px;padding:8px 12px;border:1px solid var(--g200);border-radius:8px;background:#fff;color:var(--g700);font-size:12.5px;font-weight:700;white-space:nowrap}
+.optional-details-state::after{content:"＋";font-size:18px;font-weight:400;line-height:1}
+.optional-details-state-open{display:none}
+.optional-details[open] .optional-details-state-closed{display:none}
+.optional-details[open] .optional-details-state-open{display:inline}
+.optional-details[open] .optional-details-state::after{content:"－"}
 .optional-details-body{padding:22px 18px 4px;border-top:1px solid var(--g100);background:#fff}
+.choice-fieldset{min-inline-size:0;margin:0 0 18px;padding:0;border:0}
+.choice-fieldset legend{float:none;width:100%;padding:0}
+.contact-preferences{margin:0 0 22px;padding:20px 18px 2px;border:1px solid var(--g100);border-radius:12px;background:color-mix(in srgb,var(--g25) 72%,#fff)}
+.contact-preferences-head{margin:0 0 17px}
+.contact-preferences-title{display:block;margin-bottom:4px;font-size:15px;font-weight:700;color:var(--ink)}
+.contact-preferences-lead{display:block;font-size:12.5px;line-height:1.65;color:var(--ink3);text-wrap:pretty}
+.contact-time-field:not([hidden]){animation:contactTimeIn .26s cubic-bezier(.22,.61,.36,1) both}
+.contact-time-field[hidden]{display:none}
+@keyframes contactTimeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+.contact-note{margin-bottom:22px;padding-top:2px}
+.contact-note .form-input{min-height:112px}
+body:has(#contactForm :is(input,textarea,select):focus) .floating{opacity:0;pointer-events:none;transform:translateY(8px)}
+body:has(#contactForm) .floating .fl-primary{display:none}
 .privacy-consent{display:flex;align-items:flex-start;gap:10px}
 .privacy-consent input{width:27px;height:27px;margin-top:1px;cursor:pointer;accent-color:var(--g600);flex-shrink:0}
 .privacy-consent label{min-height:32px;font-size:13px;color:var(--ink3);line-height:1.6;cursor:pointer}
+.privacy-consent a{display:inline-flex;align-items:center;min-height:28px}
 .info-box{background:var(--g25);border-radius:var(--r);padding:28px;margin-bottom:20px;border:1px solid var(--g100)}
 .info-box h3{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--g100)}
 .info-item{display:flex;gap:12px;align-items:flex-start;font-size:14px}
@@ -174,8 +201,13 @@ textarea.form-input{min-height:120px;resize:vertical}
   .footer-contact-address{white-space:normal}
   .grid-2{grid-template-columns:1fr}
   .form-wrap{padding:28px 20px}
-  .optional-details summary{padding:16px 48px 16px 16px}
+  .optional-details summary{grid-template-columns:1fr;gap:13px;padding:17px 16px}
+  .optional-details-state{width:100%}
   .optional-details-body{padding:20px 14px 2px}
+  .contact-preferences{padding:18px 14px 2px}
+}
+@media (prefers-reduced-motion:reduce){
+  .contact-time-field:not([hidden]){animation:none}
 }
 @media(max-width:700px){
   .nav-inner{gap:10px;padding-inline:16px}
@@ -303,7 +335,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
               </svg>
             </div>
             <h3 class="su-t1" style="font-size:24px; font-weight:700; color:var(--ink); margin-bottom:10px;">送信が完了しました！</h3>
-            <p class="su-t2" style="font-size:16px; color:var(--ink2); line-height:1.65; margin-bottom:24px;">お問い合わせありがとうございます。<br>24時間以内に担当者よりご連絡します。</p>
+            <p class="su-t2" style="font-size:16px; color:var(--ink2); line-height:1.65; margin-bottom:24px;">お問い合わせありがとうございます。<br>原則、翌営業日までに担当者よりご連絡します。</p>
             <a href="../index.html" class="su-t3 form-submit" style="display:inline-block;width:auto;padding:12px 28px;">ホームへ戻る</a>
         </div>
         
@@ -329,14 +361,22 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
               </div>
             </div>
             <div class="form-group">
-              <label class="form-label" for="message">ご相談内容・ご質問 <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
-              <textarea id="message" class="form-input" placeholder="現在の状況やご相談内容をご記入ください。&#10;例）就業規則を見直したい、助成金が使えるか知りたい など"></textarea>
+              <label class="form-label" for="message">まず、ご相談の概要を教えてください <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
+              <textarea id="message" class="form-input" aria-describedby="messageHelp" placeholder="1〜2行でも構いません。&#10;例）就業規則を見直したい、助成金が使えるか知りたい など"></textarea>
+              <small class="form-help" id="messageHelp">詳しい事情や、連絡時に伝えておきたいことは、フォーム最後の「補足・連絡事項」に書き足せます。</small>
             </div>
 
             <details class="optional-details" id="optionalDetails">
               <summary>
-                <span class="optional-details-title">詳しい状況も伝える（任意）</span>
-                <span class="optional-details-lead">業種・従業員数などを事前に伝えると、ご相談当日の確認がスムーズです。</span>
+                <span class="optional-details-copy">
+                  <span class="optional-details-kicker">任意・4項目</span>
+                  <span class="optional-details-title">ご相談前の確認</span>
+                  <span class="optional-details-lead">業種・従業員数・きっかけ・ご相談内容を、分かる範囲で選べます。</span>
+                </span>
+                <span class="optional-details-state" aria-hidden="true">
+                  <span class="optional-details-state-closed">項目を見る</span>
+                  <span class="optional-details-state-open">項目を閉じる</span>
+                </span>
               </summary>
               <div class="optional-details-body">
                 <div class="form-section-note"><span>ここから先はすべて任意です。</span>分かる範囲でお知らせください。</div>
@@ -361,11 +401,11 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
             <div class="form-group">
               <label class="form-label">従業員数 <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
               <div class="checkbox-group" id="sizeCheckboxes">
-                <label class="checkbox-label"><input type="checkbox" name="size" value="1〜5名"> 1〜5名</label>
-                <label class="checkbox-label"><input type="checkbox" name="size" value="6〜10名"> 6〜10名</label>
-                <label class="checkbox-label"><input type="checkbox" name="size" value="11〜30名"> 11〜30名</label>
-                <label class="checkbox-label"><input type="checkbox" name="size" value="31名以上"> 31名以上</label>
-                <label class="checkbox-label"><input type="checkbox" name="size" value="これから採用予定"> これから採用</label>
+                <label class="checkbox-label"><input type="radio" name="size" value="1〜5名"> 1〜5名</label>
+                <label class="checkbox-label"><input type="radio" name="size" value="6〜10名"> 6〜10名</label>
+                <label class="checkbox-label"><input type="radio" name="size" value="11〜30名"> 11〜30名</label>
+                <label class="checkbox-label"><input type="radio" name="size" value="31名以上"> 31名以上</label>
+                <label class="checkbox-label"><input type="radio" name="size" value="これから採用予定"> これから採用</label>
               </div>
             </div>
 
@@ -382,7 +422,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" hidden>
               <label class="form-label">現在、顧問の社会保険労務士はいますか？ <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
               <div class="checkbox-group" id="advKomon">
                 <label class="checkbox-label"><input type="radio" name="adv_komon" value="いる"> いる</label>
@@ -391,7 +431,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
                 <label class="checkbox-label"><input type="radio" name="adv_komon" value="わからない"> わからない</label>
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
               <label class="form-label">給与計算・勤怠の管理方法は？ <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
               <div class="checkbox-group" id="advKyuyoKanri">
                 <label class="checkbox-label"><input type="radio" name="adv_kyuyo_kanri" value="手計算・手書き"> 手計算・手書き</label>
@@ -402,7 +442,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" hidden>
               <label class="form-label">入退社などの手続きは、どのように処理していますか？ <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
               <div class="checkbox-group" id="ctxTetsuduki">
                 <label class="checkbox-label"><input type="radio" name="ctx_tetsuduki" value="自社で窓口・郵送"> 自社で窓口・郵送</label>
@@ -413,7 +453,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" hidden>
               <label class="form-label">使っているソフト・サービスは？ <small style="color:var(--ink4);font-weight:400">（任意・複数選択可）</small></label>
               <div class="checkbox-group" id="softCheckboxes">
                 <label class="checkbox-label"><input type="checkbox" value="freee"> freee</label>
@@ -427,7 +467,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
                 <label class="checkbox-label"><input type="checkbox" value="使っていない"> 使っていない</label>
                 <label class="checkbox-label"><input type="checkbox" value="その他"> その他</label>
               </div>
-              <input type="text" class="form-input" name="soft_other" placeholder="「その他」の場合：ソフト名をご記入ください" style="margin-top:10px">
+              <input type="text" class="form-input" name="soft_other" aria-label="その他のソフト・サービス名" placeholder="「その他」の場合：ソフト名をご記入ください" style="margin-top:10px">
               <div style="margin-top:12px">
                 <label class="form-label" style="font-weight:400;font-size:13px;color:var(--ink3)">ソフト・サービスにかかっている費用のめやす（月額・任意）</label>
                 <div class="checkbox-group" id="ctxBackofficeCost">
@@ -443,7 +483,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" hidden>
               <label class="form-label">給与・勤怠・手続きなどの事務作業に、毎月どのくらい時間をかけていますか？ <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
               <div class="checkbox-group" id="ctxWorkload">
                 <label class="checkbox-label"><input type="radio" name="ctx_workload" value="1日程度"> 1日程度</label>
@@ -465,7 +505,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
               </div>
             </div>
 
-            <div id="branchBlocks">
+            <div id="branchBlocks" hidden>
               <div class="branch-block" data-branch="joseikin" style="display:none">
                 <div class="branch-inner">
                   <p class="branch-head">助成金について、もう少しだけ</p>
@@ -483,7 +523,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
                       <label class="checkbox-label"><input type="radio" name="br_jose_setsubi" value="ある"> ある</label>
                       <label class="checkbox-label"><input type="radio" name="br_jose_setsubi" value="特にない"> 特にない</label>
                     </div>
-                    <input type="text" class="form-input br-extra" name="br_jose_setsubi_naiyo" placeholder="「ある」場合：どんな設備・システムか（例：勤怠システム、業務用機械 など）" style="margin-top:10px">
+                    <input type="text" class="form-input br-extra" name="br_jose_setsubi_naiyo" aria-label="導入を検討している設備・システムの内容" placeholder="「ある」場合：どんな設備・システムか（例：勤怠システム、業務用機械 など）" style="margin-top:10px">
                   </div>
                 </div>
               </div>
@@ -496,7 +536,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
                     <label class="checkbox-label"><input type="radio" name="br_kisoku_umu" value="ない"> ない</label>
                     <label class="checkbox-label"><input type="radio" name="br_kisoku_umu" value="わからない"> わからない</label>
                   </div>
-                  <input type="text" class="form-input br-extra" name="br_kisoku_kaitei" placeholder="「ある」場合：最終改定はいつ頃ですか？（例：3年ほど前／改定したことがない など）" style="margin-top:10px">
+                  <input type="text" class="form-input br-extra" name="br_kisoku_kaitei" aria-label="就業規則の最終改定時期" placeholder="「ある」場合：最終改定はいつ頃ですか？（例：3年ほど前／改定したことがない など）" style="margin-top:10px">
                 </div>
               </div>
               <div class="branch-block" data-branch="kyuyo" style="display:none">
@@ -564,24 +604,41 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
               </div>
             </div>
 
-            <div class="form-group">
-              <label class="form-label">ご都合のよい連絡方法・時間帯 <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
-              <div class="checkbox-group" id="prefContact" style="margin-bottom:8px">
-                <label class="checkbox-label"><input type="radio" name="pref_contact" value="メール"> メール</label>
-                <label class="checkbox-label"><input type="radio" name="pref_contact" value="電話"> 電話</label>
-                <label class="checkbox-label"><input type="radio" name="pref_contact" value="どれでもよい"> どれでも</label>
-              </div>
-              <div class="checkbox-group" id="prefTime">
-                <label class="checkbox-label"><input type="radio" name="pref_time" value="午前"> 午前</label>
-                <label class="checkbox-label"><input type="radio" name="pref_time" value="午後"> 午後</label>
-                <label class="checkbox-label"><input type="radio" name="pref_time" value="夕方以降"> 夕方以降</label>
-                <label class="checkbox-label"><input type="radio" name="pref_time" value="いつでも"> いつでも</label>
-              </div>
-            </div>
-
                 </div>
               </div>
             </details>
+
+            <div class="contact-preferences" aria-labelledby="contactPreferencesTitle">
+              <div class="contact-preferences-head">
+                <span class="contact-preferences-title" id="contactPreferencesTitle">ご連絡方法の希望 <small style="color:var(--ink4);font-weight:400">（任意）</small></span>
+                <span class="contact-preferences-lead">「電話」または「どちらでもよい」を選ぶと、時間帯を指定できます。</span>
+              </div>
+              <fieldset class="choice-fieldset">
+                <legend class="form-label">ご希望の連絡方法</legend>
+                <div class="checkbox-group" id="prefContact">
+                  <label class="checkbox-label"><input type="radio" name="pref_contact" value="メール"> メール</label>
+                  <label class="checkbox-label"><input type="radio" name="pref_contact" value="電話"> 電話</label>
+                  <label class="checkbox-label"><input type="radio" name="pref_contact" value="どれでもよい"> どちらでもよい</label>
+                </div>
+              </fieldset>
+              <fieldset class="choice-fieldset contact-time-field" id="contactTimeField" hidden>
+                <legend class="form-label">電話してよい時間</legend>
+                <div class="checkbox-group" id="prefTime" aria-describedby="prefTimeHelp">
+                  <label class="checkbox-label"><input type="radio" name="pref_time" value="平日 9:00〜12:00"> 平日 9:00〜12:00</label>
+                  <label class="checkbox-label"><input type="radio" name="pref_time" value="平日 12:00〜15:00"> 平日 12:00〜15:00</label>
+                  <label class="checkbox-label"><input type="radio" name="pref_time" value="平日 15:00〜18:00"> 平日 15:00〜18:00</label>
+                  <label class="checkbox-label"><input type="radio" name="pref_time" value="平日ならいつでも"> 平日ならいつでも</label>
+                  <label class="checkbox-label"><input type="radio" name="pref_time" value="土日を希望（要相談）"> 土日を希望（要相談）</label>
+                </div>
+                <small class="form-help" id="prefTimeHelp">通常の電話連絡は平日9:00〜18:00です。土日をご希望の場合は、日程を確認してご連絡します。</small>
+              </fieldset>
+            </div>
+
+            <div class="form-group contact-note">
+              <label class="form-label" for="contactNote">補足・連絡事項 <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
+              <textarea id="contactNote" class="form-input" aria-describedby="contactNoteHelp" placeholder="書ききれなかったご事情、期限、資料の有無、電話に出られない時間などがあればご記入ください。"></textarea>
+              <small class="form-help" id="contactNoteHelp">冒頭の「ご相談の概要」と同じ内容を、もう一度書く必要はありません。</small>
+            </div>
 
             <div class="form-group privacy-consent">
               <input type="checkbox" id="privacy" required>
@@ -590,7 +647,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
               </label>
             </div>
             <button type="submit" class="form-submit">無料相談を申し込む</button>
-            <p style="text-align:center; font-size:12px; color:var(--ink3);margin-top:12px;">送信後、24時間以内にご連絡します。</p>
+            <p style="text-align:center; font-size:12px; color:var(--ink3);margin-top:12px;">原則、翌営業日まで（平日9:00〜18:00）にご連絡します。</p>
         </form>
       </div>
       <div>
@@ -794,9 +851,27 @@ function getText(nameAttr) {
   var el = document.querySelector('input[name="' + nameAttr + '"]');
   return el ? (el.value || '').trim() : '';
 }
+function updateContactTimeVisibility() {
+  var field = document.getElementById('contactTimeField');
+  var method = getRadioVal('pref_contact');
+  var show = method === '電話' || method === 'どれでもよい';
+  if (!field) return;
+  field.hidden = !show;
+  if (!show) {
+    Array.prototype.slice.call(field.querySelectorAll('input[name="pref_time"]'))
+      .forEach(function (input) { input.checked = false; });
+  }
+}
+var contactMethodInputs = Array.prototype.slice.call(document.querySelectorAll('input[name="pref_contact"]'));
+contactMethodInputs.forEach(function (input) {
+  if (input.dataset.timeToggleBound === '1') return;
+  input.dataset.timeToggleBound = '1';
+  input.addEventListener('change', updateContactTimeVisibility);
+});
+updateContactTimeVisibility();
 function branchVisible(key) {
   var b = document.querySelector('.branch-block[data-branch="' + key + '"]');
-  return !!(b && b.style.display !== 'none');
+  return !!(b && !b.closest('[hidden]') && b.style.display !== 'none');
 }
 // 「ご相談の内容」の選択に応じて、関連する確認ブロックだけを表示
 function updateBranches() {
@@ -819,18 +894,13 @@ function collectForm() {
     メール:   (document.getElementById('email').value || '').trim(),
     電話番号: (document.getElementById('tel').value || '').trim(),
     業種:     getChecked('industryCheckboxes').join('、'),
-    従業員数: getChecked('sizeCheckboxes').join('、'),
+    従業員数: getRadioVal('size'),
     ご相談内容: getChecked('serviceCheckboxes').join('、'),
-    顧問社労士の有無: getRadioVal('adv_komon'),
-    給与勤怠の管理方法: getRadioVal('adv_kyuyo_kanri'),
     ご相談のきっかけ: getChecked('ctxTrigger').join('、'),
-    導入ソフト: getChecked('softCheckboxes').join('、') + (getText('soft_other') ? '（その他：' + getText('soft_other') + '）' : ''),
-    入退社などの手続きの処理方法: getRadioVal('ctx_tetsuduki'),
-    ソフトサービスの月額費用: getRadioVal('ctx_bo_cost'),
-    事務作業の毎月の負担: getRadioVal('ctx_workload'),
     希望の連絡方法: getRadioVal('pref_contact'),
     つながりやすい時間帯: getRadioVal('pref_time'),
-    ご質問:   (document.getElementById('message').value || '').trim()
+    ご質問:   (document.getElementById('message').value || '').trim(),
+    補足・連絡事項: (document.getElementById('contactNote').value || '').trim()
   };
   // 相談内容に応じた事前確認（表示中のブロックのみ）
   if (branchVisible('joseikin')) {
@@ -858,7 +928,7 @@ function collectForm() {
   }
   // 未回答もシグナルとして残す（AI分析用。必須項目以外の空欄を「未回答」に）
   for (var key in data) {
-    if (data.hasOwnProperty(key) && data[key] === '' && key !== 'お名前' && key !== '会社名' && key !== 'メール' && key !== '電話番号' && key !== 'ご質問') {
+    if (data.hasOwnProperty(key) && data[key] === '' && key !== 'お名前' && key !== '会社名' && key !== 'メール' && key !== '電話番号' && key !== 'ご質問' && key !== '補足・連絡事項') {
       data[key] = '（未回答）';
     }
   }
@@ -980,7 +1050,8 @@ if (fromPlan) {
   const entry = {
     start:    ["スタート顧問プランについて詳しく知りたいです。", "顧問契約について"],
     standard: ["スタンダードプランについて詳しく知りたいです。", "顧問契約について"],
-    custom:   ["カスタムプラン（単発・スポットのご依頼）について相談したいです。", "その他"],
+    custom:   ["カスタム顧問プランについて、業務範囲や従業員数に合う内容を相談したいです。", "顧問契約について"],
+    sim:      ["料金シミュレーターの結果をもとに、顧問プランを相談したいです。", "顧問契約について"],
     joseikin: ["助成金の申請サポートについて相談したいです。", "助成金申請"],
     shugyo:   ["就業規則の作成・見直しについて相談したいです。", "就業規則の作成・改定"],
     shaho:    ["社会保険・労働保険の手続き代行について相談したいです。", "社会保険・労働保険手続き"],
