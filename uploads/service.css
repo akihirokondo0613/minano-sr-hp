@@ -171,7 +171,7 @@ html.nav-menu-open :is(.mn-mascot,.mn-recall,.floating){opacity:0!important;poin
 .note-cell:nth-child(2n){border-right:none}
 .note-ic{width:34px;height:34px;flex-shrink:0;color:var(--g600);display:flex;align-items:center;justify-content:center}
 .note-ic svg{width:26px;height:26px;stroke-width:1.6}
-.note-cell h4{font-size:15.5px;font-weight:700;color:var(--ink);margin-bottom:8px;letter-spacing:.01em;line-height:1.5}
+.note-cell :is(h3,h4){font-size:15.5px;font-weight:700;color:var(--ink);margin-bottom:8px;letter-spacing:.01em;line-height:1.5}
 .note-cell p{font-size:13.5px;color:var(--ink2);line-height:1.8;letter-spacing:.02em;text-wrap:pretty}
 
 /* ─── ツール連携（ロゴテキスト）─── */
@@ -198,7 +198,7 @@ html.nav-menu-open :is(.mn-mascot,.mn-recall,.floating){opacity:0!important;poin
 .change-cell{padding:30px 26px;border-right:1px solid var(--line)}
 .change-ic{width:34px;height:34px;color:var(--g600);margin-bottom:16px}
 .change-ic svg{width:30px;height:30px;stroke-width:1.6}
-.change-cell h4{font-size:15.5px;font-weight:700;color:var(--ink);margin-bottom:9px;letter-spacing:.01em;line-height:1.5}
+.change-cell :is(h3,h4){font-size:15.5px;font-weight:700;color:var(--ink);margin-bottom:9px;letter-spacing:.01em;line-height:1.5}
 .change-cell p{font-size:13.5px;color:var(--ink2);line-height:1.85;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
 
 /* ─── FINAL CTA ─── */
@@ -301,7 +301,8 @@ html.nav-menu-open :is(.mn-mascot,.mn-recall,.floating){opacity:0!important;poin
 }
 @media(max-width:480px){
   .footer-grid{gap:28px 16px}
-  .footer-ul a[href^="tel:"],.footer-ul a[href^="mailto:"]{font-size:11.5px}
+  .footer-ul a{display:inline-flex;align-items:center;min-height:32px}
+  .footer-ul a[href^="tel:"],.footer-ul a[href^="mailto:"]{font-size:13px}
   .page-hero-cta{flex-direction:column;align-items:stretch}
   .page-hero-cta .btn-primary,.page-hero-cta .btn-secondary{justify-content:center}
   .ctable th,.ctable td{display:block;width:100%}
@@ -370,8 +371,8 @@ html.nav-menu-open :is(.mn-mascot,.mn-recall,.floating){opacity:0!important;poin
 
 /* ⑦ 注意点 */
 .caution{max-width:820px;margin:38px auto 0;border:1px solid var(--g100);border-radius:var(--r);background:var(--g25);padding:26px 30px}
-.caution h4{font-size:14px;font-weight:700;color:var(--g800);margin-bottom:14px;letter-spacing:.02em;display:flex;align-items:center;gap:9px}
-.caution h4 svg{width:18px;height:18px;color:var(--g600);stroke-width:1.7;flex-shrink:0}
+.caution :is(h3,h4){font-size:14px;font-weight:700;color:var(--g800);margin-bottom:14px;letter-spacing:.02em;display:flex;align-items:center;gap:9px}
+.caution :is(h3,h4) svg{width:18px;height:18px;color:var(--g600);stroke-width:1.7;flex-shrink:0}
 .caution ul{list-style:none;display:flex;flex-direction:column;gap:10px}
 .caution li{position:relative;padding-left:18px;font-size:13px;color:var(--ink2);line-height:1.8;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
 .caution li::before{content:'';position:absolute;left:0;top:.72em;width:5px;height:5px;border-radius:50%;background:var(--g500)}

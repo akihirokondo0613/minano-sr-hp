@@ -349,6 +349,15 @@ main > section:not(.hero) {
 </style>
 <link rel="stylesheet" href="skin-v2.css?v=20260723-herophoto1" media="print" data-async-style onload="this.media='all';this.onload=null">
 <noscript><link rel="stylesheet" href="skin-v2.css?v=20260723-herophoto1"></noscript>
+<style id="home-hero-legibility">
+@media(max-width:700px){
+  .hero-veil{background:linear-gradient(to bottom,rgba(249,250,247,.82) 0%,rgba(249,250,247,.72) 68%,rgba(249,250,247,.42) 84%,rgba(249,250,247,0) 100%)}
+  .hero-sub{width:fit-content;max-width:100%;padding:10px 12px;border-radius:10px;background:rgba(249,250,247,.94);box-shadow:0 1px 0 rgba(18,63,48,.05)}
+}
+@media(min-width:641px) and (max-width:900px){
+  .home-plan-card:last-child{grid-column:1 / -1;width:calc(50% - 8px);justify-self:center}
+}
+</style>
 <!-- Structured Data: LocalBusiness / ProfessionalService -->
 <script type="application/ld+json">
 {
@@ -596,8 +605,8 @@ main > section:not(.hero) {
         <p class="home-plan-en">BASIC</p><h3 class="home-plan-name">スタート顧問プラン</h3>
         <p class="home-plan-price">¥35,000<small>〜／月（税抜）</small></p><p class="home-plan-unit">従業員5名まで目安</p>
         <p class="home-plan-founder">創業3年以内：¥25,000〜／月</p>
-        <p class="home-plan-feature">入退社手続き・年度更新など</p>
-        <ul class="home-plan-list"><li>社会保険・雇用保険の入退社手続き</li><li>年度更新・算定基礎届・労使協定</li><li>助成金・法改正情報のご案内</li></ul>
+        <p class="home-plan-feature">定例手続きと主な給付申請まで</p>
+        <ul class="home-plan-list"><li>入退社・年度更新・算定基礎届・労使協定</li><li>出産手当金・育児休業・介護休業・高年齢の給付申請</li><li>助成金・法改正情報のご案内</li></ul>
         <a href="pricing.html#plan-basic" class="home-plan-link">詳しい内容を見る →</a>
       </article>
       <article class="home-plan-card is-main">
@@ -612,12 +621,12 @@ main > section:not(.hero) {
         <p class="home-plan-en">CUSTOM</p><h3 class="home-plan-name">カスタムプラン</h3>
         <p class="home-plan-price is-estimate">お見積もり</p><p class="home-plan-unit">内容・規模に応じてご提示</p>
         <p class="home-plan-founder">月額契約は創業割の対象</p>
-        <p class="home-plan-feature">助成金・就業規則・個別相談など</p>
-        <ul class="home-plan-list"><li>雇用関係助成金の申請</li><li>就業規則・人事制度の整備</li><li>労務トラブルなどの個別相談</li></ul>
+        <p class="home-plan-feature">人数・体制に合わせて月額業務を設計</p>
+        <ul class="home-plan-list"><li>従業員31名以上・複数拠点でのご依頼</li><li>複数の定例業務を組み合わせたい場合</li><li>社内の担当範囲に合わせた業務分担</li></ul>
         <a href="pricing.html#plan-custom" class="home-plan-link">詳しい内容を見る →</a>
       </article>
     </div>
-    <p class="home-plan-note">料金は従業員数・業務範囲により変わります。表示は目安（税抜）です。初回相談後、着手前にお見積もりをご提示します。</p>
+    <p class="home-plan-note">料金は従業員数・業務範囲により変わります。表示は目安（税抜）です。賞与支払届・年末調整の資料整理と税理士連携・助成金申請は別料金となり、初回相談後、着手前にお見積もりをご提示します。</p>
     <div class="home-section-more rv"><a href="pricing.html" class="link-more">料金・顧問プランを詳しく見る →</a></div>
   </div>
 </section>
