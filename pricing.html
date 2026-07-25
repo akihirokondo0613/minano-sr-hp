@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="page-enter.js?v=20260723-privacy1"></script>
+<script defer src="page-enter.js?v=20260725-nocat1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <style>
 .spot-fees .sf-note{color:var(--ink3)}
+.page-hero .breadcrumb span{color:var(--ink3)!important}
 .spot-fees summary{transition:background .2s,color .2s}
 .spot-fees summary:hover,.spot-fees[open] summary{background:color-mix(in srgb,var(--moegi-l) 42%,#fff)}
 .spot-fees summary:focus-visible,.plan-btn:focus-visible,.ks-cta:focus-visible{outline:3px solid color-mix(in srgb,var(--moegi) 62%,#fff);outline-offset:3px}
@@ -39,7 +40,7 @@
 <!-- Theme + Favicon (inline SVG avoids extra asset) -->
 <meta name="theme-color" content="#123F30">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="skin-v2.css?v=20260723-herophoto1">
+<link rel="stylesheet" href="skin-v2.css?v=20260725-nocat1">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"料金・顧問プラン｜みなの社会保険労務士事務所","description":"みなの社会保険労務士事務所の料金・顧問プラン。顧問料、創業3年以内の割引、スポット料金、助成金の成功報酬、料金シミュレーターをご案内します。","url":"https://minano-sr.com/pricing.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://minano-sr.com/"},{"@type":"ListItem","position":2,"name":"料金・顧問プラン","item":"https://minano-sr.com/pricing.html"}]}]}
 </script>
@@ -91,7 +92,7 @@
       <nav class="breadcrumb" aria-label="パンくずリスト"><a href="index.html">ホーム</a><span class="sep">›</span><span>料金・顧問プラン</span></nav>
       <span class="page-kicker">Pricing</span>
       <h1>料金・顧問プラン</h1>
-      <p class="lead">顧問料に含まれる業務、追加料金が生じる業務、従業員数による目安をまとめています。</p>
+      <p class="lead">顧問料に含まれる業務、顧問先の追加料金、スポット料金を固定額でまとめています。</p>
     </div>
   </header>
 
@@ -117,23 +118,23 @@
         <p class="plan-name">スタート顧問プラン</p>
         <p class="plan-tagline">最低限の手続き代行から</p>
         <div class="plan-price">¥35,000</div>
-        <div class="plan-unit">〜 / 月（税抜）・従業員5名まで目安</div>
-        <p class="plan-founder">創業3年以内なら <b>¥25,000</b>〜 / 月</p>
+        <div class="plan-unit">/ 月（税抜）・従業員5名まで</div>
+        <p class="plan-founder">創業3年以内なら <b>¥25,000 / 月</b></p>
         <div class="plan-div"></div>
         <p class="plan-section">含まれる内容</p>
         <ul class="plan-features">
-          <li>社会保険・雇用保険の入退社手続き</li>
-          <li>労働保険の年度更新・社会保険の算定基礎届</li>
+          <li>社会保険・雇用保険の入退社手続き<br><span class="plan-feature-sub">離職票を含む</span></li>
           <li>労使協定の作成・届出<br><span class="plan-feature-sub">36協定など</span></li>
-          <li>扶養・氏名変更等の定例届出</li>
+          <li>月額変更・扶養・氏名変更等の定例届出</li>
           <li>出産手当金の支給申請</li>
           <li>育児休業給付・介護休業給付・高年齢雇用継続給付</li>
+          <li>労災発生時の初動相談・必要書類の案内・必要な場合の労働者死傷病報告</li>
           <li>法定三帳簿の整備<br><span class="plan-feature-sub">労働者名簿・賃金台帳・出勤簿</span></li>
           <li>助成金情報の案内</li>
           <li>法改正情報の配信</li>
         </ul>
         <a href="uploads/contact.html?from=start" class="plan-btn">このプランで相談する</a>
-        <p class="plan-note">6人目以降1名あたり +¥2,000/月（例：10名なら ¥45,000/月）。31名以上はお見積もり</p>
+        <p class="plan-note">6人目以降1名あたり +¥2,000/月（例：10名なら ¥45,000/月）</p>
       </div>
       <div class="plan plan-hot rv d2" id="plan-standard">
         <span class="plan-hot-label">おすすめ</span>
@@ -141,8 +142,8 @@
         <p class="plan-name">スタンダードプラン</p>
         <p class="plan-tagline">給与計算までまとめてお任せ</p>
         <div class="plan-price">¥55,000</div>
-        <div class="plan-unit">〜 / 月（税抜）・従業員10名まで目安</div>
-        <p class="plan-founder">創業3年以内なら <b>¥45,000</b>〜 / 月</p>
+        <div class="plan-unit">/ 月（税抜）・従業員10名まで</div>
+        <p class="plan-founder">創業3年以内なら <b>¥45,000 / 月</b></p>
         <div class="plan-div"></div>
         <p class="plan-inherit"><span class="pi-tag">BASIC</span>のすべて</p>
         <p class="plan-section plan-section-plus">＋ こちらが加わります</p>
@@ -153,25 +154,25 @@
         </ul>
         <p style="font-size:12px;color:var(--ink3);margin-top:10px;line-height:1.7">※ 年末調整は別料金（下記オプション）。</p>
         <a href="uploads/contact.html?from=standard" class="plan-btn plan-btn-main">このプランで相談する</a>
-        <p class="plan-note">11人目以降1名あたり +¥2,500/月（例：20名なら ¥80,000/月）。31名以上はお見積もり</p>
+        <p class="plan-note">11人目以降1名あたり +¥2,500/月（例：20名なら ¥80,000/月）</p>
       </div>
       <div class="plan rv d3" id="plan-custom">
-        <p class="plan-badge">CUSTOM</p>
-        <p class="plan-name">カスタムプラン</p>
-        <p class="plan-tagline">必要なものを、必要なだけ</p>
-        <div class="plan-price" style="font-size:clamp(20px,2.5vw,28px);line-height:1.3;margin-top:6px">お見積もり</div>
-        <div class="plan-unit">内容に応じてご提示します</div>
-        <p class="plan-founder">月額のご契約は創業割（−¥10,000/月）対象</p>
+        <p class="plan-badge">31+ EMPLOYEES</p>
+        <p class="plan-name">31名以上プラン</p>
+        <p class="plan-tagline">人数に応じた定額式</p>
+        <div class="plan-price">¥87,000</div>
+        <div class="plan-unit">/ 月（税抜）・31名の手続き顧問</div>
+        <p class="plan-founder">給与計算込みなら <b>¥107,500 / 月</b></p>
         <div class="plan-div"></div>
-        <p class="plan-section">こんなご要望に</p>
+        <p class="plan-section">料金の決まり方</p>
         <ul class="plan-features">
-          <li>従業員31名以上・複数拠点で依頼したい</li>
-          <li>複数の業務を組み合わせたい</li>
-          <li>既存の社内体制に合わせて範囲を調整したい</li>
-          <li>スタート・スタンダードの一部だけ使いたい</li>
+          <li>手続き顧問：基本¥35,000＋6人目から1名¥2,000</li>
+          <li>給与計算込み：基本¥55,000＋11人目から1名¥2,500</li>
+          <li>創業3年以内は月額から¥10,000割引</li>
+          <li>料金シミュレーターの固定計算は30名まで</li>
         </ul>
-        <a href="uploads/contact.html?from=custom" class="plan-btn">内容を相談する</a>
-        <p class="plan-note">初回相談 無料</p>
+        <a href="uploads/contact.html?from=custom" class="plan-btn">31名以上で相談する</a>
+        <p class="plan-note">32人目以降：手続き顧問 +¥2,000/名・月、給与計算込み +¥2,500/名・月</p>
       </div>
     </div>
     <div class="price-incl rv">
@@ -179,65 +180,67 @@
         <image-slot id="price-incl-photo" src="assets/illustrations/18_payroll_calculation.webp" crop-scale="1.061789" crop-x="0.217238" crop-y="-1.837216" placeholder="書類・手続きのイメージ写真（推奨 4:3）"></image-slot>
       </div>
       <div>
-      <p class="price-incl-h">定例手続きと主な雇用・社会保険給付は、<strong>顧問料に含まれています。</strong></p>
-      <p class="price-incl-sub">年度更新・算定基礎届・労使協定に加え、出産手当金、育児休業給付・介護休業給付・高年齢雇用継続給付も継続して対応します。
-あとから費用に驚くことのない料金体系を大切にしています。</p>
+      <p class="price-incl-h">定例手続きと、従業員のライフイベントに伴う<strong>定型的な給付申請は顧問料に含まれます。</strong></p>
+      <p class="price-incl-sub">出産手当金、育児休業給付、介護休業給付、高年齢雇用継続給付に加え、労災発生時の初動相談と、必要な場合の労働者死傷病報告まで対応します。傷病手当金と労災保険給付は初回申請のみ別料金で、同一傷病・同一事故の定型的な継続申請は顧問料に含まれます。</p>
       </div>
     </div>
     <details class="spot-fees rv" id="retainer-extra-fees">
       <summary>
         <span class="sf-t">顧問契約者向けの別料金</span>
-        <span class="sf-sub">通常の顧問業務を超えて個別対応が必要なものだけ、追加料金をいただきます。</span>
+        <span class="sf-sub">初回確認の負担が大きい申請と、年次・臨時業務だけを固定額で掲載しています。</span>
         <span class="sf-arr" aria-hidden="true">▾</span>
       </summary>
       <div class="sf-body">
-        <p class="sf-taxnote">表示価格はすべて税抜です。顧問先価格は原則として同じ業務のスポット料金の50％です（助成金を除く）。下記以外の定例手続きは、原則として顧問料に含まれます。</p>
+        <p class="sf-taxnote">表示価格はすべて税抜です。下記の顧問先別料金は、対応するスポット料金の50％です（助成金を除く）。入退社などの定例手続きと通常の給付申請は顧問料に含まれます。</p>
         <p class="sf-group-t">個別の申請・年次業務</p>
-        <div class="sf-row"><span class="sf-name">傷病手当金の支給申請（初回）</span><span class="sf-price">¥5,000〜 / 件</span><span class="sf-desc">初回の申請書作成・提出まで。スポット料金の50％です。</span></div>
-        <div class="sf-row"><span class="sf-name">労災保険給付の申請（初回）</span><span class="sf-price">スポット料金の50％</span><span class="sf-desc">療養・休業などの初回申請をまとめてご案内します。内容を確認して事前にお見積もりします。</span></div>
+        <div class="sf-row"><span class="sf-name">会社設立時の新規適用手続き</span><span class="sf-price">¥30,000 / 事業所（5名まで）</span><span class="sf-desc">労働保険・雇用保険・社会保険の新規加入3保険一式。6名目から1名¥1,000を加算します。</span></div>
+        <div class="sf-row"><span class="sf-name">労働保険の年度更新</span><span class="sf-price">基本 ¥12,500＋対象者1名¥500 / 回</span><span class="sf-desc">申告書の作成から納付手続きのご案内まで。</span></div>
+        <div class="sf-row"><span class="sf-name">社会保険の算定基礎届</span><span class="sf-price">基本 ¥12,500＋対象者1名¥500 / 回</span><span class="sf-desc">定時決定の届書作成・提出まで。</span></div>
+        <div class="sf-row"><span class="sf-name">傷病手当金の支給申請（初回）</span><span class="sf-price">¥7,500 / 1名</span><span class="sf-desc">初回の申請書作成・提出まで。同一傷病の定型的な継続申請は顧問料に含まれます。</span></div>
+        <div class="sf-row"><span class="sf-name">労災保険給付の申請（初回一式）</span><span class="sf-price">¥15,000 / 件</span><span class="sf-desc">療養（補償）給付・休業（補償）給付の初回書類一式。初動相談・必要書類の案内・必要な場合の労働者死傷病報告と、同一事故の定型的な継続申請は顧問料に含まれます。</span></div>
         <div class="sf-row"><span class="sf-name">賞与支払届</span><span class="sf-price">基本 ¥10,000＋対象者1名¥500 / 回</span><span class="sf-desc">賞与支払届の作成・提出まで。賞与計算は含みません。</span></div>
         <div class="sf-row"><span class="sf-name">年末調整の資料整理・税理士連携</span><span class="sf-price">基本 ¥10,000＋従業員1名¥750</span><span class="sf-desc">給与データや申告書類をとりまとめ、提携税理士へ連携します。</span></div>
         <p class="sf-group-t">助成金</p>
         <div class="sf-row"><span class="sf-name">助成金の申請代行</span><span class="sf-price">成功報酬：受給額の15％</span><span class="sf-desc">顧問契約者向けの報酬率です。着手前に対象可能性と必要な準備をご説明します。</span></div>
-        <p class="sf-note">※ 税理士法上職務外の処理については、提携の税理士に依頼します。</p>
+        <p class="sf-note">※ 個別の事実調査や制度設計などを伴う業務は、公開固定料金の対象外です。税理士法上職務外の処理については、提携の税理士に依頼します。</p>
       </div>
     </details>
     <details class="spot-fees rv" id="spot-fees">
       <summary>
         <span class="sf-t">スポット依頼の料金</span>
-        <span class="sf-sub">顧問契約のない方が、手続きや相談を1回ずつ依頼する場合の目安です。</span>
+        <span class="sf-sub">顧問契約のない方が、手続きや相談を1回ずつ依頼する場合の固定料金です。</span>
         <span class="sf-arr" aria-hidden="true">▾</span>
       </summary>
       <div class="sf-body">
         <p class="sf-taxnote">表示価格はすべて税抜です。実費（郵送費・交通費など）は実額のみで、上乗せはしません。</p>
         <p class="sf-group-t">手続き・届出</p>
-        <div class="sf-row"><span class="sf-name">入社手続き（資格取得届）</span><span class="sf-price">¥10,000〜 / 1名</span><span class="sf-desc">健康保険・厚生年金・雇用保険の取得手続きをセットで。扶養届も同時に対応します。</span></div>
-        <div class="sf-row"><span class="sf-name">退社手続き（資格喪失届）</span><span class="sf-price">¥10,000〜 / 1名</span><span class="sf-desc">健康保険・厚生年金・雇用保険の喪失手続きをセットで。</span></div>
-        <div class="sf-row"><span class="sf-name">離職票の作成</span><span class="sf-price">¥15,000〜 / 1名</span><span class="sf-desc">離職証明書の作成・ハローワークへの提出まで。退社手続き（喪失届）とセットの場合は合計 ¥20,000/1名。</span></div>
-        <div class="sf-row"><span class="sf-name">会社設立時の新規適用手続き</span><span class="sf-price">¥25,000〜50,000</span><span class="sf-desc">労働保険・社会保険の新規加入をセットで。</span></div>
-        <div class="sf-row"><span class="sf-name">労使協定の作成・届出（36協定など）</span><span class="sf-price">¥15,000〜 / 件</span><span class="sf-desc">協定書の作成から労働基準監督署への届出まで。</span></div>
+        <div class="sf-row"><span class="sf-name">入社手続き（資格取得届）</span><span class="sf-price">¥20,000 / 1名</span><span class="sf-desc">健康保険・厚生年金・雇用保険の取得手続きをセットで。扶養届も同時に対応します。</span></div>
+        <div class="sf-row"><span class="sf-name">退社手続き（資格喪失届）</span><span class="sf-price">¥20,000 / 1名</span><span class="sf-desc">健康保険・厚生年金・雇用保険の喪失手続きをセットで。</span></div>
+        <div class="sf-row"><span class="sf-name">離職票の作成</span><span class="sf-price">¥15,000 / 1名</span><span class="sf-desc">離職証明書の作成・提出まで。退社手続きと同時依頼の場合は合計 ¥30,000/1名です。</span></div>
+        <div class="sf-row"><span class="sf-name">会社設立時の新規適用手続き</span><span class="sf-price">¥60,000 / 事業所（5名まで）</span><span class="sf-desc">労働保険・雇用保険・社会保険の新規加入3保険一式。6名目から1名¥2,000を加算します。</span></div>
+        <div class="sf-row"><span class="sf-name">労使協定の作成・届出（36協定など）</span><span class="sf-price">¥20,000 / 事業所</span><span class="sf-desc">協定書の作成から労働基準監督署への届出まで。</span></div>
         <p class="sf-group-t">個別の申請</p>
-        <div class="sf-row"><span class="sf-name">出産手当金の支給申請</span><span class="sf-price">¥10,000〜 / 件</span><span class="sf-desc">申請書の作成・提出まで。顧問契約者は顧問料に含まれます。</span></div>
-        <div class="sf-row"><span class="sf-name">育児休業給付の申請</span><span class="sf-price">初回 ¥20,000 / 1名</span><span class="sf-desc">受給資格の確認から初回申請まで。2回目以降は ¥5,000/回。顧問契約者は顧問料に含まれます。</span></div>
-        <div class="sf-row"><span class="sf-name">高年齢雇用継続給付の申請</span><span class="sf-price">初回 ¥15,000 / 1名</span><span class="sf-desc">60歳到達時の賃金登録から初回申請まで。継続申請は ¥5,000/回。顧問契約者は顧問料に含まれます。</span></div>
-        <div class="sf-row"><span class="sf-name">介護休業給付の申請</span><span class="sf-price">お見積もり</span><span class="sf-desc">受給資格の確認から申請まで。顧問契約者は顧問料に含まれます。</span></div>
-        <div class="sf-row"><span class="sf-name">傷病手当金の支給申請（初回）</span><span class="sf-price">¥10,000〜 / 件</span><span class="sf-desc">初回の申請書作成・提出まで。</span></div>
-        <div class="sf-row"><span class="sf-name">労災保険給付の申請（初回）</span><span class="sf-price">お見積もり</span><span class="sf-desc">療養・休業などの初回申請をまとめてご案内します。内容を確認して事前にお見積もりします。</span></div>
+        <div class="sf-row"><span class="sf-name">出産手当金の支給申請</span><span class="sf-price">¥15,000 / 1名</span><span class="sf-desc">申請書の作成・提出まで。顧問契約者は顧問料に含まれます。</span></div>
+        <div class="sf-row"><span class="sf-name">育児休業給付の申請</span><span class="sf-price">初回 ¥20,000 / 1名</span><span class="sf-desc">休業開始時賃金証明と初回申請まで。2回目以降は ¥5,000/回。顧問契約者は顧問料に含まれます。</span></div>
+        <div class="sf-row"><span class="sf-name">高年齢雇用継続給付の申請</span><span class="sf-price">初回 ¥20,000 / 1名</span><span class="sf-desc">60歳到達時の賃金登録と初回申請まで。継続申請は ¥5,000/回。顧問契約者は顧問料に含まれます。</span></div>
+        <div class="sf-row"><span class="sf-name">介護休業給付の申請</span><span class="sf-price">初回 ¥20,000 / 1名</span><span class="sf-desc">休業開始時賃金証明と初回申請まで。2回目以降は ¥5,000/回。顧問契約者は顧問料に含まれます。</span></div>
+        <div class="sf-row"><span class="sf-name">傷病手当金の支給申請（初回）</span><span class="sf-price">¥15,000 / 1名</span><span class="sf-desc">初回の申請書作成・提出まで。</span></div>
+        <div class="sf-row"><span class="sf-name">労災保険給付の申請（初回一式）</span><span class="sf-price">¥30,000 / 件</span><span class="sf-desc">療養（補償）給付・休業（補償）給付の初回書類一式。</span></div>
         <div class="sf-row"><span class="sf-name">助成金の申請代行</span><span class="sf-price">成功報酬：受給額の20％</span><span class="sf-desc">着手金0円。受給できなければ報酬はいただきません。</span></div>
         <p class="sf-group-t">給与計算・年次業務</p>
-        <div class="sf-row"><span class="sf-name">単発の給与・賞与計算</span><span class="sf-price">基本 ¥15,000＋従業員1名¥800 / 回</span><span class="sf-desc">賞与計算だけなど、給与計算を含まないプランの方の単発のご依頼に。</span></div>
+        <div class="sf-row"><span class="sf-name">単発の給与・賞与計算</span><span class="sf-price">基本 ¥15,000＋対象者1名¥800 / 回</span><span class="sf-desc">顧問契約のない方の単発依頼に。顧問先は給与計算を含むプランへの変更をご相談ください。</span></div>
         <div class="sf-row"><span class="sf-name">賞与支払届</span><span class="sf-price">基本 ¥20,000＋対象者1名¥1,000 / 回</span><span class="sf-desc">賞与支払届の作成・提出まで。賞与計算は含みません。</span></div>
         <div class="sf-row"><span class="sf-name">年末調整の資料整理・税理士連携</span><span class="sf-price">基本 ¥20,000＋従業員1名¥1,500</span><span class="sf-desc">給与データや申告書類をとりまとめ、提携税理士へ連携します。</span></div>
-        <div class="sf-row"><span class="sf-name">労働保険の年度更新（単発）</span><span class="sf-price">¥20,000〜 / 回</span><span class="sf-desc">申告書の作成から納付手続きのご案内まで。毎年6〜7月の手続きです。</span></div>
-        <div class="sf-row"><span class="sf-name">算定基礎届の提出（単発）</span><span class="sf-price">¥20,000〜 / 回</span><span class="sf-desc">社会保険（健康保険・厚生年金）の定時決定。毎年7月の手続きです。</span></div>
+        <div class="sf-row"><span class="sf-name">労働保険の年度更新（単発）</span><span class="sf-price">基本 ¥25,000＋対象者1名¥1,000 / 回</span><span class="sf-desc">申告書の作成から納付手続きのご案内まで。毎年6月から7月の手続きです。</span></div>
+        <div class="sf-row"><span class="sf-name">算定基礎届の提出（単発）</span><span class="sf-price">基本 ¥25,000＋対象者1名¥1,000 / 回</span><span class="sf-desc">社会保険（健康保険・厚生年金）の定時決定。毎年7月の手続きです。</span></div>
         <p class="sf-group-t">研修</p>
-        <div class="sf-row"><span class="sf-name">管理職研修・ハラスメント研修</span><span class="sf-price">¥50,000〜 / 回</span><span class="sf-desc">内容・時間により。オンライン開催も可能です。</span></div>
+        <div class="sf-row"><span class="sf-name">管理職研修・ハラスメント研修</span><span class="sf-price">¥30,000 / 60分</span><span class="sf-desc">資料作成とオンライン開催を含みます。</span></div>
         <p class="sf-group-t">相談</p>
-        <div class="sf-row"><span class="sf-name">スポット労務相談（60分）</span><span class="sf-price">¥15,000 / 回</span><span class="sf-desc">解雇・問題社員・ハラスメント対応など、1回だけのご相談に。オンライン可。初回相談（30分）は無料です。</span></div>
-        <div class="sf-row"><span class="sf-name">労務トラブルの個別案件</span><span class="sf-price">お見積もり</span><span class="sf-desc">あっせん対応・退職勧奨の個別協議など、突発案件の内容に応じて。</span></div>
+        <div class="sf-row"><span class="sf-name">スポット労務相談（60分）</span><span class="sf-price">¥10,000 / 回</span><span class="sf-desc">解雇・問題社員・ハラスメント対応など、1回だけのご相談に。オンライン可。初回相談（30分）は無料です。</span></div>
+        <div class="sf-row"><span class="sf-name">労務トラブルの初動整理</span><span class="sf-price">¥30,000 / 件</span><span class="sf-desc">資料確認と60分相談で、事実関係・論点・次の対応を整理します。交渉代理や文書作成は含みません。</span></div>
         <div class="sf-row"><span class="sf-name">実費</span><span class="sf-price">実額のみ</span><span class="sf-desc">郵送費・交通費など。上乗せはしません。</span></div>
         <div class="sf-bridge">スポットご利用後3ヶ月以内に顧問契約をいただいた場合、お支払いいただいたスポット料金（上限 ¥30,000）を初月の顧問料に充当します。</div>
-        <p class="sf-note">※ 金額は目安（税抜）です。内容・規模により変動します。着手前に必ずお見積もりを提示し、ご納得いただいてから進めます。税理士法上職務外の処理については、提携の税理士に依頼します。（料金改定日：2026年7月24日）</p>
+        <p class="sf-note">※ 上記は記載した標準業務範囲の固定料金（税抜）です。税理士法上職務外の処理については、提携の税理士に依頼します。（料金改定日：2026年7月24日）</p>
       </div>
     </details>
     <details class="spot-fees rv" id="simulator">
@@ -264,16 +267,16 @@
                   </div>
                 </div>
               </div>
-              <p class="ks-note">顧問料には定例手続きと主な雇用・社会保険給付を含みます。傷病手当金・労災の初回申請、年末調整の資料整理・税理士連携、賞与支払届など、別料金表に記載した業務はこの計算に含まれません。</p>
+              <p class="ks-note">顧問料には入退社などの定例手続きと主な雇用・社会保険給付を含みます。年度更新・算定基礎届、傷病手当金・労災の初回申請、年末調整の資料整理・税理士連携、賞与支払届など、別料金表に記載した業務はこの計算に含まれません。</p>
             </div>
             <div class="ks-result" aria-live="polite">
               <span class="ks-eyebrow">顧問料の目安（税抜）</span>
-              <div class="ks-price" id="ksPrice">¥35,000<small>〜 / 月</small></div>
-              <p class="ks-break" id="ksBreak">スタート顧問プラン｜手続き代行＋法改正フォロー（従業員5名まで目安）</p>
+              <div class="ks-price" id="ksPrice">¥35,000<small> / 月</small></div>
+              <p class="ks-break" id="ksBreak">スタート顧問プラン｜手続き代行＋法改正フォロー（従業員5名まで）</p>
               <span class="ks-badge" id="ksBadge" hidden>創業割 −¥10,000/月 適用</span>
               <p class="ks-year" id="ksYear">年間 ¥420,000（税抜）</p>
               <a href="uploads/contact.html?from=sim" class="ks-cta">この結果をもとに無料相談する</a>
-              <p class="ks-note">※ 顧問料は業務範囲により変わります。正確な金額は、無料相談後にお見積もりします。</p>
+              <p class="ks-note">※ 30名までは公開料金をそのまま計算します。31名以上は個別見積もりです。別料金表の業務と実費は含まれません。</p>
             </div>
           </div>
         </div>
@@ -292,18 +295,28 @@
             var payroll = $('#ksPayroll').checked, startup = $('#ksStartup').checked;
             // 顧問料の目安（料金表の公表値に準拠）
             var plan, price = null, note;
-            if (emp > 30) { plan = 'カスタムプラン'; note = '従業員31名以上は、体制・業務範囲に合わせてお見積もりします。'; }
-            else if (payroll) { plan = 'スタンダードプラン'; price = 55000 + (emp > 10 ? (emp - 10) * 2500 : 0); note = emp > 10 ? '給与計算込み。11名以降の加算（＋¥2,500/名・月）を含みます。' : '給与計算までまとめてお任せ（従業員10名まで目安）。'; }
-            else if (emp > 5) { plan = 'スタート顧問プラン'; price = 35000 + (emp - 5) * 2000; note = '基本¥35,000＋6名以降の加算（＋¥2,000/名・月）を含みます。'; }
-            else { plan = 'スタート顧問プラン'; price = 35000; note = '手続き代行＋法改正フォロー（従業員5名まで目安）。'; }
+            if (emp > 30) {
+              plan = '31名以上';
+              note = '31名以上は、体制と業務範囲を確認して個別にお見積もりします。';
+            } else if (payroll) {
+              plan = 'スタンダードプラン';
+              price = 55000 + (emp > 10 ? (emp - 10) * 2500 : 0);
+              note = emp > 10 ? '基本¥55,000＋11名以降の加算（＋¥2,500/名・月）を含みます。' : '給与計算までまとめてお任せ（従業員10名まで）。';
+            } else {
+              plan = 'スタート顧問プラン';
+              price = 35000 + (emp > 5 ? (emp - 5) * 2000 : 0);
+              note = emp > 5 ? '基本¥35,000＋6名以降の加算（＋¥2,000/名・月）を含みます。' : '手続き代行＋法改正フォロー（従業員5名まで）。';
+            }
             if (startup && price !== null) { price -= 10000; badgeEl.hidden = false; } else { badgeEl.hidden = true; }
             if (price !== null) {
               priceEl.classList.remove('est');
               priceEl.textContent = yen(price);
-              var sm = document.createElement('small'); sm.textContent = '〜 / 月'; priceEl.appendChild(sm);
+              var sm = document.createElement('small'); sm.textContent = ' / 月'; priceEl.appendChild(sm);
               yearEl.textContent = '年間 ' + yen(price * 12) + '（税抜）';
             } else {
-              priceEl.classList.add('est'); priceEl.textContent = 'お見積もり'; yearEl.textContent = '';
+              priceEl.classList.add('est');
+              priceEl.textContent = 'お見積もり';
+              yearEl.textContent = '';
             }
             breakEl.textContent = plan + '｜' + note;
           }
@@ -319,7 +332,7 @@
         </script>
       </div>
     </details>
-    <p class="plan-note" style="font-size:13px;margin-top:20px">※料金はすべて税抜です。従業員数・業務範囲により変動します。初回のご相談は無料ですので、まずはお気軽にお問い合わせください。</p>
+    <p class="plan-note" style="font-size:13px;margin-top:20px">※料金はすべて税抜です。掲載外の業務と実費は含まれません。初回のご相談は無料です。</p>
   </div>
 </section>
 
@@ -508,7 +521,6 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
 </script>
 <script defer src="image-slot.js?v=20260722-crop1"></script>
 <script defer src="link-keep.js?v=20260723-conversion1"></script>
-<script defer src="mascot.js?v=20260723-hidden1"></script>
 <script defer src="header-motion.js?v=20260723-header1"></script>
 <script id="pf-hover">(function(){var d={};function pf(u){if(d[u])return;d[u]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u;document.head.appendChild(l);}function h(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var hr=a.getAttribute("href");if(!hr||hr[0]==="#"||/^(mailto:|tel:|https?:)/.test(hr))return;if(a.target==="_blank")return;pf(a.href);}document.addEventListener("mouseover",h,{passive:true});document.addEventListener("touchstart",h,{passive:true});})();</script>
 <style id="brushup-2026">/* skin-v2.css に統合済み */</style>

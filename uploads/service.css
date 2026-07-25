@@ -77,7 +77,7 @@ html.nav-menu-open .nav-burger svg rect:nth-child(3){transform:translateY(-6px) 
 @media(hover:hover){.mob-nav a:hover{color:var(--g600)}}
 .mob-nav a.mob-cta{min-height:50px;justify-content:center;background:var(--g600);color:#fff;font-size:14.5px;font-weight:700;border-bottom:none;border-radius:8px;margin-top:22px;padding:14px 18px}
 html.nav-menu-open{overflow:hidden}
-html.nav-menu-open :is(.mn-mascot,.mn-recall,.floating){opacity:0!important;pointer-events:none!important}
+html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
 @media(min-width:701px) and (max-width:1199px){
   .mob-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(4,54px);align-content:center;column-gap:clamp(36px,7vw,80px);padding:90px clamp(48px,8vw,96px) 40px}
   .mob-nav>a:nth-child(1){grid-area:1/1}

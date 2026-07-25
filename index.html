@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="page-enter.js?v=20260723-privacy1"></script>
+<script defer src="page-enter.js?v=20260725-nocat1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>みなの社会保険労務士事務所｜富山・石川の社労士</title>
@@ -206,7 +206,7 @@ html.nav-menu-open .nav-burger svg rect:nth-child(3) { transform: translateY(-6p
 .mob-nav a[aria-current="page"]::after { content: ''; width: 26px; height: 2px; margin-left: auto; border-radius: 2px; background: var(--moegi); }
 .mob-nav .mob-cta { min-height: 50px; justify-content: center; border: 0; margin-top: 22px; background: var(--sugi); color: #fff; font-family: var(--font-body); font-size: 14.5px; font-weight: 700; text-align: center; padding: 14px 18px; border-radius: var(--r); }
 html.nav-menu-open { overflow: hidden; }
-html.nav-menu-open :is(.mn-mascot, .mn-recall, .floating) { opacity: 0 !important; pointer-events: none !important; }
+html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !important; }
 @media (min-width: 701px) and (max-width: 1199px) {
   .mob-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(4, 54px); align-content: center; column-gap: clamp(36px, 7vw, 80px); padding: 90px clamp(48px, 8vw, 96px) 40px; }
   .mob-nav > a:nth-child(1) { grid-area: 1 / 1; }
@@ -347,8 +347,8 @@ main > section:not(.hero) {
   contain-intrinsic-size: auto 900px;
 }
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20260723-herophoto1" media="print" data-async-style onload="this.media='all';this.onload=null">
-<noscript><link rel="stylesheet" href="skin-v2.css?v=20260723-herophoto1"></noscript>
+<link rel="stylesheet" href="skin-v2.css?v=20260725-nocat1" media="print" data-async-style onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="skin-v2.css?v=20260725-nocat1"></noscript>
 <style id="home-hero-legibility">
 @media(max-width:700px){
   .hero-veil{background:linear-gradient(to bottom,rgba(249,250,247,.82) 0%,rgba(249,250,247,.72) 68%,rgba(249,250,247,.42) 84%,rgba(249,250,247,0) 100%)}
@@ -358,21 +358,109 @@ main > section:not(.hero) {
   .home-plan-card:last-child{grid-column:1 / -1;width:calc(50% - 8px);justify-self:center}
 }
 </style>
-<!-- Structured Data: LocalBusiness / ProfessionalService -->
-<script type="application/ld+json">
+<!-- Structured Data: LocalBusiness -->
+<script type="application/ld+json" data-schema="localbusiness">
 {
-  "@context":"https://schema.org",
-  "@type":"ProfessionalService",
-  "name":"みなの社会保険労務士事務所",
-  "description":"富山の中小企業向けに助成金申請・就業規則作成・社会保険手続き・給与計算を提供する社会保険労務士事務所。来所・訪問・オンラインに対応し、全国からご相談いただけます。",
-  "areaServed":["富山県","石川県","日本"],
-  "address":{"@type":"PostalAddress","postalCode":"931-8333","addressRegion":"富山県","addressLocality":"富山市","streetAddress":"蓮町1丁目7　SCOP富山","addressCountry":"JP"},
-  "openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"18:00"},
-  "priceRange":"¥35,000〜",
-  "dateModified":"2026-07-23"
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": "https://minano-sr.com/#office",
+  "name": "みなの社会保険労務士事務所",
+  "url": "https://minano-sr.com/",
+  "description": "富山の中小企業向けに助成金申請・就業規則作成・社会保険手続き・給与計算を提供する社会保険労務士事務所。来所・訪問・オンラインに対応し、全国からご相談いただけます。",
+  "image": "https://minano-sr.com/assets/og/minano-og.png",
+  "telephone": "+81-90-8259-8774",
+  "email": "contact@minano-sr.com",
+  "areaServed": [
+    "富山県",
+    "石川県",
+    "日本"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "postalCode": "931-8333",
+    "addressRegion": "富山県",
+    "addressLocality": "富山市",
+    "streetAddress": "蓮町1丁目7 SCOP富山",
+    "addressCountry": "JP"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 36.741023,
+    "longitude": 137.225116
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "opens": "09:00",
+    "closes": "18:00"
+  },
+  "priceRange": "月額 ¥35,000から（税抜）"
 }
 </script>
 
+<!-- Structured Data: FAQPage -->
+<script type="application/ld+json" data-schema="faqpage">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "相談だけでも大丈夫ですか？費用はかかりますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "初回のご相談は無料でお受けしています。ご相談のみでも歓迎いたします。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "従業員が少ない小さな会社でも依頼できますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "従業員1名様からご対応しています。「これから人を雇う」「初めて社会保険に加入する」という段階も、よくあるご相談です。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "契約期間の縛りはありますか？プランは途中で変えられますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "プランの変更・見直しはいつでもご相談いただけます。契約期間や解約のお取り扱いは、ご契約前に書面でご説明し、ご納得いただいたうえで開始します。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "オンラインだけで完結しますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "業務内容によって異なります。オンライン相談や電子データでのやり取りに対応していますが、実務では情報を直接授受する場面も多いため、具体的な進め方はご相談時に貴社の業務形態や情報管理体制に合わせて調整します。ご来所や訪問が適する場合も含め、ご相談時に最適な方法をご案内します。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "他の社労士から乗り換えたいのですが。",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "もちろん可能です。引き継ぎ手続きもサポートします。乗り換え時の不安や懸念点もヒアリングしたうえで対応します。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "急なトラブル対応もお願いできますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "急なご相談も、まずはお電話（090-8259-8774）またはお問い合わせフォームからご連絡ください。状況をうかがったうえで、できる限り速やかに対応します。"
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body data-nav="B">
 <a class="skip-link" href="#main">本文へスキップ</a>
@@ -598,35 +686,35 @@ main > section:not(.hero) {
   <div class="w">
     <div class="sec-head rv">
       <div class="sec-head-idx"><span class="idx-num">04</span><span class="idx-lat">PRICING</span><span class="idx-jp">料金</span></div>
-      <div class="sec-head-body"><h2 class="sec-h">業務範囲と料金がわかる、<strong>3つの選び方。</strong></h2><p class="sec-sub">手続き中心、給与計算まで、必要な業務だけ。主な内容と月額の目安を掲載しています。</p></div>
+      <div class="sec-head-body"><h2 class="sec-h">業務範囲と料金がわかる、<strong>3つの選び方。</strong></h2><p class="sec-sub">手続き中心、給与計算込み、31名以上。主な内容と固定の月額を掲載しています。</p></div>
     </div>
     <div class="home-plan-grid">
       <article class="home-plan-card">
         <p class="home-plan-en">BASIC</p><h3 class="home-plan-name">スタート顧問プラン</h3>
-        <p class="home-plan-price">¥35,000<small>〜／月（税抜）</small></p><p class="home-plan-unit">従業員5名まで目安</p>
-        <p class="home-plan-founder">創業3年以内：¥25,000〜／月</p>
+        <p class="home-plan-price">¥35,000<small>／月（税抜）</small></p><p class="home-plan-unit">従業員5名まで</p>
+        <p class="home-plan-founder">創業3年以内：¥25,000／月</p>
         <p class="home-plan-feature">定例手続きと主な給付申請まで</p>
-        <ul class="home-plan-list"><li>入退社・年度更新・算定基礎届・労使協定</li><li>出産手当金・育児休業・介護休業・高年齢の給付申請</li><li>助成金・法改正情報のご案内</li></ul>
+        <ul class="home-plan-list"><li>入退社・月額変更・扶養届・労使協定</li><li>出産手当金・育児休業・介護休業・高年齢の給付申請</li><li>助成金・法改正情報のご案内</li></ul>
         <a href="pricing.html#plan-basic" class="home-plan-link">詳しい内容を見る →</a>
       </article>
       <article class="home-plan-card is-main">
         <span class="home-plan-recommend">おすすめ</span><p class="home-plan-en">STANDARD</p><h3 class="home-plan-name">スタンダードプラン</h3>
-        <p class="home-plan-price">¥55,000<small>〜／月（税抜）</small></p><p class="home-plan-unit">従業員10名まで目安</p>
-        <p class="home-plan-founder">創業3年以内：¥45,000〜／月</p>
+        <p class="home-plan-price">¥55,000<small>／月（税抜）</small></p><p class="home-plan-unit">従業員10名まで</p>
+        <p class="home-plan-founder">創業3年以内：¥45,000／月</p>
         <p class="home-plan-feature">手続きに加えて給与・賞与計算まで</p>
         <ul class="home-plan-list"><li>スタート顧問プランの全業務</li><li>給与・賞与計算と個別労務相談</li><li>就業規則の年次レビュー</li></ul>
         <a href="pricing.html#plan-standard" class="home-plan-link">詳しい内容を見る →</a>
       </article>
       <article class="home-plan-card">
-        <p class="home-plan-en">CUSTOM</p><h3 class="home-plan-name">カスタムプラン</h3>
-        <p class="home-plan-price is-estimate">お見積もり</p><p class="home-plan-unit">内容・規模に応じてご提示</p>
-        <p class="home-plan-founder">月額契約は創業割の対象</p>
-        <p class="home-plan-feature">人数・体制に合わせて月額業務を設計</p>
-        <ul class="home-plan-list"><li>従業員31名以上・複数拠点でのご依頼</li><li>複数の定例業務を組み合わせたい場合</li><li>社内の担当範囲に合わせた業務分担</li></ul>
+        <p class="home-plan-en">31+ EMPLOYEES</p><h3 class="home-plan-name">31名以上プラン</h3>
+        <p class="home-plan-price">¥87,000<small>／月（税抜）</small></p><p class="home-plan-unit">31名・手続き顧問</p>
+        <p class="home-plan-founder">給与計算込み：¥107,500／月</p>
+        <p class="home-plan-feature">人数に応じた定額式</p>
+        <ul class="home-plan-list"><li>32名から手続き顧問は1名＋¥2,000／月</li><li>給与計算込みは1名＋¥2,500／月</li><li>料金計算機の固定計算は30名まで</li></ul>
         <a href="pricing.html#plan-custom" class="home-plan-link">詳しい内容を見る →</a>
       </article>
     </div>
-    <p class="home-plan-note">料金は従業員数・業務範囲により変わります。表示は目安（税抜）です。賞与支払届・年末調整の資料整理と税理士連携・助成金申請は別料金となり、初回相談後、着手前にお見積もりをご提示します。</p>
+    <p class="home-plan-note">表示価格は税抜です。年度更新・算定基礎届、賞与支払届、傷病手当金・労災の初回申請、年末調整用データ整備・税理士連携、助成金申請は別料金です。固定額は料金ページで確認できます。</p>
     <div class="home-section-more rv"><a href="pricing.html" class="link-more">料金・顧問プランを詳しく見る →</a></div>
   </div>
 </section>
@@ -931,7 +1019,6 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
 </script>
 <script defer src="image-slot.js?v=20260722-crop1"></script>
 <script defer src="link-keep.js?v=20260723-conversion1"></script>
-<script defer src="mascot.js?v=20260723-hidden1"></script>
 <script defer src="header-motion.js?v=20260723-header1"></script>
 <script id="pf-hover">(function(){var d={};function pf(u){if(d[u])return;d[u]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u;document.head.appendChild(l);}function h(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var hr=a.getAttribute("href");if(!hr||hr[0]==="#"||/^(mailto:|tel:|https?:)/.test(hr))return;if(a.target==="_blank")return;pf(a.href);}document.addEventListener("mouseover",h,{passive:true});document.addEventListener("touchstart",h,{passive:true});})();</script>
 <style id="brushup-2026">/* skin-v2.css に統合済み */</style>

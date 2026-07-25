@@ -18,6 +18,13 @@ jobs:
         with:
           node-version: 22
 
+      - name: 公開データの整合性チェック
+        run: |
+          node scripts/sync-structured-data.mjs --check
+          node scripts/remove-cat-ui.mjs --check
+          node scripts/check-structured-data.mjs
+          node gen-sitemap.js --check
+
       - name: 静的な性能チェック
         run: node scripts/check-performance-budget.mjs
 
@@ -56,6 +63,16 @@ jobs:
               --output-path="/tmp/lighthouse-mobile-${attempt}.json" \
               --only-categories=performance
           done
+
+      - name: Lighthouse（PC）をウォームアップ
+        run: |
+          npx --yes lighthouse@13.0.1 http://127.0.0.1:8765/ \
+            --quiet \
+            --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+            --output=json \
+            --output-path=/tmp/lighthouse-warmup-desktop.json \
+            --only-categories=performance \
+            --preset=desktop
 
       - name: Lighthouse（PC）
         run: |
