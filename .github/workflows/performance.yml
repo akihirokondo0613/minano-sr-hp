@@ -64,6 +64,16 @@ jobs:
               --only-categories=performance
           done
 
+      - name: Lighthouse（PC）をウォームアップ
+        run: |
+          npx --yes lighthouse@13.0.1 http://127.0.0.1:8765/ \
+            --quiet \
+            --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+            --output=json \
+            --output-path=/tmp/lighthouse-warmup-desktop.json \
+            --only-categories=performance \
+            --preset=desktop
+
       - name: Lighthouse（PC）
         run: |
           for attempt in 1 2 3; do
