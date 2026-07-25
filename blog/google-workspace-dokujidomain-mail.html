@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<script defer src="../page-enter.js?v=20260725-nocat1"></script>
+<style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Workspaceで独自ドメインメールを始める｜契約・エイリアス・送受信｜みなの社会保険労務士事務所</title>
+<meta name="description" content="Google Workspaceの契約、ドメイン所有権の確認、MXレコード設定、ユーザー・エイリアス・グループの使い分け、送受信確認までを順番に解説します。">
+<meta name="keywords" content="Google Workspace,独自ドメインメール,メールエイリアス,Gmail,MXレコード,開業準備">
+<link rel="canonical" href="https://minano-sr.com/blog/google-workspace-dokujidomain-mail.html">
+
+<!-- OGP -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Google Workspaceで独自ドメインメールを始める｜契約・エイリアス・送受信">
+<meta property="og:description" content="Google Workspaceの契約、ドメイン所有権の確認、MXレコード設定、ユーザー・エイリアス・グループの使い分け、送受信確認までを順番に解説します。">
+<meta property="og:url" content="https://minano-sr.com/blog/google-workspace-dokujidomain-mail.html">
+<meta property="og:site_name" content="みなの社会保険労務士事務所">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://minano-sr.com/assets/og/minano-og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="みなの社会保険労務士事務所のトップページ｜会社の労務を、まるごと任せられる。">
+<meta property="article:published_time" content="2026-07-25">
+<meta property="article:modified_time" content="2026-07-25">
+<meta property="article:section" content="経営・採用">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://minano-sr.com/assets/og/minano-og.png">
+
+<!-- Article JSON-LD -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Google Workspaceで独自ドメインメールを始める｜契約・エイリアス・送受信","description":"Google Workspaceの契約、ドメイン所有権の確認、MXレコード設定、ユーザー・エイリアス・グループの使い分け、送受信確認までを順番に解説します。","datePublished":"2026-07-25","dateModified":"2026-07-25","author":{"@type":"Organization","name":"みなの社会保険労務士事務所"},"publisher":{"@type":"Organization","name":"みなの社会保険労務士事務所","logo":{"@type":"ImageObject","url":"https://minano-sr.com/assets/og/logo-512.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://minano-sr.com/blog/google-workspace-dokujidomain-mail.html"},"articleSection":"経営・採用","keywords":"Google Workspace,独自ドメインメール,メールエイリアス,Gmail,MXレコード,開業準備"}</script>
+
+<meta name="theme-color" content="#123F30">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
+
+
+<link rel="stylesheet" href="../skin-v2.css?v=20260725-nocat1">
+
+<!-- Structured Data: FAQPage -->
+<script type="application/ld+json" data-schema="faqpage">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "個人向けGmailがあれば、Google Workspaceは不要ですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "個人向けGmailでもメールは使えますが、独自ドメインのアドレスを組織で管理する場合は、Google Workspaceなどの事業向けメールサービスが必要です。個人アカウントと事業アカウントは分けて管理します。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "ドメイン所有権の確認が終われば、すぐにメールを使えますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "所有権の確認とは別に、メールの配送先を示すMXレコードの設定が必要です。設定後は外部アドレスとの送受信、返信、迷惑メールへの振り分けを確認してから案内を始めます。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "contactやinfoのアドレスごとにユーザー契約が必要ですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "同じ一人が受け取る別名アドレスなら、追加料金なしのメールエイリアスで運用できます。複数人で受け取る窓口にはグループ、別の受信箱・ログイン・保存領域が必要な担当者には個別のユーザーを使います。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "設定後に最初に確認するセキュリティ項目は何ですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "管理者と利用者の2段階認証、復旧手段、不要な管理者権限がないかを確認します。続いてSPF、DKIM、DMARCを段階的に設定し、送信元のなりすまし対策を整えます。"
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">本文へ移動</a>
+<div id="prog"></div>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="logo">
+      <div class="logo-mark"><span>み</span></div>
+      <div class="logo-text"><b>みなの社会保険労務士事務所</b><small>複雑な労務を、シンプルに。</small></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../services.html">サービス</a></li>
+      <li><a href="../pricing.html">料金</a></li>
+      <li><a href="../support.html">支援の進め方</a></li>
+      <li><a href="../about.html">事務所案内</a></li>
+      <li><a href="../blog.html" class="active" aria-current="page">ブログ</a></li>
+      <li><a href="../infographic.html">社労士とは</a></li>
+      <li><a href="../portal.html">公式情報</a></li>
+    </ul>
+    <a href="../uploads/contact.html" class="nav-cta">無料で相談する</a>
+    <button class="nav-burger" onclick="toggleNav()" aria-label="メニュー">
+      <svg width="20" height="14" viewBox="0 0 20 14" fill="currentColor"><rect width="20" height="2" rx="1"/><rect y="6" width="20" height="2" rx="1"/><rect y="12" width="20" height="2" rx="1"/></svg>
+    </button>
+  </div>
+</nav>
+<div class="mob-nav" id="mobNav">
+  <a href="../services.html" onclick="closeNav()">サービス</a>
+  <a href="../pricing.html" onclick="closeNav()">料金</a>
+  <a href="../support.html" onclick="closeNav()">支援の進め方</a>
+  <a href="../about.html" onclick="closeNav()">事務所案内</a>
+  <a href="../blog.html" onclick="closeNav()" aria-current="page">ブログ</a>
+  <a href="../infographic.html" onclick="closeNav()">社労士とは</a>
+  <a href="../portal.html" onclick="closeNav()">公式情報</a>
+  <a href="../uploads/contact.html" class="mob-cta">→ 無料相談を申し込む</a>
+</div>
+
+<main id="main">
+<header class="post-hero">
+  <div class="post-hero-inner">
+    <nav class="breadcrumb">
+      <a href="../index.html">ホーム</a><span class="sep">›</span>
+      <a href="../blog.html">コラム・ブログ</a><span class="sep">›</span>
+      <span>経営・採用</span>
+    </nav>
+    <span class="cat-tag">経営・採用</span>
+    <h1 class="post-h1">Google Workspaceで独自ドメインメールを始める｜契約・エイリアス・送受信</h1>
+    <div class="post-meta">
+      <span>読了 約6分</span>
+    </div>
+  </div>
+</header>
+
+<article class="post">
+  <p>事業用メールを独自ドメインにすると、名刺やホームページと連絡先を統一できます。ただし、Google Workspaceを申し込むだけではメールは届きません。ドメイン所有権の確認、MXレコード、ユーザー、セキュリティを順番に設定する必要があります。</p>
+  <p>この記事では、すでに独自ドメインを取得している開業準備者を対象に、契約前の設計から送受信確認までを整理します。当事務所でもGoogle Workspaceを使っていますが、契約しているプランや料金ではなく、公式手順と公開DNSで確認できる設定を分けて説明します。</p>
+<div class="point-box"><p class="pb-t">この記事のポイント</p><ul><li>申込み前に、管理者・利用者・案内用アドレスの役割を決める</li><li>所有権確認用TXTとメール配送用MXは、目的の異なる設定として扱う</li><li>送受信テスト後に2段階認証と送信ドメイン認証まで整える</li></ul></div>
+<h2>契約前にアカウント設計を決める</h2>
+<p>最初に決めたいのはプランよりも「誰が管理し、誰が使うか」です。通常の連絡に使うユーザーと、組織設定を変更できる管理者は役割が異なります。日常利用のアカウントへ強い管理権限を集中させず、管理者の復旧用メールと電話番号、2段階認証の方法も準備します。</p>
+<p>次に、個人名のアドレスと、contactやinfoなどの案内用アドレスを洗い出します。同じ人が受け取る別名ならメールエイリアスで足りる場合があります。一方、担当者ごとにログイン、受信箱、保存領域が必要なら、個別のユーザーアカウントとして設計します。申込み後に場当たり的に増やすより、役割を表にしてから設定する方が迷いません。</p>
+
+<h2>契約から利用開始までのロードマップ</h2>
+<figure class="post-figure">
+  <div class="tbl-wrap">
+    <table aria-label="Google Workspaceの契約から送受信までのロードマップ">
+      <thead><tr><th>順番</th><th>作業と確認事項</th></tr></thead>
+      <tbody>
+        <tr><td>1. 契約</td><td>事業情報、利用するドメイン、管理者の復旧手段を確認する</td></tr>
+        <tr><td>2. 所有権確認</td><td>Googleが指定するTXTレコードを、ドメイン側のDNSへ追加する</td></tr>
+        <tr><td>3. メール接続</td><td>既存メールの有無を確認し、Google指定のMXレコードへ切り替える</td></tr>
+        <tr><td>4. アドレス設計</td><td>ユーザー、エイリアス、グループ、管理権限を役割に合わせて設定する</td></tr>
+        <tr><td>5. 利用開始</td><td>外部との送受信、2段階認証、SPF・DKIM・DMARCを確認する</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <figcaption>図1：契約、ドメイン接続、アドレス設計、外部送受信の順で確認します</figcaption>
+</figure>
+<p>Googleの公式手順では、管理コンソールで発行された確認コードをTXTレコードとして追加し、ドメインの所有権を確認します。このTXTは「このドメインを管理している」ことを示すためのもので、メールを届ける設定ではありません。</p>
+
+<h2>MXレコードでメールの配送先を切り替える</h2>
+<p>所有権の確認後、メールの配送先を示すMXレコードを設定します。Googleの現行公式案内では、新規設定の値として <strong>smtp.google.com</strong>、優先度1が示されています。以前からGoogle Workspaceを利用している環境では、旧来のMX値が正常に動作している場合があるため、確認せず一括置換しません。</p>
+<p>当事務所の <strong>minano-sr.com</strong> は、公開DNS上でGoogleのメール配送先を示すMXレコードを確認できます。これは実際の確認済み事項です。一方、契約プラン、管理画面内の権限、請求情報は公開DNSからは分からないため、本記事では断定していません。</p>
+<p>すでに別のメールサービスを使っている場合、MXの変更は受信先の切替になります。旧受信箱のデータ、切替時刻、戻す手順を用意してから作業し、新旧双方へ届く可能性がある時間帯も見込んで確認します。</p>
+
+<h2>ユーザーとエイリアスを使い分ける</h2>
+<div class="tbl-wrap">
+  <table>
+    <thead><tr><th>種類</th><th>向いている使い方</th><th>契約・管理上の違い</th></tr></thead>
+    <tbody>
+      <tr><td>ユーザー</td><td>担当者が自分でログインし、受信・送信・保存する</td><td>利用者ごとにライセンスが必要。退職・異動時の停止とデータ移管を決める</td></tr>
+      <tr><td>メールエイリアス</td><td>contactなど、同じ一人が別名の宛先を受け取る</td><td>1ユーザーにつき最大30個まで追加料金なし。独立したログインや受信箱は持たない</td></tr>
+      <tr><td>グループ</td><td>複数人で同じ窓口宛てのメールを受け取る</td><td>グループ自体のユーザーライセンスは不要。外部投稿の可否とメンバーを管理する</td></tr>
+    </tbody>
+  </table>
+</div>
+<p>一人事業で <strong>contact@</strong> と <strong>info@</strong> を同じ受信箱へ届けるだけなら、エイリアスが簡潔です。複数人で受ける窓口はグループを使い、対応状況まで共有したい場合は共同トレイなどの運用も検討します。パスワードを複数人で共有する運用は避けます。</p>
+
+<h3>エイリアスから送る設定は、受信設定と分けて確認する</h3>
+<p>エイリアスを追加すると、その宛先へのメールは元のユーザーの受信箱へ届きます。一方、返信時の差出人を <strong>contact@</strong> などに統一するには、Gmailの「他のメールアドレスを追加」から差出人を設定し、実際の送信画面でFromと返信先を確認します。受け取れることと、そのアドレス名義で送れることは別々にテストしてください。</p>
+<p>窓口アドレスを一人の個人名へ転送するだけにすると、引継ぎ時に見落としが起きます。問い合わせ、請求、採用など、目的ごとに「誰が受け、誰が返信し、不在時に誰が確認するか」まで決めます。</p>
+
+<h2>送受信テストは外部から行う</h2>
+<div class="point-box"><p class="pb-t">案内を始める前の確認項目</p><ul><li>事業用アドレスから外部のメールへ送信し、返信を受信できる</li><li>外部アドレスからcontactなどの窓口へ送信し、担当者が確認できる</li><li>差出人名、署名、返信先が意図した表示になっている</li><li>迷惑メールフォルダ、エラーメール、転送ルールに異常がない</li><li>管理者と利用者の2段階認証、復旧手段、管理権限を確認した</li></ul></div>
+<p>同じ組織内だけのテストでは、インターネット経由の配送を確認できません。別サービスのメールアドレスから送り、返信と添付ファイルも確認します。問い合わせフォームを使う場合は、フォーム送信、受信通知、返信の三つを通して試してください。</p>
+
+<h2>SPF・DKIM・DMARCは次の工程</h2>
+<p>送受信できるだけでは、なりすまし対策として十分ではありません。GoogleはSPF、DKIM、DMARCによる送信ドメイン認証を案内しています。まず正規の送信サービスを洗い出し、SPFとDKIMを整え、その結果を確認してからDMARCを段階的に設定します。詳しい順番は<a href="dns-mail-authentication.html">「事業用メールを守るDNS設定」</a>で解説します。</p>
+
+<h2>よくある質問</h2>
+<dl class="faq">
+<dt>個人向けGmailがあれば、Google Workspaceは不要ですか？</dt>
+<dd>個人向けGmailでもメールは使えますが、独自ドメインのアドレスを組織で管理する場合は、Google Workspaceなどの事業向けメールサービスが必要です。個人アカウントと事業アカウントは分けて管理します。</dd>
+<dt>ドメイン所有権の確認が終われば、すぐにメールを使えますか？</dt>
+<dd>所有権の確認とは別に、メールの配送先を示すMXレコードの設定が必要です。設定後は外部アドレスとの送受信、返信、迷惑メールへの振り分けを確認してから案内を始めます。</dd>
+<dt>contactやinfoのアドレスごとにユーザー契約が必要ですか？</dt>
+<dd>同じ一人が受け取る別名アドレスなら、追加料金なしのメールエイリアスで運用できます。複数人で受け取る窓口にはグループ、別の受信箱・ログイン・保存領域が必要な担当者には個別のユーザーを使います。</dd>
+<dt>設定後に最初に確認するセキュリティ項目は何ですか？</dt>
+<dd>管理者と利用者の2段階認証、復旧手段、不要な管理者権限がないかを確認します。続いてSPF、DKIM、DMARCを段階的に設定し、送信元のなりすまし対策を整えます。</dd>
+</dl>
+<h2>当事務所のサポート</h2>
+<p>当事務所では、労務手続きや給与計算で扱う情報について、会社の業務形態に合わせた受け渡し方法と担当範囲を整理します。Google Workspaceの契約代行ではありませんが、従業員情報を誰が受け取り、どこで確認し、いつ削除するかという運用設計はご相談いただけます。</p>
+</article>
+
+<section class="post-refs" style="max-width:820px;margin:24px auto 0;padding:24px 26px;background:var(--shiro,#fff);border:1px solid var(--line,#e6e3d6);border-radius:14px">
+  <h2 style="font-size:15px;font-weight:700;color:var(--ink,#1e3a2f);letter-spacing:.04em;margin:0 0 14px">参考となる公式情報</h2>
+  <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px">
+    <li style="display:flex;gap:9px;align-items:flex-start;font-size:13.5px;line-height:1.75"><span aria-hidden="true" style="flex-shrink:0;margin-top:8px;width:6px;height:6px;border-radius:50%;background:#007B43"></span><a href="https://support.google.com/a/answer/53926?hl=ja" target="_blank" rel="noopener" style="color:var(--sugi,#1e5b41);text-decoration:underline;text-underline-offset:3px">Google Workspace管理者ヘルプ「Google Workspaceの無料試用に申し込む」</a></li>
+    <li style="display:flex;gap:9px;align-items:flex-start;font-size:13.5px;line-height:1.75"><span aria-hidden="true" style="flex-shrink:0;margin-top:8px;width:6px;height:6px;border-radius:50%;background:#007B43"></span><a href="https://support.google.com/a/answer/6169597?hl=ja" target="_blank" rel="noopener" style="color:var(--sugi,#1e5b41);text-decoration:underline;text-underline-offset:3px">Google Workspace管理者ヘルプ「TXTレコードでドメインを保護する」</a></li>
+    <li style="display:flex;gap:9px;align-items:flex-start;font-size:13.5px;line-height:1.75"><span aria-hidden="true" style="flex-shrink:0;margin-top:8px;width:6px;height:6px;border-radius:50%;background:#007B43"></span><a href="https://support.google.com/a/answer/87127?hl=ja" target="_blank" rel="noopener" style="color:var(--sugi,#1e5b41);text-decoration:underline;text-underline-offset:3px">Google Workspace管理者ヘルプ「Google Workspace向けにMXレコードを設定する」</a></li>
+    <li style="display:flex;gap:9px;align-items:flex-start;font-size:13.5px;line-height:1.75"><span aria-hidden="true" style="flex-shrink:0;margin-top:8px;width:6px;height:6px;border-radius:50%;background:#007B43"></span><a href="https://support.google.com/a/answer/33310?hl=ja" target="_blank" rel="noopener" style="color:var(--sugi,#1e5b41);text-decoration:underline;text-underline-offset:3px">Google Workspace管理者ヘルプ「ユーザーを個別に追加する」</a></li>
+    <li style="display:flex;gap:9px;align-items:flex-start;font-size:13.5px;line-height:1.75"><span aria-hidden="true" style="flex-shrink:0;margin-top:8px;width:6px;height:6px;border-radius:50%;background:#007B43"></span><a href="https://support.google.com/a/answer/33327?hl=ja" target="_blank" rel="noopener" style="color:var(--sugi,#1e5b41);text-decoration:underline;text-underline-offset:3px">Google Workspace管理者ヘルプ「ユーザーのメール エイリアスを追加する」</a></li>
+    <li style="display:flex;gap:9px;align-items:flex-start;font-size:13.5px;line-height:1.75"><span aria-hidden="true" style="flex-shrink:0;margin-top:8px;width:6px;height:6px;border-radius:50%;background:#007B43"></span><a href="https://support.google.com/mail/answer/22370?hl=ja" target="_blank" rel="noopener" style="color:var(--sugi,#1e5b41);text-decoration:underline;text-underline-offset:3px">Gmailヘルプ「別のアドレスやエイリアスからメールを送信する」</a></li>
+    <li style="display:flex;gap:9px;align-items:flex-start;font-size:13.5px;line-height:1.75"><span aria-hidden="true" style="flex-shrink:0;margin-top:8px;width:6px;height:6px;border-radius:50%;background:#007B43"></span><a href="https://support.google.com/a/answer/6142901?hl=ja" target="_blank" rel="noopener" style="color:var(--sugi,#1e5b41);text-decoration:underline;text-underline-offset:3px">Google Workspace管理者ヘルプ「共同トレイを設定する」</a></li>
+  </ul>
+  <p style="font-size:12.5px;color:var(--ink3,#7a857d);margin:15px 0 0;line-height:1.85">※ 管理画面、提供条件、DNSの指定値は変更されることがあります。実際の操作時はGoogle Workspaceとドメイン管理事業者の公式情報をご確認ください。</p>
+</section>
+<section class="post-related" style="max-width:820px;margin:22px auto 0">
+  <h2 style="font-size:15px;font-weight:700;color:var(--ink,#1e3a2f);letter-spacing:.04em;margin:0 0 14px">あわせて読みたい</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px"><a href="kaigyo-domain-shutoku.html" style="display:block;padding:16px 18px;background:var(--shiro,#fff);border:1px solid var(--line,#e6e3d6);border-radius:12px;text-decoration:none">
+      <span style="display:block;font-size:12px;font-weight:700;color:var(--sugi,#1e5b41);letter-spacing:.06em;margin-bottom:7px">経営・採用</span>
+      <span style="display:block;font-size:13.5px;font-weight:700;color:var(--ink,#1e3a2f);line-height:1.6">開業用の独自ドメインを取得する｜決め方・契約・更新管理の実務</span>
+    </a><a href="dns-mail-authentication.html" style="display:block;padding:16px 18px;background:var(--shiro,#fff);border:1px solid var(--line,#e6e3d6);border-radius:12px;text-decoration:none">
+      <span style="display:block;font-size:12px;font-weight:700;color:var(--sugi,#1e5b41);letter-spacing:.06em;margin-bottom:7px">経営・採用</span>
+      <span style="display:block;font-size:13.5px;font-weight:700;color:var(--ink,#1e3a2f);line-height:1.6">事業用メールを守るDNS設定｜SPF・DKIM・DMARCの順番</span>
+    </a></div>
+</section>
+
+<aside class="author-card">
+  <div class="author-av">み</div>
+  <div class="author-meta">
+    <b>みなの社会保険労務士事務所 編集部</b>
+    中小企業の労務体制構築・助成金活用・規程整備を専門としています。
+    <small>本記事は公開時点の法令・制度および公式情報に基づきます。内容は変更されることがあるため、最新情報は各公式サイトもご確認ください。</small>
+  </div>
+</aside>
+
+<section class="next-steps">
+  <div class="next-steps-head">
+    <span class="label">NEXT STEPS</span>
+    <span class="rule"></span>
+  </div>
+  <h2 style="font-size:22px;font-weight:700;color:var(--ink);letter-spacing:.03em;line-height:1.5;margin:0 0 22px;max-width:600px">記事をお読みいただき、ありがとうございました。<br>もし気になる点があれば、次の3つの入口をどうぞ。</h2>
+  <div class="next-steps-grid">
+    <a href="../uploads/contact.html" class="ns-card ns-primary">
+      <div>
+        <div class="eyebrow">Free Consultation</div>
+        <h3>無料で相談する</h3>
+        <p>記事の内容について、貴社の状況に沿って個別にお話しします。初回相談は無料です。訪問・オンラインどちらも対応。</p>
+      </div>
+      <span class="arr">相談を申し込む →</span>
+    </a>
+    <a href="../uploads/service-romu-sodan.html" class="ns-card">
+      <div>
+        <div class="eyebrow">Related Service</div>
+        <h3>労務相談（顧問）</h3>
+        <p>トラブルの予防から、起きてしまった後の初動まで。日常的に相談できる顧問サービスです。</p>
+      </div>
+      <span class="arr">サービス詳細へ →</span>
+    </a>
+    <a href="../pricing.html" class="ns-card">
+      <div>
+        <div class="eyebrow">Pricing</div>
+        <h3>料金を見る</h3>
+        <p>シンプル3プラン制。創業3年以内の事業者さま向けの割引もご用意しています。</p>
+      </div>
+      <span class="arr">プランを見る →</span>
+    </a>
+  </div>
+</section>
+
+<div class="back-link">
+  <a href="../blog.html">← コラム・ブログ一覧に戻る</a>
+  <a href="#" class="to-top">↑ ページ上部へ</a>
+</div>
+
+</main>
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <div class="logo-mark"><span>み</span></div>
+          <div class="logo-text"><b>みなの社会保険労務士事務所</b><small>複雑な労務を、シンプルに。</small></div>
+        </div>
+        <p class="footer-desc">助成金活用・手続き代行・DX支援で、中小企業の労務コストを最適化します。</p>
+        <address class="footer-contact">
+          <span class="footer-contact-row footer-contact-address">〒931-8333 富山県富山市蓮町1丁目7　SCOP富山</span>
+          <span class="footer-contact-row"><a href="tel:090-8259-8774">TEL: 090-8259-8774</a><span class="footer-contact-hours">平日 9:00–18:00</span></span>
+        </address>
+      </div>
+      <div>
+        <p class="footer-h">サービス</p>
+        <ul class="footer-ul">
+          <li><a href="../services.html">サービス一覧</a></li>
+          <li><a href="../uploads/service-joseikin.html">助成金申請</a></li>
+          <li><a href="../uploads/service-shugyo-kisoku.html">就業規則作成</a></li>
+          <li><a href="../uploads/service-shakai-hoken.html">社会保険手続き</a></li>
+          <li><a href="../uploads/service-kyuyo-keisan.html">給与計算</a></li>
+          <li><a href="../uploads/service-romu-sodan.html">労務相談</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-h">支援の進め方</p>
+        <ul class="footer-ul">
+          <li><a href="../support.html">支援全体を見る</a></li>
+          <li><a href="../uploads/case-seizogyo.html">製造業</a></li>
+          <li><a href="../uploads/case-inshoku.html">飲食業</a></li>
+          <li><a href="../uploads/case-kaigo.html">介護業</a></li>
+          <li><a href="../uploads/case-kensetsu.html">建設業</a></li>
+          <li><a href="../uploads/case-shika.html">歯科・クリニック</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-h">コンテンツ</p>
+        <ul class="footer-ul">
+          <li><a href="../pricing.html">料金・顧問プラン</a></li>
+          <li><a href="../about.html">事務所案内</a></li>
+          <li><a href="../blog.html">コラム・ブログ</a></li>
+          <li><a href="../joseikin.html">令和8年度 助成金5選</a></li>
+          <li><a href="../infographic.html">社労士とは？</a></li>
+          <li><a href="../recruit.html">採用情報</a></li>
+          <li><a href="../portal.html">公式情報</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-h">お問い合わせ</p>
+        <ul class="footer-ul">
+          <li><a href="../uploads/contact.html">無料相談フォーム</a></li>
+          <li><a href="tel:090-8259-8774">電話: 090-8259-8774</a></li>
+          <li><a href="mailto:contact@minano-sr.com">contact@minano-sr.com</a></li>
+          <li><a href="../privacy-policy.html">プライバシーポリシー</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 みなの社会保険労務士事務所. All rights reserved.</p>
+      <div class="footer-badges">
+        <span class="footer-badge">富山県社会保険労務士会</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+var ticking=false;
+if(window.__pgScroll)window.removeEventListener('scroll',window.__pgScroll);
+window.__pgScroll=function(){
+  if(ticking)return;ticking=true;
+  requestAnimationFrame(function(){
+    var prog=document.getElementById('prog'),nav=document.getElementById('nav');
+    var p=scrollY/(document.documentElement.scrollHeight-innerHeight||1);
+    if(prog)prog.style.width=(p*100)+'%';
+    if(nav)nav.classList.toggle('solid',scrollY>60);
+    ticking=false;
+  });
+};
+window.addEventListener('scroll',window.__pgScroll,{passive:true});
+function toggleNav(){document.getElementById('mobNav').classList.toggle('open')}
+function closeNav(){document.getElementById('mobNav').classList.remove('open')}
+</script>
+<script defer src="../link-keep.js?v=20260723-conversion1"></script>
+<script defer src="../header-motion.js?v=20260723-header1"></script>
+<script id="pf-hover">(function(){var d={};function pf(u){if(d[u])return;d[u]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u;document.head.appendChild(l);}function h(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var hr=a.getAttribute("href");if(!hr||hr[0]==="#"||/^(mailto:|tel:|https?:)/.test(hr))return;if(a.target==="_blank")return;pf(a.href);}document.addEventListener("mouseover",h,{passive:true});document.addEventListener("touchstart",h,{passive:true});})();</script>
+<script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/blog/google-workspace-dokujidomain-mail.html"}' async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

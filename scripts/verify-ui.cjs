@@ -354,11 +354,11 @@ function recordConsoleError(target) {
     .filter(term => pricingStructure.basicText.includes(term));
   const incorrectlySeparateRetainerItems = ['労働保険の年度更新', '社会保険の算定基礎届', '賞与支払届']
     .filter(term => pricingStructure.retainerRowText.includes(term));
-  const ambiguousPriceTerms = ['お見積もり', '要相談']
+  const ambiguousPriceTerms = ['要相談']
     .filter(term => `${pricingStructure.planText} ${pricingStructure.rowText}`.includes(term));
   const rangedPriceRows = Array.from(pricingStructure.rowText.matchAll(/¥[^ ]*〜/g), match => match[0]);
   const pricingRulesOk =
-    /31名以上プラン.*¥87,000.*¥107,500/.test(pricingStructure.planText) &&
+    /カスタムプラン.*お見積もり.*従業員31名以上・複数拠点/.test(pricingStructure.planText) &&
     /年度更新・算定基礎届・賞与支払届.*年次・賞与時の届出も顧問料内/.test(pricingStructure.basicText) &&
     /労災発生時の初動相談.*必要な場合の労働者死傷病報告/.test(pricingStructure.basicText) &&
     /会社設立時の新規適用手続き.*¥30,000.*5名まで.*6名目から1名¥1,000/.test(pricingStructure.retainerText) &&

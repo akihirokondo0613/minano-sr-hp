@@ -187,8 +187,12 @@ const office = {
 syncFaq('recruit.html', extractRecruitFaq);
 
 const definitionFaqArticles = [
+  'blog/dns-mail-authentication.html',
   'blog/fukugyo-kengyo-kisoku.html',
+  'blog/google-business-profile-kaisetsu.html',
+  'blog/google-workspace-dokujidomain-mail.html',
   'blog/joseikin-career-up-2026.html',
+  'blog/kaigyo-domain-shutoku.html',
   'blog/kintai-dx-donyu-junbi.html',
   'blog/kyuyo-itaku-junbi.html',
   'blog/necchusho-taisaku-gimu.html',
@@ -197,6 +201,7 @@ const definitionFaqArticles = [
   'blog/ryoritsu-shien-josei.html',
   'blog/shaho-tekiyo-kakudai-2026.html',
   'blog/taishoku-trouble-prevention.html',
+  'blog/website-search-console-kokai.html',
 ];
 definitionFaqArticles.forEach((relativePath) => syncFaq(relativePath, extractDefinitionFaq));
 syncFaq('blog/natsu-shoyo-tetsuzuki.html', extractBonusFaq);

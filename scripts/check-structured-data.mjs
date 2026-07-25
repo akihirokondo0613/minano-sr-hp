@@ -9,7 +9,11 @@ const expectedFaqCounts = new Map([
   ['index.html', 6],
   ['recruit.html', 4],
   ['blog/fukugyo-kengyo-kisoku.html', 2],
+  ['blog/google-business-profile-kaisetsu.html', 4],
+  ['blog/google-workspace-dokujidomain-mail.html', 4],
+  ['blog/dns-mail-authentication.html', 3],
   ['blog/joseikin-career-up-2026.html', 2],
+  ['blog/kaigyo-domain-shutoku.html', 4],
   ['blog/kintai-dx-donyu-junbi.html', 3],
   ['blog/kyuyo-itaku-junbi.html', 3],
   ['blog/natsu-shoyo-tetsuzuki.html', 2],
@@ -19,6 +23,7 @@ const expectedFaqCounts = new Map([
   ['blog/ryoritsu-shien-josei.html', 2],
   ['blog/shaho-tekiyo-kakudai-2026.html', 2],
   ['blog/taishoku-trouble-prevention.html', 2],
+  ['blog/website-search-console-kokai.html', 4],
 ]);
 
 const expectedServicePages = new Set([
@@ -74,6 +79,43 @@ for (const full of walkHtml(root)) {
     source,
     schemas: parseSchemas(relativePath, source),
   });
+}
+
+const articleIndex = new Map(
+  JSON.parse(fs.readFileSync(path.join(root, 'blog/articles.json'), 'utf8')).map((article) => [
+    article.slug,
+    article,
+  ]),
+);
+
+for (const [relativePath, { source, schemas }] of pages) {
+  if (!relativePath.startsWith('blog/')) continue;
+  const articleSchemas = schemas.filter((schema) => typeOf(schema).includes('Article'));
+  if (articleSchemas.length !== 1) {
+    errors.push(`${relativePath}: Articleは1件必要です（現在${articleSchemas.length}件）`);
+    continue;
+  }
+
+  const slug = path.basename(relativePath, '.html');
+  const indexed = articleIndex.get(slug);
+  const published = source.match(
+    /<meta property=["']article:published_time["'] content=["']([^"']+)["']>/i,
+  )?.[1];
+  const modified = source.match(
+    /<meta property=["']article:modified_time["'] content=["']([^"']+)["']>/i,
+  )?.[1];
+  const article = articleSchemas[0];
+
+  if (!indexed) {
+    errors.push(`${relativePath}: blog/articles.jsonに記事がありません`);
+  } else if (
+    published !== article.datePublished ||
+    modified !== article.dateModified ||
+    indexed.date !== article.datePublished ||
+    indexed.updated !== article.dateModified
+  ) {
+    errors.push(`${relativePath}: OGP・Article・articles.jsonの日付が一致していません`);
+  }
 }
 
 for (const [relativePath, { schemas }] of pages) {
