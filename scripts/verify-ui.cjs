@@ -354,12 +354,12 @@ function recordConsoleError(target) {
   const rangedPriceRows = Array.from(pricingStructure.rowText.matchAll(/¥[^ ]*〜/g), match => match[0]);
   const pricingRulesOk =
     /31名以上プラン.*¥87,000.*¥107,500/.test(pricingStructure.planText) &&
-    /労災発生時の初動相談.*労働者死傷病報告/.test(pricingStructure.basicText) &&
+    /労災発生時の初動相談.*必要な場合の労働者死傷病報告/.test(pricingStructure.basicText) &&
     /会社設立時の新規適用手続き.*¥30,000.*5名まで.*6名目から1名¥1,000/.test(pricingStructure.retainerText) &&
     /労働保険の年度更新.*基本 ¥12,500＋対象者1名¥500/.test(pricingStructure.retainerText) &&
     /社会保険の算定基礎届.*基本 ¥12,500＋対象者1名¥500/.test(pricingStructure.retainerText) &&
     /傷病手当金.*¥7,500/.test(pricingStructure.retainerText) &&
-    /労災保険給付.*¥15,000.*初動相談.*労働者死傷病報告.*定型的な継続申請は顧問料に含まれます/.test(pricingStructure.retainerText) &&
+    /労災保険給付.*¥15,000.*初動相談.*必要な場合の労働者死傷病報告.*同一事故の定型的な継続申請は顧問料に含まれます/.test(pricingStructure.retainerText) &&
     /賞与支払届.*¥10,000＋対象者1名¥500/.test(pricingStructure.retainerText) &&
     /成功報酬：受給額の15％/.test(pricingStructure.retainerText) &&
     /会社設立時の新規適用手続き.*¥60,000.*5名まで.*6名目から1名¥2,000/.test(pricingStructure.spotText) &&
