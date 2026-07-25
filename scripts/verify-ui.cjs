@@ -335,8 +335,11 @@ function recordConsoleError(target) {
     const basicText = document.getElementById('plan-basic')?.textContent.replace(/\s+/g, ' ').trim() || '';
     const planText = document.querySelector('.price-grid')?.textContent.replace(/\s+/g, ' ').trim() || '';
     const retainerText = document.getElementById('retainer-extra-fees')?.textContent.replace(/\s+/g, ' ').trim() || '';
+    const retainerRowText = Array.from(document.querySelectorAll('#retainer-extra-fees .sf-row'))
+      .map(row => row.textContent.replace(/\s+/g, ' ').trim())
+      .join('\n');
     const spotText = document.getElementById('spot-fees')?.textContent.replace(/\s+/g, ' ').trim() || '';
-    return { rowText, basicText, planText, retainerText, spotText };
+    return { rowText, basicText, planText, retainerText, retainerRowText, spotText };
   });
   const forbiddenPriceRows = [
     '就業規則の新規作成・全面改定',
@@ -347,31 +350,33 @@ function recordConsoleError(target) {
     '第三者行為',
     '障害・遺族給付',
   ].filter(term => pricingStructure.rowText.includes(term));
-  const includedRetainerItems = ['出産手当金', '育児休業', '介護休業', '高年齢雇用継続給付']
+  const includedRetainerItems = ['出産手当金', '育児休業', '介護休業', '高年齢雇用継続給付', '年度更新', '算定基礎届', '賞与支払届']
     .filter(term => pricingStructure.basicText.includes(term));
+  const incorrectlySeparateRetainerItems = ['労働保険の年度更新', '社会保険の算定基礎届', '賞与支払届']
+    .filter(term => pricingStructure.retainerRowText.includes(term));
   const ambiguousPriceTerms = ['お見積もり', '要相談']
     .filter(term => `${pricingStructure.planText} ${pricingStructure.rowText}`.includes(term));
   const rangedPriceRows = Array.from(pricingStructure.rowText.matchAll(/¥[^ ]*〜/g), match => match[0]);
   const pricingRulesOk =
     /31名以上プラン.*¥87,000.*¥107,500/.test(pricingStructure.planText) &&
+    /年度更新・算定基礎届・賞与支払届.*年次・賞与時の届出も顧問料内/.test(pricingStructure.basicText) &&
     /労災発生時の初動相談.*必要な場合の労働者死傷病報告/.test(pricingStructure.basicText) &&
     /会社設立時の新規適用手続き.*¥30,000.*5名まで.*6名目から1名¥1,000/.test(pricingStructure.retainerText) &&
-    /労働保険の年度更新.*基本 ¥12,500＋対象者1名¥500/.test(pricingStructure.retainerText) &&
-    /社会保険の算定基礎届.*基本 ¥12,500＋対象者1名¥500/.test(pricingStructure.retainerText) &&
     /傷病手当金.*¥7,500/.test(pricingStructure.retainerText) &&
     /労災保険給付.*¥15,000.*初動相談.*必要な場合の労働者死傷病報告.*同一事故の定型的な継続申請は顧問料に含まれます/.test(pricingStructure.retainerText) &&
-    /賞与支払届.*¥10,000＋対象者1名¥500/.test(pricingStructure.retainerText) &&
+    /年末調整の資料整理・税理士連携.*基本 ¥10,000＋従業員1名¥750.*提携税理士へ連携/.test(pricingStructure.retainerText) &&
     /成功報酬：受給額の15％/.test(pricingStructure.retainerText) &&
     /会社設立時の新規適用手続き.*¥60,000.*5名まで.*6名目から1名¥2,000/.test(pricingStructure.spotText) &&
     /労働保険の年度更新.*基本 ¥25,000＋対象者1名¥1,000/.test(pricingStructure.spotText) &&
     /算定基礎届.*基本 ¥25,000＋対象者1名¥1,000/.test(pricingStructure.spotText) &&
     /賞与支払届.*¥20,000＋対象者1名¥1,000/.test(pricingStructure.spotText) &&
+    /年末調整の資料整理・税理士連携.*基本 ¥20,000＋従業員1名¥1,500.*提携税理士へ連携/.test(pricingStructure.spotText) &&
     /成功報酬：受給額の20％/.test(pricingStructure.spotText) &&
     /税理士法上職務外の処理については、提携の税理士に依頼します/.test(pricingStructure.spotText);
-  if (forbiddenPriceRows.length || includedRetainerItems.length !== 4 || ambiguousPriceTerms.length || rangedPriceRows.length || !pricingRulesOk) {
-    failures.push(`料金体系: 指示内容との不整合 ${JSON.stringify({ forbiddenPriceRows, includedRetainerItems, ambiguousPriceTerms, rangedPriceRows, pricingRulesOk })}`);
+  if (forbiddenPriceRows.length || includedRetainerItems.length !== 7 || incorrectlySeparateRetainerItems.length || ambiguousPriceTerms.length || rangedPriceRows.length || !pricingRulesOk) {
+    failures.push(`料金体系: 指示内容との不整合 ${JSON.stringify({ forbiddenPriceRows, includedRetainerItems, incorrectlySeparateRetainerItems, ambiguousPriceTerms, rangedPriceRows, pricingRulesOk })}`);
   }
-  results.push({ pricingStructure: { forbiddenPriceRows, includedRetainerItems, ambiguousPriceTerms, rangedPriceRows, pricingRulesOk } });
+  results.push({ pricingStructure: { forbiddenPriceRows, includedRetainerItems, incorrectlySeparateRetainerItems, ambiguousPriceTerms, rangedPriceRows, pricingRulesOk } });
   await simulatorPage.locator('#simulator > summary').click();
   await simulatorPage.waitForTimeout(350);
   await simulatorPage.locator('#ksEmpN').fill('8');
