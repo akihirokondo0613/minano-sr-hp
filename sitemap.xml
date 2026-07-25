@@ -85,7 +85,25 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://minano-sr.com/blog/dns-mail-authentication.html</loc>
+    <lastmod>2026-07-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://minano-sr.com/blog/fukugyo-kengyo-kisoku.html</loc>
+    <lastmod>2026-07-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://minano-sr.com/blog/google-business-profile-kaisetsu.html</loc>
+    <lastmod>2026-07-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://minano-sr.com/blog/google-workspace-dokujidomain-mail.html</loc>
     <lastmod>2026-07-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -104,6 +122,12 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/joseikin-career-up-2026.html</loc>
+    <lastmod>2026-07-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://minano-sr.com/blog/kaigyo-domain-shutoku.html</loc>
     <lastmod>2026-07-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -176,6 +200,12 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/taishoku-trouble-prevention.html</loc>
+    <lastmod>2026-07-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://minano-sr.com/blog/website-search-console-kokai.html</loc>
     <lastmod>2026-07-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
