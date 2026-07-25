@@ -7,13 +7,12 @@
      → ④ 準備（フォント＋トップのみヒーロー画像）を待つ
      → ⑤ マーカー線(.12+.46s) → 一拍(.12s) → めくり(.34s)   …= motion-lab「5a」の固定リズム
    ドキュメントが生き続けるので読み込みの凍結が画面に出ず、
-   波・文字・足あとは途切れず動き続ける（旧：入場/退場の二重実装・
+   波と文字は途切れず動き続ける（旧：入場/退場の二重実装・
    sessionStorage引き継ぎ・prerender注入・壁時計位相同期は全廃）。
 
    【再初期化の約束事】
-   - 共有スクリプト（image-slot.js / mascot.js / link-keep.js / header-motion.js 等の
+   - 共有スクリプト（image-slot.js / link-keep.js / header-motion.js 等の
      src付き）は初回のみ実行。差し替え後は再実行しない（URLレジストリで判定）。
-   - 猫マスコットのDOM（.mn-mascot / .mn-recall）は body 差し替えをまたいで移植する。
    - ページ固有のインラインscriptは差し替えのたびに再実行（要素バインドなので安全）。
      ただし id が ONCE_INLINE のもの（pf-hover 等、document級リスナーを張るもの）は初回のみ。
    - header-motion.js は window.__hmReinit()、見出し改行は window.__mnJbreak() を差し替え後に呼ぶ。
@@ -78,15 +77,14 @@ function mnGreeting() {
 }
 function mnIsHomePath(p) { return /(^|\/)(index\.html)?$/.test(p || ''); }
 
-/* ── 固定相談UIと猫：ヒーロー／最終CTA／フッターとの重なりを防ぐ ── */
+/* ── 固定相談UI：ヒーロー／最終CTA／フッターとの重なりを防ぐ ── */
 (function () {
   var style = document.getElementById('mn-footer-ui-style');
   if (!style) {
     style = document.createElement('style');
     style.id = 'mn-footer-ui-style';
     style.textContent =
-      'html.mn-fixed-ui-hidden .floating{opacity:0!important;visibility:hidden!important;pointer-events:none!important;transform:translateY(12px)!important}' +
-      'html.mn-mascot-footer-hidden .mn-mascot,html.mn-mascot-footer-hidden .mn-recall{opacity:0!important;visibility:hidden!important;pointer-events:none!important}';
+      'html.mn-fixed-ui-hidden .floating{opacity:0!important;visibility:hidden!important;pointer-events:none!important;transform:translateY(12px)!important}';
     document.head.appendChild(style);
   }
 
@@ -125,7 +123,6 @@ function mnIsHomePath(p) { return /(^|\/)(index\.html)?$/.test(p || ''); }
       var fixedHidden = state.hero || footerSide;
       var floating = document.querySelector('.floating');
       html.classList.toggle('mn-fixed-ui-hidden', fixedHidden);
-      html.classList.toggle('mn-mascot-footer-hidden', footerSide);
       if (floating) floating.classList.toggle('hidden', fixedHidden);
     }
     render();
@@ -160,35 +157,6 @@ function mnIsHomePath(p) { return /(^|\/)(index\.html)?$/.test(p || ''); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
   else init();
 })();
-
-/* ── 猫の足あと（採用案 1h）：登り方6パターン。[x, y(上へ), 回転deg]、intは歩間隔（秒） ── */
-var MN_PAWS = [
-  { steps: [[0, 0, 26], [24, 20, 26], [48, 40, 26], [72, 60, 26]], int: .34 },
-  { steps: [[72, 0, -26], [48, 20, -26], [24, 40, -26], [0, 60, -26]], int: .34 },
-  { steps: [[4, 0, 32], [30, 16, 8], [16, 36, -24], [42, 52, 28]], int: .34 },
-  { steps: [[0, 0, 30], [34, 26, 30], [68, 52, 30]], int: .22 },
-  { steps: [[0, 0, 20], [13, 12, 20], [26, 24, 20], [39, 36, 20], [52, 48, 20], [65, 60, 20]], int: .22 },
-  { steps: [[0, 0, 48], [24, 12, 34], [42, 30, 16], [52, 52, 2]], int: .34 }
-];
-var MN_PAW_SVG = '<svg viewBox="0 0 24 24"><ellipse cx="12" cy="16" rx="5.4" ry="4.2"/><circle cx="5.2" cy="9.4" r="2.4"/><circle cx="9.8" cy="7" r="2.4"/><circle cx="14.2" cy="7" r="2.4"/><circle cx="18.8" cy="9.4" r="2.4"/></svg>';
-function mnPawTrail(el) {
-  el.innerHTML = '';
-  var p = MN_PAWS[Math.floor(Math.random() * MN_PAWS.length)], mx = 0, my = 0;
-  p.steps.forEach(function (s) { if (s[0] > mx) mx = s[0]; if (s[1] > my) my = s[1]; });
-  el.style.width = (mx + 16) + 'px';
-  el.style.height = (my + 16) + 'px';
-  p.steps.forEach(function (s, i) {
-    var sp = document.createElement('span');
-    // 足あとの出現間隔：非トップ（顧問先ポータル等）はカバー時間が短く（めくりまで約1.25s）、
-    // 旧・間隔 p.int（0.22〜0.34s）＋容器の .3s 遅延では 2〜3歩しか登り切らなかった。
-    // 12ms 刻みに詰めて、覆っている間に全パターン（最長6歩）が出そろうようにする。
-    sp.style.cssText = 'position:absolute;left:' + s[0] + 'px;bottom:' + s[1] + 'px;width:14px;height:14px;opacity:0;will-change:transform,opacity;' +
-      'animation:pvPawUp 3.8s ease-out infinite;animation-delay:' + (i * 0.12) + 's';
-    sp.innerHTML = MN_PAW_SVG;
-    sp.firstChild.style.cssText = 'display:block;width:100%;height:100%;fill:rgba(255,255,255,.62);transform:rotate(' + s[2] + 'deg)';
-    el.appendChild(sp);
-  });
-}
 function mnSplitLabel(el, text) {
   // 文字は1字ずつ揺らすが、改行は文節のかたまり（.pv-w＝nowrap）単位でだけ起こす。
   // 旧実装は全文字が独立spanで、狭い画面では任意の位置（単語の途中）で折れていた。
@@ -278,30 +246,25 @@ function mnSplitLabel(el, text) {
       '  border-radius:2px;transform:scaleX(0);transform-origin:left center;z-index:-1}' +
       '#pg-veil .pv-w{display:inline-block;white-space:nowrap;animation:pvBob 2.9s ease-in-out infinite;will-change:transform}' +
       '@keyframes pvBob{0%,100%{transform:translate3d(0,2.2px,0)}50%{transform:translate3d(0,-2.2px,0)}}' +
-      '#pg-veil .pv-paws{position:absolute;left:50%;top:calc(50% + 32px);transform:translateX(-50%);opacity:0;' +
-      '  transition:opacity .28s ease;will-change:opacity}' +
-      '@keyframes pvPawUp{0%{opacity:0;transform:translateY(6px) scale(.6)}9%{opacity:.62;transform:translateY(0) scale(1)}58%{opacity:.62}78%,100%{opacity:0;transform:translateY(0) scale(1)}}' +
       /* 覆う */
       'html.pv-on #pg-veil{transform:translateY(0);transition:transform .22s cubic-bezier(.6,0,.15,1)}' +
       'html.pv-on #pg-veil .pv-lbl{opacity:.97;transform:translateY(-50%);transition:opacity .18s ease .02s,transform .22s cubic-bezier(.6,0,.15,1) .02s}' +
-      'html.pv-on #pg-veil .pv-paws{opacity:1}' +
       /* マーカー（準備完了後にだけ引かれる＝途中で切れない） */
       'html.pv-mark #pg-veil .pv-in::after{transform:scaleX(1);transition:transform .46s cubic-bezier(.45,.05,.35,.95) .12s}' +
       /* めくる */
       'html.pv-lift #pg-veil{transform:translateY(-101%);transition:transform .34s cubic-bezier(.6,0,.15,1)}' +
       'html.pv-lift #pg-veil .pv-lbl{opacity:0;transform:translateY(-50%) translateY(-12px);transition:opacity .22s ease,transform .32s cubic-bezier(.6,0,.15,1)}' +
-      'html.pv-lift #pg-veil .pv-paws{opacity:0;transition:opacity .12s ease}' +
-      /* めくり中はカーテン内の常時アニメ（波の流れ・文字の揺れ・足あとの点滅）を止め、静止した1枚の面にする。
+      /* めくり中はカーテン内の常時アニメ（波の流れ・文字の揺れ）を止め、静止した1枚の面にする。
          重い遷移先（社労士とは＝大きなDOM＋クイズ再構築／顧問先＝file-slot.js初回ロード＋一覧生成）では
          めくりの瞬間にレイアウト・描画でメインスレッドが飽和し、常時再描画の子を抱えたカーテンは
          コンポジット層を維持できず“めくりが一瞬で飛ぶ＝上がって見えない”。子アニメを止めれば面は静的な
          1枚となり、transform だけがGPUで滑るので、描画が詰まっていても最後まで上へめくれる。 */
-      'html.pv-lift #pg-veil .pv-wave,html.pv-lift #pg-veil .pv-in span,html.pv-lift #pg-veil .pv-paws span{animation-play-state:paused}';
+      'html.pv-lift #pg-veil .pv-wave,html.pv-lift #pg-veil .pv-in span{animation-play-state:paused}';
     document.head.appendChild(veilStyle);
     veil = document.createElement('div');
     veil.id = 'pg-veil';
     veil.setAttribute('aria-hidden', 'true');
-    veil.innerHTML = '<div class="pv-body"></div><div class="pv-wave"></div><div class="pv-lbl"><span class="pv-in"></span></div><div class="pv-paws"></div>';
+    veil.innerHTML = '<div class="pv-body"></div><div class="pv-wave"></div><div class="pv-lbl"><span class="pv-in"></span></div>';
     de.appendChild(veil);   // body ではなく <html> 直下（差し替えの影響を受けない）
     syncVeilZoom();
     return veil;
@@ -318,12 +281,11 @@ function mnSplitLabel(el, text) {
     ensureVeil();
     try { de.style.setProperty('--pg-curtain', themeColor()); } catch (e) {}
     mnSplitLabel(veil.querySelector('.pv-in'), label || '');
-    mnPawTrail(veil.querySelector('.pv-paws'));
     veil.classList.add('show');
     void veil.offsetWidth;               // 表示化を確定させてから
     coverDone = new Promise(function (resolve) {
       requestAnimationFrame(function () {  // 1フレームのちに覆う＝初回でも確実に走らせる
-        de.classList.add('pv-on');                 // 文字・足あとの立ち上げ（opacity）
+        de.classList.add('pv-on');                 // 文字の立ち上げ（opacity）
         animVeil('-101%', '0', 220).then(resolve, resolve);   // 降りきった時点で解決
       });
     });
@@ -400,7 +362,7 @@ function mnSplitLabel(el, text) {
 
   /* ---- 実行済みレジストリ ---- */
   // 注意：初期登録は <head> 同期実行時点＝body未パースなので、初期ページ body 内の共有
-  // スクリプト（image-slot/mascot/link-keep/header-motion/file-slot）が登録されない。
+  // スクリプト（image-slot/link-keep/header-motion/file-slot）が登録されない。
   // DCL後に再スキャンして補完する（辞書なので冪等）。→「src付きは初回のみ」の契約を守る。
   var loadedSrcs = {};
   function seedLoadedSrcs() {
@@ -418,7 +380,6 @@ function mnSplitLabel(el, text) {
     'pg-veil-style': 1,
     'mn-footer-ui-style': 1,
     'hm-css': 1,
-    'mn-mascot-style': 1,
     'mn-image-slot-public-style': 1,
     '__om-edit-overrides': 1
   };
@@ -519,22 +480,17 @@ function mnSplitLabel(el, text) {
     return step();
   }
   function swapBody(doc) {
-    var keep = Array.prototype.slice.call(document.querySelectorAll('.mn-mascot, .mn-recall'));
     var newBody = document.adoptNode(doc.body);
     if (window.__heroCtaObserver) { try { window.__heroCtaObserver.disconnect(); } catch (e) {} window.__heroCtaObserver = null; }
     if (window.__mnFooterUiCleanup) { try { window.__mnFooterUiCleanup(); } catch (e) {} }
-    if (window.__mnMascotCleanup) { try { window.__mnMascotCleanup(); } catch (e) {} }
     // ロゴローダー(#mn-load)はページを最初に開いた時だけの演出。SPA遷移で来た body にも
     // 静的に含まれているため、除去せずに残すと「トップに戻る」たびに再表示されてしまう。
     var loader = newBody.querySelector('#mn-load');
     if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
     document.documentElement.replaceChild(newBody, document.body);
-    keep.forEach(function (el) { newBody.appendChild(el); });   // 猫はページをまたいで居続ける
     return execScriptsSeq(newBody).then(function () {
       if (window.__hmReinit) { try { window.__hmReinit(); } catch (e) {} }
       if (window.__mnJbreak) { try { window.__mnJbreak(); } catch (e) {} }
-      if (window.__mnMascotReinit) { try { window.__mnMascotReinit(); } catch (e) {} }
-      else if (window.__mnMascotRelink) { try { window.__mnMascotRelink(); } catch (e) {} }
       if (window.__mnFooterUiReinit) { try { window.__mnFooterUiReinit(); } catch (e) {} }
       // アクセス解析：SPA遷移は通常のページ読み込みが起きないため、手動でページビューを記録する
       try {
@@ -546,7 +502,7 @@ function mnSplitLabel(el, text) {
     });
   }
 
-  /* ---- 準備待ち（この間もカーテン上の文字・足あとは漂い続ける） ---- */
+  /* ---- 準備待ち（この間もカーテン上の文字は漂い続ける） ---- */
   function waitHero(cap) {
     return new Promise(function (res) {
       var done = false;
@@ -609,7 +565,7 @@ function mnSplitLabel(el, text) {
     var swapped = false, lifted = false;
     function doLift() {
       if (lifted) return Promise.resolve(); lifted = true;
-      de.classList.add('pv-lift');                    // 文字・足あとの退場（opacity）
+      de.classList.add('pv-lift');                    // 文字の退場（opacity）
       return animVeil('0', '-101%', 340).then(function () { hideVeil(); busy = false; });
     }
     var watchdog = setTimeout(function () {

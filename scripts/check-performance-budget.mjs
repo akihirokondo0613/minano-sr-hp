@@ -6,7 +6,7 @@ const root = process.cwd();
 const errors = [];
 const publicHtml = [];
 const excludedHtml = new Set(['admin-post.html', 'icon-catalog.html']);
-const sharedScripts = /(?:page-enter|image-slot|link-keep|mascot|header-motion)\.js(?:\?[^"']*)?/i;
+const sharedScripts = /(?:page-enter|image-slot|link-keep|header-motion)\.js(?:\?[^"']*)?/i;
 
 async function collectHtml(dir) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
@@ -38,20 +38,23 @@ for (const { full, rel } of publicHtml) {
     }
   }
   const pageEnter = html.match(/page-enter\.js\?v=([^"']+)/i);
-  if (pageEnter && pageEnter[1] !== '20260723-privacy1') {
+  if (pageEnter && pageEnter[1] !== '20260725-nocat1') {
     fail(`${rel}: page-enter.jsのキャッシュ版が不一致です（${pageEnter[1]}）`);
   }
-  const mascotVersion = html.match(/mascot\.js\?v=([^"']+)/i);
-  if (mascotVersion && mascotVersion[1] !== '20260723-hidden1') {
-    fail(`${rel}: mascot.jsのキャッシュ版が不一致です（${mascotVersion[1]}）`);
+  if (/mascot\.js|mn-mascot|mn-recall/i.test(html)) {
+    fail(`${rel}: 撤去済みの猫UI参照が残っています`);
   }
   const imageSlotVersion = html.match(/image-slot\.js\?v=([^"']+)/i);
   if (imageSlotVersion && imageSlotVersion[1] !== '20260722-crop1') {
     fail(`${rel}: image-slot.jsのキャッシュ版が不一致です（${imageSlotVersion[1]}）`);
   }
   const skinVersion = html.match(/skin-v2\.css\?v=([^"']+)/i);
-  if (skinVersion && skinVersion[1] !== '20260723-herophoto1') {
+  if (skinVersion && skinVersion[1] !== '20260725-nocat1') {
     fail(`${rel}: skin-v2.cssのキャッシュ版が不一致です（${skinVersion[1]}）`);
+  }
+  const serviceVersion = html.match(/service\.css\?v=([^"']+)/i);
+  if (serviceVersion && serviceVersion[1] !== '20260725-nocat1') {
+    fail(`${rel}: service.cssのキャッシュ版が不一致です（${serviceVersion[1]}）`);
   }
   if (/data-goatcounter=/i.test(html)) {
     const expectedPath = rel === 'index.html' ? '/' : `/${rel}`;
@@ -91,9 +94,6 @@ const sizeBudgets = [
   ['assets/photos/hero-main-800.avif', 40 * 1024],
   ['assets/photos/hero-main-1200.avif', 90 * 1024],
   ['assets/photos/hero-main-1600.avif', 150 * 1024],
-  ['assets/cat-walk-1-256.webp', 12 * 1024],
-  ['assets/cat-walk-2-256.webp', 12 * 1024],
-  ['assets/cat-walk-3-256.webp', 12 * 1024],
 ];
 for (const [rel, max] of sizeBudgets) {
   try {

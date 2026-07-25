@@ -170,7 +170,7 @@ html.nav-menu-open .nav-burger svg rect:nth-child(3) { transform: translateY(-6p
 .mob-nav a[aria-current="page"]::after { content: ''; width: 26px; height: 2px; margin-left: auto; border-radius: 2px; background: var(--moegi); }
 .mob-nav .mob-cta { min-height: 50px; justify-content: center; border: 0; margin-top: 22px; background: var(--sugi); color: #fff; font-family: var(--font-body); font-size: 14.5px; font-weight: 700; text-align: center; padding: 14px 18px; border-radius: var(--r); }
 html.nav-menu-open { overflow: hidden; }
-html.nav-menu-open :is(.mn-mascot, .mn-recall, .floating) { opacity: 0 !important; pointer-events: none !important; }
+html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !important; }
 @media (min-width: 701px) and (max-width: 1199px) {
   .mob-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(4, 54px); align-content: center; column-gap: clamp(36px, 7vw, 80px); padding: 90px clamp(48px, 8vw, 96px) 40px; }
   .mob-nav > a:nth-child(1) { grid-area: 1 / 1; }

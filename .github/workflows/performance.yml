@@ -18,6 +18,13 @@ jobs:
         with:
           node-version: 22
 
+      - name: 公開データの整合性チェック
+        run: |
+          node scripts/sync-structured-data.mjs --check
+          node scripts/remove-cat-ui.mjs --check
+          node scripts/check-structured-data.mjs
+          node gen-sitemap.js --check
+
       - name: 静的な性能チェック
         run: node scripts/check-performance-budget.mjs
 

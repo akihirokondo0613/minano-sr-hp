@@ -14,6 +14,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: 公開データの整合性チェック
+        run: |
+          node scripts/sync-structured-data.mjs --check
+          node scripts/remove-cat-ui.mjs --check
+          node scripts/check-structured-data.mjs
+          node gen-sitemap.js --check
+
       - name: 公開前の性能チェック
         run: node scripts/check-performance-budget.mjs
 
@@ -25,7 +32,8 @@ jobs:
 
       - name: 非公開ファイルを除外
         run: |
-          rm -f AGENTS.md CLAUDE.md icon-catalog.html .maintenance
+          rm -f AGENTS.md CLAUDE.md admin-post.html icon-catalog.html mascot.js .maintenance
+          rm -f assets/cat-walk-*.webp
           rm -rf _backup_* .github scripts
           rm -f *.zip
           find . -name ".image-slots.state.json" -delete

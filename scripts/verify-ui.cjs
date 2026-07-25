@@ -39,9 +39,6 @@ function recordConsoleError(target) {
     await page.waitForTimeout(700);
     const state = await page.evaluate(() => {
       const rect = el => el?.getBoundingClientRect();
-      const catEl = document.querySelector('.mn-mascot');
-      const recallEl = document.querySelector('.mn-recall');
-      const cat = rect(catEl);
       const aboutPhoto = rect(document.querySelector('.home-about-photo'));
       const aboutCopy = rect(document.querySelector('.home-about-copy'));
       const whyPhoto = rect(document.querySelector('.home-why-photo'));
@@ -66,9 +63,7 @@ function recordConsoleError(target) {
         faqWordBreak: getComputedStyle(document.querySelector('.faq-q-text')).wordBreak,
         protectedPlan: !![...document.querySelectorAll('.faq-q-text .nobr')].find(el => el.textContent === 'プラン'),
         footerObserver: !!window.__footerUiObserver,
-        catInside: !!(cat && cat.left >= 0 && cat.top >= 0 && cat.right <= innerWidth && cat.bottom <= innerHeight),
-        catDisplay: catEl ? getComputedStyle(catEl).display : null,
-        recallDisplay: recallEl ? getComputedStyle(recallEl).display : null,
+        catUiCount: document.querySelectorAll('.mn-mascot,.mn-recall,.pv-paws').length,
       };
     });
     if (state.overflow > 1) failures.push(`${viewport.width}px: 横はみ出し ${state.overflow}px`);
@@ -77,8 +72,7 @@ function recordConsoleError(target) {
     if (state.stateRequests) failures.push(`${viewport.width}px: 編集用JSONを${state.stateRequests}回取得しています`);
     if (state.googleFontRequests) failures.push(`${viewport.width}px: Google Fontsを取得しています`);
     if (!state.footerObserver) failures.push(`${viewport.width}px: 固定UIのObserverが初期化されていません`);
-    if (!state.catInside) failures.push(`${viewport.width}px: 猫の初期位置が画面外です`);
-    if (state.catDisplay !== 'none' || state.recallDisplay === 'none') failures.push(`${viewport.width}px: 猫が初期状態で収納されていません`);
+    if (state.catUiCount) failures.push(`${viewport.width}px: 撤去済みの猫UIが残っています`);
     if (viewport.width <= 640) {
       if (state.summaryColumns !== 2) failures.push(`${viewport.width}px: ヒーロー直下サマリーが2列ではありません`);
       if (state.planListDisplay !== 'none' || state.planFeatureDisplay === 'none') failures.push(`${viewport.width}px: スマホ料金カードの情報量が不正です`);
@@ -339,9 +333,10 @@ function recordConsoleError(target) {
       .map(row => row.textContent.replace(/\s+/g, ' ').trim())
       .join('\n');
     const basicText = document.getElementById('plan-basic')?.textContent.replace(/\s+/g, ' ').trim() || '';
+    const planText = document.querySelector('.price-grid')?.textContent.replace(/\s+/g, ' ').trim() || '';
     const retainerText = document.getElementById('retainer-extra-fees')?.textContent.replace(/\s+/g, ' ').trim() || '';
     const spotText = document.getElementById('spot-fees')?.textContent.replace(/\s+/g, ' ').trim() || '';
-    return { rowText, basicText, retainerText, spotText };
+    return { rowText, basicText, planText, retainerText, spotText };
   });
   const forbiddenPriceRows = [
     '就業規則の新規作成・全面改定',
@@ -354,16 +349,28 @@ function recordConsoleError(target) {
   ].filter(term => pricingStructure.rowText.includes(term));
   const includedRetainerItems = ['出産手当金', '育児休業', '介護休業', '高年齢雇用継続給付']
     .filter(term => pricingStructure.basicText.includes(term));
+  const ambiguousPriceTerms = ['お見積もり', '要相談']
+    .filter(term => `${pricingStructure.planText} ${pricingStructure.rowText}`.includes(term));
+  const rangedPriceRows = Array.from(pricingStructure.rowText.matchAll(/¥[^ ]*〜/g), match => match[0]);
   const pricingRulesOk =
+    /31名以上プラン.*¥87,000.*¥107,500/.test(pricingStructure.planText) &&
+    /会社設立時の新規適用手続き.*基本 ¥40,000＋対象者1名¥1,000/.test(pricingStructure.retainerText) &&
+    /労働保険の年度更新.*基本 ¥12,500＋対象者1名¥500/.test(pricingStructure.retainerText) &&
+    /社会保険の算定基礎届.*基本 ¥12,500＋対象者1名¥500/.test(pricingStructure.retainerText) &&
+    /傷病手当金.*¥7,500/.test(pricingStructure.retainerText) &&
+    /労災保険給付.*¥15,000/.test(pricingStructure.retainerText) &&
     /賞与支払届.*¥10,000＋対象者1名¥500/.test(pricingStructure.retainerText) &&
     /成功報酬：受給額の15％/.test(pricingStructure.retainerText) &&
+    /会社設立時の新規適用手続き.*基本 ¥80,000＋対象者1名¥2,000/.test(pricingStructure.spotText) &&
+    /労働保険の年度更新.*基本 ¥25,000＋対象者1名¥1,000/.test(pricingStructure.spotText) &&
+    /算定基礎届.*基本 ¥25,000＋対象者1名¥1,000/.test(pricingStructure.spotText) &&
     /賞与支払届.*¥20,000＋対象者1名¥1,000/.test(pricingStructure.spotText) &&
     /成功報酬：受給額の20％/.test(pricingStructure.spotText) &&
     /税理士法上職務外の処理については、提携の税理士に依頼します/.test(pricingStructure.spotText);
-  if (forbiddenPriceRows.length || includedRetainerItems.length !== 4 || !pricingRulesOk) {
-    failures.push(`料金体系: 指示内容との不整合 ${JSON.stringify({ forbiddenPriceRows, includedRetainerItems, pricingRulesOk })}`);
+  if (forbiddenPriceRows.length || includedRetainerItems.length !== 4 || ambiguousPriceTerms.length || rangedPriceRows.length || !pricingRulesOk) {
+    failures.push(`料金体系: 指示内容との不整合 ${JSON.stringify({ forbiddenPriceRows, includedRetainerItems, ambiguousPriceTerms, rangedPriceRows, pricingRulesOk })}`);
   }
-  results.push({ pricingStructure: { forbiddenPriceRows, includedRetainerItems, pricingRulesOk } });
+  results.push({ pricingStructure: { forbiddenPriceRows, includedRetainerItems, ambiguousPriceTerms, rangedPriceRows, pricingRulesOk } });
   await simulatorPage.locator('#simulator > summary').click();
   await simulatorPage.waitForTimeout(350);
   await simulatorPage.locator('#ksEmpN').fill('8');
@@ -378,16 +385,81 @@ function recordConsoleError(target) {
   if (!/¥55,000/.test(simulatorState.price) || !/スタンダードプラン/.test(simulatorState.plan) || !/¥660,000/.test(simulatorState.year) || simulatorState.grantControls !== 0 || simulatorState.grantText) {
     failures.push(`料金シミュレーター: 計算結果が不正 ${JSON.stringify(simulatorState)}`);
   }
+  await simulatorPage.locator('#ksEmpN').fill('31');
+  const largeCompanyState = await simulatorPage.evaluate(() => ({
+    price: document.getElementById('ksPrice')?.textContent.trim() || '',
+    plan: document.getElementById('ksBreak')?.textContent.trim() || '',
+    year: document.getElementById('ksYear')?.textContent.trim() || '',
+  }));
+  if (!/お見積もり/.test(largeCompanyState.price) || !/31名以上/.test(largeCompanyState.plan) || largeCompanyState.year) {
+    failures.push(`料金シミュレーター: 31名以上の見積もり表示が不正 ${JSON.stringify(largeCompanyState)}`);
+  }
+  await simulatorPage.locator('#ksEmpN').fill('50');
+  const fiftyEmployeeState = await simulatorPage.evaluate(() => ({
+    price: document.getElementById('ksPrice')?.textContent.trim() || '',
+    plan: document.getElementById('ksBreak')?.textContent.trim() || '',
+    year: document.getElementById('ksYear')?.textContent.trim() || '',
+  }));
+  if (!/お見積もり/.test(fiftyEmployeeState.price) || !/31名以上/.test(fiftyEmployeeState.plan) || fiftyEmployeeState.year) {
+    failures.push(`料金シミュレーター: 50名の見積もり表示が不正 ${JSON.stringify(fiftyEmployeeState)}`);
+  }
+  await simulatorPage.locator('#ksEmpN').fill('8');
   await simulatorPage.locator('.ks-cta').click();
   await simulatorPage.waitForFunction(() => location.pathname.endsWith('/uploads/contact.html') && new URLSearchParams(location.search).get('from') === 'sim', null, { timeout: 10000 });
+  await simulatorPage.locator('#optionalDetails > summary').click();
+  await simulatorPage.waitForTimeout(250);
   const contactInitial = await simulatorPage.evaluate(() => {
     const details = document.getElementById('optionalDetails');
     const note = document.getElementById('contactNote');
     const privacy = document.querySelector('.privacy-consent');
     const timeField = document.getElementById('contactTimeField');
+    const restoredIds = ['advKomon', 'ctxTetsuduki', 'advKyuyoKanri', 'softCheckboxes', 'ctxWorkload'];
+    const expectedQuestionSelectors = {
+      name: '#name',
+      company: '#company',
+      email: '#email',
+      phone: '#tel',
+      initialMessage: '#message',
+      industry: '#industryCheckboxes input[type="checkbox"]',
+      employeeCount: 'input[name="size"]',
+      currentLaborConsultant: 'input[name="adv_komon"]',
+      procedureMethod: 'input[name="ctx_tetsuduki"]',
+      payrollAttendanceMethod: 'input[name="adv_kyuyo_kanri"]',
+      software: '#softCheckboxes input[type="checkbox"]',
+      softwareOther: 'input[name="soft_other"]',
+      softwareCost: 'input[name="ctx_bo_cost"]',
+      monthlyWorkload: 'input[name="ctx_workload"]',
+      consultationTrigger: '#ctxTrigger input[type="checkbox"]',
+      consultationCategory: '#serviceCheckboxes input[type="checkbox"]',
+      subsidyWagePlan: 'input[name="br_jose_chinage"]',
+      subsidyInvestment: 'input[name="br_jose_setsubi"]',
+      subsidyInvestmentDetail: 'input[name="br_jose_setsubi_naiyo"]',
+      workRulesStatus: 'input[name="br_kisoku_umu"]',
+      workRulesRevision: 'input[name="br_kisoku_kaitei"]',
+      payrollOwner: 'input[name="br_kyuyo_tantou"]',
+      procedureFrequency: 'input[name="br_shaho_hindo"]',
+      burdensomeProcedures: '#brShahoTema input[type="checkbox"]',
+      laborConcerns: '#brRomuKanshin input[type="checkbox"]',
+      retainerBackground: 'input[name="br_komon_haikei"]',
+      contactMethod: 'input[name="pref_contact"]',
+      contactDay: 'input[name="pref_day"]',
+      contactTime: 'input[name="pref_time"]',
+      finalNote: '#contactNote',
+    };
+    const missingQuestionSelectors = Object.entries(expectedQuestionSelectors)
+      .filter(([, selector]) => !document.querySelector(selector))
+      .map(([name]) => name);
     return {
       simPrefill: document.getElementById('message')?.value || '',
       detailsSummary: details?.querySelector('summary')?.textContent.replace(/\s+/g, ' ').trim() || '',
+      questionInventoryCount: Object.keys(expectedQuestionSelectors).length,
+      missingQuestionSelectors,
+      optionalStepCount: details?.querySelectorAll('.optional-step-heading').length || 0,
+      restoredQuestionsVisible: restoredIds.every(id => {
+        const el = document.getElementById(id);
+        return !!el && el.getBoundingClientRect().height > 0;
+      }),
+      branchQuestionsEnabled: document.getElementById('branchBlocks')?.hidden === false,
       finalNoteAfterDetails: !!(details && note && (details.compareDocumentPosition(note) & Node.DOCUMENT_POSITION_FOLLOWING)),
       finalNoteBeforePrivacy: !!(note && privacy && (note.compareDocumentPosition(privacy) & Node.DOCUMENT_POSITION_FOLLOWING)),
       timeInitiallyHidden: !!timeField?.hidden,
@@ -397,23 +469,31 @@ function recordConsoleError(target) {
   });
   await simulatorPage.locator('input[name="pref_contact"][value="電話"]').check();
   await simulatorPage.waitForFunction(() => !document.getElementById('contactTimeField')?.hidden);
-  await simulatorPage.locator('input[name="pref_time"][value="平日 15:00〜18:00"]').check();
+  await simulatorPage.locator('input[name="pref_day"][value="土曜日"]').check();
+  await simulatorPage.locator('input[name="pref_time"][value="15:00〜18:00"]').check();
   await simulatorPage.locator('input[name="pref_contact"][value="メール"]').check();
   const contactPreferenceState = await simulatorPage.evaluate(() => ({
     timeHiddenForEmail: !!document.getElementById('contactTimeField')?.hidden,
     timeSelectionCleared: !document.querySelector('input[name="pref_time"]:checked'),
+    daySelectionCleared: !document.querySelector('input[name="pref_day"]:checked'),
   }));
   const contactFormOk =
     /料金シミュレーター/.test(contactInitial.simPrefill) &&
     /任意/.test(contactInitial.detailsSummary) &&
-    /ご相談前の確認/.test(contactInitial.detailsSummary) &&
-    /4項目/.test(contactInitial.detailsSummary) &&
+    /初回相談を具体的にするための質問/.test(contactInitial.detailsSummary) &&
+    /顧問社労士の有無/.test(contactInitial.detailsSummary) &&
+    contactInitial.questionInventoryCount === 30 &&
+    contactInitial.missingQuestionSelectors.length === 0 &&
+    contactInitial.optionalStepCount === 3 &&
+    contactInitial.restoredQuestionsVisible &&
+    contactInitial.branchQuestionsEnabled &&
     contactInitial.finalNoteAfterDetails &&
     contactInitial.finalNoteBeforePrivacy &&
     contactInitial.timeInitiallyHidden &&
     contactInitial.contactMethodVisible &&
     contactPreferenceState.timeHiddenForEmail &&
-    contactPreferenceState.timeSelectionCleared;
+    contactPreferenceState.timeSelectionCleared &&
+    contactPreferenceState.daySelectionCleared;
   if (!contactFormOk) {
     failures.push(`問い合わせフォーム: 導線・任意項目・連絡希望の表示が不正 ${JSON.stringify({ contactInitial, contactPreferenceState })}`);
   }
@@ -427,23 +507,90 @@ function recordConsoleError(target) {
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true }) });
   });
   await simulatorPage.locator('#name').fill('検証 太郎');
+  await simulatorPage.locator('#company').fill('検証株式会社');
   await simulatorPage.locator('#email').fill('verification@example.com');
+  await simulatorPage.locator('#tel').fill('090-0000-0000');
+  await simulatorPage.locator('#industryCheckboxes input[type="checkbox"]').first().check();
+  await simulatorPage.locator('input[name="size"]').first().check();
   await simulatorPage.locator('#contactNote').fill('平日16時以降の電話を希望します。');
+  await simulatorPage.locator('input[name="adv_komon"][value="いない"]').check();
+  await simulatorPage.locator('input[name="ctx_tetsuduki"][value="自社で電子申請"]').check();
+  await simulatorPage.locator('input[name="adv_kyuyo_kanri"]').first().check();
+  await simulatorPage.locator('#softCheckboxes input[type="checkbox"]').first().check();
+  await simulatorPage.locator('input[name="soft_other"]').fill('検証用ソフト');
+  await simulatorPage.locator('input[name="ctx_bo_cost"]').first().check();
+  await simulatorPage.locator('input[name="ctx_workload"]').first().check();
+  await simulatorPage.locator('#ctxTrigger input[type="checkbox"]').first().check();
+  await simulatorPage.locator('#serviceCheckboxes input[type="checkbox"]').evaluateAll(inputs => {
+    inputs.forEach(input => {
+      input.checked = true;
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  });
+  await simulatorPage.waitForFunction(() =>
+    Array.from(document.querySelectorAll('.branch-block')).every(block => block.style.display !== 'none')
+  );
+  await simulatorPage.locator('input[name="br_jose_chinage"]').first().check();
+  await simulatorPage.locator('input[name="br_jose_setsubi"]').first().check();
+  await simulatorPage.locator('input[name="br_jose_setsubi_naiyo"]').fill('検証用設備');
+  await simulatorPage.locator('input[name="br_kisoku_umu"]').first().check();
+  await simulatorPage.locator('input[name="br_kisoku_kaitei"]').fill('2024-04');
+  await simulatorPage.locator('input[name="br_kyuyo_tantou"]').first().check();
+  await simulatorPage.locator('input[name="br_shaho_hindo"]').first().check();
+  await simulatorPage.locator('#brShahoTema input[type="checkbox"]').first().check();
+  await simulatorPage.locator('#brRomuKanshin input[type="checkbox"]').first().check();
+  await simulatorPage.locator('input[name="br_komon_haikei"]').first().check();
   await simulatorPage.locator('input[name="pref_contact"][value="電話"]').check();
-  await simulatorPage.locator('input[name="pref_time"][value="平日 15:00〜18:00"]').check();
+  await simulatorPage.locator('input[name="pref_day"][value="日曜日"]').check();
+  await simulatorPage.locator('input[name="pref_time"][value="15:00〜18:00"]').check();
   await simulatorPage.locator('#privacy').check();
   await simulatorPage.locator('#contactForm .form-submit').click();
   await simulatorPage.locator('#formSuccess').waitFor({ state: 'visible' });
+  const expectedContactPayloadKeys = [
+    'お名前',
+    '会社名',
+    'メール',
+    '電話番号',
+    '業種',
+    '従業員数',
+    '顧問社労士の有無',
+    '入退社などの手続きの処理方法',
+    '給与勤怠の管理方法',
+    '導入ソフト',
+    'ソフトサービスの月額費用',
+    '事務作業の毎月の負担',
+    'ご相談のきっかけ',
+    'ご相談内容',
+    '希望の連絡方法',
+    '電話してよい曜日',
+    'つながりやすい時間帯',
+    'ご質問',
+    '補足・連絡事項',
+    '【助成金】賃上げ予定',
+    '【助成金】設備投資',
+    '【就業規則】有無',
+    '【給与計算】担当者',
+    '【社会保険】入退社の頻度',
+    '【社会保険】手間に感じている手続き',
+    '【労務相談】気になっていること',
+    '【顧問契約】検討の背景',
+  ];
+  const missingContactPayloadKeys = expectedContactPayloadKeys
+    .filter(key => !Object.prototype.hasOwnProperty.call(submittedContactPayload || {}, key));
   const contactPayloadOk =
+    missingContactPayloadKeys.length === 0 &&
     submittedContactPayload?.['希望の連絡方法'] === '電話' &&
-    submittedContactPayload?.['つながりやすい時間帯'] === '平日 15:00〜18:00' &&
+    submittedContactPayload?.['電話してよい曜日'] === '日曜日' &&
+    submittedContactPayload?.['つながりやすい時間帯'] === '15:00〜18:00' &&
+    submittedContactPayload?.['顧問社労士の有無'] === 'いない' &&
+    submittedContactPayload?.['入退社などの手続きの処理方法'] === '自社で電子申請' &&
     submittedContactPayload?.['補足・連絡事項'] === '平日16時以降の電話を希望します。';
   if (!contactPayloadOk) {
     failures.push(`問い合わせフォーム: 送信内容への反映が不正 ${JSON.stringify(submittedContactPayload)}`);
   }
   results.push({ contactForm: { ...contactInitial, ...contactPreferenceState, ok: contactFormOk } });
-  results.push({ contactPayload: { ok: contactPayloadOk } });
-  results.push({ simulator: simulatorState, contactParameter: 'from=sim' });
+  results.push({ contactPayload: { ok: contactPayloadOk, expectedKeys: expectedContactPayloadKeys.length, missingContactPayloadKeys } });
+  results.push({ simulator: simulatorState, largeCompanyState, fiftyEmployeeState, contactParameter: 'from=sim' });
   await simulatorPage.close();
 
   const adminPage = await browser.newPage({ viewport: { width: 1280, height: 900 }, acceptDownloads: true });
@@ -471,13 +618,14 @@ function recordConsoleError(target) {
     '../pricing.html',
     '../support.html',
     '../about.html',
-    'skin-v2.css?v=20260723-herophoto1',
+    'page-enter.js?v=20260725-nocat1',
+    'skin-v2.css?v=20260725-nocat1',
     'link-keep.js?v=20260723-conversion1',
     'data-goatcounter-settings="{&quot;path&quot;:&quot;/blog/verification-only.html&quot;}"',
     'href="#" class="to-top"',
   ];
   const templateMissing = expectedTemplateFragments.filter(fragment => !generatedArticle.includes(fragment));
-  if (templateMissing.length || /index\.html#(?:services|pricing|cases|about)|16◯/.test(generatedArticle) || adminErrors.length) {
+  if (templateMissing.length || /index\.html#(?:services|pricing|cases|about)|16◯|mascot\.js/.test(generatedArticle) || adminErrors.length) {
     failures.push(`記事投稿テンプレート: ${JSON.stringify({ templateMissing, adminErrors })}`);
   }
   results.push({ articleTemplate: 'generated', requiredLinks: expectedTemplateFragments.length - templateMissing.length, errors: adminErrors.length });
@@ -548,8 +696,6 @@ function recordConsoleError(target) {
       const state = await sweepPage.evaluate(() => ({
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
         brokenImages: [...document.images]
-          // 猫は初期収納時、重要描画を妨げないようdata-frameだけを持ちidle時にsrcを設定する。
-          .filter(img => !(img.hasAttribute('data-frame') && !img.getAttribute('src')))
           .filter(img => img.complete && img.naturalWidth === 0)
           .map(img => img.currentSrc || img.src),
       }));
