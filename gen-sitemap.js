@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* ============================================================
-   gen-sitemap.js — sitemap.xml をファイルの最終更新日時から自動生成
+   gen-sitemap.js — sitemap.xml をファイルの最終更新日から自動生成
 
    使い方（このフォルダで）:
      node gen-sitemap.js          … sitemap.xml を書き出す
@@ -9,7 +9,8 @@
    なぜこれが要るか:
      lastmod を手で書くと「編集したのに書き忘れる」で簡単にズレる。
      Google は lastmod が不正確だとサイト全体の lastmod を無視し始める。
-     → ファイルの実 mtime から機械生成すれば、編集＝lastmod更新が構造的に一致する。
+     → Git管理中の確定済みファイルは最終コミット日、未コミットの変更や
+       Git管理外の環境では実mtimeを使い、編集＝lastmod更新を構造的に一致させる。
 
    運用フロー:
      ・記事公開（admin-post.html の手順A）や any 編集のあと、公開直前に一度実行。
@@ -18,6 +19,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execFileSync } = require('child_process');
 
 // ── 設定（ここだけ触れば良い） ─────────────────────────────
 const DOMAIN = 'https://minano-sr.com';   // ★ドメイン確定後にここを差し替え（末尾スラッシュなし）
@@ -57,6 +59,30 @@ function ymd(d) {
   return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }
 
+function gitOutput(args) {
+  try {
+    return execFileSync('git', args, {
+      cwd: __dirname,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+  } catch {
+    return '';
+  }
+}
+
+function lastModified(rel, stat) {
+  // 編集中のファイルは、コミット前でも実行日が反映されるようmtimeを優先する。
+  if (gitOutput(['status', '--porcelain', '--', rel])) return ymd(stat.mtime);
+
+  // CIではcheckoutのmtimeが全ファイル同一になるため、確定済みファイルはGit履歴を正本にする。
+  const committed = gitOutput(['log', '-1', '--format=%cs', '--', rel]);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(committed)) return committed;
+
+  // Git管理外で配布されたフォルダでも従来どおり利用できる。
+  return ymd(stat.mtime);
+}
+
 function collect() {
   const rows = [];
   for (const dir of DIRS) {
@@ -69,7 +95,7 @@ function collect() {
       const st = fs.statSync(rel);
       const rule = RULES.find(r => r.test(rel));
       const locPath = rule.loc !== undefined ? rule.loc : rel;
-      rows.push({ rel, url: DOMAIN + '/' + locPath, lastmod: ymd(st.mtime), changefreq: rule.changefreq, priority: rule.priority });
+      rows.push({ rel, url: DOMAIN + '/' + locPath, lastmod: lastModified(rel, st), changefreq: rule.changefreq, priority: rule.priority });
     }
   }
   // 並び順：トップ→主要→uploads→blog（priority降順→URL）で安定化
