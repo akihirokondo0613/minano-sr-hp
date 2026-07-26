@@ -15,8 +15,8 @@
   },
   {
     "slug": "google-workspace-dokujidomain-mail",
-    "cat": "keiei",
-    "catLabel": "経営・採用",
+    "cat": "system",
+    "catLabel": "システム導入",
     "date": "2026-07-25",
     "dateJp": "2026年7月25日",
     "read": "6",
@@ -71,8 +71,8 @@
   },
   {
     "slug": "kintai-dx-donyu-junbi",
-    "cat": "keiei",
-    "catLabel": "経営・採用",
+    "cat": "system",
+    "catLabel": "システム導入",
     "date": "2026-07-23",
     "dateJp": "2026年7月23日",
     "read": "4",

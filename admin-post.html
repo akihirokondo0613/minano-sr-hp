@@ -184,7 +184,8 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
             <option value="hoken">社会保険</option>
             <option value="kaisei">法改正情報</option>
             <option value="trouble">労務トラブル</option>
-            <option value="keiei">経営・人事</option>
+            <option value="system">システム導入</option>
+            <option value="keiei">経営・採用</option>
           </select>
         </div>
       </div>
@@ -431,9 +432,10 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 <script>
 (function(){
 'use strict';
-var CATS={joseikin:'助成金',shugyo:'就業規則',hoken:'社会保険',kaisei:'法改正情報',trouble:'労務トラブル',keiei:'経営・採用'};
+var CATS={system:'システム導入',joseikin:'助成金',shugyo:'就業規則',hoken:'社会保険',kaisei:'法改正情報',trouble:'労務トラブル',keiei:'経営・採用'};
 // カテゴリ別の関連サービスカード（記事末尾 NEXT STEPS の2枚目）
 var REL={
+  system:{href:'../uploads/service-dx.html',t:'勤怠・人事労務DX支援',p:'現状整理から製品選定、設定、試行、定着まで、労務実務に沿って段階的に支援します。'},
   joseikin:{href:'../uploads/service-joseikin.html',t:'助成金の申請サポート',p:'受給可能性の診断から計画届・支給申請まで、実施前の準備を含めて伴走します。'},
   shugyo:{href:'../uploads/service-shugyo-kisoku.html',t:'就業規則の作成・見直し',p:'会社の実態に合わせた規程づくりで、トラブルの芽を先回りして摘みます。'},
   hoken:{href:'../uploads/service-shakai-hoken.html',t:'社会保険手続きの代行',p:'入退社・扶養・保険料まわりの届出を、期限管理込みでお任せいただけます。'},
@@ -582,7 +584,7 @@ function makeBlog(){
     var i=html.indexOf(anchor);
     if(i<0)throw new Error('blog.html の挿入位置が見つかりません。手順Bで貼ってください。');
     var out=html.slice(0,i+anchor.length)+'\n\n'+$('o-artrow').value+html.slice(i+anchor.length);
-    out=out.replace(/(<p id="resultCount">全)(\d+)(件<\/p>)/,function(m,a,n,z){return a+(parseInt(n,10)+1)+z});
+    out=out.replace(/(<p\b[^>]*\bid="resultCount"[^>]*>全)(\d+)(件<\/p>)/,function(m,a,n,z){return a+(parseInt(n,10)+1)+z});
     return out;
   });
 }

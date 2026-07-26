@@ -296,6 +296,84 @@ function recordConsoleError(target) {
   }
   results.push({ supportCards: supportCardResults });
 
+  const blogFilterResults = [];
+  for (const width of [360, 390, 1440]) {
+    const blogPage = await browser.newPage({ viewport: { width, height: width <= 390 ? 844 : 900 } });
+    const blogErrors = [];
+    blogPage.on('console', recordConsoleError(blogErrors));
+    blogPage.on('pageerror', error => blogErrors.push(`pageerror: ${error.message}`));
+    await blogPage.goto(new URL('blog.html', base).href, { waitUntil: 'load' });
+    await blogPage.waitForTimeout(750);
+    const initialBlogState = await blogPage.evaluate(() => ({
+      total: document.querySelectorAll('#articleList .art-row').length,
+      categories: document.getElementById('pubCats')?.textContent.trim() || '',
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      filterHeight: Math.round(document.querySelector('.filter-bar')?.getBoundingClientRect().height || 0),
+      systemTabVisible: (() => {
+        const rect = [...document.querySelectorAll('.filter-tab')]
+          .find(tab => tab.textContent.trim() === 'システム導入')?.getBoundingClientRect();
+        return !!rect && rect.left >= 0 && rect.right <= innerWidth;
+      })(),
+    }));
+    await blogPage.getByRole('button', { name: 'システム導入', exact: true }).click();
+    const filteredBlogState = await blogPage.evaluate(() => {
+      const visibleRows = [...document.querySelectorAll('#articleList .art-row')]
+        .filter(row => getComputedStyle(row).display !== 'none');
+      return {
+        count: document.getElementById('resultCount')?.textContent.trim() || '',
+        active: document.querySelector('.filter-tab.active')?.textContent.trim() || '',
+        pressed: document.querySelector('.filter-tab.active')?.getAttribute('aria-pressed') || '',
+        hrefs: visibleRows.map(row => row.getAttribute('href')),
+        badges: visibleRows.map(row => row.querySelector('.art-cat-badge')?.textContent.trim() || ''),
+      };
+    });
+    const expectedSystemArticles = [
+      'blog/google-workspace-dokujidomain-mail.html',
+      'blog/kintai-dx-donyu-junbi.html',
+    ];
+    const blogFilterOk =
+      initialBlogState.total === 21 &&
+      initialBlogState.categories === '7' &&
+      initialBlogState.overflow <= 1 &&
+      initialBlogState.systemTabVisible &&
+      (width > 640 || initialBlogState.filterHeight <= 70) &&
+      filteredBlogState.count === '該当 2件' &&
+      filteredBlogState.active === 'システム導入' &&
+      filteredBlogState.pressed === 'true' &&
+      JSON.stringify(filteredBlogState.hrefs) === JSON.stringify(expectedSystemArticles) &&
+      filteredBlogState.badges.every(badge => badge === 'システム導入');
+    await blogPage.getByRole('button', { name: 'すべて', exact: true }).click();
+    const resetBlogState = await blogPage.evaluate(() => ({
+      count: document.getElementById('resultCount')?.textContent.trim() || '',
+      visible: [...document.querySelectorAll('#articleList .art-row')]
+        .filter(row => getComputedStyle(row).display !== 'none').length,
+      pressed: document.querySelectorAll('.filter-tab[aria-pressed="true"]').length,
+    }));
+    await blogPage.evaluate(() => scrollTo(0, document.documentElement.scrollHeight * 0.65));
+    await blogPage.waitForTimeout(250);
+    await blogPage.evaluate(() => scrollBy(0, -120));
+    await blogPage.waitForTimeout(500);
+    const stickyBlogState = await blogPage.evaluate(() => {
+      const nav = document.querySelector('.nav')?.getBoundingClientRect();
+      const filter = document.querySelector('.filter-bar')?.getBoundingClientRect();
+      return {
+        navHidden: document.querySelector('.nav')?.classList.contains('nav--hidden') || false,
+        overlap: nav && filter ? Math.round(nav.bottom - filter.top) : 999,
+      };
+    });
+    const resetBlogOk =
+      resetBlogState.count === '全21件' &&
+      resetBlogState.visible === 21 &&
+      resetBlogState.pressed === 1;
+    const stickyBlogOk = !stickyBlogState.navHidden && stickyBlogState.overlap <= 1;
+    if (!blogFilterOk || !resetBlogOk || !stickyBlogOk || blogErrors.length) {
+      failures.push(`${width}px ブログ絞り込み: 表示・件数・カテゴリが不正 ${JSON.stringify({ initialBlogState, filteredBlogState, resetBlogState, stickyBlogState, blogErrors })}`);
+    }
+    blogFilterResults.push({ width, initialBlogState, filteredBlogState, resetBlogState, stickyBlogState, ok: blogFilterOk && resetBlogOk && stickyBlogOk, errors: blogErrors.length });
+    await blogPage.close();
+  }
+  results.push({ blogFilters: blogFilterResults });
+
   const journeyPage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   const journeyErrors = [];
   journeyPage.on('console', recordConsoleError(journeyErrors));
@@ -618,6 +696,7 @@ function recordConsoleError(target) {
   adminPage.on('console', recordConsoleError(adminErrors));
   adminPage.on('pageerror', error => adminErrors.push(`pageerror: ${error.message}`));
   await adminPage.goto(new URL('admin-post.html', base).href, { waitUntil: 'load' });
+  await adminPage.locator('#f-cat').selectOption('system');
   await adminPage.locator('#f-title').fill('検証用の記事タイトル');
   await adminPage.locator('#f-slug').fill('verification-only');
   await adminPage.locator('#f-desc').fill('記事投稿テンプレートの検証用説明文です。');
@@ -643,12 +722,28 @@ function recordConsoleError(target) {
     'link-keep.js?v=20260723-conversion1',
     'data-goatcounter-settings="{&quot;path&quot;:&quot;/blog/verification-only.html&quot;}"',
     'href="#" class="to-top"',
+    '<meta property="article:section" content="システム導入">',
+    '"articleSection":"システム導入"',
+    '<span>システム導入</span>',
+    'href="../uploads/service-dx.html"',
   ];
   const templateMissing = expectedTemplateFragments.filter(fragment => !generatedArticle.includes(fragment));
   if (templateMissing.length || /index\.html#(?:services|pricing|cases|about)|16◯|mascot\.js/.test(generatedArticle) || adminErrors.length) {
     failures.push(`記事投稿テンプレート: ${JSON.stringify({ templateMissing, adminErrors })}`);
   }
-  results.push({ articleTemplate: 'generated', requiredLinks: expectedTemplateFragments.length - templateMissing.length, errors: adminErrors.length });
+  await adminPage.locator('#btn-dl-blog').evaluate(button => button.click());
+  await adminPage.waitForFunction(() => document.getElementById('set-status')?.textContent.includes('blog.html を生成しました'));
+  const generatedBlog = await adminPage.evaluate(() => window.__verificationArticleBlob.text());
+  const generatedBlogState = {
+    count: Number(generatedBlog.match(/<p\b[^>]*\bid="resultCount"[^>]*>全(\d+)件<\/p>/)?.[1] || 0),
+    rows: (generatedBlog.match(/class="art-row"/g) || []).length,
+    systemRow: /href="blog\/verification-only\.html" class="art-row" data-cat="system"/.test(generatedBlog) &&
+      /<span class="art-cat-badge">システム導入<\/span>/.test(generatedBlog),
+  };
+  if (generatedBlogState.count !== 22 || generatedBlogState.rows !== 22 || !generatedBlogState.systemRow) {
+    failures.push(`記事投稿テンプレート: blog.htmlの件数・カテゴリ反映が不正 ${JSON.stringify(generatedBlogState)}`);
+  }
+  results.push({ articleTemplate: 'generated', requiredLinks: expectedTemplateFragments.length - templateMissing.length, generatedBlogState, errors: adminErrors.length });
   await adminPage.close();
 
   const editPage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
