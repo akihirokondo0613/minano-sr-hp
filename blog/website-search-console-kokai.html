@@ -6,15 +6,15 @@
 <script defer src="../page-enter.js?v=20260725-nocat1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ホームページ公開後に行うこと｜Search Consoleとサイトマップの初期設定｜みなの社会保険労務士事務所</title>
-<meta name="description" content="ホームページ公開後に必要なSearch Consoleの登録、ドメイン所有権の確認、サイトマップ送信、公開後の点検を、初めての方向けに順序立てて解説します。">
+<title>公開したホームページを、検索に載せる前に点検した｜Search Console登録の前にやったこと｜みなの社会保険労務士事務所</title>
+<meta name="description" content="ホームページを公開したあと、Search Consoleへ登録する前に何を点検しているかの記録です。先に潰している項目、Domainプロパティを選ぶ理由、アクセス数が0件だった原因を書きました。">
 <meta name="keywords" content="Search Console,サイトマップ,ホームページ公開,開業準備,SEO">
 <link rel="canonical" href="https://minano-sr.com/blog/website-search-console-kokai.html">
 
 <!-- OGP -->
 <meta property="og:type" content="article">
-<meta property="og:title" content="ホームページ公開後に行うこと｜Search Consoleとサイトマップの初期設定">
-<meta property="og:description" content="ホームページ公開後に必要なSearch Consoleの登録、ドメイン所有権の確認、サイトマップ送信、公開後の点検を、初めての方向けに順序立てて解説します。">
+<meta property="og:title" content="公開したホームページを、検索に載せる前に点検した｜Search Console登録の前にやったこと">
+<meta property="og:description" content="ホームページを公開したあと、Search Consoleへ登録する前に何を点検しているかの記録です。先に潰している項目、Domainプロパティを選ぶ理由、アクセス数が0件だった原因を書きました。">
 <meta property="og:url" content="https://minano-sr.com/blog/website-search-console-kokai.html">
 <meta property="og:site_name" content="みなの社会保険労務士事務所">
 <meta property="og:locale" content="ja_JP">
@@ -23,13 +23,13 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="みなの社会保険労務士事務所のトップページ｜会社の労務を、まるごと任せられる。">
 <meta property="article:published_time" content="2026-07-25">
-<meta property="article:modified_time" content="2026-07-25">
+<meta property="article:modified_time" content="2026-07-26">
 <meta property="article:section" content="経営・採用">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://minano-sr.com/assets/og/minano-og.png">
 
 <!-- Article JSON-LD -->
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"ホームページ公開後に行うこと｜Search Consoleとサイトマップの初期設定","description":"ホームページ公開後に必要なSearch Consoleの登録、ドメイン所有権の確認、サイトマップ送信、公開後の点検を、初めての方向けに順序立てて解説します。","datePublished":"2026-07-25","dateModified":"2026-07-25","author":{"@type":"Organization","name":"みなの社会保険労務士事務所"},"publisher":{"@type":"Organization","name":"みなの社会保険労務士事務所","logo":{"@type":"ImageObject","url":"https://minano-sr.com/assets/og/logo-512.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://minano-sr.com/blog/website-search-console-kokai.html"},"articleSection":"経営・採用","keywords":"Search Console,サイトマップ,ホームページ公開,開業準備,SEO"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"公開したホームページを、検索に載せる前に点検した｜Search Console登録の前にやったこと","description":"ホームページを公開したあと、Search Consoleへ登録する前に何を点検しているかの記録です。先に潰している項目、Domainプロパティを選ぶ理由、アクセス数が0件だった原因を書きました。","datePublished":"2026-07-25","dateModified":"2026-07-26","author":{"@type":"Person","name":"近藤昭宏","jobTitle":"社会保険労務士","worksFor":{"@type":"Organization","name":"みなの社会保険労務士事務所"}},"publisher":{"@type":"Organization","name":"みなの社会保険労務士事務所","logo":{"@type":"ImageObject","url":"https://minano-sr.com/assets/og/logo-512.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://minano-sr.com/blog/website-search-console-kokai.html"},"articleSection":"経営・採用","keywords":"Search Console,サイトマップ,ホームページ公開,開業準備,SEO"}</script>
 
 <meta name="theme-color" content="#123F30">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
@@ -37,47 +37,6 @@
 
 <link rel="stylesheet" href="../skin-v2.css?v=20260725-nocat1">
 
-<!-- Structured Data: FAQPage -->
-<script type="application/ld+json" data-schema="faqpage">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "サイトマップを送信すれば、必ず検索結果に載りますか？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "いいえ。サイトマップの送信は、Googleにサイトマップの場所を知らせる手段であり、クロールやインデックス登録を保証するものではありません。内容、内部リンク、公開状態も合わせて確認します。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "DomainプロパティとURLプレフィックスは、どちらを選びますか？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "サイト全体を継続して管理するなら、http・httpsやサブドメインをまとめて確認できるDomainプロパティが便利です。特定のURL範囲だけを確認したい場合やDNSを変更できない場合はURLプレフィックスも選べます。Domainプロパティの所有権確認にはDNSレコードを使用します。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "所有権確認が終わったら、DNSの確認レコードを削除してよいですか？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "削除しないでください。Googleは、所有権を維持するために確認レコードを残すよう案内しています。DNSの整理をするときも、このレコードを誤って消さないよう管理します。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "公開直後に検索結果へ出ないのは異常ですか？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "直ちに異常とは限りません。公開URLへアクセスできること、noindexやrobots.txtで妨げていないこと、canonicalとサイトマップが正しいことを確認し、Search Consoleの状態を継続して見ます。"
-      }
-    }
-  ]
-}
-</script>
 </head>
 <body>
 <a class="skip-link" href="#main">本文へ移動</a>
@@ -124,56 +83,46 @@
       <span>経営・採用</span>
     </nav>
     <span class="cat-tag">経営・採用</span>
-    <h1 class="post-h1">ホームページ公開後に行うこと｜Search Consoleとサイトマップの初期設定</h1>
+    <h1 class="post-h1">公開したホームページを、検索に載せる前に点検した｜Search Console登録の前にやったこと</h1>
     <div class="post-meta">
-      <span>読了 約6分</span>
+      <span>読了 約5分</span>
     </div>
   </div>
 </header>
 
 <article class="post">
-  <p>ホームページは、サーバーへ置けば自動的に検索結果へ並ぶわけではありません。公開してよい状態を確認し、Google Search Consoleで所有権を確かめ、サイトマップの場所を伝えた後も、クロールとインデックスの状態を見ていく必要があります。ここでは、開業準備で迷いやすい順番を、公開前と公開後に分けて整理します。</p>
-<div class="point-box"><p class="pb-t">この記事のポイント</p><ul><li>公開前に、法的表示・連絡先・フォーム・検索制御を「公開ゲート」で点検する</li><li>サイト全体を一括管理する場合はDomainプロパティを選び、DNSで所有権を確認する</li><li>サイトマップ送信はインデックス保証ではなく、公開後の確認の出発点と考える</li></ul></div>
+  <p>ホームページは公開しました。URLを打てば表示されますし、スマートフォンからも問題なく開きます。ただ、Search Consoleへの登録とサイトマップの送信は、まだやっていません。忘れているのではなく、先に済ませたいことがあるからです。</p>
+  <p>公開すれば自動的に検索結果へ並ぶ、と思っていた時期がありました。実際には、ページが表示される状態にすることと、検索エンジンに見つけてもらい登録されることは、別の工程です。分けて考えられるようになってから、慌てなくなりました。開業前のいま、何を先に潰しているかを書きます。</p>
+
 <figure class="post-figure">
-  <img src="../assets/blog/search-console-property-guide.webp" width="620" height="545" alt="Google Search Console公式ヘルプでDomainプロパティとDNS確認を確認する画面" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;border-radius:var(--r)">
-  <figcaption>図1：DomainプロパティはDNSで所有権を確認し、サイト全体をまとめて管理します</figcaption>
+  <img src="../assets/blog/search-console-property-guide.webp" width="620" height="545" alt="Search ConsoleのDomainプロパティとDNSによる所有権確認の説明画面" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;border-radius:var(--r)">
+  <figcaption>登録するときはDomainプロパティにするつもりで、所有権の確認方法まで先に読んでいます</figcaption>
 </figure>
 
-<h2>最初に「公開」と「検索への登録」を分けて考える</h2>
-<p>公開とは、URLでページが表示される状態です。検索への登録は、Googleがページを発見・取得・評価し、インデックスへ保存する別の工程です。まず利用者が閲覧できるかを確認し、その次に検索エンジンへ伝える設定を進めます。</p>
-<p>今回のサイトでは、GitHub上の正本を更新し、確認済みの内容をXServer Staticへ反映します。正本、変更履歴、公開結果を分けることで、不具合の原因を追いやすくしています。サーバーIPはDNS等から確認できる場合がありますが、管理画面の認証情報、APIトークン、復旧情報などの秘密値は公開しません。</p>
+<h2>先にやっているのは、出している内容の点検</h2>
+<p>順番を逆にしなかった理由は単純で、数字を見始めると、そちらに気を取られると分かっていたからです。表示回数やクリック数が動き出すと、書いてある内容が正しいかどうかより、増えたか減ったかを見てしまう。開業前のいまは、内容を固めるほうが先だと考えました。</p>
+<p>自分で決めた点検項目は、だいたいこの範囲です。事務所名、所在地、連絡先、料金、対応できる地域、そして受付を始める時期が、手元の正本と食い違っていないか。プライバシーポリシーが実態に合っているか。問い合わせフォームが、送信から通知まで本当に動くか。ここは前に一度つまずいているので、必ず自分で通しています。</p>
+<p>開業前だからこそ気をつけているのが、書ける範囲です。まだ積み上げていないものを、あるように読める書き方にしない。「これから受け付けます」と「もう受けています」を混ぜない。ここは、あとから直すより最初から書かないほうが早いと思っています。</p>
 
-<h2>公開ゲートを通してから検索エンジンへ知らせる</h2>
-<p>開業前は「ページが完成したか」だけでなく、「今、公開してよい内容か」が重要です。事務所名、受付開始時期、料金、所在地、連絡先、資格や実績に未確定情報がなく、管理用ページや古い料金表が公開領域へ入っていないことを点検します。</p>
-<div class="tbl-wrap"><table><thead><tr><th>公開ゲート</th><th>確認する内容</th></tr></thead><tbody><tr><td><b>内容</b></td><td>名称、所在地、連絡先、料金、営業時間、サービス範囲が正本と一致</td></tr><tr><td><b>法的表示</b></td><td>プライバシーポリシー、誤認を招く実績・保証表現、受付可能時期</td></tr><tr><td><b>操作</b></td><td>フォーム送信、自動返信、電話・メールリンク、スマホ表示</td></tr><tr><td><b>検索制御</b></td><td>noindex、robots.txt、canonical、旧URL、サイトマップ</td></tr><tr><td><b>公開物</b></td><td>管理ツール、下書き、設定ファイル、秘密値が含まれていない</td></tr></tbody></table></div>
-<p>メンテナンス表示を外す前に、公開URLで画像、リンク、フォームを実操作します。スマートフォンとPCの両方で確認し、公開後にも同じ点検を繰り返します。</p>
+<h2>直したつもりと、公開されている内容がずれるのが怖い</h2>
+<p>サイトの更新は、手元の正本を直し、確認してから公開先へ反映する形にしています。変更の履歴が残るようにしてあるので、「いつ、どこを、なぜ直したか」を後から追えます。</p>
+<p>一人でやっていると、直したつもりのページが実は反映されていない、という事故に気づく人がいません。料金や連絡先のような、間違っていると迷惑がかかる情報ほど、履歴の残る形で扱うようにしました。</p>
 
-<h2>サイト全体を管理するならDomainプロパティを選ぶ</h2>
-<p>Domainプロパティは、http・https、wwwの有無、サブドメインをまとめて扱えます。登録時に表示される所有権確認用のDNSレコードを、ドメイン管理会社のDNS設定へ追加します。この所有権確認はホームページの一般公開前でも進められます。検索クロールを許可し、サイトマップを送信するのは公開ゲートを通過してからにします。特定のURL範囲だけを管理したい場合やDNSを変更できない場合は、URLプレフィックスも選択肢です。</p>
-<ol><li>Search Consoleで、管理範囲に応じて「ドメイン」または「URLプレフィックス」を選ぶ</li><li>Domainプロパティでは、表示されたDNS確認レコードをドメイン管理会社の画面へ追加する</li><li>DNSの反映を待ち、Search Consoleで「確認」を実行する</li><li>確認完了後も、所有権を維持するためDNSレコードを残す</li></ol>
-<p>確認レコードは必要な担当者だけが扱います。DNSはメール認証にも使うため、一括削除すると別の機能まで止まりかねません。変更前に現在値を記録し、各レコードの目的を台帳へ残します。</p>
+<h2>登録するときはDomainプロパティにする</h2>
+<p>Search Consoleのプロパティには種類があり、サイト全体をまとめて見たいならDomainプロパティになります。<code>http</code> と <code>https</code>、<code>www</code> のあり・なし、サブドメインを一つにまとめて扱えるからです。所有権の確認は、DNSにレコードを一行追加して行います。</p>
+<p>ここで一点だけ、先に自分に言い聞かせていることがあります。確認が終わっても、そのレコードは消さないこと。消すと所有権の確認が外れます。DNSはメールの認証にも使っている画面なので、整理のつもりで触ったときに巻き込むのが一番ありそうな失敗です。何のための行かを台帳に残しておく、というのは前の記事に書いたとおりです。</p>
+<p>サイトマップについても、送信すれば必ず登録される、というものではないと理解しています。送信でできるのは、ファイルの場所を伝えることまで。だから、公開してよい正規のURLだけが入っている状態にしてから送るつもりです。</p>
 
-<h2>サイトマップを送信し、重要ページへの入口を伝える</h2>
-<p>サイトマップは正規URLを一覧にしたファイルです。Search Consoleから送信する操作は、ファイルの場所をGoogleへ知らせるもので、ファイル自体をアップロードするものではありません。</p>
-<p>送信済みでも、すべてのURLがインデックスされる保証はありません。noindex、誤ったcanonical、重複、サーバーエラーなどがあれば登録されないことがあります。公開してよい正規URLだけを含め、内部リンクからもたどれる状態にします。</p>
+<h2>数字が出ないときは、まず「測れているか」を疑う</h2>
+<p>関連して、アクセス数の計測でつまずいた話を書いておきます。解析を入れたのに、いつまで経っても0件のままでした。</p>
+<p>原因は、解析サービス側のアカウント名と、ホームページに埋め込んだコードが食い違っていたことです。つまり誰も来ていなかったのではなく、来ていても数えられていませんでした。今は一致させてあります。</p>
+<p>0という数字を見たとき、最初に「人が来ていない」と解釈しそうになりました。でも、そう考える前に「そもそも測れているのか」を確かめるほうが先です。これは労務のデータでも同じで、勤怠の集計が想定と違うとき、実態を疑う前に取り方を疑ったほうが早いことがよくあります。</p>
 
-<h2>公開後は「エラーがないか」ではなく「意図どおりか」を見る</h2>
-<ul><li>トップ、主要サービス、料金、事務所案内、問い合わせが公開URLで開く</li><li>HTTPSへ統一され、canonicalが実際の正規URLを指している</li><li>Search Consoleのページ登録状況に、意図しない除外がない</li><li>サイトマップへ管理ページ、下書き、重複URLが入っていない</li><li>検索パフォーマンスで、想定外の名称・地域・古い情報が表示されていない</li><li>記事追加やURL変更のたびに、内部リンクとサイトマップを更新している</li></ul>
-<p>ページ追加後はリンク切れと検索結果の見え方を確認します。ページの追加・修正履歴は内部で管理し、必要な再点検へつなげます。</p>
+<h2>順番が来たら、また書きます</h2>
+<p>Search Consoleの登録とサイトマップの送信は、点検を終えてから行います。やっていないことを、やったように書くのは避けたいので、この記事は「登録の前に何を決めたか」までにしておきます。</p>
 
-<h2>よくある質問</h2>
-<dl class="faq">
-<dt>サイトマップを送信すれば、必ず検索結果に載りますか？</dt>
-<dd>いいえ。サイトマップの送信は、Googleにサイトマップの場所を知らせる手段であり、クロールやインデックス登録を保証するものではありません。内容、内部リンク、公開状態も合わせて確認します。</dd>
-<dt>DomainプロパティとURLプレフィックスは、どちらを選びますか？</dt>
-<dd>サイト全体を継続して管理するなら、http・httpsやサブドメインをまとめて確認できるDomainプロパティが便利です。特定のURL範囲だけを確認したい場合やDNSを変更できない場合はURLプレフィックスも選べます。Domainプロパティの所有権確認にはDNSレコードを使用します。</dd>
-<dt>所有権確認が終わったら、DNSの確認レコードを削除してよいですか？</dt>
-<dd>削除しないでください。Googleは、所有権を維持するために確認レコードを残すよう案内しています。DNSの整理をするときも、このレコードを誤って消さないよう管理します。</dd>
-<dt>公開直後に検索結果へ出ないのは異常ですか？</dt>
-<dd>直ちに異常とは限りません。公開URLへアクセスできること、noindexやrobots.txtで妨げていないこと、canonicalとサイトマップが正しいことを確認し、Search Consoleの状態を継続して見ます。</dd>
-</dl>
-<h2>当事務所のサポート</h2>
-<p>ホームページ公開やSearch Consoleの操作そのものはWeb管理の領域ですが、公開内容には料金、受付方法、対応地域、採用、個人情報の扱いなど、事業運営と労務に関わる情報が含まれます。当事務所では、開業時の手続きと日々の運用が食い違わないよう、公開情報、問い合わせ後の対応、必要書類の受け渡しまでを整理します。</p>
+<h2>この経験を、お客様の相談にどう返すか</h2>
+<p>ホームページの運用そのものはWebの領域ですが、公開している内容には、料金、受付方法、対応地域、採用、個人情報の扱いといった、事業と労務に直結する情報が入ります。求人票に書いた条件と就業規則が食い違っていた、というのは実際によくある話です。当事務所では、外に出している情報と、社内の書類や運用が食い違わないように整えるところからご相談を受けています。</p>
 </article>
 
 <section class="post-refs" style="max-width:820px;margin:24px auto 0;padding:24px 26px;background:var(--shiro,#fff);border:1px solid var(--line,#e6e3d6);border-radius:14px">
@@ -189,18 +138,18 @@
   <h2 style="font-size:15px;font-weight:700;color:var(--ink,#1e3a2f);letter-spacing:.04em;margin:0 0 14px">あわせて読みたい</h2>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px"><a href="dns-mail-authentication.html" style="display:block;padding:16px 18px;background:var(--shiro,#fff);border:1px solid var(--line,#e6e3d6);border-radius:12px;text-decoration:none">
       <span style="display:block;font-size:12px;font-weight:700;color:var(--sugi,#1e5b41);letter-spacing:.06em;margin-bottom:7px">経営・採用</span>
-      <span style="display:block;font-size:13.5px;font-weight:700;color:var(--ink,#1e3a2f);line-height:1.6">独自ドメインメールを安全に使う｜SPF・DKIM・DMARC</span>
+      <span style="display:block;font-size:13.5px;font-weight:700;color:var(--ink,#1e3a2f);line-height:1.6">送ったメールが迷惑メールに入った｜SPF・DKIM・DMARCを設定した記録</span>
     </a><a href="google-business-profile-kaisetsu.html" style="display:block;padding:16px 18px;background:var(--shiro,#fff);border:1px solid var(--line,#e6e3d6);border-radius:12px;text-decoration:none">
       <span style="display:block;font-size:12px;font-weight:700;color:var(--sugi,#1e5b41);letter-spacing:.06em;margin-bottom:7px">経営・採用</span>
-      <span style="display:block;font-size:13.5px;font-weight:700;color:var(--ink,#1e3a2f);line-height:1.6">Googleビジネスプロフィール開設前の確認事項</span>
+      <span style="display:block;font-size:13.5px;font-weight:700;color:var(--ink,#1e3a2f);line-height:1.6">Googleマップに載せるか、まだ載せないか｜開業前に掲載条件を調べた記録</span>
     </a></div>
 </section>
 
 <aside class="author-card">
   <div class="author-av">み</div>
   <div class="author-meta">
-    <b>みなの社会保険労務士事務所 編集部</b>
-    中小企業の労務体制構築・助成金活用・規程整備を専門としています。
+    <b>近藤昭宏（みなの社会保険労務士事務所）</b>
+    社会保険労務士。中小企業の労務体制構築・助成金活用・規程整備を専門としています。2026年8月15日、富山市で開業します。
     <small>本記事は公開時点の法令・制度および公式情報に基づきます。内容は変更されることがあるため、最新情報は各公式サイトもご確認ください。</small>
   </div>
 </aside>

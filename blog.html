@@ -33,40 +33,6 @@
 
 
 <link rel="stylesheet" href="skin-v2.css?v=20260725-nocat1">
-<style id="startup-roadmap-style">
-.startup-roadmap{padding:52px 0;background:#f6f8f5;border-block:1px solid var(--line)}
-.startup-roadmap-head{display:grid;grid-template-columns:minmax(180px,.34fr) minmax(0,1fr);gap:34px;align-items:end;margin-bottom:26px}
-.startup-roadmap-label{display:block;color:var(--g700);font-size:11px;font-weight:800;letter-spacing:.2em;margin-bottom:8px}
-.startup-roadmap h2{color:var(--ink);font-size:clamp(24px,3vw,38px);line-height:1.42;letter-spacing:.02em;margin:0}
-.startup-roadmap-intro{color:var(--ink2);font-size:14px;line-height:1.9;margin:0;max-width:720px}
-.startup-roadmap-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;list-style:none;margin:0;padding:0;counter-reset:opening-step}
-.startup-roadmap-list li{min-width:0;counter-increment:opening-step}
-.startup-roadmap-list a{display:flex;min-height:156px;height:100%;flex-direction:column;padding:19px 18px 17px;background:var(--shiro);border:1px solid var(--line);border-radius:var(--r);color:var(--ink);text-decoration:none;box-shadow:0 8px 22px rgba(18,63,48,.035);transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
-.startup-roadmap-list a:hover,.startup-roadmap-list a:focus-visible{transform:translateY(-3px);border-color:var(--g400);box-shadow:0 12px 28px rgba(18,63,48,.08)}
-.startup-roadmap-list a:focus-visible{outline:3px solid rgba(0,110,60,.22);outline-offset:3px}
-.startup-roadmap-step{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--g700);font-size:10px;font-weight:800;letter-spacing:.15em;margin-bottom:18px}
-.startup-roadmap-step::before{content:"0" counter(opening-step)}
-.startup-roadmap-step::after{content:"→";font-size:15px;letter-spacing:0}
-.startup-roadmap-list li:last-child .startup-roadmap-step::after{content:"✓"}
-.startup-roadmap-list b{font-size:15px;line-height:1.6;letter-spacing:.02em;text-wrap:pretty}
-.startup-roadmap-list small{display:block;color:var(--ink3);font-size:12px;line-height:1.7;margin-top:auto;padding-top:10px}
-@media(max-width:1099px){
-  .startup-roadmap-list{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .startup-roadmap-list li:last-child{grid-column:1 / -1}
-  .startup-roadmap-list li:last-child a{min-height:128px}
-}
-@media(max-width:640px){
-  .startup-roadmap{padding:38px 0}
-  .startup-roadmap-head{display:block;margin-bottom:22px}
-  .startup-roadmap-intro{margin-top:13px}
-  .startup-roadmap-list{grid-template-columns:1fr;gap:9px}
-  .startup-roadmap-list li:last-child{grid-column:auto}
-  .startup-roadmap-list a,.startup-roadmap-list li:last-child a{min-height:0;padding:16px 17px}
-  .startup-roadmap-step{margin-bottom:8px}
-  .startup-roadmap-list small{margin-top:4px;padding-top:0}
-}
-@media(prefers-reduced-motion:reduce){.startup-roadmap-list a{transition:none}.startup-roadmap-list a:hover{transform:none}}
-</style>
 </head>
 <body>
 <a class="skip-link" href="#main">本文へスキップ</a>
@@ -119,24 +85,6 @@
   </div>
 </header>
 
-<section class="startup-roadmap" aria-labelledby="startup-roadmap-title">
-  <div class="w">
-    <div class="startup-roadmap-head">
-      <div>
-        <span class="startup-roadmap-label">OPENING ROADMAP</span>
-        <h2 id="startup-roadmap-title">開業準備を、<br>実際の順番で。</h2>
-      </div>
-      <p class="startup-roadmap-intro">独自ドメインの取得からGoogle Workspace、メール認証、検索・地図への接続まで。今回の準備作業を5つの記事に分け、前後関係が分かる順番に並べました。</p>
-    </div>
-    <ol class="startup-roadmap-list">
-      <li><a href="blog/kaigyo-domain-shutoku.html"><span class="startup-roadmap-step">DOMAIN</span><b>独自ドメインを取得する</b><small>名称・契約名義・更新管理を決める</small></a></li>
-      <li><a href="blog/google-workspace-dokujidomain-mail.html"><span class="startup-roadmap-step">WORKSPACE</span><b>Workspaceを契約し、メールとエイリアスを作る</b><small>ユーザー・窓口アドレス・送受信を整える</small></a></li>
-      <li><a href="blog/dns-mail-authentication.html"><span class="startup-roadmap-step">SECURITY</span><b>SPF・DKIM・DMARCを設定する</b><small>正規メールを止めずになりすまし対策</small></a></li>
-      <li><a href="blog/website-search-console-kokai.html"><span class="startup-roadmap-step">SEARCH</span><b>Search Consoleへ接続する</b><small>所有権確認・サイトマップ・公開後点検</small></a></li>
-      <li><a href="blog/google-business-profile-kaisetsu.html"><span class="startup-roadmap-step">MAP</span><b>Googleマップの掲載条件を確認する</b><small>事業形態と住所表示を実態に合わせる</small></a></li>
-    </ol>
-  </div>
-</section>
 
 <div class="filter-bar">
   <div class="filter-inner">
@@ -160,8 +108,8 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><text x="70" y="13" text-anchor="middle" font-size="8" font-weight="700" fill="#3a3d45">事業の住所を決める</text><rect x="14" y="24" width="112" height="25" rx="5" fill="#fff" stroke="#A8D8B8"/><circle cx="27" cy="36.5" r="6" fill="#EEF8F2" stroke="#3DAA6A"/><path d="m24 36 2 2 4-5" fill="none" stroke="#006E3C" stroke-width="1.4"/><text x="77" y="39.5" text-anchor="middle" font-size="7" font-weight="700" fill="#123F30">minano-sr.com</text><rect x="31" y="60" width="78" height="15" rx="7.5" fill="#123F30"/><text x="70" y="70.5" text-anchor="middle" font-size="6" font-weight="700" fill="#fff">取得・更新を管理</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">経営・採用</span>
-          <h2 class="art-title">開業用の独自ドメインを取得する｜決め方・契約・更新管理の実務</h2>
-          <p class="art-excerpt">開業時の独自ドメイン選びから空き状況の確認、契約、ネームサーバー、更新管理までを、事業用ホームページとメールを止めない視点で詳しく解説します。</p>
+          <h2 class="art-title">開業の「住所」を決める｜ドメインをminano-sr.comにするまでに迷ったこと</h2>
+          <p class="art-excerpt">事務所の独自ドメインをminano-sr.comに決めるまでの記録です。名前の決め方、.jpを見送った理由、サーバーとのセット契約をやめた経緯、いま実際にかかっている年間費用まで書きました。</p>
         </div>
         <span class="art-read">読む →</span>
       </a>
@@ -170,8 +118,8 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><text x="70" y="13" text-anchor="middle" font-size="8" font-weight="700" fill="#3a3d45">独自ドメインメール</text><rect x="12" y="27" width="43" height="31" rx="6" fill="#EEF8F2" stroke="#A8D8B8"/><text x="33.5" y="46" text-anchor="middle" font-size="6" font-weight="700" fill="#123F30">ドメイン</text><path d="M58 42h18m-4-4 4 4-4 4" fill="none" stroke="#3DAA6A" stroke-width="1.4"/><rect x="80" y="27" width="48" height="31" rx="6" fill="#123F30"/><path d="M89 36h30v15H89z" fill="none" stroke="#fff"/><path d="m89 36 15 10 15-10" fill="none" stroke="#fff"/><rect x="35" y="67" width="70" height="11" rx="5.5" fill="#EEF8F2"/><text x="70" y="75" text-anchor="middle" font-size="5.5" font-weight="700" fill="#006E3C">送受信まで確認</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">経営・採用</span>
-          <h2 class="art-title">Google Workspaceで独自ドメインメールを始める｜契約・エイリアス・送受信</h2>
-          <p class="art-excerpt">Google Workspaceの契約、ドメイン所有権の確認、MXレコード、ユーザー・エイリアス・グループの使い分け、送受信確認までを順番に解説します。</p>
+          <h2 class="art-title">事務所のメールを立ち上げる｜Google Workspaceで独自ドメインメールを整えた記録</h2>
+          <p class="art-excerpt">開業前の事務所メールをGoogle Workspaceで立ち上げた記録です。info@一本化をやめて窓口と個人アドレスを分けた理由、ユーザーとエイリアスの費用の違い、送受信テストでつまずいた点を書きました。</p>
         </div>
         <span class="art-read">読む →</span>
       </a>
@@ -180,8 +128,8 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><text x="70" y="13" text-anchor="middle" font-size="8" font-weight="700" fill="#3a3d45">メール認証を3段階で</text><rect x="9" y="27" width="36" height="30" rx="5" fill="#123F30"/><rect x="52" y="27" width="36" height="30" rx="5" fill="#EEF8F2" stroke="#A8D8B8"/><rect x="95" y="27" width="36" height="30" rx="5" fill="#EEF8F2" stroke="#A8D8B8"/><text x="27" y="45" text-anchor="middle" font-size="7" font-weight="700" fill="#fff">SPF</text><text x="70" y="45" text-anchor="middle" font-size="7" font-weight="700" fill="#123F30">DKIM</text><text x="113" y="45" text-anchor="middle" font-size="6.5" font-weight="700" fill="#123F30">DMARC</text><path d="M27 61v8h86v-8" fill="none" stroke="#3DAA6A" stroke-width="1.3"/><text x="70" y="77" text-anchor="middle" font-size="5.5" font-weight="700" fill="#006E3C">なりすまし対策</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">経営・採用</span>
-          <h2 class="art-title">独自ドメインメールを安全に使う｜SPF・DKIM・DMARCの設定順序</h2>
-          <p class="art-excerpt">独自ドメインメールのなりすまし対策に必要なSPF、DKIM、DMARCの役割と設定順序、確認方法、運用開始後の注意点を実務の流れで整理します。</p>
+          <h2 class="art-title">送ったメールが迷惑メールに入った｜SPF・DKIM・DMARCを設定した記録</h2>
+          <p class="art-excerpt">開業準備中、自分が送ったメールが相手の迷惑メールフォルダに入っていました。SPF・DKIM・DMARCを入れ直すまでの順番と、DNSを触るときに怖かったこと、問い合わせフォームの落とし穴を書きました。</p>
         </div>
         <span class="art-read">読む →</span>
       </a>
@@ -190,8 +138,8 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><text x="70" y="13" text-anchor="middle" font-size="8" font-weight="700" fill="#3a3d45">公開後の3ステップ</text><circle cx="24" cy="42" r="14" fill="#123F30"/><circle cx="70" cy="42" r="14" fill="#EEF8F2" stroke="#A8D8B8"/><circle cx="116" cy="42" r="14" fill="#EEF8F2" stroke="#A8D8B8"/><text x="24" y="45" text-anchor="middle" font-size="6" font-weight="700" fill="#fff">公開</text><text x="70" y="45" text-anchor="middle" font-size="5.5" font-weight="700" fill="#123F30">所有権</text><text x="116" y="45" text-anchor="middle" font-size="5.5" font-weight="700" fill="#123F30">送信</text><path d="M40 42h13m-3-3 3 3-3 3M86 42h13m-3-3 3 3-3 3" fill="none" stroke="#3DAA6A" stroke-width="1.3"/><text x="70" y="72" text-anchor="middle" font-size="6" font-weight="700" fill="#006E3C">Search Console</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">経営・採用</span>
-          <h2 class="art-title">ホームページ公開後に行うこと｜Search Consoleとサイトマップの初期設定</h2>
-          <p class="art-excerpt">ホームページ公開後に必要なSearch Consoleの登録、ドメイン所有権の確認、サイトマップ送信、公開後の点検を、初めての方向けに順序立てて解説します。</p>
+          <h2 class="art-title">公開したホームページを、検索に載せる前に点検した｜Search Console登録の前にやったこと</h2>
+          <p class="art-excerpt">ホームページを公開したあと、Search Consoleへ登録する前に何を点検しているかの記録です。先に潰している項目、Domainプロパティを選ぶ理由、アクセス数が0件だった原因を書きました。</p>
         </div>
         <span class="art-read">読む →</span>
       </a>
@@ -200,8 +148,8 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><text x="70" y="13" text-anchor="middle" font-size="8" font-weight="700" fill="#3a3d45">掲載条件から確認</text><path d="M35 25c-9 0-16 7-16 16 0 13 16 27 16 27s16-14 16-27c0-9-7-16-16-16z" fill="#123F30"/><circle cx="35" cy="41" r="5" fill="#fff"/><rect x="66" y="25" width="57" height="43" rx="6" fill="#EEF8F2" stroke="#A8D8B8"/><path d="m75 37 3 3 5-6m-8 13 3 3 5-6m-8 13 3 3 5-6" fill="none" stroke="#006E3C" stroke-width="1.3"/><path d="M89 37h24M89 47h24M89 57h24" stroke="#657069"/><text x="70" y="81" text-anchor="middle" font-size="5.5" font-weight="700" fill="#006E3C">住所・区分・確認方法</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">経営・採用</span>
-          <h2 class="art-title">開業前に確認したいGoogleビジネスプロフィール｜掲載条件と登録の順番</h2>
-          <p class="art-excerpt">Googleビジネスプロフィールを事業開始時に準備する方向けに、掲載条件、店舗型と非店舗型の違い、登録前に揃える情報、公開後の管理までを公式情報に沿って整理します。</p>
+          <h2 class="art-title">Googleマップに載せるか、まだ載せないか｜開業前に掲載条件を調べた記録</h2>
+          <p class="art-excerpt">開業前にGoogleビジネスプロフィールの掲載条件を調べ、まだ登録しないと判断した記録です。共有オフィスの住所を出せるのか、店舗型とサービス提供地域型のどちらを選ぶかを整理しました。</p>
         </div>
         <span class="art-read">読む →</span>
       </a>

@@ -5,15 +5,15 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const errors = [];
 
+// 表示上のFAQを持つページのみ登録する。開業準備の体験記5本（kaigyo-domain-shutoku /
+// google-workspace-dokujidomain-mail / dns-mail-authentication /
+// website-search-console-kokai / google-business-profile-kaisetsu）は
+// 本文からFAQを外したため、FAQPage構造化データも持たない。
 const expectedFaqCounts = new Map([
   ['index.html', 6],
   ['recruit.html', 4],
   ['blog/fukugyo-kengyo-kisoku.html', 2],
-  ['blog/google-business-profile-kaisetsu.html', 4],
-  ['blog/google-workspace-dokujidomain-mail.html', 4],
-  ['blog/dns-mail-authentication.html', 3],
   ['blog/joseikin-career-up-2026.html', 2],
-  ['blog/kaigyo-domain-shutoku.html', 4],
   ['blog/kintai-dx-donyu-junbi.html', 3],
   ['blog/kyuyo-itaku-junbi.html', 3],
   ['blog/natsu-shoyo-tetsuzuki.html', 2],
@@ -23,7 +23,6 @@ const expectedFaqCounts = new Map([
   ['blog/ryoritsu-shien-josei.html', 2],
   ['blog/shaho-tekiyo-kakudai-2026.html', 2],
   ['blog/taishoku-trouble-prevention.html', 2],
-  ['blog/website-search-console-kokai.html', 4],
 ]);
 
 const expectedServicePages = new Set([

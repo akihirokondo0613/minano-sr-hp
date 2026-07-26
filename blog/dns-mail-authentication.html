@@ -6,15 +6,15 @@
 <script defer src="../page-enter.js?v=20260725-nocat1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>独自ドメインメールを安全に使う｜SPF・DKIM・DMARCの設定順序｜みなの社会保険労務士事務所</title>
-<meta name="description" content="独自ドメインメールのなりすまし対策に必要なSPF、DKIM、DMARCの役割と設定順序、確認方法、運用開始後の注意点を実務の流れで整理します。">
+<title>送ったメールが迷惑メールに入った｜SPF・DKIM・DMARCを設定した記録｜みなの社会保険労務士事務所</title>
+<meta name="description" content="開業準備中、自分が送ったメールが相手の迷惑メールフォルダに入っていました。SPF・DKIM・DMARCを入れ直すまでの順番と、DNSを触るときに怖かったこと、問い合わせフォームの落とし穴を書きました。">
 <meta name="keywords" content="SPF,DKIM,DMARC,独自ドメインメール,DNS,開業準備">
 <link rel="canonical" href="https://minano-sr.com/blog/dns-mail-authentication.html">
 
 <!-- OGP -->
 <meta property="og:type" content="article">
-<meta property="og:title" content="独自ドメインメールを安全に使う｜SPF・DKIM・DMARCの設定順序">
-<meta property="og:description" content="独自ドメインメールのなりすまし対策に必要なSPF、DKIM、DMARCの役割と設定順序、確認方法、運用開始後の注意点を実務の流れで整理します。">
+<meta property="og:title" content="送ったメールが迷惑メールに入った｜SPF・DKIM・DMARCを設定した記録">
+<meta property="og:description" content="開業準備中、自分が送ったメールが相手の迷惑メールフォルダに入っていました。SPF・DKIM・DMARCを入れ直すまでの順番と、DNSを触るときに怖かったこと、問い合わせフォームの落とし穴を書きました。">
 <meta property="og:url" content="https://minano-sr.com/blog/dns-mail-authentication.html">
 <meta property="og:site_name" content="みなの社会保険労務士事務所">
 <meta property="og:locale" content="ja_JP">
@@ -23,13 +23,13 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="みなの社会保険労務士事務所のトップページ｜会社の労務を、まるごと任せられる。">
 <meta property="article:published_time" content="2026-07-25">
-<meta property="article:modified_time" content="2026-07-25">
+<meta property="article:modified_time" content="2026-07-26">
 <meta property="article:section" content="経営・採用">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://minano-sr.com/assets/og/minano-og.png">
 
 <!-- Article JSON-LD -->
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"独自ドメインメールを安全に使う｜SPF・DKIM・DMARCの設定順序","description":"独自ドメインメールのなりすまし対策に必要なSPF、DKIM、DMARCの役割と設定順序、確認方法、運用開始後の注意点を実務の流れで整理します。","datePublished":"2026-07-25","dateModified":"2026-07-25","author":{"@type":"Organization","name":"みなの社会保険労務士事務所"},"publisher":{"@type":"Organization","name":"みなの社会保険労務士事務所","logo":{"@type":"ImageObject","url":"https://minano-sr.com/assets/og/logo-512.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://minano-sr.com/blog/dns-mail-authentication.html"},"articleSection":"経営・採用","keywords":"SPF,DKIM,DMARC,独自ドメインメール,DNS,開業準備"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"送ったメールが迷惑メールに入った｜SPF・DKIM・DMARCを設定した記録","description":"開業準備中、自分が送ったメールが相手の迷惑メールフォルダに入っていました。SPF・DKIM・DMARCを入れ直すまでの順番と、DNSを触るときに怖かったこと、問い合わせフォームの落とし穴を書きました。","datePublished":"2026-07-25","dateModified":"2026-07-26","author":{"@type":"Person","name":"近藤昭宏","jobTitle":"社会保険労務士","worksFor":{"@type":"Organization","name":"みなの社会保険労務士事務所"}},"publisher":{"@type":"Organization","name":"みなの社会保険労務士事務所","logo":{"@type":"ImageObject","url":"https://minano-sr.com/assets/og/logo-512.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://minano-sr.com/blog/dns-mail-authentication.html"},"articleSection":"経営・採用","keywords":"SPF,DKIM,DMARC,独自ドメインメール,DNS,開業準備"}</script>
 
 <meta name="theme-color" content="#123F30">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
@@ -37,39 +37,6 @@
 
 <link rel="stylesheet" href="../skin-v2.css?v=20260725-nocat1">
 
-<!-- Structured Data: FAQPage -->
-<script type="application/ld+json" data-schema="faqpage">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "SPFを設定すれば、なりすまし対策は十分ですか？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "十分とはいえません。SPFは送信元サーバーを確認する仕組みです。メールへの電子署名を確認するDKIMと、認証に失敗したメールの扱いを定めるDMARCも組み合わせて運用します。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "DMARCは最初から拒否設定にしてよいですか？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "通常はおすすめしません。まずp=noneでレポートを観測し、正規の送信元がSPFまたはDKIMで認証され、かつ差出人のFromドメインと整合してDMARCに合格していることを確認してから、隔離、拒否へ段階的に強化します。"
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "お問い合わせフォームや請求サービスも確認が必要ですか？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "必要です。自社ドメインを差出人にして送るサービスは、すべて送信元の候補です。サービス追加時には、提供元の公式手順、DNS設定、テスト送信までを一組で確認します。"
-      }
-    }
-  ]
-}
-</script>
 </head>
 <body>
 <a class="skip-link" href="#main">本文へ移動</a>
@@ -116,54 +83,51 @@
       <span>経営・採用</span>
     </nav>
     <span class="cat-tag">経営・採用</span>
-    <h1 class="post-h1">独自ドメインメールを安全に使う｜SPF・DKIM・DMARCの設定順序</h1>
+    <h1 class="post-h1">送ったメールが迷惑メールに入った｜SPF・DKIM・DMARCを設定した記録</h1>
     <div class="post-meta">
-      <span>読了 約5分</span>
+      <span>読了 約6分</span>
     </div>
   </div>
 </header>
 
 <article class="post">
-  <p>独自ドメインのメールは、会社名と同じ住所を持つ名刺のようなものです。一方で、受信できるようにしただけでは、第三者によるなりすましや迷惑メール判定への備えは終わりません。開業準備では、利用する送信サービスを先に洗い出し、SPF・DKIM・DMARCを順番に設定して、正規のメールを止めない形で強化します。</p>
-<div class="point-box"><p class="pb-t">この記事のポイント</p><ul><li>DNSを変更する前に、フォームや請求サービスを含む「全送信元」を一覧にする</li><li>SPFとDKIMを先に有効化し、実際の送信メールが認証に合格するか確認する</li><li>DMARCはp=noneで観測を始め、問題のない範囲から段階的に強化する</li></ul></div>
+  <p>メールの送受信ができるようになって、開業準備が一つ片づいたと思っていました。念のため、普段使っている別のメールアドレス宛てに事務所から一通送ってみたところ、受信箱には見当たらず、迷惑メールフォルダに入っていました。</p>
+  <p>相手に届いてはいる。ただ、読まれない場所に届いていた。開業の案内をこのアドレスから出すつもりだったので、ここで止まって設定をやり直したのは正解だったと思います。SPF・DKIM・DMARCという三つの設定を入れるまでの記録です。</p>
+
 <figure class="post-figure">
-  <img src="../assets/blog/email-authentication-guide.webp" width="610" height="500" alt="Google Workspace公式ヘルプでSPF・DKIM・DMARCの設定順序を確認する画面" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;border-radius:var(--r)">
-  <figcaption>図1：公開情報で手順を確認し、秘密値を記事や作業記録へ貼らずに設定を進めます</figcaption>
+  <img src="../assets/blog/email-authentication-guide.webp" width="610" height="500" alt="SPF・DKIM・DMARCの設定順序を公式ヘルプで確認している画面" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;border-radius:var(--r)">
+  <figcaption>手順は公式の案内で確認しました。作業メモに秘密の値を貼らないことだけは決めていました</figcaption>
 </figure>
 
-<h2>SPF・DKIM・DMARCは、守る場所が異なる</h2>
-<p>3つは似た略語ですが、同じ設定を重ねるものではありません。SPFは「どの送信サーバーから送ってよいか」、DKIMは「送信途中で内容が改変されていないか」を確認します。DMARCは、SPFまたはDKIMの認証結果が差出人として表示されるFromドメインと整合しているかを確認し、失敗したメールを受信側でどう扱うかを伝えます。どれか一つではなく、役割を分けて組み合わせることが重要です。</p>
-<div class="tbl-wrap"><table><thead><tr><th>仕組み</th><th>確認するもの</th><th>開業準備での要点</th></tr></thead><tbody><tr><td><b>SPF</b></td><td>送信元サーバー</td><td>自社ドメインで送信するサービスを漏れなく登録する</td></tr><tr><td><b>DKIM</b></td><td>電子署名</td><td>メールサービス側で鍵を生成し、DNS公開後に署名を開始する</td></tr><tr><td><b>DMARC</b></td><td>認証失敗時の方針</td><td>まず観測し、正規メールへの影響を見ながら強化する</td></tr></tbody></table></div>
-<p>このサイトの開業準備でも、Google Workspaceを中心にメール環境を整えています。SPF、DKIMの公開鍵、DMARC方針やレポート送付先は公開DNSから確認できる情報です。一方、管理画面の認証情報、DKIMの秘密鍵、復旧情報、APIトークンは公開せず、作業記録にも秘密値そのものを残さないようにします。</p>
+<h2>三つの略語を、自分の言葉に置き換えた</h2>
+<p>SPF、DKIM、DMARC。どれも似たような場所に設定するので、最初は同じことを三回やっているように見えました。腑に落ちなかったので、自分なりに言い換えてから作業しました。</p>
+<p><strong>SPF</strong>は、このドメインの名前で手紙を出してよい郵便局の名簿です。名簿にない場所から出された手紙は怪しい、と判断できるようになります。<strong>DKIM</strong>は封印です。途中で中身を差し替えられていないことを、受け取った側が確かめられます。そして<strong>DMARC</strong>は、名簿にも封印にも合わない手紙が届いたときに、受け取り側へ「こう扱ってください」と伝える指示書で、同時に「そういう手紙が何通来たか報告してください」とお願いする仕組みでもあります。</p>
+<p>守っている場所が違う、と分かってからは、三つとも入れる意味が納得できました。</p>
 
-<h2>最初に「自社ドメインで送る場所」を棚卸しする</h2>
-<p>SPF設定の前に必要なのは、文字列のコピーではなく送信元の棚卸しです。通常メールのほか、フォーム、予約、請求、メルマガ、採用管理、複合機なども自社ドメインを差出人にすることがあります。漏れがあると、正規メールが迷惑メール扱いになるおそれがあります。</p>
-<ul><li>代表・個人・採用など、Google Workspaceから送るアドレス</li><li>お問い合わせフォームの自動返信と管理者通知</li><li>請求書、予約、メール配信などのクラウドサービス</li><li>サーバー、複合機、業務システムからの自動通知</li><li>今後追加するサービスの申請・確認担当者</li></ul>
-<p>一覧にはサービス名、差出人、実際の送信基盤、提供元の認証手順、テスト先を記録します。差出人が自社アドレスでも、実際は外部事業者から送信される場合があるため、画面表示だけで判断しません。</p>
+<h2>設定する前に、送信元を数えた</h2>
+<p>作業の順番として、最初にやったのはDNSを開くことではなく、紙に書き出すことでした。自分のドメイン名で外へメールが出ていく場所が、Gmailだけとは限らないからです。</p>
+<p>ホームページの問い合わせフォームは、外部のサービス経由で自動返信と通知を飛ばします。今後、請求書の送付やメール配信のサービスを使えば、そこも送信元になります。この棚卸しを飛ばしてSPFを書くと、後から追加したサービスのメールだけが静かに落ちる、という事故が起きます。数えてから設定する、という順番はここでは重要でした。</p>
 
-<h2>設定はSPF・DKIMを先に、DMARCを後にする</h2>
-<h3>1．SPFを一つのレコードとして整理する</h3>
-<p>Google公式は、SPFにすべてのメール送信元を含めるよう案内しています。他サービスも使うなら、各提供元が示す情報を統合します。SPFレコードをサービスごとに複数作らず、ドメイン全体で一つの方針にすることが基本です。</p>
-<h3>2．DKIMの公開鍵をDNSへ登録し、署名を開始する</h3>
-<p>DKIMはGoogle管理コンソールで認証情報を生成し、公開鍵をDNSへ登録した後、署名を開始します。DNSへ追加しただけで終わりにせず、外部宛てのテストメールでDKIMの合格まで確認します。秘密鍵はコピーしたり共有資料へ貼ったりしません。</p>
-<h3>3．DMARCはp=noneで観測し、段階的に強化する</h3>
-<p>SPFとDKIMが動いてからDMARCを追加します。最初は監視用の方針で、正規の送信元が認証を通過しているかを観測します。その後、対象を限定した隔離、隔離範囲の拡大、拒否へ進めると、業務メールを止めるリスクを抑えられます。</p>
+<h2>順番を守る。DMARCは最後</h2>
+<p>SPFとDKIMを先に入れて、実際の送信が通っているかを確かめてから、最後にDMARCを追加しました。逆にすると、認証がまだ整っていない状態で「失敗した手紙は捨ててください」と宣言することになり、自分の正規のメールを自分で止めてしまいます。</p>
+<p>DMARCの方針も、いきなり厳しくしていません。今は監視だけの設定にして、レポートが自分の窓口アドレスへ届くようにしてあります。まず観測して、正規の送信元が全部通っていることを確かめてから、段階的に強くする。ここは急いでも良いことがない部分だと考えています。</p>
+<p>なお、実際に入っている値のうち、公開されているDNSを見れば誰でも確認できる範囲は次のとおりです。Googleのメールサーバーを送信元として許可するSPF、<code>google</code> というセレクタで公開しているDKIMの鍵、そして監視の段階にあるDMARCの方針とレポートの宛先です。一方で、管理画面のログイン情報、DKIMの秘密鍵、復旧用の情報は、記事にも作業メモにも残していません。</p>
 
-<h2>公開後も、サービス追加のたびに見直す</h2>
-<div class="tbl-wrap"><table><thead><tr><th>確認の場面</th><th>チェック内容</th></tr></thead><tbody><tr><td>初期設定直後</td><td>社内外へテスト送信し、SPF・DKIM・DMARCの結果と返信を確認</td></tr><tr><td>DMARC観測中</td><td>正規送信元の失敗、未知の送信元、転送による影響を確認</td></tr><tr><td>新サービス追加時</td><td>提供元の公式手順を確認し、送信元一覧とDNSを更新</td></tr><tr><td>サービス解約時</td><td>不要になった送信元をSPF等から外し、権限も停止</td></tr><tr><td>定期点検</td><td>管理者権限、二段階認証、復旧手段、設定変更履歴を確認</td></tr></tbody></table></div>
-<p>DNSは変更が反映されるまで時間がかかることがあります。変更直後の一度だけで判断せず、反映後に複数の宛先へ送り、受信可否と認証結果を確認します。また、問い合わせフォームは「送信できた」だけでなく、自動返信、管理者通知、返信先、迷惑メール判定まで一連で試します。</p>
+<h2>DNSを触るのが、いちばん怖かった</h2>
+<p>設定作業そのものより緊張したのが、DNSの整理です。使っていない確認用のレコードが一行残っていたので消したのですが、その前に手が止まりました。</p>
+<p>DNSは、ホームページの表示先も、メールの配送先も、所有権の確認も、認証の鍵も、全部同じ画面に並んでいます。見慣れない行を「たぶん要らない」でまとめて消すと、ホームページとメールが同時に止まります。しかも止まったことに気づくのは、たいてい誰かから連絡が来たときです。</p>
+<p>結局、一行ずつ何のための行かを確認し、消す前の値を控えてから作業しました。反映にも時間差があるので、直後に一度見て「大丈夫そうだ」と判断せず、しばらく置いてから別の回線と別のメールアドレスで確かめています。</p>
 
-<h2>よくある質問</h2>
-<dl class="faq">
-<dt>SPFを設定すれば、なりすまし対策は十分ですか？</dt>
-<dd>十分とはいえません。SPFは送信元サーバーを確認する仕組みです。メールへの電子署名を確認するDKIMと、認証に失敗したメールの扱いを定めるDMARCも組み合わせて運用します。</dd>
-<dt>DMARCは最初から拒否設定にしてよいですか？</dt>
-<dd>通常はおすすめしません。まずp=noneでレポートを観測し、正規の送信元がSPFまたはDKIMで認証され、かつ差出人のFromドメインと整合してDMARCに合格していることを確認してから、隔離、拒否へ段階的に強化します。</dd>
-<dt>お問い合わせフォームや請求サービスも確認が必要ですか？</dt>
-<dd>必要です。自社ドメインを差出人にして送るサービスは、すべて送信元の候補です。サービス追加時には、提供元の公式手順、DNS設定、テスト送信までを一組で確認します。</dd>
-</dl>
-<h2>当事務所のサポート</h2>
-<p>メール認証そのものはドメイン・メールサービスの管理領域ですが、開業時のバックオフィスは、勤怠、給与、問い合わせ、書類共有がつながって初めて機能します。当事務所では、労務手続きや給与計算の情報が安全に受け渡せるよう、利用ツール、担当者、運用ルールを整理します。技術設定が必要な部分は、各サービスの公式窓口や専門事業者と連携できる形に切り分けます。</p>
+<h2>フォームは「送信できた」で安心しない</h2>
+<p>もう一つ、自分への戒めとして書いておきます。問い合わせフォームは、送信ボタンを押して完了画面が出ても、それは「届いた」証拠にはなりません。外部のフォームサービスには、最初に届く確認メールのリンクを踏むまで本稼働しないものがあり、気づかないと二件目以降が黙って消えます。</p>
+<p>送信できたか、自動返信が返ってくるか、自分の受信箱に通知が来るか、それが迷惑メールに入っていないか。ここまでを一続きで試して、初めて問い合わせを受けられる状態になります。開業前に気づけたのは運が良かっただけで、開業後に気づいていたら、消えた問い合わせの数すら分かりませんでした。</p>
+
+<h2>今の状態</h2>
+<p>三つの設定を入れ直したあと、外部宛てのテストは認証を通り、迷惑メールフォルダにも入らなくなりました。ここまでが、開業前に済ませたメール周りの作業です。</p>
+<p>設定は入れて終わりではなく、サービスを一つ増やすたびに送信元の一覧とDNSを見直すことになります。増やしたときに見直す、という運用のほうが本体だと思っています。</p>
+
+<h2>この経験を、お客様の相談にどう返すか</h2>
+<p>メール認証そのものは、ドメインやメールサービスの管理領域です。ただ、労務のバックオフィスは、勤怠、給与、問い合わせ、書類の受け渡しがつながって初めて回ります。どのツールを使い、誰が受け取り、どこで止まると業務が止まるのか。その全体を見て整理するのが当事務所の仕事です。技術的な設定が必要な部分は、各サービスの窓口や専門の事業者につなぐ形で切り分けています。</p>
 </article>
 
 <section class="post-refs" style="max-width:820px;margin:24px auto 0;padding:24px 26px;background:var(--shiro,#fff);border:1px solid var(--line,#e6e3d6);border-radius:14px">
@@ -179,18 +143,18 @@
   <h2 style="font-size:15px;font-weight:700;color:var(--ink,#1e3a2f);letter-spacing:.04em;margin:0 0 14px">あわせて読みたい</h2>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px"><a href="google-workspace-dokujidomain-mail.html" style="display:block;padding:16px 18px;background:var(--shiro,#fff);border:1px solid var(--line,#e6e3d6);border-radius:12px;text-decoration:none">
       <span style="display:block;font-size:12px;font-weight:700;color:var(--sugi,#1e5b41);letter-spacing:.06em;margin-bottom:7px">経営・採用</span>
-      <span style="display:block;font-size:13.5px;font-weight:700;color:var(--ink,#1e3a2f);line-height:1.6">Google Workspaceの契約・エイリアス・送受信を整える</span>
+      <span style="display:block;font-size:13.5px;font-weight:700;color:var(--ink,#1e3a2f);line-height:1.6">事務所のメールを立ち上げる｜Google Workspaceで独自ドメインメールを整えた記録</span>
     </a><a href="website-search-console-kokai.html" style="display:block;padding:16px 18px;background:var(--shiro,#fff);border:1px solid var(--line,#e6e3d6);border-radius:12px;text-decoration:none">
       <span style="display:block;font-size:12px;font-weight:700;color:var(--sugi,#1e5b41);letter-spacing:.06em;margin-bottom:7px">経営・採用</span>
-      <span style="display:block;font-size:13.5px;font-weight:700;color:var(--ink,#1e3a2f);line-height:1.6">ホームページ公開後に行うこと｜Search Consoleとサイトマップ</span>
+      <span style="display:block;font-size:13.5px;font-weight:700;color:var(--ink,#1e3a2f);line-height:1.6">公開したホームページを、検索に載せる前に点検した｜Search Console登録の前にやったこと</span>
     </a></div>
 </section>
 
 <aside class="author-card">
   <div class="author-av">み</div>
   <div class="author-meta">
-    <b>みなの社会保険労務士事務所 編集部</b>
-    中小企業の労務体制構築・助成金活用・規程整備を専門としています。
+    <b>近藤昭宏（みなの社会保険労務士事務所）</b>
+    社会保険労務士。中小企業の労務体制構築・助成金活用・規程整備を専門としています。2026年8月15日、富山市で開業します。
     <small>本記事は公開時点の法令・制度および公式情報に基づきます。内容は変更されることがあるため、最新情報は各公式サイトもご確認ください。</small>
   </div>
 </aside>
