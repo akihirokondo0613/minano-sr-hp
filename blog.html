@@ -33,40 +33,6 @@
 
 
 <link rel="stylesheet" href="skin-v2.css?v=20260725-nocat1">
-<style id="startup-roadmap-style">
-.startup-roadmap{padding:52px 0;background:#f6f8f5;border-block:1px solid var(--line)}
-.startup-roadmap-head{display:grid;grid-template-columns:minmax(180px,.34fr) minmax(0,1fr);gap:34px;align-items:end;margin-bottom:26px}
-.startup-roadmap-label{display:block;color:var(--g700);font-size:11px;font-weight:800;letter-spacing:.2em;margin-bottom:8px}
-.startup-roadmap h2{color:var(--ink);font-size:clamp(24px,3vw,38px);line-height:1.42;letter-spacing:.02em;margin:0}
-.startup-roadmap-intro{color:var(--ink2);font-size:14px;line-height:1.9;margin:0;max-width:720px}
-.startup-roadmap-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;list-style:none;margin:0;padding:0;counter-reset:opening-step}
-.startup-roadmap-list li{min-width:0;counter-increment:opening-step}
-.startup-roadmap-list a{display:flex;min-height:156px;height:100%;flex-direction:column;padding:19px 18px 17px;background:var(--shiro);border:1px solid var(--line);border-radius:var(--r);color:var(--ink);text-decoration:none;box-shadow:0 8px 22px rgba(18,63,48,.035);transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
-.startup-roadmap-list a:hover,.startup-roadmap-list a:focus-visible{transform:translateY(-3px);border-color:var(--g400);box-shadow:0 12px 28px rgba(18,63,48,.08)}
-.startup-roadmap-list a:focus-visible{outline:3px solid rgba(0,110,60,.22);outline-offset:3px}
-.startup-roadmap-step{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--g700);font-size:10px;font-weight:800;letter-spacing:.15em;margin-bottom:18px}
-.startup-roadmap-step::before{content:"0" counter(opening-step)}
-.startup-roadmap-step::after{content:"→";font-size:15px;letter-spacing:0}
-.startup-roadmap-list li:last-child .startup-roadmap-step::after{content:"✓"}
-.startup-roadmap-list b{font-size:15px;line-height:1.6;letter-spacing:.02em;text-wrap:pretty}
-.startup-roadmap-list small{display:block;color:var(--ink3);font-size:12px;line-height:1.7;margin-top:auto;padding-top:10px}
-@media(max-width:1099px){
-  .startup-roadmap-list{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .startup-roadmap-list li:last-child{grid-column:1 / -1}
-  .startup-roadmap-list li:last-child a{min-height:128px}
-}
-@media(max-width:640px){
-  .startup-roadmap{padding:38px 0}
-  .startup-roadmap-head{display:block;margin-bottom:22px}
-  .startup-roadmap-intro{margin-top:13px}
-  .startup-roadmap-list{grid-template-columns:1fr;gap:9px}
-  .startup-roadmap-list li:last-child{grid-column:auto}
-  .startup-roadmap-list a,.startup-roadmap-list li:last-child a{min-height:0;padding:16px 17px}
-  .startup-roadmap-step{margin-bottom:8px}
-  .startup-roadmap-list small{margin-top:4px;padding-top:0}
-}
-@media(prefers-reduced-motion:reduce){.startup-roadmap-list a{transition:none}.startup-roadmap-list a:hover{transform:none}}
-</style>
 </head>
 <body>
 <a class="skip-link" href="#main">本文へスキップ</a>
@@ -118,25 +84,6 @@
     </div>
   </div>
 </header>
-
-<section class="startup-roadmap" aria-labelledby="startup-roadmap-title">
-  <div class="w">
-    <div class="startup-roadmap-head">
-      <div>
-        <span class="startup-roadmap-label">OPENING ROADMAP</span>
-        <h2 id="startup-roadmap-title">開業準備を、<br>実際の順番で。</h2>
-      </div>
-      <p class="startup-roadmap-intro">独自ドメインの取得からGoogle Workspace、メール認証、検索・地図への接続まで。今回の準備作業を5つの記事に分け、前後関係が分かる順番に並べました。</p>
-    </div>
-    <ol class="startup-roadmap-list">
-      <li><a href="blog/kaigyo-domain-shutoku.html"><span class="startup-roadmap-step">DOMAIN</span><b>独自ドメインを取得する</b><small>名称・契約名義・更新管理を決める</small></a></li>
-      <li><a href="blog/google-workspace-dokujidomain-mail.html"><span class="startup-roadmap-step">WORKSPACE</span><b>Workspaceを契約し、メールとエイリアスを作る</b><small>ユーザー・窓口アドレス・送受信を整える</small></a></li>
-      <li><a href="blog/dns-mail-authentication.html"><span class="startup-roadmap-step">SECURITY</span><b>SPF・DKIM・DMARCを設定する</b><small>正規メールを止めずになりすまし対策</small></a></li>
-      <li><a href="blog/website-search-console-kokai.html"><span class="startup-roadmap-step">SEARCH</span><b>Search Consoleへ接続する</b><small>所有権確認・サイトマップ・公開後点検</small></a></li>
-      <li><a href="blog/google-business-profile-kaisetsu.html"><span class="startup-roadmap-step">MAP</span><b>Googleマップの掲載条件を確認する</b><small>事業形態と住所表示を実態に合わせる</small></a></li>
-    </ol>
-  </div>
-</section>
 
 <div class="filter-bar">
   <div class="filter-inner">
