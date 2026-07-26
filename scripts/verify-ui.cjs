@@ -339,7 +339,16 @@ function recordConsoleError(target) {
       .map(row => row.textContent.replace(/\s+/g, ' ').trim())
       .join('\n');
     const spotText = document.getElementById('spot-fees')?.textContent.replace(/\s+/g, ' ').trim() || '';
-    return { rowText, basicText, planText, retainerText, retainerRowText, spotText };
+    const spotRows = Object.fromEntries(
+      Array.from(document.querySelectorAll('#spot-fees .sf-row')).map(row => [
+        row.querySelector('.sf-name')?.textContent.trim() || '',
+        {
+          price: row.querySelector('.sf-price')?.textContent.trim() || '',
+          description: row.querySelector('.sf-desc')?.textContent.replace(/\s+/g, ' ').trim() || '',
+        },
+      ])
+    );
+    return { rowText, basicText, planText, retainerText, retainerRowText, spotText, spotRows };
   });
   const forbiddenPriceRows = [
     '就業規則の新規作成・全面改定',
@@ -367,9 +376,14 @@ function recordConsoleError(target) {
     /年末調整の資料整理・税理士連携.*基本 ¥10,000＋従業員1名¥750.*提携税理士へ連携/.test(pricingStructure.retainerText) &&
     /成功報酬：受給額の15％/.test(pricingStructure.retainerText) &&
     /会社設立時の新規適用手続き.*¥60,000.*5名まで.*6名目から1名¥2,000/.test(pricingStructure.spotText) &&
+    pricingStructure.spotRows['入社手続き（資格取得届）']?.price === '¥10,000 / 1名' &&
+    pricingStructure.spotRows['退社手続き（資格喪失届）']?.price === '¥10,000 / 1名' &&
+    pricingStructure.spotRows['離職票の作成']?.price === '¥10,000 / 1名' &&
+    pricingStructure.spotRows['離職票の作成']?.description === '離職証明書の作成・提出まで。退社手続きと同時依頼の場合は合計 ¥15,000 / 1名です。' &&
     /労働保険の年度更新.*基本 ¥25,000＋対象者1名¥1,000/.test(pricingStructure.spotText) &&
     /算定基礎届.*基本 ¥25,000＋対象者1名¥1,000/.test(pricingStructure.spotText) &&
-    /賞与支払届.*¥20,000＋対象者1名¥1,000/.test(pricingStructure.spotText) &&
+    pricingStructure.spotRows['単発の給与・賞与計算']?.price === '基本 ¥20,000＋対象者1名¥1,500 / 回' &&
+    pricingStructure.spotRows['賞与支払届']?.price === '基本 ¥20,000＋対象者1名¥1,500 / 回' &&
     /年末調整の資料整理・税理士連携.*基本 ¥20,000＋従業員1名¥1,500.*提携税理士へ連携/.test(pricingStructure.spotText) &&
     /成功報酬：受給額の20％/.test(pricingStructure.spotText) &&
     /税理士法上職務外の処理については、提携の税理士に依頼します/.test(pricingStructure.spotText);

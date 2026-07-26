@@ -380,10 +380,10 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 
 **lastmod を手で書かないこと。** 手動だと「編集したのに lastmod を書き忘れる」で簡単にズレ、Google は lastmod が不正確だとサイト全体の lastmod を無視し始める（＝SEO実害）。過去に実際、福井表記削除・canonical/og追加を各ページに入れたのに sitemap の日付が 05-17/06-29 のまま取り残される不整合が起きた。
 
-- **正本は `gen-sitemap.js`**（ルート直下・Node製）。ファイルの実 mtime から lastmod を機械生成する。公開直前や記事公開（admin-post 手順A）後に `node gen-sitemap.js` を一度実行するだけ。差分確認だけなら `node gen-sitemap.js --check`（CI向け・古ければ exit 1）。
+- **正本は `gen-sitemap.js`**（ルート直下・Node製）。Git管理中の確定済みファイルは最終コミット日、未コミットの変更やGit管理外のフォルダでは実mtimeから lastmod を機械生成する。GitHub Actionsは履歴を省略せずcheckoutすること。公開直前や記事公開（admin-post 手順A）後に `node gen-sitemap.js` を一度実行するだけ。差分確認だけなら `node gen-sitemap.js --check`（CI向け・古ければ exit 1）。
 - 対象は DIRS=（ルート/uploads/blog）直下の .html。除外は EXCLUDE（admin-post・icon-catalog・404・_backup 等）。priority/changefreq は RULES に定義（現行 sitemap と一致）。
 - **ドメイン確定後はこのファイル先頭の `DOMAIN` 定数を1行差し替えるだけ**（HTML側の example.com 一括置換とは別。sitemap は DOMAIN が単一の真実）。
-- この環境（ブラウザsandbox）は mtime を読めないため、初回の正確化だけは run_script で日付を機械割り当てして sitemap.xml を再生成済み（今日編集の9ページ=07-19、canonical/og追加ほか24ページ=07-18、古い日付の残存0）。以後はローカルで `node gen-sitemap.js` を回せば実 mtime で常に正確になる。
+- この環境（ブラウザsandbox）は mtime を読めないため、初回の正確化だけは run_script で日付を機械割り当てして sitemap.xml を再生成済み（今日編集の9ページ=07-19、canonical/og追加ほか24ページ=07-18、古い日付の残存0）。以後はローカルで `node gen-sitemap.js` を回せば、Git履歴（コミット前の変更はmtime）から正確に更新できる。
 
 ## 今後の引き継ぎ方針（2026-07-20・VSコード/Codexへの引き継ぎ検討）
 
