@@ -296,6 +296,68 @@ function recordConsoleError(target) {
   }
   results.push({ supportCards: supportCardResults });
 
+  const founderMessageResults = [];
+  const expectedFounderParagraphs = [
+    '「これで合っているのかな」。労務のルールは年々こまかくなり、そんな不安を抱えたまま会社を経営されている方が、少なくありません。',
+    '私たちの仕事は、複雑なルールをひとつずつほどくこと。そして、明日からの現場でそのまま使える形にして、お渡しすることです。むずかしい言葉は使いません。',
+    '経営者のみなさまが一番に相談できる事務所でありたい。まずは気軽に、お話を聞かせてください。',
+  ];
+  for (const width of [390, 900, 1440]) {
+    const founderPage = await browser.newPage({ viewport: { width, height: width === 390 ? 844 : 900 } });
+    const founderErrors = [];
+    founderPage.on('console', recordConsoleError(founderErrors));
+    founderPage.on('pageerror', error => founderErrors.push(`pageerror: ${error.message}`));
+    await founderPage.goto(new URL('about.html', base).href, { waitUntil: 'load' });
+    await founderPage.locator('.rep-block').scrollIntoViewIfNeeded();
+    await founderPage.waitForTimeout(500);
+    const founderState = await founderPage.evaluate(() => {
+      const block = document.querySelector('.rep-block');
+      const body = document.querySelector('.rep-body');
+      const sign = document.querySelector('.rep-sign');
+      const blockStyle = block && getComputedStyle(block);
+      const blockRect = block?.getBoundingClientRect();
+      const bodyRect = body?.getBoundingClientRect();
+      const textRect = document.querySelector('.rep-text')?.getBoundingClientRect();
+      const signRect = sign?.getBoundingClientRect();
+      const contentWidth = block && blockStyle
+        ? block.clientWidth - Number.parseFloat(blockStyle.paddingLeft) - Number.parseFloat(blockStyle.paddingRight)
+        : 0;
+      return {
+        eyebrow: document.querySelector('.rep-eyebrow')?.textContent.trim() || '',
+        heading: document.querySelector('.rep-h')?.textContent.trim() || '',
+        paragraphs: [...document.querySelectorAll('.rep-text')].map(paragraph => paragraph.textContent.replace(/\s+/g, ' ').trim()),
+        photoCount: document.querySelectorAll('.rep-photo, #rep-portrait, .rep-block image-slot').length,
+        signature: sign?.textContent.replace(/\s+/g, ' ').trim() || '',
+        bodyWidthRatio: contentWidth ? (bodyRect?.width || 0) / contentWidth : 0,
+        textWidthRatio: bodyRect?.width ? (textRect?.width || 0) / bodyRect.width : 0,
+        signBelowBody: !!(bodyRect && signRect && signRect.top >= bodyRect.bottom - 1),
+        overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        legacyCopyCount: ['運用しやすい形に', 'いつもの会話のなかで', '北陸の地で']
+          .filter(text => document.body.textContent.includes(text)).length,
+        blockWidth: Math.round(blockRect?.width || 0),
+      };
+    });
+    const founderMessageOk =
+      founderState.eyebrow === '代表挨拶 / Message from the founder' &&
+      founderState.heading === '経営者と、同じ視点で。' &&
+      JSON.stringify(founderState.paragraphs) === JSON.stringify(expectedFounderParagraphs) &&
+      founderState.photoCount === 0 &&
+      /代表 社会保険労務士\s*近藤 昭宏\s*所属\s*富山県社会保険労務士会/.test(founderState.signature) &&
+      founderState.bodyWidthRatio >= 0.98 &&
+      founderState.textWidthRatio >= 0.98 &&
+      founderState.signBelowBody &&
+      founderState.overflow <= 1 &&
+      founderState.legacyCopyCount === 0 &&
+      founderErrors.length === 0;
+    if (!founderMessageOk) {
+      failures.push(`${width}px 代表挨拶: 文面・写真撤去・レイアウトが不正 ${JSON.stringify({ founderState, founderErrors })}`);
+    }
+    await founderPage.locator('.rep-block').screenshot({ path: `/tmp/minano-about-founder-${width}.png` });
+    founderMessageResults.push({ width, ...founderState, errors: founderErrors.length, ok: founderMessageOk });
+    await founderPage.close();
+  }
+  results.push({ founderMessage: founderMessageResults });
+
   const blogFilterResults = [];
   for (const width of [360, 390, 1440]) {
     const blogPage = await browser.newPage({ viewport: { width, height: width <= 390 ? 844 : 900 } });

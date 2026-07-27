@@ -30,6 +30,16 @@
 <meta name="theme-color" content="#123F30">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="skin-v2.css?v=20260725-nocat1">
+<style>
+.rep-block--text-only {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  grid-template-areas: "body" "sign";
+  column-gap: 0;
+  align-items: stretch;
+}
+.rep-block--text-only .rep-text { max-width: none; }
+</style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"事務所案内｜みなの社会保険労務士事務所","description":"富山にある、みなの社会保険労務士事務所の代表メッセージ、支援姿勢、事務所概要、所在地をご案内します。来所・訪問・オンラインに対応し、全国からご相談いただけます。","url":"https://minano-sr.com/about.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://minano-sr.com/"},{"@type":"ListItem","position":2,"name":"事務所案内","item":"https://minano-sr.com/about.html"}]}]}
 </script>
@@ -136,23 +146,18 @@
     </div>
 
     <!-- 代表メッセージ -->
-    <div class="rep-block rv d1">
+    <div class="rep-block rep-block--text-only rv d1">
       <div class="rep-body">
         <div class="rep-eyebrow">代表挨拶 / Message from the founder</div>
-        <h3 class="rep-h">複雑なルールを、<strong>運用しやすい形に。</strong></h3>
+        <h3 class="rep-h">経営者と、<strong>同じ視点で。</strong></h3>
         <p class="rep-text">「これで合っているのかな」。<br>労務のルールは年々こまかくなり、そんな不安を抱えたまま会社を経営されている方が、少なくありません。</p>
-        <p class="rep-text">私たちの仕事は、複雑なルールをひとつずつほどくこと。そして、明日からの現場でそのまま使える形にして、お渡しすることです。むずかしい言葉は使いません。いつもの会話のなかで、いっしょに考えます。</p>
-        <p class="rep-text">北陸の地で、経営者のみなさまの隣を歩く事務所でありたい。<br>まずは気軽に、お話を聞かせてください。</p>
+        <p class="rep-text">私たちの仕事は、複雑なルールをひとつずつほどくこと。そして、明日からの現場でそのまま使える形にして、お渡しすることです。むずかしい言葉は使いません。</p>
+        <p class="rep-text">経営者のみなさまが一番に相談できる事務所でありたい。<br>まずは気軽に、お話を聞かせてください。</p>
       </div>
       <div class="rep-sign">
         <div class="rep-meta">
           <div><b>代表 社会保険労務士</b><span>近藤 昭宏</span></div>
           <div><b>所属</b><span>富山県社会保険労務士会</span></div>
-        </div>
-      </div>
-      <div class="rep-photo">
-        <div class="ph-frame">
-          <image-slot id="rep-portrait" src="assets/illustrations/about-representative.webp" fit="contain" placeholder="代表イラスト（推奨 4:3）"></image-slot>
         </div>
       </div>
     </div>
