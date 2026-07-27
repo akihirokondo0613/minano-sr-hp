@@ -39,8 +39,9 @@ function recordConsoleError(target) {
     await page.waitForTimeout(700);
     const state = await page.evaluate(() => {
       const rect = el => el?.getBoundingClientRect();
-      const aboutPhoto = rect(document.querySelector('.home-about-photo'));
+      const aboutCard = rect(document.querySelector('.home-about-card'));
       const aboutCopy = rect(document.querySelector('.home-about-copy'));
+      const aboutText = rect(document.querySelector('.home-about-copy p'));
       const whyPhoto = rect(document.querySelector('.home-why-photo'));
       const footerLinks = [...document.querySelectorAll('.footer-ul a')];
       const summaryColumns = getComputedStyle(document.querySelector('.hs-inner')).gridTemplateColumns.split(' ').filter(Boolean).length;
@@ -54,8 +55,9 @@ function recordConsoleError(target) {
         summaryColumns,
         planListDisplay: getComputedStyle(document.querySelector('.home-plan-list')).display,
         planFeatureDisplay: getComputedStyle(document.querySelector('.home-plan-feature')).display,
-        aboutPhotoWidth: Math.round(aboutPhoto?.width || 0),
-        aboutCopyFirst: !!(aboutPhoto && aboutCopy && aboutCopy.top < aboutPhoto.top),
+        aboutPhotoCount: document.querySelectorAll('.home-about-photo, #home-representative').length,
+        aboutCopyWidthRatio: aboutCard?.width ? (aboutCopy?.width || 0) / aboutCard.width : 0,
+        aboutTextWidthRatio: aboutCopy?.width ? (aboutText?.width || 0) / aboutCopy.width : 0,
         whyPhotoWidth: Math.round(whyPhoto?.width || 0),
         footerTapMin: Math.min(...footerLinks.map(link => Math.round(rect(link)?.height || 0))),
         footerFontSize: Number.parseFloat(getComputedStyle(footerLinks[0]).fontSize),
@@ -73,10 +75,12 @@ function recordConsoleError(target) {
     if (state.googleFontRequests) failures.push(`${viewport.width}px: Google Fontsを取得しています`);
     if (!state.footerObserver) failures.push(`${viewport.width}px: 固定UIのObserverが初期化されていません`);
     if (state.catUiCount) failures.push(`${viewport.width}px: 撤去済みの猫UIが残っています`);
+    if (state.aboutPhotoCount || state.aboutCopyWidthRatio < 0.98 || state.aboutTextWidthRatio < 0.98) {
+      failures.push(`${viewport.width}px: 事務所案内の代表画像撤去・本文幅が不正です`);
+    }
     if (viewport.width <= 640) {
       if (state.summaryColumns !== 2) failures.push(`${viewport.width}px: ヒーロー直下サマリーが2列ではありません`);
       if (state.planListDisplay !== 'none' || state.planFeatureDisplay === 'none') failures.push(`${viewport.width}px: スマホ料金カードの情報量が不正です`);
-      if (state.aboutPhotoWidth < 220 || state.aboutPhotoWidth > 240 || !state.aboutCopyFirst) failures.push(`${viewport.width}px: 事務所案内の順序・画像幅が不正です`);
       if (state.whyPhotoWidth < 230 || state.whyPhotoWidth > 250) failures.push(`${viewport.width}px: 理念イラストの画像幅が不正です（${state.whyPhotoWidth}px）`);
       if (state.footerTapMin < 32 || state.footerFontSize < 13) failures.push(`${viewport.width}px: フッターリンクの文字・タップ領域が不足しています`);
       if (state.faqWrap !== 'pretty' || state.faqWordBreak !== 'auto-phrase' || !state.protectedPlan) failures.push(`${viewport.width}px: FAQの日本語改行保護が不正です`);
@@ -141,7 +145,6 @@ function recordConsoleError(target) {
     'home-svc-joseikin', 'home-svc-kisoku', 'home-svc-shaho', 'home-svc-kyuyo', 'home-svc-sodan', 'home-svc-dx',
     'home-stage-startup', 'home-stage-growth', 'home-stage-org',
     'news-thumb-1', 'news-thumb-2', 'news-thumb-3',
-    'home-representative',
   ];
   const illustrationFailures = await imagePage.evaluate(ids => ids.flatMap(id => {
     const slot = document.getElementById(id);
