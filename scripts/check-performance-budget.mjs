@@ -49,7 +49,7 @@ for (const { full, rel } of publicHtml) {
     fail(`${rel}: image-slot.jsのキャッシュ版が不一致です（${imageSlotVersion[1]}）`);
   }
   const skinVersion = html.match(/skin-v2\.css\?v=([^"']+)/i);
-  if (skinVersion && skinVersion[1] !== '20260725-nocat1') {
+  if (skinVersion && skinVersion[1] !== '20260728-blog1') {
     fail(`${rel}: skin-v2.cssのキャッシュ版が不一致です（${skinVersion[1]}）`);
   }
   const serviceVersion = html.match(/service\.css\?v=([^"']+)/i);

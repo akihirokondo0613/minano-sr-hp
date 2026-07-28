@@ -4,7 +4,9 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const checkOnly = process.argv.includes('--check');
-const assetVersion = '20260725-nocat1';
+const pageEnterVersion = '20260725-nocat1';
+const skinVersion = '20260728-blog1';
+const serviceVersion = '20260725-nocat1';
 let changed = 0;
 
 function htmlFiles(dir) {
@@ -32,9 +34,9 @@ for (const file of htmlFiles(root)) {
       /\\n\r?\n\\n<script defer src="\.\.\/header-motion\.js/g,
       '\\n\\n<script defer src="../header-motion.js',
     )
-    .replace(/page-enter\.js\?v=[^"'\\<\s]+/g, `page-enter.js?v=${assetVersion}`)
-    .replace(/skin-v2\.css\?v=[^"'\\<\s]+/g, `skin-v2.css?v=${assetVersion}`)
-    .replace(/service\.css\?v=[^"'\\<\s]+/g, `service.css?v=${assetVersion}`);
+    .replace(/page-enter\.js\?v=[^"'\\<\s]+/g, `page-enter.js?v=${pageEnterVersion}`)
+    .replace(/skin-v2\.css\?v=[^"'\\<\s]+/g, `skin-v2.css?v=${skinVersion}`)
+    .replace(/service\.css\?v=[^"'\\<\s]+/g, `service.css?v=${serviceVersion}`);
 
   if (after === before) continue;
   changed += 1;

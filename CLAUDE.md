@@ -311,7 +311,7 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
   - `about.html`：事務所の約束・代表メッセージ・プロフィール・所在地・地図
 - 外部ブックマーク互換のため、トップの `#services`／`#pricing`／`#cases`／`#about` は短い案内部分に残す。削除・改名しない。
 - グローバルメニューは「サービス／料金／支援の進め方／事務所案内／ブログ／社労士とは／公式情報」で全ページ統一。記事生成テンプレート `admin-post.html` も同じ接続を正本とする。
-- CSSキャッシュ版は `20260723-split1`。変更後は `scripts/verify-ui.cjs` で12画面幅・全公開ページ・主要導線・料金計算機・記事生成テンプレートまで確認する。
+- CSSキャッシュ版は `20260728-blog1`。変更後は `scripts/verify-ui.cjs` で12画面幅・全公開ページ・主要導線・料金計算機・記事生成テンプレートまで確認する。
 
 ## レスポンシブの徹底（このプロジェクトで繰り返し発生した問題。編集後は必ず守る）
 
@@ -355,6 +355,7 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 ※トップの pub-live バッジ（「開業準備中から発信中 ◯本・◯分野」）は 2026-07-12 ユーザー編集で削除済み（#pubLive 要素と pub-live-js を撤去）。articles.json はブログ側の「発信のあゆみ」集計と本ツールで引き続き使用する。
 
 - ルート直下 `admin-post.html`。タブ3つ（記事を書く／公開中の記事一覧／使い方）。フォーム入力→簡易記法の本文→「生成する」で、**手順A「かんたん公開セット」＝①記事HTML ②新記事組み込み済みblog.html（件数+1済み） ③先頭追加済みarticles.json の3ファイルをダウンロード**（現行ファイルをfetchして差分を機械挿入。重複スラッグ検知あり。file://ではfetch不可のため手順B=コピペ方式にフォールバック）。手順Bとして従来の art-row／JSONエントリ／news-row スニペットも出力。
+- 公開日・更新日・読了時間の正本は `blog/articles.json`。既存記事の更新後は `node scripts/sync-blog-dates.mjs` を実行すると、記事HTMLの表示・OGP・Article JSON-LDと `blog.html` の一覧日付が同期される。差分確認のみは `--check`。
 - noindex・どこからもリンクしていない（URL直打ちで使う管理ページ）。sitemap.xml には载せないこと。
 - 下書きは localStorage（`mn-admin-post-draft-v1`）に自動保存。
 - 記事テンプレを変えたら admin-post.html 内の `buildArticle()` も追従させること。カテゴリ別関連サービスカードは `REL` マップ。

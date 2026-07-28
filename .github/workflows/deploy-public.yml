@@ -18,6 +18,7 @@ jobs:
 
       - name: 公開データの整合性チェック
         run: |
+          node scripts/sync-blog-dates.mjs --check
           node scripts/sync-structured-data.mjs --check
           node scripts/remove-cat-ui.mjs --check
           node scripts/check-structured-data.mjs
