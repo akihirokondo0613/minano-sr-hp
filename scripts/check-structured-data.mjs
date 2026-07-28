@@ -13,6 +13,12 @@ const expectedFaqCounts = new Map([
   ['blog/fukugyo-kengyo-kisoku.html', 2],
   ['blog/getsugaku-henkou-todoke-zuiji-kaitei.html', 3],
   ['blog/joseikin-career-up-2026.html', 2],
+  ['blog/kaigo-hoshu-kaitei-2027.html', 3],
+  ['blog/kaigo-shogu-career-path-2026.html', 3],
+  ['blog/kaigo-shogu-haibun-rule-2026.html', 3],
+  ['blog/kaigo-shogu-new-services-2026.html', 3],
+  ['blog/kaigo-shogu-todokede-2026.html', 3],
+  ['blog/kaigo-technology-jininhaichi-2027.html', 3],
   ['blog/kintai-dx-donyu-junbi.html', 3],
   ['blog/kodomo-kosodate-shienkin-2026.html', 3],
   ['blog/kounenrei-koyo-keizoku-kyufu-2025.html', 3],
@@ -29,6 +35,10 @@ const expectedFaqCounts = new Map([
   ['blog/shogaisha-hotei-koyoritsu-2026.html', 3],
   ['blog/shusseigo-shien-ikujijitan-kyufu.html', 3],
   ['blog/taishoku-trouble-prevention.html', 2],
+  ['blog/tokutei-chiiki-kyotaku-service-2027.html', 3],
+  ['blog/toyama-koyou-josei-2026-05.html', 3],
+  ['blog/toyama-kyujin-chingin-data-2026.html', 3],
+  ['blog/toyama-shokushu-betsu-kyujin-bairitsu-2026.html', 3],
 ]);
 
 const expectedServicePages = new Set([

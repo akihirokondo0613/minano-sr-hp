@@ -192,6 +192,12 @@ const definitionFaqArticles = [
   'blog/fukugyo-kengyo-kisoku.html',
   'blog/getsugaku-henkou-todoke-zuiji-kaitei.html',
   'blog/joseikin-career-up-2026.html',
+  'blog/kaigo-hoshu-kaitei-2027.html',
+  'blog/kaigo-shogu-career-path-2026.html',
+  'blog/kaigo-shogu-haibun-rule-2026.html',
+  'blog/kaigo-shogu-new-services-2026.html',
+  'blog/kaigo-shogu-todokede-2026.html',
+  'blog/kaigo-technology-jininhaichi-2027.html',
   'blog/kintai-dx-donyu-junbi.html',
   'blog/kodomo-kosodate-shienkin-2026.html',
   'blog/kounenrei-koyo-keizoku-kyufu-2025.html',
@@ -207,6 +213,10 @@ const definitionFaqArticles = [
   'blog/shogaisha-hotei-koyoritsu-2026.html',
   'blog/shusseigo-shien-ikujijitan-kyufu.html',
   'blog/taishoku-trouble-prevention.html',
+  'blog/tokutei-chiiki-kyotaku-service-2027.html',
+  'blog/toyama-koyou-josei-2026-05.html',
+  'blog/toyama-kyujin-chingin-data-2026.html',
+  'blog/toyama-shokushu-betsu-kyujin-bairitsu-2026.html',
 ];
 definitionFaqArticles.forEach((relativePath) => syncFaq(relativePath, extractDefinitionFaq));
 syncFaq('blog/natsu-shoyo-tetsuzuki.html', extractBonusFaq);
