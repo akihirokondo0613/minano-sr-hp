@@ -187,15 +187,25 @@ const office = {
 syncFaq('recruit.html', extractRecruitFaq);
 
 const definitionFaqArticles = [
+  'blog/36kyotei-jogen-kanri.html',
+  'blog/customer-harassment-gimuka-2026.html',
   'blog/fukugyo-kengyo-kisoku.html',
+  'blog/getsugaku-henkou-todoke-zuiji-kaitei.html',
   'blog/joseikin-career-up-2026.html',
   'blog/kintai-dx-donyu-junbi.html',
+  'blog/kodomo-kosodate-shienkin-2026.html',
+  'blog/kounenrei-koyo-keizoku-kyufu-2025.html',
   'blog/kyuyo-itaku-junbi.html',
+  'blog/nenkyu-5days-kanribo.html',
   'blog/necchusho-taisaku-gimu.html',
   'blog/nendo-koshin-santei.html',
   'blog/nyusha-tetsuzuki-checklist.html',
+  'blog/roudou-joken-tsuchisho-2024.html',
+  'blog/roudousha-shishoubyou-houkoku-denshi.html',
   'blog/ryoritsu-shien-josei.html',
   'blog/shaho-tekiyo-kakudai-2026.html',
+  'blog/shogaisha-hotei-koyoritsu-2026.html',
+  'blog/shusseigo-shien-ikujijitan-kyufu.html',
   'blog/taishoku-trouble-prevention.html',
 ];
 definitionFaqArticles.forEach((relativePath) => syncFaq(relativePath, extractDefinitionFaq));
