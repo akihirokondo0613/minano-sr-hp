@@ -26,7 +26,7 @@ const expectedFaqCounts = new Map([
   ['blog/nenkyu-5days-kanribo.html', 3],
   ['blog/natsu-shoyo-tetsuzuki.html', 2],
   ['blog/necchusho-taisaku-gimu.html', 2],
-  ['blog/nendo-koshin-santei.html', 2],
+  ['blog/nendo-koshin-santei.html', 3],
   ['blog/nyusha-tetsuzuki-checklist.html', 2],
   ['blog/roudou-joken-tsuchisho-2024.html', 3],
   ['blog/roudousha-shishoubyou-houkoku-denshi.html', 3],

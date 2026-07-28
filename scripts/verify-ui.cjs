@@ -374,12 +374,23 @@ function recordConsoleError(target) {
       categories: document.getElementById('pubCats')?.textContent.trim() || '',
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       filterHeight: Math.round(document.querySelector('.filter-bar')?.getBoundingClientRect().height || 0),
+      dateCount: document.querySelectorAll('#articleList .art-date').length,
       systemTabVisible: (() => {
         const rect = [...document.querySelectorAll('.filter-tab')]
           .find(tab => tab.textContent.trim() === 'システム導入')?.getBoundingClientRect();
         return !!rect && rect.left >= 0 && rect.right <= innerWidth;
       })(),
     }));
+    await blogPage.locator('#blogSearch').fill('介護テクノロジー');
+    const searchBlogState = await blogPage.evaluate(() => {
+      const visibleRows = [...document.querySelectorAll('#articleList .art-row')]
+        .filter(row => getComputedStyle(row).display !== 'none');
+      return {
+        count: document.getElementById('resultCount')?.textContent.trim() || '',
+        hrefs: visibleRows.map(row => row.getAttribute('href')),
+        clearVisible: !document.getElementById('blogSearchClear')?.hidden,
+      };
+    });
     await blogPage.getByRole('button', { name: 'システム導入', exact: true }).click();
     const filteredBlogState = await blogPage.evaluate(() => {
       const visibleRows = [...document.querySelectorAll('#articleList .art-row')]
@@ -400,13 +411,24 @@ function recordConsoleError(target) {
       initialBlogState.total === 36 &&
       initialBlogState.categories === '7' &&
       initialBlogState.overflow <= 1 &&
+      initialBlogState.dateCount === 36 &&
       initialBlogState.systemTabVisible &&
       (width > 640 || initialBlogState.filterHeight <= 70) &&
-      filteredBlogState.count === '該当 2件' &&
+      searchBlogState.count === '該当 1件' &&
+      searchBlogState.clearVisible &&
+      JSON.stringify(searchBlogState.hrefs) === JSON.stringify(expectedSystemArticles.slice(0, 1)) &&
+      filteredBlogState.count === '該当 1件' &&
       filteredBlogState.active === 'システム導入' &&
       filteredBlogState.pressed === 'true' &&
-      JSON.stringify(filteredBlogState.hrefs) === JSON.stringify(expectedSystemArticles) &&
+      JSON.stringify(filteredBlogState.hrefs) === JSON.stringify(expectedSystemArticles.slice(0, 1)) &&
       filteredBlogState.badges.every(badge => badge === 'システム導入');
+    await blogPage.getByRole('button', { name: 'クリア', exact: true }).click();
+    const clearedBlogState = await blogPage.evaluate(() => ({
+      count: document.getElementById('resultCount')?.textContent.trim() || '',
+      visible: [...document.querySelectorAll('#articleList .art-row')]
+        .filter(row => getComputedStyle(row).display !== 'none').length,
+      active: document.querySelector('.filter-tab.active')?.textContent.trim() || '',
+    }));
     await blogPage.getByRole('button', { name: 'すべて', exact: true }).click();
     const resetBlogState = await blogPage.evaluate(() => ({
       count: document.getElementById('resultCount')?.textContent.trim() || '',
@@ -427,14 +449,17 @@ function recordConsoleError(target) {
       };
     });
     const resetBlogOk =
+      clearedBlogState.count === '該当 2件' &&
+      clearedBlogState.visible === 2 &&
+      clearedBlogState.active === 'システム導入' &&
       resetBlogState.count === '全36件' &&
       resetBlogState.visible === 36 &&
       resetBlogState.pressed === 1;
     const stickyBlogOk = !stickyBlogState.navHidden && stickyBlogState.overlap <= 1;
     if (!blogFilterOk || !resetBlogOk || !stickyBlogOk || blogErrors.length) {
-      failures.push(`${width}px ブログ絞り込み: 表示・件数・カテゴリが不正 ${JSON.stringify({ initialBlogState, filteredBlogState, resetBlogState, stickyBlogState, blogErrors })}`);
+      failures.push(`${width}px ブログ絞り込み: 表示・件数・検索・カテゴリが不正 ${JSON.stringify({ initialBlogState, searchBlogState, filteredBlogState, clearedBlogState, resetBlogState, stickyBlogState, blogErrors })}`);
     }
-    blogFilterResults.push({ width, initialBlogState, filteredBlogState, resetBlogState, stickyBlogState, ok: blogFilterOk && resetBlogOk && stickyBlogOk, errors: blogErrors.length });
+    blogFilterResults.push({ width, initialBlogState, searchBlogState, filteredBlogState, clearedBlogState, resetBlogState, stickyBlogState, ok: blogFilterOk && resetBlogOk && stickyBlogOk, errors: blogErrors.length });
     await blogPage.close();
   }
   results.push({ blogFilters: blogFilterResults });
@@ -783,7 +808,7 @@ function recordConsoleError(target) {
     '../support.html',
     '../about.html',
     'page-enter.js?v=20260725-nocat1',
-    'skin-v2.css?v=20260725-nocat1',
+    'skin-v2.css?v=20260728-blog1',
     'link-keep.js?v=20260723-conversion1',
     'data-goatcounter-settings="{&quot;path&quot;:&quot;/blog/verification-only.html&quot;}"',
     'href="#" class="to-top"',

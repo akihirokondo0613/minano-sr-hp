@@ -833,26 +833,39 @@ main > section:not(.hero) {
 .filter-tab.active { background: var(--sugi); border-color: var(--sugi); color: #fff; }
 
 /* 記事一覧 */
-.list-head { display: flex; justify-content: flex-end; margin-bottom: 16px; }
+.blog-search-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+.blog-search { width: min(100%, 620px); }
+.blog-search label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700; color: var(--iwa); }
+.blog-search-control { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 5px 6px 5px 16px; background: var(--shiro); border: 1px solid var(--line); border-radius: var(--r); transition: border-color .2s, box-shadow .2s; }
+.blog-search-control:focus-within { border-color: var(--moegi); box-shadow: 0 0 0 3px color-mix(in srgb, var(--moegi) 18%, transparent); }
+.blog-search input { flex: 1; min-width: 0; font: inherit; font-size: 14px; color: var(--iwa); background: transparent; border: 0; outline: 0; }
+.blog-search input::placeholder { color: var(--ink4); }
+.blog-search button { flex: 0 0 auto; min-height: 36px; padding: 6px 13px; font-family: var(--font-body); font-size: 12px; font-weight: 700; color: var(--sugi); background: var(--moegi-l); border: 0; border-radius: 8px; cursor: pointer; }
+.blog-search button:hover { background: #D7EBDD; }
+.blog-search p { margin-top: 6px; font-size: 11.5px; color: var(--ink3); }
+.list-head { display: flex; justify-content: flex-end; padding-bottom: 27px; }
 .list-head p { font-family: var(--mono); font-size: 12.5px; color: var(--ink3); }
 .art-list { display: flex; flex-direction: column; gap: 12px; }
 .art-row { display: grid; grid-template-columns: 150px 1fr auto; align-items: center; gap: clamp(16px, 2.4vw, 30px); padding: 16px 20px; background: var(--shiro); border: 1px solid var(--line); border-radius: var(--r-lg); transition: border-color .3s, transform .3s var(--ease), box-shadow .35s var(--ease); }
 .art-row:hover { border-color: var(--moegi); transform: translateX(4px); box-shadow: 0 12px 30px rgba(18,63,48,.08); }
-.art-thumb { width: 150px; border-radius: var(--r); overflow: hidden; background: var(--yuki); border: 1px solid var(--line2); }
+.art-thumb { grid-column: 1; grid-row: 1 / span 2; width: 150px; border-radius: var(--r); overflow: hidden; background: var(--yuki); border: 1px solid var(--line2); }
 .art-thumb svg { width: 100%; height: auto; display: block; }
+.art-date { grid-column: 2; grid-row: 1; align-self: end; margin-bottom: -8px; font-family: var(--mono); font-size: 11.5px; color: var(--ink3); }
+.art-body { grid-column: 2; grid-row: 2; min-width: 0; }
 .art-cat-badge { display: inline-block; font-size: 11px; font-weight: 700; color: var(--sugi); background: var(--moegi-l); padding: 3px 12px; border-radius: 999px; margin-bottom: 8px; }
 .art-title { font-family: var(--disp); font-size: clamp(15px, 1.6vw, 17.5px); font-weight: 800; letter-spacing: .01em; line-height: 1.7; color: var(--iwa); }
 .art-row:hover .art-title { color: var(--sugi); }
 .art-excerpt { font-size: 13px; line-height: 1.95; color: var(--ink3); margin-top: 6px; }
-.art-read { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--sugi); border-bottom: 2px solid var(--moegi); padding-bottom: 2px; white-space: nowrap; }
+.art-read { grid-column: 3; grid-row: 1 / span 2; font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--sugi); border-bottom: 2px solid var(--moegi); padding-bottom: 2px; white-space: nowrap; }
 .empty { text-align: center; font-size: 14px; color: var(--ink3); padding: 48px 0; }
 @media (max-width: 860px) {
   .art-row { grid-template-columns: 110px minmax(0, 1fr); }
   .art-thumb { width: 110px; }
-  .art-body { grid-column: 2; min-width: 0; }
   .art-read { display: none; }
 }
 @media (max-width: 560px) {
+  .blog-search-row { display: block; margin-bottom: 20px; }
+  .list-head { justify-content: flex-start; padding: 10px 0 0; }
   .pub-rhythm { width: 100%; min-width: 0; }
   .pub-months { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: end; gap: 12px 6px; max-width: 100%; overflow-x: visible; }
   .pub-y { grid-column: 1 / -1; }
