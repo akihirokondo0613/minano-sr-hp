@@ -75,7 +75,7 @@ p, li { text-wrap: pretty; }
   --iwa:    #1E2721;   /* 岩（本文墨） */
   --ink2:   #37423B;
   --ink3:   #5D6962;
-  --ink4:   #7E8981;
+  --ink4:   #68736C;   /* 注釈・メタ。淡い地でも4.5:1を満たす濃さにしてある（旧 #7E8981 は3.6:1） */
   --sora:   #5E87A6;   /* 山影ブルー */
   --sora-l: #E2EBF2;
   --asahi:  #E5A63C;   /* 朝日（極小アクセント） */
@@ -248,7 +248,8 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
 }
 .hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
 .hero-veil { display: block; position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(97deg, rgba(249,250,247,.66) 0%, rgba(249,250,247,.5) 30%, rgba(249,250,247,.24) 58%, rgba(249,250,247,0) 82%),
+  /* 本文（.hero-sub）が伸びる横幅ぶんは白を残す。768〜1440pxで写真の建物に重なって読めなくなっていた */
+  background: linear-gradient(97deg, rgba(249,250,247,.74) 0%, rgba(249,250,247,.66) 32%, rgba(249,250,247,.5) 62%, rgba(249,250,247,0) 86%),
               linear-gradient(to bottom, rgba(249,250,247,.34), transparent 140px); }
 .hero-overlay {
   position: relative; z-index: 2;
@@ -304,10 +305,11 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
   .trust-item { padding: 7px 12px; background: rgba(255,255,255,.94); }
   .hero-veil {
     background: linear-gradient(to bottom,
-      rgba(249,250,247,.5) 0%,
-      rgba(249,250,247,.4) 56%,
-      rgba(249,250,247,.2) 80%,
-      rgba(249,250,247,.04) 92%,
+      rgba(249,250,247,.64) 0%,
+      rgba(249,250,247,.62) 60%,
+      rgba(249,250,247,.54) 76%,
+      rgba(249,250,247,.18) 88%,
+      rgba(249,250,247,.03) 95%,
       rgba(249,250,247,0) 100%);
   }
 }
@@ -348,12 +350,15 @@ main > section:not(.hero) {
   contain-intrinsic-size: auto 900px;
 }
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20260728-blog1" media="print" data-async-style onload="this.media='all';this.onload=null">
-<noscript><link rel="stylesheet" href="skin-v2.css?v=20260728-blog1"></noscript>
+<link rel="stylesheet" href="skin-v2.css?v=20260729-a11y1" media="print" data-async-style onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="skin-v2.css?v=20260729-a11y1"></noscript>
 <style id="home-hero-legibility">
 @media(max-width:700px){
-  .hero-veil{background:linear-gradient(to bottom,rgba(249,250,247,.5) 0%,rgba(249,250,247,.4) 56%,rgba(249,250,247,.2) 80%,rgba(249,250,247,.04) 92%,rgba(249,250,247,0) 100%)}
-  .hero-sub-link{display:inline;align-items:normal;min-height:auto;padding:0 0 3px;background:linear-gradient(rgba(249,250,247,.74),rgba(249,250,247,.74)) no-repeat left 82% / 100% 64%;font-size:14px;font-weight:400;text-shadow:none}
+  /* 本文が写真の建物・木立に重なる帯（ヒーロー高の45〜75%）まで白を残す。
+     下端は従来どおり抜いて、水面と船を見せる。 */
+  .hero-veil{background:linear-gradient(to bottom,rgba(249,250,247,.64) 0%,rgba(249,250,247,.62) 60%,rgba(249,250,247,.54) 76%,rgba(249,250,247,.18) 88%,rgba(249,250,247,.03) 95%,rgba(249,250,247,0) 100%)}
+  /* 白マーカーが文字の下側しか覆っておらず、上半分が写真に溶けていた */
+  .hero-sub-link{display:inline;align-items:normal;min-height:auto;padding:0 0 3px;background:linear-gradient(rgba(249,250,247,.92),rgba(249,250,247,.92)) no-repeat left 60% / 100% 92%;font-size:14px;font-weight:400;text-shadow:none}
 }
 @media(min-width:641px) and (max-width:900px){
   .home-plan-card:last-child{grid-column:1 / -1;width:calc(50% - 8px);justify-self:center}

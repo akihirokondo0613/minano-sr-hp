@@ -39,7 +39,7 @@ p, li { text-wrap: pretty; }
   --iwa:    #1E2721;   /* 岩（本文墨） */
   --ink2:   #37423B;
   --ink3:   #5D6962;
-  --ink4:   #7E8981;
+  --ink4:   #68736C;   /* 注釈・メタ。淡い地でも4.5:1を満たす濃さにしてある（旧 #7E8981 は3.6:1） */
   --sora:   #5E87A6;   /* 山影ブルー */
   --sora-l: #E2EBF2;
   --asahi:  #E5A63C;   /* 朝日（極小アクセント） */
@@ -212,7 +212,8 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
 }
 .hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
 .hero-veil { display: block; position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(97deg, rgba(249,250,247,.66) 0%, rgba(249,250,247,.5) 30%, rgba(249,250,247,.24) 58%, rgba(249,250,247,0) 82%),
+  /* 本文（.hero-sub）が伸びる横幅ぶんは白を残す。768〜1440pxで写真の建物に重なって読めなくなっていた */
+  background: linear-gradient(97deg, rgba(249,250,247,.74) 0%, rgba(249,250,247,.66) 32%, rgba(249,250,247,.5) 62%, rgba(249,250,247,0) 86%),
               linear-gradient(to bottom, rgba(249,250,247,.34), transparent 140px); }
 .hero-overlay {
   position: relative; z-index: 2;
@@ -268,10 +269,11 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
   .trust-item { padding: 7px 12px; background: rgba(255,255,255,.94); }
   .hero-veil {
     background: linear-gradient(to bottom,
-      rgba(249,250,247,.5) 0%,
-      rgba(249,250,247,.4) 56%,
-      rgba(249,250,247,.2) 80%,
-      rgba(249,250,247,.04) 92%,
+      rgba(249,250,247,.64) 0%,
+      rgba(249,250,247,.62) 60%,
+      rgba(249,250,247,.54) 76%,
+      rgba(249,250,247,.18) 88%,
+      rgba(249,250,247,.03) 95%,
       rgba(249,250,247,0) 100%);
   }
 }
@@ -741,7 +743,9 @@ main > section:not(.hero) {
 .footer-h { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .22em; color: var(--moegi-b); margin-bottom: 16px; }
 .footer-ul { list-style: none; }
 .footer-ul li { margin-bottom: 10px; }
-.footer-ul a { font-size: 12.5px; color: rgba(255,255,255,.66); transition: color .3s; }
+/* インライン要素の上下paddingは行ボックスの高さを変えない。見た目の行間はそのままに、
+   操作領域だけを15px→25pxへ広げて24px以上を満たす。 */
+.footer-ul a { padding-block: 5px; font-size: 12.5px; color: rgba(255,255,255,.66); transition: color .3s; }
 .footer-ul a[href^="tel:"], .footer-ul a[href^="mailto:"] { white-space: nowrap; letter-spacing: 0; font-variant-numeric: tabular-nums; }
 .footer-ul a:hover { color: #fff; }
 .footer-bottom { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; padding-top: 26px; }
