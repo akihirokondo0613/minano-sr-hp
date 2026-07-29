@@ -407,3 +407,169 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 - 小さな修正依頼は**その箇所だけ**直す（周辺のレイアウト・文言・色を勝手に変えない）。
 - 修正後は `ready_for_verification({path})` でルートの該当 HTML を開いて確認。
 - 変更は基本ルート直下に対して行う。
+
+## GitHub経由の編集・本番公開フロー（Claude Code用・2026-07-29）
+
+この節は、ターミナルとGitHub CLIを使える **Claude Code** での標準手順。Claude.ai／Claude Design単体など、ローカルGitや `gh` を操作できない環境では、公開したと装わず、ローカル変更または差分の作成までで止めて引き継ぐ。
+
+### 基本方針
+
+- 正本は `main` ブランチ。**`public` ブランチを直接編集・pushしない**。`main` へのマージ後、`.github/workflows/deploy-public.yml` が公開用ファイルだけを `public` へ反映する。
+- ユーザーが「分析だけ」「下書き」「公開しない」と指定した場合を除き、修正依頼は原則として **検証・PR・マージ・本番公開・本番確認までを一続き**で行う。
+- 小さな変更で全ページ・全ファイルを調査しない。対象要素、適用元CSS、上書きCSS、対象端末、公開経路だけを確認する。
+- 既存の文言・レイアウト・ブランドを維持し、依頼箇所以外のリファクタリングや「ついで修正」をしない。
+- 作業ツリーに他人の変更がある場合は、勝手に破棄・上書き・一括stageしない。`git reset --hard`、`git checkout -- .` は使わない。
+- PRのLighthouseが通る前にマージしない。本番URLで変更を確認する前に「公開完了」と報告しない。
+
+### 1. 作業開始
+
+最初に現在地、未コミット変更、GitHub認証を確認する。
+
+```bash
+git status -sb
+git branch --show-current
+gh auth status
+```
+
+作業ツリーがクリーンなら `main` を更新し、変更内容が分かる作業ブランチを作る。
+
+```bash
+git switch main
+git pull --ff-only origin main
+git switch -c agent/<短い変更名>
+```
+
+未コミット変更がある場合は、その所有者と対象を確認する。無関係な変更を新しいPRへ混ぜない。
+
+### 2. 調査と編集
+
+1. `rg` で対象のHTML・CSS・JSだけを特定する。
+2. 現在の表示を対象幅で確認する。
+3. 変更は必要な行だけに限定する。
+4. トップのファーストビューCSSを変える場合は、`index.html` の `#critical-home` と `skin-v2.css` の対応を確認する。キャッシュ済みCSSより後のページ固有上書きが必要な場合も、意図を明確にする。
+5. CSS／JS本体を変更した場合は、既存のキャッシュ版管理スクリプトとの整合を確認する。版番号を1ページだけ独自変更しない。
+6. 文字・画像・制度情報の変更では、記事一覧、構造化データ、画像本体、sitemapなど同期対象を確認する。
+
+### 3. 変更後の検証
+
+小さな修正は対象ページに絞る。スマホ修正なら原則 `320 / 390 / 430px` とブレークポイント前後、PC修正なら対象PC幅を確認する。
+
+- スクリーンショットを見て、依頼箇所が意図どおりか確認する。
+- 横スクロール、重なり、不自然な折り返しがないことを確認する。
+- ブラウザーのconsole errorとpage errorが0件であることを確認する。
+- リンク・ボタンはキーボード操作、フォーカス表示、24×24px以上の操作領域を維持する。
+- 共通CSS／共通JS／サイト全体の構造を変えたときだけ、`scripts/verify-ui.cjs` の全体検証を使う。局所修正で毎回全ページ巡回はしない。
+
+公開前には次の整合性チェックを実行する。
+
+```bash
+node scripts/sync-blog-dates.mjs --check
+node scripts/sync-structured-data.mjs --check
+node scripts/remove-cat-ui.mjs --check
+node scripts/check-structured-data.mjs
+node gen-sitemap.js --check
+node scripts/check-performance-budget.mjs
+git diff --check
+```
+
+`--check` が「要更新」で失敗した場合は、対応する同期コマンドを実行して差分を確認し、再度すべてのチェックを通す。エラーを無視して公開しない。
+
+### 4. Commit・push・PR作成
+
+差分と対象ファイルを再確認し、関係するファイルだけを明示的にstageする。
+
+```bash
+git status -sb
+git diff
+git add -- <対象ファイル1> <対象ファイル2>
+git commit -m "<変更内容を表す短い日本語>"
+git push -u origin "$(git branch --show-current)"
+```
+
+PR本文には「変更内容」「原因または目的」「検証結果」を記載する。公開まで依頼されている場合はdraftにしない。
+
+```bash
+gh pr create \
+  --base main \
+  --head "$(git branch --show-current)" \
+  --title "<変更内容を表す日本語>" \
+  --body-file <PR本文のMarkdownファイル>
+```
+
+PR番号を取得し、Lighthouseが終わるまで待つ。
+
+```bash
+PR_NUMBER="$(gh pr view --json number --jq .number)"
+gh pr checks "$PR_NUMBER" --watch --interval 10
+```
+
+失敗した場合は `gh run view <run-id> --log-failed` で原因を確認し、同じブランチで修正・pushして再検証する。合格後にだけマージする。
+
+```bash
+gh pr merge "$PR_NUMBER" --squash --delete-branch
+```
+
+### 5. 本番デプロイの確認
+
+マージ後に、今回のPRタイトルとhead SHAに対応する `Deploy public branch` の実行を探す。
+
+```bash
+gh run list \
+  --workflow deploy-public.yml \
+  --branch main \
+  --limit 3 \
+  --json databaseId,headSha,status,conclusion,url,displayTitle
+```
+
+該当する `databaseId` を使い、完了まで待つ。
+
+```bash
+gh run watch <databaseId> --interval 10 --exit-status
+```
+
+成功する前に完了扱いにしない。`public` ブランチへ手動でforce pushしない。
+
+### 6. 本番サイトの最終確認
+
+- `https://minano-sr.com/?verify=<日時または変更名>` のようにクエリを付け、古いHTMLキャッシュを避けて確認する。
+- 対象のスマホ／PC幅で、実際の文言・画像・計算済みCSS・リンク先を確認する。
+- console error、横はみ出し、表示崩れがないことを確認する。
+- キャッシュ対策を含め、本番が意図した状態になるまで完了報告しない。
+- 最終報告には、本番URL、PR URL、変更点、確認した画面幅と主要チェック結果を簡潔に記載する。
+
+### Claude Codeへ渡す標準プロンプト
+
+下記をコピーし、角括弧内だけ依頼ごとに差し替える。
+
+```text
+このリポジトリの CLAUDE.md を最初に最後まで読み、記載された正本・デザイン・GitHub公開ルールに従ってHPを修正してください。
+
+【変更内容】
+[直したい内容を具体的に記載]
+
+【対象ページ・箇所】
+[例：トップページのスマホ版ヒーロー／不明なら「画面から特定」]
+
+【対象画面】
+[例：スマホのみ。320〜430px／PCのみ／全画面]
+
+【維持するもの】
+[文言、写真、リンク、PC表示、既存デザインなど]
+
+【完了条件】
+[見た目・挙動として満たす条件]
+
+重要:
+- 小さな変更は対象箇所だけを調べ、周辺の文言・配色・レイアウトを勝手に変更しないでください。
+- 既存の実装方法とブランドトークンを優先し、同じ目的の新しい表現を増やしすぎないでください。
+- 編集前に現状を確認し、変更後は対象幅のスクリーンショット、横はみ出し、console errorを確認してください。
+- 私が「分析だけ」「下書き」「公開しない」と指定していない限り、作業ブランチ作成、commit、push、PR作成、Lighthouse合格確認、mainへのsquash merge、本番デプロイ、本番URL確認まで行ってください。
+- PRまたはデプロイが失敗した場合は、原因を直して再実行してください。権限・認証・未確定情報で進められない場合だけ、推測せず止めて報告してください。
+- 完了報告には、本番URL、PR URL、変更点、検証結果を記載してください。
+```
+
+短い依頼では、次の一文に変更内容を続けてもよい。
+
+```text
+CLAUDE.md の「GitHub経由の編集・本番公開フロー」を厳守し、[変更内容]を対象箇所だけ修正してください。検証後、PR作成→Lighthouse合格→mainへsquash merge→本番デプロイ→実サイト確認まで行い、最後に本番URL・PR URL・検証結果を報告してください。
+```
