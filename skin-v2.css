@@ -942,6 +942,17 @@ article.post .point-box { background: var(--yuki); border: 1px solid var(--line)
 article.post .point-box .pb-t { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: .12em; color: var(--sugi); margin: 0 0 10px; }
 article.post .point-box ul { margin: 0 0 0 1.2em; padding: 0; }
 article.post .point-box li { font-size: 14.5px; line-height: 1.95; margin-bottom: .25em; }
+/* 記事の目次。過去に「横並びチップの目次」が中間幅で溢れた失敗があるため、必ず縦1列で組む */
+article.post .post-toc { background: var(--shiro); border: 1px solid var(--line); border-radius: var(--r); padding: 18px 24px; margin: 0 0 2em; }
+article.post .post-toc-t { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: .12em; color: var(--ink3); margin: 0 0 10px; }
+article.post .post-toc ol { margin: 0; padding-left: 1.5em; display: flex; flex-direction: column; gap: 7px; }
+article.post .post-toc li { font-size: 14.5px; line-height: 1.7; color: var(--ink3); }
+/* inline-block にすると折り返した項目で番号が下段にずれ、下線が枠幅まで伸びる。
+   インラインのまま上下paddingで操作領域だけ24px以上にする。 */
+article.post .post-toc a { padding-block: 4px; color: var(--sugi); text-decoration: underline; text-decoration-color: var(--g300); text-underline-offset: 3px; transition: text-decoration-color .3s; }
+article.post .post-toc a:hover { text-decoration-color: var(--moegi); }
+/* 追従ヘッダーに見出しが隠れないようにする */
+article.post h2[id] { scroll-margin-top: 96px; }
 article.post .case-box { background: var(--yuki); border: 1px solid var(--line); border-radius: var(--r); padding: 20px 24px; margin: 0 0 1.6em; }
 article.post .case-box .cb-t { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .1em; color: #fff; background: var(--sugi); border-radius: 999px; padding: 3px 12px; margin: 0 0 12px; }
 article.post .case-box p { font-size: 14.5px; line-height: 1.95; margin-bottom: .7em; }
