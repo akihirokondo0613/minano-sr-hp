@@ -26,7 +26,10 @@ jobs:
           node scripts/sync-structured-data.mjs --check
           node scripts/remove-cat-ui.mjs --check
           node scripts/check-structured-data.mjs
-          node gen-sitemap.js --check
+          # lastmod はコミット日由来でsquash mergeのたびに変わるため --check では判定しない。
+          # ここでは生成器が通ること（URL集合が作れること）だけを確認し、公開用の
+          # sitemap は deploy-public.yml が作り直す。
+          node gen-sitemap.js
 
       - name: 静的な性能チェック
         run: node scripts/check-performance-budget.mjs

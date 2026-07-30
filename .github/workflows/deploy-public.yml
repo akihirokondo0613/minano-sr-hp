@@ -22,10 +22,17 @@ jobs:
           node scripts/sync-structured-data.mjs --check
           node scripts/remove-cat-ui.mjs --check
           node scripts/check-structured-data.mjs
-          node gen-sitemap.js --check
 
       - name: 公開前の性能チェック
         run: node scripts/check-performance-budget.mjs
+
+      # lastmod は各HTMLの最終コミット日から作る。squash mergeは新しい日付の
+      # コミットを作るので、ローカルで生成した値は必ずずれる可能性がある。
+      # 公開する sitemap はここで作り直す（--check で止めない）。
+      - name: sitemapを公開用に再生成
+        run: |
+          node gen-sitemap.js
+          git --no-pager diff --stat -- sitemap.xml
 
       - name: メンテナンスモード判定・適用
         run: |
