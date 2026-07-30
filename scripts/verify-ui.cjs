@@ -808,7 +808,7 @@ function recordConsoleError(target) {
     '../support.html',
     '../about.html',
     'page-enter.js?v=20260725-nocat1',
-    'skin-v2.css?v=20260730-hero1',
+    'skin-v2.css?v=20260729-a11y1',
     'link-keep.js?v=20260723-conversion1',
     'data-goatcounter-settings="{&quot;path&quot;:&quot;/blog/verification-only.html&quot;}"',
     'href="#" class="to-top"',
