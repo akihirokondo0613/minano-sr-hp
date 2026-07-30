@@ -189,7 +189,7 @@ async function photoContrast(page, selector) {
   await page.addStyleTag({ content: `${selector}, ${selector} * { color: transparent !important; text-shadow: none !important }` });
   await page.waitForTimeout(120);
   const shot = await page.screenshot();
-  await page.reload({ waitUntil: 'domcontentloaded' });
+  // 呼び出し元で直後にページを閉じるため、WebKitが停止し得る不要な再読み込みはしない。
 
   const { PNG } = tryLoadPng();
   if (!PNG) return { selector, ratio: null, note: 'pngjs が無いため実ピクセル測定を省略' };

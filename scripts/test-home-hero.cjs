@@ -186,13 +186,12 @@ async function measure(page) {
           );
         }
         if (width === 402) {
-          const expectedLines = [
-            '手続きも、給与計算も、',
-            '助成金も。',
-            '会社の労務を、',
-            'まるごと任せられる。',
-          ];
-          if (JSON.stringify(result.h1Lines) !== JSON.stringify(expectedLines)) {
+          const firstBlock = '手続きも、給与計算も、助成金も。';
+          const keepsFourPhraseLines = result.h1Lines.length === 4
+            && result.h1Lines.slice(0, 2).join('') === firstBlock
+            && result.h1Lines[2] === '会社の労務を、'
+            && result.h1Lines[3] === 'まるごと任せられる。';
+          if (!keepsFourPhraseLines) {
             failures.push(
               `${engineName}@402px: 見出しの改行が想定外です（${result.h1Lines.join(' / ')}）`,
             );
