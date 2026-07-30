@@ -23,6 +23,25 @@ const ENGINES = [
   ['webkit', webkit],
 ];
 const EPSILON = 1;
+const UPGRADE_INSECURE_META =
+  /<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">/gi;
+
+async function prepareLocalHttpPage(page) {
+  const baseUrl = new URL(base);
+  if (baseUrl.protocol !== 'http:') return;
+
+  // WebKitはローカルHTTPでもupgrade-insecure-requestsを適用し、相対CSSをHTTPS化する。
+  // 本番は元からHTTPSなので、検査時のdocumentレスポンスだけmetaを除いて同じCSSを読ませる。
+  await page.route(`${baseUrl.origin}/**`, async (route) => {
+    if (route.request().resourceType() !== 'document') {
+      await route.continue();
+      return;
+    }
+    const response = await route.fetch();
+    const html = await response.text();
+    await route.fulfill({ response, body: html.replace(UPGRADE_INSECURE_META, '') });
+  });
+}
 
 async function emulateAffectedIosWebKit(page) {
   return page.evaluate(() => {
@@ -141,6 +160,7 @@ async function measure(page) {
           isMobile: true,
           hasTouch: true,
         });
+        await prepareLocalHttpPage(page);
         const errors = [];
         page.on('pageerror', (error) => errors.push(error.message));
 

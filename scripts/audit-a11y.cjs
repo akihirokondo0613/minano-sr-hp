@@ -44,6 +44,25 @@ const PHOTO_TARGETS = [
 const AA_NORMAL = 4.5;
 const AA_LARGE = 3;
 const TARGET_SIZE = 24;
+const UPGRADE_INSECURE_META =
+  /<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">/gi;
+
+async function prepareLocalHttpPage(page) {
+  const baseUrl = new URL(base);
+  if (baseUrl.protocol !== 'http:') return;
+
+  // WebKitはローカルHTTPでもupgrade-insecure-requestsを適用し、相対CSSをHTTPS化する。
+  // 本番は元からHTTPSなので、検査時のdocumentレスポンスだけmetaを除いて同じCSSを読ませる。
+  await page.route(`${baseUrl.origin}/**`, async (route) => {
+    if (route.request().resourceType() !== 'document') {
+      await route.continue();
+      return;
+    }
+    const response = await route.fetch();
+    const html = await response.text();
+    await route.fulfill({ response, body: html.replace(UPGRADE_INSECURE_META, '') });
+  });
+}
 
 function pages() {
   const list = [];
@@ -263,6 +282,7 @@ async function auditEngine(engine, browserType, targetPages) {
     for (const rel of targetPages) {
       for (const width of WIDTHS) {
         const page = await browser.newPage({ viewport: { width, height: 900 } });
+        await prepareLocalHttpPage(page);
         const errors = [];
         page.on('console', (m) => {
           if (m.type() !== 'error') return;
@@ -315,6 +335,7 @@ async function auditEngine(engine, browserType, targetPages) {
     for (const target of PHOTO_TARGETS) {
       for (const width of target.widths) {
         const page = await browser.newPage({ viewport: { width, height: 900 } });
+        await prepareLocalHttpPage(page);
         await page.goto(base + target.page, { waitUntil: 'domcontentloaded', timeout: 20000 });
         await page.waitForTimeout(500);
         await activateAsyncStyles(page);
