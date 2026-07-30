@@ -118,7 +118,8 @@ function extractDefinitionFaq(source, relativePath) {
 }
 
 function extractBonusFaq(source) {
-  const section = source.match(/<h2>よくある質問<\/h2>\s*<ul>([\s\S]*?)<\/ul>/);
+  // 目次導入で h2 に id が付いたため、属性ありも拾う
+  const section = source.match(/<h2[^>]*>よくある質問<\/h2>\s*<ul>([\s\S]*?)<\/ul>/);
   if (!section) throw new Error('blog/natsu-shoyo-tetsuzuki.html: FAQ節が見つかりません');
   const pairs = [...section[1].matchAll(
     /<li><b>([\s\S]*?)<\/b>\s*([\s\S]*?)<\/li>/g,
