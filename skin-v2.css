@@ -264,7 +264,7 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
   .hero-sub { margin-top: 16px; font-size: 13.5px; line-height: 1.95; }
   .hero-btns { gap: 12px; margin-top: 22px; flex-wrap: nowrap; }
   .hero-btns .btn-primary { padding: 15px 27px; font-size: 14px; }
-  .hero-sub-link { display: inline-flex; align-items: center; min-height: 44px; padding: 0 5px; background: rgba(249,250,247,.94); }
+  .hero-sub-link { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 0 18px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.94); font-size: 13.5px; font-weight: 400; letter-spacing: .05em; }
   .hero-trust { gap: 7px; margin-top: 18px; }
   .trust-item { padding: 7px 12px; background: rgba(255,255,255,.94); }
   .hero-veil {
