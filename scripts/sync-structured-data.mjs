@@ -218,6 +218,9 @@ const definitionFaqArticles = [
   'blog/toyama-koyou-josei-2026-05.html',
   'blog/toyama-kyujin-chingin-data-2026.html',
   'blog/toyama-shokushu-betsu-kyujin-bairitsu-2026.html',
+  'blog/harassment-madoguchi.html',
+  'blog/ikukyu-kaisei-2026.html',
+  'blog/shugyo-kisoku-template-risk.html',
 ];
 definitionFaqArticles.forEach((relativePath) => syncFaq(relativePath, extractDefinitionFaq));
 syncFaq('blog/natsu-shoyo-tetsuzuki.html', extractBonusFaq);

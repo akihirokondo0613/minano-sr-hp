@@ -36,9 +36,12 @@ const expectedFaqCounts = new Map([
   ['blog/shusseigo-shien-ikujijitan-kyufu.html', 3],
   ['blog/taishoku-trouble-prevention.html', 2],
   ['blog/tokutei-chiiki-kyotaku-service-2027.html', 3],
-  ['blog/toyama-koyou-josei-2026-05.html', 3],
+  ['blog/toyama-koyou-josei-2026-05.html', 2],
   ['blog/toyama-kyujin-chingin-data-2026.html', 3],
   ['blog/toyama-shokushu-betsu-kyujin-bairitsu-2026.html', 3],
+  ['blog/harassment-madoguchi.html', 3],
+  ['blog/ikukyu-kaisei-2026.html', 3],
+  ['blog/shugyo-kisoku-template-risk.html', 3],
 ]);
 
 const expectedServicePages = new Set([
