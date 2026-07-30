@@ -125,7 +125,7 @@ body {
   background: var(--yuki);
   color: var(--iwa);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;
   line-height: 1.9;
   font-size: 15.5px;
   font-weight: 400;
@@ -339,6 +339,10 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
   .hs-item { align-items: flex-start; white-space: normal; font-size: 11.5px; line-height: 1.55; letter-spacing: .01em; }
   .hs-item svg { width: 15px; height: 15px; margin-top: 1px; }
 }
+/* 430px以下は説明を細い2列へ押し込まず、1列で自然に読ませる */
+@media (max-width: 430px) {
+  .hs-inner { grid-template-columns: minmax(0, 1fr); }
+}
 /* 中途半端な位置での折り返し防止（チップ・ヒーローCTA・STEP説明） */
 .hero-trust .trust-item { white-space: nowrap; }
 .hero-btns .btn-primary { white-space: nowrap; }
@@ -350,8 +354,8 @@ main > section:not(.hero) {
   contain-intrinsic-size: auto 900px;
 }
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20260730-toc1" media="print" data-async-style onload="this.media='all';this.onload=null">
-<noscript><link rel="stylesheet" href="skin-v2.css?v=20260730-toc1"></noscript>
+<link rel="stylesheet" href="skin-v2.css?v=20260730-hero-wrap1" media="print" data-async-style onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="skin-v2.css?v=20260730-hero-wrap1"></noscript>
 <style id="home-hero-legibility">
 @media(max-width:700px){
   /* 本文が写真の建物・木立に重なる帯（ヒーロー高の45〜75%）まで白を残す。
@@ -558,8 +562,8 @@ main > section:not(.hero) {
     <div class="hero-veil" aria-hidden="true"></div>
     <div class="hero-overlay">
       <div class="why-label hero-label">富山の社会保険労務士事務所</div>
-      <h1 class="hero-h1"><span class="nw">手続きも、</span><span class="nw">給与計算も、</span><span class="nw">助成金も。</span><br><strong><span class="nw">会社の労務を、</span><span class="nw">まるごと任せられる。</span></strong></h1>
-      <p class="hero-sub"><span class="nw">中小企業の経営者に向けて、</span><span class="nw">労務顧問・手続き・給与計算・</span><span class="nw">助成金・DXまで</span><span class="nw">実務に沿ってサポート。</span><br><span class="nw">初めてのご相談でも、</span><span class="nw">むずかしい言葉を使わずに整理します。</span></p>
+      <h1 class="hero-h1"><span class="nw">手続きも、</span><wbr><span class="nw">給与計算も、</span><wbr><span class="nw">助成金も。</span><br><strong><span class="nw">会社の労務を、</span><wbr><span class="nw">まるごと任せられる。</span></strong></h1>
+      <p class="hero-sub"><span class="nw">中小企業の経営者に向けて、</span><wbr><span class="nw">労務顧問・手続き・給与計算・</span><wbr><span class="nw">助成金・DXまで</span><wbr><span class="nw">実務に沿ってサポート。</span><br><span class="nw">初めてのご相談でも、</span><wbr><span class="nw">むずかしい言葉を使わずに整理します。</span></p>
       <div class="hero-btns">
         <a href="uploads/contact.html" class="btn-primary">無料で相談する</a>
         <a href="infographic.html" class="hero-sub-link">社労士とは？ →</a>

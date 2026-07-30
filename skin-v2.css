@@ -89,7 +89,7 @@ body {
   background: var(--yuki);
   color: var(--iwa);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;
   line-height: 1.9;
   font-size: 15.5px;
   font-weight: 400;
@@ -302,6 +302,10 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
   .hs-inner { grid-template-columns: repeat(2, minmax(0, 1fr)); justify-content: stretch; gap: 6px 14px; }
   .hs-item { align-items: flex-start; white-space: normal; font-size: 11.5px; line-height: 1.55; letter-spacing: .01em; }
   .hs-item svg { width: 15px; height: 15px; margin-top: 1px; }
+}
+/* 430px以下は説明を細い2列へ押し込まず、1列で自然に読ませる */
+@media (max-width: 430px) {
+  .hs-inner { grid-template-columns: minmax(0, 1fr); }
 }
 /* 中途半端な位置での折り返し防止（チップ・ヒーローCTA・STEP説明） */
 .hero-trust .trust-item { white-space: nowrap; }
