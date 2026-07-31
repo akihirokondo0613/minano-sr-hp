@@ -412,10 +412,10 @@ function recordConsoleError(target) {
       'blog/kintai-dx-donyu-junbi.html',
     ];
     const blogFilterOk =
-      initialBlogState.total === 36 &&
+      initialBlogState.total === 37 &&
       initialBlogState.categories === '7' &&
       initialBlogState.overflow <= 1 &&
-      initialBlogState.dateCount === 36 &&
+      initialBlogState.dateCount === 37 &&
       initialBlogState.systemTabVisible &&
       (width > 640 || initialBlogState.filterHeight <= 70) &&
       searchBlogState.count === '該当 1件' &&
@@ -456,8 +456,8 @@ function recordConsoleError(target) {
       clearedBlogState.count === '該当 2件' &&
       clearedBlogState.visible === 2 &&
       clearedBlogState.active === 'システム導入' &&
-      resetBlogState.count === '全36件' &&
-      resetBlogState.visible === 36 &&
+      resetBlogState.count === '全37件' &&
+      resetBlogState.visible === 37 &&
       resetBlogState.pressed === 1;
     const stickyBlogOk = !stickyBlogState.navHidden && stickyBlogState.overlap <= 1;
     if (!blogFilterOk || !resetBlogOk || !stickyBlogOk || blogErrors.length) {
@@ -834,7 +834,7 @@ function recordConsoleError(target) {
     systemRow: /href="blog\/verification-only\.html" class="art-row" data-cat="system"/.test(generatedBlog) &&
       /<span class="art-cat-badge">システム導入<\/span>/.test(generatedBlog),
   };
-  if (generatedBlogState.count !== 37 || generatedBlogState.rows !== 37 || !generatedBlogState.systemRow) {
+  if (generatedBlogState.count !== 38 || generatedBlogState.rows !== 38 || !generatedBlogState.systemRow) {
     failures.push(`記事投稿テンプレート: blog.htmlの件数・カテゴリ反映が不正 ${JSON.stringify(generatedBlogState)}`);
   }
   results.push({ articleTemplate: 'generated', requiredLinks: expectedTemplateFragments.length - templateMissing.length, generatedBlogState, errors: adminErrors.length });
