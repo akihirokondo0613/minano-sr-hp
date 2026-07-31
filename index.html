@@ -51,6 +51,11 @@ img, picture, video, canvas, svg { max-width: 100%; }
 table { max-width: 100%; }
 h1, h2, h3 { line-height: 1.5; text-wrap: balance; word-break: auto-phrase; }
 p, li { text-wrap: pretty; }
+/* 日本語の行末処理。iPhone（WebKit）で句点だけが次の行に落ちる「泣き別れ」が
+   出ていたため、句読点を行末にぶら下げる。Chromiumは未対応で無害。
+   dd・figcaption は text-wrap 未指定だったので、末尾1文字の孤立を避ける pretty を足す。 */
+h1, h2, h3, h4, p, li, dt, dd, figcaption, blockquote, td, th { hanging-punctuation: allow-end; }
+dd, figcaption { text-wrap: pretty; }
 .nobr, .nw { white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -354,8 +359,8 @@ main > section:not(.hero) {
   contain-intrinsic-size: auto 900px;
 }
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20260730-hero-wrap1" media="print" data-async-style onload="this.media='all';this.onload=null">
-<noscript><link rel="stylesheet" href="skin-v2.css?v=20260730-hero-wrap1"></noscript>
+<link rel="stylesheet" href="skin-v2.css?v=20260731-jp-wrap1" media="print" data-async-style onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="skin-v2.css?v=20260731-jp-wrap1"></noscript>
 <style id="home-hero-legibility">
 @media(max-width:700px){
   /* 本文が写真の建物・木立に重なる帯（ヒーロー高の45〜75%）まで白を残す。
