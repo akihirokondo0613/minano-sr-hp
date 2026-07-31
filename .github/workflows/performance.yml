@@ -8,6 +8,41 @@ permissions:
   contents: read
 
 jobs:
+  hero-layout:
+    name: Hero layout (Chromium + WebKit)
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Playwrightを準備
+        run: |
+          npm install --no-save --no-package-lock playwright@1.61.1
+          npx playwright install --with-deps chromium webkit
+
+      - name: 日本語フォントを準備
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends fonts-noto-cjk
+          fc-cache -f
+          fc-match 'Noto Sans CJK JP'
+
+      - name: ローカル公開サーバーを起動
+        run: |
+          python3 -m http.server 8811 >/tmp/minano-hero-http.log 2>&1 &
+          for i in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8811/ >/dev/null; then break; fi
+            sleep 0.25
+          done
+          curl --fail --silent http://127.0.0.1:8811/ >/dev/null
+
+      - name: トップヒーローの回帰テスト
+        run: node scripts/test-home-hero.cjs http://127.0.0.1:8811/
+
   lighthouse:
     runs-on: ubuntu-latest
     timeout-minutes: 15

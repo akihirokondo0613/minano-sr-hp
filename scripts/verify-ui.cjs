@@ -78,8 +78,12 @@ function recordConsoleError(target) {
     if (state.aboutPhotoCount || state.aboutCopyWidthRatio < 0.98 || state.aboutTextWidthRatio < 0.98) {
       failures.push(`${viewport.width}px: 事務所案内の代表画像撤去・本文幅が不正です`);
     }
+    if (viewport.width <= 430) {
+      if (state.summaryColumns !== 1) failures.push(`${viewport.width}px: ヒーロー直下サマリーが1列ではありません`);
+    } else if (viewport.width <= 640 && state.summaryColumns !== 2) {
+      failures.push(`${viewport.width}px: ヒーロー直下サマリーが2列ではありません`);
+    }
     if (viewport.width <= 640) {
-      if (state.summaryColumns !== 2) failures.push(`${viewport.width}px: ヒーロー直下サマリーが2列ではありません`);
       if (state.planListDisplay !== 'none' || state.planFeatureDisplay === 'none') failures.push(`${viewport.width}px: スマホ料金カードの情報量が不正です`);
       if (state.whyPhotoWidth < 230 || state.whyPhotoWidth > 250) failures.push(`${viewport.width}px: 理念イラストの画像幅が不正です（${state.whyPhotoWidth}px）`);
       if (state.footerTapMin < 32 || state.footerFontSize < 13) failures.push(`${viewport.width}px: フッターリンクの文字・タップ領域が不足しています`);
@@ -808,7 +812,7 @@ function recordConsoleError(target) {
     '../support.html',
     '../about.html',
     'page-enter.js?v=20260725-nocat1',
-    'skin-v2.css?v=20260730-toc1',
+    'skin-v2.css?v=20260730-hero-wrap1',
     'link-keep.js?v=20260723-conversion1',
     'data-goatcounter-settings="{&quot;path&quot;:&quot;/blog/verification-only.html&quot;}"',
     'href="#" class="to-top"',

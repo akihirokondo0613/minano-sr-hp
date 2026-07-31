@@ -17,7 +17,7 @@
  * 数値の出どころを人の記憶に置かないための道具。監査結果を報告するときはこの出力を根拠にする。
  */
 
-const { chromium } = require('playwright');
+const { chromium, webkit } = require('playwright');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -27,7 +27,11 @@ const checkOnly = args.includes('--check');
 const asJson = args.includes('--json');
 
 const root = path.resolve(__dirname, '..');
-const WIDTHS = [320, 390, 430, 640, 768, 900, 1024, 1440, 2560];
+const WIDTHS = [320, 360, 375, 390, 402, 430, 640, 768, 900, 1024, 1440, 2560];
+const ENGINES = [
+  ['chromium', chromium],
+  ['webkit', webkit],
+];
 
 // 写真の上に乗る文字。背景色では測れないので実ピクセルで測る対象。
 const PHOTO_TARGETS = [
@@ -40,6 +44,25 @@ const PHOTO_TARGETS = [
 const AA_NORMAL = 4.5;
 const AA_LARGE = 3;
 const TARGET_SIZE = 24;
+const UPGRADE_INSECURE_META =
+  /<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">/gi;
+
+async function prepareLocalHttpPage(page) {
+  const baseUrl = new URL(base);
+  if (baseUrl.protocol !== 'http:') return;
+
+  // WebKitはローカルHTTPでもupgrade-insecure-requestsを適用し、相対CSSをHTTPS化する。
+  // 本番は元からHTTPSなので、検査時のdocumentレスポンスだけmetaを除いて同じCSSを読ませる。
+  await page.route(`${baseUrl.origin}/**`, async (route) => {
+    if (route.request().resourceType() !== 'document') {
+      await route.continue();
+      return;
+    }
+    const response = await route.fetch();
+    const html = await response.text();
+    await route.fulfill({ response, body: html.replace(UPGRADE_INSECURE_META, '') });
+  });
+}
 
 function pages() {
   const list = [];
@@ -114,7 +137,14 @@ const PAGE_AUDIT = `() => {
     const r = el.getBoundingClientRect();
     if (!r.width && !r.height) return;
 
-    if ((r.right > vw + 1 || r.left < -1) && !scrollableAncestor(el)) {
+    const intentionallyOffscreen = el.matches('.skip-link:not(:focus)');
+    // image-slotの枠自体は監査し、構図調整で枠内だけ拡大した公開画像は除外する。
+    const intentionallyClippedMedia = el.matches('image-slot > img[data-image-slot-public]')
+      && getComputedStyle(el.parentElement).overflowX === 'hidden';
+    if (!intentionallyOffscreen
+        && !intentionallyClippedMedia
+        && (r.right > vw + 1 || r.left < -1)
+        && !scrollableAncestor(el)) {
       overflow.push({ sel: label(el), right: Math.round(r.right) });
     }
 
@@ -150,6 +180,7 @@ const PAGE_AUDIT = `() => {
   });
   return {
     pageScrollsHorizontally: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    overflowCount: overflow.length,
     overflow: overflow.slice(0, 10),
     contrast: contrast.slice(0, 20),
     targets: targets.slice(0, 10),
@@ -177,7 +208,7 @@ async function photoContrast(page, selector) {
   await page.addStyleTag({ content: `${selector}, ${selector} * { color: transparent !important; text-shadow: none !important }` });
   await page.waitForTimeout(120);
   const shot = await page.screenshot();
-  await page.reload({ waitUntil: 'domcontentloaded' });
+  // 呼び出し元で直後にページを閉じるため、WebKitが停止し得る不要な再読み込みはしない。
 
   const { PNG } = tryLoadPng();
   if (!PNG) return { selector, ratio: null, note: 'pngjs が無いため実ピクセル測定を省略' };
@@ -210,89 +241,176 @@ function tryLoadPng() {
   try { return { PNG: require('pngjs').PNG }; } catch { return { PNG: null }; }
 }
 
-(async () => {
-  const browser = await chromium.launch({ headless: true });
+async function activateAsyncStyles(page) {
+  try {
+    await page.waitForFunction(
+      () => [...document.querySelectorAll('link[data-async-style]')].every((link) => link.media === 'all'),
+      null,
+      { timeout: 1500 },
+    );
+  } catch {
+    // Playwright WebKitではlink.onloadが発火しないことがある。監査時だけ全量CSSを確実に有効化する。
+    await page.evaluate(() => {
+      for (const link of document.querySelectorAll('link[data-async-style]')) link.media = 'all';
+    });
+    await page.waitForTimeout(100);
+  }
+}
+
+async function closeBrowserWithTimeout(browser, engine) {
+  let timer;
+  const closeTimedOut = await Promise.race([
+    browser.close().then(() => false).catch(() => true),
+    new Promise((resolve) => {
+      timer = setTimeout(() => resolve(true), 5000);
+    }),
+  ]);
+  clearTimeout(timer);
+  if (closeTimedOut) {
+    console.error(`${engine}: 監査完了後のブラウザー終了が5秒を超えたため強制終了します`);
+  }
+  return closeTimedOut;
+}
+
+async function auditEngine(engine, browserType, targetPages) {
+  const browser = await browserType.launch({ headless: true });
   const findings = [];
-  const targetPages = pages();
-
-  for (const rel of targetPages) {
-    for (const width of WIDTHS) {
-      const page = await browser.newPage({ viewport: { width, height: 900 } });
-      const errors = [];
-      page.on('console', (m) => {
-        if (m.type() !== 'error') return;
-        if (/goatcounter/.test(m.location().url || '')) return; // 自動ブラウザの計測は400で拒否される
-        errors.push(m.text().slice(0, 140));
-      });
-      page.on('pageerror', (e) => errors.push(String(e).slice(0, 140)));
-      // about.html の地図など外部埋め込みは load が返らないことがあるため domcontentloaded で待つ
-      try {
-        await page.goto(base + rel, { waitUntil: 'domcontentloaded', timeout: 20000 });
-      } catch (e) {
-        findings.push({ page: rel, width, pageScrollsHorizontally: 0, overflow: [], contrast: [], targets: [], errors: [`読み込み失敗: ${String(e).slice(0, 80)}`] });
-        await page.close();
-        continue;
-      }
-      await page.waitForTimeout(350);
-      // content-visibility:auto の節も測るため一度末尾まで送る
-      await page.evaluate(async () => {
-        document.documentElement.style.scrollBehavior = 'auto';
-        const h = document.documentElement.scrollHeight;
-        for (let y = 0; y < h; y += 700) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 12)); }
-        window.scrollTo(0, 0);
-        await new Promise((r) => setTimeout(r, 150));
-      });
-      const res = await page.evaluate(PAGE_AUDIT);
-      findings.push({ page: rel, width, ...res, errors });
-      await page.close();
-    }
-  }
-
   const photo = [];
-  for (const t of PHOTO_TARGETS) {
-    for (const width of t.widths) {
-      const page = await browser.newPage({ viewport: { width, height: 900 } });
-      await page.goto(base + t.page, { waitUntil: 'domcontentloaded', timeout: 20000 });
-      await page.waitForTimeout(500);
-      const r = await photoContrast(page, t.selector);
-      if (r) photo.push({ page: t.page, width, ...r });
-      await page.close();
-    }
-  }
-  await browser.close();
+  let closeTimedOut = false;
 
+  try {
+    for (const rel of targetPages) {
+      for (const width of WIDTHS) {
+        const page = await browser.newPage({ viewport: { width, height: 900 } });
+        await prepareLocalHttpPage(page);
+        const errors = [];
+        page.on('console', (m) => {
+          if (m.type() !== 'error') return;
+          const message = m.text();
+          if (/goatcounter/.test(m.location().url || '')) return; // 自動ブラウザの計測は400で拒否される
+          if (/Failed to load resource: A TLS error/.test(message)) return; // WebKitの外部計測通信
+          errors.push(message.slice(0, 140));
+        });
+        page.on('pageerror', (e) => errors.push(String(e).slice(0, 140)));
+        // about.html の地図など外部埋め込みは load が返らないことがあるため domcontentloaded で待つ
+        try {
+          await page.goto(base + rel, { waitUntil: 'domcontentloaded', timeout: 20000 });
+        } catch (e) {
+          findings.push({
+            engine,
+            page: rel,
+            width,
+            pageScrollsHorizontally: 0,
+            overflowCount: 0,
+            overflow: [],
+            contrast: [],
+            targets: [],
+            errors: [`読み込み失敗: ${String(e).slice(0, 80)}`],
+          });
+          await page.close();
+          continue;
+        }
+        await page.waitForTimeout(350);
+        await activateAsyncStyles(page);
+        // content-visibility:auto の節も測るため一度末尾まで送る
+        await page.evaluate(async () => {
+          document.documentElement.style.scrollBehavior = 'auto';
+          const h = document.documentElement.scrollHeight;
+          for (let y = 0; y < h; y += 700) {
+            window.scrollTo(0, y);
+            await new Promise((resolve) => setTimeout(resolve, 12));
+          }
+          window.scrollTo(0, 0);
+          await new Promise((resolve) => setTimeout(resolve, 150));
+        });
+        const res = await page.evaluate(`(${PAGE_AUDIT})()`);
+        if (!res || !Number.isInteger(res.overflowCount)) {
+          throw new Error(`${engine}:${rel}@${width}px 要素監査の結果を取得できませんでした`);
+        }
+        findings.push({ engine, page: rel, width, ...res, errors });
+        await page.close();
+      }
+    }
+
+    for (const target of PHOTO_TARGETS) {
+      for (const width of target.widths) {
+        const page = await browser.newPage({ viewport: { width, height: 900 } });
+        await prepareLocalHttpPage(page);
+        await page.goto(base + target.page, { waitUntil: 'domcontentloaded', timeout: 20000 });
+        await page.waitForTimeout(500);
+        await activateAsyncStyles(page);
+        const result = await photoContrast(page, target.selector);
+        if (result) photo.push({ engine, page: target.page, width, ...result });
+        await page.close();
+      }
+    }
+  } finally {
+    closeTimedOut = await closeBrowserWithTimeout(browser, engine);
+  }
+
+  return { findings, photo, closeTimedOut };
+}
+
+(async () => {
+  const targetPages = pages();
+  const audited = await Promise.all(
+    ENGINES.map(([engine, browserType]) => auditEngine(engine, browserType, targetPages)),
+  );
+  const findings = audited.flatMap((result) => result.findings);
+  const photo = audited.flatMap((result) => result.photo);
   const conditions = findings.length;
   const scrolls = findings.filter((f) => (f.pageScrollsHorizontally ?? 0) > 0);
+  const overflowed = findings.filter((f) => (f.overflowCount ?? 0) > 0);
   const errored = findings.filter((f) => (f.errors ?? []).length);
   const contrast = new Map();
   const targets = new Map();
   for (const f of findings) {
     for (const c of f.contrast ?? []) {
       if (c.color.startsWith('rgba(0, 0, 0, 0)')) continue; // background-clip:text の装飾数字
-      contrast.set(`${f.page}|${c.sel}|${c.ratio}`, { ...c, page: f.page });
+      contrast.set(`${f.engine}|${f.page}|${c.sel}|${c.ratio}`, {
+        ...c,
+        engine: f.engine,
+        page: f.page,
+      });
     }
-    for (const t of f.targets ?? []) targets.set(`${f.page}|${t.sel}|${t.w}x${t.h}`, { ...t, page: f.page });
+    for (const t of f.targets ?? []) {
+      targets.set(`${f.engine}|${f.page}|${t.sel}|${t.w}x${t.h}`, {
+        ...t,
+        engine: f.engine,
+        page: f.page,
+      });
+    }
   }
   const photoFails = photo.filter((p) => p.ratio !== null && p.ratio < AA_NORMAL);
 
   if (asJson) {
     console.log(JSON.stringify({ base, conditions, findings, photo }, null, 2));
   } else {
-    console.log(`検証: ${targetPages.length}ページ × ${WIDTHS.length}画面幅 = ${conditions}通り（${WIDTHS.join(' / ')}px）`);
-    console.log(`ページ自体の横スクロール: ${scrolls.length ? scrolls.map((s) => `${s.page}@${s.width}`).join(', ') : '0件'}`);
-    console.log(`console / page error: ${errored.length ? errored.map((e) => `${e.page}@${e.width} ${e.errors[0]}`).join(' / ') : '0件'}`);
+    console.log(`検証: ${ENGINES.length}エンジン × ${targetPages.length}ページ × ${WIDTHS.length}画面幅 = ${conditions}通り（${WIDTHS.join(' / ')}px）`);
+    console.log(`ページ自体の横スクロール: ${scrolls.length ? scrolls.map((s) => `${s.engine}:${s.page}@${s.width}`).join(', ') : '0件'}`);
+    console.log(`要素単位の横はみ出し: ${overflowed.length ? `${overflowed.length}条件` : '0件'}`);
+    for (const item of overflowed) {
+      console.log(`- ${item.engine}:${item.page}@${item.width}px ${item.overflowCount}要素 ${item.overflow.map((entry) => `${entry.sel} right=${entry.right}`).join(', ')}`);
+    }
+    console.log(`console / page error: ${errored.length ? errored.map((e) => `${e.engine}:${e.page}@${e.width} ${e.errors[0]}`).join(' / ') : '0件'}`);
     console.log(`背景色から算出したコントラスト不足: ${contrast.size}件`);
     for (const c of [...contrast.values()].sort((a, b) => a.ratio - b.ratio)) {
-      console.log(`- ${c.ratio}（必要${c.need}） ${c.size}px ${c.sel} ${c.page}${c.decorative ? '  ※aria-hidden の装飾' : ''}\n    「${c.text}」${c.color} on ${c.bg}`);
+      console.log(`- ${c.ratio}（必要${c.need}） ${c.size}px ${c.sel} ${c.engine}:${c.page}${c.decorative ? '  ※aria-hidden の装飾' : ''}\n    「${c.text}」${c.color} on ${c.bg}`);
     }
     console.log(`操作領域24px未満: ${targets.size}件`);
-    for (const t of targets.values()) console.log(`- ${t.w}x${t.h} ${t.sel}「${t.text}」${t.page}`);
+    for (const t of targets.values()) console.log(`- ${t.w}x${t.h} ${t.sel}「${t.text}」${t.engine}:${t.page}`);
     console.log(`写真の上の文字（実ピクセル測定）:`);
-    for (const p of photo) console.log(`- ${p.page}@${p.width}px ${p.selector} = ${p.ratio ?? p.note}`);
+    for (const p of photo) console.log(`- ${p.engine}:${p.page}@${p.width}px ${p.selector} = ${p.ratio ?? p.note}`);
   }
 
-  const fatal = scrolls.length + errored.length + photoFails.length;
-  if (checkOnly && fatal) process.exit(1);
+  const fatal = scrolls.length + overflowed.length + errored.length + photoFails.length;
+  const exitCode = checkOnly && fatal ? 1 : 0;
+  if (audited.some((result) => result.closeTimedOut)) {
+    // Playwright WebKitの残ったパイプでNodeが待ち続けないよう、出力後にだけ終了する。
+    setTimeout(() => process.exit(exitCode), 50);
+  } else if (exitCode) {
+    process.exitCode = exitCode;
+  }
 })().catch((error) => {
   console.error(error);
   process.exit(1);
