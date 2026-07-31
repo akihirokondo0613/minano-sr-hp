@@ -4,10 +4,11 @@
  * 実行:
  *   node scripts/test-home-hero.cjs [base] [--json]
  *
- * Playwrightの最新WebKitでは、実機iOSで起きた「空白のない隣接 .nw span の
- * 境界を改行機会にしない」挙動を再現しない。そのため、明示的な <wbr> が無い
- * 隣接境界だけへ WORD JOINER を挿入し、当該WebKit挙動をレイアウト上で再現する。
- * 合否は実際の要素矩形で判定し、documentElement.scrollWidthには依存しない。
+ * 修正前の bf25281^ をCSPメタ除去だけで測ると、390 / 402 / 430pxで
+ * Chromiumはh1右端370 / 382 / 410px・はみ出し0、WebKitは
+ * 504.53 / 519.44 / 537.66px・各12要素がはみ出した。両エンジンとも
+ * documentElement.scrollWidthとviewportの差は0で、横はみ出し判定は
+ * WebKitだけが失敗した。そのためフィクスチャを使わず、実際の要素矩形で判定する。
  */
 
 const { chromium, webkit } = require('playwright');
@@ -40,24 +41,6 @@ async function prepareLocalHttpPage(page) {
     const response = await route.fetch();
     const html = await response.text();
     await route.fulfill({ response, body: html.replace(UPGRADE_INSECURE_META, '') });
-  });
-}
-
-async function emulateAffectedIosWebKit(page) {
-  return page.evaluate(() => {
-    let inserted = 0;
-    for (const parent of document.querySelectorAll('.hero-h1, .hero-sub')) {
-      const phrases = [...parent.querySelectorAll('.nw')];
-      for (let index = 1; index < phrases.length; index += 1) {
-        const previous = phrases[index - 1];
-        const current = phrases[index];
-        if (previous.parentElement === current.parentElement && previous.nextSibling === current) {
-          current.before(document.createTextNode('\u2060'));
-          inserted += 1;
-        }
-      }
-    }
-    return inserted;
   });
 }
 
@@ -167,10 +150,8 @@ async function measure(page) {
         // 外部解析スクリプトの遅延を合否へ混ぜず、必要なフォントだけ明示的に待つ。
         await page.goto(base, { waitUntil: 'domcontentloaded', timeout: 20000 });
         await page.evaluate(() => document.fonts.ready);
-        const insertedJoiners = await emulateAffectedIosWebKit(page);
-        await page.waitForTimeout(50);
         const result = await measure(page);
-        results.push({ engine: engineName, width, insertedJoiners, errors, ...result });
+        results.push({ engine: engineName, width, errors, ...result });
 
         if (result.offenders.length) {
           failures.push(
@@ -181,12 +162,6 @@ async function measure(page) {
         }
         if (result.wbrCount !== 7) {
           failures.push(`${engineName}@${width}px: ヒーローの<wbr>が7個ではありません（${result.wbrCount}個）`);
-        }
-        if (insertedJoiners !== 0) {
-          failures.push(
-            `${engineName}@${width}px: 明示的な改行機会がない隣接.nw境界が`
-            + `${insertedJoiners}か所あります`,
-          );
         }
         if (result.phraseBreaks.length) {
           failures.push(
@@ -238,8 +213,7 @@ async function measure(page) {
         + `label=${label.width}/${label.right} h1=${h1.width}/${h1.right} `
         + `sub=${sub.width}/${sub.right} buttons=${buttons.width}/${buttons.right} `
         + `trust=${trust.width}/${trust.right} `
-        + `wbr=${result.wbrCount} simulated=${result.insertedJoiners} `
-        + `overflow=${result.offenders.length}`,
+        + `wbr=${result.wbrCount} overflow=${result.offenders.length}`,
       );
       if (result.width === 402) console.log(`  h1 lines: ${result.h1Lines.join(' / ')}`);
     }
