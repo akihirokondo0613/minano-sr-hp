@@ -104,3 +104,8 @@ body{min-width:320px}
   --g400:#57B07F;--g300:#8FCBA8;--g200:#BFE0CD;--g100:#DCEEE3;--g50:#EDF6F0;--g25:#F6FAF7;
   --ink:#1E2721;--ink2:#37423B;--ink3:#5D6962;--ink4:#68736C;/* 注釈・メタ。skin-v2.css と同値（4.5:1 確保） */
 }
+
+/* 日本語の行末処理。uploads配下はskin-v2.cssを読まないため、同じ規則をここにも置く。
+   iPhone（WebKit）で句読点だけが次の行に落ちる「泣き別れ」の対策。Chromiumは未対応で無害。 */
+h1, h2, h3, h4, p, li, dt, dd, figcaption, blockquote, td, th { hanging-punctuation: allow-end; }
+p, li, dd, figcaption { text-wrap: pretty; }

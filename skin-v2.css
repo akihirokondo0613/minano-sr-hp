@@ -15,6 +15,11 @@ img, picture, video, canvas, svg { max-width: 100%; }
 table { max-width: 100%; }
 h1, h2, h3 { line-height: 1.5; text-wrap: balance; word-break: auto-phrase; }
 p, li { text-wrap: pretty; }
+/* 日本語の行末処理。iPhone（WebKit）で句点だけが次の行に落ちる「泣き別れ」が
+   出ていたため、句読点を行末にぶら下げる。Chromiumは未対応で無害。
+   dd・figcaption は text-wrap 未指定だったので、末尾1文字の孤立を避ける pretty を足す。 */
+h1, h2, h3, h4, p, li, dt, dd, figcaption, blockquote, td, th { hanging-punctuation: allow-end; }
+dd, figcaption { text-wrap: pretty; }
 .nobr, .nw { white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -1043,7 +1048,9 @@ article.post .note { font-size: 12.5px; color: var(--ink3); margin-top: -1em; ma
 .cat-count { font-family: var(--mono); font-size: 11px; color: var(--ink4); margin-left: auto; }
 /* ---------- 文字の偏り対策（見出し=balance / 本文=pretty） ---------- */
 .sec-h, .why-h, .hc-title, .bc-title, .promise-t, .plan-name, .stg-prog-name, .tflow-step b { text-wrap: balance; }
-.sec-sub, .why-p p, .hc-desc, .bc-desc, .voice-text, .svc-info-desc, .tflow-note, .tools-note, .stg-issues li, .stg-props li, .plan-tagline, .faq-a-in { text-wrap: pretty; }
+.sec-sub, .why-p p, .hc-desc, .bc-desc, .voice-text, .svc-info-desc, .tflow-note, .stg-issues li, .stg-props li, .plan-tagline, .faq-a-in { text-wrap: pretty; }
+/* 中央揃えの短い注記は pretty だと句点だけが2行目に落ちる。2行を均す balance にする */
+.tools-note { text-wrap: balance; }
 .cat-desc { font-size: 13px; line-height: 1.95; color: var(--ink3); margin-bottom: 16px; }
 .file-list { display: flex; flex-direction: column; gap: 10px; }
 .file { display: grid; grid-template-columns: 46px 1fr auto auto; align-items: center; gap: 16px; background: var(--shiro); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 14px 18px; transition: border-color .3s, box-shadow .35s var(--ease), transform .3s var(--ease); }
