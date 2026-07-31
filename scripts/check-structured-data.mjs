@@ -42,6 +42,7 @@ const expectedFaqCounts = new Map([
   ['blog/harassment-madoguchi.html', 3],
   ['blog/ikukyu-kaisei-2026.html', 3],
   ['blog/shugyo-kisoku-template-risk.html', 3],
+  ['blog/gyomu-kaizen-joseikin-2026.html', 3],
 ]);
 
 const expectedServicePages = new Set([
