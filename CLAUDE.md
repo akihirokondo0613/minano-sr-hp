@@ -595,3 +595,24 @@ gh run watch <databaseId> --interval 10 --exit-status
 ```text
 CLAUDE.md の「GitHub経由の編集・本番公開フロー」を厳守し、[変更内容]を対象箇所だけ修正してください。検証後、PR作成→Lighthouse合格→mainへsquash merge→本番デプロイ→実サイト確認まで行い、最後に本番URL・PR URL・検証結果を報告してください。
 ```
+
+## 泣き別れ（行末に1文字だけ残る改行）の監査 — 2026-08-01 追加
+
+`scripts/audit-line-breaks.cjs`（playwright必要・既定WebKit）。
+
+**なぜ別の道具が要るのか**: `audit-a11y.cjs` と `test-home-hero.cjs` は「要素の右端がビューポートを超えるか」で判定する。泣き別れははみ出しではなく組版の問題なので、それらでは原理的に検出できない。実際、最終CTA見出しの「。」が5ページで2行目に落ちていたのを長く見逃した。
+
+```bash
+node scripts/audit-line-breaks.cjs http://127.0.0.1:8811/            # 9幅・WebKit
+node scripts/audit-line-breaks.cjs http://127.0.0.1:8811/ --check    # 検出したら exit 1
+node scripts/audit-line-breaks.cjs https://minano-sr.com/ --widths=375,402
+```
+
+直し方の優先順位（実測で効いた順）:
+
+1. **句読点の孤立** → `hanging-punctuation: allow-end`（Safariのみ対応・Chromiumは無害）。ただし**中央揃えの要素には効かない**。
+2. **見出し・引用の末尾1文字** → `text-wrap: pretty`。`balance` は行長を均すだけで孤立を防がない。`.sec-h` は 2026-08-01 に balance から pretty へ移した。
+3. **1〜2で直らない箇所** → 文節を `.nw`（nowrap）で括り、**文節の境目に `<wbr>` を置く**。`<wbr>` が無いと WebKit は隣接する nowrap の境界で改行機会を作らず、PR #58 と同じ横はみ出しを起こす。**この2つは必ずセット**。長い文節を nowrap にすると狭い幅で溢れるので、文節の実幅を測ってから使う。
+4. `word-break: auto-phrase` は日本語の文節改行に効きそうに見えるが、**実測では改行位置が変わらなかった**（最終CTA本文で確認済み）。
+
+**uploads配下は `skin-v2.css` を読まない。** 組版の規則を足すときは `wave-skin.css` にも同じものを入れる（これを忘れて2回取りこぼした）。

@@ -1047,7 +1047,9 @@ article.post .note { font-size: 12.5px; color: var(--ink3); margin-top: -1em; ma
 .cat-title { font-family: var(--disp); font-size: clamp(18px, 2vw, 21px); font-weight: 800; color: var(--iwa); }
 .cat-count { font-family: var(--mono); font-size: 11px; color: var(--ink4); margin-left: auto; }
 /* ---------- 文字の偏り対策（見出し=balance / 本文=pretty） ---------- */
-.sec-h, .why-h, .hc-title, .bc-title, .promise-t, .plan-name, .stg-prog-name, .tflow-step b { text-wrap: balance; }
+.why-h, .hc-title, .bc-title, .promise-t, .plan-name, .stg-prog-name, .tflow-step b { text-wrap: balance; }
+/* 見出し・引用の末尾に1文字だけ残る改行を避ける。balance は行長を均すだけで孤立を防がない */
+.sec-h, h3, h4, blockquote { text-wrap: pretty; }
 .sec-sub, .why-p p, .hc-desc, .bc-desc, .voice-text, .svc-info-desc, .tflow-note, .stg-issues li, .stg-props li, .plan-tagline, .faq-a-in { text-wrap: pretty; }
 /* 中央揃えの短い注記は pretty だと句点だけが2行目に落ちる。2行を均す balance にする */
 .tools-note { text-wrap: balance; }
