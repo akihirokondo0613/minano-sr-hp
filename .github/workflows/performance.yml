@@ -31,17 +31,16 @@ jobs:
           fc-cache -f
           fc-match 'Noto Sans CJK JP'
 
-      - name: ローカル公開サーバーを起動
-        run: |
-          python3 -m http.server 8811 >/tmp/minano-hero-http.log 2>&1 &
-          for i in {1..20}; do
-            if curl --fail --silent http://127.0.0.1:8811/ >/dev/null; then break; fi
-            sleep 0.25
-          done
-          curl --fail --silent http://127.0.0.1:8811/ >/dev/null
+      - name: 文節改行と横はみ出しの回帰テスト
+        run: node scripts/run-layout-checks.cjs --report-dir "$RUNNER_TEMP/layout-results"
 
-      - name: トップヒーローの回帰テスト
-        run: node scripts/test-home-hero.cjs http://127.0.0.1:8811/
+      - name: レイアウト検証結果を保存
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: layout-validation-reports
+          path: ${{ runner.temp }}/layout-results
+          retention-days: 14
 
   lighthouse:
     runs-on: ubuntu-latest
