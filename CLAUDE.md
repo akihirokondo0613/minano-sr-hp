@@ -421,7 +421,9 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 「◯件→◯件に改善した」と報告するなら、その数値はこのスクリプトの出力であること。手元の使い捨てスクリプトで測って報告し、第三者が追試できない状態にしない。
 
 - `node scripts/audit-blog.mjs`（ブラウザ不要）… ブログ記事の構成。この記事のポイント／目次／出典／あわせて読みたいの有無、FAQ問数、読了時間と本文量の整合、目次アンカーと h2 id の一致、記事間リンクと孤立記事、タイトル・description長。`--check` で基準外があれば exit 1、`--json` で機械可読。
+- `node scripts/run-layout-checks.cjs`（playwright必要）… 動的ポートの検証用サーバーを自動起動し、トップヒーローと最終CTAの Chromium／WebKit 回帰テストを順番に実行する。サーバーは実行後に必ず閉じ、JSON結果とサーバー状態を一時フォルダへ残す。`--full` で `verify-ui.cjs`・公開前チェック5種・`git diff --check` も同じサーバーで続けて実行する。
 - `node scripts/test-home-hero.cjs http://127.0.0.1:8811/`（playwright必要）… トップだけを Chromium／WebKit とスマホ〜700px境界で確認する軽量回帰テスト。ヒーロー内の各要素矩形、文節内改行、`<wbr>`、要約帯の列数を検査し、`documentElement.scrollWidth`だけでは見えないクリップ内のはみ出しも失敗にする。
+- `node scripts/test-final-copy.cjs http://127.0.0.1:8811/`（playwright必要）… 最終CTAを持つ5ページ × 4画面幅 × Chromium／WebKit = 40条件を確認する。`.final-p` を表示領域へ送り、フォント読込と2フレームを待ってから実測する。期待40件／実測40件／未測定0件が必須で、要素0件・描画行0本は合格ではなく失敗とする。
 - `node scripts/audit-a11y.cjs http://127.0.0.1:8811/`（playwright必要）… Chromium／WebKitの両方で全公開ページ×12画面幅を巡回し、ページ自体と要素単位の横はみ出し・背景色から算出したコントラスト・操作領域24px・console/pageエラーを確認する。**写真の上の文字は背景色から計算できない**ので、`PHOTO_TARGETS` に登録した要素だけ「文字を透明にして背景の実ピクセルを測る」方式で別に測る。写真上に文字を置く箇所を増やしたらここに追加する。
 - **FAQが無いこと自体は異常としない**（よくある質問が実在しない記事に無理に作らない方針）。`audit-blog.mjs` もそう判定する。
 - 集計の落とし穴：出典（`.post-refs`）と関連記事（`.post-related`）は **`</article>` の外**にある。`<article class="post">` の内側だけを検索すると「0件」と誤判定する（実際にやった）。記事間リンクは `blog/` 配下なので相対パスにディレクトリが付かない点も同じ。
