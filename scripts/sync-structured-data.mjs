@@ -151,7 +151,7 @@ const office = {
     postalCode: '931-8333',
     addressRegion: '富山県',
     addressLocality: '富山市',
-    streetAddress: '蓮町1丁目7 SCOP富山',
+    streetAddress: '蓮町1丁目7 SCOP TOYAMA',
     addressCountry: 'JP',
   },
   geo: {
