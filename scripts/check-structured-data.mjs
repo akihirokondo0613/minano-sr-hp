@@ -209,7 +209,7 @@ for (const [relativePath, { schemas }] of pages) {
     if (
       office['@id'] !== 'https://minano-sr.com/#office' ||
       office.telephone !== '+81-90-8259-8774' ||
-      office.address?.streetAddress !== '蓮町1丁目7 SCOP TOYAMA' ||
+      office.address?.streetAddress !== '蓮町1丁目7番3号 SCOP TOYAMA' ||
       office.geo?.latitude !== 36.741023 ||
       office.geo?.longitude !== 137.225116 ||
       !Array.isArray(office.areaServed) ||
