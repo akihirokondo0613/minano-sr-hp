@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1.0",
+  "assets": [
+    {
+      "id": "admin-work",
+      "source": "assets/illustrations/17_admin_work_female.webp",
+      "projectPath": "public/minano/illustrations/admin-work.webp",
+      "rightsStatus": "user_supplied",
+      "usage": "問題シーンの担当者"
+    },
+    {
+      "id": "workflow-organizing",
+      "source": "assets/illustrations/hero-story/workflow-organizing.webp",
+      "projectPath": "public/minano/illustrations/workflow-organizing.webp",
+      "rightsStatus": "user_supplied",
+      "usage": "整理シーン"
+    },
+    {
+      "id": "consult-documents",
+      "source": "assets/illustrations/hero-story/consult-documents.webp",
+      "projectPath": "public/minano/illustrations/consult-documents.webp",
+      "rightsStatus": "user_supplied",
+      "usage": "支援領域シーン"
+    },
+    {
+      "id": "voiceover",
+      "source": "VOICEVOX Engine 0.25.2 / VOICEVOX:冥鳴ひまり / style id 14",
+      "projectPath": "public/minano/audio/vo-*.mp3",
+      "generatedBy": "scripts/generate_voicevox_voiceover.py",
+      "rightsStatus": "licensed_with_attribution",
+      "requiredCredit": "VOICEVOX:冥鳴ひまり",
+      "terms": [
+        "https://voicevox.hiroshiba.jp/term/",
+        "https://www.meimeihimari.com/terms-of-use"
+      ],
+      "termsCheckedAt": "2026-08-04",
+      "usage": "5つのナレーション区切り",
+      "outputs": [
+        {"file": "vo-01-services.mp3", "durationSeconds": 2.944, "sha256": "542233661f063d682013f1b2bebbd5354d469d9c83a39fe43b94925e3be9648b"},
+        {"file": "vo-02-question.mp3", "durationSeconds": 2.08, "sha256": "5f6feee3de57758c764ae2d30f8aa32317cc167c3a0791b752bf676c28e94e41"},
+        {"file": "vo-03-support.mp3", "durationSeconds": 2.528, "sha256": "596df4e963b6871bffa99df10a932287bd17e36d9cb2b3cc9e01470c89dd9c66"},
+        {"file": "vo-04-brand.mp3", "durationSeconds": 2.026667, "sha256": "1e18f340d17eff1bbefd6a462999360bd59ed63a9ab15c9ab2f99806928b5572"},
+        {"file": "vo-05-cta.mp3", "durationSeconds": 1.962667, "sha256": "f2beb1e4c30ef8ad1638d5b18572cfc7c281ec17a07d4d4f802b5fcdfcb061cb"}
+      ]
+    },
+    {
+      "id": "music-and-sfx",
+      "source": "scripts/generate_audio.py deterministic synthesis",
+      "projectPath": "public/minano/audio/*.wav",
+      "rightsStatus": "generated",
+      "usage": "120 BPM BGMと画面同期効果音"
+    }
+  ],
+  "deliverable": {
+    "file": "assets/video/home-labor-cm-15s-v2.mp4",
+    "sha256": "490edfa4bb01cb74cca5140f203961e355fb1926642031ba1d2144540872879a",
+    "durationSeconds": 15.061333,
+    "video": "H.264 1280x720 30fps yuv420p limited-range BT.709",
+    "audio": "AAC-LC 48kHz stereo, -18.6 LUFS-I, -5.7 dBTP"
+  }
+}

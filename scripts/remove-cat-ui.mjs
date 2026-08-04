@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const checkOnly = process.argv.includes('--check');
 const pageEnterVersion = '20260725-nocat1';
-const skinVersion = '20260804-hero-video1';
+const skinVersion = '20260804-hero-cm2';
 const serviceVersion = '20260725-nocat1';
 let changed = 0;
 

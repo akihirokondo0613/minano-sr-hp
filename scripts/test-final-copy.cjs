@@ -57,6 +57,9 @@ function recordConsoleError(target) {
     const text = message.text();
     if (/minano-sr\.goatcounter\.com\/count/.test(url)) return;
     if (/Failed to load resource: A TLS error/.test(text)) return;
+    // WebKitのheadless環境だけで、未読込videoのネイティブ操作アイコンが
+    // blob URLから取得できず出る既知の内部警告。ページ資産の失敗ではない。
+    if (/Button failed to load, iconName = (?:invalid|pip|airplay)-placard/.test(text)) return;
     target.push(`console ${url || 'unknown'}: ${text}`);
   };
 }
@@ -127,11 +130,15 @@ async function renderAndMeasure(page) {
   await locator.evaluate(async (element) => {
     document.documentElement.style.scrollBehavior = 'auto';
     document.body.style.scrollBehavior = 'auto';
-    for (let attempt = 0; attempt < 2; attempt += 1) {
-      const rect = element.getBoundingClientRect();
-      const targetY = scrollY + rect.top - Math.max(0, (innerHeight - rect.height) / 2);
-      scrollTo(0, Math.max(0, targetY));
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    // content-visibility:autoの節は初回スクロールで実高へ展開され、後続要素の
+    // 座標が再計算される。位置が安定するまで中央配置を繰り返す。
+    for (let attempt = 0; attempt < 6; attempt += 1) {
+      element.scrollIntoView({ block: 'center', inline: 'nearest' });
       await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      const rect = element.getBoundingClientRect();
+      if (rect.bottom > 0 && rect.top < innerHeight) break;
     }
   });
 
