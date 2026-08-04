@@ -18,7 +18,7 @@ const base = (args.find((arg) => arg.startsWith('http')) || 'http://127.0.0.1:88
   .replace(/\/?$/, '/');
 const asJson = args.includes('--json');
 
-const WIDTHS = [320, 360, 375, 390, 402, 429, 430, 431, 699, 700, 701, 1024, 1280, 1440];
+const WIDTHS = [320, 360, 375, 390, 402, 429, 430, 431, 699, 700, 701];
 const ENGINES = [
   ['chromium', chromium],
   ['webkit', webkit],
@@ -57,11 +57,8 @@ async function measure(page) {
       const rect = element.getBoundingClientRect();
       return {
         width: Number(rect.width.toFixed(2)),
-        height: Number(rect.height.toFixed(2)),
         left: Number(rect.left.toFixed(2)),
         right: Number(rect.right.toFixed(2)),
-        top: Number(rect.top.toFixed(2)),
-        bottom: Number(rect.bottom.toFixed(2)),
       };
     };
     const linesOf = (selector) => {
@@ -108,15 +105,6 @@ async function measure(page) {
           lines: rects.length,
         }] : [];
       });
-    const video = document.querySelector('.hero-video');
-    const videoState = video ? {
-      hasSrcAttribute: video.hasAttribute('src'),
-      currentSrc: video.currentSrc,
-      dataSrc: video.getAttribute('data-src') || '',
-      autoplay: video.hasAttribute('autoplay') || video.autoplay,
-      muted: video.hasAttribute('muted') || video.defaultMuted || video.muted,
-      loop: video.hasAttribute('loop') || video.loop,
-    } : null;
 
     return {
       viewportWidth,
@@ -129,9 +117,6 @@ async function measure(page) {
       metrics: {
         stage: rectOf('.hero-stage'),
         overlay: rectOf('.hero-overlay'),
-        copy: rectOf('.hero-copy'),
-        cm: rectOf('.hero-cm'),
-        cmFrame: rectOf('.hero-cm-frame'),
         label: rectOf('.why-label.hero-label'),
         h1: rectOf('.hero-h1'),
         sub: rectOf('.hero-sub'),
@@ -140,7 +125,6 @@ async function measure(page) {
       },
       offenders,
       phraseBreaks,
-      videoState,
     };
   });
 }
@@ -153,12 +137,11 @@ async function measure(page) {
     const browser = await browserType.launch({ headless: true });
     try {
       for (const width of WIDTHS) {
-        const desktop = width >= 1024;
         const page = await browser.newPage({
           viewport: { width, height: 900 },
-          deviceScaleFactor: desktop ? 1 : 3,
-          isMobile: !desktop,
-          hasTouch: !desktop,
+          deviceScaleFactor: 3,
+          isMobile: true,
+          hasTouch: true,
         });
         await prepareLocalHttpPage(page);
         const errors = [];
@@ -190,91 +173,12 @@ async function measure(page) {
         if (width <= 700 && result.metrics.label.width >= result.metrics.h1.width - EPSILON) {
           failures.push(`${engineName}@${width}px: 淡緑ラベルが本文幅まで引き伸ばされています`);
         }
-        if (width <= 1023) {
-          const expectedSummaryColumns = width <= 430 ? 1 : 2;
-          if (result.summaryColumns !== expectedSummaryColumns) {
-            failures.push(
-              `${engineName}@${width}px: ヒーロー直下サマリーが`
-              + `${expectedSummaryColumns}列ではありません（${result.summaryColumns}列）`,
-            );
-          }
-        }
-        const { copy, cm, cmFrame } = result.metrics;
-        const cmAspectRatio = cmFrame.width / cmFrame.height;
-        if (Math.abs(cmAspectRatio - (16 / 9)) > 0.02) {
+        const expectedSummaryColumns = width <= 430 ? 1 : 2;
+        if (result.summaryColumns !== expectedSummaryColumns) {
           failures.push(
-            `${engineName}@${width}px: CM枠が16:9ではありません`
-            + `（${cmFrame.width}x${cmFrame.height}）`,
+            `${engineName}@${width}px: ヒーロー直下サマリーが`
+            + `${expectedSummaryColumns}列ではありません（${result.summaryColumns}列）`,
           );
-        }
-        if (cmFrame.left < -EPSILON || cmFrame.right > result.viewportWidth + EPSILON) {
-          failures.push(
-            `${engineName}@${width}px: CM枠がviewportから横にはみ出しています`
-            + `（left=${cmFrame.left}, right=${cmFrame.right}）`,
-          );
-        }
-        const horizontalOverlap = Math.min(copy.right, cm.right) - Math.max(copy.left, cm.left);
-        const verticalOverlap = Math.min(copy.bottom, cm.bottom) - Math.max(copy.top, cm.top);
-        if (desktop) {
-          if (cm.left < copy.right - EPSILON || verticalOverlap <= EPSILON) {
-            failures.push(`${engineName}@${width}px: コピーとCMが左右配置ではありません`);
-          }
-        } else if (cm.top < copy.bottom - EPSILON || horizontalOverlap <= EPSILON) {
-          failures.push(`${engineName}@${width}px: コピーとCMが上下配置ではありません`);
-        }
-        if (!result.videoState) {
-          failures.push(`${engineName}@${width}px: .hero-videoが見つかりません`);
-        } else {
-          if (result.videoState.hasSrcAttribute || result.videoState.currentSrc) {
-            failures.push(`${engineName}@${width}px: 初期状態の動画にsrcが設定されています`);
-          }
-          if (!result.videoState.dataSrc.trim()) {
-            failures.push(`${engineName}@${width}px: 初期状態の動画にdata-srcがありません`);
-          }
-          if (result.videoState.autoplay || result.videoState.muted || result.videoState.loop) {
-            failures.push(
-              `${engineName}@${width}px: 動画に禁止属性があります`
-              + `（autoplay=${result.videoState.autoplay}, muted=${result.videoState.muted}, `
-              + `loop=${result.videoState.loop}）`,
-            );
-          }
-        }
-        if (engineName === 'chromium' && width === 1280) {
-          const initialVideoRequests = await page.evaluate(() => (
-            performance.getEntriesByType('resource')
-              .filter((entry) => entry.name.includes('/assets/video/')).length
-          ));
-          if (initialVideoRequests !== 0) {
-            failures.push(`chromium@1280px: クリック前に動画通信が${initialVideoRequests}件あります`);
-          }
-          await page.locator('.hero-cm-play').click();
-          try {
-            await page.waitForFunction(() => {
-              const video = document.querySelector('.hero-video');
-              return Boolean(video && video.currentSrc && !video.paused && video.currentTime > 0.05);
-            }, null, { timeout: 10000 });
-            result.videoPlayback = await page.evaluate(() => {
-              const video = document.querySelector('.hero-video');
-              return {
-                currentSrc: video.currentSrc,
-                currentTime: Number(video.currentTime.toFixed(2)),
-                muted: video.muted,
-                paused: video.paused,
-                videoRequests: performance.getEntriesByType('resource')
-                  .filter((entry) => entry.name.includes('/assets/video/')).length,
-              };
-            });
-            if (result.videoPlayback.muted || result.videoPlayback.paused
-              || result.videoPlayback.videoRequests !== 1) {
-              failures.push(
-                `chromium@1280px: 明示クリック後の音声付き再生状態が不正です`
-                + `（muted=${result.videoPlayback.muted}, paused=${result.videoPlayback.paused}, `
-                + `requests=${result.videoPlayback.videoRequests}）`,
-              );
-            }
-          } catch (error) {
-            failures.push(`chromium@1280px: CMを明示クリックで再生できません（${error.message}）`);
-          }
         }
         if (width === 402) {
           const firstBlock = '手続きも、給与計算も、助成金も。';
@@ -301,13 +205,11 @@ async function measure(page) {
   } else {
     for (const result of results) {
       const {
-        stage, overlay, copy, cm, cmFrame, label, h1, sub, buttons, trust,
+        stage, overlay, label, h1, sub, buttons, trust,
       } = result.metrics;
       console.log(
         `${result.engine}@${result.width}px `
         + `stage=${stage.width}/${stage.right} overlay=${overlay.width}/${overlay.right} `
-        + `copy=${copy.width}/${copy.right} cm=${cm.width}/${cm.right} `
-        + `cmFrame=${cmFrame.width}x${cmFrame.height} `
         + `label=${label.width}/${label.right} h1=${h1.width}/${h1.right} `
         + `sub=${sub.width}/${sub.right} buttons=${buttons.width}/${buttons.right} `
         + `trust=${trust.width}/${trust.right} `

@@ -49,7 +49,7 @@ for (const { full, rel } of publicHtml) {
     fail(`${rel}: image-slot.jsのキャッシュ版が不一致です（${imageSlotVersion[1]}）`);
   }
   const skinVersion = html.match(/skin-v2\.css\?v=([^"']+)/i);
-  if (skinVersion && skinVersion[1] !== '20260804-hero-cm2') {
+  if (skinVersion && skinVersion[1] !== '20260801-wrap2') {
     fail(`${rel}: skin-v2.cssのキャッシュ版が不一致です（${skinVersion[1]}）`);
   }
   const serviceVersion = html.match(/service\.css\?v=([^"']+)/i);
@@ -70,21 +70,11 @@ const requiredHomePatterns = [
   [/<picture class="hero-media"/, 'LCP画像がnative pictureになっていません'],
   [/fetchpriority="high"/, 'LCP画像にfetchpriority=highがありません'],
   [/<link rel="preload" as="image" type="image\/avif"/, 'LCP画像のpreloadがありません'],
-  [/<video class="hero-video"[^>]*\bpreload="none"/, 'ヒーロー動画が初期読込を避けていません'],
-  [/<video class="hero-video"[^>]*\bdata-src="assets\/video\/home-labor-cm-15s-v2\.mp4"/, 'ヒーローCMの遅延読込先が不正です'],
   [/data-async-style/, 'トップページの全量CSSが非同期化されていません'],
   [/id="critical-home"/, 'トップページの重要CSSがインライン化されていません'],
 ];
 for (const [pattern, message] of requiredHomePatterns) {
   if (!pattern.test(index)) fail(`index.html: ${message}`);
-}
-const heroVideoTag = index.match(/<video class="hero-video"[\s\S]*?>/i)?.[0] || '';
-if (/\ssrc\s*=/i.test(heroVideoTag)) fail('index.html: ヒーローCMに初期通信を起こすsrc属性があります');
-if (/\b(?:autoplay|muted|loop)\b/i.test(heroVideoTag)) {
-  fail('index.html: ヒーローCMにautoplay・muted・loopのいずれかがあります');
-}
-if (!/\bcontrols\b/i.test(heroVideoTag) || !/\bplaysinline\b/i.test(heroVideoTag)) {
-  fail('index.html: ヒーローCMのcontrolsまたはplaysinlineがありません');
 }
 if (/id="mn-load"/.test(index)) fail('index.html: 初回ローダーが再導入されています');
 
@@ -101,9 +91,9 @@ if (!/const EDIT_MODE\s*=\s*!!\(window\.omelette/.test(imageSlot)) {
 }
 
 const sizeBudgets = [
-  ['assets/photos/home-labor-cm/home-labor-cm-poster-800.avif', 16 * 1024],
-  ['assets/photos/home-labor-cm/home-labor-cm-poster-1280.avif', 24 * 1024],
-  ['assets/video/home-labor-cm-15s-v2.mp4', 1536 * 1024],
+  ['assets/photos/hero-main-800.avif', 40 * 1024],
+  ['assets/photos/hero-main-1200.avif', 90 * 1024],
+  ['assets/photos/hero-main-1600.avif', 150 * 1024],
 ];
 for (const [rel, max] of sizeBudgets) {
   try {
