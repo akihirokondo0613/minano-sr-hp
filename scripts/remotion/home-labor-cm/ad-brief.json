@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "1.0",
+  "sourceUrl": "https://minano-sr.com/",
+  "generatedAt": "2026-08-04T10:00:00.000Z",
+  "mode": "inferred_defaults",
+  "status": "draft",
+  "sourceType": "service_local",
+  "classificationConfidence": 1,
+  "classificationReasons": [
+    "ユーザー本人の社会保険労務士事務所HPと既存イラストが制作対象",
+    "HPトップに掲載する15秒広告で、目的は無料相談への導線"
+  ],
+  "productName": "みなの社会保険労務士事務所",
+  "interactionLanguage": "ja",
+  "sourceLanguage": "ja",
+  "outputLanguage": "ja",
+  "languagePlan": {
+    "preflightQuestions": "ja",
+    "videoScriptAndCaptions": "ja",
+    "note": "映像内のナレーション、テロップ、CTAはすべて自然な日本語にする。"
+  },
+  "goal": "consultation",
+  "cta": "まずは無料相談",
+  "audience": "富山県内を中心とする中小企業の経営者・労務担当者",
+  "painPoint": "入退社、勤怠、給与、就業規則などが分散し、何をいつまでに行うか整理できていない",
+  "hookFocus": "pain",
+  "creativeRoute": "paper-chaos-to-organized-workflow",
+  "primaryMessage": "労務データを、会社の成長に変える。",
+  "proofPlan": {
+    "allowed": [
+      "手続き、給与計算、就業規則、勤怠DXなどHPに掲載済みの支援領域",
+      "労務情報と期限・手順・優先順位を整理するという事業方針"
+    ],
+    "blocked": [
+      "受給保証、成果保証、ミスゼロ、必ず解決などの断定",
+      "開業前の事務所実績と勤務先での経験を混同する表現",
+      "根拠のない件数、割合、短縮時間などの数値"
+    ],
+    "notes": "数値実績は表示せず、問題の整理と実務支援を視覚化する。"
+  },
+  "assetPlan": {
+    "status": "confirmed",
+    "rightsStatus": "user_supplied",
+    "required": [
+      "assets/illustrations/17_admin_work_female.webp",
+      "assets/illustrations/hero-story/workflow-organizing.webp",
+      "assets/illustrations/hero-story/consult-documents.webp"
+    ],
+    "notes": "ユーザーが制作してきた太い黒線・白/淡黄・青/緑の既存イラストを主素材にし、紙・時計・矢印・チェック印は同じ作風のベクターで追加する。"
+  },
+  "format": {
+    "preset": "landscape-16x9",
+    "width": 1280,
+    "height": 720,
+    "renderScale": 0.5,
+    "draftWidth": 640,
+    "draftHeight": 360
+  },
+  "durationSeconds": 15,
+  "fps": 30,
+  "audioMode": "full-soundscape",
+  "audioPlan": {
+    "voice": "ja-JP-NanamiNeural female generated TTS",
+    "music": "deterministically generated original 120 BPM bed",
+    "sfx": "generated picture-locked paper, swipe, impact, click and success cues",
+    "captions": "burned-in word-synced Japanese captions",
+    "rightsStatus": "generated"
+  },
+  "renderEngine": "remotion",
+  "renderEngineReason": "ユーザーがRemotion制作を指定し、選定したスキルの字幕・音声・広告QAを最も直接利用できる。",
+  "renderEngineSelection": {
+    "status": "selected",
+    "source": "user_delegated_best_choice",
+    "requested": "remotion",
+    "reason": "15秒広告、焼き込み字幕、複数音声トラック、編集可能なReact/TypeScript制作源を一体で残せる。",
+    "options": [
+      "remotion",
+      "hyperframes"
+    ]
+  },
+  "renderPlan": {
+    "engine": "remotion",
+    "compositionId": "MinanoLaborCm15",
+    "format": "landscape-16x9",
+    "width": 1280,
+    "height": 720,
+    "draftWidth": 640,
+    "draftHeight": 360,
+    "template": "remotion-ad-video@e734c0299474132366e8270e9cffaf9a26f2c5ed",
+    "primarySource": "src/MinanoLaborCm.tsx",
+    "validationCommands": [
+      "npm run typecheck",
+      "npm run stills",
+      "npm run render:draft",
+      "npm run render"
+    ]
+  },
+  "preflightDefaults": {
+    "format": "landscape-16x9",
+    "creativeRoute": "paper-chaos-to-organized-workflow",
+    "goal": "consultation",
+    "assets": "existing user-owned illustrations plus locally drawn matching vector elements",
+    "audio": "female voiceover, original generated music, generated SFX and burned-in captions"
+  },
+  "references": [
+    {
+      "title": "ひとりになった桃太郎（15秒）",
+      "url": "https://www.youtube.com/watch?v=fUXsDJOJELg",
+      "use": "イラストで問題を短く描き、最後にサービスへ着地するテンポだけを参照"
+    },
+    {
+      "title": "「ハラスメント」の解剖図鑑 15秒CM",
+      "use": "大きなテロップと図解的な見せ方を参照。固有の表現は複製しない。"
+    },
+    {
+      "title": "社会保険労務士法人とうかい「スマート手続き顧問」",
+      "use": "労務の困りごとから社労士サービスへ明快に着地する構造を参照。固有の表現は複製しない。"
+    }
+  ],
+  "assumptions": [
+    "HP埋め込みではブラウザの自動再生制限を避け、音声付き再生は明示ボタンから開始する。",
+    "無料相談CTAは現行HPの相談導線と整合する。",
+    "動画全体を固定16:9枠に収め、全面背景やcoverクロップを使用しない。"
+  ],
+  "unansweredQuestions": [],
+  "blockers": []
+}

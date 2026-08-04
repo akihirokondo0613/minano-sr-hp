@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "1.0",
+  "sourceUrl": "https://minano-sr.com/",
+  "productName": "みなの社会保険労務士事務所",
+  "defaultArc": [
+    "hook",
+    "pain",
+    "demo",
+    "proof",
+    "cta"
+  ],
+  "concepts": [
+    {
+      "id": "paper-avalanche-freeze",
+      "label": "書類雪崩を止める",
+      "angle": "担当者へ押し寄せる労務書類の雪崩を時間停止し、期限順の一本道へ組み替える。",
+      "insight": "経営者や担当者がつらいのは書類の量そのものより、何をいつまでに処理すべきか見えないこと。",
+      "hookLine": "その労務、積んでませんか",
+      "firstFrame": "既存の担当者イラストへ『入退社』『給与』『勤怠』『就業規則』の巨大な書類が四方から迫り、左上に小さな『みなの社労士』印が見える。",
+      "structure": [
+        "paper-avalanche",
+        "time-freeze-question",
+        "snap-organize-workflow",
+        "consultant-support-map",
+        "cta-card"
+      ],
+      "motionIdea": "紙の雪崩をフレーム中央で完全停止し、黒い一本線に吸い込ませて期限順のカード列へ変形させる。カメラ揺れは使わない。",
+      "signatureMoment": "『入退社・給与・勤怠・就業規則』の書類雪崩が、みなの社労士の丸印で止まり、一瞬で期限順の一本道へ折り畳まれる。",
+      "spectacleMove": "time-break",
+      "proof": "HP掲載済みの支援領域と、期限・手順・優先順位を整理する事業方針。数値実績は使わない。",
+      "cta": "まずは無料相談",
+      "risk": "書類を一瞬で整理する描写を処理時間の保証と受け取られないよう、ナレーションは『整理して支えます』に留める。",
+      "scores": {
+        "attention": 5,
+        "nativeFit": 5,
+        "productProof": 4,
+        "conversion": 5,
+        "productionFeasibility": 5,
+        "claimSafety": 5,
+        "distinctiveness": 5,
+        "boldness": 5
+      }
+    },
+    {
+      "id": "labor-anatomy-map",
+      "label": "労務の解剖図",
+      "angle": "会社の中に散らばる労務の詰まりを解剖図のように可視化し、社労士が一本の流れへつなぐ。",
+      "insight": "労務問題は一つの大きな事故ではなく、勤怠・給与・入退社・規則の小さな詰まりがつながって起きる。",
+      "hookLine": "会社の中、詰まっていませんか",
+      "firstFrame": "会社の断面図を模した既存イラストへ太い黒線の配管が走り、勤怠・給与・入退社の各所で黄色い警告札が点灯する。",
+      "structure": [
+        "anatomy-open",
+        "problem-labels-pulse",
+        "support-line-connect",
+        "brand-stamp",
+        "cta-card"
+      ],
+      "motionIdea": "図鑑の見開きのような固定画面で、警告札と接続線だけを順に点灯させ、最後に一本の青い流れへ変える。",
+      "signatureMoment": "会社の断面図にある四つの労務詰まりを、青い『社労士ライン』が一筆書きで貫いて緑のチェックへ変える。",
+      "spectacleMove": "world-bend",
+      "proof": "現行HPのサービス区分と、分断された労務情報を整理する提供価値。",
+      "cta": "まずは無料相談",
+      "risk": "医療的な解剖表現は避け、会社の業務フロー図として明確にする。",
+      "scores": {
+        "attention": 4,
+        "nativeFit": 4,
+        "productProof": 4,
+        "conversion": 4,
+        "productionFeasibility": 3,
+        "claimSafety": 5,
+        "distinctiveness": 5,
+        "boldness": 4
+      }
+    },
+    {
+      "id": "deadline-domino-rescue",
+      "label": "期限ドミノ救出",
+      "angle": "一枚の未処理カードから期限ドミノが崩れ始め、社労士のチェック印が連鎖を逆再生して立て直す。",
+      "insight": "労務は一つの期限遅れが給与・保険・社内説明へ連鎖し、担当者の不安を増やす。",
+      "hookLine": "一つの期限が、全部を倒す",
+      "firstFrame": "画面いっぱいの黒線ドミノに『入社』『勤怠締め』『給与』『届出』と書かれ、最初の一枚が今にも倒れる。",
+      "structure": [
+        "deadline-domino-start",
+        "chain-escalation",
+        "reverse-rescue",
+        "ordered-calendar",
+        "cta-card"
+      ],
+      "motionIdea": "ドミノの連鎖を途中で静止し、緑のチェック印をきっかけに逆再生してカレンダーへ整列させる。",
+      "signatureMoment": "倒れかけた『届出』ドミノが緑のチェック印で反転し、全カードが期限入りカレンダーへ変わる。",
+      "spectacleMove": "impossible-physics",
+      "proof": "期限管理と日常業務の安定という現行事業方針。",
+      "cta": "まずは無料相談",
+      "risk": "期限遅れの具体的な法的結果を断定せず、視覚的な不安の比喩に留める。",
+      "scores": {
+        "attention": 5,
+        "nativeFit": 4,
+        "productProof": 3,
+        "conversion": 4,
+        "productionFeasibility": 4,
+        "claimSafety": 5,
+        "distinctiveness": 4,
+        "boldness": 5
+      }
+    }
+  ],
+  "chosenId": "paper-avalanche-freeze",
+  "selectionNote": "指定された『労務問題をイラストで短く描く』参考に最も近く、既存イラストを活かしながら最初の2秒で問題を理解できる。解剖図案の図解性を整理シーンへ取り込み、ドミノ案よりもHPの幅広い支援領域を自然に見せられるため採用する。"
+}
