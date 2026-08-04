@@ -29,9 +29,13 @@
 <!-- Theme + Favicon (inline SVG avoids extra asset) -->
 <meta name="theme-color" content="#123F30">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
-<link rel="preload" as="image" type="image/avif"
-      href="assets/photos/hero-main-800.avif"
-      imagesrcset="assets/photos/hero-main-720.avif 720w, assets/photos/hero-main-800.avif 800w, assets/photos/hero-main-1200.avif 1200w, assets/photos/hero-main-1600.avif 1600w"
+<link rel="preload" as="image" type="image/avif" media="(max-width: 700px)"
+      href="assets/photos/home-labor-story/home-labor-story-mobile-720.avif"
+      imagesrcset="assets/photos/home-labor-story/home-labor-story-mobile-480.avif 480w, assets/photos/home-labor-story/home-labor-story-mobile-720.avif 720w"
+      imagesizes="100vw" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" media="(min-width: 701px)"
+      href="assets/photos/home-labor-story/home-labor-story-desktop-1280.avif"
+      imagesrcset="assets/photos/home-labor-story/home-labor-story-desktop-800.avif 800w, assets/photos/home-labor-story/home-labor-story-desktop-1280.avif 1280w"
       imagesizes="100vw" fetchpriority="high">
 <style id="critical-home">
 /* ============================================================
@@ -234,7 +238,7 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
   .mob-nav { padding: 84px 22px max(28px, env(safe-area-inset-bottom)); }
 }
 
-/* ---------- HERO（写真オーバーレイ＋深杉ベール。PCは帯込みで100svhに収める） ---------- */
+/* ---------- HERO（イラスト動画＋雪白ベール。PCは帯込みで100svhに収める） ---------- */
 :root { --hs-h: 76px; }  /* PCのサマリー帯の高さ */
 .hero { position: relative; background: var(--yuki); display: flex; align-items: stretch; overflow: hidden; }
 @media (min-width: 1024px) {
@@ -244,17 +248,19 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
   .hero { min-height: clamp(560px, 88svh, 840px); }
 }
 .hero-stage { position: relative; flex: 1; display: flex; background-color: var(--yuki) !important; }
-/* 写真は全面カバー（image-slot.jsのインライン縦横比は絶対配置で無効化される） */
-.hero-stage > :is(image-slot, .hero-media) {
+/* 背景メディアは全面カバー（image-slot.jsのインライン縦横比は絶対配置で無効化される） */
+.hero-stage > :is(image-slot, .hero-media, .hero-video) {
   position: absolute !important; inset: 0 !important;
   width: 100% !important; height: 100% !important;
   aspect-ratio: auto !important; border-radius: 0 !important; margin: 0 !important;
   display: block !important; z-index: 0;
 }
 .hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.hero-video { object-fit: cover; object-position: center; opacity: 0; pointer-events: none; transition: opacity .7s var(--ease); }
+.hero-video.is-ready { opacity: 1; }
 .hero-veil { display: block; position: absolute; inset: 0; z-index: 1;
-  /* 本文（.hero-sub）が伸びる横幅ぶんは白を残す。768〜1440pxで写真の建物に重なって読めなくなっていた */
-  background: linear-gradient(97deg, rgba(249,250,247,.74) 0%, rgba(249,250,247,.66) 32%, rgba(249,250,247,.5) 62%, rgba(249,250,247,0) 86%),
+  /* 見出しの安全領域を雪白で確保し、右側のイラストへなだらかにつなぐ。 */
+  background: linear-gradient(97deg, rgba(249,250,247,.94) 0%, rgba(249,250,247,.9) 42%, rgba(249,250,247,.78) 62%, rgba(249,250,247,.18) 76%, rgba(249,250,247,0) 86%),
               linear-gradient(to bottom, rgba(249,250,247,.34), transparent 140px); }
 .hero-overlay {
   position: relative; z-index: 2;
@@ -277,11 +283,11 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
 .live-dot-w, .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--moegi); display: inline-block; position: relative; flex-shrink: 0; }
 .live-dot-w::after, .live-dot::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1px solid var(--moegi); animation: pulse 2s infinite; }
 @keyframes pulse { 0% { transform: scale(.6); opacity: 1; } 100% { transform: scale(1.4); opacity: 0; } }
-.hero-eng-cap { position: absolute; z-index: 3; top: clamp(88px, 12vh, 128px); right: clamp(20px, 4vw, 48px); font-family: var(--mono); font-size: 10px; letter-spacing: .34em; color: rgba(255,255,255,.75); text-shadow: 0 1px 10px rgba(30,39,33,.45); }
+.hero-eng-cap { position: absolute; z-index: 3; top: clamp(88px, 12vh, 128px); right: clamp(20px, 4vw, 48px); font-family: var(--mono); font-size: 10px; letter-spacing: .34em; color: rgba(18,63,48,.55); }
 .hero-scroll { display: none; }
 
 
-/* 稜線（写真の裾は深杉の山なみ→最前面の1枚だけ雪白で次の帯へつなぐ） */
+/* 稜線（背景メディアの裾から雪白の次の帯へつなぐ） */
 .hero-ridge { position: absolute; left: 0; right: 0; bottom: -1px; z-index: 2; pointer-events: none; }
 .hero-ridge > div { position: absolute; bottom: 0; left: 0; right: 0; }
 .hero-ridge svg { width: 100%; height: 100%; display: block; }
@@ -295,9 +301,10 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
   .hero-ridge .mt-sky { height: 48px; } .hero-ridge .mt-back { height: 36px; }
   .hero-ridge .mt { height: 26px; } .hero-ridge .sea { height: 14px; } .hero-ridge .sea-front { height: 8px; }
 }
-/* モバイル: 文節単位を保ったまま、写真上の文字を読みやすくする */
+/* モバイル: 文節単位を保ったまま、背景上の文字を読みやすくする */
 @media (max-width: 700px) {
   .hero { min-height: 0; }
+  .hero-stage { min-height: 780px; }
   .hero-overlay { padding: 92px 20px 58px; justify-content: flex-start; }
   .hero-h1 .nw, .hero-sub .nw { white-space: nowrap; }
   .hero-h1 { font-size: clamp(26px, 7.2vw, 30px); line-height: 1.4; }
@@ -310,11 +317,11 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
   .trust-item { padding: 7px 12px; background: rgba(255,255,255,.94); }
   .hero-veil {
     background: linear-gradient(to bottom,
-      rgba(249,250,247,.64) 0%,
-      rgba(249,250,247,.62) 60%,
-      rgba(249,250,247,.54) 76%,
-      rgba(249,250,247,.18) 88%,
-      rgba(249,250,247,.03) 95%,
+      rgba(249,250,247,.18) 0%,
+      rgba(249,250,247,.16) 58%,
+      rgba(249,250,247,.08) 74%,
+      rgba(249,250,247,.03) 88%,
+      rgba(249,250,247,.01) 95%,
       rgba(249,250,247,0) 100%);
   }
 }
@@ -359,14 +366,11 @@ main > section:not(.hero) {
   contain-intrinsic-size: auto 900px;
 }
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20260801-wrap2" media="print" data-async-style onload="this.media='all';this.onload=null">
-<noscript><link rel="stylesheet" href="skin-v2.css?v=20260801-wrap2"></noscript>
+<link rel="stylesheet" href="skin-v2.css?v=20260804-hero-video1" media="print" data-async-style onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="skin-v2.css?v=20260804-hero-video1"></noscript>
 <style id="home-hero-legibility">
 @media(max-width:700px){
-  /* 本文が写真の建物・木立に重なる帯（ヒーロー高の45〜75%）まで白を残す。
-     下端は従来どおり抜いて、水面と船を見せる。 */
-  .hero-veil{background:linear-gradient(to bottom,rgba(249,250,247,.64) 0%,rgba(249,250,247,.62) 60%,rgba(249,250,247,.54) 76%,rgba(249,250,247,.18) 88%,rgba(249,250,247,.03) 95%,rgba(249,250,247,0) 100%)}
-  /* 写真の上では下線だけだと読めず、白マーカーだと角ばった箱が貼りついて見える。
+  /* イラストの上では下線だけだと読めず、白マーカーだと角ばった箱が貼りついて見える。
      すぐ下の .trust-item と同じ白い丸チップに寄せて、副ボタンとして成立させる。 */
   .hero-sub-link{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 18px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.94);color:var(--sugi);font-size:13.5px;font-weight:400;letter-spacing:.05em;text-shadow:none}
   /* 340px以下では横に並びきらずチップ内で「社労士と／は？」と割れる。
@@ -553,17 +557,26 @@ main > section:not(.hero) {
   </div>
   <div class="hero-stage">
     <picture class="hero-media" aria-hidden="true">
+      <source media="(max-width: 700px)" type="image/avif"
+              srcset="assets/photos/home-labor-story/home-labor-story-mobile-480.avif 480w, assets/photos/home-labor-story/home-labor-story-mobile-720.avif 720w"
+              sizes="100vw">
+      <source media="(max-width: 700px)" type="image/webp"
+              srcset="assets/photos/home-labor-story/home-labor-story-mobile-480.webp 480w, assets/photos/home-labor-story/home-labor-story-mobile-720.webp 720w"
+              sizes="100vw">
       <source type="image/avif"
-              srcset="assets/photos/hero-main-720.avif 720w, assets/photos/hero-main-800.avif 800w, assets/photos/hero-main-1200.avif 1200w, assets/photos/hero-main-1600.avif 1600w"
+              srcset="assets/photos/home-labor-story/home-labor-story-desktop-800.avif 800w, assets/photos/home-labor-story/home-labor-story-desktop-1280.avif 1280w"
               sizes="100vw">
       <source type="image/webp"
-              srcset="assets/photos/hero-main-720.webp 720w, assets/photos/hero-main-800.webp 800w, assets/photos/hero-main-1200.webp 1200w, assets/photos/hero-main-1600.webp 1600w"
+              srcset="assets/photos/home-labor-story/home-labor-story-desktop-800.webp 800w, assets/photos/home-labor-story/home-labor-story-desktop-1280.webp 1280w"
               sizes="100vw">
-      <img src="assets/photos/hero-main-1200.webp"
-           srcset="assets/photos/hero-main-720.webp 720w, assets/photos/hero-main-800.webp 800w, assets/photos/hero-main-1200.webp 1200w, assets/photos/hero-main-1600.webp 1600w"
-           sizes="100vw" width="1600" height="1424" alt=""
+      <img src="assets/photos/home-labor-story/home-labor-story-desktop-1280.webp"
+           srcset="assets/photos/home-labor-story/home-labor-story-desktop-800.webp 800w, assets/photos/home-labor-story/home-labor-story-desktop-1280.webp 1280w"
+           sizes="100vw" width="1280" height="720" alt=""
            fetchpriority="high" decoding="sync">
     </picture>
+    <video class="hero-video" muted loop playsinline preload="none" aria-hidden="true"
+           data-src-desktop="assets/video/home-labor-story-desktop.mp4"
+           data-src-mobile="assets/video/home-labor-story-mobile.mp4"></video>
     <div class="hero-veil" aria-hidden="true"></div>
     <div class="hero-overlay">
       <div class="why-label hero-label">富山の社会保険労務士事務所</div>
@@ -959,6 +972,57 @@ main > section:not(.hero) {
 // Modal data removed — 詳細モーダルは未使用のため削除済み
 
 // Open modal handlers removed — 詳細モーダルは未使用のため削除済み
+
+// 初期表示はLCP静止画だけにし、最初の操作後に動画を読込む。省データ・動きを減らす設定では静止画を保つ。
+if(window.__homeHeroVideo&&window.__homeHeroVideo.isConnected===false){
+  window.__homeHeroVideo.pause();
+  window.__homeHeroVideo.removeAttribute('src');
+  window.__homeHeroVideo.load();
+}
+if(window.__homeHeroVideoIdle&&'cancelIdleCallback' in window){
+  cancelIdleCallback(window.__homeHeroVideoIdle);
+}
+(function(){
+  var video=document.querySelector('.hero-video');
+  if(!video)return;
+  window.__homeHeroVideo=video;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var connection=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+  if(reduce||(connection&&connection.saveData))return;
+  function loadVideo(){
+    if(!video.isConnected||video.getAttribute('src'))return;
+    var mobile=window.matchMedia&&window.matchMedia('(max-width: 700px)').matches;
+    video.src=video.dataset[mobile?'srcMobile':'srcDesktop'];
+    video.load();
+    var playback=video.play();
+    if(playback&&typeof playback.then==='function'){
+      playback.then(function(){video.classList.add('is-ready')}).catch(function(){});
+    }else{
+      video.classList.add('is-ready');
+    }
+  }
+  function queueVideo(){
+    if('requestIdleCallback' in window){
+      window.__homeHeroVideoIdle=requestIdleCallback(loadVideo,{timeout:800});
+    }else{
+      setTimeout(loadVideo,300);
+    }
+  }
+  var started=false;
+  var intentEvents=['pointermove','pointerdown','touchstart','scroll','keydown'];
+  function startAfterIntent(){
+    if(started)return;
+    started=true;
+    intentEvents.forEach(function(name){window.removeEventListener(name,startAfterIntent)});
+    if(document.readyState==='complete')queueVideo();
+    else window.addEventListener('load',queueVideo,{once:true});
+  }
+  if(navigator.userActivation&&navigator.userActivation.hasBeenActive){
+    startAfterIntent();
+  }else{
+    intentEvents.forEach(function(name){window.addEventListener(name,startAfterIntent,{passive:true})});
+  }
+})();
 
 
 // 固定相談ボタンはスクロールごとの位置計測を避け、ヒーローCTAの交差状態だけで切り替える。
