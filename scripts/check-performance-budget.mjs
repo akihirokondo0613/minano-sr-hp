@@ -49,7 +49,7 @@ for (const { full, rel } of publicHtml) {
     fail(`${rel}: image-slot.jsのキャッシュ版が不一致です（${imageSlotVersion[1]}）`);
   }
   const skinVersion = html.match(/skin-v2\.css\?v=([^"']+)/i);
-  if (skinVersion && skinVersion[1] !== '20260801-wrap2') {
+  if (skinVersion && skinVersion[1] !== '20260804-hero-video1') {
     fail(`${rel}: skin-v2.cssのキャッシュ版が不一致です（${skinVersion[1]}）`);
   }
   const serviceVersion = html.match(/service\.css\?v=([^"']+)/i);
@@ -70,6 +70,7 @@ const requiredHomePatterns = [
   [/<picture class="hero-media"/, 'LCP画像がnative pictureになっていません'],
   [/fetchpriority="high"/, 'LCP画像にfetchpriority=highがありません'],
   [/<link rel="preload" as="image" type="image\/avif"/, 'LCP画像のpreloadがありません'],
+  [/<video class="hero-video"[^>]*\bpreload="none"/, 'ヒーロー動画が初期読込を避けていません'],
   [/data-async-style/, 'トップページの全量CSSが非同期化されていません'],
   [/id="critical-home"/, 'トップページの重要CSSがインライン化されていません'],
 ];
@@ -91,9 +92,10 @@ if (!/const EDIT_MODE\s*=\s*!!\(window\.omelette/.test(imageSlot)) {
 }
 
 const sizeBudgets = [
-  ['assets/photos/hero-main-800.avif', 40 * 1024],
-  ['assets/photos/hero-main-1200.avif', 90 * 1024],
-  ['assets/photos/hero-main-1600.avif', 150 * 1024],
+  ['assets/photos/home-labor-story/home-labor-story-mobile-480.avif', 16 * 1024],
+  ['assets/photos/home-labor-story/home-labor-story-mobile-720.avif', 24 * 1024],
+  ['assets/photos/home-labor-story/home-labor-story-desktop-800.avif', 16 * 1024],
+  ['assets/photos/home-labor-story/home-labor-story-desktop-1280.avif', 24 * 1024],
 ];
 for (const [rel, max] of sizeBudgets) {
   try {

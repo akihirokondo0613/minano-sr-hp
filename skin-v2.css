@@ -198,7 +198,7 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
   .mob-nav { padding: 84px 22px max(28px, env(safe-area-inset-bottom)); }
 }
 
-/* ---------- HERO（写真オーバーレイ＋深杉ベール。PCは帯込みで100svhに収める） ---------- */
+/* ---------- HERO（イラスト動画＋雪白ベール。PCは帯込みで100svhに収める） ---------- */
 :root { --hs-h: 76px; }  /* PCのサマリー帯の高さ */
 .hero { position: relative; background: var(--yuki); display: flex; align-items: stretch; overflow: hidden; }
 @media (min-width: 1024px) {
@@ -208,17 +208,19 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
   .hero { min-height: clamp(560px, 88svh, 840px); }
 }
 .hero-stage { position: relative; flex: 1; display: flex; background-color: var(--yuki) !important; }
-/* 写真は全面カバー（image-slot.jsのインライン縦横比は絶対配置で無効化される） */
-.hero-stage > :is(image-slot, .hero-media) {
+/* 背景メディアは全面カバー（image-slot.jsのインライン縦横比は絶対配置で無効化される） */
+.hero-stage > :is(image-slot, .hero-media, .hero-video) {
   position: absolute !important; inset: 0 !important;
   width: 100% !important; height: 100% !important;
   aspect-ratio: auto !important; border-radius: 0 !important; margin: 0 !important;
   display: block !important; z-index: 0;
 }
 .hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.hero-video { object-fit: cover; object-position: center; opacity: 0; pointer-events: none; transition: opacity .7s var(--ease); }
+.hero-video.is-ready { opacity: 1; }
 .hero-veil { display: block; position: absolute; inset: 0; z-index: 1;
-  /* 本文（.hero-sub）が伸びる横幅ぶんは白を残す。768〜1440pxで写真の建物に重なって読めなくなっていた */
-  background: linear-gradient(97deg, rgba(249,250,247,.74) 0%, rgba(249,250,247,.66) 32%, rgba(249,250,247,.5) 62%, rgba(249,250,247,0) 86%),
+  /* 見出しの安全領域を雪白で確保し、右側のイラストへなだらかにつなぐ。 */
+  background: linear-gradient(97deg, rgba(249,250,247,.94) 0%, rgba(249,250,247,.9) 42%, rgba(249,250,247,.78) 62%, rgba(249,250,247,.18) 76%, rgba(249,250,247,0) 86%),
               linear-gradient(to bottom, rgba(249,250,247,.34), transparent 140px); }
 .hero-overlay {
   position: relative; z-index: 2;
@@ -241,11 +243,11 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
 .live-dot-w, .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--moegi); display: inline-block; position: relative; flex-shrink: 0; }
 .live-dot-w::after, .live-dot::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1px solid var(--moegi); animation: pulse 2s infinite; }
 @keyframes pulse { 0% { transform: scale(.6); opacity: 1; } 100% { transform: scale(1.4); opacity: 0; } }
-.hero-eng-cap { position: absolute; z-index: 3; top: clamp(88px, 12vh, 128px); right: clamp(20px, 4vw, 48px); font-family: var(--mono); font-size: 10px; letter-spacing: .34em; color: rgba(255,255,255,.75); text-shadow: 0 1px 10px rgba(30,39,33,.45); }
+.hero-eng-cap { position: absolute; z-index: 3; top: clamp(88px, 12vh, 128px); right: clamp(20px, 4vw, 48px); font-family: var(--mono); font-size: 10px; letter-spacing: .34em; color: rgba(18,63,48,.55); }
 .hero-scroll { display: none; }
 
 
-/* 稜線（写真の裾は深杉の山なみ→最前面の1枚だけ雪白で次の帯へつなぐ） */
+/* 稜線（背景メディアの裾から雪白の次の帯へつなぐ） */
 .hero-ridge { position: absolute; left: 0; right: 0; bottom: -1px; z-index: 2; pointer-events: none; }
 .hero-ridge > div { position: absolute; bottom: 0; left: 0; right: 0; }
 .hero-ridge svg { width: 100%; height: 100%; display: block; }
@@ -259,9 +261,10 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
   .hero-ridge .mt-sky { height: 48px; } .hero-ridge .mt-back { height: 36px; }
   .hero-ridge .mt { height: 26px; } .hero-ridge .sea { height: 14px; } .hero-ridge .sea-front { height: 8px; }
 }
-/* モバイル: 文節単位を保ったまま、写真上の文字を読みやすくする */
+/* モバイル: 文節単位を保ったまま、背景上の文字を読みやすくする */
 @media (max-width: 700px) {
   .hero { min-height: 0; }
+  .hero-stage { min-height: 780px; }
   .hero-overlay { padding: 92px 20px 58px; justify-content: flex-start; }
   .hero-h1 .nw, .hero-sub .nw { white-space: nowrap; }
   .hero-h1 { font-size: clamp(26px, 7.2vw, 30px); line-height: 1.4; }
@@ -274,11 +277,11 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
   .trust-item { padding: 7px 12px; background: rgba(255,255,255,.94); }
   .hero-veil {
     background: linear-gradient(to bottom,
-      rgba(249,250,247,.64) 0%,
-      rgba(249,250,247,.62) 60%,
-      rgba(249,250,247,.54) 76%,
-      rgba(249,250,247,.18) 88%,
-      rgba(249,250,247,.03) 95%,
+      rgba(249,250,247,.18) 0%,
+      rgba(249,250,247,.16) 58%,
+      rgba(249,250,247,.08) 74%,
+      rgba(249,250,247,.03) 88%,
+      rgba(249,250,247,.01) 95%,
       rgba(249,250,247,0) 100%);
   }
 }
