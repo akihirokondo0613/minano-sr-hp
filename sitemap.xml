@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog.html</loc>
-    <lastmod>2026-08-04</lastmod>
+    <lastmod>2026-08-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -194,7 +194,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/kyuyo-itaku-junbi.html</loc>
-    <lastmod>2026-08-04</lastmod>
+    <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -261,6 +261,12 @@
   <url>
     <loc>https://minano-sr.com/blog/shaho-tekiyo-kakudai-2026.html</loc>
     <lastmod>2026-08-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://minano-sr.com/blog/shika-baseup-hyokaryo-2026.html</loc>
+    <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
