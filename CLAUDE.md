@@ -175,6 +175,21 @@ fetch はローカルファイルではブロックされ、待ち状態（pendi
 - 検証用：`window.__mnSpa.navigate(url)`。（比較デモ motion-lab.html はクリーンアップ 2026-07-15 で削除済み。決定内容は本メモに記録。）
 - 注意：ページ固有インラインscriptがdocument/window級リスナーを張ると訪問のたびに蓄積する。**scrollハンドラは2026-07-17に全ページ「登録置き換え式」へ統一済み（下記「ページ共通scrollハンドラの作法」参照）。新規ページも必ず同じ書き方にすること。** それ以外のdocument/window級リスナーは要素バインドに寄せるか ONCE_INLINE にid登録。
 
+## ナビの下線は skin-v2.css の1系統だけ（2026-08-09 二重下線を解消）
+
+**起きたバグ**: `header-motion.js` が旧デザイン時代のホバー下線を注入し続けていた。
+
+```css
+body:not([data-nav]) .nav-links a:not(.active):not([aria-current]){
+  background:linear-gradient(var(--g600),var(--g600)) no-repeat center bottom;background-size:0 2px}
+```
+
+稜線適用時に `skin-v2.css` へ `.nav-links a::after`（--moegi 3px・左右8px内側）を入れたが、旧下線を無効化したのは `<body data-nav="B">` を付けた5ページ（index / services / pricing / support / about）だけだった。**`skin-v2.css` を読む残りのページ（blog.html・blog記事28本・portal・recruit・infographic・joseikin・privacy・404）では2本が重なり**、幅の広い濃緑2pxの両端が「耳」のようにはみ出して見えていた。加えてこの `background` 指定（特異度 0-4-2）が `skin-v2.css` の `.nav-links a:hover`（0-2-1）の淡い緑のピル背景を打ち消していた＝**ブログ側だけホバーの見た目が違う**原因。
+
+- **対処**: `header-motion.js` から当該2行を撤去。ナビのホバー下線と背景は `skin-v2.css` の `.nav-links a::after` / `a:hover` が全ページで担う。`data-nav` 属性はどこからも参照されなくなったが、各ページの `<body data-nav="B">` はそのまま残してある（他の用途で使う可能性があるため。使わないなら別途削除してよい）。
+- **`uploads/` 配下は対象外。** これらは `skin-v2.css` を読まず `uploads/service.css` が独自に `.nav-links a{background:linear-gradient(...)}` を持つ。`::after` は無いので下線は1本のまま＝二重になっていない。旧系統として意図的に残す（配色は稜線パレットに追従済み）。
+- **再発防止**: 共通CSSへ新しい装飾を足すときは、**旧実装が別ファイル（JSの注入CSS含む）に残っていないか**を必ず `rg` で確認する。今回は「一部ページにだけ除外フラグを付けて済ませた」ことで、フラグの無いページに旧実装が生き残った。除外フラグ方式は取りこぼす。
+
 ## ページ共通scrollハンドラの作法（2026-07-17 全33ページ改修済み・必ず守る）
 
 **起きたバグ（Codex指摘で発覚）**：各ページのインラインscrollハンドラが (1) SPA遷移のたびに `window.addEventListener('scroll',…)` を張り直して**蓄積**し、(2) index / blog のハンドラは `#fl`（固定相談ボタン）を**無ガード参照**（indexは素の `fl` ＝id暗黙グローバル、blogは `getElementById('fl').classList` 直呼び）していたため、`#fl` を持たない**ブログ記事14本**へ遷移すると残留ハンドラが `ReferenceError: fl is not defined` / `TypeError: Cannot read properties of null` を毎スクロール発生させていた。単一ページのレスポンシブ検証では出ず、**SPAで複数ページを連続遷移して初めて発生**する。

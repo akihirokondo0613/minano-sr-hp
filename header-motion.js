@@ -5,8 +5,8 @@
  *                    高さが縮み影が満ちる（下の注入CSS）。
  *  ② 隠れて戻る   … 下スクロールでヘッダーを上へ隠し、上スクロールで戻す（このJS）。
  *  ③ 進捗下線     … ヘッダー下辺に読み進み具合を示す緑線を注入（このJS）。
- *  ＋ ホバー②     … メニューに中央から伸びる緑下線＋文字が緑（注入CSS）。
- *                    トップ（body[data-nav=...]）は独自ナビ演出を持つため対象外。
+ *  （旧「ホバー②」の下線注入は撤去。ナビのホバー下線と背景は skin-v2.css の
+ *    .nav-links a::after / a:hover が全ページで担う。2026-08-09）
  *
  * CSSはこのファイルから注入し、全ページ一律に効かせる（service.css読込の有無を問わない）。
  * 既存の .solid トグル / floating 処理には手を付けない。reduced-motion では隠れを無効化。
@@ -18,9 +18,7 @@
     + '.nav.solid{height:56px;box-shadow:0 6px 20px rgba(0,0,0,.07)}'
     + '.nav.nav--hidden{transform:translateY(-100%)}'
     + '.logo-mark{transition:transform .42s cubic-bezier(.22,1,.36,1)}'
-    + '.nav.solid .logo-mark{transform:scale(.9)}'
-    + 'body:not([data-nav]) .nav-links a:not(.active):not([aria-current]){background:linear-gradient(var(--g600,#006E3C),var(--g600,#006E3C)) no-repeat center bottom;background-size:0 2px;transition:color .35s ease,background-size .32s cubic-bezier(.22,1,.36,1)}'
-    + '@media(hover:hover){body:not([data-nav]) .nav-links a:not(.active):not([aria-current]):hover{color:var(--g600,#006E3C);background-size:100% 2px}}';
+    + '.nav.solid .logo-mark{transform:scale(.9)}';
 
   function injectCSS() {
     if (document.getElementById('hm-css')) return;
