@@ -3,6 +3,20 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const base = process.argv[2] || 'http://127.0.0.1:8765/';
+const articleMetadata = JSON.parse(
+  fs.readFileSync(path.join(process.cwd(), 'blog/articles.json'), 'utf8'),
+);
+const expectedArticleCount = articleMetadata.length;
+const blogSearchTerm = '介護テクノロジー';
+const expectedSystemArticles = articleMetadata
+  .filter(article => article.cat === 'system')
+  .map(article => `blog/${article.slug}.html`);
+const expectedSearchArticles = articleMetadata
+  .filter(article => `${article.title} ${article.description} ${article.catLabel}`.includes(blogSearchTerm))
+  .map(article => `blog/${article.slug}.html`);
+const expectedSearchSystemArticles = articleMetadata
+  .filter(article => article.cat === 'system' && `${article.title} ${article.description} ${article.catLabel}`.includes(blogSearchTerm))
+  .map(article => `blog/${article.slug}.html`);
 const viewports = [
   { width: 360, height: 844 },
   { width: 390, height: 844 },
@@ -379,13 +393,35 @@ function recordConsoleError(target) {
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       filterHeight: Math.round(document.querySelector('.filter-bar')?.getBoundingClientRect().height || 0),
       dateCount: document.querySelectorAll('#articleList .art-date').length,
+      firstHref: document.querySelector('#articleList .art-row')?.getAttribute('href') || '',
       systemTabVisible: (() => {
         const rect = [...document.querySelectorAll('.filter-tab')]
           .find(tab => tab.textContent.trim() === 'システム導入')?.getBoundingClientRect();
         return !!rect && rect.left >= 0 && rect.right <= innerWidth;
       })(),
     }));
-    await blogPage.locator('#blogSearch').fill('介護テクノロジー');
+    let navUnderlineState = null;
+    if (width === 1440) {
+      const navLink = blogPage.locator('.nav-links a[href="pricing.html"]');
+      await navLink.hover();
+      await blogPage.waitForTimeout(350);
+      navUnderlineState = await navLink.evaluate(link => {
+        const linkRect = link.getBoundingClientRect();
+        const linkStyle = getComputedStyle(link);
+        const underlineStyle = getComputedStyle(link, '::after');
+        return {
+          bodyNav: document.body.dataset.nav || '',
+          backgroundImage: linkStyle.backgroundImage,
+          linkWidth: Number(linkRect.width.toFixed(2)),
+          underlineWidth: Number.parseFloat(underlineStyle.width),
+          underlineHeight: Number.parseFloat(underlineStyle.height),
+          underlineLeft: Number.parseFloat(underlineStyle.left),
+          underlineRight: Number.parseFloat(underlineStyle.right),
+          underlineColor: underlineStyle.backgroundColor,
+        };
+      });
+    }
+    await blogPage.locator('#blogSearch').fill(blogSearchTerm);
     const searchBlogState = await blogPage.evaluate(() => {
       const visibleRows = [...document.querySelectorAll('#articleList .art-row')]
         .filter(row => getComputedStyle(row).display !== 'none');
@@ -396,35 +432,41 @@ function recordConsoleError(target) {
       };
     });
     await blogPage.getByRole('button', { name: 'システム導入', exact: true }).click();
+    await blogPage.waitForTimeout(350);
     const filteredBlogState = await blogPage.evaluate(() => {
       const visibleRows = [...document.querySelectorAll('#articleList .art-row')]
         .filter(row => getComputedStyle(row).display !== 'none');
+      const activeTab = document.querySelector('.filter-tab.active');
+      const activeStyle = activeTab && getComputedStyle(activeTab);
+      const activeAfter = activeTab && getComputedStyle(activeTab, '::after');
       return {
         count: document.getElementById('resultCount')?.textContent.trim() || '',
         active: document.querySelector('.filter-tab.active')?.textContent.trim() || '',
         pressed: document.querySelector('.filter-tab.active')?.getAttribute('aria-pressed') || '',
         hrefs: visibleRows.map(row => row.getAttribute('href')),
         badges: visibleRows.map(row => row.querySelector('.art-cat-badge')?.textContent.trim() || ''),
+        backgroundImage: activeStyle?.backgroundImage || '',
+        backgroundColor: activeStyle?.backgroundColor || '',
+        afterContent: activeAfter?.content || '',
       };
     });
-    const expectedSystemArticles = [
-      'blog/kaigo-technology-jininhaichi-2027.html',
-      'blog/kintai-dx-donyu-junbi.html',
-    ];
     const blogFilterOk =
-      initialBlogState.total === 40 &&
+      initialBlogState.total === expectedArticleCount &&
       initialBlogState.categories === '7' &&
       initialBlogState.overflow <= 1 &&
-      initialBlogState.dateCount === 40 &&
+      initialBlogState.dateCount === expectedArticleCount &&
       initialBlogState.systemTabVisible &&
       (width > 640 || initialBlogState.filterHeight <= 70) &&
-      searchBlogState.count === '該当 1件' &&
+      searchBlogState.count === `該当 ${expectedSearchArticles.length}件` &&
       searchBlogState.clearVisible &&
-      JSON.stringify(searchBlogState.hrefs) === JSON.stringify(expectedSystemArticles.slice(0, 1)) &&
-      filteredBlogState.count === '該当 1件' &&
+      JSON.stringify(searchBlogState.hrefs) === JSON.stringify(expectedSearchArticles) &&
+      filteredBlogState.count === `該当 ${expectedSearchSystemArticles.length}件` &&
       filteredBlogState.active === 'システム導入' &&
       filteredBlogState.pressed === 'true' &&
-      JSON.stringify(filteredBlogState.hrefs) === JSON.stringify(expectedSystemArticles.slice(0, 1)) &&
+      filteredBlogState.backgroundImage === 'none' &&
+      filteredBlogState.backgroundColor === 'rgb(18, 63, 48)' &&
+      filteredBlogState.afterContent === 'none' &&
+      JSON.stringify(filteredBlogState.hrefs) === JSON.stringify(expectedSearchSystemArticles) &&
       filteredBlogState.badges.every(badge => badge === 'システム導入');
     await blogPage.getByRole('button', { name: 'クリア', exact: true }).click();
     const clearedBlogState = await blogPage.evaluate(() => ({
@@ -452,18 +494,59 @@ function recordConsoleError(target) {
         overlap: nav && filter ? Math.round(nav.bottom - filter.top) : 999,
       };
     });
+    let articleNavUnderlineState = null;
+    if (width === 1440 && initialBlogState.firstHref) {
+      await blogPage.goto(new URL(initialBlogState.firstHref, base).href, { waitUntil: 'load' });
+      await blogPage.waitForTimeout(350);
+      const articleNavLink = blogPage.locator('.nav-links a[href="../pricing.html"]');
+      await articleNavLink.hover();
+      await blogPage.waitForTimeout(350);
+      articleNavUnderlineState = await articleNavLink.evaluate(link => {
+        const linkRect = link.getBoundingClientRect();
+        const linkStyle = getComputedStyle(link);
+        const underlineStyle = getComputedStyle(link, '::after');
+        return {
+          bodyNav: document.body.dataset.nav || '',
+          backgroundImage: linkStyle.backgroundImage,
+          linkWidth: Number(linkRect.width.toFixed(2)),
+          underlineWidth: Number.parseFloat(underlineStyle.width),
+          underlineHeight: Number.parseFloat(underlineStyle.height),
+          underlineLeft: Number.parseFloat(underlineStyle.left),
+          underlineRight: Number.parseFloat(underlineStyle.right),
+          underlineColor: underlineStyle.backgroundColor,
+        };
+      });
+    }
     const resetBlogOk =
-      clearedBlogState.count === '該当 2件' &&
-      clearedBlogState.visible === 2 &&
+      clearedBlogState.count === `該当 ${expectedSystemArticles.length}件` &&
+      clearedBlogState.visible === expectedSystemArticles.length &&
       clearedBlogState.active === 'システム導入' &&
-      resetBlogState.count === '全40件' &&
-      resetBlogState.visible === 40 &&
+      resetBlogState.count === `全${expectedArticleCount}件` &&
+      resetBlogState.visible === expectedArticleCount &&
       resetBlogState.pressed === 1;
     const stickyBlogOk = !stickyBlogState.navHidden && stickyBlogState.overlap <= 1;
-    if (!blogFilterOk || !resetBlogOk || !stickyBlogOk || blogErrors.length) {
-      failures.push(`${width}px ブログ絞り込み: 表示・件数・検索・カテゴリが不正 ${JSON.stringify({ initialBlogState, searchBlogState, filteredBlogState, clearedBlogState, resetBlogState, stickyBlogState, blogErrors })}`);
+    const navUnderlineOk = navUnderlineState === null || (
+      navUnderlineState.bodyNav === '' &&
+      navUnderlineState.backgroundImage === 'none' &&
+      navUnderlineState.underlineHeight === 3 &&
+      navUnderlineState.underlineLeft === 8 &&
+      navUnderlineState.underlineRight === 8 &&
+      navUnderlineState.underlineColor === 'rgb(46, 158, 99)' &&
+      navUnderlineState.underlineWidth <= navUnderlineState.linkWidth - 15
+    );
+    const articleNavUnderlineOk = articleNavUnderlineState === null || (
+      articleNavUnderlineState.bodyNav === '' &&
+      articleNavUnderlineState.backgroundImage === 'none' &&
+      articleNavUnderlineState.underlineHeight === 3 &&
+      articleNavUnderlineState.underlineLeft === 8 &&
+      articleNavUnderlineState.underlineRight === 8 &&
+      articleNavUnderlineState.underlineColor === 'rgb(46, 158, 99)' &&
+      articleNavUnderlineState.underlineWidth <= articleNavUnderlineState.linkWidth - 15
+    );
+    if (!blogFilterOk || !resetBlogOk || !stickyBlogOk || !navUnderlineOk || !articleNavUnderlineOk || blogErrors.length) {
+      failures.push(`${width}px ブログ絞り込み・ナビ下線: 表示・件数・検索・カテゴリ・下線が不正 ${JSON.stringify({ initialBlogState, navUnderlineState, articleNavUnderlineState, searchBlogState, filteredBlogState, clearedBlogState, resetBlogState, stickyBlogState, blogErrors })}`);
     }
-    blogFilterResults.push({ width, initialBlogState, searchBlogState, filteredBlogState, clearedBlogState, resetBlogState, stickyBlogState, ok: blogFilterOk && resetBlogOk && stickyBlogOk, errors: blogErrors.length });
+    blogFilterResults.push({ width, initialBlogState, navUnderlineState, articleNavUnderlineState, searchBlogState, filteredBlogState, clearedBlogState, resetBlogState, stickyBlogState, ok: blogFilterOk && resetBlogOk && stickyBlogOk && navUnderlineOk && articleNavUnderlineOk, errors: blogErrors.length });
     await blogPage.close();
   }
   results.push({ blogFilters: blogFilterResults });
@@ -834,7 +917,7 @@ function recordConsoleError(target) {
     systemRow: /href="blog\/verification-only\.html" class="art-row" data-cat="system"/.test(generatedBlog) &&
       /<span class="art-cat-badge">システム導入<\/span>/.test(generatedBlog),
   };
-  if (generatedBlogState.count !== 41 || generatedBlogState.rows !== 41 || !generatedBlogState.systemRow) {
+  if (generatedBlogState.count !== expectedArticleCount + 1 || generatedBlogState.rows !== expectedArticleCount + 1 || !generatedBlogState.systemRow) {
     failures.push(`記事投稿テンプレート: blog.htmlの件数・カテゴリ反映が不正 ${JSON.stringify(generatedBlogState)}`);
   }
   results.push({ articleTemplate: 'generated', requiredLinks: expectedTemplateFragments.length - templateMissing.length, generatedBlogState, errors: adminErrors.length });
