@@ -1,7 +1,7 @@
 /**
  * 日本語の「泣き別れ」（行末に1文字だけ取り残される改行）を実測する監査（Playwright）
  *
- *   node scripts/audit-line-breaks.cjs [base] [--check] [--json] [--widths=375,402]
+ *   node scripts/audit-line-breaks.cjs [base] [--check] [--json] [--widths=375,402] [--page=blog/slug.html]
  *   例) node scripts/audit-line-breaks.cjs http://127.0.0.1:8811/
  *
  * なぜ別の道具が要るのか:
@@ -34,6 +34,7 @@ const checkOnly = args.includes('--check');
 const asJson = args.includes('--json');
 const engineName = (args.find((a) => a.startsWith('--engine=')) || '--engine=webkit').split('=')[1];
 const widthArg = args.find((a) => a.startsWith('--widths='));
+const pageArg = (args.find((a) => a.startsWith('--page=')) || '').split('=')[1] || '';
 const WIDTHS = widthArg
   ? widthArg.split('=')[1].split(',').map(Number)
   : [320, 360, 375, 390, 393, 402, 414, 430, 440];
@@ -63,6 +64,15 @@ async function prepareLocalHttpPage(page) {
 }
 
 function pages() {
+  if (pageArg) {
+    if (!/^(?:[a-z0-9-]+\.html|(?:blog|uploads)\/[a-z0-9-]+\.html)$/.test(pageArg)) {
+      throw new Error(`--page は公開HTMLの相対パスで指定してください: ${pageArg}`);
+    }
+    if (!fs.existsSync(path.join(root, pageArg))) {
+      throw new Error(`--page の対象が見つかりません: ${pageArg}`);
+    }
+    return [pageArg];
+  }
   const list = [];
   for (const f of fs.readdirSync(root)) {
     if (!f.endsWith('.html')) continue;
@@ -132,17 +142,27 @@ const AUDIT = `() => {
   const browser = await engine.launch({ headless: true });
   const targets = pages();
   const found = new Map();
+  const navigationFailures = [];
+  let successfulNavigations = 0;
 
   for (const rel of targets) {
     for (const width of WIDTHS) {
       const page = await browser.newPage({ viewport: { width, height: 900 } });
       await prepareLocalHttpPage(page);
+      let response;
       try {
-        await page.goto(base + rel, { waitUntil: 'domcontentloaded', timeout: 20000 });
-      } catch {
+        response = await page.goto(base + rel, { waitUntil: 'domcontentloaded', timeout: 20000 });
+      } catch (error) {
+        navigationFailures.push(`${rel} @ ${width}px: ${error.message}`);
         await page.close();
         continue;
       }
+      if (!response?.ok()) {
+        navigationFailures.push(`${rel} @ ${width}px: HTTP ${response?.status() ?? '応答なし'}`);
+        await page.close();
+        continue;
+      }
+      successfulNavigations += 1;
       await page.waitForTimeout(300);
       // content-visibility:auto の節も測るため一度末尾まで送る
       await page.evaluate(async () => {
@@ -164,20 +184,23 @@ const AUDIT = `() => {
   await browser.close();
 
   const list = [...found.values()].sort((a, b) => b.widths.length - a.widths.length);
+  const expectedNavigations = targets.length * WIDTHS.length;
   if (asJson) {
-    console.log(JSON.stringify({ base, engine: engineName, widths: WIDTHS, findings: list }, null, 2));
+    console.log(JSON.stringify({ base, engine: engineName, widths: WIDTHS, successfulNavigations, expectedNavigations, navigationFailures, findings: list }, null, 2));
   } else {
     console.log(`対象 ${targets.length}ページ × ${WIDTHS.length}幅（${WIDTHS.join(' / ')}px）／${engineName}`);
+    console.log(`読込成功: ${successfulNavigations}/${expectedNavigations}`);
     console.log(`泣き別れ（最終行が${MAX_ORPHAN}文字以下）: ${list.length}件`);
     for (const f of list) {
       console.log(`\n[${f.widths.length}幅 ${f.widths.join('/')}] ${f.page}`);
       console.log(`   <${f.tag}${f.cls ? '.' + f.cls : ''}> …${f.prev} / 「${f.orphan}」`);
       console.log(`   ${f.text}`);
     }
+    for (const failure of navigationFailures) console.error(`読込失敗: ${failure}`);
     if (!list.length) console.log('\n泣き別れはありません。');
   }
 
-  if (checkOnly && list.length) process.exit(1);
+  if ((checkOnly || pageArg) && (list.length || successfulNavigations !== expectedNavigations)) process.exit(1);
 })().catch((error) => {
   console.error(error);
   process.exit(1);

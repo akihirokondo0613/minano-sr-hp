@@ -8,7 +8,7 @@
  * 見るもの（すべて実測値。人の記憶や印象は入れない）:
  *   - この記事のポイント / 目次 / 出典（参考となる公式情報） / あわせて読みたい の有無
  *   - FAQの問数（無いこと自体は異常としない。「よくある質問が実在しない記事に無理に作らない」方針）
- *   - 読了時間の表示と本文量の整合（500字/分・下限3分。差が2分以上なら要修正）
+ *   - 読了時間の表示と本文量・図解数の整合（550字/分＋図1点0.5分・切上げ・下限2分。差が2分以上なら要修正）
  *   - 目次のアンカーと h2 の id の一致
  *   - 記事間リンクの本数と、他のどの記事からもリンクされていない記事（孤立記事）
  *   - タイトル長（検索結果での省略を避ける32字目安）と description 長（80〜110字）
@@ -25,8 +25,9 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const checkOnly = process.argv.includes('--check');
 const asJson = process.argv.includes('--json');
 
-const CHARS_PER_MIN = 500;
-const MIN_READ = 3;
+const CHARS_PER_MIN = 550;
+const FIGURE_MINUTES = 0.5;
+const MIN_READ = 2;
 const READ_TOLERANCE = 2; // 丸め差では指摘しない
 const TITLE_MAX = 32;
 const DESC_MIN = 80;
@@ -37,7 +38,7 @@ const slugs = new Set(articles.map((a) => a.slug));
 
 function stripTags(html) {
   return html
-    .replace(/<(script|style)[\s\S]*?<\/\1>/g, '')
+    .replace(/<(script|style|svg)[\s\S]*?<\/\1>/g, '')
     .replace(/<[^>]+>/g, '')
     .replace(/&[a-z]+;|&#\d+;/gi, ' ');
 }
@@ -53,10 +54,11 @@ function inspect(article) {
   const body = bodyOf(source);
   if (!body) return { slug: article.slug, errors: ['article.post が見つかりません'] };
 
-  // 本文の実文字数（空白を除く）。読了時間の根拠。
+  // new_post.py の read モードと同じ式を使い、表示値との判定ずれを防ぐ。
   const chars = stripTags(body).replace(/\s+/g, '').length;
+  const figures = (body.match(/<figure\b/g) ?? []).length;
   const shownRead = Number(source.match(/読了 約(\d+)分/)?.[1] ?? 0);
-  const wantRead = Math.max(MIN_READ, Math.round(chars / CHARS_PER_MIN));
+  const wantRead = Math.max(MIN_READ, Math.ceil(chars / CHARS_PER_MIN + figures * FIGURE_MINUTES));
 
   // 目次とアンカーの整合
   const toc = body.match(/<nav class="post-toc"[\s\S]*?<\/nav>/)?.[0] ?? '';
@@ -88,6 +90,7 @@ function inspect(article) {
     date: article.date,
     updated: article.updated,
     chars,
+    figures,
     shownRead,
     wantRead,
     readGap: shownRead ? Math.abs(shownRead - wantRead) : 0,
@@ -127,7 +130,7 @@ for (const r of rows) {
   if (!r.hasRelated) problems.push(`${r.slug}: あわせて読みたいがありません`);
   if (r.headings >= 3 && !r.hasToc) problems.push(`${r.slug}: 見出しが${r.headings}個あるのに目次がありません`);
   if (!r.anchorsResolved) problems.push(`${r.slug}: 目次のアンカーに対応する h2 id がありません`);
-  if (r.readGap >= READ_TOLERANCE) problems.push(`${r.slug}: 読了時間が本文量と合いません（表示${r.shownRead}分 / 本文${r.chars}字＝約${r.wantRead}分）`);
+  if (r.readGap >= READ_TOLERANCE) problems.push(`${r.slug}: 読了時間が本文量・図解数と合いません（表示${r.shownRead}分 / 本文${r.chars}字＋図${r.figures}点＝約${r.wantRead}分）`);
   if (r.jsonRead !== r.shownRead) problems.push(`${r.slug}: 読了時間が articles.json（${r.jsonRead}分）と表示（${r.shownRead}分）で不一致です`);
   if (r.faqCount > 0 && !r.hasFaqSchema) problems.push(`${r.slug}: FAQがあるのに FAQPage 構造化データがありません`);
   if (r.inbound === 0) problems.push(`${r.slug}: 他のどの記事からもリンクされていません（孤立記事）`);
