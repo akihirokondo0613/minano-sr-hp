@@ -8,7 +8,7 @@
  * 見るもの（すべて実測値。人の記憶や印象は入れない）:
  *   - この記事のポイント / 目次 / 出典（参考となる公式情報） / あわせて読みたい の有無
  *   - FAQの問数（無いこと自体は異常としない。「よくある質問が実在しない記事に無理に作らない」方針）
- *   - 読了時間の表示と本文量・図解数の整合（550字/分＋図1点0.5分・切上げ・下限2分。差が2分以上なら要修正）
+ *   - 読了時間の表示と本文量・SVG図解数の整合（550字/分＋SVG図1点0.5分・切上げ・下限2分。差が2分以上なら要修正）
  *   - 目次のアンカーと h2 の id の一致
  *   - 記事間リンクの本数と、他のどの記事からもリンクされていない記事（孤立記事）
  *   - タイトル長（検索結果での省略を避ける32字目安）と description 長（80〜110字）
@@ -26,7 +26,7 @@ const checkOnly = process.argv.includes('--check');
 const asJson = process.argv.includes('--json');
 
 const CHARS_PER_MIN = 550;
-const FIGURE_MINUTES = 0.5;
+const SVG_FIGURE_MINUTES = 0.5;
 const MIN_READ = 2;
 const READ_TOLERANCE = 2; // 丸め差では指摘しない
 const TITLE_MAX = 32;
@@ -55,10 +55,11 @@ function inspect(article) {
   if (!body) return { slug: article.slug, errors: ['article.post が見つかりません'] };
 
   // new_post.py の read モードと同じ式を使い、表示値との判定ずれを防ぐ。
+  // HTML/CSS図解は中の文字がcharsへ入るため、追加時間は文字が除去されるSVGだけにする。
   const chars = stripTags(body).replace(/\s+/g, '').length;
-  const figures = (body.match(/<figure\b/g) ?? []).length;
+  const figures = (body.match(/<svg\b/g) ?? []).length;
   const shownRead = Number(source.match(/読了 約(\d+)分/)?.[1] ?? 0);
-  const wantRead = Math.max(MIN_READ, Math.ceil(chars / CHARS_PER_MIN + figures * FIGURE_MINUTES));
+  const wantRead = Math.max(MIN_READ, Math.ceil(chars / CHARS_PER_MIN + figures * SVG_FIGURE_MINUTES));
 
   // 目次とアンカーの整合
   const toc = body.match(/<nav class="post-toc"[\s\S]*?<\/nav>/)?.[0] ?? '';
@@ -73,13 +74,20 @@ function inspect(article) {
     ? (dl.match(/<dt>/g) ?? []).length
     : (ulFaq.match(/<li>/g) ?? []).length;
 
-  // リンクはページ全体を見る（出典・関連記事は </article> の外にある）
+  // リンクはページ全体を見る（出典・関連記事は </article> の外にある）。
+  // 関連記事はsectionの存在だけでなく、実在する記事リンクが入っていることを確認する。
   const officialLinks = new Set(
     [...source.matchAll(/https?:\/\/[^"']*?(?:go\.jp|mhlw|nenkin|hellowork|e-gov|kyoukaikenpo|jeed)[^"']*/g)]
       .map((m) => m[0]),
   );
   const siblings = new Set(
     [...source.matchAll(/href="(?:\.\/)?([a-z0-9-]+)\.html"/g)]
+      .map((m) => m[1])
+      .filter((s) => slugs.has(s) && s !== article.slug),
+  );
+  const relatedBlock = source.match(/<section class="post-related"[\s\S]*?<\/section>/)?.[0] ?? '';
+  const relatedLinks = new Set(
+    [...relatedBlock.matchAll(/href="(?:\.\/)?([a-z0-9-]+)\.html"/g)]
       .map((m) => m[1])
       .filter((s) => slugs.has(s) && s !== article.slug),
   );
@@ -103,10 +111,11 @@ function inspect(article) {
     headings: (body.match(/<h2/g) ?? []).length,
     anchorsResolved,
     faqCount,
-    hasFaqSchema: source.includes('FAQPage'),
+    hasFaqSchema: /<script\b[^>]*type=["']application\/ld\+json["'][^>]*>[\s\S]*?"@type"\s*:\s*"FAQPage"/i.test(source),
     officialLinks: officialLinks.size,
     hasRefs: source.includes('post-refs'),
-    hasRelated: source.includes('post-related'),
+    hasRelated: relatedLinks.size > 0,
+    hasDraftMarkers: /class="draft-(?:reader|placeholder)"|<!--\s*TODO|\bTODO\b/.test(source),
     outbound: [...siblings],
     errors: [],
   };
@@ -128,9 +137,10 @@ for (const r of rows) {
   if (!r.hasPointBox) problems.push(`${r.slug}: この記事のポイントがありません`);
   if (!r.hasRefs || r.officialLinks === 0) problems.push(`${r.slug}: 公式ソースへのリンクがありません`);
   if (!r.hasRelated) problems.push(`${r.slug}: あわせて読みたいがありません`);
+  if (r.hasDraftMarkers) problems.push(`${r.slug}: 下書き用のreader・placeholder・TODOが残っています`);
   if (r.headings >= 3 && !r.hasToc) problems.push(`${r.slug}: 見出しが${r.headings}個あるのに目次がありません`);
   if (!r.anchorsResolved) problems.push(`${r.slug}: 目次のアンカーに対応する h2 id がありません`);
-  if (r.readGap >= READ_TOLERANCE) problems.push(`${r.slug}: 読了時間が本文量・図解数と合いません（表示${r.shownRead}分 / 本文${r.chars}字＋図${r.figures}点＝約${r.wantRead}分）`);
+  if (r.readGap >= READ_TOLERANCE) problems.push(`${r.slug}: 読了時間が本文量・SVG図解数と合いません（表示${r.shownRead}分 / 本文${r.chars}字＋SVG図${r.figures}点＝約${r.wantRead}分）`);
   if (r.jsonRead !== r.shownRead) problems.push(`${r.slug}: 読了時間が articles.json（${r.jsonRead}分）と表示（${r.shownRead}分）で不一致です`);
   if (r.faqCount > 0 && !r.hasFaqSchema) problems.push(`${r.slug}: FAQがあるのに FAQPage 構造化データがありません`);
   if (r.inbound === 0) problems.push(`${r.slug}: 他のどの記事からもリンクされていません（孤立記事）`);
