@@ -226,6 +226,20 @@ async function runTask(task) {
         ],
         output: 'blog-line-breaks.json',
       },
+      {
+        name: 'ルート泣き別れ',
+        command: process.execPath,
+        args: [
+          'scripts/audit-line-breaks.cjs',
+          base,
+          '--section=root',
+          '--engines=webkit',
+          '--widths=320,390,430',
+          '--check',
+          '--json',
+        ],
+        output: 'root-line-breaks.json',
+      },
     ];
     if (full) {
       tasks.push(

@@ -3,6 +3,7 @@
  *
  *   node scripts/audit-line-breaks.cjs [base] [--check] [--json] [--widths=375,402] [--page=blog/slug.html]
  *   node scripts/audit-line-breaks.cjs [base] --section=blog --engines=chromium,webkit --widths=320,390,430,768,1440
+ *   node scripts/audit-line-breaks.cjs [base] --section=root --engines=webkit --widths=320,390,430
  *   例) node scripts/audit-line-breaks.cjs http://127.0.0.1:8811/
  *
  * なぜ別の道具が要るのか:
@@ -108,6 +109,16 @@ function blogPages() {
   return targets;
 }
 
+function rootPages() {
+  const targets = ['index.html', 'about.html', 'pricing.html', 'services.html', 'support.html'];
+  for (const rel of targets) {
+    if (!fs.existsSync(path.join(root, rel))) {
+      throw new Error(`ルート監査対象が見つかりません: ${rel}`);
+    }
+  }
+  return targets;
+}
+
 function pages() {
   if (pageArg && sectionArg) {
     throw new Error('--page と --section は同時に指定できません');
@@ -122,10 +133,9 @@ function pages() {
     return [pageArg];
   }
   if (sectionArg) {
-    if (sectionArg !== 'blog') {
-      throw new Error(`対応セクションは blog です: ${sectionArg}`);
-    }
-    return blogPages();
+    if (sectionArg === 'blog') return blogPages();
+    if (sectionArg === 'root') return rootPages();
+    throw new Error(`対応セクションは blog / root です: ${sectionArg}`);
   }
   const list = [];
   for (const f of fs.readdirSync(root)) {
