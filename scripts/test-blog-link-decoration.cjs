@@ -12,13 +12,21 @@
  */
 
 const { chromium, webkit } = require('playwright');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const args = process.argv.slice(2);
 const base = (args.find((arg) => arg.startsWith('http')) || 'http://127.0.0.1:8811/')
   .replace(/\/?$/, '/');
 const asJson = args.includes('--json');
 
-const ARTICLE_PATH = 'blog/36kyotei-jogen-kanri.html';
+const ARTICLES_PATH = path.join(__dirname, '..', 'blog', 'articles.json');
+const articles = JSON.parse(fs.readFileSync(ARTICLES_PATH, 'utf8'));
+const firstSlug = articles[0]?.slug;
+if (typeof firstSlug !== 'string' || !/^[a-z0-9][a-z0-9-]*$/.test(firstSlug)) {
+  throw new Error('blog/articles.jsonの先頭記事slugを取得できません');
+}
+const ARTICLE_PATH = `blog/${firstSlug}.html`;
 const WIDTHS = [390, 1440];
 const ENGINES = [
   ['chromium', chromium],
