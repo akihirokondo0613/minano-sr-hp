@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { discoverFaqPages } from './lib/faq-source.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const checkOnly = process.argv.includes('--check');
@@ -40,16 +41,6 @@ function decodeEntities(value) {
   });
 }
 
-function text(value) {
-  return decodeEntities(
-    value
-      .replace(/<br\s*\/?>/gi, ' ')
-      .replace(/<[^>]+>/g, '')
-      .replace(/[\s　]+/g, ' ')
-      .trim(),
-  );
-}
-
 function jsonLd(marker, data) {
   return [
     `<!-- Structured Data: ${marker} -->`,
@@ -59,15 +50,52 @@ function jsonLd(marker, data) {
   ].join('\n');
 }
 
-function replaceMarkedBlock(source, marker, block) {
+function markedBlockPattern(marker) {
   const escaped = marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const pattern = new RegExp(
-    `\\n?<!-- Structured Data: ${escaped} -->\\s*<script[^>]*>[\\s\\S]*?<\\/script>\\n?`,
-    'g',
+  return new RegExp(
+    `\\n?<!--\\s*Structured Data:\\s*${escaped}\\s*-->\\s*` +
+      '<script\\b[^>]*>[\\s\\S]*?<\\/script>\\n?',
+    'gi',
   );
-  const without = source.replace(pattern, '\n');
+}
+
+function findMarkedBlocks(source, marker) {
+  return [...source.matchAll(markedBlockPattern(marker))];
+}
+
+function replaceMarkedBlock(source, marker, block) {
+  const matches = findMarkedBlocks(source, marker);
+  if (matches.length > 1) {
+    throw new Error(`${marker}: 構造化データのマーク付きブロックが複数あります`);
+  }
+  const without = matches.length ? source.replace(markedBlockPattern(marker), '\n') : source;
   if (!without.includes('</head>')) throw new Error(`${marker}: </head> が見つかりません`);
   return without.replace('</head>', `${block}\n</head>`);
+}
+
+function canonicalJson(value) {
+  if (Array.isArray(value)) return value.map(canonicalJson);
+  if (!value || typeof value !== 'object') return value;
+  return Object.fromEntries(
+    Object.entries(value)
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([key, child]) => [key, canonicalJson(child)]),
+  );
+}
+
+function markedJson(source, marker) {
+  const matches = findMarkedBlocks(source, marker);
+  if (matches.length > 1) {
+    throw new Error(`${marker}: 構造化データのマーク付きブロックが複数あります`);
+  }
+  if (!matches.length) return { found: false };
+  const json = matches[0][0].match(/<script\b[^>]*>([\s\S]*?)<\/script>/i)?.[1];
+  if (json === undefined) return { found: true };
+  try {
+    return { found: true, data: JSON.parse(json) };
+  } catch {
+    return { found: true };
+  }
 }
 
 function faqData(pairs) {
@@ -86,53 +114,23 @@ function faqData(pairs) {
   };
 }
 
-function extractHomeFaq(source) {
-  const questions = [...source.matchAll(
-    /<span class="faq-q-text">([\s\S]*?)<\/span>\s*<\/span>/g,
-  )].map((match) => text(match[1]));
-  const answers = [...source.matchAll(
-    /<div class="faq-a-in">([\s\S]*?)<\/div>/g,
-  )].map((match) => text(match[1]));
-  if (questions.length !== 6 || answers.length !== 6) {
-    throw new Error(`index.html: FAQ抽出数が不正です（Q=${questions.length}, A=${answers.length}）`);
+function syncMarkedSource(source, marker, data) {
+  const existing = markedJson(source, marker);
+  if (
+    existing.data !== undefined &&
+    JSON.stringify(canonicalJson(existing.data)) === JSON.stringify(canonicalJson(data))
+  ) {
+    return source;
   }
-  return questions.map((question, index) => ({ question, answer: answers[index] }));
+  return replaceMarkedBlock(source, marker, jsonLd(marker, data));
 }
 
-function extractRecruitFaq(source) {
-  const pairs = [...source.matchAll(
-    /<details>\s*<summary>([\s\S]*?)<\/summary>\s*<p>([\s\S]*?)<\/p>\s*<\/details>/g,
-  )].map((match) => ({ question: text(match[1]), answer: text(match[2]) }));
-  if (pairs.length !== 4) throw new Error(`recruit.html: FAQ抽出数が不正です（${pairs.length}）`);
-  return pairs;
+function syncFaqSource(source, pairs) {
+  return syncMarkedSource(source, faqMarker, faqData(pairs));
 }
 
-function extractDefinitionFaq(source, relativePath) {
-  const faqList = source.match(/<dl\b[^>]*class="[^"]*\bfaq\b[^"]*"[^>]*>([\s\S]*?)<\/dl>/i)?.[1];
-  if (!faqList) throw new Error(`${relativePath}: dl.faqが見つかりません`);
-  const pairs = [...faqList.matchAll(
-    /<dt>([\s\S]*?)<\/dt>\s*<dd>([\s\S]*?)<\/dd>/g,
-  )].map((match) => ({ question: text(match[1]), answer: text(match[2]) }));
-  if (!pairs.length) throw new Error(`${relativePath}: FAQを抽出できません`);
-  return pairs;
-}
-
-function extractBonusFaq(source) {
-  // 目次導入で h2 に id が付いたため、属性ありも拾う
-  const section = source.match(/<h2[^>]*>よくある質問<\/h2>\s*<ul>([\s\S]*?)<\/ul>/);
-  if (!section) throw new Error('blog/natsu-shoyo-tetsuzuki.html: FAQ節が見つかりません');
-  const pairs = [...section[1].matchAll(
-    /<li><b>([\s\S]*?)<\/b>\s*([\s\S]*?)<\/li>/g,
-  )].map((match) => ({ question: text(match[1]), answer: text(match[2]) }));
-  if (pairs.length !== 2) throw new Error(`賞与記事: FAQ抽出数が不正です（${pairs.length}）`);
-  return pairs;
-}
-
-function syncFaq(relativePath, extractor) {
-  const source = read(relativePath);
-  const block = jsonLd(faqMarker, faqData(extractor(source, relativePath)));
-  write(relativePath, replaceMarkedBlock(source, faqMarker, block));
-}
+const faqPages = discoverFaqPages(root);
+const faqByPath = new Map(faqPages.map((page) => [page.relativePath, page.pairs]));
 
 const office = {
   '@context': 'https://schema.org',
@@ -190,61 +188,16 @@ const website = {
     oldOffice,
     jsonLd('LocalBusiness', office),
   );
-  source = replaceMarkedBlock(
-    source,
-    'WebSite',
-    jsonLd('WebSite', website),
-  );
-  source = replaceMarkedBlock(
-    source,
-    faqMarker,
-    jsonLd(faqMarker, faqData(extractHomeFaq(source))),
-  );
+  source = syncMarkedSource(source, 'WebSite', website);
+  source = syncFaqSource(source, faqByPath.get(relativePath));
   write(relativePath, source);
 }
 
-syncFaq('recruit.html', extractRecruitFaq);
-
-const definitionFaqArticles = [
-  'blog/36kyotei-jogen-kanri.html',
-  'blog/customer-harassment-gimuka-2026.html',
-  'blog/fukugyo-kengyo-kisoku.html',
-  'blog/getsugaku-henkou-todoke-zuiji-kaitei.html',
-  'blog/joseikin-career-up-2026.html',
-  'blog/kaigo-hoshu-kaitei-2027.html',
-  'blog/kaigo-shogu-career-path-2026.html',
-  'blog/kaigo-shogu-haibun-rule-2026.html',
-  'blog/kaigo-shogu-new-services-2026.html',
-  'blog/kaigo-shogu-todokede-2026.html',
-  'blog/kaigo-technology-jininhaichi-2027.html',
-  'blog/kintai-dx-donyu-junbi.html',
-  'blog/kodomo-kosodate-shienkin-2026.html',
-  'blog/kounenrei-koyo-keizoku-kyufu-2025.html',
-  'blog/kyuyo-itaku-junbi.html',
-  'blog/nenkyu-5days-kanribo.html',
-  'blog/necchusho-taisaku-gimu.html',
-  'blog/nendo-koshin-santei.html',
-  'blog/nyusha-tetsuzuki-checklist.html',
-  'blog/roudou-joken-tsuchisho-2024.html',
-  'blog/roudousha-shishoubyou-houkoku-denshi.html',
-  'blog/ryoritsu-shien-josei.html',
-  'blog/shaho-tekiyo-kakudai-2026.html',
-  'blog/shogaisha-hotei-koyoritsu-2026.html',
-  'blog/shusseigo-shien-ikujijitan-kyufu.html',
-  'blog/taishoku-trouble-prevention.html',
-  'blog/tokutei-chiiki-kyotaku-service-2027.html',
-  'blog/toyama-koyou-josei-2026-05.html',
-  'blog/toyama-kyujin-chingin-data-2026.html',
-  'blog/toyama-shokushu-betsu-kyujin-bairitsu-2026.html',
-  'blog/harassment-madoguchi.html',
-  'blog/ikukyu-kaisei-2026.html',
-  'blog/shugyo-kisoku-template-risk.html',
-  'blog/gyomu-kaizen-joseikin-2026.html',
-  'blog/jinzai-kaihatsu-joseikin-2026.html',
-  'blog/trial-koyo-joseikin-2026.html',
-];
-definitionFaqArticles.forEach((relativePath) => syncFaq(relativePath, extractDefinitionFaq));
-syncFaq('blog/natsu-shoyo-tetsuzuki.html', extractBonusFaq);
+for (const { relativePath, pairs } of faqPages) {
+  if (relativePath === 'index.html') continue;
+  const source = read(relativePath);
+  write(relativePath, syncFaqSource(source, pairs));
+}
 
 const services = {
   'uploads/service-dx.html': '労務システム導入・DX支援',

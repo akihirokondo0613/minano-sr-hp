@@ -393,7 +393,7 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 - Google Fontsは使用しない。和文はヒラギノ／游ゴシック／メイリオ等の端末内フォントを使い、分割フォントの大量通信を避ける。
 - トップのLCP画像は native `<picture>`。AVIF/WebPの 720/800/1200/1600px を用意し、`preload`・`fetchpriority="high"`・width/heightを維持する。公開トップを `<image-slot>` に戻さない（preload scannerが画像を早期発見できなくなる）。
 - トップの初回ロゴローダーは撤去済み。サイト内移動の緑カーテンはブランド演出として残す。
-- トップは `#critical-home` にファーストビュー用CSSを置き、全量 `skin-v2.css` は `data-async-style` で後から適用する。両者を片方だけ変更しない。ファーストビューの規則を変更したらインライン側も同期する。
+- トップは `#critical-home` にファーストビュー用CSSを置き、全量 `skin-v2.css` は `data-async-style` で後から適用する。`skin-v2.css` を正本とし、ファーストビューの規則を変更したら `node scripts/sync-critical-css.mjs` でインライン側を生成・同期する。
 - 画面外の大きなsectionは `content-visibility:auto` で描画計算を遅延する。アンカー移動・SPA遷移で位置ずれがないことをモバイル実測する。
 - CSS/JSを変更して公開するときはクエリ版を更新する。ヒーロー等の最適化画像は寸法入りの別名にして、7日キャッシュ中の旧資産と混同させない。サーバーはHTML/CSSをBrotli圧縮し、静的資産へ `max-age=604800` を付与している。
 - 変更前後で `node scripts/check-performance-budget.mjs` を実行する。PRでは `.github/workflows/performance.yml` が日本語フォント（Noto Sans CJK JP）を準備し、判定対象外のウォームアップを1回行ったうえで、モバイル／PCのLighthouseを各3回計測する。性能点は中央値でモバイル91以上・PC99以上、CLSは全試行0.1以下、転送量は全試行でモバイル600KiB以下・PC700KiB以下を合否判定し、全レポートを14日間保存する。単発値では判定しない。
@@ -448,8 +448,9 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 - `node scripts/test-blog-articles.cjs http://127.0.0.1:8811/`（playwright必要）… 全ブログ記事をChromium／WebKit × 320・390・430・768・1440pxで実測する。reader map・HTML/CSS図解・判断箇所・次の3手、要素単位の横はみ出し、図解内11px未満、console/page errorを検査し、期待件数と実測件数が一致しない場合も失敗にする。共通ブログCSS、記事テンプレート、全記事本文を変更したときに実行する。
 - `node scripts/audit-a11y.cjs http://127.0.0.1:8811/`（playwright必要）… Chromium／WebKitの両方で全公開ページ×12画面幅を巡回し、ページ自体と要素単位の横はみ出し・背景色から算出したコントラスト・操作領域24px・console/pageエラーを確認する。**写真の上の文字は背景色から計算できない**ので、`PHOTO_TARGETS` に登録した要素だけ「文字を透明にして背景の実ピクセルを測る」方式で別に測る。写真上に文字を置く箇所を増やしたらここに追加する。
 - `node scripts/sync-asset-version.mjs`（ブラウザ不要）… `assets-version.json` を正本に、7資産の `?v=` を対象HTMLと `admin-post.html` の生成テンプレートへ同期する。`--check` は書き込まず不一致で exit 1。
+- `node scripts/sync-critical-css.mjs`（ブラウザ不要）… `skin-v2.css` の境界より前を正本に、トップの `#critical-home` を生成する。`--check` は書き込まず不一致で exit 1。境界や対象styleの欠落・重複時は生成せず停止する。
 - `node scripts/check-asset-version.mjs`（ブラウザ不要）… 共通JS/CSSのキャッシュ版取りこぼしを検出する。(1) baseと比べて中身が変わった資産の `?v=` が据え置きになっていないか (2) 同じ資産の `?v=` がページ間でばらついていないか（部分適用の検出）。`preflight.mjs` 経由では main pushの `ASSET_VERSION_BASE_REF`（`github.event.before`）を最優先し、PRでは `GITHUB_BASE_REF`→`origin/main` の順に解決する。baseを解決できない場合はばらつき検査だけを行う。
-- `node scripts/preflight.mjs`（ブラウザ不要）… 公開前の10チェックを決められた順序ですべて実行する正本。途中で失敗しても残りを実行し、最後に失敗一覧を出して exit 1。
+- `node scripts/preflight.mjs`（ブラウザ不要）… 公開前の11チェックを決められた順序ですべて実行する正本。途中で失敗しても残りを実行し、最後に失敗一覧を出して exit 1。
 
 - **FAQが無いこと自体は異常としない**（よくある質問が実在しない記事に無理に作らない方針）。`audit-blog.mjs` もそう判定する。
 - 集計の落とし穴：出典（`.post-refs`）と関連記事（`.post-related`）は **`</article>` の外**にある。`<article class="post">` の内側だけを検索すると「0件」と誤判定する（実際にやった）。記事間リンクは `blog/` 配下なので相対パスにディレクトリが付かない点も同じ。
@@ -503,7 +504,7 @@ git switch -c agent/<短い変更名>
 1. `rg` で対象のHTML・CSS・JSだけを特定する。
 2. 現在の表示を対象幅で確認する。
 3. 変更は必要な行だけに限定する。
-4. トップのファーストビューCSSを変える場合は、`index.html` の `#critical-home` と `skin-v2.css` の対応を確認する。キャッシュ済みCSSより後のページ固有上書きが必要な場合も、意図を明確にする。
+4. トップのファーストビューCSSを変える場合は、`skin-v2.css` を編集して `node scripts/sync-critical-css.mjs` を実行する。`index.html` の `#critical-home` を手作業で写さない。キャッシュ済みCSSより後のページ固有上書きが必要な場合も、意図を明確にする。
 5. 共通CSS／JS本体を変更した場合は、同じPRで `assets-version.json` の該当値を更新し、`node scripts/sync-asset-version.mjs` で参照HTMLと `admin-post.html` の生成テンプレートへ同期する。commit前に `node scripts/preflight.mjs` を通す。HTMLだけの変更では共通資産の版番号を上げない。
 6. 文字・画像・制度情報の変更では、記事一覧、構造化データ、画像本体、sitemapなど同期対象を確認する。
 
@@ -525,7 +526,7 @@ git switch -c agent/<短い変更名>
 node scripts/preflight.mjs
 ```
 
-`preflight.mjs` は10本を順番にすべて実行し、途中の失敗も最後に一覧化する。`--check` が「要更新」で失敗した場合は、対応する同期コマンドを実行して差分を確認し、再度 `node scripts/preflight.mjs` を通す。エラーを無視して公開しない。
+`preflight.mjs` は11本を順番にすべて実行し、途中の失敗も最後に一覧化する。`--check` が「要更新」で失敗した場合は、対応する同期コマンドを実行して差分を確認し、再度 `node scripts/preflight.mjs` を通す。エラーを無視して公開しない。
 
 `gen-sitemap.js` は `--check` ではなく生成で回す。lastmod はマージ日で変わるため、ローカルの値がずれていても公開の障害にはならない（本番用は `deploy-public.yml` が作り直す。上の「公開用の sitemap は deploy 時に作り直す」節を参照）。URLの増減があるときだけ差分を確認する。
 

@@ -1,3 +1,4 @@
+import { spawnSync } from 'node:child_process';
 import { readdir, readFile, stat } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 import process from 'node:process';
@@ -72,6 +73,23 @@ function fail(message) {
   errors.push(message);
 }
 
+function checkCriticalCss() {
+  const result = spawnSync(
+    process.execPath,
+    [join(root, 'scripts/sync-critical-css.mjs'), '--check'],
+    { cwd: root, encoding: 'utf8' },
+  );
+  if (result.status === 0) return;
+
+  const detail = [
+    result.error?.message,
+    result.stderr?.trim(),
+    result.stdout?.trim(),
+    result.signal ? `signal ${result.signal}` : '',
+  ].filter(Boolean).join(' / ');
+  fail(`index.html: Critical CSSの同期確認に失敗しました${detail ? `（${detail}）` : ''}`);
+}
+
 await collectHtml(root);
 
 for (const { full, rel } of publicHtml) {
@@ -115,12 +133,7 @@ for (const [pattern, message] of requiredHomePatterns) {
 }
 if (/id="mn-load"/.test(index)) fail('index.html: 初回ローダーが再導入されています');
 
-const skin = await readFile(join(root, 'skin-v2.css'), 'utf8');
-const criticalMatch = index.match(/<style id="critical-home">([\s\S]*?)<\/style>/);
-const criticalSource = skin.split('/* ---------- セクション見出し')[0].trim();
-if (!criticalMatch || criticalMatch[1].trim() !== criticalSource) {
-  fail('index.html: #critical-home と skin-v2.css のファーストビュー部分が同期していません');
-}
+checkCriticalCss();
 
 const imageSlot = await readFile(join(root, 'image-slot.js'), 'utf8');
 if (!/const EDIT_MODE\s*=\s*!!\(window\.omelette/.test(imageSlot)) {
