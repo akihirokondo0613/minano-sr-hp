@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const host = 'minano-sr.com';
+const origin = `https://${host}`;
 const key = '85dc66a4f952381a9f0c3877409afb84';
 const keyFile = `${key}.txt`;
 const keyLocation = `https://${host}/${keyFile}`;
@@ -23,6 +24,21 @@ const decodeXml = (value) => value
   .replaceAll('&quot;', '"')
   .replaceAll('&apos;', "'");
 
+const isAllowedUrl = (value) => {
+  try {
+    const url = new URL(value);
+    return (
+      url.origin === origin &&
+      !url.search &&
+      !url.hash &&
+      !url.username &&
+      !url.password
+    );
+  } catch {
+    return false;
+  }
+};
+
 const localKey = fs.readFileSync(path.join(root, keyFile), 'utf8').trim();
 if (localKey !== key) throw new Error(`IndexNowキーファイルが不正です: ${keyFile}`);
 
@@ -31,13 +47,23 @@ const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) =>
 if (!sitemapUrls.length) throw new Error('sitemap.xmlからURLを取得できません');
 
 const positionalUrls = process.argv.slice(2).filter((arg) => !arg.startsWith('--'));
-const urlList = positionalUrls.length ? positionalUrls : sitemapUrls;
+const sourceUrls = positionalUrls.length ? positionalUrls : sitemapUrls;
+for (const value of sourceUrls) {
+  if (!isAllowedUrl(value)) throw new Error(`対象外のURLです: ${value}`);
+}
+const urlList = [...new Set(sourceUrls.map((value) => new URL(value).href))];
 if (urlList.length > 10_000) throw new Error('IndexNowの1回の上限10,000 URLを超えています');
 
-for (const value of urlList) {
-  const url = new URL(value);
-  if (url.protocol !== 'https:' || url.hostname !== host || url.username || url.password) {
-    throw new Error(`対象外のURLです: ${value}`);
+if (checkOnly) {
+  const invalidCases = [
+    `http://${host}/`,
+    `https://www.${host}/`,
+    `https://${host}:8443/`,
+    `https://${host}/?preview=1`,
+    `https://${host}/#section`,
+  ];
+  for (const value of invalidCases) {
+    if (isAllowedUrl(value)) throw new Error(`URL検証が不正なURLを許可しました: ${value}`);
   }
 }
 

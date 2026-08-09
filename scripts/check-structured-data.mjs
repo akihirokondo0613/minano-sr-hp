@@ -238,6 +238,7 @@ for (const [relativePath, { schemas }] of pages) {
       website.url !== 'https://minano-sr.com/' ||
       website.name !== 'みなの社会保険労務士事務所' ||
       website.alternateName !== 'minano-sr.com' ||
+      website.inLanguage !== 'ja-JP' ||
       website.publisher?.['@id'] !== 'https://minano-sr.com/#office'
     ) {
       errors.push('index.html: WebSiteのサイト名・URL・publisherが不正です');
