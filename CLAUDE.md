@@ -459,15 +459,26 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 - 作業ツリーに他人の変更がある場合は、勝手に破棄・上書き・一括stageしない。`git reset --hard`、`git checkout -- .` は使わない。
 - PRのLighthouseが通る前にマージしない。本番URLで変更を確認する前に「公開完了」と報告しない。
 
+### 0. Hotfix と仕組み改訂を分ける
+
+- 画面上の不具合修正と、生成器・スキル・監査・CIなどの再発防止改訂は原則として別PRにする。先にHotfixを最小差分で本番確認まで完了し、仕組み改訂は最新`main`から別ブランチで行う。
+- 共通CSS／JSの`?v=`更新、参照HTMLと`admin-post.html`の同期など、修正を既存端末へ届けるため不可欠な変更はHotfixに含める。後続PRへ先送りしない。
+- 分離すると一時的に壊れる、または同じ修正を二重に行う場合だけ同一PRにし、理由をPR本文へ1行残す。修正前からある無関係な監査警告は混ぜない。
+- ユーザーが複数利用を明示した場合を除き、小規模Hotfixのサブエージェントは原則0〜1人。増やす場合は独立した論点だけにし、担当ファイル・成果物・終了条件を固定する。同じ原因調査や同じファイルの編集を重複させず、最終判断・commit・merge・本番確認は主担当1人が行う。
+
 ### 1. 作業開始
 
 最初に現在地、未コミット変更、GitHub認証を確認する。
 
 ```bash
+git fetch origin --prune
 git status -sb
 git branch --show-current
 gh auth status
+gh pr list --state open --json number,title,headRefName,updatedAt,url
 ```
+
+同じ共通資産・生成テンプレート・版番号を触るPRがある場合だけ、対象ファイルと作業順を確認する。無関係なPRの調査や完了待ちはしない。元の作業ツリーを別作業が使用中なら、その変更に触れず`origin/main`から隔離worktreeを作る。
 
 作業ツリーがクリーンなら `main` を更新し、変更内容が分かる作業ブランチを作る。
 
@@ -485,12 +496,14 @@ git switch -c agent/<短い変更名>
 2. 現在の表示を対象幅で確認する。
 3. 変更は必要な行だけに限定する。
 4. トップのファーストビューCSSを変える場合は、`index.html` の `#critical-home` と `skin-v2.css` の対応を確認する。キャッシュ済みCSSより後のページ固有上書きが必要な場合も、意図を明確にする。
-5. CSS／JS本体を変更した場合は、既存のキャッシュ版管理スクリプトとの整合を確認する。版番号を1ページだけ独自変更しない。
+5. 共通CSS／JS本体を変更した場合は、同じPRで参照HTMLと`admin-post.html`の生成テンプレートを新しい`?v=`へ同期し、commit前に`node scripts/check-asset-version.mjs`を通す。HTMLだけの変更では共通資産の版番号を上げない。
 6. 文字・画像・制度情報の変更では、記事一覧、構造化データ、画像本体、sitemapなど同期対象を確認する。
 
 ### 3. 変更後の検証
 
 小さな修正は対象ページに絞る。スマホ修正なら原則 `320 / 390 / 430px` とブレークポイント前後、PC修正なら対象PC幅を確認する。
+
+検証は①修正前の対象条件で再現、②同じ条件と境界幅で対象回帰、③版番号・テンプレート・構造化データ・一覧・sitemap等の直接同期、④共通CSS／JS・共通テンプレート・生成器・サイト構造を変えた場合だけ全体回帰、の順に進める。前段が通る前に重い全体検証を始めず、最終差分が変わっていなければ合格済みの全体検証を繰り返さない。
 
 - スクリーンショットを見て、依頼箇所が意図どおりか確認する。
 - 横スクロール、重なり、不自然な折り返しがないことを確認する。
@@ -541,10 +554,14 @@ PR番号を取得し、Lighthouseが終わるまで待つ。
 
 ```bash
 PR_NUMBER="$(gh pr view --json number --jq .number)"
-gh pr checks "$PR_NUMBER" --watch --interval 10
+gh pr checks "$PR_NUMBER" --watch --interval 30
 ```
 
+CI待ちはこのwatchを1本だけ使い、別の10秒間隔ポーリングを重ねない。
+
 失敗した場合は `gh run view <run-id> --log-failed` で原因を確認し、同じブランチで修正・pushして再検証する。合格後にだけマージする。
+
+マージ直前にもう一度`git fetch origin`と未マージPRを確認する。検証後に`origin/main`が進み、今回と同じファイルまたは共通資産へ変更が入った場合だけ、最新`main`へ載せ直して対象検証とCIを再実行する。
 
 ```bash
 gh pr merge "$PR_NUMBER" --squash --delete-branch
@@ -565,7 +582,7 @@ gh run list \
 該当する `databaseId` を使い、完了まで待つ。
 
 ```bash
-gh run watch <databaseId> --interval 10 --exit-status
+gh run watch <databaseId> --interval 30 --exit-status
 ```
 
 成功する前に完了扱いにしない。`public` ブランチへ手動でforce pushしない。
@@ -573,6 +590,7 @@ gh run watch <databaseId> --interval 10 --exit-status
 ### 6. 本番サイトの最終確認
 
 - `https://minano-sr.com/?verify=<日時または変更名>` のようにクエリを付け、古いHTMLキャッシュを避けて確認する。
+- 共通CSS／JSを変更した場合は、実際に読み込まれた`href`／`src`が今回の新しい`?v=`であることまで確認する。画面が直って見えることだけでキャッシュ反映済みと判断しない。
 - 対象のスマホ／PC幅で、実際の文言・画像・計算済みCSS・リンク先を確認する。
 - console error、横はみ出し、表示崩れがないことを確認する。
 - キャッシュ対策を含め、本番が意図した状態になるまで完了報告しない。
@@ -602,6 +620,8 @@ gh run watch <databaseId> --interval 10 --exit-status
 
 重要:
 - 小さな変更は対象箇所だけを調べ、周辺の文言・配色・レイアウトを勝手に変更しないでください。
+- 着手時に「局所修正／新規作成／共通基盤変更」を分類し、調査・検証・変更ファイルをその伝播範囲に限定してください。
+- 画面上のHotfixと生成器・監査・CI・指示書の改訂は、分離できる限り別PRにしてください。並行PRは着手時とマージ直前だけ確認し、同じ調査を繰り返さないでください。
 - 既存の実装方法とブランドトークンを優先し、同じ目的の新しい表現を増やしすぎないでください。
 - 編集前に現状を確認し、変更後は対象幅のスクリーンショット、横はみ出し、console errorを確認してください。
 - 私が「分析だけ」「下書き」「公開しない」と指定していない限り、作業ブランチ作成、commit、push、PR作成、Lighthouse合格確認、mainへのsquash merge、本番デプロイ、本番URL確認まで行ってください。
