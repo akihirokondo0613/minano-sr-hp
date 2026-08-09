@@ -370,11 +370,15 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 
 ※トップの pub-live バッジ（「開業準備中から発信中 ◯本・◯分野」）は 2026-07-12 ユーザー編集で削除済み（#pubLive 要素と pub-live-js を撤去）。articles.json はブログ側の「発信のあゆみ」集計と本ツールで引き続き使用する。
 
-- ルート直下 `admin-post.html`。タブ3つ（記事を書く／公開中の記事一覧／使い方）。フォーム入力→簡易記法の本文→「生成する」で、**手順A「かんたん公開セット」＝①記事HTML ②新記事組み込み済みblog.html（件数+1済み） ③先頭追加済みarticles.json の3ファイルをダウンロード**（現行ファイルをfetchして差分を機械挿入。重複スラッグ検知あり。file://ではfetch不可のため手順B=コピペ方式にフォールバック）。手順Bとして従来の art-row／JSONエントリ／news-row スニペットも出力。
+- ルート直下 `admin-post.html`。タブ4つ（記事を書く／公開中の記事一覧／使い方／アクセス解析）。フォーム入力→簡易記法の本文→「生成する」で、**手順A「下書きセット」＝①記事HTML ②新記事組み込み済みblog.html（件数+1済み） ③先頭追加済みarticles.json の3ファイルをダウンロード**する（現行ファイルをfetchして差分を機械挿入。重複スラッグ検知あり。file://ではfetch不可のため手順B=コピペ方式にフォールバック）。この3ファイルは公開完成物ではない。CodexまたはClaudeで図解・根拠・導線を仕上げ、監査とsitemap同期を通してから公開する。手順Bとして従来の art-row／JSONエントリ／news-row スニペットも出力。
 - 公開日・更新日・読了時間の正本は `blog/articles.json`。既存記事の更新後は `node scripts/sync-blog-dates.mjs` を実行すると、記事HTMLの表示・OGP・Article JSON-LDと `blog.html` の一覧日付が同期される。差分確認のみは `--check`。
+- 本文量が変わったときは先に `node scripts/sync-blog-read-times.mjs` で読了時間を再計算し、その後 `node scripts/sync-blog-dates.mjs` で表示へ反映する。公開前は両方を `--check` でも確認する。
 - noindex・どこからもリンクしていない（URL直打ちで使う管理ページ）。sitemap.xml には载せないこと。
 - 下書きは localStorage（`mn-admin-post-draft-v1`）に自動保存。
-- 記事テンプレを変えたら admin-post.html 内の `buildArticle()` も追従させること。カテゴリ別関連サービスカードは `REL` マップ。
+- 新規記事では、本文を書く前に `reader`（誰が読むか）・`problem`（いま何に困っているか）・`outcome`（読後に何ができるか）・`service`（記事末の相談先）を確定し、`articles.json` と本文冒頭の読者マップを一致させる。一般的な制度説明から書き始めない。
+- 本文は読者の困りごとから入り、判断条件、実務手順、迷いやすい箇所、次の3アクションへつなぐ。図解は本文の判断を助ける箇所に3〜7点を目安としてHTML/CSSで置き、記事を長くするためだけに見出しや図を増やさない。記事内SVGへ本文を閉じ込めない。
+- 関連サービスは `service` から一意に決め、記事自身への関連記事リンクを作らない。公開前に `node scripts/audit-blog.mjs --check` で読者マップ・図解・判断箇所・次の行動・CTA・孤立記事を確認する。
+- 記事テンプレを変えたら admin-post.html 内の `buildArticle()` と `minano-blog-post` スキルの `assets/new_post.py` も追従させること。カテゴリ別関連サービスカードは `REL` マップ。
 
 ## 記号・アイコンの方針（2026-07-17刷新→2026-07-18巻き戻し。現行ルール）
 
@@ -436,10 +440,11 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 
 「◯件→◯件に改善した」と報告するなら、その数値はこのスクリプトの出力であること。手元の使い捨てスクリプトで測って報告し、第三者が追試できない状態にしない。
 
-- `node scripts/audit-blog.mjs`（ブラウザ不要）… ブログ記事の構成。この記事のポイント／目次／出典／あわせて読みたいの有無、FAQ問数、読了時間と本文量の整合、目次アンカーと h2 id の一致、記事間リンクと孤立記事、タイトル・description長。`--check` で基準外があれば exit 1、`--json` で機械可読。
-- `node scripts/run-layout-checks.cjs`（playwright必要）… 動的ポートの検証用サーバーを自動起動し、トップヒーローと最終CTAの Chromium／WebKit 回帰テストを順番に実行する。サーバーは実行後に必ず閉じ、JSON結果とサーバー状態を一時フォルダへ残す。`--full` で `verify-ui.cjs`・公開前チェック5種・`git diff --check` も同じサーバーで続けて実行する。
+- `node scripts/audit-blog.mjs`（ブラウザ不要）… ブログ記事の構成。reader/problem/outcome/serviceと本文の一致、HTML/CSS図解、判断が難しい箇所、次の3アクション、CTA、この記事のポイント／目次／出典／あわせて読みたい、FAQ問数、読了時間と本文量の整合、目次アンカーと h2 id の一致、自己リンク・記事間リンク・孤立記事、タイトル・description長を検査する。`--check` で基準外があれば exit 1、`--json` で機械可読。
+- `node scripts/run-layout-checks.cjs`（playwright必要）… 動的ポートの検証用サーバーを自動起動し、トップヒーロー、最終CTA、ブログ記事リンク下線、全ブログ記事の Chromium／WebKit 回帰、全ブログ記事の泣き別れ監査を順番に実行する。サーバーは実行後に必ず閉じ、JSON結果とサーバー状態を一時フォルダへ残す。`--full` で `verify-ui.cjs`・公開前チェック5種・`git diff --check` も同じサーバーで続けて実行する。
 - `node scripts/test-home-hero.cjs http://127.0.0.1:8811/`（playwright必要）… トップだけを Chromium／WebKit とスマホ〜700px境界で確認する軽量回帰テスト。ヒーロー内の各要素矩形、文節内改行、`<wbr>`、要約帯の列数を検査し、`documentElement.scrollWidth`だけでは見えないクリップ内のはみ出しも失敗にする。
 - `node scripts/test-final-copy.cjs http://127.0.0.1:8811/`（playwright必要）… 最終CTAを持つ5ページ × 4画面幅 × Chromium／WebKit = 40条件を確認する。`.final-p` を表示領域へ送り、フォント読込と2フレームを待ってから実測する。期待40件／実測40件／未測定0件が必須で、要素0件・描画行0本は合格ではなく失敗とする。
+- `node scripts/test-blog-articles.cjs http://127.0.0.1:8811/`（playwright必要）… 全ブログ記事をChromium／WebKit × 320・390・430・768・1440pxで実測する。reader map・HTML/CSS図解・判断箇所・次の3手、要素単位の横はみ出し、図解内11px未満、console/page errorを検査し、期待件数と実測件数が一致しない場合も失敗にする。共通ブログCSS、記事テンプレート、全記事本文を変更したときに実行する。
 - `node scripts/audit-a11y.cjs http://127.0.0.1:8811/`（playwright必要）… Chromium／WebKitの両方で全公開ページ×12画面幅を巡回し、ページ自体と要素単位の横はみ出し・背景色から算出したコントラスト・操作領域24px・console/pageエラーを確認する。**写真の上の文字は背景色から計算できない**ので、`PHOTO_TARGETS` に登録した要素だけ「文字を透明にして背景の実ピクセルを測る」方式で別に測る。写真上に文字を置く箇所を増やしたらここに追加する。
 - `node scripts/check-asset-version.mjs`（ブラウザ不要）… 共通JS/CSSのキャッシュ版取りこぼしを検出する。(1) baseと比べて中身が変わった資産の `?v=` が据え置きになっていないか (2) 同じ資産の `?v=` がページ間でばらついていないか（部分適用の検出）。CIの `performance.yml`（PR）と `deploy-public.yml`（公開）の両方で実行する。base は `GITHUB_BASE_REF` →`origin/main` の順に解決し、解決できない場合はばらつき検査だけを行う。
 
@@ -647,6 +652,7 @@ CLAUDE.md の「GitHub経由の編集・本番公開フロー」を厳守し、[
 node scripts/audit-line-breaks.cjs http://127.0.0.1:8811/            # 9幅・WebKit
 node scripts/audit-line-breaks.cjs http://127.0.0.1:8811/ --check    # 検出したら exit 1
 node scripts/audit-line-breaks.cjs https://minano-sr.com/ --widths=375,402
+node scripts/audit-line-breaks.cjs http://127.0.0.1:8811/ --section=blog --engines=chromium,webkit --widths=320,390,430,768,1440 --check
 ```
 
 直し方の優先順位（実測で効いた順）:

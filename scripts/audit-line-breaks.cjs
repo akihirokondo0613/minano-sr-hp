@@ -2,6 +2,7 @@
  * 日本語の「泣き別れ」（行末に1文字だけ取り残される改行）を実測する監査（Playwright）
  *
  *   node scripts/audit-line-breaks.cjs [base] [--check] [--json] [--widths=375,402] [--page=blog/slug.html]
+ *   node scripts/audit-line-breaks.cjs [base] --section=blog --engines=chromium,webkit --widths=320,390,430,768,1440
  *   例) node scripts/audit-line-breaks.cjs http://127.0.0.1:8811/
  *
  * なぜ別の道具が要るのか:
@@ -19,7 +20,7 @@
  *
  * エンジン:
  *   既定は WebKit。iOS Safari と同じ行分割の癖（行頭禁則が効かない場面がある）を再現するため。
- *   --engine=chromium で切り替えられる。
+ *   --engine=chromium で切り替え、--engines=chromium,webkit で複数を一括測定できる。
  *
  * verify-ui.cjs / audit-a11y.cjs と同じく playwright を必要とする手元の検証ツール。
  */
@@ -32,9 +33,11 @@ const args = process.argv.slice(2);
 const base = (args.find((a) => a.startsWith('http')) || 'http://127.0.0.1:8811/').replace(/\/?$/, '/');
 const checkOnly = args.includes('--check');
 const asJson = args.includes('--json');
-const engineName = (args.find((a) => a.startsWith('--engine=')) || '--engine=webkit').split('=')[1];
+const engineArg = (args.find((a) => a.startsWith('--engine=')) || '').split('=')[1] || '';
+const enginesArg = (args.find((a) => a.startsWith('--engines=')) || '').split('=')[1] || '';
 const widthArg = args.find((a) => a.startsWith('--widths='));
 const pageArg = (args.find((a) => a.startsWith('--page=')) || '').split('=')[1] || '';
+const sectionArg = (args.find((a) => a.startsWith('--section=')) || '').split('=')[1] || '';
 const WIDTHS = widthArg
   ? widthArg.split('=')[1].split(',').map(Number)
   : [320, 360, 375, 390, 393, 402, 414, 430, 440];
@@ -57,13 +60,58 @@ async function prepareLocalHttpPage(page) {
       await route.continue();
       return;
     }
-    const response = await route.fetch();
-    const html = await response.text();
-    await route.fulfill({ response, body: html.replace(UPGRADE_INSECURE_META, '') });
+    try {
+      const response = await route.fetch();
+      const html = await response.text();
+      await route.fulfill({ response, body: html.replace(UPGRADE_INSECURE_META, '') });
+    } catch {
+      // page.goto側の例外として集計し、未処理のroute.fetch例外で監査結果を失わない。
+      await route.abort('failed');
+    }
   });
 }
 
+function engines() {
+  if (engineArg && enginesArg) {
+    throw new Error('--engine と --engines は同時に指定できません');
+  }
+  const names = enginesArg ? enginesArg.split(',').filter(Boolean) : [engineArg || 'webkit'];
+  if (!names.length || names.some((name) => !['chromium', 'webkit'].includes(name))) {
+    throw new Error(`対応エンジンは chromium / webkit です: ${names.join(',')}`);
+  }
+  if (new Set(names).size !== names.length) {
+    throw new Error(`--engines に重複があります: ${names.join(',')}`);
+  }
+  return names;
+}
+
+function blogPages() {
+  const manifestPath = path.join(root, 'blog', 'articles.json');
+  const articles = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  if (!Array.isArray(articles) || !articles.length) {
+    throw new Error('blog/articles.json に記事がありません');
+  }
+  const targets = articles.map((article) => {
+    if (!article || !/^[a-z0-9-]+$/.test(article.slug || '')) {
+      throw new Error(`blog/articles.json のslugが不正です: ${article?.slug ?? '未設定'}`);
+    }
+    return `blog/${article.slug}.html`;
+  });
+  if (new Set(targets).size !== targets.length) {
+    throw new Error('blog/articles.json にslugの重複があります');
+  }
+  for (const rel of targets) {
+    if (!fs.existsSync(path.join(root, rel))) {
+      throw new Error(`blog/articles.json 掲載記事が見つかりません: ${rel}`);
+    }
+  }
+  return targets;
+}
+
 function pages() {
+  if (pageArg && sectionArg) {
+    throw new Error('--page と --section は同時に指定できません');
+  }
   if (pageArg) {
     if (!/^(?:[a-z0-9-]+\.html|(?:blog|uploads)\/[a-z0-9-]+\.html)$/.test(pageArg)) {
       throw new Error(`--page は公開HTMLの相対パスで指定してください: ${pageArg}`);
@@ -72,6 +120,12 @@ function pages() {
       throw new Error(`--page の対象が見つかりません: ${pageArg}`);
     }
     return [pageArg];
+  }
+  if (sectionArg) {
+    if (sectionArg !== 'blog') {
+      throw new Error(`対応セクションは blog です: ${sectionArg}`);
+    }
+    return blogPages();
   }
   const list = [];
   for (const f of fs.readdirSync(root)) {
@@ -91,11 +145,19 @@ const AUDIT = `() => {
   const out = [];
   const seen = new Set();
   const vw = document.documentElement.clientWidth;
-  document.querySelectorAll('h1,h2,h3,h4,p,li,dd,figcaption,blockquote').forEach((el) => {
+  const targetSelector = 'h1,h2,h3,h4,p,li,dd,figcaption,blockquote';
+  document.querySelectorAll(targetSelector).forEach((el) => {
     const cs = getComputedStyle(el);
     if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) === 0) return;
-    // 親子で二重に数えないよう、直接の文字ノードを持つ要素だけ見る
-    const nodes = [...el.childNodes].filter((n) => n.nodeType === 3 && n.textContent.trim().length);
+    // strong/a/span等のインライン要素内も含める。最寄りの監査対象が自身の文字だけを採り、
+    // li内のpなどを親子双方で二重計上しない。
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      if (!node.textContent.trim().length) continue;
+      if (node.parentElement?.closest(targetSelector) !== el) continue;
+      nodes.push(node);
+    }
     if (!nodes.length) return;
     const full = el.textContent.replace(/\\s+/g, '');
     if (full.length < 12) return;
@@ -138,61 +200,89 @@ const AUDIT = `() => {
 }`;
 
 (async () => {
-  const engine = engineName === 'chromium' ? chromium : webkit;
-  const browser = await engine.launch({ headless: true });
+  if (!WIDTHS.length || WIDTHS.some((width) => !Number.isInteger(width) || width <= 0)) {
+    throw new Error(`--widths は正の整数をカンマ区切りで指定してください: ${WIDTHS.join(',')}`);
+  }
+  if (new Set(WIDTHS).size !== WIDTHS.length) {
+    throw new Error(`--widths に重複があります: ${WIDTHS.join(',')}`);
+  }
+  const engineNames = engines();
   const targets = pages();
   const found = new Map();
   const navigationFailures = [];
   let successfulNavigations = 0;
+  let completedMeasurements = 0;
 
-  for (const rel of targets) {
-    for (const width of WIDTHS) {
-      const page = await browser.newPage({ viewport: { width, height: 900 } });
-      await prepareLocalHttpPage(page);
-      let response;
-      try {
-        response = await page.goto(base + rel, { waitUntil: 'domcontentloaded', timeout: 20000 });
-      } catch (error) {
-        navigationFailures.push(`${rel} @ ${width}px: ${error.message}`);
-        await page.close();
-        continue;
+  for (const engineName of engineNames) {
+    const browserType = engineName === 'chromium' ? chromium : webkit;
+    const browser = await browserType.launch({ headless: true });
+    try {
+      for (const rel of targets) {
+        for (const width of WIDTHS) {
+          const page = await browser.newPage({ viewport: { width, height: 900 } });
+          await prepareLocalHttpPage(page);
+          let response;
+          try {
+            response = await page.goto(base + rel, { waitUntil: 'domcontentloaded', timeout: 20000 });
+          } catch (error) {
+            navigationFailures.push(`${engineName} / ${rel} @ ${width}px: ${error.message}`);
+            await page.close();
+            continue;
+          }
+          if (!response?.ok()) {
+            navigationFailures.push(`${engineName} / ${rel} @ ${width}px: HTTP ${response?.status() ?? '応答なし'}`);
+            await page.close();
+            continue;
+          }
+          successfulNavigations += 1;
+          await page.waitForTimeout(300);
+          // content-visibility:auto の節も測るため一度末尾まで送る
+          await page.evaluate(async () => {
+            document.documentElement.style.scrollBehavior = 'auto';
+            const h = document.documentElement.scrollHeight;
+            for (let y = 0; y < h; y += 800) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 10)); }
+            window.scrollTo(0, 0);
+            await new Promise((r) => setTimeout(r, 150));
+          });
+          const items = (await page.evaluate(AUDIT)) || [];
+          completedMeasurements += 1;
+          for (const item of items) {
+            const key = `${engineName}|${rel}|${item.tag}.${item.cls}|${item.text}|${item.orphan}`;
+            if (!found.has(key)) found.set(key, { engine: engineName, page: rel, ...item, widths: [] });
+            found.get(key).widths.push(width);
+          }
+          await page.close();
+        }
       }
-      if (!response?.ok()) {
-        navigationFailures.push(`${rel} @ ${width}px: HTTP ${response?.status() ?? '応答なし'}`);
-        await page.close();
-        continue;
-      }
-      successfulNavigations += 1;
-      await page.waitForTimeout(300);
-      // content-visibility:auto の節も測るため一度末尾まで送る
-      await page.evaluate(async () => {
-        document.documentElement.style.scrollBehavior = 'auto';
-        const h = document.documentElement.scrollHeight;
-        for (let y = 0; y < h; y += 800) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 10)); }
-        window.scrollTo(0, 0);
-        await new Promise((r) => setTimeout(r, 150));
-      });
-      const items = (await page.evaluate(AUDIT)) || [];
-      for (const item of items) {
-        const key = `${rel}|${item.tag}.${item.cls}|${item.text}|${item.orphan}`;
-        if (!found.has(key)) found.set(key, { page: rel, ...item, widths: [] });
-        found.get(key).widths.push(width);
-      }
-      await page.close();
+    } finally {
+      await browser.close();
     }
   }
-  await browser.close();
 
   const list = [...found.values()].sort((a, b) => b.widths.length - a.widths.length);
-  const expectedNavigations = targets.length * WIDTHS.length;
+  const expectedMeasurements = targets.length * WIDTHS.length * engineNames.length;
+  const expectedNavigations = expectedMeasurements;
   if (asJson) {
-    console.log(JSON.stringify({ base, engine: engineName, widths: WIDTHS, successfulNavigations, expectedNavigations, navigationFailures, findings: list }, null, 2));
+    console.log(JSON.stringify({
+      base,
+      engine: engineNames.join(','),
+      engines: engineNames,
+      widths: WIDTHS,
+      targets: targets.length,
+      successfulNavigations,
+      expectedNavigations,
+      completedMeasurements,
+      expectedMeasurements,
+      navigationFailures,
+      findings: list,
+    }, null, 2));
   } else {
-    console.log(`対象 ${targets.length}ページ × ${WIDTHS.length}幅（${WIDTHS.join(' / ')}px）／${engineName}`);
+    console.log(`対象 ${targets.length}ページ × ${WIDTHS.length}幅（${WIDTHS.join(' / ')}px）× ${engineNames.length}エンジン（${engineNames.join(' / ')}）`);
     console.log(`読込成功: ${successfulNavigations}/${expectedNavigations}`);
+    console.log(`測定完了: ${completedMeasurements}/${expectedMeasurements}`);
     console.log(`泣き別れ（最終行が${MAX_ORPHAN}文字以下）: ${list.length}件`);
     for (const f of list) {
-      console.log(`\n[${f.widths.length}幅 ${f.widths.join('/')}] ${f.page}`);
+      console.log(`\n[${f.engine} / ${f.widths.length}幅 ${f.widths.join('/')}] ${f.page}`);
       console.log(`   <${f.tag}${f.cls ? '.' + f.cls : ''}> …${f.prev} / 「${f.orphan}」`);
       console.log(`   ${f.text}`);
     }
@@ -200,7 +290,11 @@ const AUDIT = `() => {
     if (!list.length) console.log('\n泣き別れはありません。');
   }
 
-  if ((checkOnly || pageArg) && (list.length || successfulNavigations !== expectedNavigations)) process.exit(1);
+  const incomplete =
+    navigationFailures.length > 0
+    || successfulNavigations !== expectedNavigations
+    || completedMeasurements !== expectedMeasurements;
+  if (incomplete || ((checkOnly || pageArg || sectionArg) && list.length)) process.exit(1);
 })().catch((error) => {
   console.error(error);
   process.exit(1);

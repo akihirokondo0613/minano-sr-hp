@@ -36,6 +36,7 @@
 
 
 <link rel="stylesheet" href="../skin-v2.css?v=20260809-bloglink1">
+<link rel="stylesheet" href="../blog-article.css?v=20260809-value1">
 
 <style id="shika-gikoujo-post">
 article.post:has(>#shika-gikoujo-article){max-width:960px}
@@ -104,7 +105,7 @@ article.post:has(>#shika-gikoujo-article){max-width:960px}
 <!-- Structured Data: FAQPage -->
 <script type="application/ld+json" data-schema="faqpage">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"委託している技工所が複数あります。全部の技工所と話をしないといけませんか。","acceptedAnswer":{"@type":"Answer","text":"施設基準では、支援料による賃金改善の意向がある技工所と連携して届け出ることとされています。様式101には委託先の名称を書く欄があり、実績報告書では技工所ごとの算定回数を書きます。委託先ごとに意向を確認し、上乗せの方法を取り決めておくのが基本の形になります。"}},{"@type":"Question","name":"院内に歯科技工士がいます。その分も算定できますか。","acceptedAnswer":{"@type":"Answer","text":"算定できません。歯科医師から交付された歯科技工指示書や直接の指示に基づき、院内の歯科技工士が製作や修理を行う場合は対象外とされています。外注した分だけが対象です。院内技工と外注が混在している医院では、装着ごとにどちらの製作かが分かる記録が必要になります。"}},{"@type":"Question","name":"届出をした時点で、すでに技工所で製作が始まっている補綴物はどうなりますか。","acceptedAnswer":{"@type":"Answer","text":"対象になります。疑義解釈で、届出時点ですでに製作等を開始している場合も対象となり、補綴物等の装着時に支援料を算定して差し支えないと示されています。"}}]}</script>
 </head>
-<body>
+<body data-nav="B">
 <a class="skip-link" href="#main">本文へ移動</a>
 <div id="prog"></div>
 
@@ -153,7 +154,7 @@ article.post:has(>#shika-gikoujo-article){max-width:960px}
     <div class="post-meta">
       <time datetime="2026-08-09">公開 2026.08.09</time>
       <span class="dot" aria-hidden="true">・</span>
-      <span>読了 約9分</span>
+      <span>読了 約10分</span>
     </div>
   </div>
 </header>
@@ -163,11 +164,35 @@ article.post:has(>#shika-gikoujo-article){max-width:960px}
 
   <p class="sb-lead">歯科技工物を外注している医院向けに、令和8年度に新設された<strong>歯科技工所ベースアップ支援料</strong>を図解で整理しました。技工所で働く歯科技工士の賃上げのための制度ですが、<strong>届け出るのは技工所ではなく医院です</strong>。まずそこが分かりにくいところなので、お金と書類の流れから順に見ていきます。数字はすべて令和8年度時点のものです。</p>
 
+  <aside class="post-reader" data-reader-map aria-labelledby="reader-map-title">
+    <p class="post-reader-kicker" id="reader-map-title">この記事が役立つ方</p>
+    <div class="post-reader-grid">
+      <div class="post-reader-item"><span class="post-reader-label">対象</span><strong>歯科技工物を外注し、支援料の届出を検討する歯科医院の院長</strong></div>
+      <div class="post-reader-item"><span class="post-reader-label">いま困っていること</span><strong>技工所との取り決め、上乗せ単価、翌年の記録方法が分からない</strong></div>
+      <div class="post-reader-item"><span class="post-reader-label">読後にできること</span><strong>届出前の確認事項と、算定開始後に残す記録を決められる</strong></div>
+    </div>
+  </aside>
+
   <div class="point-box"><p class="pb-t">この記事のポイント</p><ul>
     <li>1装置につき15点（150円）。装着したときに算定し、<strong>全額を技工所への委託費の増額に充てます</strong>。医院の収益にはなりません。</li>
     <li>届出の前に、<strong>技工所に賃上げの意向があるかを確認して連携する</strong>ことが施設基準で求められています。医院だけで決められません。</li>
     <li>委託費の上乗せは<strong>1装置いくら、と単価で決める</strong>と持ち出しが出ません。消費税分も支援料から充ててよいことになっています。</li>
   </ul></div>
+
+  <nav class="post-toc" aria-labelledby="post-toc-t">
+    <p class="post-toc-t" id="post-toc-t">この記事の内容</p>
+    <ol>
+      <li><a href="#s1">なぜ技工所ではなく、医院が届け出るのか</a></li>
+      <li><a href="#s2">1装置につき15点。患者さんの負担はいくらか</a></li>
+      <li><a href="#s3">届出の前に、技工所と話をする必要があります</a></li>
+      <li><a href="#s4">届出と報告のスケジュール</a></li>
+      <li><a href="#s5">委託費への上乗せを決める方法</a></li>
+      <li><a href="#s6">消費税を含めた単価の考え方</a></li>
+      <li><a href="#s7">翌年8月の実績報告で書くこと</a></li>
+      <li><a href="#s8">医院だけでは判断が難しいところ</a></li>
+      <li><a href="#faq">よくある質問</a></li>
+    </ol>
+  </nav>
 
   <!-- ═══ 01 ═══ -->
   <section class="sb-sec">
@@ -333,7 +358,7 @@ article.post:has(>#shika-gikoujo-article){max-width:960px}
     </div>
   </section>
 
-  <h2>よくある質問</h2>
+  <h2 id="faq">よくある質問</h2>
   <dl class="faq">
     <dt>委託している技工所が複数あります。全部の技工所と話をしないといけませんか。</dt>
     <dd>施設基準では、支援料による賃金改善の意向がある技工所と連携して届け出ることとされています。様式101には委託先の名称を書く欄があり、実績報告書では技工所ごとの算定回数を書きます。委託先ごとに意向を確認し、上乗せの方法を取り決めておくのが基本の形になります。</dd>
@@ -342,6 +367,12 @@ article.post:has(>#shika-gikoujo-article){max-width:960px}
     <dt>届出をした時点で、すでに技工所で製作が始まっている補綴物はどうなりますか。</dt>
     <dd>対象になります。疑義解釈で、届出時点ですでに製作等を開始している場合も対象となり、補綴物等の装着時に支援料を算定して差し支えないと示されています。</dd>
   </dl>
+
+  <aside class="post-action"><p class="post-action-title">この記事を読んだら、まず行うこと</p><ol>
+    <li>外注している技工所ごとに、賃上げの意向と届出への協力可否を確認する</li>
+    <li>1装置あたりの上乗せ額を税込・税抜のどちらで決めるか書面に残す</li>
+    <li>算定開始月から、装置・技工所・算定回数を月ごとに記録する担当を決める</li>
+  </ol></aside>
 
   <h2>当事務所のサポート</h2>
   <p>この制度は、届出の書類そのものは短く、記入に時間はかかりません。手間がかかるのは、その前後にある<strong>技工所との取り決め</strong>と<strong>院内の記録の仕組みづくり</strong>です。当事務所では、委託先への意向確認の進め方、単価と消費税を含めた上乗せ方法の設計、様式101に書く「賃金引き上げの方法」の文案づくり、そして翌年8月の実績報告に向けた記録の整え方までをご一緒に進めます。</p>
