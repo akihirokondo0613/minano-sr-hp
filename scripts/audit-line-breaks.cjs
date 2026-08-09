@@ -16,7 +16,8 @@
  *   最終行の文字数が1以下なら泣き別れとして報告する。
  *
  * 対象の絞り込み:
- *   表のセルや狭いチップは折り返して当然なので、本文幅（画面の55%以上）の箱だけを見る。
+ *   表のセルや狭いチップは折り返して当然なので、画面幅の55%以上の箱だけを見る。
+ *   PCのmax-widthカラムで対象0件になる場合も、候補DOMの走査完了を別カウントする。
  *   12文字未満の短い要素も対象外。
  *
  * エンジン:
@@ -29,6 +30,7 @@
 const { chromium, webkit } = require('playwright');
 const fs = require('node:fs');
 const path = require('node:path');
+const { probeLineBreaks } = require('./lib/line-break-probe.cjs');
 
 const args = process.argv.slice(2);
 const base = (args.find((a) => a.startsWith('http')) || 'http://127.0.0.1:8811/').replace(/\/?$/, '/');
@@ -45,8 +47,6 @@ const WIDTHS = widthArg
 
 const root = path.resolve(__dirname, '..');
 const MAX_ORPHAN = 1;
-const MIN_TEXT = 12;
-const MIN_BOX_RATIO = 0.55;
 
 const UPGRADE_INSECURE_META =
   /<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">/gi;
@@ -69,6 +69,22 @@ async function prepareLocalHttpPage(page) {
       // page.goto側の例外として集計し、未処理のroute.fetch例外で監査結果を失わない。
       await route.abort('failed');
     }
+  });
+}
+
+// PR-Bまでの単体監査と同じ描画待機を維持する。共通化するのは判定probeだけで、
+// 待機条件を変えて既存の合否を変えない。
+async function prepareAuditMeasurement(page) {
+  await page.waitForTimeout(300);
+  await page.evaluate(async () => {
+    document.documentElement.style.scrollBehavior = 'auto';
+    const height = document.documentElement.scrollHeight;
+    for (let y = 0; y < height; y += 800) {
+      window.scrollTo(0, y);
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+    window.scrollTo(0, 0);
+    await new Promise((resolve) => setTimeout(resolve, 150));
   });
 }
 
@@ -151,64 +167,6 @@ function pages() {
   return list;
 }
 
-const AUDIT = `() => {
-  const out = [];
-  const seen = new Set();
-  const vw = document.documentElement.clientWidth;
-  const targetSelector = 'h1,h2,h3,h4,p,li,dd,figcaption,blockquote';
-  document.querySelectorAll(targetSelector).forEach((el) => {
-    const cs = getComputedStyle(el);
-    if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) === 0) return;
-    // strong/a/span等のインライン要素内も含める。最寄りの監査対象が自身の文字だけを採り、
-    // li内のpなどを親子双方で二重計上しない。
-    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
-    const nodes = [];
-    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-      if (!node.textContent.trim().length) continue;
-      if (node.parentElement?.closest(targetSelector) !== el) continue;
-      nodes.push(node);
-    }
-    if (!nodes.length) return;
-    const full = el.textContent.replace(/\\s+/g, '');
-    if (full.length < 12) return;
-    const box = el.getBoundingClientRect();
-    if (box.width < vw * 0.55) return;
-
-    const lines = [];
-    for (const node of nodes) {
-      const t = node.textContent;
-      for (let i = 0; i < t.length; i++) {
-        const ch = t[i];
-        if (/\\s/.test(ch)) continue;
-        const rg = document.createRange();
-        rg.setStart(node, i); rg.setEnd(node, i + 1);
-        const r = rg.getBoundingClientRect();
-        if (!r.width && !r.height) continue;
-        const top = Math.round(r.top);
-        let line = lines.find((l) => Math.abs(l.top - top) <= 3);
-        if (!line) { line = { top, chars: '' }; lines.push(line); }
-        line.chars += ch;
-      }
-    }
-    if (lines.length < 2) return;
-    lines.sort((a, b) => a.top - b.top);
-    const last = lines[lines.length - 1];
-    if (last.chars.length > 1) return;
-
-    const key = el.tagName + '|' + full.slice(0, 40) + '|' + last.chars;
-    if (seen.has(key)) return;
-    seen.add(key);
-    out.push({
-      tag: el.tagName.toLowerCase(),
-      cls: (typeof el.className === 'string' ? el.className : '').slice(0, 28),
-      text: el.textContent.trim().slice(0, 48),
-      orphan: last.chars,
-      prev: lines.length >= 2 ? lines[lines.length - 2].chars.slice(-18) : '',
-    });
-  });
-  return out;
-}`;
-
 (async () => {
   if (!WIDTHS.length || WIDTHS.some((width) => !Number.isInteger(width) || width <= 0)) {
     throw new Error(`--widths は正の整数をカンマ区切りで指定してください: ${WIDTHS.join(',')}`);
@@ -218,9 +176,13 @@ const AUDIT = `() => {
   }
   const engineNames = engines();
   const targets = pages();
+  if (!targets.length) throw new Error('監査対象ページがありません');
   const found = new Map();
   const navigationFailures = [];
+  const measurementFailures = [];
+  const measurements = [];
   let successfulNavigations = 0;
+  let recordedMeasurements = 0;
   let completedMeasurements = 0;
 
   for (const engineName of engineNames) {
@@ -229,7 +191,9 @@ const AUDIT = `() => {
     try {
       for (const rel of targets) {
         for (const width of WIDTHS) {
-          const page = await browser.newPage({ viewport: { width, height: 900 } });
+          const page = await browser.newPage({
+            viewport: { width, height: width < 768 ? 900 : 1000 },
+          });
           await prepareLocalHttpPage(page);
           let response;
           try {
@@ -245,17 +209,49 @@ const AUDIT = `() => {
             continue;
           }
           successfulNavigations += 1;
-          await page.waitForTimeout(300);
-          // content-visibility:auto の節も測るため一度末尾まで送る
-          await page.evaluate(async () => {
-            document.documentElement.style.scrollBehavior = 'auto';
-            const h = document.documentElement.scrollHeight;
-            for (let y = 0; y < h; y += 800) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 10)); }
-            window.scrollTo(0, 0);
-            await new Promise((r) => setTimeout(r, 150));
+          let probe;
+          try {
+            await prepareAuditMeasurement(page);
+            probe = await page.evaluate(probeLineBreaks);
+          } catch (error) {
+            measurementFailures.push(`${engineName} / ${rel} @ ${width}px: ${error.message}`);
+            await page.close();
+            continue;
+          }
+          recordedMeasurements += 1;
+          const validProbe = probe
+            && typeof probe.measured === 'boolean'
+            && Number.isInteger(probe.targetCount)
+            && Number.isInteger(probe.candidateCount)
+            && Number.isInteger(probe.eligibleCount)
+            && Number.isInteger(probe.measuredCount)
+            && Array.isArray(probe.findings);
+          if (!validProbe) {
+            measurementFailures.push(`${engineName} / ${rel} @ ${width}px: probe結果が不正です`);
+            await page.close();
+            continue;
+          }
+          measurements.push({
+            engine: engineName,
+            page: rel,
+            width,
+            measured: probe.measured,
+            targetCount: probe.targetCount,
+            candidateCount: probe.candidateCount,
+            eligibleCount: probe.eligibleCount,
+            measuredCount: probe.measuredCount,
+            findings: probe.findings.length,
           });
-          const items = (await page.evaluate(AUDIT)) || [];
-          completedMeasurements += 1;
+          if (probe.measured) {
+            completedMeasurements += 1;
+          } else {
+            measurementFailures.push(
+              `${engineName} / ${rel} @ ${width}px: `
+              + `泣き別れを実測できません（対象${probe.targetCount} / 候補${probe.candidateCount} / `
+              + `適格${probe.eligibleCount} / 実測${probe.measuredCount}）`,
+            );
+          }
+          const items = probe.findings;
           for (const item of items) {
             const key = `${engineName}|${rel}|${item.tag}.${item.cls}|${item.text}|${item.orphan}`;
             if (!found.has(key)) found.set(key, { engine: engineName, page: rel, ...item, widths: [] });
@@ -281,15 +277,22 @@ const AUDIT = `() => {
       targets: targets.length,
       successfulNavigations,
       expectedNavigations,
+      recordedMeasurements,
       completedMeasurements,
       expectedMeasurements,
+      unmeasuredMeasurements: expectedMeasurements - completedMeasurements,
       navigationFailures,
+      measurementFailures,
+      measurements,
       findings: list,
     }, null, 2));
   } else {
     console.log(`対象 ${targets.length}ページ × ${WIDTHS.length}幅（${WIDTHS.join(' / ')}px）× ${engineNames.length}エンジン（${engineNames.join(' / ')}）`);
     console.log(`読込成功: ${successfulNavigations}/${expectedNavigations}`);
-    console.log(`測定完了: ${completedMeasurements}/${expectedMeasurements}`);
+    console.log(
+      `測定: 期待${expectedMeasurements} / 記録${recordedMeasurements} / `
+      + `実測${completedMeasurements} / 未測定${expectedMeasurements - completedMeasurements}`,
+    );
     console.log(`泣き別れ（最終行が${MAX_ORPHAN}文字以下）: ${list.length}件`);
     for (const f of list) {
       console.log(`\n[${f.engine} / ${f.widths.length}幅 ${f.widths.join('/')}] ${f.page}`);
@@ -297,12 +300,15 @@ const AUDIT = `() => {
       console.log(`   ${f.text}`);
     }
     for (const failure of navigationFailures) console.error(`読込失敗: ${failure}`);
-    if (!list.length) console.log('\n泣き別れはありません。');
+    for (const failure of measurementFailures) console.error(`測定失敗: ${failure}`);
+    if (!list.length && !measurementFailures.length) console.log('\n泣き別れはありません。');
   }
 
   const incomplete =
     navigationFailures.length > 0
+    || measurementFailures.length > 0
     || successfulNavigations !== expectedNavigations
+    || recordedMeasurements !== expectedMeasurements
     || completedMeasurements !== expectedMeasurements;
   if (incomplete || ((checkOnly || pageArg || sectionArg) && list.length)) process.exit(1);
 })().catch((error) => {

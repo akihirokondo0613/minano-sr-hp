@@ -14,10 +14,18 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v7
         with:
           node-version: 22
+
+      - name: Playwrightブラウザのキャッシュ
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-1.61.1-${{ runner.os }}
 
       - name: Playwrightを準備
         run: |
@@ -53,6 +61,9 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 22
+
+      - name: Lighthouseを準備
+        run: npm install --no-save --no-package-lock lighthouse@13.0.1
 
       - name: 公開データの整合性チェック
         run: |
@@ -90,7 +101,7 @@ jobs:
 
       - name: Lighthouseをウォームアップ
         run: |
-          npx --yes lighthouse@13.0.1 http://127.0.0.1:8765/ \
+          npx lighthouse http://127.0.0.1:8765/ \
             --quiet \
             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
             --output=json \
@@ -100,7 +111,7 @@ jobs:
       - name: Lighthouse（モバイル）
         run: |
           for attempt in 1 2 3; do
-            npx --yes lighthouse@13.0.1 http://127.0.0.1:8765/ \
+            npx lighthouse http://127.0.0.1:8765/ \
               --quiet \
               --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
               --output=json \
@@ -110,7 +121,7 @@ jobs:
 
       - name: Lighthouse（PC）をウォームアップ
         run: |
-          npx --yes lighthouse@13.0.1 http://127.0.0.1:8765/ \
+          npx lighthouse http://127.0.0.1:8765/ \
             --quiet \
             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
             --output=json \
@@ -121,7 +132,7 @@ jobs:
       - name: Lighthouse（PC）
         run: |
           for attempt in 1 2 3; do
-            npx --yes lighthouse@13.0.1 http://127.0.0.1:8765/ \
+            npx lighthouse http://127.0.0.1:8765/ \
               --quiet \
               --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
               --output=json \
