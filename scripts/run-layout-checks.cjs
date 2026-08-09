@@ -303,6 +303,20 @@ async function runTaskPool(tasks, limit = 2) {
 
     const tasks = [
       {
+        name: '全ブログ記事',
+        command: process.execPath,
+        args: [
+          'scripts/test-blog-articles.cjs',
+          base,
+          '--json',
+          '--with-line-breaks',
+          ...(blogSelection.mode === 'shard'
+            ? blogSelection.slugs.map((slug) => `--slug=${slug}`)
+            : []),
+        ],
+        output: 'blog-articles.json',
+      },
+      {
         name: 'トップヒーロー',
         command: process.execPath,
         args: ['scripts/test-home-hero.cjs', base, '--json'],
@@ -321,20 +335,6 @@ async function runTaskPool(tasks, limit = 2) {
         output: 'blog-link-decoration.json',
       },
       {
-        name: '全ブログ記事',
-        command: process.execPath,
-        args: [
-          'scripts/test-blog-articles.cjs',
-          base,
-          '--json',
-          '--with-line-breaks',
-          ...(blogSelection.mode === 'shard'
-            ? blogSelection.slugs.map((slug) => `--slug=${slug}`)
-            : []),
-        ],
-        output: 'blog-articles.json',
-      },
-      {
         name: 'ルート泣き別れ',
         command: process.execPath,
         args: [
@@ -347,6 +347,9 @@ async function runTaskPool(tasks, limit = 2) {
           '--json',
         ],
         output: 'root-line-breaks.json',
+        // CIの2コアを420条件のブログ監査が占有している間は、WebKitの最終描画が
+        // 不安定になり得る。判定・幅・エンジンを変えず、この監査だけ単独で測る。
+        isolated: true,
       },
     ];
     if (full) {
@@ -396,7 +399,10 @@ async function runTaskPool(tasks, limit = 2) {
       );
     }
 
-    results.push(...await runTaskPool(tasks, 2));
+    const parallelTasks = tasks.filter((task) => !task.isolated);
+    const isolatedTasks = tasks.filter((task) => task.isolated);
+    results.push(...await runTaskPool(parallelTasks, 2));
+    for (const task of isolatedTasks) results.push(await runTask(task));
   } finally {
     server.closeAllConnections?.();
     await new Promise((resolve) => server.close(resolve));
