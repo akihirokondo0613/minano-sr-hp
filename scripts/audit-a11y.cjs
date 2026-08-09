@@ -157,18 +157,24 @@ const PAGE_AUDIT = `() => {
         const large = size >= 24 || (size >= 18.66 && parseFloat(cs.fontWeight) >= 700);
         const need = large ? ${AA_LARGE} : ${AA_NORMAL};
         const cr = ratio(eff, bg);
-        if (cr < need) {
+        const decorative = el.closest('[aria-hidden="true"]') !== null;
+        const transparentText = cs.color.startsWith('rgba(0, 0, 0, 0)');
+        // 意図的除外はslice前に落とし、通常の違反が上限外へ押し出される偽合格を防ぐ。
+        if (cr < need && !decorative && !transparentText) {
           contrast.push({
             sel: label(el), text: el.textContent.trim().slice(0, 30),
             ratio: +cr.toFixed(2), need, size: Math.round(size),
             color: cs.color, bg: 'rgb(' + [bg.r, bg.g, bg.b].map(Math.round).join(',') + ')',
-            decorative: el.closest('[aria-hidden="true"]') !== null,
+            decorative,
           });
         }
       }
     }
 
-    if (/^(a|button)$/i.test(el.tagName) && r.width > 0 && (r.width < ${TARGET_SIZE} || r.height < ${TARGET_SIZE})) {
+    if (/^(a|button)$/i.test(el.tagName)
+        && !el.closest('[aria-hidden="true"]')
+        && r.width > 0
+        && (r.width < ${TARGET_SIZE} || r.height < ${TARGET_SIZE})) {
       // 本文中のインラインリンクは WCAG 2.2 の適用除外
       const inline = el.tagName === 'A' && getComputedStyle(el).display === 'inline'
         && el.parentElement && /^(P|LI|TD|DD|SPAN)$/.test(el.parentElement.tagName)
@@ -294,7 +300,10 @@ async function auditEngine(engine, browserType, targetPages) {
         page.on('pageerror', (e) => errors.push(String(e).slice(0, 140)));
         // about.html の地図など外部埋め込みは load が返らないことがあるため domcontentloaded で待つ
         try {
-          await page.goto(base + rel, { waitUntil: 'domcontentloaded', timeout: 20000 });
+          const response = await page.goto(base + rel, { waitUntil: 'domcontentloaded', timeout: 20000 });
+          if (!response?.ok()) {
+            errors.push(`HTTP ${response?.status() ?? '応答なし'}`);
+          }
         } catch (e) {
           findings.push({
             engine,
@@ -366,6 +375,7 @@ async function auditEngine(engine, browserType, targetPages) {
   const targets = new Map();
   for (const f of findings) {
     for (const c of f.contrast ?? []) {
+      if (c.decorative) continue; // aria-hidden の装飾要素はWCAGの適用対象外
       if (c.color.startsWith('rgba(0, 0, 0, 0)')) continue; // background-clip:text の装飾数字
       contrast.set(`${f.engine}|${f.page}|${c.sel}|${c.ratio}`, {
         ...c,
@@ -403,7 +413,8 @@ async function auditEngine(engine, browserType, targetPages) {
     for (const p of photo) console.log(`- ${p.engine}:${p.page}@${p.width}px ${p.selector} = ${p.ratio ?? p.note}`);
   }
 
-  const fatal = scrolls.length + overflowed.length + errored.length + photoFails.length;
+  const fatal = scrolls.length + overflowed.length + errored.length + photoFails.length
+    + contrast.size + targets.size;
   const exitCode = checkOnly && fatal ? 1 : 0;
   if (audited.some((result) => result.closeTimedOut)) {
     // Playwright WebKitの残ったパイプでNodeが待ち続けないよう、出力後にだけ終了する。
