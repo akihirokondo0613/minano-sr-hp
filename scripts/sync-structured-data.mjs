@@ -168,6 +168,19 @@ const office = {
   priceRange: '月額 ¥35,000から（税抜）',
 };
 
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': 'https://minano-sr.com/#website',
+  url: 'https://minano-sr.com/',
+  name: 'みなの社会保険労務士事務所',
+  alternateName: 'minano-sr.com',
+  inLanguage: 'ja-JP',
+  publisher: {
+    '@id': 'https://minano-sr.com/#office',
+  },
+};
+
 {
   const relativePath = 'index.html';
   let source = read(relativePath);
@@ -176,6 +189,11 @@ const office = {
   source = source.replace(
     oldOffice,
     jsonLd('LocalBusiness', office),
+  );
+  source = replaceMarkedBlock(
+    source,
+    'WebSite',
+    jsonLd('WebSite', website),
   );
   source = replaceMarkedBlock(
     source,

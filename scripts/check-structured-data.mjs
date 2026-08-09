@@ -203,6 +203,7 @@ for (const [relativePath, { schemas }] of pages) {
 {
   const indexSchemas = pages.get('index.html')?.schemas ?? [];
   const localBusinesses = indexSchemas.filter((schema) => typeOf(schema).includes('LocalBusiness'));
+  const websites = indexSchemas.filter((schema) => typeOf(schema).includes('WebSite'));
   const deprecatedProfessionalService = indexSchemas.some((schema) =>
     typeOf(schema).includes('ProfessionalService'));
   if (localBusinesses.length !== 1) {
@@ -227,6 +228,20 @@ for (const [relativePath, { schemas }] of pages) {
   }
   if (deprecatedProfessionalService) {
     errors.push('index.html: 非推奨のProfessionalServiceが残っています');
+  }
+  if (websites.length !== 1) {
+    errors.push(`index.html: WebSiteは1件必要です（現在${websites.length}件）`);
+  } else {
+    const website = websites[0];
+    if (
+      website['@id'] !== 'https://minano-sr.com/#website' ||
+      website.url !== 'https://minano-sr.com/' ||
+      website.name !== 'みなの社会保険労務士事務所' ||
+      website.alternateName !== 'minano-sr.com' ||
+      website.publisher?.['@id'] !== 'https://minano-sr.com/#office'
+    ) {
+      errors.push('index.html: WebSiteのサイト名・URL・publisherが不正です');
+    }
   }
 }
 
@@ -274,5 +289,5 @@ if (errors.length) {
 
 console.log(
   `構造化データチェック合格: FAQPage ${expectedFaqCounts.size}ページ・${expectedFaqTotal}問、` +
-  `Service ${expectedServicePages.size}ページ、LocalBusiness 1件、BreadcrumbList 1件。`,
+  `Service ${expectedServicePages.size}ページ、LocalBusiness 1件、WebSite 1件、BreadcrumbList 1件。`,
 );
