@@ -22,6 +22,7 @@ jobs:
           node scripts/sync-structured-data.mjs --check
           node scripts/remove-cat-ui.mjs --check
           node scripts/check-structured-data.mjs
+          node scripts/check-asset-version.mjs
 
       - name: 公開前の性能チェック
         run: node scripts/check-performance-budget.mjs
