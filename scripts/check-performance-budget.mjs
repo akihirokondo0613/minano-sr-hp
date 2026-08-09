@@ -7,6 +7,53 @@ const errors = [];
 const publicHtml = [];
 const excludedHtml = new Set(['admin-post.html', 'icon-catalog.html']);
 const sharedScripts = /(?:page-enter|image-slot|link-keep|header-motion)\.js(?:\?[^"']*)?/i;
+const expectedAssets = [
+  'page-enter.js',
+  'skin-v2.css',
+  'service.css',
+  'image-slot.js',
+  'blog-article.css',
+  'header-motion.js',
+  'link-keep.js',
+];
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+async function loadAssetVersions() {
+  let manifest;
+  try {
+    manifest = JSON.parse(await readFile(join(root, 'assets-version.json'), 'utf8'));
+  } catch (error) {
+    throw new Error(`assets-version.jsonを読めません: ${error.message}`);
+  }
+  if (!manifest || Array.isArray(manifest) || typeof manifest !== 'object') {
+    throw new Error('assets-version.jsonのルートはオブジェクトにしてください');
+  }
+
+  const actual = Object.keys(manifest);
+  const missing = expectedAssets.filter((asset) => !Object.hasOwn(manifest, asset));
+  const unexpected = actual.filter((asset) => !expectedAssets.includes(asset));
+  const invalid = expectedAssets.filter(
+    (asset) => typeof manifest[asset] !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(manifest[asset]),
+  );
+  const problems = [];
+  if (missing.length) problems.push(`不足キー: ${missing.join(', ')}`);
+  if (unexpected.length) problems.push(`未定義キー: ${unexpected.join(', ')}`);
+  if (invalid.length) problems.push(`版の形式が不正: ${invalid.join(', ')}`);
+  if (problems.length) throw new Error(problems.join(' / '));
+
+  return Object.freeze(Object.fromEntries(expectedAssets.map((asset) => [asset, manifest[asset]])));
+}
+
+let assetVersions;
+try {
+  assetVersions = await loadAssetVersions();
+} catch (error) {
+  console.error(`性能チェックを開始できません。資産版manifestが不正です: ${error.message}`);
+  process.exit(1);
+}
 
 async function collectHtml(dir) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
@@ -37,24 +84,14 @@ for (const { full, rel } of publicHtml) {
       fail(`${rel}: 共通スクリプトにdeferがありません: ${tag[0]}`);
     }
   }
-  const pageEnter = html.match(/page-enter\.js\?v=([^"']+)/i);
-  if (pageEnter && pageEnter[1] !== '20260725-nocat1') {
-    fail(`${rel}: page-enter.jsのキャッシュ版が不一致です（${pageEnter[1]}）`);
+  for (const [asset, expectedVersion] of Object.entries(assetVersions)) {
+    const reference = html.match(new RegExp(`${escapeRegExp(asset)}\\?v=([^"']+)`, 'i'));
+    if (reference && reference[1] !== expectedVersion) {
+      fail(`${rel}: ${asset}のキャッシュ版が不一致です（${reference[1]}）`);
+    }
   }
   if (/mascot\.js|mn-mascot|mn-recall/i.test(html)) {
     fail(`${rel}: 撤去済みの猫UI参照が残っています`);
-  }
-  const imageSlotVersion = html.match(/image-slot\.js\?v=([^"']+)/i);
-  if (imageSlotVersion && imageSlotVersion[1] !== '20260722-crop1') {
-    fail(`${rel}: image-slot.jsのキャッシュ版が不一致です（${imageSlotVersion[1]}）`);
-  }
-  const skinVersion = html.match(/skin-v2\.css\?v=([^"']+)/i);
-  if (skinVersion && skinVersion[1] !== '20260809-bloglink1') {
-    fail(`${rel}: skin-v2.cssのキャッシュ版が不一致です（${skinVersion[1]}）`);
-  }
-  const serviceVersion = html.match(/service\.css\?v=([^"']+)/i);
-  if (serviceVersion && serviceVersion[1] !== '20260725-nocat1') {
-    fail(`${rel}: service.cssのキャッシュ版が不一致です（${serviceVersion[1]}）`);
   }
   if (/data-goatcounter=/i.test(html)) {
     const expectedPath = rel === 'index.html' ? '/' : `/${rel}`;

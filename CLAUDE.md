@@ -97,10 +97,10 @@ fetch はローカルファイルではブロックされ、待ち状態（pendi
 
 - `window.omelette.writeFile` が使える環境だけを編集モードとする。編集モードでは従来どおり `.image-slots.state.json` と localStorage を利用する。
 - 通常の公開サイトでは `.image-slots.state.json` を取得せず、HTMLの `src/srcset` をそのまま表示する。約1.6MBの編集用JSONが二重取得される問題を再発させない。
-- 公開時の `<image-slot>` は編集UI・ghost画像・ドラッグ処理を作らない軽量クラスで表示する。編集用の重いShadow DOMを公開側へ戻さない。読込URLは `image-slot.js?v=20260722-crop1`。
+- 公開時の `<image-slot>` は編集UI・ghost画像・ドラッグ処理を作らない軽量クラスで表示する。編集用の重いShadow DOMを公開側へ戻さない。読込URLの版は `assets-version.json` の `image-slot.js` を正本とする。
 - `<a>` や `onclick` 付きカード内の画像をClaude Designで調整できるよう、画像の直接ラッパーに編集環境だけ作動する `onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"` を置き、`page-enter.js` も編集環境の image-slot 操作をSPA遷移より優先する。公開時のリンク挙動は変えない。
 - 軽量版が追加する `#mn-image-slot-public-style` は、`page-enter.js` の `KEEP_HEAD_IDS` でSPA遷移をまたいで保持する。これが無いとトップ→無料相談などの遷移後に画像の100%幅・高さ・cover指定が消え、画像と枠の大きさがずれる（2026-07-21に再現・修正）。
-- `deploy-public.yml` は `.image-slots.state.json` と検証用 `scripts/` を public ブランチから除外する。隠しファイルを公開へ戻さない。
+- `deploy-public.yml` は `.image-slots.state.json`、運用用の `assets-version.json`、検証用 `scripts/` を public ブランチから除外する。隠しファイルや運用ファイルを公開へ戻さない。
 - 大きなイラストは `-480.webp` / `-960.webp` を `image-slot.js` が公開時に選択する。対象を増やすときは本体画像と同じ構図で両方を生成する。
 
 ## 画像の「ブラウザ内と本ファイルの食い違い」対策（2026-07-20 発覚・再発防止ルール）
@@ -147,7 +147,7 @@ fetch はローカルファイルではブロックされ、待ち状態（pendi
 
 ### v6 の変更（2026-07-21・遷移文字の途中拡大を修正）
 `window.__mnSpa.v===6`。ルートページは `html` の実効 `zoom=1`、uploads配下は `wave-skin.css` により通常 `zoom=.9`（2000px以上では1.15）。SPAのカーテンは `<html>` 直下に残したまま `swapHead()` でページCSSだけを交換するため、**無料相談→トップ系ページでは表示中のカーテンも .9→1 に切り替わり、文字が途中で約11%拡大していた**。`syncVeilZoom()` がカーテンへルートの逆倍率を与え、表示開始時・head交換直後・新規CSS適用時・表示中のリサイズ時に同期する。これにより本文側の既存倍率は変えず、カーテンの文字・波・足あとだけを常に同じ実寸で表示する。
-- **本番キャッシュ対策**：サーバーがJavaScriptへ `max-age=604800`（7日）を付けるため、全HTMLと記事生成テンプレートの読込URLを `page-enter.js?v=20260722-1` に統一。修正版公開時に既存端末が旧版を保持し続けるのを防ぐ。次回 `page-enter.js` を変更して本番公開するときも、このクエリ版番号を全ページ＋`admin-post.html`の生成テンプレートで更新する。
+- **本番キャッシュ対策**：サーバーがJavaScriptへ `max-age=604800`（7日）を付けるため、全HTMLと記事生成テンプレートの読込URLに同じ版を付け、修正版公開時に既存端末が旧版を保持し続けるのを防ぐ。`page-enter.js` の版は `assets-version.json` を正本とし、変更時は `node scripts/sync-asset-version.mjs` で全ページ＋`admin-post.html`の生成テンプレートへ同期する。
 
 ### v4 の変更（2026-07-19・ブログ行きは演出なし＋文字/線の同フェーズ化）
 `window.__mnSpa.v===4`。ユーザー要望「別ページへ行くときだけ遷移演出を出す（理念→サービス等は出す／ブログは続けて読めるよう出さない）」＋「文字とアンダーラインのズレ・文字なしアンダーラインの根絶」に対応。**判定は原則『移動先』**：
@@ -188,7 +188,7 @@ body:not([data-nav]) .nav-links a:not(.active):not([aria-current]){
 
 - **対処**: `header-motion.js` から当該2行を撤去。ナビのホバー下線と背景は `skin-v2.css` の `.nav-links a::after` / `a:hover` が全ページで担う。`data-nav` 属性はどこからも参照されなくなったが、各ページの `<body data-nav="B">` はそのまま残してある（他の用途で使う可能性があるため。使わないなら別途削除してよい）。
 - **`uploads/` 配下は対象外。** これらは `skin-v2.css` を読まず `uploads/service.css` が独自に `.nav-links a{background:linear-gradient(...)}` を持つ。`::after` は無いので下線は1本のまま＝二重になっていない。旧系統として意図的に残す（配色は稜線パレットに追従済み）。
-- **キャッシュ版の取りこぼしは機械で止める（2026-08-09 追加）**: この修正（PR #76）では `header-motion.js` の中身だけ変えて `?v=` を据え置いたため、7日キャッシュを持つ端末に修正が届かず、後追いのPR #78で65ファイルの版番号を上げることになった。運用ルールでは守れないので `scripts/check-asset-version.mjs` をCIに入れてある。共通JS/CSSを触ったら、同じPRで参照HTMLの `?v=` を一括更新すること（`admin-post.html` の生成テンプレートを含む）。
+- **キャッシュ版の取りこぼしは機械で止める（2026-08-09 追加）**: この修正（PR #76）では `header-motion.js` の中身だけ変えて `?v=` を据え置いたため、7日キャッシュを持つ端末に修正が届かず、後追いのPR #78で65ファイルの版番号を上げることになった。版の正本は `assets-version.json`。共通JS/CSSを変更したら該当値を更新し、`node scripts/sync-asset-version.mjs` で参照HTMLと `admin-post.html` の記事生成テンプレートへ同期する。`preflight.mjs` が同期漏れとキャッシュ版の据え置きをCIで止める。
 - **再発防止**: 共通CSSへ新しい装飾を足すときは、**旧実装が別ファイル（JSの注入CSS含む）に残っていないか**を必ず `rg` で確認する。今回は「一部ページにだけ除外フラグを付けて済ませた」ことで、フラグの無いページに旧実装が生き残った。除外フラグ方式は取りこぼす。
 
 ## ページ共通scrollハンドラの作法（2026-07-17 全33ページ改修済み・必ず守る）
@@ -276,7 +276,7 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 
 - 全33公開ページの「お問い合わせ」欄に `mailto:contact@minano-sr.com` を追加済み。`admin-post.html` の記事生成テンプレートも同じ内容に同期してある。
 - 所在地と電話・営業時間は `address.footer-contact` の2行構造に統一。旧 `.footer-addr` の固定`<br>`や `.addr-sep` の「 / 」区切りへ戻さない。電話番号とメールアドレスは途中で分割しない。
-- 共通スタイルはルート系=`skin-v2.css`、uploads系=`uploads/service.css`、問い合わせページ=`uploads/contact.html` 内のCSS。キャッシュ回避の読込版は `20260721-footer`。
+- 共通スタイルはルート系=`skin-v2.css`、uploads系=`uploads/service.css`、問い合わせページ=`uploads/contact.html` 内のCSS。版付きで読む共通CSSは `assets-version.json` の値を正本とする。
 
 ## ホバー・アニメーションの作法（カクつき防止）
 
@@ -328,7 +328,7 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
   - `about.html`：事務所の約束・代表メッセージ・プロフィール・所在地・地図
 - 外部ブックマーク互換のため、トップの `#services`／`#pricing`／`#cases`／`#about` は短い案内部分に残す。削除・改名しない。
 - グローバルメニューは「サービス／料金／支援の進め方／事務所案内／ブログ／社労士とは／公式情報」で全ページ統一。記事生成テンプレート `admin-post.html` も同じ接続を正本とする。
-- CSSキャッシュ版は `20260730-hero-wrap1`。変更後は `scripts/verify-ui.cjs` で12画面幅・全公開ページ・主要導線・料金計算機・記事生成テンプレートまで確認する。
+- 共通資産のキャッシュ版は `assets-version.json` を正本とする。変更後は `scripts/verify-ui.cjs` で12画面幅・全公開ページ・主要導線・料金計算機・記事生成テンプレートまで確認する。
 
 ## レスポンシブの徹底（このプロジェクトで繰り返し発生した問題。編集後は必ず守る）
 
@@ -442,12 +442,14 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 「◯件→◯件に改善した」と報告するなら、その数値はこのスクリプトの出力であること。手元の使い捨てスクリプトで測って報告し、第三者が追試できない状態にしない。
 
 - `node scripts/audit-blog.mjs`（ブラウザ不要）… ブログ記事の構成。reader/problem/outcome/serviceと本文の一致、HTML/CSS図解、判断が難しい箇所、次の3アクション、CTA、この記事のポイント／目次／出典／あわせて読みたい、FAQ問数、読了時間と本文量の整合、目次アンカーと h2 id の一致、自己リンク・記事間リンク・孤立記事、タイトル・description長を検査する。`--check` で基準外があれば exit 1、`--json` で機械可読。
-- `node scripts/run-layout-checks.cjs`（playwright必要）… 動的ポートの検証用サーバーを自動起動し、トップヒーロー、最終CTA、ブログ記事リンク下線、全ブログ記事の Chromium／WebKit 回帰、全ブログ記事の泣き別れ監査を順番に実行する。サーバーは実行後に必ず閉じ、JSON結果とサーバー状態を一時フォルダへ残す。`--full` で `verify-ui.cjs`・公開前チェック5種・`git diff --check` も同じサーバーで続けて実行する。
+- `node scripts/run-layout-checks.cjs`（playwright必要）… 動的ポートの検証用サーバーを自動起動し、トップヒーロー、最終CTA、ブログ記事リンク下線、全ブログ記事の Chromium／WebKit 回帰、全ブログ記事の泣き別れ監査を順番に実行する。サーバーは実行後に必ず閉じ、JSON結果とサーバー状態を一時フォルダへ残す。`--full` で `verify-ui.cjs`・資産版同期を含む公開前チェック5種・`git diff --check` も同じサーバーで続けて実行する。
 - `node scripts/test-home-hero.cjs http://127.0.0.1:8811/`（playwright必要）… トップだけを Chromium／WebKit とスマホ〜700px境界で確認する軽量回帰テスト。ヒーロー内の各要素矩形、文節内改行、`<wbr>`、要約帯の列数を検査し、`documentElement.scrollWidth`だけでは見えないクリップ内のはみ出しも失敗にする。
 - `node scripts/test-final-copy.cjs http://127.0.0.1:8811/`（playwright必要）… 最終CTAを持つ5ページ × 4画面幅 × Chromium／WebKit = 40条件を確認する。`.final-p` を表示領域へ送り、フォント読込と2フレームを待ってから実測する。期待40件／実測40件／未測定0件が必須で、要素0件・描画行0本は合格ではなく失敗とする。
 - `node scripts/test-blog-articles.cjs http://127.0.0.1:8811/`（playwright必要）… 全ブログ記事をChromium／WebKit × 320・390・430・768・1440pxで実測する。reader map・HTML/CSS図解・判断箇所・次の3手、要素単位の横はみ出し、図解内11px未満、console/page errorを検査し、期待件数と実測件数が一致しない場合も失敗にする。共通ブログCSS、記事テンプレート、全記事本文を変更したときに実行する。
 - `node scripts/audit-a11y.cjs http://127.0.0.1:8811/`（playwright必要）… Chromium／WebKitの両方で全公開ページ×12画面幅を巡回し、ページ自体と要素単位の横はみ出し・背景色から算出したコントラスト・操作領域24px・console/pageエラーを確認する。**写真の上の文字は背景色から計算できない**ので、`PHOTO_TARGETS` に登録した要素だけ「文字を透明にして背景の実ピクセルを測る」方式で別に測る。写真上に文字を置く箇所を増やしたらここに追加する。
-- `node scripts/check-asset-version.mjs`（ブラウザ不要）… 共通JS/CSSのキャッシュ版取りこぼしを検出する。(1) baseと比べて中身が変わった資産の `?v=` が据え置きになっていないか (2) 同じ資産の `?v=` がページ間でばらついていないか（部分適用の検出）。CIの `performance.yml`（PR）と `deploy-public.yml`（公開）の両方で実行する。base は `GITHUB_BASE_REF` →`origin/main` の順に解決し、解決できない場合はばらつき検査だけを行う。
+- `node scripts/sync-asset-version.mjs`（ブラウザ不要）… `assets-version.json` を正本に、7資産の `?v=` を対象HTMLと `admin-post.html` の生成テンプレートへ同期する。`--check` は書き込まず不一致で exit 1。
+- `node scripts/check-asset-version.mjs`（ブラウザ不要）… 共通JS/CSSのキャッシュ版取りこぼしを検出する。(1) baseと比べて中身が変わった資産の `?v=` が据え置きになっていないか (2) 同じ資産の `?v=` がページ間でばらついていないか（部分適用の検出）。`preflight.mjs` 経由では main pushの `ASSET_VERSION_BASE_REF`（`github.event.before`）を最優先し、PRでは `GITHUB_BASE_REF`→`origin/main` の順に解決する。baseを解決できない場合はばらつき検査だけを行う。
+- `node scripts/preflight.mjs`（ブラウザ不要）… 公開前の10チェックを決められた順序ですべて実行する正本。途中で失敗しても残りを実行し、最後に失敗一覧を出して exit 1。
 
 - **FAQが無いこと自体は異常としない**（よくある質問が実在しない記事に無理に作らない方針）。`audit-blog.mjs` もそう判定する。
 - 集計の落とし穴：出典（`.post-refs`）と関連記事（`.post-related`）は **`</article>` の外**にある。`<article class="post">` の内側だけを検索すると「0件」と誤判定する（実際にやった）。記事間リンクは `blog/` 配下なので相対パスにディレクトリが付かない点も同じ。
@@ -502,7 +504,7 @@ git switch -c agent/<短い変更名>
 2. 現在の表示を対象幅で確認する。
 3. 変更は必要な行だけに限定する。
 4. トップのファーストビューCSSを変える場合は、`index.html` の `#critical-home` と `skin-v2.css` の対応を確認する。キャッシュ済みCSSより後のページ固有上書きが必要な場合も、意図を明確にする。
-5. 共通CSS／JS本体を変更した場合は、同じPRで参照HTMLと`admin-post.html`の生成テンプレートを新しい`?v=`へ同期し、commit前に`node scripts/check-asset-version.mjs`を通す。HTMLだけの変更では共通資産の版番号を上げない。
+5. 共通CSS／JS本体を変更した場合は、同じPRで `assets-version.json` の該当値を更新し、`node scripts/sync-asset-version.mjs` で参照HTMLと `admin-post.html` の生成テンプレートへ同期する。commit前に `node scripts/preflight.mjs` を通す。HTMLだけの変更では共通資産の版番号を上げない。
 6. 文字・画像・制度情報の変更では、記事一覧、構造化データ、画像本体、sitemapなど同期対象を確認する。
 
 ### 3. 変更後の検証
@@ -520,18 +522,10 @@ git switch -c agent/<短い変更名>
 公開前には次の整合性チェックを実行する。
 
 ```bash
-node scripts/sync-blog-dates.mjs --check
-node scripts/sync-structured-data.mjs --check
-node scripts/remove-cat-ui.mjs --check
-node scripts/check-structured-data.mjs
-node scripts/check-asset-version.mjs
-node scripts/submit-indexnow.mjs --check
-node gen-sitemap.js
-node scripts/check-performance-budget.mjs
-git diff --check
+node scripts/preflight.mjs
 ```
 
-`--check` が「要更新」で失敗した場合は、対応する同期コマンドを実行して差分を確認し、再度すべてのチェックを通す。エラーを無視して公開しない。
+`preflight.mjs` は10本を順番にすべて実行し、途中の失敗も最後に一覧化する。`--check` が「要更新」で失敗した場合は、対応する同期コマンドを実行して差分を確認し、再度 `node scripts/preflight.mjs` を通す。エラーを無視して公開しない。
 
 `gen-sitemap.js` は `--check` ではなく生成で回す。lastmod はマージ日で変わるため、ローカルの値がずれていても公開の障害にはならない（本番用は `deploy-public.yml` が作り直す。上の「公開用の sitemap は deploy 時に作り直す」節を参照）。URLの増減があるときだけ差分を確認する。
 
