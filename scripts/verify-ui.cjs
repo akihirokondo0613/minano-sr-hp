@@ -2,6 +2,52 @@ const { chromium } = require('playwright');
 const fs = require('node:fs');
 const path = require('node:path');
 
+const expectedAssets = [
+  'page-enter.js',
+  'skin-v2.css',
+  'service.css',
+  'image-slot.js',
+  'blog-article.css',
+  'header-motion.js',
+  'link-keep.js',
+];
+
+function loadAssetVersions() {
+  let manifest;
+  try {
+    manifest = JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), 'assets-version.json'), 'utf8'),
+    );
+  } catch (error) {
+    throw new Error(`assets-version.jsonを読めません: ${error.message}`);
+  }
+  if (!manifest || Array.isArray(manifest) || typeof manifest !== 'object') {
+    throw new Error('assets-version.jsonのルートはオブジェクトにしてください');
+  }
+
+  const actual = Object.keys(manifest);
+  const missing = expectedAssets.filter(asset => !Object.hasOwn(manifest, asset));
+  const unexpected = actual.filter(asset => !expectedAssets.includes(asset));
+  const invalid = expectedAssets.filter(
+    asset => typeof manifest[asset] !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(manifest[asset]),
+  );
+  const problems = [];
+  if (missing.length) problems.push(`不足キー: ${missing.join(', ')}`);
+  if (unexpected.length) problems.push(`未定義キー: ${unexpected.join(', ')}`);
+  if (invalid.length) problems.push(`版の形式が不正: ${invalid.join(', ')}`);
+  if (problems.length) throw new Error(problems.join(' / '));
+
+  return Object.freeze(Object.fromEntries(expectedAssets.map(asset => [asset, manifest[asset]])));
+}
+
+let assetVersions;
+try {
+  assetVersions = loadAssetVersions();
+} catch (error) {
+  console.error(`画面検証を開始できません。資産版manifestが不正です: ${error.message}`);
+  process.exit(1);
+}
+
 const base = process.argv[2] || 'http://127.0.0.1:8765/';
 const articleMetadata = JSON.parse(
   fs.readFileSync(path.join(process.cwd(), 'blog/articles.json'), 'utf8'),
@@ -898,9 +944,9 @@ function recordConsoleError(target) {
     '../pricing.html',
     '../support.html',
     '../about.html',
-    'page-enter.js?v=20260725-nocat1',
-    'skin-v2.css?v=20260809-bloglink1',
-    'link-keep.js?v=20260723-conversion1',
+    `page-enter.js?v=${assetVersions['page-enter.js']}`,
+    `skin-v2.css?v=${assetVersions['skin-v2.css']}`,
+    `link-keep.js?v=${assetVersions['link-keep.js']}`,
     'data-goatcounter-settings="{&quot;path&quot;:&quot;/blog/verification-only.html&quot;}"',
     'href="#" class="to-top"',
     '<meta property="article:section" content="システム導入">',

@@ -12,31 +12,18 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - name: 公開データの整合性チェック
-        run: |
-          node scripts/sync-blog-read-times.mjs --check
-          node scripts/audit-blog.mjs --check
-          node scripts/sync-blog-dates.mjs --check
-          node scripts/sync-structured-data.mjs --check
-          node scripts/remove-cat-ui.mjs --check
-          node scripts/check-structured-data.mjs
-          node scripts/check-asset-version.mjs
-          node scripts/submit-indexnow.mjs --check
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
 
-      - name: 公開前の性能チェック
-        run: node scripts/check-performance-budget.mjs
-
-      # lastmod は各HTMLの最終コミット日から作る。squash mergeは新しい日付の
-      # コミットを作るので、ローカルで生成した値は必ずずれる可能性がある。
-      # 公開する sitemap はここで作り直す（--check で止めない）。
-      - name: sitemapを公開用に再生成
-        run: |
-          node gen-sitemap.js
-          git --no-pager diff --stat -- sitemap.xml
+      - name: 公開前チェック
+        env:
+          ASSET_VERSION_BASE_REF: ${{ github.event.before }}
+        run: node scripts/preflight.mjs
 
       - name: メンテナンスモード判定・適用
         run: |
@@ -55,7 +42,7 @@ jobs:
 
       - name: 非公開ファイルを除外
         run: |
-          rm -f AGENTS.md CLAUDE.md admin-post.html icon-catalog.html mascot.js .maintenance
+          rm -f AGENTS.md CLAUDE.md admin-post.html assets-version.json icon-catalog.html mascot.js .maintenance
           rm -f assets/cat-walk-*.webp
           rm -rf _backup_* .github scripts
           rm -f *.zip

@@ -373,10 +373,10 @@ async function runTaskPool(tasks, limit = 2) {
           output: 'preflight-structured-sync.log',
         },
         {
-          name: '猫UI・キャッシュ版',
+          name: '資産版同期',
           command: process.execPath,
-          args: ['scripts/remove-cat-ui.mjs', '--check'],
-          output: 'preflight-cat-ui.log',
+          args: ['scripts/sync-asset-version.mjs', '--check'],
+          output: 'preflight-asset-version.log',
         },
         {
           name: '構造化データ検査',
