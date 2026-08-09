@@ -12,10 +12,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { chromium, webkit } = require('playwright');
-const {
-  prepareLineBreakProbe,
-  probeLineBreaks,
-} = require('./lib/line-break-probe.cjs');
+const { probeLineBreaks } = require('./lib/line-break-probe.cjs');
 
 const args = process.argv.slice(2);
 const base = (args.find((arg) => arg.startsWith('http')) || 'http://127.0.0.1:8811/')
@@ -139,8 +136,7 @@ async function settleAndMeasure(page, includeLineBreaks) {
   let lineBreak = null;
   if (includeLineBreaks) {
     try {
-      // 同じnavigation・viewport・browser engineのまま全文を描画し、共通probeを実行する。
-      await prepareLineBreakProbe(page);
+      // 直前の既存settle処理で遅延描画を確定済み。同じnavigation・幅・engineのまま測る。
       lineBreak = await page.evaluate(probeLineBreaks);
       if (!validLineBreakProbe(lineBreak)) {
         lineBreak = unmeasuredLineBreak('probe結果が不正です');

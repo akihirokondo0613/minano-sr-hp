@@ -30,10 +30,7 @@
 const { chromium, webkit } = require('playwright');
 const fs = require('node:fs');
 const path = require('node:path');
-const {
-  prepareLineBreakProbe,
-  probeLineBreaks,
-} = require('./lib/line-break-probe.cjs');
+const { probeLineBreaks } = require('./lib/line-break-probe.cjs');
 
 const args = process.argv.slice(2);
 const base = (args.find((a) => a.startsWith('http')) || 'http://127.0.0.1:8811/').replace(/\/?$/, '/');
@@ -72,6 +69,22 @@ async function prepareLocalHttpPage(page) {
       // page.goto側の例外として集計し、未処理のroute.fetch例外で監査結果を失わない。
       await route.abort('failed');
     }
+  });
+}
+
+// PR-Bまでの単体監査と同じ描画待機を維持する。共通化するのは判定probeだけで、
+// 待機条件を変えて既存の合否を変えない。
+async function prepareAuditMeasurement(page) {
+  await page.waitForTimeout(300);
+  await page.evaluate(async () => {
+    document.documentElement.style.scrollBehavior = 'auto';
+    const height = document.documentElement.scrollHeight;
+    for (let y = 0; y < height; y += 800) {
+      window.scrollTo(0, y);
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+    window.scrollTo(0, 0);
+    await new Promise((resolve) => setTimeout(resolve, 150));
   });
 }
 
@@ -198,7 +211,7 @@ function pages() {
           successfulNavigations += 1;
           let probe;
           try {
-            await prepareLineBreakProbe(page);
+            await prepareAuditMeasurement(page);
             probe = await page.evaluate(probeLineBreaks);
           } catch (error) {
             measurementFailures.push(`${engineName} / ${rel} @ ${width}px: ${error.message}`);
