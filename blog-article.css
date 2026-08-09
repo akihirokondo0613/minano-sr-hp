@@ -372,3 +372,4 @@ article.post .post-action li::marker { color: var(--moegi-b); }
     grid-column: 2;
   }
 }
+/* PR-C 全件フォールバック検証用の一時コメント */
