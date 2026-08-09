@@ -45,7 +45,7 @@ async function prepareLocalHttpPage(page) {
 }
 
 async function measure(page) {
-  return page.evaluate(() => {
+  return page.evaluate(({ epsilon }) => {
     const viewportWidth = document.documentElement.clientWidth;
     const selectorOf = (element) => {
       if (element.id) return `#${element.id}`;
@@ -61,21 +61,74 @@ async function measure(page) {
         right: Number(rect.right.toFixed(2)),
       };
     };
-    const linesOf = (selector) => {
-      const lines = [];
-      for (const phrase of document.querySelectorAll(`${selector} .nw`)) {
+    const phrasesOf = (selector) => [...document.querySelectorAll(`${selector} .nw`)]
+      .map((phrase) => {
         const range = document.createRange();
         range.selectNodeContents(phrase);
-        const rect = [...range.getClientRects()].find((item) => item.width > 0 && item.height > 0);
-        if (!rect) continue;
-        let line = lines.find((item) => Math.abs(item.top - rect.top) < 1);
+        const rects = [...range.getClientRects()]
+          .filter((rect) => rect.width > 0 && rect.height > 0);
+        return {
+          text: phrase.textContent,
+          rectCount: rects.length,
+          rects: rects.map((rect) => ({
+            top: Number(rect.top.toFixed(2)),
+            left: Number(rect.left.toFixed(2)),
+            right: Number(rect.right.toFixed(2)),
+          })),
+        };
+      });
+    const boundariesOf = (selector) => {
+      const phrases = [...document.querySelectorAll(`${selector} .nw`)];
+      return phrases.slice(0, -1).map((phrase, index) => {
+        const nextPhrase = phrases[index + 1];
+        const range = document.createRange();
+        range.setStartAfter(phrase);
+        range.setEndBefore(nextPhrase);
+        const between = range.cloneContents();
+        const meaningfulText = between.textContent.replace(/\s+/g, '');
+        const replacedElementCount = between.querySelectorAll(
+          'img,svg,video,audio,canvas,input,button,select,textarea,iframe,object,embed',
+        ).length;
+        const unexpectedElementCount = [...between.querySelectorAll('*')]
+          .filter((element) => !['BR', 'WBR', 'STRONG'].includes(element.tagName)).length;
+        const brCount = between.querySelectorAll('br').length;
+        const wbrCount = between.querySelectorAll('wbr').length;
+        return {
+          before: phrase.textContent,
+          after: nextPhrase.textContent,
+          brCount,
+          wbrCount,
+          meaningfulText,
+          replacedElementCount,
+          unexpectedElementCount,
+          valid: meaningfulText.length === 0 && replacedElementCount === 0
+            && unexpectedElementCount === 0
+            && (brCount === 0 ? wbrCount === 1 : brCount === 1 && wbrCount === 0),
+        };
+      });
+    };
+    const textCoveredBy = (selector, phrases) => {
+      const target = document.querySelector(selector);
+      const normalizeText = (text) => text.replace(/\s+/g, '');
+      return Boolean(target) && normalizeText(target.textContent)
+        === normalizeText(phrases.map((phrase) => phrase.text).join(''));
+    };
+    const linesOf = (phrases) => {
+      const lines = [];
+      for (const phrase of phrases) {
+        if (phrase.rectCount !== 1) continue;
+        const [rect] = phrase.rects;
+        let line = lines.find((item) => Math.abs(item.top - rect.top) < epsilon);
         if (!line) {
           line = { top: rect.top, text: '' };
           lines.push(line);
         }
-        line.text += phrase.textContent;
+        line.text += phrase.text;
       }
-      return lines.sort((a, b) => a.top - b.top).map((item) => item.text);
+      return lines.sort((a, b) => a.top - b.top).map((item) => ({
+        text: item.text,
+        characterCount: [...item.text.replace(/\s+/g, '')].length,
+      }));
     };
     const offenders = [...document.querySelectorAll('.hero, .hero *')]
       .filter((element) => {
@@ -84,7 +137,8 @@ async function measure(page) {
           return false;
         }
         const rect = element.getBoundingClientRect();
-        return rect.width > 0 && (rect.left < -1 || rect.right > viewportWidth + 1);
+        return rect.width > 0
+          && (rect.left < -epsilon || rect.right > viewportWidth + epsilon);
       })
       .map((element) => {
         const rect = element.getBoundingClientRect();
@@ -95,25 +149,22 @@ async function measure(page) {
           right: Number(rect.right.toFixed(2)),
         };
       });
-    const phraseBreaks = [...document.querySelectorAll('.hero-h1 .nw, .hero-sub .nw')]
-      .flatMap((element) => {
-        const range = document.createRange();
-        range.selectNodeContents(element);
-        const rects = [...range.getClientRects()].filter((rect) => rect.width > 0 && rect.height > 0);
-        return rects.length > 1 ? [{
-          text: element.textContent,
-          lines: rects.length,
-        }] : [];
-      });
+    const h1Phrases = phrasesOf('.hero-h1');
+    const subPhrases = phrasesOf('.hero-sub');
 
     return {
       viewportWidth,
       documentScrollWidth: document.documentElement.scrollWidth,
-      wbrCount: document.querySelectorAll('.hero-h1 wbr, .hero-sub wbr').length,
       summaryColumns: getComputedStyle(document.querySelector('.hs-inner'))
         .gridTemplateColumns.split(' ').filter(Boolean).length,
-      h1Lines: linesOf('.hero-h1'),
-      subLines: linesOf('.hero-sub'),
+      h1Phrases,
+      subPhrases,
+      h1Boundaries: boundariesOf('.hero-h1'),
+      subBoundaries: boundariesOf('.hero-sub'),
+      h1TextCovered: textCoveredBy('.hero-h1', h1Phrases),
+      subTextCovered: textCoveredBy('.hero-sub', subPhrases),
+      h1Lines: linesOf(h1Phrases),
+      subLines: linesOf(subPhrases),
       metrics: {
         stage: rectOf('.hero-stage'),
         overlay: rectOf('.hero-overlay'),
@@ -124,9 +175,8 @@ async function measure(page) {
         trust: rectOf('.hero-trust'),
       },
       offenders,
-      phraseBreaks,
     };
-  });
+  }, { epsilon: EPSILON });
 }
 
 (async () => {
@@ -160,14 +210,58 @@ async function measure(page) {
               .join(', ')}`,
           );
         }
-        if (result.wbrCount !== 7) {
-          failures.push(`${engineName}@${width}px: ヒーローの<wbr>が7個ではありません（${result.wbrCount}個）`);
+        for (const [section, phrases] of [
+          ['見出し', result.h1Phrases],
+          ['説明文', result.subPhrases],
+        ]) {
+          if (phrases.length === 0) {
+            failures.push(`${engineName}@${width}px: ${section}の文節を測定できません`);
+          }
+          for (const phrase of phrases.filter((item) => item.rectCount !== 1)) {
+            failures.push(
+              `${engineName}@${width}px: ${section}の文節「${phrase.text}」が`
+              + `1行に収まっていません（rect=${phrase.rectCount}）`,
+            );
+          }
         }
-        if (result.phraseBreaks.length) {
+        for (const [section, textCovered] of [
+          ['見出し', result.h1TextCovered],
+          ['説明文', result.subTextCovered],
+        ]) {
+          if (!textCovered) {
+            failures.push(`${engineName}@${width}px: ${section}に.nwで覆われていない文字があります`);
+          }
+        }
+        for (const [section, boundaries] of [
+          ['見出し', result.h1Boundaries],
+          ['説明文', result.subBoundaries],
+        ]) {
+          for (const boundary of boundaries.filter((item) => !item.valid)) {
+            failures.push(
+              `${engineName}@${width}px: ${section}の文節境界`
+              + `「${boundary.before}｜${boundary.after}」の<wbr>がちょうど1個ではありません`
+              + `（br=${boundary.brCount}, wbr=${boundary.wbrCount}, `
+              + `文字=${boundary.meaningfulText.length}, 置換要素=${boundary.replacedElementCount}, `
+              + `予期しない要素=${boundary.unexpectedElementCount}）`,
+            );
+          }
+        }
+        for (const [section, lines] of [
+          ['見出し', result.h1Lines],
+          ['説明文', result.subLines],
+        ]) {
+          const lastLine = lines.at(-1);
+          if (!lastLine || lastLine.characterCount < 2) {
+            failures.push(
+              `${engineName}@${width}px: ${section}の最終行が2文字未満です`
+              + `（${lastLine?.text ?? '未測定'}）`,
+            );
+          }
+        }
+        if (result.documentScrollWidth > result.viewportWidth) {
           failures.push(
-            `${engineName}@${width}px: 文節内改行 ${result.phraseBreaks
-              .map((item) => `「${item.text}」=${item.lines}行`)
-              .join(', ')}`,
+            `${engineName}@${width}px: ページ横スクロールがあります `
+            + `(scrollWidth=${result.documentScrollWidth}, viewport=${result.viewportWidth})`,
           );
         }
         if (width <= 700 && result.metrics.label.width >= result.metrics.h1.width - EPSILON) {
@@ -179,18 +273,6 @@ async function measure(page) {
             `${engineName}@${width}px: ヒーロー直下サマリーが`
             + `${expectedSummaryColumns}列ではありません（${result.summaryColumns}列）`,
           );
-        }
-        if (width === 402) {
-          const firstBlock = '手続きも、給与計算も、助成金も。';
-          const keepsFourPhraseLines = result.h1Lines.length === 4
-            && result.h1Lines.slice(0, 2).join('') === firstBlock
-            && result.h1Lines[2] === '会社の労務を、'
-            && result.h1Lines[3] === 'まるごと任せられる。';
-          if (!keepsFourPhraseLines) {
-            failures.push(
-              `${engineName}@402px: 見出しの改行が想定外です（${result.h1Lines.join(' / ')}）`,
-            );
-          }
         }
         if (errors.length) failures.push(`${engineName}@${width}px: ${errors.join(' / ')}`);
         await page.close();
@@ -213,9 +295,12 @@ async function measure(page) {
         + `label=${label.width}/${label.right} h1=${h1.width}/${h1.right} `
         + `sub=${sub.width}/${sub.right} buttons=${buttons.width}/${buttons.right} `
         + `trust=${trust.width}/${trust.right} `
-        + `wbr=${result.wbrCount} overflow=${result.offenders.length}`,
+        + `scroll=${result.documentScrollWidth - result.viewportWidth} `
+        + `overflow=${result.offenders.length}`,
       );
-      if (result.width === 402) console.log(`  h1 lines: ${result.h1Lines.join(' / ')}`);
+      if (result.width === 402) {
+        console.log(`  h1 lines: ${result.h1Lines.map((line) => line.text).join(' / ')}`);
+      }
     }
     console.log(failures.length ? `失敗: ${failures.length}件` : '合格: ヒーローの横はみ出し0件');
     for (const failure of failures) console.error(`- ${failure}`);

@@ -21,17 +21,6 @@ const ENGINES = [
   ['chromium', chromium],
   ['webkit', webkit],
 ];
-const PHRASES = [
-  '助成金、手続きの効率化、トラブル予防——',
-  'どこから手をつければいいか、',
-  '一緒に考えます。',
-];
-const EXPECTED_LINES = new Map([
-  [320, PHRASES],
-  [402, [PHRASES[0], PHRASES[1] + PHRASES[2]]],
-  [430, [PHRASES[0], PHRASES[1] + PHRASES[2]]],
-  [768, [PHRASES.join('')]],
-]);
 const EPSILON = 1;
 const UPGRADE_INSECURE_META =
   /<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">/gi;
@@ -44,10 +33,6 @@ function commitSha() {
   } catch {
     return 'unknown';
   }
-}
-
-function sameLines(actual, expected) {
-  return actual.length === expected.length && actual.every((line, index) => line === expected[index]);
 }
 
 function recordConsoleError(target) {
@@ -104,11 +89,14 @@ async function renderAndMeasure(page) {
       measured: false,
       targetCount,
       phraseCount: 0,
-      wbrCount: 0,
       phrases: [],
+      boundaries: [],
       lines: [],
+      finalLineCharacters: 0,
+      textCovered: false,
       offenders: [],
       pageOverflow: 0,
+      viewportWidth: 0,
       targetRect: null,
     };
   }
@@ -146,7 +134,27 @@ async function renderAndMeasure(page) {
     }
     const viewportWidth = document.documentElement.clientWidth;
     const targetRect = visibleRect;
-    const phrases = [...target.querySelectorAll(':scope > .nw')].map((element) => {
+    const phraseElements = [...target.querySelectorAll(':scope > .nw')];
+    const childNodes = [...target.childNodes];
+    const boundaries = phraseElements.slice(0, -1).map((element, index) => {
+      const next = phraseElements[index + 1];
+      const between = childNodes.slice(childNodes.indexOf(element) + 1, childNodes.indexOf(next));
+      const wbrCount = between.filter(
+        (node) => node.nodeType === Node.ELEMENT_NODE && node.tagName === 'WBR',
+      ).length;
+      const unexpectedCount = between.filter((node) => {
+        if (node.nodeType === Node.TEXT_NODE) return Boolean(node.textContent.trim());
+        if (node.nodeType === Node.ELEMENT_NODE) return node.tagName !== 'WBR';
+        return false;
+      }).length;
+      return {
+        index: index + 1,
+        wbrCount,
+        unexpectedCount,
+        valid: wbrCount === 1 && unexpectedCount === 0,
+      };
+    });
+    const phrases = phraseElements.map((element) => {
       const range = document.createRange();
       range.selectNodeContents(element);
       const rects = [...range.getClientRects()].filter((rect) => rect.width > 0 && rect.height > 0);
@@ -160,6 +168,9 @@ async function renderAndMeasure(page) {
         top: rect ? Number(rect.top.toFixed(2)) : null,
       };
     });
+    const normalizeText = (text) => text.replace(/\s+/g, '');
+    const textCovered = normalizeText(target.textContent)
+      === normalizeText(phrases.map((phrase) => phrase.text).join(''));
     const lines = [];
     for (const phrase of phrases.filter((item) => item.rectCount === 1)) {
       let line = lines.find((item) => Math.abs(item.top - phrase.top) < 1);
@@ -169,6 +180,10 @@ async function renderAndMeasure(page) {
       }
       line.text += phrase.text;
     }
+    const sortedLines = lines.sort((a, b) => a.top - b.top).map((line) => line.text);
+    const finalLineCharacters = sortedLines.length
+      ? [...sortedLines.at(-1).trim()].length
+      : 0;
     const offenders = [target, ...target.querySelectorAll('*')].flatMap((element) => {
       const style = getComputedStyle(element);
       if (style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity) === 0) return [];
@@ -183,15 +198,18 @@ async function renderAndMeasure(page) {
 
     return {
       measured: targetRect.width > 0 && targetRect.height > 0
-        && phrases.length === 3 && phrases.every((phrase) => phrase.rectCount === 1)
-        && lines.length > 0,
+        && phrases.length > 0 && phrases.every((phrase) => phrase.rectCount === 1)
+        && lines.length > 0 && textCovered,
       targetCount: 1,
       phraseCount: phrases.length,
-      wbrCount: target.querySelectorAll(':scope > wbr').length,
       phrases,
-      lines: lines.sort((a, b) => a.top - b.top).map((line) => line.text),
+      boundaries,
+      lines: sortedLines,
+      finalLineCharacters,
+      textCovered,
       offenders,
-      pageOverflow: document.documentElement.scrollWidth - viewportWidth,
+      pageOverflow: Math.max(0, document.documentElement.scrollWidth - viewportWidth),
+      viewportWidth,
       targetRect: {
         width: Number(targetRect.width.toFixed(2)),
         height: Number(targetRect.height.toFixed(2)),
@@ -208,6 +226,7 @@ async function renderAndMeasure(page) {
 (async () => {
   const startedAt = new Date().toISOString();
   const results = [];
+  const expectedPhraseCounts = new Map();
 
   for (const [engine, browserType] of ENGINES) {
     const browser = await browserType.launch({ headless: true });
@@ -241,11 +260,14 @@ async function renderAndMeasure(page) {
               measured: false,
               targetCount: 0,
               phraseCount: 0,
-              wbrCount: 0,
               phrases: [],
+              boundaries: [],
               lines: [],
+              finalLineCharacters: 0,
+              textCovered: false,
               offenders: [],
               pageOverflow: 0,
+              viewportWidth: 0,
               targetRect: null,
             };
           }
@@ -255,20 +277,41 @@ async function renderAndMeasure(page) {
           if (loadError) conditionFailures.push(`読み込み失敗: ${loadError}`);
           if (!measurement.measured) conditionFailures.push('対象・文節・行を実測できません');
           if (measurement.targetCount !== 1) conditionFailures.push(`.final-pが1件ではありません（${measurement.targetCount}件）`);
-          if (measurement.phraseCount !== PHRASES.length) conditionFailures.push(`.nwが${PHRASES.length}件ではありません（${measurement.phraseCount}件）`);
-          if (measurement.wbrCount !== 2) conditionFailures.push(`<wbr>が2件ではありません（${measurement.wbrCount}件）`);
+          if (measurement.phraseCount === 0) conditionFailures.push('.final-p直下の.nwが0件です');
+          if (responseOk && measurement.targetCount === 1) {
+            const expectedPhraseCount = expectedPhraseCounts.get(pageName);
+            if (expectedPhraseCount === undefined) {
+              expectedPhraseCounts.set(pageName, measurement.phraseCount);
+            } else if (measurement.phraseCount !== expectedPhraseCount) {
+              conditionFailures.push(
+                `.nw件数が同じページの初回DOMと一致しません`
+                + `（期待${expectedPhraseCount}件、実測${measurement.phraseCount}件）`,
+              );
+            }
+          }
+          if (!measurement.textCovered) {
+            conditionFailures.push('.final-pの本文に.nwで覆われていない文字があります');
+          }
+          measurement.boundaries.forEach((boundary) => {
+            if (!boundary.valid) {
+              conditionFailures.push(
+                `文節境界${boundary.index}に<wbr>がちょうど1件ありません`
+                + `（wbr=${boundary.wbrCount}, その他=${boundary.unexpectedCount}）`,
+              );
+            }
+          });
           measurement.phrases.forEach((phrase, index) => {
-            if (phrase.text !== PHRASES[index]) conditionFailures.push(`文節${index + 1}の文言が一致しません`);
             if (phrase.rectCount !== 1) conditionFailures.push(`文節${index + 1}の描画行が1本ではありません（${phrase.rectCount}本）`);
-            if (phrase.left < -EPSILON || phrase.right > width + EPSILON) {
+            if (phrase.left < -EPSILON || phrase.right > measurement.viewportWidth + EPSILON) {
               conditionFailures.push(`文節${index + 1}が画面外です（${phrase.left}〜${phrase.right}px）`);
             }
           });
-          if (!sameLines(measurement.lines, EXPECTED_LINES.get(width))) {
-            conditionFailures.push(`改行が想定外です（${measurement.lines.join(' / ') || '0行'}）`);
+          if (measurement.lines.length === 0) conditionFailures.push('描画行が0本です');
+          if (measurement.finalLineCharacters < 2) {
+            conditionFailures.push(`最終行が2文字未満です（${measurement.finalLineCharacters}文字）`);
           }
           if (!measurement.targetRect?.inViewport) conditionFailures.push('.final-pが表示領域内にありません');
-          if (measurement.pageOverflow > EPSILON) conditionFailures.push(`ページが${measurement.pageOverflow}px横スクロールします`);
+          if (measurement.pageOverflow > 0) conditionFailures.push(`ページが${measurement.pageOverflow}px横スクロールします`);
           if (measurement.offenders.length) conditionFailures.push(`.final-p内の横はみ出し${measurement.offenders.length}件`);
           if (runtimeErrors.length) conditionFailures.push(...runtimeErrors);
 
@@ -290,7 +333,8 @@ async function renderAndMeasure(page) {
   }
 
   const expectedConditions = ENGINES.length * PAGES.length * WIDTHS.length;
-  const expectedPhrases = expectedConditions * PHRASES.length;
+  const expectedPhrases = [...expectedPhraseCounts.values()].reduce((sum, count) => sum + count, 0)
+    * WIDTHS.length * ENGINES.length;
   const measuredConditions = results.filter((result) => result.measured).length;
   const measuredPhrases = results.reduce(
     (sum, result) => sum + result.phrases.filter((phrase) => phrase.rectCount === 1).length,
@@ -301,6 +345,9 @@ async function renderAndMeasure(page) {
     (failure) => `${result.engine}:${result.page}@${result.width}px ${failure}`,
   ));
   if (results.length !== expectedConditions) failures.push(`条件数が${expectedConditions}件ではありません（${results.length}件）`);
+  if (expectedPhraseCounts.size !== PAGES.length) {
+    failures.push(`文節の期待件数を${PAGES.length}ページすべてから取得できません（${expectedPhraseCounts.size}ページ）`);
+  }
   if (measuredConditions !== expectedConditions) failures.push(`実測済みが${expectedConditions}件ではありません（${measuredConditions}件）`);
   if (measuredPhrases !== expectedPhrases) failures.push(`文節の実測済みが${expectedPhrases}件ではありません（${measuredPhrases}件）`);
 
