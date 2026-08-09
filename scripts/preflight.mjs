@@ -46,6 +46,10 @@ const tasks = [
     args: ['scripts/sync-asset-version.mjs', '--check'],
   },
   {
+    name: 'Critical CSSの同期確認',
+    args: ['scripts/sync-critical-css.mjs', '--check'],
+  },
+  {
     name: '構造化データ検査',
     args: ['scripts/check-structured-data.mjs'],
   },

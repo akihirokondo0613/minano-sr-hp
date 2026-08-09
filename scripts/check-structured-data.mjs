@@ -1,54 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { discoverFaqPages } from './lib/faq-source.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const errors = [];
-
-const expectedFaqCounts = new Map([
-  ['index.html', 6],
-  ['recruit.html', 4],
-  ['blog/36kyotei-jogen-kanri.html', 3],
-  ['blog/customer-harassment-gimuka-2026.html', 3],
-  ['blog/fukugyo-kengyo-kisoku.html', 2],
-  ['blog/getsugaku-henkou-todoke-zuiji-kaitei.html', 3],
-  ['blog/joseikin-career-up-2026.html', 2],
-  ['blog/kaigo-hoshu-kaitei-2027.html', 3],
-  ['blog/kaigo-shogu-career-path-2026.html', 3],
-  ['blog/kaigo-shogu-haibun-rule-2026.html', 3],
-  ['blog/kaigo-shogu-new-services-2026.html', 3],
-  ['blog/kaigo-shogu-todokede-2026.html', 3],
-  ['blog/kaigo-technology-jininhaichi-2027.html', 3],
-  ['blog/kensetsu-kokuho-hojinnari.html', 5],
-  ['blog/kintai-dx-donyu-junbi.html', 3],
-  ['blog/kodomo-kosodate-shienkin-2026.html', 3],
-  ['blog/kounenrei-koyo-keizoku-kyufu-2025.html', 3],
-  ['blog/kyuyo-itaku-junbi.html', 3],
-  ['blog/nenkyu-5days-kanribo.html', 3],
-  ['blog/natsu-shoyo-tetsuzuki.html', 2],
-  ['blog/necchusho-taisaku-gimu.html', 2],
-  ['blog/nendo-koshin-santei.html', 3],
-  ['blog/nyusha-tetsuzuki-checklist.html', 2],
-  ['blog/roudou-joken-tsuchisho-2024.html', 3],
-  ['blog/roudousha-shishoubyou-houkoku-denshi.html', 3],
-  ['blog/ryoritsu-shien-josei.html', 2],
-  ['blog/shaho-tekiyo-kakudai-2026.html', 2],
-  ['blog/shika-baseup-hyokaryo-2026.html', 3],
-  ['blog/shika-gikoujo-shienryo-2026.html', 3],
-  ['blog/shogaisha-hotei-koyoritsu-2026.html', 3],
-  ['blog/shusseigo-shien-ikujijitan-kyufu.html', 3],
-  ['blog/taishoku-trouble-prevention.html', 2],
-  ['blog/tokutei-chiiki-kyotaku-service-2027.html', 3],
-  ['blog/toyama-koyou-josei-2026-05.html', 2],
-  ['blog/toyama-kyujin-chingin-data-2026.html', 3],
-  ['blog/toyama-shokushu-betsu-kyujin-bairitsu-2026.html', 3],
-  ['blog/harassment-madoguchi.html', 3],
-  ['blog/ikukyu-kaisei-2026.html', 3],
-  ['blog/shugyo-kisoku-template-risk.html', 3],
-  ['blog/gyomu-kaizen-joseikin-2026.html', 3],
-  ['blog/jinzai-kaihatsu-joseikin-2026.html', 3],
-  ['blog/trial-koyo-joseikin-2026.html', 3],
-]);
 
 const expectedServicePages = new Set([
   'uploads/service-dx.html',
@@ -58,6 +14,18 @@ const expectedServicePages = new Set([
   'uploads/service-shakai-hoken.html',
   'uploads/service-shugyo-kisoku.html',
 ]);
+
+let faqPages;
+try {
+  faqPages = discoverFaqPages(root);
+} catch (error) {
+  console.error('表示FAQの構造に問題が見つかりました。');
+  console.error(`- ${error.message}`);
+  process.exit(1);
+}
+const displayedFaqs = new Map(
+  faqPages.map(({ relativePath, pairs }) => [relativePath, pairs]),
+);
 
 function walkHtml(dir) {
   const result = [];
@@ -82,11 +50,14 @@ function flattenJsonLd(value) {
 
 function parseSchemas(relativePath, source) {
   const schemas = [];
-  for (const match of source.matchAll(
-    /<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi,
-  )) {
+  for (const match of source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
+    const typeMatch = match[1].match(
+      /(?:^|\s)type\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/i,
+    );
+    const scriptType = typeMatch?.[1] ?? typeMatch?.[2] ?? typeMatch?.[3];
+    if (scriptType?.toLowerCase() !== 'application/ld+json') continue;
     try {
-      schemas.push(...flattenJsonLd(JSON.parse(match[1])));
+      schemas.push(...flattenJsonLd(JSON.parse(match[2])));
     } catch (error) {
       errors.push(`${relativePath}: JSON-LDを解析できません（${error.message}）`);
     }
@@ -96,7 +67,7 @@ function parseSchemas(relativePath, source) {
 
 const pages = new Map();
 for (const full of walkHtml(root)) {
-  const relativePath = path.relative(root, full);
+  const relativePath = path.relative(root, full).split(path.sep).join('/');
   if (relativePath === 'admin-post.html' || relativePath === 'icon-catalog.html') continue;
   const source = fs.readFileSync(full, 'utf8');
   pages.set(relativePath, {
@@ -144,19 +115,20 @@ for (const [relativePath, { source, schemas }] of pages) {
 
 for (const [relativePath, { schemas }] of pages) {
   const faqSchemas = schemas.filter((schema) => typeOf(schema).includes('FAQPage'));
-  const expectedCount = expectedFaqCounts.get(relativePath);
+  const displayedPairs = displayedFaqs.get(relativePath);
 
-  if (expectedCount === undefined && faqSchemas.length) {
-    errors.push(`${relativePath}: 表示上のFAQを監査していないページにFAQPageがあります`);
-  } else if (expectedCount !== undefined) {
+  if (!displayedPairs && faqSchemas.length) {
+    errors.push(`${relativePath}: 表示上のFAQが0件なのにFAQPageがあります`);
+  } else if (displayedPairs) {
     if (faqSchemas.length !== 1) {
       errors.push(`${relativePath}: FAQPageは1件必要です（現在${faqSchemas.length}件）`);
       continue;
     }
     const entities = faqSchemas[0].mainEntity;
-    if (!Array.isArray(entities) || entities.length !== expectedCount) {
+    if (!Array.isArray(entities) || entities.length !== displayedPairs.length) {
       errors.push(
-        `${relativePath}: FAQPageの質問数が不正です（期待${expectedCount}件、現在${entities?.length ?? 0}件）`,
+        `${relativePath}: FAQPageの質問数が表示FAQと一致しません` +
+          `（表示${displayedPairs.length}件、構造化データ${entities?.length ?? 0}件）`,
       );
       continue;
     }
@@ -171,6 +143,11 @@ for (const [relativePath, { schemas }] of pages) {
         !answer.text.trim()
       ) {
         errors.push(`${relativePath}: FAQPage ${index + 1}件目の質問または回答が不正です`);
+      } else if (
+        entity.name !== displayedPairs[index].question ||
+        answer.text !== displayedPairs[index].answer
+      ) {
+        errors.push(`${relativePath}: FAQPage ${index + 1}件目が表示FAQと一致していません`);
       }
     }
   }
@@ -289,7 +266,7 @@ for (const [relativePath, { source }] of pages) {
   }
 }
 
-const expectedFaqTotal = [...expectedFaqCounts.values()].reduce((sum, count) => sum + count, 0);
+const faqTotal = faqPages.reduce((sum, { pairs }) => sum + pairs.length, 0);
 if (errors.length) {
   console.error('構造化データ／公開除外チェックで問題が見つかりました。');
   for (const error of errors) console.error(`- ${error}`);
@@ -297,6 +274,6 @@ if (errors.length) {
 }
 
 console.log(
-  `構造化データチェック合格: FAQPage ${expectedFaqCounts.size}ページ・${expectedFaqTotal}問、` +
+  `構造化データチェック合格: FAQPage ${faqPages.length}ページ・${faqTotal}問、` +
   `Service ${expectedServicePages.size}ページ、LocalBusiness 1件、WebSite 1件、BreadcrumbList 1件。`,
 );
