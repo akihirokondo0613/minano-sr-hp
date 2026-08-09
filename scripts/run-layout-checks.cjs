@@ -200,6 +200,12 @@ async function runTask(task) {
         args: ['scripts/test-final-copy.cjs', base, '--json'],
         output: 'final-copy.json',
       },
+      {
+        name: 'ブログ記事リンク下線',
+        command: process.execPath,
+        args: ['scripts/test-blog-link-decoration.cjs', base, '--json'],
+        output: 'blog-link-decoration.json',
+      },
     ];
     if (full) {
       tasks.push(

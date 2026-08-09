@@ -957,8 +957,9 @@ article.post .post-toc-t { font-family: var(--mono); font-size: 12px; font-weigh
 article.post .post-toc ol { margin: 0; padding-left: 1.5em; display: flex; flex-direction: column; gap: 7px; }
 article.post .post-toc li { font-size: 14.5px; line-height: 1.7; color: var(--ink3); }
 /* inline-block にすると折り返した項目で番号が下段にずれ、下線が枠幅まで伸びる。
-   インラインのまま上下paddingで操作領域だけ24px以上にする。 */
-article.post .post-toc a { padding-block: 4px; color: var(--sugi); text-decoration: underline; text-decoration-color: var(--g300); text-underline-offset: 3px; transition: text-decoration-color .3s; }
+   インラインのまま上下paddingで操作領域だけ24px以上にする。
+   目次は文字に沿う下線だけを使い、article.post a の枠線は必ず解除する。 */
+article.post .post-toc a { padding-block: 4px; color: var(--sugi); border-bottom: 0; text-decoration: underline; text-decoration-color: var(--g300); text-underline-offset: 3px; transition: text-decoration-color .3s; }
 article.post .post-toc a:hover { text-decoration-color: var(--moegi); }
 /* 追従ヘッダーに見出しが隠れないようにする */
 article.post h2[id] { scroll-margin-top: 96px; }

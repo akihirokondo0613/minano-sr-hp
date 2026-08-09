@@ -135,10 +135,17 @@ async function renderAndMeasure(page) {
     }
   });
 
-  return page.evaluate((epsilon) => {
+  return page.evaluate(async (epsilon) => {
     const target = document.querySelector('.final-p');
+    // 遅延描画の確定時にスクロール位置が戻ることがあるため、計測と同じ処理内で再確認する。
+    let visibleRect = target.getBoundingClientRect();
+    if (visibleRect.bottom <= 0 || visibleRect.top >= innerHeight) {
+      target.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' });
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      visibleRect = target.getBoundingClientRect();
+    }
     const viewportWidth = document.documentElement.clientWidth;
-    const targetRect = target.getBoundingClientRect();
+    const targetRect = visibleRect;
     const phrases = [...target.querySelectorAll(':scope > .nw')].map((element) => {
       const range = document.createRange();
       range.selectNodeContents(element);
