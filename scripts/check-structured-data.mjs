@@ -19,6 +19,7 @@ const expectedFaqCounts = new Map([
   ['blog/kaigo-shogu-new-services-2026.html', 3],
   ['blog/kaigo-shogu-todokede-2026.html', 3],
   ['blog/kaigo-technology-jininhaichi-2027.html', 3],
+  ['blog/kensetsu-kokuho-hojinnari.html', 5],
   ['blog/kintai-dx-donyu-junbi.html', 3],
   ['blog/kodomo-kosodate-shienkin-2026.html', 3],
   ['blog/kounenrei-koyo-keizoku-kyufu-2025.html', 3],
