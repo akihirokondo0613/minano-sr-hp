@@ -188,6 +188,7 @@ body:not([data-nav]) .nav-links a:not(.active):not([aria-current]){
 
 - **対処**: `header-motion.js` から当該2行を撤去。ナビのホバー下線と背景は `skin-v2.css` の `.nav-links a::after` / `a:hover` が全ページで担う。`data-nav` 属性はどこからも参照されなくなったが、各ページの `<body data-nav="B">` はそのまま残してある（他の用途で使う可能性があるため。使わないなら別途削除してよい）。
 - **`uploads/` 配下は対象外。** これらは `skin-v2.css` を読まず `uploads/service.css` が独自に `.nav-links a{background:linear-gradient(...)}` を持つ。`::after` は無いので下線は1本のまま＝二重になっていない。旧系統として意図的に残す（配色は稜線パレットに追従済み）。
+- **キャッシュ版の取りこぼしは機械で止める（2026-08-09 追加）**: この修正（PR #76）では `header-motion.js` の中身だけ変えて `?v=` を据え置いたため、7日キャッシュを持つ端末に修正が届かず、後追いのPR #78で65ファイルの版番号を上げることになった。運用ルールでは守れないので `scripts/check-asset-version.mjs` をCIに入れてある。共通JS/CSSを触ったら、同じPRで参照HTMLの `?v=` を一括更新すること（`admin-post.html` の生成テンプレートを含む）。
 - **再発防止**: 共通CSSへ新しい装飾を足すときは、**旧実装が別ファイル（JSの注入CSS含む）に残っていないか**を必ず `rg` で確認する。今回は「一部ページにだけ除外フラグを付けて済ませた」ことで、フラグの無いページに旧実装が生き残った。除外フラグ方式は取りこぼす。
 
 ## ページ共通scrollハンドラの作法（2026-07-17 全33ページ改修済み・必ず守る）
@@ -440,6 +441,8 @@ window.addEventListener('scroll',window.__pgScroll,{passive:true});
 - `node scripts/test-home-hero.cjs http://127.0.0.1:8811/`（playwright必要）… トップだけを Chromium／WebKit とスマホ〜700px境界で確認する軽量回帰テスト。ヒーロー内の各要素矩形、文節内改行、`<wbr>`、要約帯の列数を検査し、`documentElement.scrollWidth`だけでは見えないクリップ内のはみ出しも失敗にする。
 - `node scripts/test-final-copy.cjs http://127.0.0.1:8811/`（playwright必要）… 最終CTAを持つ5ページ × 4画面幅 × Chromium／WebKit = 40条件を確認する。`.final-p` を表示領域へ送り、フォント読込と2フレームを待ってから実測する。期待40件／実測40件／未測定0件が必須で、要素0件・描画行0本は合格ではなく失敗とする。
 - `node scripts/audit-a11y.cjs http://127.0.0.1:8811/`（playwright必要）… Chromium／WebKitの両方で全公開ページ×12画面幅を巡回し、ページ自体と要素単位の横はみ出し・背景色から算出したコントラスト・操作領域24px・console/pageエラーを確認する。**写真の上の文字は背景色から計算できない**ので、`PHOTO_TARGETS` に登録した要素だけ「文字を透明にして背景の実ピクセルを測る」方式で別に測る。写真上に文字を置く箇所を増やしたらここに追加する。
+- `node scripts/check-asset-version.mjs`（ブラウザ不要）… 共通JS/CSSのキャッシュ版取りこぼしを検出する。(1) baseと比べて中身が変わった資産の `?v=` が据え置きになっていないか (2) 同じ資産の `?v=` がページ間でばらついていないか（部分適用の検出）。CIの `performance.yml`（PR）と `deploy-public.yml`（公開）の両方で実行する。base は `GITHUB_BASE_REF` →`origin/main` の順に解決し、解決できない場合はばらつき検査だけを行う。
+
 - **FAQが無いこと自体は異常としない**（よくある質問が実在しない記事に無理に作らない方針）。`audit-blog.mjs` もそう判定する。
 - 集計の落とし穴：出典（`.post-refs`）と関連記事（`.post-related`）は **`</article>` の外**にある。`<article class="post">` の内側だけを検索すると「0件」と誤判定する（実際にやった）。記事間リンクは `blog/` 配下なので相対パスにディレクトリが付かない点も同じ。
 
@@ -502,6 +505,7 @@ node scripts/sync-blog-dates.mjs --check
 node scripts/sync-structured-data.mjs --check
 node scripts/remove-cat-ui.mjs --check
 node scripts/check-structured-data.mjs
+node scripts/check-asset-version.mjs
 node gen-sitemap.js
 node scripts/check-performance-budget.mjs
 git diff --check
