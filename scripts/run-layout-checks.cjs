@@ -1,10 +1,11 @@
 /**
  * レイアウト回帰テスト用の静的サーバーを動的ポートで起動し、
- * ブラウザーテストを順番に実行して結果を保存する。
+ * ブラウザーテストを同時2件まで実行して結果を保存する。
  *
  *   node scripts/run-layout-checks.cjs
  *   node scripts/run-layout-checks.cjs --full
  *   node scripts/run-layout-checks.cjs --report-dir /tmp/minano-layout-results
+ *   node scripts/run-layout-checks.cjs --base-ref <git-ref>
  */
 
 const { spawn, execFileSync } = require('node:child_process');
@@ -18,6 +19,7 @@ const { pipeline } = require('node:stream/promises');
 const args = process.argv.slice(2);
 const full = args.includes('--full');
 const root = path.resolve(__dirname, '..');
+const blogManifest = path.join(root, 'blog', 'articles.json');
 
 function optionValue(name) {
   const direct = args.find((arg) => arg.startsWith(`${name}=`));
@@ -33,6 +35,101 @@ function commitSha() {
   } catch {
     return 'unknown';
   }
+}
+
+function gitOutput(gitArgs) {
+  return execFileSync('git', gitArgs, { cwd: root, encoding: 'utf8' }).trim();
+}
+
+function readArticles() {
+  const articles = JSON.parse(fs.readFileSync(blogManifest, 'utf8'));
+  if (!Array.isArray(articles) || !articles.length) {
+    throw new Error('blog/articles.json に記事がありません');
+  }
+  const slugs = articles.map((article) => article?.slug);
+  if (slugs.some((slug) => !/^[a-z0-9-]+$/.test(slug || ''))) {
+    throw new Error('blog/articles.json に不正なslugがあります');
+  }
+  if (new Set(slugs).size !== slugs.length) {
+    throw new Error('blog/articles.json にslugの重複があります');
+  }
+  return articles;
+}
+
+function resolveDiffBase() {
+  const explicit = optionValue('--base-ref');
+  const candidates = [
+    explicit,
+    process.env.GITHUB_BASE_REF ? `origin/${process.env.GITHUB_BASE_REF}` : '',
+    'origin/main',
+  ].filter(Boolean);
+  for (const candidate of candidates) {
+    try {
+      gitOutput(['rev-parse', '--verify', `${candidate}^{commit}`]);
+      return candidate;
+    } catch {
+      // 次の候補へ。すべて解決できなければ安全側で全記事を検証する。
+    }
+  }
+  return '';
+}
+
+function selectBlogScope() {
+  const articles = readArticles();
+  const allSlugs = articles.map((article) => article.slug);
+  const selectAll = (reason, baseRef = '', changedFiles = []) => ({
+    mode: 'all', reason, baseRef, changedFiles, slugs: allSlugs,
+  });
+  if (full) return selectAll('--full指定');
+
+  const baseRef = resolveDiffBase();
+  if (!baseRef) return selectAll('比較baseを解決できないため安全側fallback');
+
+  let changedFiles;
+  try {
+    changedFiles = gitOutput(['diff', '--name-only', `${baseRef}...HEAD`])
+      .split(/\r?\n/)
+      .filter(Boolean);
+  } catch {
+    return selectAll('差分を取得できないため安全側fallback', baseRef);
+  }
+  if (!changedFiles.length) {
+    return selectAll('差分0件のため安全側fallback', baseRef, changedFiles);
+  }
+
+  const sharedFiles = new Set([
+    'blog-article.css',
+    'admin-post.html',
+    'blog/articles.json',
+    'skin-v2.css',
+    'page-enter.js',
+    'header-motion.js',
+  ]);
+  if (changedFiles.some((file) => sharedFiles.has(file) || file.startsWith('scripts/'))) {
+    return selectAll('共通資産または検証基盤の変更', baseRef, changedFiles);
+  }
+
+  const articleOnly = changedFiles.every((file) => /^blog\/[a-z0-9-]+\.html$/.test(file));
+  if (!articleOnly) {
+    return selectAll('記事HTML以外の変更を含むため安全側fallback', baseRef, changedFiles);
+  }
+
+  const changedSlugs = changedFiles.map((file) => path.basename(file, '.html'));
+  if (changedSlugs.some((slug) => !allSlugs.includes(slug))) {
+    return selectAll('articles.json外の記事変更を含むため安全側fallback', baseRef, changedFiles);
+  }
+  const firstSlug = articles[0].slug;
+  const latestOther = [...articles]
+    .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')))
+    .find((article) => article.slug !== firstSlug)?.slug;
+  const slugs = [...new Set([...changedSlugs, firstSlug, latestOther].filter(Boolean))];
+  return {
+    mode: 'shard',
+    reason: '記事HTMLだけの変更（変更記事＋代表2件）',
+    baseRef,
+    changedFiles,
+    slugs,
+  };
 }
 
 const reportDir = path.resolve(
@@ -172,9 +269,24 @@ async function runTask(task) {
   };
 }
 
+async function runTaskPool(tasks, limit = 2) {
+  const results = Array(tasks.length);
+  let nextIndex = 0;
+  async function worker() {
+    while (nextIndex < tasks.length) {
+      const index = nextIndex;
+      nextIndex += 1;
+      results[index] = await runTask(tasks[index]);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, tasks.length) }, () => worker()));
+  return results;
+}
+
 (async () => {
   const startedAt = new Date().toISOString();
   await fsp.mkdir(reportDir, { recursive: true });
+  const blogSelection = selectBlogScope();
   const serverState = { requests: 0, clientResets: 0, errors: [] };
   const server = await createStaticServer(serverState);
   const address = server.address();
@@ -186,6 +298,8 @@ async function runTask(task) {
     if (!health.ok) throw new Error(`検証サーバーの起動確認に失敗しました: HTTP ${health.status}`);
     console.log(`検証サーバー: ${base}`);
     console.log(`結果保存先: ${reportDir}`);
+    console.log(`ブログ検証範囲: ${blogSelection.mode}（${blogSelection.reason}）`);
+    console.log(`ブログ対象: ${blogSelection.slugs.length}記事`);
 
     const tasks = [
       {
@@ -209,22 +323,16 @@ async function runTask(task) {
       {
         name: '全ブログ記事',
         command: process.execPath,
-        args: ['scripts/test-blog-articles.cjs', base, '--json'],
-        output: 'blog-articles.json',
-      },
-      {
-        name: 'ブログ泣き別れ',
-        command: process.execPath,
         args: [
-          'scripts/audit-line-breaks.cjs',
+          'scripts/test-blog-articles.cjs',
           base,
-          '--section=blog',
-          '--engines=chromium,webkit',
-          '--widths=320,390,430,768,1440',
-          '--check',
           '--json',
+          '--with-line-breaks',
+          ...(blogSelection.mode === 'shard'
+            ? blogSelection.slugs.map((slug) => `--slug=${slug}`)
+            : []),
         ],
-        output: 'blog-line-breaks.json',
+        output: 'blog-articles.json',
       },
       {
         name: 'ルート泣き別れ',
@@ -288,7 +396,7 @@ async function runTask(task) {
       );
     }
 
-    for (const task of tasks) results.push(await runTask(task));
+    results.push(...await runTaskPool(tasks, 2));
   } finally {
     server.closeAllConnections?.();
     await new Promise((resolve) => server.close(resolve));
@@ -302,6 +410,7 @@ async function runTask(task) {
     base,
     reportDir,
     server: serverState,
+    blogSelection,
     tasks: results,
     success: results.every((result) => result.exitCode === 0) && serverState.errors.length === 0,
   };

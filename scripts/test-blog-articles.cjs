@@ -1,7 +1,8 @@
 /**
  * 全ブログ記事の共通UI回帰テスト。
  *
- *   node scripts/test-blog-articles.cjs [base] [--json]
+ *   node scripts/test-blog-articles.cjs [base] [--json] [--with-line-breaks]
+ *   node scripts/test-blog-articles.cjs [base] --slug=slug-a --slug=slug-b --width=390 --engine=webkit
  *
  * Chromium / WebKit × 320 / 390 / 430 / 768 / 1440px で、全記事を実際に描画する。
  * scrollWidthだけに依存せず、記事内の各要素矩形も測ってクリップ内のはみ出しを拾う。
@@ -11,17 +12,53 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { chromium, webkit } = require('playwright');
+const {
+  prepareLineBreakProbe,
+  probeLineBreaks,
+} = require('./lib/line-break-probe.cjs');
 
 const args = process.argv.slice(2);
 const base = (args.find((arg) => arg.startsWith('http')) || 'http://127.0.0.1:8811/')
   .replace(/\/?$/, '/');
 const asJson = args.includes('--json');
+const withLineBreaks = args.includes('--with-line-breaks');
 const root = path.resolve(__dirname, '..');
-const allArticles = JSON.parse(fs.readFileSync(path.join(root, 'blog/articles.json'), 'utf8'));
-const slugFilter = args.find((arg) => arg.startsWith('--slug='))?.slice('--slug='.length);
+const manifestPath = path.join(root, 'blog/articles.json');
+const allArticles = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+if (!Array.isArray(allArticles) || !allArticles.length) {
+  throw new Error('blog/articles.json に記事がありません');
+}
+const manifestSlugs = allArticles.map((article) => article?.slug);
+if (manifestSlugs.some((slug) => !/^[a-z0-9-]+$/.test(slug || ''))) {
+  throw new Error('blog/articles.json に不正なslugがあります');
+}
+if (new Set(manifestSlugs).size !== manifestSlugs.length) {
+  throw new Error('blog/articles.json にslugの重複があります');
+}
+for (const slug of manifestSlugs) {
+  if (!fs.existsSync(path.join(root, 'blog', `${slug}.html`))) {
+    throw new Error(`blog/articles.json 掲載記事が見つかりません: blog/${slug}.html`);
+  }
+}
+const slugFilters = args
+  .filter((arg) => arg.startsWith('--slug='))
+  .map((arg) => arg.slice('--slug='.length));
+if (slugFilters.some((slug) => !/^[a-z0-9-]+$/.test(slug))) {
+  throw new Error(`--slug が不正です: ${slugFilters.find((slug) => !/^[a-z0-9-]+$/.test(slug)) || '未設定'}`);
+}
+if (new Set(slugFilters).size !== slugFilters.length) {
+  throw new Error(`--slug に重複があります: ${slugFilters.join(',')}`);
+}
+const unknownSlugs = slugFilters.filter((slug) => !manifestSlugs.includes(slug));
+if (unknownSlugs.length) {
+  throw new Error(`blog/articles.json にない--slugです: ${unknownSlugs.join(',')}`);
+}
 const widthFilter = Number(args.find((arg) => arg.startsWith('--width='))?.slice('--width='.length));
 const engineFilter = args.find((arg) => arg.startsWith('--engine='))?.slice('--engine='.length);
-const articles = slugFilter ? allArticles.filter((article) => article.slug === slugFilter) : allArticles;
+const articleBySlug = new Map(allArticles.map((article) => [article.slug, article]));
+const articles = slugFilters.length
+  ? slugFilters.map((slug) => articleBySlug.get(slug))
+  : allArticles;
 const widths = Number.isFinite(widthFilter) && widthFilter > 0
   ? [widthFilter]
   : [320, 390, 430, 768, 1440];
@@ -30,7 +67,7 @@ const engines = [
   ['webkit', webkit],
 ].filter(([name]) => !engineFilter || name === engineFilter);
 const expected = articles.length * widths.length * engines.length;
-if (!articles.length) throw new Error(`対象記事がありません: ${slugFilter || 'articles.json'}`);
+if (!articles.length) throw new Error('対象記事がありません: articles.json');
 if (!engines.length) throw new Error(`対象エンジンが不正です: ${engineFilter}`);
 const epsilon = 1;
 const upgradeInsecureMeta =
@@ -57,7 +94,29 @@ async function prepareLocalHttp(page) {
   });
 }
 
-async function settleAndMeasure(page) {
+function unmeasuredLineBreak(reason = '未測定') {
+  return {
+    measured: false,
+    reason,
+    targetCount: 0,
+    candidateCount: 0,
+    eligibleCount: 0,
+    measuredCount: 0,
+    findings: [],
+  };
+}
+
+function validLineBreakProbe(probe) {
+  return probe
+    && typeof probe.measured === 'boolean'
+    && Number.isInteger(probe.targetCount)
+    && Number.isInteger(probe.candidateCount)
+    && Number.isInteger(probe.eligibleCount)
+    && Number.isInteger(probe.measuredCount)
+    && Array.isArray(probe.findings);
+}
+
+async function settleAndMeasure(page, includeLineBreaks) {
   await page.waitForFunction(() => {
     const style = document.querySelector('link[data-async-style]');
     return !style || style.media === 'all';
@@ -77,7 +136,21 @@ async function settleAndMeasure(page) {
     await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
   });
 
-  return page.evaluate((allowedOverflow) => {
+  let lineBreak = null;
+  if (includeLineBreaks) {
+    try {
+      // 同じnavigation・viewport・browser engineのまま全文を描画し、共通probeを実行する。
+      await prepareLineBreakProbe(page);
+      lineBreak = await page.evaluate(probeLineBreaks);
+      if (!validLineBreakProbe(lineBreak)) {
+        lineBreak = unmeasuredLineBreak('probe結果が不正です');
+      }
+    } catch (error) {
+      lineBreak = unmeasuredLineBreak(`probe失敗: ${error.message}`);
+    }
+  }
+
+  const measurement = await page.evaluate((allowedOverflow) => {
     const article = document.querySelector('article.post');
     if (!article) return { measured: false, reason: 'article.postがありません' };
     const readerCount = article.querySelectorAll('[data-reader-map]').length;
@@ -222,6 +295,7 @@ async function settleAndMeasure(page) {
       draftMarkers,
     };
   }, epsilon);
+  return { ...measurement, lineBreak };
 }
 
 (async () => {
@@ -253,9 +327,16 @@ async function settleAndMeasure(page) {
               { waitUntil: 'domcontentloaded', timeout: 20000 },
             );
             responseOk = Boolean(response?.ok());
-            measurement = await settleAndMeasure(page);
+            measurement = await settleAndMeasure(page, withLineBreaks);
           } catch (error) {
             loadError = String(error);
+            measurement = {
+              measured: false,
+              reason: '記事を実測できません',
+              lineBreak: withLineBreaks
+                ? unmeasuredLineBreak(`記事読込または実測失敗: ${error.message}`)
+                : null,
+            };
           }
           page.off('console', onConsole);
           page.off('pageerror', onPageError);
@@ -278,6 +359,23 @@ async function settleAndMeasure(page) {
           }
           if (measurement.smallText?.length) failures.push(`図解内11px未満=${measurement.smallText.length}`);
           if (measurement.draftMarkers) failures.push('下書きマーカーが残っています');
+          if (withLineBreaks) {
+            const lineBreak = measurement.lineBreak;
+            if (!validLineBreakProbe(lineBreak)) {
+              failures.push('泣き別れprobe結果が不正です');
+            } else {
+              if (!lineBreak.measured) {
+                failures.push(
+                  `泣き別れを実測できません（対象${lineBreak.targetCount} / 候補${lineBreak.candidateCount} / `
+                  + `適格${lineBreak.eligibleCount} / 実測${lineBreak.measuredCount}`
+                  + `${lineBreak.reason ? ` / ${lineBreak.reason}` : ''}）`,
+                );
+              }
+              if (lineBreak.findings.length) {
+                failures.push(`泣き別れ=${lineBreak.findings.length}`);
+              }
+            }
+          }
           if (runtimeErrors.length) failures.push(`runtime error=${runtimeErrors.length}`);
 
           results.push({
@@ -300,25 +398,82 @@ async function settleAndMeasure(page) {
   }
 
   const failed = results.filter((result) => !result.ok);
+  const recordedMeasurements = results.length;
+  const completedLayoutMeasurements = results.filter((result) => result.measured).length;
+  const expectedLineBreakMeasurements = withLineBreaks ? expected : 0;
+  const completedLineBreakMeasurements = withLineBreaks
+    ? results.filter((result) => (
+      validLineBreakProbe(result.lineBreak)
+      && result.lineBreak.measured
+    )).length
+    : 0;
+  const completedMeasurements = results.filter((result) => (
+    result.measured
+    && (
+      !withLineBreaks
+      || (
+        validLineBreakProbe(result.lineBreak)
+        && result.lineBreak.measured
+      )
+    )
+  )).length;
+  const countFailures = [];
+  if (recordedMeasurements !== expected) {
+    countFailures.push(`記録条件が${expected}件ではありません（${recordedMeasurements}件）`);
+  }
+  if (completedLayoutMeasurements !== expected) {
+    countFailures.push(`記事UIの実測が${expected}件ではありません（${completedLayoutMeasurements}件）`);
+  }
+  if (completedLineBreakMeasurements !== expectedLineBreakMeasurements) {
+    countFailures.push(
+      `泣き別れの実測が${expectedLineBreakMeasurements}件ではありません`
+      + `（${completedLineBreakMeasurements}件）`,
+    );
+  }
+  if (completedMeasurements !== expected) {
+    countFailures.push(`統合実測が${expected}件ではありません（${completedMeasurements}件）`);
+  }
   const output = {
     expected,
-    measured: results.length,
+    measured: recordedMeasurements,
+    expectedMeasurements: expected,
+    recordedMeasurements,
+    completedMeasurements,
+    unmeasuredMeasurements: expected - completedMeasurements,
+    completedLayoutMeasurements,
+    expectedLineBreakMeasurements,
+    completedLineBreakMeasurements,
+    unmeasuredLineBreakMeasurements:
+      expectedLineBreakMeasurements - completedLineBreakMeasurements,
     failed: failed.length,
+    countFailures,
+    withLineBreaks,
     engines: engines.map(([name]) => name),
     widths,
     articles: articles.length,
+    slugs: articles.map((article) => article.slug),
     results,
   };
   if (asJson) {
     console.log(JSON.stringify(output, null, 2));
   } else {
-    console.log(`ブログ実測 ${results.length}/${expected}条件、失敗${failed.length}件`);
+    console.log(
+      `ブログ実測: 期待${expected} / 記録${recordedMeasurements} / `
+      + `実測${completedMeasurements} / 未測定${expected - completedMeasurements} / `
+      + `失敗${failed.length}件`,
+    );
+    if (withLineBreaks) {
+      console.log(
+        `泣き別れ実測: ${completedLineBreakMeasurements}/${expectedLineBreakMeasurements}条件`,
+      );
+    }
+    for (const failure of countFailures) console.error(`件数不一致: ${failure}`);
     for (const result of failed.slice(0, 100)) {
       console.error(`${result.engine} ${result.width}px ${result.slug}: ${result.failures.join(' / ')}`);
     }
     if (failed.length > 100) console.error(`ほか${failed.length - 100}件`);
   }
-  if (results.length !== expected || failed.length) process.exitCode = 1;
+  if (countFailures.length || failed.length) process.exitCode = 1;
 })().catch((error) => {
   console.error(error);
   process.exitCode = 1;
