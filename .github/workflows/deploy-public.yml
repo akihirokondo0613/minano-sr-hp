@@ -23,6 +23,7 @@ jobs:
           node scripts/remove-cat-ui.mjs --check
           node scripts/check-structured-data.mjs
           node scripts/check-asset-version.mjs
+          node scripts/submit-indexnow.mjs --check
 
       - name: 公開前の性能チェック
         run: node scripts/check-performance-budget.mjs

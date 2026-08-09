@@ -519,6 +519,7 @@ node scripts/sync-structured-data.mjs --check
 node scripts/remove-cat-ui.mjs --check
 node scripts/check-structured-data.mjs
 node scripts/check-asset-version.mjs
+node scripts/submit-indexnow.mjs --check
 node gen-sitemap.js
 node scripts/check-performance-budget.mjs
 git diff --check
@@ -594,6 +595,7 @@ gh run watch <databaseId> --interval 30 --exit-status
 - 対象のスマホ／PC幅で、実際の文言・画像・計算済みCSS・リンク先を確認する。
 - console error、横はみ出し、表示崩れがないことを確認する。
 - キャッシュ対策を含め、本番が意図した状態になるまで完了報告しない。
+- HTMLの追加・更新・削除を公開したときは、本番URLの確認後に `node scripts/submit-indexnow.mjs --submit <変更した本番URL...>` を1回だけ実行する。初回のみURL省略でsitemap全件を通知し、変更のないURLを毎回再送信しない。HTTP 200/202は受付完了であり、インデックスや順位を保証しない。
 - 最終報告には、本番URL、PR URL、変更点、確認した画面幅と主要チェック結果を簡潔に記載する。
 
 ### Claude Codeへ渡す標準プロンプト
