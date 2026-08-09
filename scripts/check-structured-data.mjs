@@ -281,6 +281,14 @@ for (const [relativePath, { schemas }] of pages) {
   }
 }
 
+// 旧NAPが指示書・台帳から公開物や設定へ再流入するのを止める（2026-08 実際に指示書へ残っていた）
+const RETIRED_NAP = ['090-2838-8252', '蓮町1丁目7番3号'];
+for (const [relativePath, { source }] of pages) {
+  for (const retired of RETIRED_NAP) {
+    if (source.includes(retired)) errors.push(`${relativePath}: 旧NAP「${retired}」が残っています`);
+  }
+}
+
 const expectedFaqTotal = [...expectedFaqCounts.values()].reduce((sum, count) => sum + count, 0);
 if (errors.length) {
   console.error('構造化データ／公開除外チェックで問題が見つかりました。');
