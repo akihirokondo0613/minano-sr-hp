@@ -11,7 +11,7 @@ jobs:
   hero-layout:
     name: Hero layout (Chromium + WebKit)
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
 
@@ -56,6 +56,8 @@ jobs:
 
       - name: 公開データの整合性チェック
         run: |
+          node scripts/sync-blog-read-times.mjs --check
+          node scripts/audit-blog.mjs --check
           node scripts/sync-blog-dates.mjs --check
           node scripts/sync-structured-data.mjs --check
           node scripts/remove-cat-ui.mjs --check

@@ -152,11 +152,11 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
   <div class="flow3">
     <div class="f"><span class="n">1</span><div><b>書く</b><span>下のフォームに入力。右のプレビューで確認。途中で閉じても自動保存。</span></div></div>
     <div class="f"><span class="n">2</span><div><b>生成する</b><span>記事ファイルと、一覧・カウンター用の追加コードができる。<b style="display:inline;color:#B3261E">この時点ではまだ載りません。</b></span></div></div>
-    <div class="f"><span class="n">3</span><div><b>置いて公開</b><span>手順Aで3ファイルをダウンロードしてサーバーに置くだけ（コピペ不要）。このプレビューでは「反映して」とチャットに書けば代行も可。</span></div></div>
+    <div class="f"><span class="n">3</span><div><b>仕上げて公開</b><span>下書きをCodexまたはClaudeへ渡し、図解・根拠・導線を仕上げ、監査に合格してから公開。</span></div></div>
   </div>
 
   <div class="intro">
-    <b>このページは「原稿づくり」の場所です。</b>書いて生成しただけでは公開されません。上の手順③（反映）までで公開完了です。
+    <b>このページは「原稿づくり」の場所です。</b>生成後に、読者が判断しやすいHTML/CSS図解を3〜7点、判断が難しい論点、読後の3手、公式一次資料をCodexまたはClaudeで仕上げます。`node scripts/audit-blog.mjs --check`に合格してから公開してください。
   </div>
 
   <div class="cols">
@@ -167,6 +167,18 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
       <div class="field">
         <label>タイトル <small>32字前後まで。ページ・OGP・JSON-LDに使われます</small></label>
         <input type="text" id="f-title" placeholder="例：夏のボーナス前に確認。賞与の就業規則と手続き">
+      </div>
+
+      <div class="field">
+        <label>記事末の関連サービス <small>記事のテーマに最も近い1つ</small></label>
+        <select id="f-service">
+          <option value="joseikin">助成金申請サポート</option>
+          <option value="shugyo">就業規則の作成・見直し</option>
+          <option value="shakai-hoken">社会保険手続きの代行</option>
+          <option value="kyuyo">給与・賞与計算の代行</option>
+          <option value="romu">労務相談・トラブル対応</option>
+          <option value="dx">勤怠・人事労務DX支援</option>
+        </select>
       </div>
 
       <div class="frow">
@@ -212,6 +224,21 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
       </div>
 
       <div class="field">
+        <label>対象読者 <small>役割・業種・いまの状況を1行で</small></label>
+        <input type="text" id="f-reader" placeholder="例：初めて賞与を支給する中小企業の経営者・給与担当者">
+      </div>
+
+      <div class="field">
+        <label>いま困っていること <small>検索のきっかけになった悩みを1行で</small></label>
+        <input type="text" id="f-problem" placeholder="例：何をいつまでに準備し、いくら控除するか分からない">
+      </div>
+
+      <div class="field">
+        <label>読後にできること <small>記事を読み終えた後の判断・行動を1行で</small></label>
+        <input type="text" id="f-outcome" placeholder="例：支給前後の確認事項と届出期限を決められる">
+      </div>
+
+      <div class="field">
         <label>この記事のポイント <small>1行1項目・最大4つ（冒頭の緑枠に入ります）。空なら枠なし</small></label>
         <textarea id="f-points" rows="3" placeholder="就業規則に「支給日在籍要件」があるか先に確認&#10;賞与からも保険料と所得税が控除される&#10;支給後5日以内に「賞与支払届」"></textarea>
       </div>
@@ -250,26 +277,26 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
   <!-- ══ 出力 ══ -->
   <div class="out" id="out" hidden>
     <div class="panel" style="margin-bottom:16px">
-      <h2>公開手順</h2>
+      <h2>下書きの引き継ぎ手順</h2>
       <p style="font-size:13px;color:var(--ink2)">
-        基本は<b>手順Aだけで公開完了</b>です：3ファイルをダウンロードしてサーバーの同じ場所に置く（上書きする）だけで、コードのコピペや手編集は不要です。
-        トップページの「発信の継続」カウンターや一覧の件数も自動で更新済み。手順Bは予備（コピペ方式）です。
+        手順Aで作る3ファイルは<b>公開前の下書きセット</b>です。サーバーへ直接置かず、CodexまたはClaudeへ渡して本文・図解・公式情報・関連記事を仕上げ、監査・sitemap同期・PR公開まで依頼してください。
+        一覧の件数と記事情報は下書きへ仮反映済みです。手順Bは予備（コピペ方式）です。
       </p>
     </div>
 
     <div class="step">
       <div class="step-h">
-        <span class="n">A</span><b>かんたん公開：ボタンを押す → 3ファイルをサーバーに置く。これだけ</b>
+        <span class="n">A</span><b>下書きセット：ボタンを押す → 3ファイルをAIへ渡す</b>
         <span class="where">
-          新記事を組み込んだ<b>完成版</b>がダウンロードされます。コードのコピペ・手編集・件数の更新はすべて自動で反映済み。
+          新記事と一覧・記事情報の<b>下書き</b>がダウンロードされます。この時点では公開基準を満たしていません。
         </span>
       </div>
       <div class="step-body">
         <div class="step-actions">
-          <button class="primary" id="btn-dl-all" style="font-size:15px;padding:14px 26px">公開用の3ファイルをまとめてダウンロード</button>
+          <button class="primary" id="btn-dl-all" style="font-size:15px;padding:14px 26px">下書き3ファイルをまとめてダウンロード</button>
           <span class="copied" id="c-set">保存しました ✓</span>
         </div>
-        <p class="hint" style="margin-top:10px">ダウンロードされるもの：① <b>記事名.html</b>（サーバーの blog/ に入れる）　② <b>blog.html</b>（一番上の階層に上書き）　③ <b>articles.json</b>（blog/ に上書き）<br>※ ブラウザが「複数ファイルのダウンロードを許可しますか？」と聞いてきたら「許可」を押してください。個別に欲しいときは下のボタンで。</p>
+        <p class="hint" style="margin-top:10px">ダウンロードされるもの：① <b>記事名.html</b>　② <b>blog.html</b>　③ <b>articles.json</b>。3点をまとめてCodexまたはClaudeへ渡してください。<b>監査前にサーバーへ置かないでください。</b><br>※ ブラウザが「複数ファイルのダウンロードを許可しますか？」と聞いてきたら「許可」を押してください。個別に欲しいときは下のボタンで。</p>
         <div class="step-actions" style="margin-top:12px">
           <button id="btn-dl-art2">① 記事HTMLのみ</button>
           <button id="btn-dl-blog">② blog.htmlのみ</button>
@@ -395,19 +422,19 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
     <h2>使い方</h2>
 
     <h3>このページでできること</h3>
-    <p>ブログ記事の「原稿作成→完成ファイルの生成」と、公開中記事の一覧確認です。書いただけでは公開されません。<b>生成 → 反映、の2段階</b>で初めてサイトに載ります（静的サイトのため、ブラウザからサーバーのファイルは書き換えられません）。</p>
+    <p>ブログ記事の「原稿作成→下書きファイルの生成」と、公開中記事の一覧確認です。書いただけでは公開されません。<b>下書き生成 → AI仕上げ → 監査 → 公開反映</b>まで進めて初めてサイトに載ります（静的サイトのため、ブラウザからサーバーのファイルは書き換えられません）。</p>
 
-    <h3>公開までの流れ（AIを使わない場合＝基本の使い方）</h3>
+    <h3>下書きから公開までの流れ</h3>
     <ol>
       <li>「記事を書く」タブで入力し「生成する」を押す</li>
-      <li><b>手順A（かんたん公開セット）</b>の3ボタンで ①記事HTML ②更新済みblog.html ③更新済みarticles.json をダウンロード</li>
-      <li>サーバー（レンタルサーバーのファイルマネージャーやFTP）で、①を <code>blog/</code> に追加、②③を同じ場所に上書き → 公開完了</li>
-      <li>コードのコピペや手編集は不要です（件数の+1も自動）。手順Bは予備手段</li>
+      <li><b>手順A（下書きセット）</b>で ①記事HTML ②更新済みblog.html ③更新済みarticles.json をダウンロード</li>
+      <li>3ファイルをCodexまたはClaudeへ渡し、図解3〜7点、判断が難しい箇所、次の3手、公式一次資料、関連記事を完成させる</li>
+      <li><code>audit-blog.mjs --check</code>とブラウザ検証に合格後、PR・マージ・sitemap同期・本番確認まで依頼する</li>
     </ol>
 
-    <h3>公開までの流れ（このプレビューでAIに任せる場合）</h3>
+    <h3>AIへ依頼するとき</h3>
     <ol>
-      <li>入力して「生成する」→ チャットで「<b>反映して</b>」と依頼するだけ</li>
+      <li>入力して「生成する」→ 3ファイルを添付し「<b>記事を仕上げて、検証・本番公開まで</b>」と依頼する</li>
     </ol>
 
     <h3>本文の書き方（記法）</h3>
@@ -435,16 +462,15 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 var CATS={system:'システム導入',joseikin:'助成金',shugyo:'就業規則',hoken:'社会保険',kaisei:'法改正情報',trouble:'労務トラブル',keiei:'経営・採用'};
 // カテゴリ別の関連サービスカード（記事末尾 NEXT STEPS の2枚目）
 var REL={
-  system:{href:'../uploads/service-dx.html',t:'勤怠・人事労務DX支援',p:'現状整理から製品選定、設定、試行、定着まで、労務実務に沿って段階的に支援します。'},
-  joseikin:{href:'../uploads/service-joseikin.html',t:'助成金の申請サポート',p:'受給可能性の診断から計画届・支給申請まで、実施前の準備を含めて伴走します。'},
+  dx:{href:'../uploads/service-dx.html',t:'勤怠・人事労務DX支援',p:'現状整理から製品選定、設定、試行、定着まで、労務実務に沿って段階的に支援します。'},
+  joseikin:{href:'../uploads/service-joseikin.html',t:'助成金の申請サポート',p:'受給可能性の確認から計画届・支給申請まで、実施前の準備を含めて伴走します。'},
   shugyo:{href:'../uploads/service-shugyo-kisoku.html',t:'就業規則の作成・見直し',p:'会社の実態に合わせた規程づくりで、トラブルの芽を先回りして摘みます。'},
-  hoken:{href:'../uploads/service-shakai-hoken.html',t:'社会保険手続きの代行',p:'入退社・扶養・保険料まわりの届出を、期限管理込みでお任せいただけます。'},
-  kaisei:{href:'../uploads/service-shugyo-kisoku.html',t:'就業規則の作成・見直し',p:'法改正に合わせた規程の改定を、影響範囲の整理から支援します。'},
-  trouble:{href:'../uploads/service-romu-sodan.html',t:'労務相談・トラブル対応',p:'日々の困りごとから有事の対応まで、顧問社労士として継続的に支えます。'},
-  keiei:{href:'../uploads/service-romu-sodan.html',t:'労務相談・トラブル対応',p:'人事制度や職場づくりの相談も、労務の専門家として一緒に考えます。'}
+  'shakai-hoken':{href:'../uploads/service-shakai-hoken.html',t:'社会保険手続きの代行',p:'入退社・扶養・保険料まわりの届出を、期限管理込みでお任せいただけます。'},
+  kyuyo:{href:'../uploads/service-kyuyo-keisan.html',t:'給与・賞与計算の代行',p:'毎月の給与計算から賞与計算・賞与支払届まで、計算と手続きをまとめて支援します。'},
+  romu:{href:'../uploads/service-romu-sodan.html',t:'労務相談・トラブル対応',p:'日々の困りごとから有事の対応まで、顧問社労士として継続的に支えます。'}
 };
 var $=function(id){return document.getElementById(id)};
-var fields=['f-title','f-slug','f-cat','f-date','f-read','f-desc','f-keywords','f-points','f-body'];
+var fields=['f-title','f-slug','f-cat','f-service','f-date','f-read','f-desc','f-keywords','f-reader','f-problem','f-outcome','f-points','f-body'];
 var DRAFT_KEY='mn-admin-post-draft-v1';
 
 /* ---------- 下書きの自動保存・復元 ---------- */
@@ -507,13 +533,20 @@ function pointBox(src){
   if(!items.length)return '';
   return '<div class="point-box"><p class="pb-t">この記事のポイント</p><ul>'+items.map(function(s){return '<li>'+inline(s)+'</li>'}).join('')+'</ul></div>';
 }
+function readerMap(reader,problem,outcome){
+  if(!reader&&!problem&&!outcome)return '';
+  return '<aside class="post-reader" data-reader-map aria-labelledby="reader-map-title"><p class="post-reader-kicker" id="reader-map-title">この記事が役立つ方</p><div class="post-reader-grid">'+
+    '<div class="post-reader-item"><span class="post-reader-label">対象</span><strong>'+esc(reader)+'</strong></div>'+
+    '<div class="post-reader-item"><span class="post-reader-label">いま困っていること</span><strong>'+esc(problem)+'</strong></div>'+
+    '<div class="post-reader-item"><span class="post-reader-label">読後にできること</span><strong>'+esc(outcome)+'</strong></div></div></aside>';
+}
 
 /* ---------- プレビュー ---------- */
 function refreshPreview(){
   $('pv-cat').textContent=CATS[$('f-cat').value];
   $('pv-title').textContent=$('f-title').value||'タイトルがここに入ります';
   $('pv-meta').textContent='公開 '+($('f-date').value||'—').replaceAll('-','.')+' ・ 読了 約'+($('f-read').value||'?')+'分';
-  var html=pointBox($('f-points').value)+parseBody($('f-body').value);
+  var html=readerMap($('f-reader').value,$('f-problem').value,$('f-outcome').value)+pointBox($('f-points').value)+parseBody($('f-body').value);
   $('pv-body').innerHTML=html||'<div class="pv-empty">本文を入力するとここに表示されます</div>';
 }
 fields.forEach(function(id){
@@ -549,9 +582,9 @@ function withToc(html){
   return i<0 ? toc+'\n'+html : html.slice(0,i+6)+toc+html.slice(i+6);
 }
 function buildArticle(v){
-  var rel=REL[v.cat];
-  var art=withToc(pointBox(v.points)+'\n'+parseBody(v.body));
-  return '<!DOCTYPE html>\n<html lang="ja">\n<head>\n<meta charset="UTF-8">\n<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">\n<script defer src="../page-enter.js?v=20260725-nocat1"><\/script>\n<style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>\n\n\n\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>'+esc(v.title)+'｜みなの社会保険労務士事務所</title>\n<meta name="description" content="'+esc(v.desc)+'">\n<meta name="keywords" content="'+esc(v.keywords)+'">\n<link rel="canonical" href="https://minano-sr.com/blog/'+v.slug+'.html">\n\n<!-- OGP -->\n<meta property="og:type" content="article">\n<meta property="og:title" content="'+esc(v.title)+'">\n<meta property="og:description" content="'+esc(v.desc)+'">\n<meta property="og:url" content="https://minano-sr.com/blog/'+v.slug+'.html">\n<meta property="og:site_name" content="みなの社会保険労務士事務所">\n<meta property="og:locale" content="ja_JP">\n<meta property="og:image" content="https://minano-sr.com/assets/og/minano-og.png">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n<meta property="og:image:alt" content="みなの社会保険労務士事務所のトップページ｜会社の労務を、まるごと任せられる。">\n<meta property="article:published_time" content="'+v.date+'">\n<meta property="article:modified_time" content="'+v.date+'">\n<meta property="article:section" content="'+CATS[v.cat]+'">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:image" content="https://minano-sr.com/assets/og/minano-og.png">\n\n<!-- Article JSON-LD -->\n<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"'+jesc(v.title)+'","description":"'+jesc(v.desc)+'","datePublished":"'+v.date+'","dateModified":"'+v.date+'","author":{"@type":"Organization","name":"みなの社会保険労務士事務所"},"publisher":{"@type":"Organization","name":"みなの社会保険労務士事務所","logo":{"@type":"ImageObject","url":"https://minano-sr.com/assets/og/logo-512.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://minano-sr.com/blog/'+v.slug+'.html"},"articleSection":"'+CATS[v.cat]+'","keywords":"'+jesc(v.keywords)+'"}<\/script>\n\n<meta name="theme-color" content="#123F30">\n<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 32 32\'%3E%3Crect width=\'32\' height=\'32\' rx=\'8\' fill=\'%23123F30\'/%3E%3Ctext x=\'16\' y=\'22\' font-family=\'sans-serif\' font-size=\'17\' font-weight=\'700\' fill=\'white\' text-anchor=\'middle\'%3Eみ%3C/text%3E%3C/svg%3E">\n\n\n<link rel="stylesheet" href="../skin-v2.css?v=20260809-bloglink1">\n\n</head>\n<body>\n<a class="skip-link" href="#main">本文へ移動</a>\n<div id="prog"></div>\n\n<nav class="nav" id="nav">\n  <div class="nav-inner">\n    <a href="../index.html" class="logo">\n      <div class="logo-mark"><span>み</span></div>\n      <div class="logo-text"><b>みなの社会保険労務士事務所</b><small>複雑な労務を、シンプルに。</small></div>\n    </a>\n    <ul class="nav-links">\n      <li><a href="../services.html">サービス</a></li>\n      <li><a href="../pricing.html">料金</a></li>\n      <li><a href="../support.html">支援の進め方</a></li>\n      <li><a href="../about.html">事務所案内</a></li>\n      <li><a href="../blog.html" class="active">ブログ</a></li>\n      <li><a href="../infographic.html">社労士とは</a></li>\n      <li><a href="../portal.html">公式情報</a></li>\n    </ul>\n    <a href="../uploads/contact.html" class="nav-cta">無料で相談する</a>\n    <button class="nav-burger" onclick="toggleNav()" aria-label="メニュー">\n      <svg width="20" height="14" viewBox="0 0 20 14" fill="currentColor"><rect width="20" height="2" rx="1"/><rect y="6" width="20" height="2" rx="1"/><rect y="12" width="20" height="2" rx="1"/></svg>\n    </button>\n  </div>\n</nav>\n<div class="mob-nav" id="mobNav">\n  <a href="../services.html" onclick="closeNav()">サービス</a>\n  <a href="../pricing.html" onclick="closeNav()">料金</a>\n  <a href="../support.html" onclick="closeNav()">支援の進め方</a>\n  <a href="../about.html" onclick="closeNav()">事務所案内</a>\n  <a href="../blog.html" onclick="closeNav()">ブログ</a>\n  <a href="../infographic.html" onclick="closeNav()">社労士とは</a>\n  <a href="../portal.html" onclick="closeNav()">公式情報</a>\n  <a href="../uploads/contact.html" class="mob-cta">→ 無料相談を申し込む</a>\n</div>\n\n<main id="main">\n<header class="post-hero">\n  <div class="post-hero-inner">\n    <nav class="breadcrumb">\n      <a href="../index.html">ホーム</a><span class="sep">›</span>\n      <a href="../blog.html">コラム・ブログ</a><span class="sep">›</span>\n      <span>'+CATS[v.cat]+'</span>\n    </nav>\n    <span class="cat-tag">'+CATS[v.cat]+'</span>\n    <h1 class="post-h1">'+esc(v.title)+'</h1>\n    <div class="post-meta">\n      <time datetime="'+v.date+'">公開 '+v.date.replaceAll('-','.')+'</time>\n      <span class="dot" aria-hidden="true">・</span>\n      <span>読了 約'+v.read+'分</span>\n    </div>\n  </div>\n</header>\n\n<article class="post">\n'+art+'\n</article>\n\n<aside class="author-card">\n  <div class="author-av">み</div>\n  <div class="author-meta">\n    <b>みなの社会保険労務士事務所 編集部</b>\n    中小企業の労務体制構築・助成金活用・規程整備に関する情報を発信しています。\n    <small>本記事は公開時点の法令・制度および公式情報に基づきます。内容は変更されることがあるため、最新情報は各公式サイトもご確認ください。</small>\n  </div>\n</aside>\n\n<section class="next-steps">\n  <div class="next-steps-head">\n    <span class="label">NEXT STEPS</span>\n    <span class="rule"></span>\n  </div>\n  <h2 style="font-size:22px;font-weight:700;color:var(--ink);letter-spacing:.03em;line-height:1.5;margin:0 0 22px;max-width:600px">記事をお読みいただき、ありがとうございました。<br>もし気になる点があれば、次の3つの入口をどうぞ。</h2>\n  <div class="next-steps-grid">\n    <a href="../uploads/contact.html" class="ns-card ns-primary">\n      <div>\n        <div class="eyebrow">Free Consultation</div>\n        <h3>無料で相談する</h3>\n        <p>記事の内容について、貴社の状況に沿って個別にお話しします。初回相談は無料です。訪問・オンラインどちらも対応。</p>\n      </div>\n      <span class="arr">相談を申し込む →</span>\n    </a>\n    <a href="'+rel.href+'" class="ns-card">\n      <div>\n        <div class="eyebrow">Related Service</div>\n        <h3>'+esc(rel.t)+'</h3>\n        <p>'+esc(rel.p)+'</p>\n      </div>\n      <span class="arr">サービス詳細へ →</span>\n    </a>\n    <a href="../pricing.html" class="ns-card">\n      <div>\n        <div class="eyebrow">Pricing</div>\n        <h3>料金を見る</h3>\n        <p>シンプル3プラン制。創業3年以内の事業者さま向けの割引もご用意しています。</p>\n      </div>\n      <span class="arr">プランを見る →</span>\n    </a>\n  </div>\n</section>\n\n<div class="back-link">\n  <a href="../blog.html">← コラム・ブログ一覧に戻る</a>\n  <a href="#" class="to-top">↑ ページ上部へ</a>\n</div>\n\n</main>\n<footer class="footer">\n  <div class="footer-inner">\n    <div class="footer-grid">\n      <div>\n        <div class="footer-logo">\n          <div class="logo-mark"><span>み</span></div>\n          <div class="logo-text"><b>みなの社会保険労務士事務所</b><small>複雑な労務を、シンプルに。</small></div>\n        </div>\n        <p class="footer-desc">助成金活用・手続き代行・DX支援で、中小企業の労務コストを最適化します。</p>\n        <address class="footer-contact">\n          <span class="footer-contact-row footer-contact-address">〒931-8333 富山県富山市蓮町1丁目7番3号　SCOP TOYAMA</span>\n          <span class="footer-contact-row"><a href="tel:090-8259-8774">TEL: 090-8259-8774</a><span class="footer-contact-hours">平日 9:00–18:00</span></span>\n        </address>\n      </div>\n      <div>\n        <p class="footer-h">サービス</p>\n        <ul class="footer-ul">\n          <li><a href="../uploads/service-joseikin.html">助成金申請</a></li>\n          <li><a href="../uploads/service-shugyo-kisoku.html">就業規則作成</a></li>\n          <li><a href="../uploads/service-shakai-hoken.html">社会保険手続き</a></li>\n          <li><a href="../uploads/service-kyuyo-keisan.html">給与計算</a></li>\n        </ul>\n      </div>\n      <div>\n        <p class="footer-h">コンテンツ</p>\n        <ul class="footer-ul">\n          <li><a href="../blog.html">コラム・ブログ</a></li>\n          <li><a href="../infographic.html">社労士とは？</a></li>\n          <li><a href="../portal.html">公式情報</a></li>\n        </ul>\n      </div>\n      <div>\n        <p class="footer-h">お問い合わせ</p>\n        <ul class="footer-ul">\n          <li><a href="../uploads/contact.html">無料相談フォーム</a></li>\n          <li><a href="tel:090-8259-8774">電話: 090-8259-8774</a></li>\n          <li><a href="mailto:contact@minano-sr.com">contact@minano-sr.com</a></li>\n          <li><a href="../privacy-policy.html">プライバシーポリシー</a></li>\n        </ul>\n      </div>\n    </div>\n    <div class="footer-bottom">\n      <p class="footer-copy">© '+v.date.slice(0,4)+' みなの社会保険労務士事務所. All rights reserved.</p>\n      <div class="footer-badges">\n\n        <span class="footer-badge">富山県社会保険労務士会</span>\n      </div>\n    </div>\n  </div>\n</footer>\n\n<script>\nvar ticking=false;\nif(window.__pgScroll)window.removeEventListener(\'scroll\',window.__pgScroll);\nwindow.__pgScroll=function(){\n  if(ticking)return;ticking=true;\n  requestAnimationFrame(function(){\n    var prog=document.getElementById(\'prog\'),nav=document.getElementById(\'nav\');\n    var p=scrollY/(document.documentElement.scrollHeight-innerHeight||1);\n    if(prog)prog.style.width=(p*100)+\'%\';\n    if(nav)nav.classList.toggle(\'solid\',scrollY>60);\n    ticking=false;\n  });\n};\nwindow.addEventListener(\'scroll\',window.__pgScroll,{passive:true});\nfunction toggleNav(){document.getElementById(\'mobNav\').classList.toggle(\'open\')}\nfunction closeNav(){document.getElementById(\'mobNav\').classList.remove(\'open\')}\n<\/script>\n<script defer src="../link-keep.js?v=20260723-conversion1"><\/script>\n\n<script defer src="../header-motion.js?v=20260809-nav1"><\/script>\n<script id="pf-hover">(function(){var d={};function pf(u){if(d[u])return;d[u]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u;document.head.appendChild(l);}function h(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var hr=a.getAttribute("href");if(!hr||hr[0]==="#"||/^(mailto:|tel:|https?:)/.test(hr))return;if(a.target==="_blank")return;pf(a.href);}document.addEventListener("mouseover",h,{passive:true});document.addEventListener("touchstart",h,{passive:true});})();<\/script>\n<script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings="{&quot;path&quot;:&quot;/blog/'+v.slug+'.html&quot;}" async src="//gc.zgo.at/count.js"><\/script>\n</body>\n</html>\n';
+  var rel=REL[v.service];
+  var art=withToc(readerMap(v.reader,v.problem,v.outcome)+'\n'+pointBox(v.points)+'\n'+parseBody(v.body));
+  return '<!DOCTYPE html>\n<html lang="ja">\n<head>\n<meta charset="UTF-8">\n<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">\n<script defer src="../page-enter.js?v=20260725-nocat1"><\/script>\n<style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>\n\n\n\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>'+esc(v.title)+'｜みなの社会保険労務士事務所</title>\n<meta name="description" content="'+esc(v.desc)+'">\n<meta name="keywords" content="'+esc(v.keywords)+'">\n<link rel="canonical" href="https://minano-sr.com/blog/'+v.slug+'.html">\n\n<!-- OGP -->\n<meta property="og:type" content="article">\n<meta property="og:title" content="'+esc(v.title)+'">\n<meta property="og:description" content="'+esc(v.desc)+'">\n<meta property="og:url" content="https://minano-sr.com/blog/'+v.slug+'.html">\n<meta property="og:site_name" content="みなの社会保険労務士事務所">\n<meta property="og:locale" content="ja_JP">\n<meta property="og:image" content="https://minano-sr.com/assets/og/minano-og.png">\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n<meta property="og:image:alt" content="みなの社会保険労務士事務所のトップページ｜会社の労務を、まるごと任せられる。">\n<meta property="article:published_time" content="'+v.date+'">\n<meta property="article:modified_time" content="'+v.date+'">\n<meta property="article:section" content="'+CATS[v.cat]+'">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="twitter:image" content="https://minano-sr.com/assets/og/minano-og.png">\n\n<!-- Article JSON-LD -->\n<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"'+jesc(v.title)+'","description":"'+jesc(v.desc)+'","datePublished":"'+v.date+'","dateModified":"'+v.date+'","author":{"@type":"Organization","name":"みなの社会保険労務士事務所"},"publisher":{"@type":"Organization","name":"みなの社会保険労務士事務所","logo":{"@type":"ImageObject","url":"https://minano-sr.com/assets/og/logo-512.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://minano-sr.com/blog/'+v.slug+'.html"},"articleSection":"'+CATS[v.cat]+'","keywords":"'+jesc(v.keywords)+'"}<\/script>\n\n<meta name="theme-color" content="#123F30">\n<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 32 32\'%3E%3Crect width=\'32\' height=\'32\' rx=\'8\' fill=\'%23123F30\'/%3E%3Ctext x=\'16\' y=\'22\' font-family=\'sans-serif\' font-size=\'17\' font-weight=\'700\' fill=\'white\' text-anchor=\'middle\'%3Eみ%3C/text%3E%3C/svg%3E">\n\n\n<link rel="stylesheet" href="../skin-v2.css?v=20260809-bloglink1">\n<link rel="stylesheet" href="../blog-article.css?v=20260809-value1">\n\n</head>\n<body data-nav="B">\n<a class="skip-link" href="#main">本文へ移動</a>\n<div id="prog"></div>\n\n<nav class="nav" id="nav">\n  <div class="nav-inner">\n    <a href="../index.html" class="logo">\n      <div class="logo-mark"><span>み</span></div>\n      <div class="logo-text"><b>みなの社会保険労務士事務所</b><small>複雑な労務を、シンプルに。</small></div>\n    </a>\n    <ul class="nav-links">\n      <li><a href="../services.html">サービス</a></li>\n      <li><a href="../pricing.html">料金</a></li>\n      <li><a href="../support.html">支援の進め方</a></li>\n      <li><a href="../about.html">事務所案内</a></li>\n      <li><a href="../blog.html" class="active">ブログ</a></li>\n      <li><a href="../infographic.html">社労士とは</a></li>\n      <li><a href="../portal.html">公式情報</a></li>\n    </ul>\n    <a href="../uploads/contact.html" class="nav-cta">無料で相談する</a>\n    <button class="nav-burger" onclick="toggleNav()" aria-label="メニュー">\n      <svg width="20" height="14" viewBox="0 0 20 14" fill="currentColor"><rect width="20" height="2" rx="1"/><rect y="6" width="20" height="2" rx="1"/><rect y="12" width="20" height="2" rx="1"/></svg>\n    </button>\n  </div>\n</nav>\n<div class="mob-nav" id="mobNav">\n  <a href="../services.html" onclick="closeNav()">サービス</a>\n  <a href="../pricing.html" onclick="closeNav()">料金</a>\n  <a href="../support.html" onclick="closeNav()">支援の進め方</a>\n  <a href="../about.html" onclick="closeNav()">事務所案内</a>\n  <a href="../blog.html" onclick="closeNav()">ブログ</a>\n  <a href="../infographic.html" onclick="closeNav()">社労士とは</a>\n  <a href="../portal.html" onclick="closeNav()">公式情報</a>\n  <a href="../uploads/contact.html" class="mob-cta">→ 無料相談を申し込む</a>\n</div>\n\n<main id="main">\n<header class="post-hero">\n  <div class="post-hero-inner">\n    <nav class="breadcrumb">\n      <a href="../index.html">ホーム</a><span class="sep">›</span>\n      <a href="../blog.html">コラム・ブログ</a><span class="sep">›</span>\n      <span>'+CATS[v.cat]+'</span>\n    </nav>\n    <span class="cat-tag">'+CATS[v.cat]+'</span>\n    <h1 class="post-h1">'+esc(v.title)+'</h1>\n    <div class="post-meta">\n      <time datetime="'+v.date+'">公開 '+v.date.replaceAll('-','.')+'</time>\n      <span class="dot" aria-hidden="true">・</span>\n      <span>読了 約'+v.read+'分</span>\n    </div>\n  </div>\n</header>\n\n<article class="post">\n'+art+'\n</article>\n\n<aside class="author-card">\n  <div class="author-av">み</div>\n  <div class="author-meta">\n    <b>みなの社会保険労務士事務所 編集部</b>\n    中小企業の労務体制構築・助成金活用・規程整備に関する情報を発信しています。\n    <small>本記事は公開時点の法令・制度および公式情報に基づきます。内容は変更されることがあるため、最新情報は各公式サイトもご確認ください。</small>\n  </div>\n</aside>\n\n<section class="next-steps">\n  <div class="next-steps-head">\n    <span class="label">NEXT STEPS</span>\n    <span class="rule"></span>\n  </div>\n  <h2 style="font-size:22px;font-weight:700;color:var(--ink);letter-spacing:.03em;line-height:1.5;margin:0 0 22px;max-width:600px">記事をお読みいただき、ありがとうございました。<br>もし気になる点があれば、次の3つの入口をどうぞ。</h2>\n  <div class="next-steps-grid">\n    <a href="../uploads/contact.html" class="ns-card ns-primary">\n      <div>\n        <div class="eyebrow">Free Consultation</div>\n        <h3>無料で相談する</h3>\n        <p>記事の内容について、貴社の状況に沿って個別にお話しします。初回相談は無料です。訪問・オンラインどちらも対応。</p>\n      </div>\n      <span class="arr">相談を申し込む →</span>\n    </a>\n    <a href="'+rel.href+'" class="ns-card">\n      <div>\n        <div class="eyebrow">Related Service</div>\n        <h3>'+esc(rel.t)+'</h3>\n        <p>'+esc(rel.p)+'</p>\n      </div>\n      <span class="arr">サービス詳細へ →</span>\n    </a>\n    <a href="../pricing.html" class="ns-card">\n      <div>\n        <div class="eyebrow">Pricing</div>\n        <h3>料金を見る</h3>\n        <p>シンプル3プラン制。創業3年以内の事業者さま向けの割引もご用意しています。</p>\n      </div>\n      <span class="arr">プランを見る →</span>\n    </a>\n  </div>\n</section>\n\n<div class="back-link">\n  <a href="../blog.html">← コラム・ブログ一覧に戻る</a>\n  <a href="#" class="to-top">↑ ページ上部へ</a>\n</div>\n\n</main>\n<footer class="footer">\n  <div class="footer-inner">\n    <div class="footer-grid">\n      <div>\n        <div class="footer-logo">\n          <div class="logo-mark"><span>み</span></div>\n          <div class="logo-text"><b>みなの社会保険労務士事務所</b><small>複雑な労務を、シンプルに。</small></div>\n        </div>\n        <p class="footer-desc">助成金活用・手続き代行・DX支援で、中小企業の労務コストを最適化します。</p>\n        <address class="footer-contact">\n          <span class="footer-contact-row footer-contact-address">〒931-8333 富山県富山市蓮町1丁目7番3号　SCOP TOYAMA</span>\n          <span class="footer-contact-row"><a href="tel:090-8259-8774">TEL: 090-8259-8774</a><span class="footer-contact-hours">平日 9:00–18:00</span></span>\n        </address>\n      </div>\n      <div>\n        <p class="footer-h">サービス</p>\n        <ul class="footer-ul">\n          <li><a href="../uploads/service-joseikin.html">助成金申請</a></li>\n          <li><a href="../uploads/service-shugyo-kisoku.html">就業規則作成</a></li>\n          <li><a href="../uploads/service-shakai-hoken.html">社会保険手続き</a></li>\n          <li><a href="../uploads/service-kyuyo-keisan.html">給与計算</a></li>\n        </ul>\n      </div>\n      <div>\n        <p class="footer-h">コンテンツ</p>\n        <ul class="footer-ul">\n          <li><a href="../blog.html">コラム・ブログ</a></li>\n          <li><a href="../infographic.html">社労士とは？</a></li>\n          <li><a href="../portal.html">公式情報</a></li>\n        </ul>\n      </div>\n      <div>\n        <p class="footer-h">お問い合わせ</p>\n        <ul class="footer-ul">\n          <li><a href="../uploads/contact.html">無料相談フォーム</a></li>\n          <li><a href="tel:090-8259-8774">電話: 090-8259-8774</a></li>\n          <li><a href="mailto:contact@minano-sr.com">contact@minano-sr.com</a></li>\n          <li><a href="../privacy-policy.html">プライバシーポリシー</a></li>\n        </ul>\n      </div>\n    </div>\n    <div class="footer-bottom">\n      <p class="footer-copy">© '+v.date.slice(0,4)+' みなの社会保険労務士事務所. All rights reserved.</p>\n      <div class="footer-badges">\n\n        <span class="footer-badge">富山県社会保険労務士会</span>\n      </div>\n    </div>\n  </div>\n</footer>\n\n<script>\nvar ticking=false;\nif(window.__pgScroll)window.removeEventListener(\'scroll\',window.__pgScroll);\nwindow.__pgScroll=function(){\n  if(ticking)return;ticking=true;\n  requestAnimationFrame(function(){\n    var prog=document.getElementById(\'prog\'),nav=document.getElementById(\'nav\');\n    var p=scrollY/(document.documentElement.scrollHeight-innerHeight||1);\n    if(prog)prog.style.width=(p*100)+\'%\';\n    if(nav)nav.classList.toggle(\'solid\',scrollY>60);\n    ticking=false;\n  });\n};\nwindow.addEventListener(\'scroll\',window.__pgScroll,{passive:true});\nfunction toggleNav(){document.getElementById(\'mobNav\').classList.toggle(\'open\')}\nfunction closeNav(){document.getElementById(\'mobNav\').classList.remove(\'open\')}\n<\/script>\n<script defer src="../link-keep.js?v=20260723-conversion1"><\/script>\n\n<script defer src="../header-motion.js?v=20260809-nav1"><\/script>\n<script id="pf-hover">(function(){var d={};function pf(u){if(d[u])return;d[u]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u;document.head.appendChild(l);}function h(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var hr=a.getAttribute("href");if(!hr||hr[0]==="#"||/^(mailto:|tel:|https?:)/.test(hr))return;if(a.target==="_blank")return;pf(a.href);}document.addEventListener("mouseover",h,{passive:true});document.addEventListener("touchstart",h,{passive:true});})();<\/script>\n<script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings="{&quot;path&quot;:&quot;/blog/'+v.slug+'.html&quot;}" async src="//gc.zgo.at/count.js"><\/script>\n</body>\n</html>\n';
 }
 
 /* ---------- 生成 ---------- */
@@ -562,26 +595,31 @@ function validate(v){
   if(!v.slug||!/^[a-z0-9-]+$/.test(v.slug))errs.push('スラッグ（半角英小文字・数字・ハイフン）');
   if(!v.date)errs.push('公開日');
   if(!v.desc)errs.push('説明文');
+  if(!v.reader)errs.push('対象読者');
+  if(!v.problem)errs.push('いま困っていること');
+  if(!v.outcome)errs.push('読後にできること');
+  if(!REL[v.service])errs.push('記事末の関連サービス');
   if(!v.body.trim())errs.push('本文');
   return errs;
 }
 $('btn-gen').addEventListener('click',function(){
   var v={title:$('f-title').value.trim(),slug:$('f-slug').value.trim(),cat:$('f-cat').value,
-    date:$('f-date').value,read:$('f-read').value||'5',desc:$('f-desc').value.trim(),
-    keywords:$('f-keywords').value.trim(),points:$('f-points').value,body:$('f-body').value};
+    service:$('f-service').value,date:$('f-date').value,read:$('f-read').value||'5',desc:$('f-desc').value.trim(),
+    keywords:$('f-keywords').value.trim(),reader:$('f-reader').value.trim(),problem:$('f-problem').value.trim(),
+    outcome:$('f-outcome').value.trim(),points:$('f-points').value,body:$('f-body').value};
   var errs=validate(v);
   if(errs.length){alert('未入力の項目があります：\n・'+errs.join('\n・'));return}
   lastArticle=buildArticle(v);lastSlug=v.slug;lastV=v;
   $('o-fname').textContent=v.slug+'.html';
   $('o-artrow').value='      <a href="blog/'+v.slug+'.html" class="art-row" data-cat="'+v.cat+'">\n        <div class="art-thumb">'+thumbSvg(v.cat,v.title)+'</div>\n        <time class="art-date" datetime="'+v.date+'">'+v.date.replaceAll('-','.')+'</time>\n        <div class="art-body">\n          <span class="art-cat-badge">'+CATS[v.cat]+'</span>\n          <h2 class="art-title">'+esc(v.title)+'</h2>\n          <p class="art-excerpt">'+esc(v.desc)+'</p>\n        </div>\n        <span class="art-read">読む →</span>\n      </a>\n';
-  $('o-json').value='  {\n    "slug": "'+v.slug+'",\n    "cat": "'+v.cat+'",\n    "catLabel": "'+CATS[v.cat]+'",\n    "date": "'+v.date+'",\n    "dateJp": "'+dateJp(v.date)+'",\n    "read": "'+v.read+'",\n    "updated": "'+v.date+'",\n    "title": "'+jesc(v.title)+'",\n    "description": "'+jesc(v.desc)+'",\n    "keywords": "'+jesc(v.keywords)+'",\n    "h1": "'+jesc(v.title)+'"\n  },';
+  $('o-json').value='  {\n    "slug": "'+v.slug+'",\n    "cat": "'+v.cat+'",\n    "catLabel": "'+CATS[v.cat]+'",\n    "date": "'+v.date+'",\n    "dateJp": "'+dateJp(v.date)+'",\n    "read": "'+v.read+'",\n    "updated": "'+v.date+'",\n    "title": "'+jesc(v.title)+'",\n    "description": "'+jesc(v.desc)+'",\n    "keywords": "'+jesc(v.keywords)+'",\n    "h1": "'+jesc(v.title)+'",\n    "reader": "'+jesc(v.reader)+'",\n    "problem": "'+jesc(v.problem)+'",\n    "outcome": "'+jesc(v.outcome)+'",\n    "service": "'+jesc(v.service)+'"\n  },';
   $('o-newsrow').value='      <a class="news-row" href="blog/'+v.slug+'.html">\n        <span class="news-thumb">'+thumbSvg(v.cat,v.title)+'</span>\n        <span class="news-meta"><span class="news-tag">'+CATS[v.cat]+'</span></span>\n        <span class="news-title">'+esc(v.title)+'</span>\n        <span class="news-arr" aria-hidden="true">→</span>\n      </a>\n';
   $('out').hidden=false;
   var r=$('out').getBoundingClientRect();
   window.scrollTo({top:r.top+(window.scrollY||0)-16,behavior:'smooth'});
 });
 
-/* ---------- かんたん公開セット（更新済み blog.html / articles.json を生成） ---------- */
+/* ---------- 下書きセット（仮更新した blog.html / articles.json を生成） ---------- */
 var lastV=null;
 function dlBlob(name,text){
   var b=new Blob([text],{type:name.slice(-5)==='.json'?'application/json;charset=utf-8':'text/html;charset=utf-8'});
@@ -607,7 +645,7 @@ function makeBlog(){
 function makeJson(){
   return fetch('blog/articles.json',{cache:'no-store'}).then(function(r){return r.json()}).then(function(arr){
     if(arr.some(function(a){return a.slug===lastV.slug}))throw new Error('このスラッグはすでに articles.json に登録済みです。別のスラッグ名にしてください。');
-    var entry={slug:lastV.slug,cat:lastV.cat,catLabel:CATS[lastV.cat],date:lastV.date,dateJp:dateJp(lastV.date),read:String(lastV.read),updated:lastV.date,title:lastV.title,description:lastV.desc,keywords:lastV.keywords,h1:lastV.title};
+    var entry={slug:lastV.slug,cat:lastV.cat,catLabel:CATS[lastV.cat],date:lastV.date,dateJp:dateJp(lastV.date),read:String(lastV.read),updated:lastV.date,title:lastV.title,description:lastV.desc,keywords:lastV.keywords,h1:lastV.title,reader:lastV.reader,problem:lastV.problem,outcome:lastV.outcome,service:lastV.service};
     arr.unshift(entry);
     return JSON.stringify(arr,null,2)+'\n';
   });
@@ -620,7 +658,7 @@ $('btn-dl-all').addEventListener('click',function(){
     dlBlob(lastSlug+'.html',lastArticle);
     return wait2(500).then(function(){dlBlob('blog.html',files[0]);return wait2(500)}).then(function(){dlBlob('articles.json',files[1])});
   }).then(function(){
-    setStatus('3ファイルを保存しました。① '+lastSlug+'.html → サーバーの blog/ に追加、② blog.html → 一番上に上書き、③ articles.json → blog/ に上書き。これで公開完了です。');
+    setStatus('下書き3ファイルを保存しました。サーバーへ直接置かず、3ファイルをCodexまたはClaudeへ渡して「記事を仕上げて、検証・本番公開まで」と依頼してください。');
   }).catch(function(e){setStatus('⚠ '+(e&&e.message||'生成に失敗しました。手順Bを使ってください。'),true)});
 });
 $('btn-dl-art2').addEventListener('click',function(){
@@ -628,12 +666,12 @@ $('btn-dl-art2').addEventListener('click',function(){
 });
 $('btn-dl-blog').addEventListener('click',function(){
   if(!lastV||needServer())return;
-  makeBlog().then(function(out){dlBlob('blog.html',out);setStatus('blog.html を生成しました（新記事の行・件数+1を反映済み）。サーバーの blog.html に上書きしてください。')})
+    makeBlog().then(function(out){dlBlob('blog.html',out);setStatus('下書き用blog.htmlを生成しました（新記事の行・件数+1を仮反映済み）。記事HTML・articles.jsonと一緒にAIへ渡してください。')})
   .catch(function(e){setStatus('⚠ '+e.message,true)});
 });
 $('btn-dl-json').addEventListener('click',function(){
   if(!lastV||needServer())return;
-  makeJson().then(function(out){dlBlob('articles.json',out);setStatus('articles.json を生成しました（新記事を先頭に追加済み）。サーバーの blog/articles.json に上書きしてください。')})
+    makeJson().then(function(out){dlBlob('articles.json',out);setStatus('下書き用articles.jsonを生成しました（新記事を先頭に追加済み）。記事HTML・blog.htmlと一緒にAIへ渡してください。')})
   .catch(function(e){setStatus('⚠ '+e.message,true)});
 });
 

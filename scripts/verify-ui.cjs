@@ -526,7 +526,7 @@ function recordConsoleError(target) {
       resetBlogState.pressed === 1;
     const stickyBlogOk = !stickyBlogState.navHidden && stickyBlogState.overlap <= 1;
     const navUnderlineOk = navUnderlineState === null || (
-      navUnderlineState.bodyNav === '' &&
+      navUnderlineState.bodyNav === 'B' &&
       navUnderlineState.backgroundImage === 'none' &&
       navUnderlineState.underlineHeight === 3 &&
       navUnderlineState.underlineLeft === 8 &&
@@ -535,7 +535,7 @@ function recordConsoleError(target) {
       navUnderlineState.underlineWidth <= navUnderlineState.linkWidth - 15
     );
     const articleNavUnderlineOk = articleNavUnderlineState === null || (
-      articleNavUnderlineState.bodyNav === '' &&
+      articleNavUnderlineState.bodyNav === 'B' &&
       articleNavUnderlineState.backgroundImage === 'none' &&
       articleNavUnderlineState.underlineHeight === 3 &&
       articleNavUnderlineState.underlineLeft === 8 &&
@@ -874,9 +874,13 @@ function recordConsoleError(target) {
   adminPage.on('pageerror', error => adminErrors.push(`pageerror: ${error.message}`));
   await adminPage.goto(new URL('admin-post.html', base).href, { waitUntil: 'load' });
   await adminPage.locator('#f-cat').selectOption('system');
+  await adminPage.locator('#f-service').selectOption('dx');
   await adminPage.locator('#f-title').fill('検証用の記事タイトル');
   await adminPage.locator('#f-slug').fill('verification-only');
   await adminPage.locator('#f-desc').fill('記事投稿テンプレートの検証用説明文です。');
+  await adminPage.locator('#f-reader').fill('制度対応を初めて担当する中小企業の経営者・担当者');
+  await adminPage.locator('#f-problem').fill('何をいつまでに確認すべきか判断できない');
+  await adminPage.locator('#f-outcome').fill('確認事項と次の行動を決められる');
   await adminPage.locator('#f-body').fill('## 検証用見出し\n\n検証用の本文です。');
   await adminPage.locator('#btn-gen').click();
   await adminPage.locator('#out:not([hidden])').waitFor();
@@ -903,13 +907,14 @@ function recordConsoleError(target) {
     '"articleSection":"システム導入"',
     '<span>システム導入</span>',
     'href="../uploads/service-dx.html"',
+    '<body data-nav="B">',
   ];
   const templateMissing = expectedTemplateFragments.filter(fragment => !generatedArticle.includes(fragment));
   if (templateMissing.length || /index\.html#(?:services|pricing|cases|about)|16◯|mascot\.js/.test(generatedArticle) || adminErrors.length) {
     failures.push(`記事投稿テンプレート: ${JSON.stringify({ templateMissing, adminErrors })}`);
   }
   await adminPage.locator('#btn-dl-blog').evaluate(button => button.click());
-  await adminPage.waitForFunction(() => document.getElementById('set-status')?.textContent.includes('blog.html を生成しました'));
+  await adminPage.waitForFunction(() => document.getElementById('set-status')?.textContent.includes('下書き用blog.htmlを生成しました'));
   const generatedBlog = await adminPage.evaluate(() => window.__verificationArticleBlob.text());
   const generatedBlogState = {
     count: Number(generatedBlog.match(/<p\b[^>]*\bid="resultCount"[^>]*>全(\d+)件<\/p>/)?.[1] || 0),

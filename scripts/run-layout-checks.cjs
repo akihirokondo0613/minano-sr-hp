@@ -206,6 +206,26 @@ async function runTask(task) {
         args: ['scripts/test-blog-link-decoration.cjs', base, '--json'],
         output: 'blog-link-decoration.json',
       },
+      {
+        name: '全ブログ記事',
+        command: process.execPath,
+        args: ['scripts/test-blog-articles.cjs', base, '--json'],
+        output: 'blog-articles.json',
+      },
+      {
+        name: 'ブログ泣き別れ',
+        command: process.execPath,
+        args: [
+          'scripts/audit-line-breaks.cjs',
+          base,
+          '--section=blog',
+          '--engines=chromium,webkit',
+          '--widths=320,390,430,768,1440',
+          '--check',
+          '--json',
+        ],
+        output: 'blog-line-breaks.json',
+      },
     ];
     if (full) {
       tasks.push(
