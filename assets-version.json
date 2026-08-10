@@ -1,9 +1,9 @@
 {
   "page-enter.js": "20260725-nocat1",
-  "skin-v2.css": "20260810-kmono1",
-  "service.css": "20260725-nocat1",
+  "skin-v2.css": "20260810-a11y1",
+  "service.css": "20260810-a11y1",
   "image-slot.js": "20260722-crop1",
-  "blog-article.css": "20260809-value1",
+  "blog-article.css": "20260810-a11y1",
   "header-motion.js": "20260809-nav1",
   "link-keep.js": "20260723-conversion1"
 }
