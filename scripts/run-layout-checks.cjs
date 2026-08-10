@@ -240,6 +240,7 @@ async function createStaticServer(serverState) {
 
 async function runTask(task) {
   const started = Date.now();
+  const timeoutMs = Number.isFinite(task.timeoutMs) ? task.timeoutMs : 15 * 60 * 1000;
   const child = spawn(task.command, task.args, {
     cwd: root,
     env: process.env,
@@ -249,9 +250,32 @@ async function runTask(task) {
   let stderr = '';
   child.stdout.on('data', (chunk) => { stdout += chunk; });
   child.stderr.on('data', (chunk) => { stderr += chunk; });
-  const exitCode = await new Promise((resolve, reject) => {
-    child.once('error', reject);
-    child.once('close', (code) => resolve(code ?? 1));
+  let timedOut = false;
+  const exitCode = await new Promise((resolve) => {
+    let settled = false;
+    let timeoutTimer;
+    let killTimer;
+    let finalTimer;
+    const finish = (code) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeoutTimer);
+      clearTimeout(killTimer);
+      clearTimeout(finalTimer);
+      resolve(timedOut ? 124 : (code ?? 1));
+    };
+    child.once('error', (error) => {
+      stderr += `\n起動失敗: ${error.message}\n`;
+      finish(1);
+    });
+    child.once('close', (code) => finish(code));
+    timeoutTimer = setTimeout(() => {
+      timedOut = true;
+      stderr += `\nタイムアウト: ${timeoutMs}ms\n`;
+      child.kill('SIGTERM');
+      killTimer = setTimeout(() => child.kill('SIGKILL'), 3000);
+      finalTimer = setTimeout(() => finish(124), 6000);
+    }, timeoutMs);
   });
   await fsp.writeFile(path.join(reportDir, task.output), stdout || stderr || '', 'utf8');
   if (stderr) await fsp.writeFile(path.join(reportDir, `${task.output}.stderr.log`), stderr, 'utf8');
@@ -265,6 +289,8 @@ async function runTask(task) {
     command: [task.command, ...task.args].join(' '),
     output: task.output,
     exitCode,
+    timedOut,
+    timeoutMs,
     durationMs: Date.now() - started,
   };
 }
@@ -302,6 +328,39 @@ async function runTaskPool(tasks, limit = 2) {
     console.log(`ブログ対象: ${blogSelection.slugs.length}記事`);
 
     const tasks = [
+      {
+        name: 'アクセシビリティ監査probe',
+        command: process.execPath,
+        args: ['scripts/test-a11y-probe.cjs'],
+        output: 'a11y-probe.log',
+        timeoutMs: 2 * 60 * 1000,
+      },
+      {
+        name: 'アクセシビリティ監査CLI負例',
+        command: process.execPath,
+        args: ['scripts/test-a11y-audit.cjs'],
+        output: 'a11y-audit-integration.log',
+        timeoutMs: 2 * 60 * 1000,
+        // 写真の実ピクセル比較を含むため、他のブラウザ監査と重ねない。
+        isolated: true,
+      },
+      {
+        name: 'アクセシビリティ監査CLI',
+        command: process.execPath,
+        args: [
+          'scripts/audit-a11y.cjs',
+          base,
+          '--pages=index.html',
+          '--widths=390',
+          '--engines=chromium,webkit',
+          '--check-measurement',
+          '--json',
+        ],
+        output: 'a11y-index-390.json',
+        timeoutMs: 3 * 60 * 1000,
+        // 写真の実ピクセル比較はCPU負荷に敏感なので、他のブラウザ監査と重ねない。
+        isolated: true,
+      },
       {
         name: '全ブログ記事',
         command: process.execPath,
