@@ -248,13 +248,10 @@ for (const [relativePath, { schemas }] of pages) {
 
 {
   const workflow = fs.readFileSync(path.join(root, '.github/workflows/deploy-public.yml'), 'utf8');
-  for (const excluded of ['AGENTS.md', 'CLAUDE.md', 'admin-post.html', 'icon-catalog.html', 'mascot.js']) {
+  for (const excluded of ['AGENTS.md', 'CLAUDE.md', 'admin-post.html', 'icon-catalog.html']) {
     if (!new RegExp(`rm -f[^\\n]*\\b${excluded.replace('.', '\\.')}\\b`).test(workflow)) {
       errors.push(`deploy-public.yml: ${excluded}の公開除外がありません`);
     }
-  }
-  if (!/rm -f assets\/cat-walk-\*\.webp/.test(workflow)) {
-    errors.push('deploy-public.yml: 猫画像の公開除外がありません');
   }
   if (!/rm -rf[^\n]*\bdocs\b/.test(workflow)) {
     errors.push('deploy-public.yml: docs/の公開除外がありません');

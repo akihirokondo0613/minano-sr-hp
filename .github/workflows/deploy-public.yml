@@ -42,8 +42,7 @@ jobs:
 
       - name: 非公開ファイルを除外
         run: |
-          rm -f AGENTS.md CLAUDE.md admin-post.html assets-version.json icon-catalog.html mascot.js .maintenance
-          rm -f assets/cat-walk-*.webp
+          rm -f AGENTS.md CLAUDE.md admin-post.html assets-version.json icon-catalog.html .maintenance
           rm -rf _backup_* docs .github scripts
           rm -f *.zip
           find . -name ".image-slots.state.json" -delete
