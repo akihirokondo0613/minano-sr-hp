@@ -352,46 +352,6 @@ main > section:not(.hero) {
   .sec-head.has-photo { grid-template-columns: 1fr; }
   .sec-head.has-photo .sec-photo { max-width: 300px; width: 100%; margin-inline: auto; }
 }
-@media (max-width: 430px) {
-  /* WebKitがぶら下げ句読点の送り幅をページ全体へ伝播するのを、描画を切らず見出し内へ留める。 */
-  .sec-h,
-  .page-hero h1,
-  .rc-h { contain: layout; }
-}
-@media (max-width: 459px) {
-  .page-h { contain: layout; }
-}
-@media (min-width: 431px) and (max-width: 465px) {
-  #voice .sec-h { contain: layout; }
-}
-@supports (hanging-punctuation: allow-end) {
-  /* 文字幅が異なるNoto CJKでも改行を変えず、描画後の文字Rangeだけを画面内へ収める。 */
-  @media (max-width: 375px) {
-    #why .sec-h,
-    #approach .sec-h {
-      transform: scaleX(.97);
-      transform-origin: left center;
-    }
-  }
-  @media (min-width: 376px) and (max-width: 390px) {
-    #why .sec-h {
-      transform: scaleX(.995);
-      transform-origin: left center;
-    }
-  }
-  @media (min-width: 430px) and (max-width: 431px) {
-    #voice .sec-h {
-      transform: scaleX(.97);
-      transform-origin: left center;
-    }
-  }
-  @media (min-width: 430px) and (max-width: 450px) {
-    body[data-nav="B"] .page-h {
-      transform: scaleX(.97);
-      transform-origin: left center;
-    }
-  }
-}
 
 /* ---------- WHY ---------- */
 .why-sec { background: linear-gradient(180deg, var(--yuki) 0, var(--shiro) clamp(200px, 24vw, 360px)) var(--shiro); padding-block: clamp(76px, 10vw, 144px); position: relative; }
