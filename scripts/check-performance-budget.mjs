@@ -111,6 +111,11 @@ for (const { full, rel } of publicHtml) {
   if (/mascot\.js|mn-mascot|mn-recall/i.test(html)) {
     fail(`${rel}: 撤去済みの猫UI参照が残っています`);
   }
+  // 営業表現としての「診断」を禁止する。法令上の正式名称「健康診断」等は対象外。
+  // icon-catalog.html は非公開ページなので excludedHtml で既に除外済み。
+  for (const match of html.matchAll(/(?<!健康)診断/g)) {
+    fail(`${rel}: 営業表現の「診断」が残っています（位置 ${match.index}）`);
+  }
   if (/data-goatcounter=/i.test(html)) {
     const expectedPath = rel === 'index.html' ? '/' : `/${rel}`;
     const trackingPath = html.match(/data-goatcounter-settings='\{"path":"([^"]+)"\}'/i);
