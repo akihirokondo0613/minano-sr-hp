@@ -352,6 +352,28 @@ main > section:not(.hero) {
   .sec-head.has-photo { grid-template-columns: 1fr; }
   .sec-head.has-photo .sec-photo { max-width: 300px; width: 100%; margin-inline: auto; }
 }
+@media (max-width: 430px) {
+  /* WebKitがぶら下げ句読点の送り幅をページ全体へ伝播するのを、描画を切らず見出し内へ留める。 */
+  .sec-h,
+  .page-hero h1,
+  .rc-h { contain: layout; }
+}
+@media (max-width: 450px) {
+  .page-h { contain: layout; }
+}
+@media (min-width: 431px) and (max-width: 459px) {
+  #voice .sec-h { contain: layout; }
+}
+@supports (hanging-punctuation: allow-end) {
+  @media (max-width: 430px) {
+    /* WebKitで句読点の描画だけが画面外へ出る3見出しを、改行を変えない最小の字間で収める。 */
+    #why .sec-h { letter-spacing: -.01em; }
+    #approach .sec-h { letter-spacing: .004em; }
+  }
+  @media (min-width: 430px) and (max-width: 459px) {
+    #voice .sec-h { letter-spacing: 0; }
+  }
+}
 
 /* ---------- WHY ---------- */
 .why-sec { background: linear-gradient(180deg, var(--yuki) 0, var(--shiro) clamp(200px, 24vw, 360px)) var(--shiro); padding-block: clamp(76px, 10vw, 144px); position: relative; }
