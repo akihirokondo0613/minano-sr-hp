@@ -382,6 +382,15 @@ async function runTaskPool(tasks, limit = 2) {
         output: 'home-hero.json',
       },
       {
+        name: 'モバイル見出し横はみ出し',
+        command: process.execPath,
+        args: ['scripts/test-mobile-heading-overflow.cjs', base, '--json'],
+        output: 'mobile-heading-overflow.json',
+        timeoutMs: 5 * 60 * 1000,
+        // WebKitの最終描画値を測るため、他のブラウザ監査と重ねない。
+        isolated: true,
+      },
+      {
         name: '最終CTA 40条件',
         command: process.execPath,
         args: ['scripts/test-final-copy.cjs', base, '--json'],
