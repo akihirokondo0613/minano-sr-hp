@@ -11,13 +11,41 @@ const args = process.argv.slice(2);
 const base = (args.find((arg) => arg.startsWith('http')) || 'http://127.0.0.1:8811/')
   .replace(/\/?$/, '/');
 const asJson = args.includes('--json');
-const WIDTHS = [320, 360, 375, 390, 402, 430, 431, 450, 451, 459, 460, 768];
+const WIDTHS = [320, 360, 375, 390, 402, 430, 431, 450, 451, 459, 460, 461, 768];
 const PAGES = [
-  { page: 'index.html', selectors: '#why .sec-h', expectedHeadingCount: 1 },
-  { page: 'services.html', selectors: '#approach .sec-h', expectedHeadingCount: 1 },
-  { page: 'about.html', selectors: '#voice .sec-h', expectedHeadingCount: 1 },
-  { page: 'blog.html', selectors: '.page-h', expectedHeadingCount: 1 },
-  { page: 'recruit.html', selectors: '.page-hero h1, .rc-h', expectedHeadingCount: 7 },
+  {
+    page: 'index.html',
+    selectors: '#why .sec-h',
+    expectedHeadingCount: 1,
+    expectedSelectorCounts: [{ selector: '#why .sec-h', count: 1 }],
+  },
+  {
+    page: 'services.html',
+    selectors: '#approach .sec-h',
+    expectedHeadingCount: 1,
+    expectedSelectorCounts: [{ selector: '#approach .sec-h', count: 1 }],
+  },
+  {
+    page: 'about.html',
+    selectors: '#voice .sec-h',
+    expectedHeadingCount: 1,
+    expectedSelectorCounts: [{ selector: '#voice .sec-h', count: 1 }],
+  },
+  {
+    page: 'blog.html',
+    selectors: 'body[data-nav="B"] .page-h',
+    expectedHeadingCount: 1,
+    expectedSelectorCounts: [{ selector: 'body[data-nav="B"] .page-h', count: 1 }],
+  },
+  {
+    page: 'recruit.html',
+    selectors: '.page-hero h1, .rc-h',
+    expectedHeadingCount: 7,
+    expectedSelectorCounts: [
+      { selector: '.page-hero h1', count: 1 },
+      { selector: '.rc-h', count: 6 },
+    ],
+  },
 ];
 const ENGINES = [
   ['chromium', chromium],
@@ -75,15 +103,21 @@ async function settlePage(page) {
   });
 }
 
-async function measure(page, selectors) {
-  return page.evaluate(async ({ selectors, epsilon }) => {
+async function measure(page, selectors, expectedSelectorCounts) {
+  return page.evaluate(async ({ selectors, expectedSelectorCounts, epsilon }) => {
     const viewportWidth = document.documentElement.clientWidth;
-    const headings = [...document.querySelectorAll(selectors)].filter((element) => {
+    const isVisible = (element) => {
       const style = getComputedStyle(element);
       const rect = element.getBoundingClientRect();
       return style.display !== 'none' && style.visibility !== 'hidden'
         && Number.parseFloat(style.opacity) !== 0 && rect.width > 0 && rect.height > 0;
-    });
+    };
+    const headings = [...document.querySelectorAll(selectors)].filter(isVisible);
+    const selectorCounts = expectedSelectorCounts.map(({ selector, count }) => ({
+      selector,
+      expected: count,
+      actual: [...document.querySelectorAll(selector)].filter(isVisible).length,
+    }));
     const measured = headings.map((element) => {
       const chars = [];
       const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
@@ -112,9 +146,15 @@ async function measure(page, selectors) {
       }
       lines.sort((left, right) => left.top - right.top);
       const box = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
       return {
         selector: element.id ? `#${element.id}` : `${element.tagName.toLowerCase()}.${[...element.classList].join('.')}`,
         text: element.textContent.replace(/\s+/g, ' ').trim(),
+        fontFamily: style.fontFamily,
+        fontSize: style.fontSize,
+        fontWeight: style.fontWeight,
+        letterSpacing: style.letterSpacing,
+        transform: style.transform,
         box: { left: box.left, right: box.right },
         lineCount: lines.length,
         lines: lines.map((line) => ({ text: line.text, left: line.left, right: line.right })),
@@ -134,11 +174,13 @@ async function measure(page, selectors) {
       documentWidth: document.documentElement.scrollWidth,
       maximumScrollX,
       headingCount: headings.length,
+      selectorCounts,
       headings: measured,
       completed: headings.length > 0
-        && measured.every((item) => item.measuredCharacters > 0 && item.lineCount > 0),
+        && measured.every((item) => item.measuredCharacters > 0 && item.lineCount > 0)
+        && selectorCounts.every((item) => item.actual === item.expected),
     };
-  }, { selectors, epsilon: EPSILON });
+  }, { selectors, expectedSelectorCounts, epsilon: EPSILON });
 }
 
 async function auditEngine(engine, browserType) {
@@ -161,15 +203,23 @@ async function auditEngine(engine, browserType) {
           });
           if (!response?.ok()) throw new Error(`HTTP ${response?.status() ?? '応答なし'}`);
           await settlePage(page);
-          const measurement = await measure(page, target.selectors);
+          const measurement = await measure(
+            page,
+            target.selectors,
+            target.expectedSelectorCounts,
+          );
           await page.addStyleTag({ content: `
-            .sec-h, .page-h, .page-hero h1, .rc-h { contain: none !important; }
+            .sec-h, .page-h, .page-hero h1, .rc-h { contain: none !important; transform: none !important; }
             #why .sec-h, #approach .sec-h, #voice .sec-h { letter-spacing: .015em !important; }
           ` });
           await page.evaluate(() => new Promise(
             (resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)),
           ));
-          const baseline = await measure(page, target.selectors);
+          const baseline = await measure(
+            page,
+            target.selectors,
+            target.expectedSelectorCounts,
+          );
           const finalLineStrings = measurement.headings.map(
             (heading) => heading.lines.map((line) => line.text),
           );
@@ -187,6 +237,11 @@ async function auditEngine(engine, browserType) {
           if (measurement.headingCount !== target.expectedHeadingCount) {
             failures.push(`見出し件数 ${measurement.headingCount}/${target.expectedHeadingCount}`);
           }
+          for (const item of measurement.selectorCounts) {
+            if (item.actual !== item.expected) {
+              failures.push(`${item.selector} の件数 ${item.actual}/${item.expected}`);
+            }
+          }
           if (!lineStringsPreserved) failures.push('修正前後で改行文字列が変化');
           if (measurement.documentWidth > measurement.viewportWidth + EPSILON) {
             failures.push(`document幅 ${measurement.documentWidth}px`);
@@ -198,6 +253,9 @@ async function auditEngine(engine, browserType) {
             if (heading.boxOverflow) failures.push(`${heading.selector} のboxが画面外`);
             if (heading.rangeOverflow) failures.push(`${heading.selector} の文字Rangeが画面外`);
             if (heading.orphanLine) failures.push(`${heading.selector} に1文字だけの行`);
+            if (engine === 'chromium' && heading.transform !== 'none') {
+              failures.push(`${heading.selector} のChromium描画幅が変更されています`);
+            }
           }
           if (errors.length) failures.push(...errors);
           results.push({
@@ -206,6 +264,7 @@ async function auditEngine(engine, browserType) {
             width,
             expectedHeadingCount: target.expectedHeadingCount,
             lineStringsPreserved,
+            baselineLineStrings,
             ...measurement,
             errors,
             failures,
