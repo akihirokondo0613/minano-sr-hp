@@ -256,6 +256,9 @@ for (const [relativePath, { schemas }] of pages) {
   if (!/rm -f assets\/cat-walk-\*\.webp/.test(workflow)) {
     errors.push('deploy-public.yml: 猫画像の公開除外がありません');
   }
+  if (!/rm -rf[^\n]*\bdocs\b/.test(workflow)) {
+    errors.push('deploy-public.yml: docs/の公開除外がありません');
+  }
 }
 
 // 旧NAPが指示書・台帳から公開物や設定へ再流入するのを止める（2026-08 実際に指示書へ残っていた）

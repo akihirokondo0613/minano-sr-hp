@@ -44,7 +44,7 @@ jobs:
         run: |
           rm -f AGENTS.md CLAUDE.md admin-post.html assets-version.json icon-catalog.html mascot.js .maintenance
           rm -f assets/cat-walk-*.webp
-          rm -rf _backup_* .github scripts
+          rm -rf _backup_* docs .github scripts
           rm -f *.zip
           find . -name ".image-slots.state.json" -delete
           find . -name ".DS_Store" -delete
