@@ -556,7 +556,7 @@ main > section:not(.hero) {
 .plan-features li::after { content: ''; position: absolute; left: 4px; top: 16.5px; width: 4px; height: 6px; border-right: 1.6px solid var(--sugi); border-bottom: 1.6px solid var(--sugi); transform: rotate(42deg); }
 .plan-features-new li::before { background: var(--moegi); }
 .plan-features-new li::after { border-color: #fff; }
-.kmono { width: 40px; height: 40px; border-radius: 8px; background: var(--moegi-l); color: #007B43; font-family: 'Zen Maru Gothic', var(--disp), sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .04em; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.kmono { width: 40px; height: 40px; border-radius: 8px; background: var(--moegi-l); color: var(--sugi); font-family: var(--disp); font-size: 13px; font-weight: 700; letter-spacing: .04em; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .plan-feature-sub { font-size: 11.5px; color: var(--ink3); }
 .plan-btn { display: block; text-align: center; margin-top: auto; padding: 15px; font-size: 14px; font-weight: 700; letter-spacing: .06em; color: var(--sugi); border: 1.5px solid var(--sugi); border-radius: var(--r); transition: background .3s, color .3s; }
 .plan-btn:hover { background: var(--sugi); color: #fff; }
