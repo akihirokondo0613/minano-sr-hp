@@ -230,7 +230,7 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
 .why-label.hero-label::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--moegi-b); }
 .hero-h1 { font-family: var(--disp); font-weight: 900; font-size: clamp(30px, 4.8vw, 56px); line-height: 1.44; letter-spacing: .015em; color: var(--iwa); }
 .hero-h1 strong { color: var(--sugi); background: linear-gradient(color-mix(in srgb, var(--moegi) 38%, transparent), color-mix(in srgb, var(--moegi) 38%, transparent)) no-repeat left 90% / 100% 26%; }
-.hero-sub { margin-top: clamp(18px, 2.4vw, 28px); font-size: clamp(13.5px, 1.3vw, 16px); line-height: 2.15; letter-spacing: .03em; color: var(--ink2); max-width: 44em; }
+.hero-sub { margin-top: clamp(18px, 2.4vw, 28px); font-size: clamp(13.5px, 1.3vw, 16px); line-height: 2.15; letter-spacing: .03em; color: var(--iwa); max-width: 44em; }
 .hero-btns { display: flex; align-items: center; gap: 24px; margin-top: clamp(26px, 3.4vw, 40px); flex-wrap: wrap; }
 .btn-primary { display: inline-block; background: var(--sugi); color: #fff; font-size: 15.5px; font-weight: 700; letter-spacing: .08em; padding: 18px 44px; border-radius: var(--r); box-shadow: 0 8px 24px rgba(18,63,48,.22); transition: background .3s, transform .3s var(--ease); }
 .btn-primary:hover { background: var(--sugi-7); transform: translateY(-2px); }
@@ -371,8 +371,8 @@ main > section:not(.hero) {
 .why-beliefs { grid-area: beliefs; display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(14px, 2vw, 24px); margin-top: clamp(40px, 5.5vw, 64px); }
 .belief-card { background: var(--yuki); border: 1px solid var(--line); border-radius: var(--r-lg); padding: clamp(24px, 3vw, 36px) clamp(22px, 2.6vw, 32px); transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s; }
 .belief-card:hover { transform: translateY(-4px); border-color: var(--moegi); box-shadow: 0 18px 40px rgba(18,63,48,.09); }
-.bc-num { font-family: var(--mono); font-size: 22px; font-weight: 500; color: transparent; -webkit-text-stroke: 1px var(--moegi); margin-bottom: 14px; }
-@supports not (-webkit-text-stroke: 1px black) { .bc-num { color: var(--moegi); } }
+.bc-num { font-family: var(--mono); font-size: 22px; font-weight: 500; color: transparent; -webkit-text-stroke: 1px var(--moegi-t); margin-bottom: 14px; }
+@supports not (-webkit-text-stroke: 1px black) { .bc-num { color: var(--moegi-t); } }
 .bc-title { font-family: var(--disp); font-size: 17.5px; font-weight: 800; letter-spacing: .02em; margin-bottom: 10px; color: var(--iwa); }
 .bc-desc { font-size: 13.5px; line-height: 2.05; color: var(--ink3); }
 @media (max-width: 900px) { .why-inner { grid-template-columns: minmax(0, 1fr) clamp(200px, 30vw, 280px); } .why-beliefs { grid-template-columns: 1fr; } }
@@ -982,7 +982,7 @@ article.post .note { font-size: 12.5px; color: var(--ink3); margin-top: -1em; ma
 
 .next-steps { max-width: 980px; margin: clamp(40px, 6vw, 64px) auto 0; padding: 0 clamp(20px, 4.5vw, 40px) clamp(48px, 6vw, 72px); }
 .next-steps-head { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
-.next-steps-head .label { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .3em; color: var(--moegi); }
+.next-steps-head .label { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .3em; color: var(--moegi-t); }
 .next-steps-head .rule { flex: 1; height: 10px; background: none no-repeat left / 120px 10px; opacity: .7; }
 .next-steps h2 { font-family: var(--disp); }
 .next-steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 14px; }
@@ -1021,7 +1021,7 @@ article.post .note { font-size: 12.5px; color: var(--ink3); margin-top: -1em; ma
 .final-cta .btn-white { display: inline-block; margin-top: 28px; }
 .btn-secondary { display: inline-block; border: 1.5px solid var(--sugi); color: var(--sugi); font-size: 14.5px; font-weight: 700; letter-spacing: .04em; padding: 16px 30px; border-radius: var(--r); transition: background .3s, color .3s; }
 .btn-secondary:hover { background: var(--sugi); color: #fff; }
-.final-cta .btn-secondary, .rc-cta .btn-secondary { border-color: rgba(255,255,255,.5); color: #fff; }
+.final-cta .btn-secondary { border-color: rgba(255,255,255,.5); color: #fff; }
 
 /* ============================================================
    顧問先ポータル（portal.html）

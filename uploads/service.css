@@ -96,7 +96,7 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
 .breadcrumb{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink4);margin-bottom:26px;letter-spacing:.03em;flex-wrap:wrap}
 .breadcrumb a{color:var(--g600);transition:color .3s var(--ease-soft)}
 @media(hover:hover){.breadcrumb a:hover{color:var(--g700)}}
-.breadcrumb span{color:#c4c4c4}
+.breadcrumb span{color:var(--ink4)}
 .page-kicker{display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--g600);text-transform:uppercase;margin-bottom:20px}
 .page-kicker::before{content:'';width:26px;height:2px;background:var(--g600)}
 .page-hero h1{font-size:clamp(30px,4.4vw,50px);font-weight:500;color:var(--ink);line-height:1.4;margin-bottom:20px;letter-spacing:.01em;font-family:var(--serif);text-wrap:balance;word-break:auto-phrase}

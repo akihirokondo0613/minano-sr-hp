@@ -255,7 +255,7 @@ article.post .post-choice {
   height: 100%;
 }
 
-article.post .post-choice-label {
+article.post .post-choice .post-choice-label {
   display: inline-block;
   width: max-content;
   margin-bottom: 9px;
@@ -264,7 +264,7 @@ article.post .post-choice-label {
   background: var(--sugi);
   color: var(--shiro);
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 800;
 }
 
