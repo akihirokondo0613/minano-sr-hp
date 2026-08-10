@@ -186,17 +186,24 @@ async function measure(page, selectors, expectedSelectorCounts) {
 async function auditEngine(engine, browserType) {
   const browser = await browserType.launch({ headless: true });
   const results = [];
+  const page = await browser.newPage({ viewport: { width: WIDTHS[0], height: 900 } });
+  let activeErrors = null;
+  page.on('console', (message) => {
+    if (activeErrors && message.type() === 'error') {
+      activeErrors.push(`console: ${message.text()}`);
+    }
+  });
+  page.on('pageerror', (error) => {
+    if (activeErrors) activeErrors.push(`pageerror: ${error.message}`);
+  });
   try {
+    await prepareLocalHttpPage(page);
     for (const target of PAGES) {
       for (const width of WIDTHS) {
-        const page = await browser.newPage({ viewport: { width, height: 900 } });
         const errors = [];
-        page.on('console', (message) => {
-          if (message.type() === 'error') errors.push(`console: ${message.text()}`);
-        });
-        page.on('pageerror', (error) => errors.push(`pageerror: ${error.message}`));
         try {
-          await prepareLocalHttpPage(page);
+          await page.setViewportSize({ width, height: 900 });
+          activeErrors = errors;
           const response = await page.goto(new URL(target.page, base).href, {
             waitUntil: 'domcontentloaded',
             timeout: 20_000,
@@ -279,11 +286,13 @@ async function auditEngine(engine, browserType) {
             failures: [error.message],
           });
         } finally {
-          await page.close();
+          activeErrors = null;
         }
       }
     }
   } finally {
+    activeErrors = null;
+    if (!page.isClosed()) await page.close();
     await browser.close();
   }
   return results;
