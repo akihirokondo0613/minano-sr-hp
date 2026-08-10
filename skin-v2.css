@@ -361,18 +361,21 @@ main > section:not(.hero) {
 @media (max-width: 459px) {
   .page-h { contain: layout; }
 }
-@media (min-width: 431px) and (max-width: 460px) {
+@media (min-width: 431px) and (max-width: 465px) {
   #voice .sec-h { contain: layout; }
 }
 @supports (hanging-punctuation: allow-end) {
   /* 文字幅が異なるNoto CJKでも改行を変えず、描画後の文字Rangeだけを画面内へ収める。 */
   @media (max-width: 375px) {
-    #why .sec-h {
-      transform: scaleX(.95);
-      transform-origin: left center;
-    }
+    #why .sec-h,
     #approach .sec-h {
       transform: scaleX(.97);
+      transform-origin: left center;
+    }
+  }
+  @media (min-width: 376px) and (max-width: 390px) {
+    #why .sec-h {
+      transform: scaleX(.995);
       transform-origin: left center;
     }
   }

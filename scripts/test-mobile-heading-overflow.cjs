@@ -11,7 +11,7 @@ const args = process.argv.slice(2);
 const base = (args.find((arg) => arg.startsWith('http')) || 'http://127.0.0.1:8811/')
   .replace(/\/?$/, '/');
 const asJson = args.includes('--json');
-const WIDTHS = [320, 360, 375, 390, 402, 430, 431, 450, 451, 459, 460, 461, 768];
+const WIDTHS = [320, 360, 375, 390, 402, 430, 431, 450, 451, 459, 460, 461, 465, 466, 768];
 const PAGES = [
   {
     page: 'index.html',
