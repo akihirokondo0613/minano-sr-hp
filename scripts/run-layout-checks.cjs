@@ -102,7 +102,11 @@ function selectBlogScope() {
     'admin-post.html',
     'blog/articles.json',
     'skin-v2.css',
+    'wave-skin.css',
     'page-enter.js',
+    'post-toc.js',
+    'terms.js',
+    'nav-spy.js',
     'header-motion.js',
   ]);
   if (changedFiles.some((file) => sharedFiles.has(file) || file.startsWith('scripts/'))) {
@@ -374,6 +378,13 @@ async function runTaskPool(tasks, limit = 2) {
             : []),
         ],
         output: 'blog-articles.json',
+      },
+      {
+        name: 'UI3（用語・追従目次・現在地ナビ）',
+        command: process.execPath,
+        args: ['scripts/test-ui3.cjs', base, '--json'],
+        output: 'ui3.json',
+        timeoutMs: 3 * 60 * 1000,
       },
       {
         name: 'トップヒーロー',

@@ -7,15 +7,19 @@ const root = process.cwd();
 const errors = [];
 const publicHtml = [];
 const excludedHtml = new Set(['admin-post.html', 'icon-catalog.html']);
-const sharedScripts = /(?:page-enter|image-slot|link-keep|header-motion)\.js(?:\?[^"']*)?/i;
+const sharedScripts = /(?:page-enter|image-slot|link-keep|header-motion|terms|post-toc|nav-spy)\.js(?:\?[^"']*)?/i;
 const expectedAssets = [
   'page-enter.js',
   'skin-v2.css',
+  'wave-skin.css',
   'service.css',
   'image-slot.js',
   'blog-article.css',
   'header-motion.js',
   'link-keep.js',
+  'terms.js',
+  'post-toc.js',
+  'nav-spy.js',
 ];
 
 function escapeRegExp(value) {
@@ -108,6 +112,16 @@ for (const { full, rel } of publicHtml) {
       fail(`${rel}: ${asset}のキャッシュ版が不一致です（${reference[1]}）`);
     }
   }
+  const usesPageEnter = /page-enter\.js\?v=/i.test(html);
+  if (usesPageEnter && !new RegExp(`terms\\.js\\?v=${escapeRegExp(assetVersions['terms.js'])}`, 'i').test(html)) {
+    fail(`${rel}: 用語ツールチップの共通スクリプトがありません`);
+  }
+  if (rel.startsWith('blog/') && !new RegExp(`post-toc\\.js\\?v=${escapeRegExp(assetVersions['post-toc.js'])}`, 'i').test(html)) {
+    fail(`${rel}: 追従目次の共通スクリプトがありません`);
+  }
+  if (rel === 'index.html' && !new RegExp(`nav-spy\\.js\\?v=${escapeRegExp(assetVersions['nav-spy.js'])}`, 'i').test(html)) {
+    fail('index.html: 現在地ナビの共通スクリプトがありません');
+  }
   if (/mascot\.js|mn-mascot|mn-recall/i.test(html)) {
     fail(`${rel}: 撤去済みの猫UI参照が残っています`);
   }
@@ -122,6 +136,13 @@ for (const { full, rel } of publicHtml) {
     if (!trackingPath || trackingPath[1] !== expectedPath) {
       fail(`${rel}: GoatCounterの送信パスが固定されていません`);
     }
+  }
+}
+
+const adminPost = await readFile(join(root, 'admin-post.html'), 'utf8');
+for (const asset of ['terms.js', 'post-toc.js']) {
+  if (!new RegExp(`${escapeRegExp(asset)}\\?v=${escapeRegExp(assetVersions[asset])}`, 'i').test(adminPost)) {
+    fail(`admin-post.html: 生成記事用の${asset}参照がありません`);
   }
 }
 
@@ -143,6 +164,25 @@ checkCriticalCss();
 const imageSlot = await readFile(join(root, 'image-slot.js'), 'utf8');
 if (!/const EDIT_MODE\s*=\s*!!\(window\.omelette/.test(imageSlot)) {
   fail('image-slot.js: 公開表示と編集表示の分離がありません');
+}
+
+const termsSource = await readFile(join(root, 'terms.js'), 'utf8');
+const termKeys = [...termsSource.matchAll(/\bkey:\s*'([^']+)'/g)].map((match) => match[1]);
+if (termKeys.length !== 25 || new Set(termKeys).size !== 25) {
+  fail(`terms.js: 用語辞書は25語・重複0にしてください（現在 ${termKeys.length}語・一意 ${new Set(termKeys).size}語）`);
+}
+if (/要確認|未確認|TODO/i.test(termsSource)) {
+  fail('terms.js: 公開前の確認フラグが残っています');
+}
+const requiredTermFacts = [
+  '週4日以下かつ週30時間未満の人は、所定労働日数に応じて比例付与されます',
+  '業務外の病気やけがで仕事に就けず',
+  '本人が希望すれば一定の電子的方法も使えます',
+  '契約自体は合意で成立します',
+  'その変動と同じ方向に原則2等級以上',
+];
+for (const fact of requiredTermFacts) {
+  if (!termsSource.includes(fact)) fail(`terms.js: 公式照合済みの説明が欠けています: ${fact}`);
 }
 
 const sizeBudgets = [

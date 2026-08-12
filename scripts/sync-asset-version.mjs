@@ -8,11 +8,15 @@ const manifestPath = path.join(root, 'assets-version.json');
 const assetFiles = new Map([
   ['page-enter.js', 'page-enter.js'],
   ['skin-v2.css', 'skin-v2.css'],
+  ['wave-skin.css', 'wave-skin.css'],
   ['service.css', 'uploads/service.css'],
   ['image-slot.js', 'image-slot.js'],
   ['blog-article.css', 'blog-article.css'],
   ['header-motion.js', 'header-motion.js'],
   ['link-keep.js', 'link-keep.js'],
+  ['terms.js', 'terms.js'],
+  ['post-toc.js', 'post-toc.js'],
+  ['nav-spy.js', 'nav-spy.js'],
 ]);
 
 function loadAssetVersions() {
