@@ -35,6 +35,21 @@
     }
   }
 
+  // 現在地チップ。ヘッダーは下スクロールで隠れる（header-motion.js の .nav--hidden）ため、
+  // 読んでいる最中はヘッダー内のハイライトが見えない。画面左上に小さな現在地を出して補う。
+  // 表示・非表示の切替は CSS 側（.nav.nav--hidden ~ #navspy-chip.has-loc）が受け持つ。
+  function ensureChip() {
+    var chip = document.getElementById('navspy-chip');
+    if (chip) return chip;
+    var nav = document.getElementById('nav') || document.querySelector('.nav');
+    if (!nav || !nav.parentNode) return null;
+    chip = document.createElement('div');
+    chip.id = 'navspy-chip';
+    chip.setAttribute('aria-hidden', 'true');   // 現在地は各リンクの aria-current が正式に伝える
+    nav.parentNode.insertBefore(chip, nav.nextSibling);
+    return chip;
+  }
+
   function createController() {
     if (!isHomePage()) return null;
 
@@ -68,17 +83,26 @@
     var activeId = '';
     var destroyed = false;
 
+    var chip = ensureChip();
+
     function setActive(nextId) {
       if (nextId === activeId) return;
       activeId = nextId;
+      var label = '';
       items.forEach(function (item) {
         var on = item.id === nextId;
+        if (on && item.links[0]) label = (item.links[0].textContent || '').trim();
         item.links.forEach(function (link) {
           link.classList.toggle('on', on);
           if (on) link.setAttribute('aria-current', 'location');
           else if (link.getAttribute('aria-current') === 'location') link.removeAttribute('aria-current');
         });
       });
+
+      if (chip) {
+        if (label) chip.textContent = label;
+        chip.classList.toggle('has-loc', !!label);
+      }
     }
 
     function update() {
@@ -122,6 +146,8 @@
         if (frame) window.cancelAnimationFrame(frame);
         frame = 0;
         setActive('');
+        if (chip && chip.parentNode) chip.parentNode.removeChild(chip);
+        chip = null;
       }
     };
   }

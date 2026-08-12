@@ -1,6 +1,6 @@
 {
   "page-enter.js": "20260812-ui3hooks1",
-  "skin-v2.css": "20260812-ui3skin1",
+  "skin-v2.css": "20260812-navstyle1",
   "wave-skin.css": "20260812-ui3terms1",
   "service.css": "20260810-a11y1",
   "image-slot.js": "20260722-crop1",
@@ -9,5 +9,5 @@
   "link-keep.js": "20260723-conversion1",
   "terms.js": "20260812-terms1",
   "post-toc.js": "20260812-toc1",
-  "nav-spy.js": "20260812-navspy1"
+  "nav-spy.js": "20260812-navspy2"
 }
