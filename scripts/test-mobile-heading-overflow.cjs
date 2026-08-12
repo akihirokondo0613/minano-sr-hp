@@ -60,6 +60,16 @@ const UPGRADE_INSECURE_META =
   /<meta[^>]+http-equiv=["']Content-Security-Policy["'][^>]*content=["'][^"']*upgrade-insecure-requests[^"']*["'][^>]*>/gi;
 
 async function prepareLocalHttpPage(page) {
+  // 見出しの測定に無関係な外部地図は、第三者スクリプトの一過性エラーで
+  // レイアウト回帰テストが揺れないよう決定的な空文書へ置き換える。
+  await page.route(/^https:\/\/maps\.google\.com\/maps(?:[?#]|$)/, async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'text/html; charset=utf-8',
+      body: '<!doctype html><html><body></body></html>',
+    });
+  });
+
   const baseUrl = new URL(base);
   if (baseUrl.protocol !== 'http:') return;
   await page.route(`${baseUrl.origin}/**`, async (route) => {
