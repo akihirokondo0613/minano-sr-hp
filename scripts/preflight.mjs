@@ -66,6 +66,10 @@ const tasks = [
     setupError: assetBaseError,
   },
   {
+    name: 'IndexNow差分抽出の検査',
+    args: ['scripts/test-indexnow-changes.mjs'],
+  },
+  {
     name: 'IndexNow通知対象の検査',
     args: ['scripts/submit-indexnow.mjs', '--check'],
   },

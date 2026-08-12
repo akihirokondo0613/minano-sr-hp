@@ -120,13 +120,13 @@ https://minano-sr.com/<対象パス>?verify=<日時または変更名>
 
 - 対象のスマホ／PC幅で、文言、画像、計算済みCSS、リンク先、横はみ出し、console errorを確認する。
 - 共通CSS／JSを変えた場合は、画面だけでなく実際に読み込まれた`href`／`src`の`?v=`が`assets-version.json`と一致することを確認する。
-- HTMLを追加・更新・削除した場合は、本番確認後に変更した本番URLだけを一度通知する。
+- HTMLを追加・更新・削除した場合は、deploy workflowが本番反映を確認した後、変更した公開URLだけをIndexNowへ一度通知する。通常デプロイ後に手動で重ねて送信しない。
 
 ```bash
-node scripts/submit-indexnow.mjs --submit <変更した本番URL...>
+node scripts/submit-indexnow.mjs --submit <自動送信に失敗した変更URL...>
 ```
 
-初回のサイト全体通知だけはURL省略を許す。HTTP応答の成功は受付完了であり、インデックス登録や検索順位を保証しない。変更のないURLを毎回再送信しない。
+この手動コマンドは自動送信に失敗した場合の復旧用である。初回のサイト全体通知だけはURL省略を許す。HTTP応答の成功は受付完了であり、インデックス登録や検索順位を保証しない。変更のないURLを毎回再送信しない。
 
 完了報告には、本番URL、PR URL、変更点、実行した検証と結果、確認した画面幅を記載する。
 

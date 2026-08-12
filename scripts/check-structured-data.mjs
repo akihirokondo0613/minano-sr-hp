@@ -256,6 +256,32 @@ for (const [relativePath, { schemas }] of pages) {
   if (!/rm -rf[^\n]*\bdocs\b/.test(workflow)) {
     errors.push('deploy-public.yml: docs/の公開除外がありません');
   }
+  const markerWrite = workflow.match(/printf[^\n]*GITHUB_SHA[^\n]*>[ \t]*deploy-version\.txt/g) ?? [];
+  if (markerWrite.length !== 1) {
+    errors.push(`deploy-public.yml: deploy-version.txtの生成は1件必要です（実測${markerWrite.length}件）`);
+  }
+  if (!/https:\/\/minano-sr\.com\/deploy-version\.txt\?verify=/.test(workflow)) {
+    errors.push('deploy-public.yml: 本番deploy-version.txtの確認がありません');
+  }
+  if (!/group:[ \t]*deploy-public/.test(workflow) || !/queue:[ \t]*max/.test(workflow)) {
+    errors.push('deploy-public.yml: 公開処理のFIFO待機がありません');
+  }
+  if ((workflow.match(/--force-with-lease=/g) ?? []).length !== 2) {
+    errors.push('deploy-public.yml: public更新2回のforce-with-leaseがありません');
+  }
+  if (
+    !/indexnow-version\.txt/.test(workflow)
+    || !/deploy-mode\.txt/.test(workflow)
+    || !/indexnow-send-all\.txt/.test(workflow)
+  ) {
+    errors.push('deploy-public.yml: IndexNow通知済みSHA、公開モード、全件通知待ちの記録がありません');
+  }
+  const publicPush = workflow.indexOf('git push origin HEAD:public');
+  const markerCheck = workflow.indexOf('https://minano-sr.com/deploy-version.txt?verify=');
+  const indexNowSubmit = workflow.indexOf('--submit');
+  if (!(publicPush >= 0 && markerCheck > publicPush && indexNowSubmit > markerCheck)) {
+    errors.push('deploy-public.yml: public反映→本番確認→IndexNow送信の順序が不正です');
+  }
 }
 
 // 旧NAPが指示書・台帳から公開物や設定へ再流入するのを止める（2026-08 実際に指示書へ残っていた）
