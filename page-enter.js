@@ -492,6 +492,9 @@ function mnSplitLabel(el, text) {
       if (window.__hmReinit) { try { window.__hmReinit(); } catch (e) {} }
       if (window.__mnJbreak) { try { window.__mnJbreak(); } catch (e) {} }
       if (window.__mnFooterUiReinit) { try { window.__mnFooterUiReinit(); } catch (e) {} }
+      if (window.__mnPostTocReinit) { try { window.__mnPostTocReinit(); } catch (e) {} }
+      if (window.__mnTermsReinit) { try { window.__mnTermsReinit(); } catch (e) {} }
+      if (window.__mnNavSpyReinit) { try { window.__mnNavSpyReinit(); } catch (e) {} }
       // アクセス解析：SPA遷移は通常のページ読み込みが起きないため、手動でページビューを記録する
       try {
         if (window.goatcounter && window.goatcounter.count) {

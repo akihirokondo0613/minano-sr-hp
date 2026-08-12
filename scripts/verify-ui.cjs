@@ -5,11 +5,15 @@ const path = require('node:path');
 const expectedAssets = [
   'page-enter.js',
   'skin-v2.css',
+  'wave-skin.css',
   'service.css',
   'image-slot.js',
   'blog-article.css',
   'header-motion.js',
   'link-keep.js',
+  'terms.js',
+  'post-toc.js',
+  'nav-spy.js',
 ];
 
 function loadAssetVersions() {
