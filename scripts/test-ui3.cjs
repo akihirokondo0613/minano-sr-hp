@@ -472,8 +472,9 @@ async function inspectToc(page, width) {
   } else if (!initial.mobileVisible || initial.sideVisible) {
     failures.push('1120px未満でmobile目次だけが表示されていません');
   }
-  if (!initial.expectedDesktop && (!initial.mobileIsDetails || initial.mobileOpen)) {
-    failures.push('mobile目次が閉じたdetailsではありません');
+  // モバイル目次は既定で開く（閉じていると存在に気づかれず目次が機能しないため）。
+  if (!initial.expectedDesktop && (!initial.mobileIsDetails || !initial.mobileOpen)) {
+    failures.push('mobile目次が開いたdetailsではありません');
   }
   if (initial.linkCounts.visible !== initial.sourceEntryCount) {
     failures.push(
@@ -497,7 +498,15 @@ async function inspectToc(page, width) {
       const summary = page.locator('.post-toc-mobile > summary');
       if (await summary.count() !== 1) failures.push('mobile目次のsummaryが1件ではありません');
       else {
+        // 既定で開いているので、Enterでいったん閉じ、もう一度Enterで開く。
+        // トグルの両方向を確認する。
         await summary.focus();
+        await summary.press('Enter');
+        await page.waitForFunction(
+          () => !document.querySelector('.post-toc-mobile')?.hasAttribute('open'),
+          null,
+          { timeout: 3000 },
+        );
         await summary.press('Enter');
         await page.waitForFunction(
           () => document.querySelector('.post-toc-mobile')?.hasAttribute('open'),

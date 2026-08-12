@@ -135,7 +135,9 @@
     var nav = document.createElement('nav');
 
     details.className = 'post-toc-mobile';
-    summary.textContent = 'この記事の内容';
+    // 閉じたままだと存在に気づかれず、目次そのものが機能しない。既定で開く。
+    details.open = true;
+    summary.textContent = 'この記事の内容（全' + entries.length + '項目）';
     nav.className = 'post-toc-mobile-panel';
     nav.setAttribute('aria-label', 'この記事の内容');
 
