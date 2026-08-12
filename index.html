@@ -183,8 +183,8 @@ img { display: block; }
 .nav-links a::after { content: ''; position: absolute; left: 8px; right: 8px; bottom: 0; height: 3px; border-radius: 2px; background: var(--moegi); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
 .nav-links a:hover { color: var(--sugi); background: color-mix(in srgb, var(--moegi) 7%, transparent); }
 .nav-links a:hover::after { transform: scaleX(1); }
-.nav-links a.active, .nav-links a[aria-current="page"] { color: var(--sugi); font-weight: 800; background: color-mix(in srgb, var(--moegi) 11%, transparent); }
-.nav-links a.active::after, .nav-links a[aria-current="page"]::after { transform: scaleX(1); }
+.nav-links a.active, .nav-links a[aria-current="page"], .nav-links a.on { color: var(--sugi); font-weight: 800; background: color-mix(in srgb, var(--moegi) 11%, transparent); }
+.nav-links a.active::after, .nav-links a[aria-current="page"]::after, .nav-links a.on::after { transform: scaleX(1); }
 .nav-cta { min-height: 50px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: var(--sugi); color: #fff; font-size: 14.5px; font-weight: 700; letter-spacing: .03em; padding: 10px 22px; border-radius: var(--r); box-shadow: 0 5px 15px rgba(18,63,48,.18); transition: background .3s, transform .3s var(--ease), box-shadow .3s; white-space: nowrap; }
 .nav-cta:hover { background: var(--sugi-7); box-shadow: 0 8px 20px rgba(18,63,48,.24); }
 .nav-burger { width: 50px; height: 50px; flex: 0 0 50px; display: none; align-items: center; justify-content: center; background: var(--shiro); border: 1px solid color-mix(in srgb, var(--sugi) 18%, var(--line)); border-radius: var(--r); cursor: pointer; color: var(--iwa); padding: 0; }
@@ -207,8 +207,8 @@ html.nav-menu-open .nav-burger svg rect:nth-child(3) { transform: translateY(-6p
 .mob-nav.open { opacity: 1; visibility: visible; pointer-events: auto; transform: none; transition-delay: 0s; }
 .mob-nav a { display: flex; align-items: center; min-height: 52px; font-family: var(--disp); font-size: 17px; font-weight: 800; letter-spacing: .025em; color: var(--iwa); padding: 10px 4px; border-bottom: 1px solid var(--line); }
 .mob-nav > a:nth-child(5) { margin-top: 14px; border-top: 1px solid var(--line); }
-.mob-nav a[aria-current="page"] { color: var(--sugi); }
-.mob-nav a[aria-current="page"]::after { content: ''; width: 26px; height: 2px; margin-left: auto; border-radius: 2px; background: var(--moegi); }
+.mob-nav a[aria-current="page"], .mob-nav a.on { color: var(--sugi); }
+.mob-nav a[aria-current="page"]::after, .mob-nav a.on::after { content: ''; width: 26px; height: 2px; margin-left: auto; border-radius: 2px; background: var(--moegi); }
 .mob-nav .mob-cta { min-height: 50px; justify-content: center; border: 0; margin-top: 22px; background: var(--sugi); color: #fff; font-family: var(--font-body); font-size: 14.5px; font-weight: 700; text-align: center; padding: 14px 18px; border-radius: var(--r); }
 html.nav-menu-open { overflow: hidden; }
 html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !important; }
@@ -359,8 +359,8 @@ main > section:not(.hero) {
   contain-intrinsic-size: auto 900px;
 }
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20260812-navstyle2" media="print" data-async-style onload="this.media='all';this.onload=null">
-<noscript><link rel="stylesheet" href="skin-v2.css?v=20260812-navstyle2"></noscript>
+<link rel="stylesheet" href="skin-v2.css?v=20260812-navstyle1" media="print" data-async-style onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="skin-v2.css?v=20260812-navstyle1"></noscript>
 <style id="home-hero-legibility">
 @media(max-width:700px){
   /* 本文が写真の建物・木立に重なる帯（ヒーロー高の45〜75%）まで白を残す。
