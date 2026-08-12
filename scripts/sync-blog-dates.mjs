@@ -45,12 +45,10 @@ function replaceArticleSchema(source, article, relativePath) {
 }
 
 function postMeta(article) {
-  const values = [
-    `<time datetime="${article.date}">公開 ${formatDate(article.date)}</time>`,
-  ];
-  if (article.updated !== article.date) {
-    values.push(`<time datetime="${article.updated}">更新 ${formatDate(article.updated)}</time>`);
-  }
+  // 日付は本文に表示しない（2026-08 方針）。
+  // 検索エンジン向けの datePublished / dateModified・OGP・sitemapのlastmodは
+  // 鮮度シグナルとして残すため、ここでは画面表示だけを落とす。
+  const values = [];
   values.push(`<span>読了 約${article.read}分</span>`);
   return [
     '    <div class="post-meta">',
@@ -89,10 +87,8 @@ for (const article of articles) {
     `(<a href="blog/${slug}\\.html" class="art-row"[^>]*>[\\s\\S]*?<div class="art-thumb">[\\s\\S]*?<\\/div>\\n)(?:\\s*<time class="art-date"[^>]*>[^<]*<\\/time>\\n)?`,
   );
   if (!row.test(listing)) throw new Error(`blog.html: ${article.slug}の記事行がありません`);
-  listing = listing.replace(
-    row,
-    `$1        <time class="art-date" datetime="${article.date}">${formatDate(article.date)}</time>\n`,
-  );
+  // 一覧にも日付を出さない（2026-08 方針）。既存の <time class="art-date"> は取り除く。
+  listing = listing.replace(row, '$1');
 }
 write('blog.html', listing);
 

@@ -38,6 +38,10 @@ const tasks = [
     args: ['scripts/sync-blog-dates.mjs', '--check'],
   },
   {
+    name: '関連記事の同期確認',
+    args: ['scripts/sync-related-posts.mjs', '--check'],
+  },
+  {
     name: '構造化データの同期確認',
     args: ['scripts/sync-structured-data.mjs', '--check'],
   },
