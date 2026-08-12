@@ -121,6 +121,33 @@ async function settlePage(page) {
   });
 }
 
+async function waitForScrollToSettle(page, timeout = 5000) {
+  await page.evaluate((timeoutMs) => new Promise((resolve, reject) => {
+    const startedAt = performance.now();
+    let previousX = scrollX;
+    let previousY = scrollY;
+    let stableFrames = 0;
+
+    function sample() {
+      const delta = Math.max(Math.abs(scrollX - previousX), Math.abs(scrollY - previousY));
+      previousX = scrollX;
+      previousY = scrollY;
+      stableFrames = delta <= 0.5 ? stableFrames + 1 : 0;
+      if (stableFrames >= 5) {
+        resolve();
+        return;
+      }
+      if (performance.now() - startedAt > timeoutMs) {
+        reject(new Error('smooth scrollが安定しません'));
+        return;
+      }
+      requestAnimationFrame(sample);
+    }
+
+    requestAnimationFrame(sample);
+  }), timeout);
+}
+
 function durationsAreZero(value) {
   const durations = String(value || '').split(',').map((part) => Number.parseFloat(part) || 0);
   return durations.length > 0 && durations.every((duration) => duration === 0);
@@ -217,7 +244,21 @@ async function inspectTooltip(page, width) {
       null,
       { timeout: 3000 },
     );
-    await page.waitForTimeout(260);
+    await page.waitForFunction(
+      () => {
+        const marker = document.activeElement;
+        const id = marker?.getAttribute('aria-describedby');
+        const popover = id ? document.getElementById(id) : null;
+        const rect = popover?.getBoundingClientRect();
+        const style = popover ? getComputedStyle(popover) : null;
+        return marker?.classList.contains('term')
+          && marker.getAttribute('aria-expanded') === 'true'
+          && Boolean(popover && rect && rect.width > 0 && rect.height > 0
+            && style.visibility !== 'hidden' && Number.parseFloat(style.opacity) > 0);
+      },
+      null,
+      { timeout: 5000 },
+    );
 
     const openState = await marker.evaluate((element) => {
       const id = element.getAttribute('aria-describedby');
@@ -478,6 +519,18 @@ async function inspectToc(page, width) {
         expectedHrefs[1],
         { timeout: 5000 },
       );
+      await page.waitForFunction(
+        (href) => {
+          let id = '';
+          try { id = decodeURIComponent(href.slice(1)); } catch { return false; }
+          const target = id ? document.getElementById(id) : null;
+          const line = Math.max(96, Math.min(innerHeight * 0.28, 220));
+          return Boolean(target && target.getBoundingClientRect().top <= line + 1);
+        },
+        expectedHrefs[1],
+        { timeout: 5000 },
+      );
+      await waitForScrollToSettle(page);
       await page.waitForFunction(
         ({ container, href }) => {
           const visible = (element) => {
