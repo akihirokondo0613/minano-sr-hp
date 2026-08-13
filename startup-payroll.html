@@ -212,16 +212,44 @@
 .startup-option-art{align-items:start}.startup-option-art figure{padding:10px 10px 12px;background:var(--yuki);border:1px solid var(--line);border-radius:var(--r)}.startup-option-art figure .startup-art-tag{top:16px;left:17px}.startup-option-art figcaption{display:grid;gap:3px;margin-top:8px;text-align:left}.startup-option-art figcaption strong{color:var(--iwa);font-family:var(--disp);font-size:12px;line-height:1.55}.startup-option-art figcaption small{color:var(--ink3);font-size:10px;line-height:1.6}
 .startup-final-art{position:relative;padding:clamp(12px,1.5vw,20px);padding-top:clamp(30px,3vw,42px);background:var(--shiro);border:1px solid color-mix(in srgb,var(--line) 75%,transparent);border-radius:var(--r)}
 .startup-final-art figcaption{display:grid;gap:3px;margin-top:11px;padding:11px 3px 2px;border-top:1px solid var(--line)}.startup-final-art figcaption strong{color:var(--iwa);font-family:var(--disp);font-size:14px;line-height:1.55}.startup-final-art figcaption small{color:var(--ink3);font-size:11px;line-height:1.65}
+.startup-point-box,.startup-page-toc{margin-top:28px;padding:22px 24px;background:var(--shiro);border:1px solid var(--line);border-radius:var(--r)}
+.startup-point-box{border-top:3px solid var(--moegi)}
+.startup-point-title,.startup-page-toc-title{color:var(--iwa);font-family:var(--disp);font-size:14px;font-weight:900;letter-spacing:.04em}
+.startup-point-box ul{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 20px;margin:13px 0 0;padding:0;list-style:none}
+.startup-point-box li{position:relative;padding-left:17px;color:var(--ink2);font-size:12.5px;line-height:1.75}
+.startup-point-box li::before{content:"";position:absolute;left:1px;top:.72em;width:8px;height:4px;border-left:2px solid var(--moegi);border-bottom:2px solid var(--moegi);transform:rotate(-45deg)}
+.startup-page-toc{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:16px;padding-block:15px;background:transparent}
+.startup-page-toc ol{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0;padding:0;list-style:none}
+.startup-page-toc a{color:var(--sugi);font-size:11.5px;font-weight:700;border-bottom:1px solid var(--moegi)}
+.startup-option-visuals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:28px}
+.startup-process-card{padding:clamp(16px,2.4vw,24px);background:var(--yuki);border:1px solid var(--line);border-top:3px solid var(--moegi);border-radius:var(--r)}
+.startup-process-card.is-warm{border-top-color:#c6923d}
+.startup-process-kicker{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em}.startup-process-card.is-warm .startup-process-kicker{color:#9b6a20}
+.startup-process-card h3{margin-top:8px;color:var(--iwa);font-family:var(--disp);font-size:16px;font-weight:900;line-height:1.55}
+.startup-process-steps{display:grid;gap:0;margin:15px 0 0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.startup-process-steps li{display:grid;grid-template-columns:28px 1fr;gap:9px;padding:10px 0;border-bottom:1px solid var(--line);color:var(--ink2);font-size:12px;line-height:1.65}
+.startup-process-steps b{display:grid;place-items:center;width:24px;height:24px;color:var(--sugi);font-family:var(--mono);font-size:10px;background:color-mix(in srgb,var(--moegi-b) 52%,var(--shiro));border-radius:50%}.startup-process-steps span{align-self:center}
+.startup-process-note{margin-top:11px;color:var(--ink3);font-size:11px;line-height:1.75}
+.startup-final-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(280px,.95fr);gap:clamp(30px,6vw,82px);align-items:center}
+.startup-final-check{padding:clamp(20px,3vw,30px);background:var(--shiro);border:1px solid var(--line);border-left:4px solid var(--moegi);border-radius:var(--r)}
+.startup-final-check ul{display:grid;gap:0;margin:14px 0 0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.startup-final-check li{position:relative;padding:12px 0 12px 22px;border-bottom:1px solid var(--line);color:var(--ink2);font-size:12.5px;line-height:1.7}
+.startup-final-check li::before{content:"";position:absolute;left:3px;top:18px;width:8px;height:4px;border-left:2px solid var(--moegi);border-bottom:2px solid var(--moegi);transform:rotate(-45deg)}
 @media(max-width:900px){
   .startup-diagram{grid-template-columns:1fr;gap:22px;padding-block:27px}
   .startup-diagram-center{max-width:340px;margin-inline:auto}
-  .startup-diagram-sources,.startup-diagram-results{grid-template-columns:1fr;gap:10px}
-  .startup-diagram-sources span,.startup-diagram-results span{padding:0;border:0;text-align:center}
+  .startup-diagram-sources,.startup-diagram-results{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .startup-diagram-sources span,.startup-diagram-results span{padding:10px 8px;border:1px solid var(--line);border-left:3px solid var(--moegi);text-align:center;font-size:12.5px;line-height:1.45}
+  .startup-diagram-sources span:last-child,.startup-diagram-results span:last-child{grid-column:1/-1}
+  .startup-diagram-center{min-height:0;padding:18px 14px}
+  .startup-option-visuals{grid-template-columns:1fr}
+  .startup-final-layout{grid-template-columns:1fr;gap:28px}
 }
 @media(max-width:640px){
   .startup-hero-intro{margin-top:11px;font-size:14px;line-height:1.75}.startup-hero-proof{margin-top:16px}.startup-hero-proof li,.startup-hero-proof li + li{display:block;padding:10px 7px;text-align:center}.startup-hero-proof span{display:block;margin-bottom:3px}.startup-hero-proof strong{display:block;font-size:10.5px;line-height:1.35}.startup-hero-proof small{display:block;margin-top:2px;font-size:9px;line-height:1.35}.startup-hero-price{margin-top:13px}
-  .startup-hero-art,.startup-story-art,.startup-after-art{padding:12px;padding-top:28px}.startup-art-tag{top:10px;left:12px;font-size:8.5px}.startup-hero-art figcaption,.startup-story-art figcaption,.startup-after-art figcaption{margin-top:8px;padding-top:9px}.startup-hero-art figcaption strong,.startup-story-art figcaption strong,.startup-after-art figcaption strong{font-size:13px}.startup-hero-art figcaption small,.startup-story-art figcaption small,.startup-after-art figcaption small{font-size:10.5px}.startup-diagram{padding-block:27px}.startup-diagram-side-result{text-align:left}.startup-diagram-results span{border-right:0;border-left:3px solid var(--moegi)}
-  .startup-option-list{grid-template-columns:1fr}.startup-option-art{grid-template-columns:1fr}.startup-option-art figure{padding:7px 7px 9px}.startup-option-art figure .startup-art-tag{top:11px;left:12px}.startup-option-art figcaption strong{font-size:10.5px}.startup-option-art figcaption small{font-size:9px}.startup-final-art{padding:12px;padding-top:28px}.startup-final-art figcaption{margin-top:8px;padding-top:9px}.startup-final-art figcaption strong{font-size:13px}.startup-final-art figcaption small{font-size:10.5px}
+  .startup-hero-art,.startup-story-art,.startup-after-art{padding:12px;padding-top:28px}.startup-art-tag{top:10px;left:12px;font-size:8.5px}.startup-hero-art figcaption,.startup-story-art figcaption,.startup-after-art figcaption{margin-top:8px;padding-top:9px}.startup-hero-art figcaption strong,.startup-story-art figcaption strong,.startup-after-art figcaption strong{font-size:13px}.startup-hero-art figcaption small,.startup-story-art figcaption small,.startup-after-art figcaption small{font-size:10.5px}.startup-diagram{gap:14px;padding-block:22px}.startup-diagram-side{gap:8px}.startup-diagram-side-label{text-align:center;font-size:9px}.startup-diagram-side-result{text-align:left}.startup-diagram-sources span,.startup-diagram-results span{font-size:12px}.startup-diagram-center{padding:16px 12px;font-size:17px}.startup-diagram-center small{font-size:9px}
+  .startup-point-box,.startup-page-toc{margin-top:18px;padding:17px 16px}.startup-point-box ul{grid-template-columns:1fr;gap:7px;margin-top:10px}.startup-page-toc{grid-template-columns:1fr;gap:8px}.startup-page-toc ol{gap:5px 14px}
+  .startup-option-list{grid-template-columns:1fr}.startup-process-card{padding:16px}.startup-process-card h3{font-size:15px}.startup-process-steps li{font-size:11.5px}.startup-final-check{padding:18px}.startup-final-check li{font-size:12px}
 }
 </style>
 <script type="application/ld+json">
@@ -264,6 +292,27 @@
     </div>
   </header>
 
+  <div class="w">
+    <aside class="startup-point-box" aria-labelledby="startup-point-title">
+      <p class="startup-point-title" id="startup-point-title">このプランのポイント</p>
+      <ul>
+        <li>給与・手続き・相談を一つの窓口へ</li>
+        <li>創業3年以内は12か月間45,000円（税抜）</li>
+        <li>初回30分で任せる範囲と次の一手を確認</li>
+      </ul>
+    </aside>
+    <nav class="startup-page-toc" aria-labelledby="startup-page-toc-title">
+      <p class="startup-page-toc-title" id="startup-page-toc-title">このページの内容</p>
+      <ol>
+        <li><a href="#burden">今の負担</a></li>
+        <li><a href="#one-window">任せる流れ</a></li>
+        <li><a href="#scope">業務範囲</a></li>
+        <li><a href="#options">次の改善</a></li>
+        <li><a href="#consultation">申込後の流れ</a></li>
+      </ol>
+    </nav>
+  </div>
+
   <section class="startup-section startup-section-white" id="burden">
     <div class="w startup-story-grid">
       <div class="startup-story-copy">
@@ -298,7 +347,7 @@
 
   <section class="startup-section startup-price-band" id="price"><div class="w"><div class="startup-section-head"><p class="startup-section-label">05 / PRICE</p><h2 class="startup-section-title">創業3年以内・従業員10名まで、月45,000円（税抜）。</h2><p class="startup-section-lead">対象は、契約開始日時点で創業3年以内・従業員10名までの企業さまです。</p></div><div class="startup-price-axis"><div class="startup-price-stage"><span>契約開始から12か月間</span><strong>45,000円</strong><small>月額・税抜</small></div><div class="startup-price-stage"><span>13か月目以降</span><strong>55,000円</strong><small>月額・税抜</small></div></div><p class="startup-price-note">従業員が11名以上になった場合の料金、31名以上・複数拠点などの個別設計は料金ページに記載しています。</p><a class="startup-primary" href="uploads/contact.html?from=startup-payroll-price">30分の現状確認を申し込む</a></div></section>
 
-  <section class="startup-section startup-section-white" id="options"><div class="w startup-option-layout"><div><p class="startup-section-label">06 / NEXT IMPROVEMENT</p><h2 class="startup-section-title">今のやり方を確認してから、次の改善へ。</h2><p class="startup-section-lead">勤怠のシステム化も助成金も、先に契約・購入するのではなく、会社の現状と予定に合うかを確認してからご提案します。</p><div class="startup-option-art"><figure><div class="startup-art-tag">紙・Excelから整える</div><img src="assets/illustrations/service-dx.webp" width="960" height="720" loading="lazy" alt="勤怠や労務システムの導入支援イラスト"><figcaption><strong>勤怠を、運用できる形へ整える。</strong><small>紙・Excelの現状確認から始めます。</small></figcaption></figure><figure><div class="startup-art-tag startup-art-tag-warm">実施前に要件を確認</div><img src="assets/illustrations/service-subsidy.webp" width="960" height="720" loading="lazy" alt="助成金の申請支援イラスト"><figcaption><strong>実施前に、対象可能性を確認。</strong><small>要件・時期・証拠書類を確認してから進めます。</small></figcaption></figure></div></div><div><div class="startup-option-list"><article class="startup-option-item"><h3>勤怠のシステム化</h3><p>紙やExcelのままでも顧問は始められます。運用が回らなくなってきた段階で、必要性と費用をあわせてご提案します。</p></article><article class="startup-option-item"><h3>助成金の対象可能性</h3><p>制度の要件、実施時期、必要な証拠書類を確認したうえでご提案します。購入・契約・運用変更の前にご相談ください。</p></article></div><p class="startup-option-note">助成金の支給は保証できません。対象年度の要件、実際の運用、証拠書類を確認したうえで受任可否をご案内します。</p></div></div></section>
+  <section class="startup-section startup-section-white" id="options"><div class="w startup-option-layout"><div><p class="startup-section-label">06 / NEXT IMPROVEMENT</p><h2 class="startup-section-title">今のやり方を確認してから、次の改善へ。</h2><p class="startup-section-lead">勤怠のシステム化も助成金も、先に契約・購入するのではなく、会社の現状と予定に合うかを確認してからご提案します。</p><div class="startup-option-visuals"><article class="startup-process-card"><p class="startup-process-kicker">01 / 勤怠を整える</p><h3>紙・Excelから、運用できる形へ。</h3><ol class="startup-process-steps"><li><b>01</b><span>今の締め方と、集計で困る箇所を確認</span></li><li><b>02</b><span>必要な機能と、会社で続けられる方法を比較</span></li><li><b>03</b><span>導入・定着支援の要否と費用を提示</span></li></ol><p class="startup-process-note">顧問開始時に無理にシステムを変える必要はありません。</p></article><article class="startup-process-card is-warm"><p class="startup-process-kicker">02 / 助成金を確認する</p><h3>実施前に、対象可能性を確認。</h3><ol class="startup-process-steps"><li><b>01</b><span>制度の要件と、会社の現状を確認</span></li><li><b>02</b><span>実施時期・購入前の手順・証拠書類を整理</span></li><li><b>03</b><span>申請支援の範囲と費用を提示</span></li></ol><p class="startup-process-note">助成金の支給は保証せず、確認できた条件だけをお伝えします。</p></article></div></div><div><div class="startup-option-list"><article class="startup-option-item"><h3>勤怠のシステム化</h3><p>紙やExcelのままでも顧問は始められます。運用が回らなくなってきた段階で、必要性と費用をあわせてご提案します。</p></article><article class="startup-option-item"><h3>助成金の対象可能性</h3><p>制度の要件、実施時期、必要な証拠書類を確認したうえでご提案します。購入・契約・運用変更の前にご相談ください。</p></article></div><p class="startup-option-note">助成金の支給は保証できません。対象年度の要件、実際の運用、証拠書類を確認したうえで受任可否をご案内します。</p></div></div></section>
 
   <section class="startup-section" id="consultation"><div class="w"><div class="startup-section-head"><p class="startup-section-label">07 / FIRST 30 MINUTES</p><h2 class="startup-section-title">最初の30分で、任せる範囲を整理します。</h2><p class="startup-section-lead">依頼内容が決まっていなくても構いません。現在の担当、使用中の勤怠・給与方法、直近の困りごとから確認します。</p></div><div class="startup-steps"><article class="startup-step"><span class="startup-step-num">STEP 01</span><h3>フォームから申込</h3><p>会社規模と気になる業務だけ入力してください。</p></article><article class="startup-step"><span class="startup-step-num">STEP 02</span><h3>30分の現状確認</h3><p>現状と優先順位を整理します。</p></article><article class="startup-step"><span class="startup-step-num">STEP 03</span><h3>範囲と料金をご提示</h3><p>月額に含む業務、別料金、会社側の担当を明示します。</p></article><article class="startup-step"><span class="startup-step-num">STEP 04</span><h3>合意後に開始</h3><p>必要資料、連絡方法、最初の締め日を決めます。</p></article></div><div class="startup-mid-cta"><p><strong>初回相談は無料です。</strong><br>まず、今どこに負担が集まっているかを一緒に整理します。</p><a class="startup-primary" href="uploads/contact.html?from=startup-payroll-process">30分の現状確認を申し込む</a></div></div></section>
 
@@ -306,7 +355,7 @@
 
   <section class="startup-section startup-rep" id="message"><div class="w"><div class="startup-rep-inner"><p class="startup-section-label">09 / REPRESENTATIVE</p><p class="startup-rep-quote">お引き受けするのは、近藤昭宏です。</p><p class="startup-rep-text">創業期は、営業、採用、資金繰り、現場づくりが同時に進みます。労務の実務と相談先を先に整えておくことで、経営者が一人で調べ続ける状態を減らしたいと考えています。できることと別料金になることを先にお伝えし、会社に合う進め方を一緒に整理します。</p><div class="startup-rep-sign"><span><strong>代表 社会保険労務士　近藤 昭宏</strong><br>富山県社会保険労務士会 所属</span><a href="about.html">代表の考え方を見る →</a></div></div></div></section>
 
-  <section class="startup-section startup-final" id="final-contact"><div class="w startup-final-inner"><figure class="startup-final-art"><div class="startup-art-tag startup-art-tag-after">富山で支える</div><img src="assets/illustrations/about-toyama-local-support.webp" width="960" height="720" loading="lazy" alt="富山の地域と山並みを背に、書類を持って立つ社会保険労務士"><figcaption><strong>地域の会社を、日々の労務から支える。</strong><small>富山を拠点に、現状確認から顧問契約後の運用まで伴走します。</small></figcaption></figure><div class="startup-final-copy"><span class="startup-final-label">10 / FREE FIRST CONSULTATION</span><h2>まず30分、<br>現状を伺います。</h2><p>現在のやり方と困りごとを確認し、月額に含む範囲、別料金、開始までに必要な準備をお伝えします。</p><a class="startup-primary" href="uploads/contact.html?from=startup-payroll-final">30分の現状確認を申し込む</a><small class="startup-final-note">初回相談無料・オンライン可。平日9:00–18:00</small></div></div></section>
+  <section class="startup-section startup-final" id="final-contact"><div class="w startup-final-layout"><div class="startup-final-copy"><span class="startup-final-label">10 / FREE FIRST CONSULTATION</span><h2>まず30分、<br>現状を伺います。</h2><p>現在のやり方と困りごとを確認し、月額に含む範囲、別料金、開始までに必要な準備をお伝えします。</p><a class="startup-primary" href="uploads/contact.html?from=startup-payroll-final">30分の現状確認を申し込む</a><small class="startup-final-note">初回相談無料・オンライン可。平日9:00–18:00</small></div><aside class="startup-final-check" aria-labelledby="startup-final-check-title"><p class="startup-section-label" id="startup-final-check-title">30 MINUTES / CONFIRM</p><ul><li>今の給与・勤怠の進め方</li><li>期限や負担が集まっている箇所</li><li>任せる範囲と、次に決めること</li></ul></aside></div></section>
 </main>
 
 <footer class="footer"><div class="footer-inner"><div class="footer-grid"><div><div class="footer-logo"><div class="logo-mark"><span>み</span></div><div class="logo-text"><b>みなの社会保険労務士事務所</b><small>複雑な労務を、シンプルに。</small></div></div><p class="footer-desc">助成金活用・手続き代行・DX支援で、中小企業の労務コストを最適化します。</p><address class="footer-contact"><span class="footer-contact-row footer-contact-address">〒931-8333 富山県富山市蓮町1丁目7-4　SCOP TOYAMA</span><span class="footer-contact-row"><a href="tel:090-8259-8774">TEL: 090-8259-8774</a><span class="footer-contact-hours">平日 9:00–18:00</span></span></address></div><div><p class="footer-h">サービス</p><ul class="footer-ul"><li><a href="services.html">サービス一覧</a></li><li><a href="uploads/service-joseikin.html">助成金申請</a></li><li><a href="uploads/service-shugyo-kisoku.html">就業規則作成</a></li><li><a href="uploads/service-shakai-hoken.html">社会保険手続き</a></li><li><a href="uploads/service-kyuyo-keisan.html">給与計算</a></li><li><a href="uploads/service-romu-sodan.html">労務相談</a></li></ul></div><div><p class="footer-h">支援の進め方</p><ul class="footer-ul"><li><a href="support.html">支援全体を見る</a></li><li><a href="uploads/case-seizogyo.html">製造業</a></li><li><a href="uploads/case-inshoku.html">飲食業</a></li><li><a href="uploads/case-kaigo.html">介護業</a></li><li><a href="uploads/case-kensetsu.html">建設業</a></li></ul></div><div><p class="footer-h">コンテンツ</p><ul class="footer-ul"><li><a href="pricing.html">料金・顧問プラン</a></li><li><a href="about.html">事務所案内</a></li><li><a href="blog.html">コラム・ブログ</a></li><li><a href="infographic.html">社労士とは？</a></li><li><a href="portal.html">公式情報</a></li></ul></div><div><p class="footer-h">お問い合わせ</p><ul class="footer-ul"><li><a href="uploads/contact.html?from=startup-payroll-final">30分の現状確認</a></li><li><a href="tel:090-8259-8774">電話: 090-8259-8774</a></li><li><a href="mailto:contact@minano-sr.com">contact@minano-sr.com</a></li><li><a href="privacy-policy.html">プライバシーポリシー</a></li></ul></div></div><div class="footer-bottom"><p class="footer-copy">© 2026 みなの社会保険労務士事務所. All rights reserved.</p><div class="footer-badges"><span class="footer-badge">富山県社会保険労務士会</span></div></div></div></footer>
