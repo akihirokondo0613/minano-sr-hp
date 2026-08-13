@@ -39,6 +39,31 @@
   align-items: stretch;
 }
 .rep-block--text-only .rep-text { max-width: none; }
+.rep-offer-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(18px, 3vw, 36px);
+  margin-top: clamp(24px, 3.5vw, 38px);
+  padding: clamp(20px, 2.8vw, 28px) clamp(20px, 3.2vw, 34px);
+  overflow: hidden;
+  color: var(--iwa);
+  background: color-mix(in srgb, var(--moegi-l) 58%, var(--shiro));
+  border: 1px solid color-mix(in srgb, var(--moegi) 36%, var(--line));
+  border-radius: var(--r-lg);
+  transition: border-color .3s, transform .3s var(--ease);
+}
+.rep-offer-card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--moegi); }
+.rep-offer-card:hover { border-color: var(--moegi); transform: translateY(-2px); }
+.rep-offer-eyebrow { display: block; font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: .16em; color: var(--moegi-t); }
+.rep-offer-title { display: block; margin-top: 5px; font-family: var(--disp); font-size: clamp(17px, 1.8vw, 21px); font-weight: 900; line-height: 1.6; }
+.rep-offer-text { display: block; margin-top: 5px; color: var(--ink2); font-size: 13px; line-height: 1.85; }
+.rep-offer-link { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 10px 16px; color: #fff; background: var(--sugi); border-radius: 999px; font-size: 12.5px; font-weight: 700; white-space: nowrap; }
+@media (max-width: 700px) {
+  .rep-offer-card { grid-template-columns: 1fr; gap: 14px; padding-left: 24px; }
+  .rep-offer-link { justify-self: start; }
+}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"事務所案内｜みなの社会保険労務士事務所","description":"富山にある、みなの社会保険労務士事務所の代表メッセージ、支援姿勢、事務所概要、所在地をご案内します。来所・訪問・オンラインに対応し、全国からご相談いただけます。","url":"https://minano-sr.com/about.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://minano-sr.com/"},{"@type":"ListItem","position":2,"name":"事務所案内","item":"https://minano-sr.com/about.html"}]}]}
@@ -162,6 +187,15 @@
       </div>
     </div>
 
+    <a class="rep-offer-card rv d1" id="representative-offer" href="startup-payroll.html" aria-labelledby="rep-offer-title">
+      <span>
+        <span class="rep-offer-eyebrow">FOUNDER PLAN / 創業期向け</span>
+        <span class="rep-offer-title" id="rep-offer-title">創業期の労務を、ひとりで抱えないために。</span>
+        <span class="rep-offer-text">給与計算も、入退社の手続きも、私がお引き受けします。判断に迷うことは、その都度ご相談ください。まずは30分、無料でお話を伺います。</span>
+      </span>
+      <span class="rep-offer-link">支援内容と料金を見る <span aria-hidden="true">→</span></span>
+    </a>
+
     <!-- 事務所イメージ（4枚・小型カードに統一） -->
     <div class="about-trio rv d1">
       <div class="about-trio-slot">
@@ -183,7 +217,7 @@
       <div class="access-media">
         <div class="access-map">
           <iframe
-            src="https://maps.google.com/maps?q=富山県富山市蓮町1丁目7-4　SCOP TOYAMA&t=&z=16&ie=UTF8&iwloc=&output=embed"
+            src="https://maps.google.com/maps?q=〒931-8333 富山県富山市蓮町1丁目7-4&t=&z=16&ie=UTF8&iwloc=&output=embed"
             title="みなの社会保険労務士事務所へのアクセスマップ"
             loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
         </div>
@@ -208,8 +242,8 @@
 土日祝はフォームよりご連絡ください</span>
         </div>
         <div class="access-actions">
-          <a class="ac-primary" href="https://www.google.com/maps/dir/?api=1&destination=富山県富山市蓮町1丁目7-4　SCOP TOYAMA" target="_blank" rel="noopener">経路を調べる</a>
-          <a class="ac-ghost" href="https://www.google.com/maps?q=富山県富山市蓮町1丁目7-4　SCOP TOYAMA" target="_blank" rel="noopener">大きな地図で見る</a>
+          <a class="ac-primary" href="https://www.google.com/maps/dir/?api=1&destination=〒931-8333 富山県富山市蓮町1丁目7-4" target="_blank" rel="noopener">経路を調べる</a>
+          <a class="ac-ghost" href="https://www.google.com/maps?q=〒931-8333 富山県富山市蓮町1丁目7-4" target="_blank" rel="noopener">大きな地図で見る</a>
         </div>
       </div>
     </div>
