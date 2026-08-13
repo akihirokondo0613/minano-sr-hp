@@ -155,7 +155,7 @@
 .startup-page>section{content-visibility:auto;contain-intrinsic-size:auto 700px}
 @media(max-width:900px){
   .startup-hero-grid,.startup-story-grid,.startup-after-grid,.startup-option-layout,.startup-final-inner{grid-template-columns:1fr;gap:28px}
-  .startup-hero-art{order:2}.startup-hero-copy{order:1}
+  .startup-hero-art,.startup-future-panel{order:2}.startup-hero-copy{order:1}
   .startup-story-art{order:-1}.startup-after-art{order:1}.startup-after-copy{order:2}
   .startup-diagram{grid-template-columns:1fr;gap:22px}.startup-diagram-center::before,.startup-diagram-center::after{display:none}
   .startup-diagram-sources span,.startup-diagram-results span{text-align:center;border:0;padding:0}
@@ -235,6 +235,20 @@
 .startup-final-check ul{display:grid;gap:0;margin:14px 0 0;padding:0;list-style:none;border-top:1px solid var(--line)}
 .startup-final-check li{position:relative;padding:12px 0 12px 22px;border-bottom:1px solid var(--line);color:var(--ink2);font-size:12.5px;line-height:1.7}
 .startup-final-check li::before{content:"";position:absolute;left:3px;top:18px;width:8px;height:4px;border-left:2px solid var(--moegi);border-bottom:2px solid var(--moegi);transform:rotate(-45deg)}
+.startup-hero-golden{display:grid;gap:0;width:100%;max-width:670px;margin:23px 0 0;padding:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);list-style:none}
+.startup-hero-golden li{display:grid;grid-template-columns:58px minmax(0,1fr);gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.startup-hero-golden li:last-child{border-bottom:0}
+.startup-hero-golden span{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em}.startup-hero-golden strong{color:var(--iwa);font-family:var(--disp);font-size:13px;line-height:1.55}.startup-hero-golden small{grid-column:2;color:var(--ink3);font-size:11px;line-height:1.55}
+.startup-future-panel{position:relative;min-width:0;padding:clamp(24px,3.5vw,42px);background:var(--sugi);color:#fff;border-radius:var(--r);overflow:hidden}
+.startup-future-panel::after{content:"";position:absolute;right:-40px;bottom:-58px;width:190px;height:190px;border:1px solid rgba(194,229,201,.35);border-radius:50%;box-shadow:0 0 0 18px rgba(194,229,201,.06),0 0 0 36px rgba(194,229,201,.04)}
+.startup-future-kicker{position:relative;z-index:1;color:var(--moegi-b);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.16em}.startup-future-panel h2{position:relative;z-index:1;max-width:14em;margin-top:11px;color:#fff;font-family:var(--disp);font-size:clamp(25px,3vw,38px);font-weight:900;line-height:1.5}.startup-future-panel h2 strong{color:var(--moegi-b)}
+.startup-future-flow{position:relative;z-index:1;display:grid;gap:10px;margin-top:26px}.startup-future-stage{padding:15px 16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);border-radius:var(--r)}.startup-future-stage.is-future{background:var(--moegi-b);border-color:var(--moegi-b);color:var(--sugi-9)}
+.startup-future-stage-label{display:block;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.14em;color:var(--moegi-b)}.startup-future-stage.is-future .startup-future-stage-label{color:var(--sugi)}.startup-future-stage strong{display:block;margin-top:5px;font-family:var(--disp);font-size:16px;line-height:1.55}.startup-future-stage small{display:block;margin-top:4px;color:rgba(255,255,255,.72);font-size:11px;line-height:1.6}.startup-future-stage.is-future small{color:rgba(18,63,48,.78)}
+.startup-future-transfer{display:flex;align-items:center;justify-content:center;gap:9px;color:var(--moegi-b);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.1em}.startup-future-transfer::before,.startup-future-transfer::after{content:"";height:1px;flex:1;background:rgba(194,229,201,.45)}
+.startup-future-route{position:relative;z-index:1;margin-top:19px;padding-top:13px;border-top:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.8);font-size:11px;line-height:1.75}.startup-future-route strong{color:#fff}
+.startup-outcome{max-width:1120px}.startup-outcome .startup-section-head{max-width:850px}.startup-outcome-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:36px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.startup-outcome-item{padding:22px clamp(16px,2.5vw,30px) 24px 0;border-right:1px solid var(--line)}.startup-outcome-item + .startup-outcome-item{padding-left:clamp(16px,2.5vw,30px)}.startup-outcome-item:last-child{padding-right:0;border-right:0}.startup-outcome-item span{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em}.startup-outcome-item h3{margin-top:9px;color:var(--iwa);font-family:var(--disp);font-size:17px;font-weight:900;line-height:1.6}.startup-outcome-item p{margin-top:7px;color:var(--ink3);font-size:12.5px;line-height:1.85}
+@media(max-width:900px){.startup-future-panel{max-width:620px;margin-inline:auto}.startup-future-panel h2{max-width:18em}}
+@media(max-width:640px){.startup-hero-golden{margin-top:17px}.startup-hero-golden li{grid-template-columns:48px minmax(0,1fr);gap:9px;padding:9px 0}.startup-hero-golden strong{font-size:12px}.startup-hero-golden small{font-size:10px}.startup-future-panel{padding:22px 18px}.startup-future-panel h2{font-size:25px}.startup-future-flow{margin-top:20px}.startup-future-stage{padding:13px 14px}.startup-future-stage strong{font-size:14px}.startup-future-stage small{font-size:10.5px}.startup-future-route{font-size:10.5px}.startup-outcome-list{grid-template-columns:1fr;margin-top:25px}.startup-outcome-item,.startup-outcome-item + .startup-outcome-item{padding:16px 0;border-right:0;border-bottom:1px solid var(--line)}.startup-outcome-item:last-child{padding-bottom:0;border-bottom:0}.startup-outcome-item h3{font-size:16px}.startup-outcome-item p{font-size:12px}}
 @media(max-width:900px){
   .startup-diagram{grid-template-columns:1fr;gap:22px;padding-block:27px}
   .startup-diagram-center{max-width:340px;margin-inline:auto}
@@ -275,50 +289,38 @@
       <div class="startup-hero-grid">
         <div class="startup-hero-copy">
           <p class="startup-kicker">創業3年以内・従業員10名まで</p>
-          <h1>給与計算・手続き・相談を、<strong>ひとつの窓口へ。</strong></h1>
-          <p class="startup-hero-intro">経営者が本業に集中できるように、毎月の労務実務をまとめて引き受けます。</p>
-          <ul class="startup-hero-proof" aria-label="月額顧問に含まれる主な支援">
-            <li><span>01</span><strong>給与・賞与計算</strong><small>締め日ごとの実務</small></li>
-            <li><span>02</span><strong>社会保険の手続き</strong><small>入退社・扶養など</small></li>
-            <li><span>03</span><strong>日々の労務相談</strong><small>迷った時の確認先</small></li>
+          <h1>経営者が、<strong>会社を前に進める時間</strong>を取り戻す。</h1>
+          <p class="startup-hero-intro">給与計算・手続き・相談を一つの窓口に。必要な確認だけ受け取り、本業へ戻れる毎月をつくります。</p>
+          <ul class="startup-hero-golden" aria-label="この顧問がつくる変化">
+            <li><span>WHY</span><strong>調べものに、経営者の時間を使わない。</strong><small>期限と必要なことを、ひとりで抱えないために。</small></li>
+            <li><span>HOW</span><strong>給与・手続き・相談を、一つの窓口で整理。</strong><small>共有 → 処理 → 結果と次の判断を返します。</small></li>
+            <li><span>FUTURE</span><strong>任せた後は、採用・営業・現場の判断へ。</strong><small>締め日を、会社の次を考える時間に変えます。</small></li>
           </ul>
           <p class="startup-hero-price">月45,000円（税抜）<small>契約開始から12か月間／13か月目以降は月55,000円（税抜）</small></p>
           <div class="startup-hero-actions"><a class="startup-primary" href="uploads/contact.html?from=startup-payroll">30分の現状確認を申し込む</a><a class="startup-secondary" href="#scope">任せられる範囲を見る →</a></div>
           <p class="startup-hero-note">初回相談は無料です。この時点で契約は確定しません。</p>
           <p class="startup-hero-sign">富山県社会保険労務士会所属　<strong>代表 社会保険労務士　近藤 昭宏</strong></p>
         </div>
-        <figure class="startup-hero-art"><div class="startup-art-tag">相談先を一つにする</div><img src="assets/illustrations/startup-consultation.webp" srcset="assets/illustrations/startup-consultation-960.webp 960w, assets/illustrations/startup-consultation.webp 1448w" sizes="(max-width: 640px) calc(100vw - 40px), 500px" width="1448" height="1086" alt="経営者と社会保険労務士が書類を見ながら相談している様子" fetchpriority="high" decoding="async"><figcaption><strong>労務の相談先を、最初から一つに。</strong><small>給与・手続き・相談を、同じ窓口で整理します。</small></figcaption></figure>
+        <aside class="startup-future-panel" aria-labelledby="startup-future-title">
+          <p class="startup-future-kicker">任せた後の毎月</p>
+          <h2 id="startup-future-title">経営者は、<strong>確認ではなく判断</strong>に戻る。</h2>
+          <div class="startup-future-flow">
+            <div class="startup-future-stage"><span class="startup-future-stage-label">今の状態</span><strong>締め日になると、労務を調べ始める</strong><small>勤怠・手続き・相談が一度に集まる</small></div>
+            <div class="startup-future-transfer" aria-hidden="true">みなのが引き受ける</div>
+            <div class="startup-future-stage is-future"><span class="startup-future-stage-label">任せた後</span><strong>必要な確認だけ受け、次の仕事へ進む</strong><small>採用・営業・現場の判断に時間を使える</small></div>
+          </div>
+          <p class="startup-future-route"><strong>会社から共有</strong> → みなのが整理・処理 → <strong>会社へ返す</strong></p>
+        </aside>
       </div>
     </div>
   </header>
 
-  <div class="w">
-    <aside class="startup-point-box" aria-labelledby="startup-point-title">
-      <p class="startup-point-title" id="startup-point-title">このプランのポイント</p>
-      <ul>
-        <li>給与・手続き・相談を一つの窓口へ</li>
-        <li>創業3年以内は12か月間45,000円（税抜）</li>
-        <li>初回30分で任せる範囲と次の一手を確認</li>
-      </ul>
-    </aside>
-    <nav class="startup-page-toc" aria-labelledby="startup-page-toc-title">
-      <p class="startup-page-toc-title" id="startup-page-toc-title">このページの内容</p>
-      <ol>
-        <li><a href="#burden">今の負担</a></li>
-        <li><a href="#one-window">任せる流れ</a></li>
-        <li><a href="#scope">業務範囲</a></li>
-        <li><a href="#options">次の改善</a></li>
-        <li><a href="#consultation">申込後の流れ</a></li>
-      </ol>
-    </nav>
-  </div>
-
   <section class="startup-section startup-section-white" id="burden">
     <div class="w startup-story-grid">
       <div class="startup-story-copy">
-        <p class="startup-section-label">01 / BEFORE</p>
-        <h2 class="startup-section-title">調べながら進める時間が、毎月積み上がる。</h2>
-        <p class="startup-section-lead">給与の締めが来るたびに確認が集中し、入退社があれば様式と期限を調べ直す。作業そのものより、確かめる時間が積み上がります。</p>
+        <p class="startup-section-label">01 / WHY</p>
+        <h2 class="startup-section-title">本業の時間を、労務の確認で削らないために。</h2>
+        <p class="startup-section-lead">創業期は、営業・採用・資金繰りと同時に、給与や手続きも発生します。経営者が一人で調べ続ける状態を、先に変えます。</p>
         <div class="startup-burden-list">
           <article class="startup-burden-item"><span class="startup-burden-num">01</span><div><h3>給与締めのたびに、確認が集中する</h3><p>勤怠の不備、手当の変更、入退社情報を締め日前後にまとめて確認し、計算まで抱えている。</p></div></article>
           <article class="startup-burden-item"><span class="startup-burden-num">02</span><div><h3>手続きごとに、期限と必要書類を調べる</h3><p>入社、退社、扶養、月額変更など、発生時期の異なる手続きが一つずつ割り込んでくる。</p></div></article>
@@ -330,20 +332,20 @@
   </section>
 
   <section class="startup-section" id="after">
-    <div class="w startup-after-grid">
-      <figure class="startup-after-art"><div class="startup-art-tag startup-art-tag-after">経営者が本業へ戻る</div><img src="assets/illustrations/startup-back-to-work.webp" srcset="assets/illustrations/startup-back-to-work-960.webp 960w, assets/illustrations/startup-back-to-work.webp 1448w" sizes="(max-width: 640px) calc(100vw - 40px), 560px" width="1448" height="1086" loading="lazy" alt="給与計算を任せて本業へ視線を戻す経営者の様子"><figcaption><strong>必要な確認だけを受け取り、本業へ戻る。</strong><small>計算・手続き・相談を任せ、次の判断に時間を使えます。</small></figcaption></figure>
-      <div class="startup-after-copy"><p class="startup-section-label">02 / AFTER</p><h2 class="startup-section-title">渡したあと、毎月がどう変わるか。</h2><p class="startup-section-lead">締め日に合わせて勤怠と変更点をお送りいただければ、計算も届出もこちらで進めます。確認が必要な点だけ、こちらからご連絡します。</p><ul class="startup-after-list"><li>締め日前に、社内で調べ直す作業が減る</li><li>入退社の届出は、共有いただいた時点で動き出す</li><li>判断に迷う点は、その都度たずねられる</li></ul></div>
+    <div class="w startup-outcome">
+      <div class="startup-section-head"><p class="startup-section-label">02 / FUTURE</p><h2 class="startup-section-title">任せた先にあるのは、経営者が判断に戻れる毎月。</h2><p class="startup-section-lead">労務の実務を外に出す価値は、作業を減らすことだけではありません。空いた時間を、会社の次の一手に使えることです。</p></div>
+      <div class="startup-outcome-list"><article class="startup-outcome-item"><span>01 / TIME</span><h3>締め日を、調べものではなく次の仕事に。</h3><p>勤怠や手続きの確認に追われず、採用・営業・現場の判断へ戻れます。</p></article><article class="startup-outcome-item"><span>02 / RELIEF</span><h3>迷ったときに、相談先を探さない。</h3><p>雇用条件や入退社など、日々の疑問を同じ窓口で確認できます。</p></article><article class="startup-outcome-item"><span>03 / GROWTH</span><h3>会社の成長に合わせて、整え方を選べる。</h3><p>勤怠のシステム化や助成金も、必要性と条件を確認してから進めます。</p></article></div>
     </div>
   </section>
 
   <section class="startup-section startup-section-white startup-window" id="one-window">
-      <div class="w"><div class="startup-section-head"><p class="startup-section-label">03 / ONE WINDOW</p><h2 class="startup-section-title">会社から送るものは、ひとつの窓口へ。</h2><p class="startup-section-lead">給与計算、行政への届出、労務相談は、別々の窓口に分かれていません。会社から共有いただく情報を整理し、必要な結果と次の判断をお返しします。</p></div>
+     <div class="w"><div class="startup-section-head"><p class="startup-section-label">03 / HOW</p><h2 class="startup-section-title">毎月のやりとりを、一つの流れにします。</h2><p class="startup-section-lead">会社から共有いただく情報を、給与計算・行政への届出・労務相談へつなぎます。処理の結果、不足資料、次に決めることを一つにまとめてお返しします。</p></div>
       <div class="startup-diagram" aria-label="会社から共有する情報がみなの社会保険労務士事務所に集まり、結果が会社へ戻る図"><div class="startup-diagram-side"><span class="startup-diagram-side-label">会社から共有</span><div class="startup-diagram-sources"><span>勤務表・変更情報</span><span>入退社・扶養の情報</span><span>困ったこと・確認したいこと</span></div></div><div class="startup-diagram-center"><small>整理・処理・相談</small>みなの社会保険労務士事務所</div><div class="startup-diagram-side startup-diagram-side-result"><span class="startup-diagram-side-label">会社へお返し</span><div class="startup-diagram-results"><span>給与計算の結果</span><span>手続きの進捗と不足資料</span><span>次に決めること</span></div></div></div>
       <div class="startup-flow"><article class="startup-flow-step"><span class="startup-flow-label">FROM COMPANY</span><h3>会社から共有</h3><p>勤務表、変更情報、雇用や労務に関する相談をお送りください。</p></article><article class="startup-flow-step"><span class="startup-flow-label">MINANO SR</span><h3>まとめて処理・整理</h3><p>給与計算、定例・年次手続き、個別労務相談を進めます。</p></article><article class="startup-flow-step"><span class="startup-flow-label">BACK TO BUSINESS</span><h3>会社へお返し</h3><p>計算結果、手続きの進捗、不足資料、判断材料を共有します。</p></article></div>
     </div>
   </section>
 
-  <section class="startup-section" id="scope"><div class="w"><div class="startup-section-head"><p class="startup-section-label">04 / SCOPE</p><h2 class="startup-section-title">月額に含まれること、別料金になること。</h2><p class="startup-section-lead">安く見せるために範囲をぼかしません。標準の業務範囲と主な別料金を事前に確認できます。</p></div><div class="startup-scope-table"><div class="startup-scope-column"><h3>月額に含む</h3><ul><li>給与・賞与計算（月次）</li><li>定例・年次の労働社会保険手続き</li><li>個別の労務相談</li><li>就業規則の年次レビューと改定提案</li><li>法改正情報と助成金情報のご案内</li></ul></div><div class="startup-scope-column"><h3>別料金</h3><ul><li>勤怠システムの導入・定着支援</li><li>助成金の申請代行</li><li>就業規則の新規作成・全面改定</li><li>年末調整の資料整理・税理士連携</li><li>料金ページ記載の申請・実費</li></ul></div></div><p class="startup-scope-note">別料金の業務は、必要性を確認したうえで事前にお見積りします。固定料金は<a href="pricing.html">料金ページ</a>でご確認ください。</p></div></section>
+  <section class="startup-section" id="scope"><div class="w"><div class="startup-section-head"><p class="startup-section-label">04 / WHAT</p><h2 class="startup-section-title">任せるのは、毎月の労務実務です。</h2><p class="startup-section-lead">給与計算・手続き・相談を顧問の中心に置き、導入支援や申請代行などは必要なときだけ別途ご提案します。</p></div><div class="startup-scope-table"><div class="startup-scope-column"><h3>月額に含む</h3><ul><li>給与・賞与計算（月次）</li><li>定例・年次の労働社会保険手続き</li><li>個別の労務相談</li><li>就業規則の年次レビューと改定提案</li><li>法改正情報と助成金情報のご案内</li></ul></div><div class="startup-scope-column"><h3>別料金</h3><ul><li>勤怠システムの導入・定着支援</li><li>助成金の申請代行</li><li>就業規則の新規作成・全面改定</li><li>年末調整の資料整理・税理士連携</li><li>料金ページ記載の申請・実費</li></ul></div></div><p class="startup-scope-note">別料金の業務は、必要性を確認したうえで事前にお見積りします。固定料金は<a href="pricing.html">料金ページ</a>でご確認ください。</p></div></section>
 
   <section class="startup-section startup-price-band" id="price"><div class="w"><div class="startup-section-head"><p class="startup-section-label">05 / PRICE</p><h2 class="startup-section-title">創業3年以内・従業員10名まで、月45,000円（税抜）。</h2><p class="startup-section-lead">対象は、契約開始日時点で創業3年以内・従業員10名までの企業さまです。</p></div><div class="startup-price-axis"><div class="startup-price-stage"><span>契約開始から12か月間</span><strong>45,000円</strong><small>月額・税抜</small></div><div class="startup-price-stage"><span>13か月目以降</span><strong>55,000円</strong><small>月額・税抜</small></div></div><p class="startup-price-note">従業員が11名以上になった場合の料金、31名以上・複数拠点などの個別設計は料金ページに記載しています。</p><a class="startup-primary" href="uploads/contact.html?from=startup-payroll-price">30分の現状確認を申し込む</a></div></section>
 
