@@ -39,29 +39,24 @@
   align-items: stretch;
 }
 .rep-block--text-only .rep-text { max-width: none; }
-.rep-offer-card {
-  position: relative;
+.rep-offer-rail {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: clamp(18px, 3vw, 36px);
   margin-top: clamp(24px, 3.5vw, 38px);
-  padding: clamp(20px, 2.8vw, 28px) clamp(20px, 3.2vw, 34px);
-  overflow: hidden;
+  padding: clamp(20px, 2.8vw, 28px) 0;
   color: var(--iwa);
-  background: color-mix(in srgb, var(--moegi-l) 58%, var(--shiro));
-  border: 1px solid color-mix(in srgb, var(--moegi) 36%, var(--line));
-  border-radius: var(--r-lg);
-  transition: border-color .3s, transform .3s var(--ease);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
-.rep-offer-card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--moegi); }
-.rep-offer-card:hover { border-color: var(--moegi); transform: translateY(-2px); }
 .rep-offer-eyebrow { display: block; font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: .16em; color: var(--moegi-t); }
 .rep-offer-title { display: block; margin-top: 5px; font-family: var(--disp); font-size: clamp(17px, 1.8vw, 21px); font-weight: 900; line-height: 1.6; }
 .rep-offer-text { display: block; margin-top: 5px; color: var(--ink2); font-size: 13px; line-height: 1.85; }
-.rep-offer-link { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 10px 16px; color: #fff; background: var(--sugi); border-radius: 999px; font-size: 12.5px; font-weight: 700; white-space: nowrap; }
+.rep-offer-link { display: inline-flex; align-items: center; gap: 9px; padding: 10px 0; color: var(--sugi); border-bottom: 1px solid var(--moegi); font-size: 12.5px; font-weight: 700; white-space: nowrap; }
+.rep-offer-link:hover { color: var(--sugi-7); border-color: var(--sugi); }
 @media (max-width: 700px) {
-  .rep-offer-card { grid-template-columns: 1fr; gap: 14px; padding-left: 24px; }
+  .rep-offer-rail { grid-template-columns: 1fr; gap: 14px; }
   .rep-offer-link { justify-self: start; }
 }
 </style>
@@ -187,9 +182,9 @@
       </div>
     </div>
 
-    <a class="rep-offer-card rv d1" id="representative-offer" href="startup-payroll.html" aria-labelledby="rep-offer-title">
+    <a class="rep-offer-rail rv d1" id="representative-offer" href="startup-payroll.html" aria-labelledby="rep-offer-title">
       <span>
-        <span class="rep-offer-eyebrow">FOUNDER PLAN / 創業期向け</span>
+        <span class="rep-offer-eyebrow">創業期の労務顧問</span>
         <span class="rep-offer-title" id="rep-offer-title">創業期の労務を、ひとりで抱えないために。</span>
         <span class="rep-offer-text">給与計算も、入退社の手続きも、私がお引き受けします。判断に迷うことは、その都度ご相談ください。まずは30分、無料でお話を伺います。</span>
       </span>
