@@ -111,12 +111,12 @@
 .startup-price-stage small{display:block;margin-top:4px;color:rgba(255,255,255,.72);font-size:11.5px;line-height:1.7}
 .startup-price-band .startup-price-note{margin-top:22px;color:rgba(255,255,255,.72);font-size:12px;line-height:1.8}
 .startup-price-band .startup-primary{margin-top:24px;color:var(--sugi);background:#fff;box-shadow:none}
-.startup-option-layout{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:clamp(32px,7vw,90px);align-items:center}
+.startup-option-layout{display:grid;grid-template-columns:1fr;gap:clamp(30px,5vw,58px);align-items:start}
 .startup-option-art{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .startup-option-art figure{margin:0;text-align:center}
 .startup-option-art img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:contain}
 .startup-option-art figcaption{color:var(--ink3);font-size:11px;line-height:1.5}
-.startup-option-list{border-top:1px solid var(--line)}
+.startup-option-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(28px,5vw,72px);border-top:1px solid var(--line)}
 .startup-option-item{padding:19px 0;border-bottom:1px solid var(--line)}
 .startup-option-item h3{color:var(--iwa);font-family:var(--disp);font-size:18px;font-weight:800}
 .startup-option-item p{margin-top:6px;color:var(--ink2);font-size:13px;line-height:1.9}
@@ -193,6 +193,29 @@
   .startup-final-inner{gap:10px}.startup-final-copy{padding-top:0}.startup-final h2{font-size:27px}
 }
 @media(prefers-reduced-motion:reduce){.startup-primary,.startup-secondary{transition:none}}
+
+/* LP information design: every visual has a declared job. */
+.startup-hero-intro{max-width:31em;margin-top:15px;color:var(--iwa);font-size:clamp(15px,1.5vw,18px);font-weight:700;line-height:1.85}
+.startup-hero-proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;width:100%;max-width:690px;margin:23px 0 0;padding:0;list-style:none;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.startup-hero-proof li{display:grid;grid-template-columns:auto 1fr;column-gap:9px;padding:13px 14px 13px 0;border-right:1px solid var(--line)}
+.startup-hero-proof li + li{padding-left:14px}.startup-hero-proof li:last-child{border-right:0}
+.startup-hero-proof span{grid-row:span 2;color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em}.startup-hero-proof strong{color:var(--iwa);font-family:var(--disp);font-size:12.5px;line-height:1.5}.startup-hero-proof small{color:var(--ink3);font-size:10.5px;line-height:1.5}
+.startup-hero-price{margin-top:18px}
+.startup-hero-art,.startup-story-art,.startup-after-art,.startup-option-art figure{position:relative}
+.startup-hero-art,.startup-story-art,.startup-after-art{padding:clamp(12px,1.5vw,20px);background:var(--shiro);border:1px solid color-mix(in srgb,var(--line) 75%,transparent);border-radius:var(--r)}
+.startup-hero-art{padding-top:clamp(30px,3vw,42px)}
+.startup-art-tag{position:absolute;top:12px;left:clamp(12px,1.5vw,20px);z-index:1;color:var(--moegi-t);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.12em}.startup-art-tag-after{color:var(--sugi)}.startup-art-tag-warm{color:#9b6a20}
+.startup-hero-art figcaption,.startup-story-art figcaption,.startup-after-art figcaption{display:grid;gap:3px;margin-top:11px;padding:11px 3px 2px;border-top:1px solid var(--line)}
+.startup-hero-art figcaption strong,.startup-story-art figcaption strong,.startup-after-art figcaption strong{color:var(--iwa);font-family:var(--disp);font-size:14px;line-height:1.55}.startup-hero-art figcaption small,.startup-story-art figcaption small,.startup-after-art figcaption small{color:var(--ink3);font-size:11px;line-height:1.65}
+.startup-story-art,.startup-after-art{align-self:center}.startup-after-art{background:color-mix(in srgb,var(--yuki) 82%,var(--moegi-b))}
+.startup-diagram{grid-template-columns:minmax(0,1fr) minmax(240px,.75fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);padding:38px 0}
+.startup-diagram-side{display:grid;gap:13px}.startup-diagram-side-label{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em}.startup-diagram-side-result{text-align:right}.startup-diagram-center{display:grid;gap:5px;align-content:center;min-height:116px}.startup-diagram-center small{color:var(--moegi-b);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em}.startup-diagram-sources span,.startup-diagram-results span{font-size:15px}.startup-diagram-sources span{padding:11px 14px;background:color-mix(in srgb,var(--yuki) 68%,var(--moegi-b));border:0;border-left:3px solid var(--moegi)}.startup-diagram-results span{padding:11px 14px;background:color-mix(in srgb,var(--yuki) 72%,var(--sora));border:0;border-right:3px solid var(--moegi)}
+.startup-option-art{align-items:start}.startup-option-art figure{padding:10px 10px 12px;background:var(--yuki);border:1px solid var(--line);border-radius:var(--r)}.startup-option-art figure .startup-art-tag{top:16px;left:17px}.startup-option-art figcaption{display:grid;gap:3px;margin-top:8px;text-align:left}.startup-option-art figcaption strong{color:var(--iwa);font-family:var(--disp);font-size:12px;line-height:1.55}.startup-option-art figcaption small{color:var(--ink3);font-size:10px;line-height:1.6}
+@media(max-width:640px){
+  .startup-hero-intro{margin-top:11px;font-size:14px;line-height:1.75}.startup-hero-proof{margin-top:16px}.startup-hero-proof li,.startup-hero-proof li + li{display:block;padding:10px 7px;text-align:center}.startup-hero-proof span{display:block;margin-bottom:3px}.startup-hero-proof strong{display:block;font-size:10.5px;line-height:1.35}.startup-hero-proof small{display:block;margin-top:2px;font-size:9px;line-height:1.35}.startup-hero-price{margin-top:13px}
+  .startup-hero-art,.startup-story-art,.startup-after-art{padding:12px;padding-top:28px}.startup-art-tag{top:10px;left:12px;font-size:8.5px}.startup-hero-art figcaption,.startup-story-art figcaption,.startup-after-art figcaption{margin-top:8px;padding-top:9px}.startup-hero-art figcaption strong,.startup-story-art figcaption strong,.startup-after-art figcaption strong{font-size:13px}.startup-hero-art figcaption small,.startup-story-art figcaption small,.startup-after-art figcaption small{font-size:10.5px}.startup-diagram{padding-block:27px}.startup-diagram-side-result{text-align:left}.startup-diagram-results span{border-right:0;border-left:3px solid var(--moegi)}
+  .startup-option-list{grid-template-columns:1fr}.startup-option-art{grid-template-columns:1fr}.startup-option-art figure{padding:7px 7px 9px}.startup-option-art figure .startup-art-tag{top:11px;left:12px}.startup-option-art figcaption strong{font-size:10.5px}.startup-option-art figcaption small{font-size:9px}
+}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"創業期の労務顧問｜みなの社会保険労務士事務所","description":"創業3年以内・従業員10名までの企業向け。給与計算、労働社会保険手続き、個別労務相談を月額顧問へ。","url":"https://minano-sr.com/startup-payroll.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://minano-sr.com/"},{"@type":"ListItem","position":2,"name":"料金・顧問プラン","item":"https://minano-sr.com/pricing.html"},{"@type":"ListItem","position":3,"name":"創業期の労務顧問","item":"https://minano-sr.com/startup-payroll.html"}]}]}
@@ -217,14 +240,19 @@
       <div class="startup-hero-grid">
         <div class="startup-hero-copy">
           <p class="startup-kicker">創業3年以内・従業員10名まで</p>
-          <h1>給与計算と社会保険の手続き、<strong>日々の労務相談まで。</strong></h1>
+          <h1>給与計算・手続き・相談を、<strong>ひとつの窓口へ。</strong></h1>
+          <p class="startup-hero-intro">経営者が本業に集中できるように、毎月の労務実務をまとめて引き受けます。</p>
+          <ul class="startup-hero-proof" aria-label="月額顧問に含まれる主な支援">
+            <li><span>01</span><strong>給与・賞与計算</strong><small>締め日ごとの実務</small></li>
+            <li><span>02</span><strong>社会保険の手続き</strong><small>入退社・扶養など</small></li>
+            <li><span>03</span><strong>日々の労務相談</strong><small>迷った時の確認先</small></li>
+          </ul>
           <p class="startup-hero-price">月45,000円（税抜）<small>契約開始から12か月間／13か月目以降は月55,000円（税抜）</small></p>
           <div class="startup-hero-actions"><a class="startup-primary" href="uploads/contact.html?from=startup-payroll">30分の現状確認を申し込む</a><a class="startup-secondary" href="#scope">任せられる範囲を見る →</a></div>
           <p class="startup-hero-note">初回相談は無料です。この時点で契約は確定しません。</p>
           <p class="startup-hero-sign">富山県社会保険労務士会所属　<strong>代表 社会保険労務士　近藤 昭宏</strong></p>
-          <p class="startup-hero-lead">締め日前の給与計算、入退社や扶養の届出、日々の労務相談。毎月の実務を引き受け、判断に迷うときはその都度ご相談いただけます。</p>
         </div>
-        <figure class="startup-hero-art"><img src="assets/illustrations/startup-consultation.webp" srcset="assets/illustrations/startup-consultation-960.webp 960w, assets/illustrations/startup-consultation.webp 1448w" sizes="(max-width: 640px) calc(100vw - 40px), 500px" width="1448" height="1086" alt="経営者と社会保険労務士が書類を見ながら相談している様子" fetchpriority="high" decoding="async"></figure>
+        <figure class="startup-hero-art"><div class="startup-art-tag">この絵が伝えること</div><img src="assets/illustrations/startup-consultation.webp" srcset="assets/illustrations/startup-consultation-960.webp 960w, assets/illustrations/startup-consultation.webp 1448w" sizes="(max-width: 640px) calc(100vw - 40px), 500px" width="1448" height="1086" alt="経営者と社会保険労務士が書類を見ながら相談している様子" fetchpriority="high" decoding="async"><figcaption><strong>相談先が決まっていると、迷う時間が減る。</strong><small>給与・手続き・労務の困りごとを、毎月ひとつの窓口へ。</small></figcaption></figure>
       </div>
     </div>
   </header>
@@ -241,20 +269,20 @@
           <article class="startup-burden-item"><span class="startup-burden-num">03</span><div><h3>迷ったときだけ、相談先を探している</h3><p>雇用条件、労働時間、休職や退職の対応を、問題が起きてから誰に聞くか決める状態になっている。</p></div></article>
         </div>
       </div>
-      <figure class="startup-story-art"><img src="assets/illustrations/18_payroll_calculation.webp" width="1600" height="1200" loading="lazy" alt="給与計算のため書類や勤怠を確認している様子"></figure>
+      <figure class="startup-story-art"><div class="startup-art-tag">BEFORE｜抱えている状態</div><img src="assets/illustrations/18_payroll_calculation.webp" width="1600" height="1200" loading="lazy" alt="給与計算のため書類や勤怠を確認している様子"><figcaption><strong>本業の合間に、労務を調べ続けている。</strong><small>締め日・手続きの期限・必要書類が、同じ時期に重なります。</small></figcaption></figure>
     </div>
   </section>
 
   <section class="startup-section" id="after">
     <div class="w startup-after-grid">
-      <figure class="startup-after-art"><img src="assets/illustrations/startup-back-to-work.webp" srcset="assets/illustrations/startup-back-to-work-960.webp 960w, assets/illustrations/startup-back-to-work.webp 1448w" sizes="(max-width: 640px) calc(100vw - 40px), 560px" width="1448" height="1086" loading="lazy" alt="給与計算を任せて本業へ視線を戻す経営者の様子"></figure>
+      <figure class="startup-after-art"><div class="startup-art-tag startup-art-tag-after">AFTER｜任せたあとの状態</div><img src="assets/illustrations/startup-back-to-work.webp" srcset="assets/illustrations/startup-back-to-work-960.webp 960w, assets/illustrations/startup-back-to-work.webp 1448w" sizes="(max-width: 640px) calc(100vw - 40px), 560px" width="1448" height="1086" loading="lazy" alt="給与計算を任せて本業へ視線を戻す経営者の様子"><figcaption><strong>確認が必要なことだけ、相談先から返ってくる。</strong><small>経営者は、本業と次の判断に時間を使えます。</small></figcaption></figure>
       <div class="startup-after-copy"><p class="startup-section-label">02 / AFTER</p><h2 class="startup-section-title">渡したあと、毎月がどう変わるか。</h2><p class="startup-section-lead">締め日に合わせて勤怠と変更点をお送りいただければ、計算も届出もこちらで進めます。確認が必要な点だけ、こちらからご連絡します。</p><ul class="startup-after-list"><li>締め日前に、社内で調べ直す作業が減る</li><li>入退社の届出は、共有いただいた時点で動き出す</li><li>判断に迷う点は、その都度たずねられる</li></ul></div>
     </div>
   </section>
 
   <section class="startup-section startup-section-white startup-window" id="one-window">
-    <div class="w"><div class="startup-section-head"><p class="startup-section-label">03 / ONE WINDOW</p><h2 class="startup-section-title">給与計算も、行政への届出も、労務相談も。連絡先はひとつ。</h2><p class="startup-section-lead">年金事務所、ハローワーク、労働基準監督署。窓口ごとに様式も期限も違いますが、会社側の連絡先は当事務所ひとつにまとまります。</p></div>
-      <div class="startup-diagram" aria-label="給与計算と手続きの相談先が一つにまとまる図"><div class="startup-diagram-sources"><span>給与計算</span><span>社会保険の手続き</span><span>雇用保険の手続き</span><span>労務相談</span></div><div class="startup-diagram-center">みなの社会保険労務士事務所</div><div class="startup-diagram-results"><span>会社へ結果を共有</span><span>経営者が本業へ戻る</span></div></div>
+      <div class="w"><div class="startup-section-head"><p class="startup-section-label">03 / ONE WINDOW</p><h2 class="startup-section-title">会社から送るものは、ひとつの窓口へ。</h2><p class="startup-section-lead">給与計算、行政への届出、労務相談は、別々の窓口に分かれていません。会社から共有いただく情報を整理し、必要な結果と次の判断をお返しします。</p></div>
+      <div class="startup-diagram" aria-label="会社から共有する情報がみなの社会保険労務士事務所に集まり、結果が会社へ戻る図"><div class="startup-diagram-side"><span class="startup-diagram-side-label">会社から共有</span><div class="startup-diagram-sources"><span>勤務表・変更情報</span><span>入退社・扶養の情報</span><span>困ったこと・確認したいこと</span></div></div><div class="startup-diagram-center"><small>整理・処理・相談</small>みなの社会保険労務士事務所</div><div class="startup-diagram-side startup-diagram-side-result"><span class="startup-diagram-side-label">会社へお返し</span><div class="startup-diagram-results"><span>給与計算の結果</span><span>手続きの進捗と不足資料</span><span>次に決めること</span></div></div></div>
       <div class="startup-flow"><article class="startup-flow-step"><span class="startup-flow-label">FROM COMPANY</span><h3>会社から共有</h3><p>勤務表、変更情報、雇用や労務に関する相談をお送りください。</p></article><article class="startup-flow-step"><span class="startup-flow-label">MINANO SR</span><h3>まとめて処理・整理</h3><p>給与計算、定例・年次手続き、個別労務相談を進めます。</p></article><article class="startup-flow-step"><span class="startup-flow-label">BACK TO BUSINESS</span><h3>会社へお返し</h3><p>計算結果、手続きの進捗、不足資料、判断材料を共有します。</p></article></div>
     </div>
   </section>
@@ -263,7 +291,7 @@
 
   <section class="startup-section startup-price-band" id="price"><div class="w"><div class="startup-section-head"><p class="startup-section-label">05 / PRICE</p><h2 class="startup-section-title">創業3年以内・従業員10名まで、月45,000円（税抜）。</h2><p class="startup-section-lead">対象は、契約開始日時点で創業3年以内・従業員10名までの企業さまです。</p></div><div class="startup-price-axis"><div class="startup-price-stage"><span>契約開始から12か月間</span><strong>45,000円</strong><small>月額・税抜</small></div><div class="startup-price-stage"><span>13か月目以降</span><strong>55,000円</strong><small>月額・税抜</small></div></div><p class="startup-price-note">従業員が11名以上になった場合の料金、31名以上・複数拠点などの個別設計は料金ページに記載しています。</p><a class="startup-primary" href="uploads/contact.html?from=startup-payroll-price">30分の現状確認を申し込む</a></div></section>
 
-  <section class="startup-section startup-section-white" id="options"><div class="w startup-option-layout"><div><p class="startup-section-label">06 / NEXT IMPROVEMENT</p><h2 class="startup-section-title">勤怠のシステム化と助成金は、必要性から確認します。</h2><p class="startup-section-lead">月額顧問に無理に組み込まず、会社の現状と予定に合う場合だけ、次の支援としてご提案します。</p><div class="startup-option-art"><figure><img src="assets/illustrations/service-dx.webp" width="960" height="720" loading="lazy" alt="勤怠や労務システムの導入支援イラスト"><figcaption>勤怠のシステム化</figcaption></figure><figure><img src="assets/illustrations/service-subsidy.webp" width="960" height="720" loading="lazy" alt="助成金の申請支援イラスト"><figcaption>助成金の対象可能性</figcaption></figure></div></div><div><div class="startup-option-list"><article class="startup-option-item"><h3>勤怠のシステム化</h3><p>紙やExcelのままでも顧問は始められます。運用が回らなくなってきた段階で、必要性と費用をあわせてご提案します。</p></article><article class="startup-option-item"><h3>助成金の対象可能性</h3><p>制度の要件、実施時期、必要な証拠書類を確認したうえでご提案します。購入・契約・運用変更の前にご相談ください。</p></article></div><p class="startup-option-note">助成金の支給は保証できません。対象年度の要件、実際の運用、証拠書類を確認したうえで受任可否をご案内します。</p></div></div></section>
+  <section class="startup-section startup-section-white" id="options"><div class="w startup-option-layout"><div><p class="startup-section-label">06 / NEXT IMPROVEMENT</p><h2 class="startup-section-title">今のやり方を確認してから、次の改善へ。</h2><p class="startup-section-lead">勤怠のシステム化も助成金も、先に契約・購入するのではなく、会社の現状と予定に合うかを確認してからご提案します。</p><div class="startup-option-art"><figure><div class="startup-art-tag">CHECK 01</div><img src="assets/illustrations/service-dx.webp" width="960" height="720" loading="lazy" alt="勤怠や労務システムの導入支援イラスト"><figcaption><strong>紙やExcelの勤怠を、運用できる形へ。</strong><small>現状確認 → 候補比較 → 定着支援</small></figcaption></figure><figure><div class="startup-art-tag startup-art-tag-warm">CHECK 02</div><img src="assets/illustrations/service-subsidy.webp" width="960" height="720" loading="lazy" alt="助成金の申請支援イラスト"><figcaption><strong>制度の対象可能性を、実施前に確認。</strong><small>要件確認 → 証拠書類 → 受任可否</small></figcaption></figure></div></div><div><div class="startup-option-list"><article class="startup-option-item"><h3>勤怠のシステム化</h3><p>紙やExcelのままでも顧問は始められます。運用が回らなくなってきた段階で、必要性と費用をあわせてご提案します。</p></article><article class="startup-option-item"><h3>助成金の対象可能性</h3><p>制度の要件、実施時期、必要な証拠書類を確認したうえでご提案します。購入・契約・運用変更の前にご相談ください。</p></article></div><p class="startup-option-note">助成金の支給は保証できません。対象年度の要件、実際の運用、証拠書類を確認したうえで受任可否をご案内します。</p></div></div></section>
 
   <section class="startup-section" id="consultation"><div class="w"><div class="startup-section-head"><p class="startup-section-label">07 / FIRST 30 MINUTES</p><h2 class="startup-section-title">最初の30分で、任せる範囲を整理します。</h2><p class="startup-section-lead">依頼内容が決まっていなくても構いません。現在の担当、使用中の勤怠・給与方法、直近の困りごとから確認します。</p></div><div class="startup-steps"><article class="startup-step"><span class="startup-step-num">STEP 01</span><h3>フォームから申込</h3><p>会社規模と気になる業務だけ入力してください。</p></article><article class="startup-step"><span class="startup-step-num">STEP 02</span><h3>30分の現状確認</h3><p>現状と優先順位を整理します。</p></article><article class="startup-step"><span class="startup-step-num">STEP 03</span><h3>範囲と料金をご提示</h3><p>月額に含む業務、別料金、会社側の担当を明示します。</p></article><article class="startup-step"><span class="startup-step-num">STEP 04</span><h3>合意後に開始</h3><p>必要資料、連絡方法、最初の締め日を決めます。</p></article></div><div class="startup-mid-cta"><p><strong>初回相談は無料です。</strong><br>まず、今どこに負担が集まっているかを一緒に整理します。</p><a class="startup-primary" href="uploads/contact.html?from=startup-payroll-process">30分の現状確認を申し込む</a></div></div></section>
 
