@@ -377,6 +377,25 @@ main > section:not(.hero) {
   .home-plan-card:last-child{grid-column:1 / -1;width:calc(50% - 8px);justify-self:center}
 }
 </style>
+<style id="home-startup-offer-card">
+.home-startup-offer{background:var(--yuki);padding:clamp(18px,2.6vw,30px) 0 clamp(24px,3.5vw,42px)}
+.home-startup-offer-card{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:clamp(20px,3vw,40px);min-height:148px;padding:clamp(22px,3vw,32px) clamp(22px,3.5vw,40px);overflow:hidden;background:var(--shiro);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:0 12px 30px rgba(18,63,48,.07);transition:border-color .3s,box-shadow .3s var(--ease),transform .3s var(--ease)}
+.home-startup-offer-card::before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:var(--moegi)}
+.home-startup-offer-card:hover{border-color:color-mix(in srgb,var(--moegi) 62%,var(--line));box-shadow:0 16px 36px rgba(18,63,48,.11);transform:translateY(-2px)}
+.home-startup-offer-eyebrow,.home-startup-offer-title,.home-startup-offer-text{display:block}
+.home-startup-offer-eyebrow{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.15em;color:var(--moegi-t)}
+.home-startup-offer-title{margin-top:5px;font-family:var(--disp);font-size:clamp(18px,2vw,24px);font-weight:900;line-height:1.55;color:var(--iwa)}
+.home-startup-offer-text{margin-top:5px;color:var(--ink2);font-size:13.5px;line-height:1.8}
+.home-startup-offer-meta{display:flex;flex-wrap:wrap;gap:5px 14px;margin-top:10px;color:var(--ink3);font-size:11.5px;line-height:1.65}
+.home-startup-offer-meta span{white-space:nowrap}
+.home-startup-offer-link{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:12px 18px;border-radius:999px;background:var(--sugi);color:#fff;font-size:13px;font-weight:700;white-space:nowrap}
+.home-startup-offer-card:hover .home-startup-offer-link{background:var(--sugi-7)}
+@media(max-width:700px){
+  .home-startup-offer-card{grid-template-columns:1fr;gap:16px;min-height:0;padding:21px 20px 22px 24px}
+  .home-startup-offer-text{font-size:13px}
+  .home-startup-offer-link{justify-self:start;min-height:44px;padding:10px 16px}
+}
+</style>
 <!-- Structured Data: LocalBusiness -->
 <script type="application/ld+json" data-schema="localbusiness">
 {
@@ -611,6 +630,20 @@ main > section:not(.hero) {
   </div>
 </div>
 
+<aside class="home-startup-offer" id="startup-offer" aria-labelledby="home-startup-offer-title">
+  <div class="w">
+    <a class="home-startup-offer-card" href="startup-payroll.html">
+      <span>
+        <span class="home-startup-offer-eyebrow">創業3年以内・従業員10名までの企業さまへ</span>
+        <span class="home-startup-offer-title" id="home-startup-offer-title">給与計算・手続き・労務相談を、月45,000円で。</span>
+        <span class="home-startup-offer-text">給与・賞与計算、日常の労働社会保険手続き、個別労務相談を毎月お引き受けします。</span>
+        <span class="home-startup-offer-meta"><span>税抜</span><span>契約開始から12か月間</span><span>13か月目から月55,000円</span></span>
+      </span>
+      <span class="home-startup-offer-link">創業期の労務顧問を見る <span aria-hidden="true">→</span></span>
+    </a>
+  </div>
+</aside>
+
 <!-- ════════════════════════════════
      WHY ― 存在理由・信念
 ════════════════════════════════ -->
@@ -726,7 +759,7 @@ main > section:not(.hero) {
       <article class="home-plan-card">
         <p class="home-plan-en">BASIC</p><h3 class="home-plan-name">スタート顧問プラン</h3>
         <p class="home-plan-price">¥35,000<small>／月（税抜）</small></p><p class="home-plan-unit">従業員5名まで</p>
-        <p class="home-plan-founder">創業3年以内：¥25,000／月</p>
+        <p class="home-plan-founder">創業3年以内：¥25,000／月（契約開始から12か月間）</p>
         <p class="home-plan-feature">年次手続きまで顧問料に含みます</p>
         <ul class="home-plan-list"><li>入退社・月額変更・扶養届・労使協定</li><li>年度更新・算定基礎届・賞与支払届</li><li>出産・育児・介護・高年齢の給付申請</li></ul>
         <a href="pricing.html#plan-basic" class="home-plan-link">詳しい内容を見る →</a>
@@ -734,7 +767,7 @@ main > section:not(.hero) {
       <article class="home-plan-card is-main">
         <span class="home-plan-recommend">おすすめ</span><p class="home-plan-en">STANDARD</p><h3 class="home-plan-name">スタンダードプラン</h3>
         <p class="home-plan-price">¥55,000<small>／月（税抜）</small></p><p class="home-plan-unit">従業員10名まで</p>
-        <p class="home-plan-founder">創業3年以内：¥45,000／月</p>
+        <p class="home-plan-founder">創業3年以内：¥45,000／月（契約開始から12か月間）</p>
         <p class="home-plan-feature">手続きに加えて給与・賞与計算まで</p>
         <ul class="home-plan-list"><li>スタート顧問プランの全業務</li><li>給与・賞与計算と個別労務相談</li><li>就業規則の年次レビュー</li></ul>
         <a href="pricing.html#plan-standard" class="home-plan-link">詳しい内容を見る →</a>
@@ -742,7 +775,7 @@ main > section:not(.hero) {
       <article class="home-plan-card">
         <p class="home-plan-en">CUSTOM</p><h3 class="home-plan-name">カスタムプラン</h3>
         <p class="home-plan-price is-estimate">お見積もり</p><p class="home-plan-unit">内容・規模に応じてご提示</p>
-        <p class="home-plan-founder">月額契約は創業割の対象</p>
+        <p class="home-plan-founder">月額契約は創業割（契約開始から12か月間）の対象</p>
         <p class="home-plan-feature">人数・体制に合わせて月額業務を設計</p>
         <ul class="home-plan-list"><li>従業員31名以上・複数拠点でのご依頼</li><li>複数の定例業務を組み合わせたい場合</li><li>社内の担当範囲に合わせた業務分担</li></ul>
         <a href="pricing.html#plan-custom" class="home-plan-link">詳しい内容を見る →</a>
