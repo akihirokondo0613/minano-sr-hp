@@ -34,6 +34,10 @@ function replaceArticleSchema(source, article, relativePath) {
       if (schema?.['@type'] !== 'Article') return block;
       schema.datePublished = article.date;
       schema.dateModified = article.updated;
+      schema.image = 'https://minano-sr.com/assets/og/minano-og.png';
+      if (schema.author && typeof schema.author === 'object') {
+        schema.author['@id'] = 'https://minano-sr.com/about.html#representative';
+      }
       found += 1;
       return `${open}${JSON.stringify(schema)}${close}`;
     },
