@@ -141,6 +141,7 @@ const office = {
   description:
     '富山の中小企業向けに助成金申請・就業規則作成・社会保険手続き・給与計算を提供する社会保険労務士事務所。来所・訪問・オンラインに対応し、全国からご相談いただけます。',
   image: 'https://minano-sr.com/assets/og/minano-og.png',
+  logo: 'https://minano-sr.com/assets/og/logo-512.png',
   telephone: '+81-90-8259-8774',
   email: 'contact@minano-sr.com',
   // 市町村名まで持たせる。「社労士 高岡」のような市町村ロングテールに対して、
