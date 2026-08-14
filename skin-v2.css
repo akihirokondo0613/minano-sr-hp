@@ -808,7 +808,8 @@ html.nav-menu-open #navspy-chip { opacity: 0 !important; visibility: hidden !imp
 }
 
 /* ---------- フローティング ---------- */
-.floating { position: fixed; right: clamp(14px, 2vw, 26px); bottom: clamp(14px, 2vw, 26px); z-index: 220; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; transition: opacity .4s, transform .4s var(--ease); }
+/* bottomはenv(safe-area-inset-bottom)を加算する。iPhoneのホームバーとタップ領域が重なるため */
+.floating { position: fixed; right: clamp(14px, 2vw, 26px); bottom: max(clamp(14px, 2vw, 26px), calc(env(safe-area-inset-bottom) + 12px)); z-index: 220; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; transition: opacity .4s, transform .4s var(--ease); }
 .floating.hidden { opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(12px); }
 .fl-mini { display: flex; gap: 8px; }
 .fl-icon { width: 46px; height: 46px; border-radius: 50%; background: var(--shiro); border: 1px solid var(--line); display: grid; place-items: center; box-shadow: 0 8px 22px rgba(18,63,48,.14); transition: transform .3s var(--ease); }

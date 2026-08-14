@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="page-enter.js?v=20260812-ui3hooks1"></script>
+<script defer src="page-enter.js?v=20260814-entryparam1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <style>
 .spot-fees .sf-note{color:var(--ink3)}
@@ -40,7 +40,7 @@
 <!-- Theme + Favicon (inline SVG avoids extra asset) -->
 <meta name="theme-color" content="#123F30">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="skin-v2.css?v=20260812-navstyle1">
+<link rel="stylesheet" href="skin-v2.css?v=20260814-safearea1">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"料金・顧問プラン｜みなの社会保険労務士事務所","description":"みなの社会保険労務士事務所の料金・顧問プラン。顧問料、創業3年以内の割引、スポット料金、助成金の成功報酬、料金シミュレーターをご案内します。","url":"https://minano-sr.com/pricing.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://minano-sr.com/"},{"@type":"ListItem","position":2,"name":"料金・顧問プラン","item":"https://minano-sr.com/pricing.html"}]}]}
 </script>
@@ -108,8 +108,8 @@
     <div class="startup-card rv" style="margin:0 0 26px">
       <span class="startup-badge">STARTUP</span>
       <div class="startup-body">
-        <p class="startup-h">創業3年以内の企業さまは、契約開始から12か月間、各プラン <span class="amt">−¥10,000 / 月</span> でサポートします。</p>
-        <p class="startup-sub">契約開始日時点で、法人設立日または個人事業の開業日から3年以内の事業者さまが対象です。13か月目からは通常料金となります。</p>
+        <p class="startup-h">創業3年以内の企業さまは、創業3周年を迎えるまで、各プラン <span class="amt">−¥10,000 / 月</span> でサポートします。</p>
+        <p class="startup-sub">契約開始日時点で、法人設立日または個人事業の開業日から3年未満の事業者さまが対象です。創業3周年までの残期間が12か月未満の場合も、契約開始から12か月間は割引を適用し、その後は通常料金となります。</p>
       </div>
     </div>
     <div class="price-grid">
@@ -119,7 +119,7 @@
         <p class="plan-tagline">入退社から年次手続きまで</p>
         <div class="plan-price">¥35,000</div>
         <div class="plan-unit">/ 月（税抜）・従業員5名まで</div>
-        <p class="plan-founder">創業3年以内なら <b>¥25,000 / 月</b>（契約開始から12か月間）</p>
+        <p class="plan-founder">創業3年以内なら <b>¥25,000 / 月</b>（創業3周年まで・最低12か月間）</p>
         <div class="plan-div"></div>
         <p class="plan-section">含まれる内容</p>
         <ul class="plan-features">
@@ -131,7 +131,7 @@
           <li>育児休業給付・介護休業給付・高年齢雇用継続給付</li>
           <li>労災発生時の初動相談・必要書類の案内・必要な場合の労働者死傷病報告</li>
           <li>法定三帳簿の整備<br><span class="plan-feature-sub">労働者名簿・賃金台帳・出勤簿</span></li>
-          <li>助成金情報の案内</li>
+          <li>助成金情報の案内・申請に備えた労務情報の整理<br><span class="plan-feature-sub">申請代行は別料金</span></li>
           <li>法改正情報の配信</li>
         </ul>
         <a href="uploads/contact.html?from=start" class="plan-btn">このプランで相談する</a>
@@ -144,7 +144,7 @@
         <p class="plan-tagline">給与計算までまとめてお任せ</p>
         <div class="plan-price">¥55,000</div>
         <div class="plan-unit">/ 月（税抜）・従業員10名まで</div>
-        <p class="plan-founder">創業3年以内なら <b>¥45,000 / 月</b>（契約開始から12か月間）</p>
+        <p class="plan-founder">創業3年以内なら <b>¥45,000 / 月</b>（創業3周年まで・最低12か月間）</p>
         <div class="plan-div"></div>
         <p class="plan-inherit"><span class="pi-tag">BASIC</span>のすべて</p>
         <p class="plan-section plan-section-plus">＋ こちらが加わります</p>
@@ -163,7 +163,7 @@
         <p class="plan-tagline">必要なものを、必要なだけ</p>
         <div class="plan-price" style="font-size:clamp(20px,2.5vw,28px);line-height:1.3;margin-top:6px">お見積もり</div>
         <div class="plan-unit">内容・規模に応じてご提示します</div>
-        <p class="plan-founder">月額のご契約は創業割（契約開始から12か月間、−¥10,000 / 月）対象</p>
+        <p class="plan-founder">月額のご契約は創業割（創業3周年まで・最低12か月間、−¥10,000 / 月）対象</p>
         <div class="plan-div"></div>
         <p class="plan-section">こんなご要望に</p>
         <ul class="plan-features">
@@ -261,7 +261,7 @@
                   <span class="ks-row-l">ご希望</span>
                   <div class="ks-chips">
                     <label class="ks-chip"><input type="checkbox" id="ksPayroll"><span>給与計算も任せたい</span></label>
-                    <label class="ks-chip"><input type="checkbox" id="ksStartup"><span>創業3年以内（最初の12か月 −¥10,000/月）</span></label>
+                    <label class="ks-chip"><input type="checkbox" id="ksStartup"><span>創業3年以内（創業3周年まで・最低12か月 −¥10,000/月）</span></label>
                   </div>
                 </div>
               </div>
@@ -271,7 +271,7 @@
               <span class="ks-eyebrow">顧問料の目安（税抜）</span>
               <div class="ks-price" id="ksPrice">¥35,000<small> / 月</small></div>
               <p class="ks-break" id="ksBreak">スタート顧問プラン｜手続き代行＋法改正フォロー（従業員5名まで）</p>
-              <span class="ks-badge" id="ksBadge" hidden>創業割 最初の12か月 −¥10,000/月 適用</span>
+              <span class="ks-badge" id="ksBadge" hidden>創業割 創業3周年まで・最低12か月 −¥10,000/月 適用</span>
               <p class="ks-year" id="ksYear">年間 ¥420,000（税抜）</p>
               <a href="uploads/contact.html?from=sim" class="ks-cta">この結果をもとに無料相談する</a>
               <p class="ks-note">※ 30名までは公開料金をそのまま計算します。31名以上は個別見積もりです。別料金表の業務と実費は含まれません。</p>
@@ -518,7 +518,7 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
 // 受付時間ブロックはJS不要（静的なリスト表示）
 </script>
 <script defer src="image-slot.js?v=20260722-crop1"></script>
-<script defer src="link-keep.js?v=20260723-conversion1"></script>
+<script defer src="link-keep.js?v=20260814-entryparam1"></script>
 <script defer src="header-motion.js?v=20260809-nav1"></script>
 <script defer src="terms.js?v=20260812-terms1"></script>
 <script id="pf-hover">(function(){var d={};function pf(u){if(d[u])return;d[u]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u;document.head.appendChild(l);}function h(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var hr=a.getAttribute("href");if(!hr||hr[0]==="#"||/^(mailto:|tel:|https?:)/.test(hr))return;if(a.target==="_blank")return;pf(a.href);}document.addEventListener("mouseover",h,{passive:true});document.addEventListener("touchstart",h,{passive:true});})();</script>

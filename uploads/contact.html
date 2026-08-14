@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="../page-enter.js?v=20260812-ui3hooks1"></script>
+<script defer src="../page-enter.js?v=20260814-entryparam1"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>無料相談・お問い合わせ｜みなの社会保険労務士事務所</title>
 <meta name="description" content="富山県富山市に所在する、みなの社会保険労務士事務所の無料相談・お問い合わせページ。来所・訪問・オンラインに対応し、全国からご相談いただけます。">
@@ -106,7 +106,7 @@ html.nav-menu-open{overflow:hidden}
 .footer-copy{font-size:11px;color:rgba(255,255,255,.5);font-weight:300;letter-spacing:.05em}
 .footer-badges{display:flex;gap:8px;flex-wrap:wrap}
 .footer-badge{font-size:10px;padding:3px 10px;border-radius:3px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.55);letter-spacing:.04em}
-.floating{position:fixed;bottom:24px;right:24px;z-index:800;display:flex;flex-direction:column;gap:10px;align-items:flex-end;transition:opacity .35s,transform .35s}
+.floating{position:fixed;bottom:max(24px,calc(env(safe-area-inset-bottom) + 12px));right:24px;z-index:800;display:flex;flex-direction:column;gap:10px;align-items:flex-end;transition:opacity .35s,transform .35s}
 .floating.hidden{opacity:0;pointer-events:none;transform:translateY(8px)}
 .fl-mini{display:flex;gap:8px}
 .fl-icon{width:46px;height:46px;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;background:#fff;border:1px solid #e8e8e8;box-shadow:0 4px 14px rgba(0,0,0,.10);color:#123F30;transition:transform .15s,border-color .15s,box-shadow .15s}
@@ -127,7 +127,8 @@ html.nav-menu-open{overflow:hidden}
 .form-group{margin-bottom:20px}
 .form-label{display:block;font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:8px}
 .form-label span{color:var(--g600)}
-.form-input{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:5px;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s;background:#fff}
+/* font-sizeは16px未満にしないこと。15px以下だとiOS Safariが入力欄をタップした瞬間に自動ズームする */
+.form-input{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:5px;font-size:16px;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s;background:#fff}
 .form-input::placeholder{color:var(--ink4);opacity:1}
 .form-input:focus{border-color:var(--g500);box-shadow:0 0 0 3px var(--g50)}
 textarea.form-input{min-height:120px;resize:vertical}
@@ -969,15 +970,46 @@ function collectMeta() {
   var pad = function (n) { return (n < 10 ? '0' : '') + n; };
   var elapsed = Math.round((Date.now() - FORM_OPENED_AT) / 1000);
   var elapsedStr = elapsed >= 60 ? Math.floor(elapsed / 60) + '分' + (elapsed % 60) + '秒' : elapsed + '秒';
-  var fromParam = new URLSearchParams(location.search).get('from') || '';
+  var q = new URLSearchParams(location.search);
+  var fromParam = q.get('from') || '';
   var device = /iPhone|Android.*Mobile/i.test(navigator.userAgent) ? 'スマホ' : (/iPad|Android/i.test(navigator.userAgent) ? 'タブレット' : 'PC');
-  return {
+
+  // entry は「サイトのどこから専用LPへ入ったか」。from（そのページのどのCTAか）とは別の軸で、
+  // 両方あると「トップのカードから入って、LPの料金セクションで申し込んだ」まで分かる。
+  var entryParam = q.get('entry') || '';
+  var entryLabels = {
+    'home-hero-startup': 'トップページ・ヒーロー直下の創業期カード',
+    'about-startup-card': '事務所案内・代表紹介の創業期カード'
+  };
+
+  var meta = {
     送信日時: d.getFullYear() + '/' + pad(d.getMonth() + 1) + '/' + pad(d.getDate()) + '（' + days[d.getDay()] + '）' + pad(d.getHours()) + ':' + pad(d.getMinutes()),
     記入所要時間: elapsedStr,
     デバイス: device,
     流入元: fromParam ? fromParam + '（ページのCTA経由）' : '直接アクセスまたはナビから',
     参照元: document.referrer || '（なし）'
   };
+  if (entryParam) meta['入口'] = (entryLabels[entryParam] || entryParam) + '（' + entryParam + '）';
+
+  // 広告経由の判別。link-keep.js が gclid・utm_* をページ遷移のたびに引き継いでいるので、
+  // 広告からLPに来て申し込んだ場合はここに値が入る。どのキーワードが実際に申込になったかを
+  // メールの時点で残しておく（Google広告の管理画面と突き合わせるため）。
+  var adKeys = {
+    gclid: '広告クリックID',
+    utm_source: '広告_参照元',
+    utm_medium: '広告_媒体',
+    utm_campaign: '広告_キャンペーン',
+    utm_content: '広告_クリエイティブ',
+    utm_term: '広告_キーワード'
+  };
+  for (var key in adKeys) {
+    if (!adKeys.hasOwnProperty(key)) continue;
+    var val = q.get(key);
+    if (val) meta[adKeys[key]] = val;
+  }
+  if (q.get('gclid')) meta['流入経路'] = 'Google広告';
+
+  return meta;
 }
 
 function showSuccess() {
@@ -1016,13 +1048,45 @@ function launchConfetti() {
   }
 }
 
-function showError() {
+// エラー画面から戻る。フォームはdisplay:noneで隠しているだけなので、入力値はそのまま残っている。
+// 以前はlocation.reload()で戻していたが、それだと書いた内容が全部消えていた。
+function restoreForm() {
+  var box = document.getElementById('formSuccess');
+  var form = document.getElementById('contactForm');
+  if (box) box.style.display = 'none';
+  if (form) {
+    form.style.display = '';
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// 送信できなかったときに、入力済みの内容を本文に入れたメールリンクを作る。
+// 電話は営業時間に縛られるうえ、書いた内容を口頭で話し直すことになるため、逃げ道をもう一つ用意する。
+function buildMailtoFallback(data) {
+  var lines = [];
+  if (data) {
+    for (var k in data) {
+      if (data.hasOwnProperty(k) && data[k] !== '') lines.push(k + '：' + data[k]);
+    }
+  }
+  var body = lines.join('\n');
+  if (body.length > 1500) body = body.slice(0, 1500) + '\n（以下省略）';
+  var name = (data && (data.会社名 || data.お名前)) || '';
+  return 'mailto:contact@minano-sr.com?subject=' +
+    encodeURIComponent('【無料相談のお申し込み】' + name) +
+    '&body=' + encodeURIComponent(body);
+}
+
+function showError(data) {
   document.getElementById('contactForm').style.display = 'none';
   var box = document.getElementById('formSuccess');
   box.innerHTML =
     '<h3 style="font-size:24px; font-weight:700; color:var(--ink); margin-bottom:10px;">送信できませんでした</h3>' +
-    '<p style="font-size:16px; color:var(--ink2); line-height:1.7; margin-bottom:24px;">通信の状態により、うまく送信できなかったようです。<br>お手数ですが、少し時間をおいてもう一度お試しください。<br>お急ぎの場合はお電話（<b>090-8259-8774</b>）でも承ります。</p>' +
-    '<button type="button" class="form-submit" style="width:auto;padding:12px 28px;" onclick="location.reload()">フォームに戻る</button>';
+    '<p style="font-size:16px; color:var(--ink2); line-height:1.7; margin-bottom:24px;">通信の状態により、うまく送信できなかったようです。<br><b>入力いただいた内容は残っています。</b>下のボタンから戻って、もう一度お試しください。<br>お急ぎの場合はお電話（<b>090-8259-8774</b>）でも承ります。</p>' +
+    '<div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">' +
+    '<button type="button" class="form-submit" style="width:auto;padding:12px 28px;" onclick="restoreForm()">入力内容を保ったまま戻る</button>' +
+    '<a class="form-submit" style="width:auto;padding:12px 28px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;" href="' + buildMailtoFallback(data) + '">メールで送る</a>' +
+    '</div>';
   box.style.display = 'block';
   window.scrollTo(0, 0);
 }
@@ -1061,7 +1125,7 @@ function handleSubmit(event) {
     })
     .catch(function () {
       if (btn) { btn.disabled = false; btn.textContent = btn.dataset.orig || '無料相談を申し込む'; }
-      showError();
+      showError(data);
     });
 }
 // ★SPA遷移対策：このインラインscriptは page-enter.js が遷移のたびに再実行する。トップレベルの
@@ -1099,10 +1163,65 @@ if (fromPlan) {
   }
 }
 </script>
-<script defer src="../link-keep.js?v=20260723-conversion1"></script>
+<script defer src="../link-keep.js?v=20260814-entryparam1"></script>
 <script defer src="../header-motion.js?v=20260809-nav1"></script>
 <script defer src="../terms.js?v=20260812-terms1"></script>
 <script id="pf-hover">(function(){var d={};function pf(u){if(d[u])return;d[u]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u;document.head.appendChild(l);}function h(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var hr=a.getAttribute("href");if(!hr||hr[0]==="#"||/^(mailto:|tel:|https?:)/.test(hr))return;if(a.target==="_blank")return;pf(a.href);}document.addEventListener("mouseover",h,{passive:true});document.addEventListener("touchstart",h,{passive:true});})();</script>
 <script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/uploads/contact.html"}' async src="//gc.zgo.at/count.js"></script>
+
+<!-- ═══ Google広告 コンバージョン計測 ═══════════════════════════════════
+     いまは無効です。下の id と label を埋めると計測が始まります。
+     空のあいだは外部スクリプトを一切読み込まないので、表示速度に影響しません。
+
+     ■ 値の取り方（Google広告の管理画面）
+       1. ツールと設定 → 測定 → コンバージョン
+       2. 「+ 新しいコンバージョンアクション」→ ウェブサイト
+       3. ドメインに minano-sr.com を入力 →「手動でコンバージョンアクションを追加」
+       4. 目標「見込み顧客フォームの送信」、名前は「無料相談の申し込み」など
+       5. 作成後の「タグを設定する」→「タグを自分で追加する」を開くと
+            送信先: AW-1234567890/AbCdEfGhIj
+          のように表示される。スラッシュの前が id、後ろが label。
+
+     ■ このページだけに置けば足ります
+       LPからの遷移で link-keep.js が gclid を引き継ぐため、広告クリックとの
+       ひもづけはこのページのURLだけで成立します。LP側にタグは要りません。
+
+     ■ 入れたあとに必ず一度テストしてください
+       広告を止めた状態で自分でフォームを送信し、Google広告のコンバージョン画面に
+       記録されるか確認してから配信を始めてください。
+════════════════════════════════════════════════════════════════ -->
+<script>
+window.MN_ADS = window.MN_ADS || {
+  id: '',      // 例: 'AW-1234567890'
+  label: ''    // 例: 'AbCdEfGhIj'
+};
+(function () {
+  var c = window.MN_ADS;
+  if (!c.id || !c.label) return;
+
+  // page-enter.js がSPA遷移のたびにこのscriptを再実行するため、二重読み込み・二重計測を防ぐ
+  if (!window.__mnAdsLoaded) {
+    window.__mnAdsLoaded = true;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(c.id);
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', c.id);
+  }
+
+  if (!window.__mnAdsBound) {
+    window.__mnAdsBound = true;
+    // 送信が成功した瞬間だけ発火する。既存の mn:contact-success をそのまま使うので、
+    // フォーム側のコードには手を入れていない。
+    document.addEventListener('mn:contact-success', function () {
+      if (typeof window.gtag !== 'function') return;
+      window.gtag('event', 'conversion', { send_to: c.id + '/' + c.label });
+    });
+  }
+})();
+</script>
 </body>
 </html>
