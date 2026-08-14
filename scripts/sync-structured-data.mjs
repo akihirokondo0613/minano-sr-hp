@@ -143,7 +143,13 @@ const office = {
   image: 'https://minano-sr.com/assets/og/minano-og.png',
   telephone: '+81-90-8259-8774',
   email: 'contact@minano-sr.com',
-  areaServed: ['富山県', '石川県', '日本'],
+  // 市町村名まで持たせる。「社労士 高岡」のような市町村ロングテールに対して、
+  // 本文（about.htmlの対応地域欄）とエンティティの両方で一致させるため。
+  areaServed: [
+    '富山県', '富山市', '高岡市', '射水市', '砺波市', '魚津市',
+    '滑川市', '黒部市', '氷見市', '小矢部市', '南砺市',
+    '石川県', '日本',
+  ],
   address: {
     '@type': 'PostalAddress',
     postalCode: '931-8333',
