@@ -71,11 +71,35 @@ function gitOutput(args) {
   }
 }
 
+// 共通資産の `?v=` を上げると全ページのHTMLが同時に変わるため、本文を一切直していない
+// ページまで「その日に更新された」ことになる。lastmodが実態とずれるとGoogleはサイト全体の
+// lastmodを信用しなくなるので、キャッシュ版だけが変わったコミットは更新と見なさず親へ遡る。
+const VERSION_ONLY = /^[+-].*\?v=\d{8}-[A-Za-z0-9]+/;
+
+function isVersionOnlyCommit(rel, sha) {
+  const diff = gitOutput(['diff', '--unified=0', `${sha}^`, sha, '--', rel]);
+  if (!diff) return false;
+  const changed = diff.split('\n').filter((line) => (
+    /^[+-]/.test(line) && !/^(\+\+\+|---)/.test(line)
+  ));
+  if (!changed.length) return false;
+  return changed.every((line) => VERSION_ONLY.test(line));
+}
+
 function lastModified(rel, stat) {
   // 編集中のファイルは、コミット前でも実行日が反映されるようmtimeを優先する。
   if (gitOutput(['status', '--porcelain', '--', rel])) return ymd(stat.mtime);
 
   // CIではcheckoutのmtimeが全ファイル同一になるため、確定済みファイルはGit履歴を正本にする。
+  // 直近コミットがキャッシュ版の付け替えだけなら、本文が変わった直近のコミットまで遡る。
+  const shas = gitOutput(['log', '-12', '--format=%H', '--', rel]).split('\n').filter(Boolean);
+  for (const sha of shas) {
+    if (isVersionOnlyCommit(rel, sha)) continue;
+    const date = gitOutput(['log', '-1', '--format=%cs', sha]);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(date)) return date;
+    break;
+  }
+
   const committed = gitOutput(['log', '-1', '--format=%cs', '--', rel]);
   if (/^\d{4}-\d{2}-\d{2}$/.test(committed)) return committed;
 
