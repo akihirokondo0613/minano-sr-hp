@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="page-enter.js?v=20260812-ui3hooks1"></script>
+<script defer src="page-enter.js?v=20260814-entryparam1"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>創業期の労務顧問｜みなの社会保険労務士事務所</title>
-<meta name="description" content="創業3年以内・従業員10名までの企業向け。給与計算、労働社会保険手続き、個別労務相談を月額顧問へ。契約開始から12か月間は月額45,000円（税抜）です。">
+<meta name="description" content="中小規模の企業向け。給与計算なしのスタート顧問は月25,000円から、給与計算込みのスタンダードは月45,000円から。労働社会保険手続きと労務実務を社労士にまとめます。">
 <link rel="canonical" href="https://minano-sr.com/startup-payroll.html">
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <meta property="og:url" content="https://minano-sr.com/startup-payroll.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="創業期の労務顧問｜みなの社会保険労務士事務所">
-<meta property="og:description" content="給与計算・労働社会保険手続き・日々の労務相談を月額顧問へ。創業3年以内・従業員10名まで、契約開始から12か月間は月額45,000円（税抜）です。">
+<meta property="og:description" content="中小規模の企業向け。給与計算なしのスタート顧問は月25,000円から、給与計算込みのスタンダードは月45,000円から。労働社会保険手続きと労務実務を社労士にまとめます。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:site_name" content="みなの社会保険労務士事務所">
 <meta name="twitter:card" content="summary_large_image">
@@ -23,27 +23,28 @@
 <meta name="twitter:image" content="https://minano-sr.com/assets/og/minano-og.png">
 <meta name="theme-color" content="#123F30">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="skin-v2.css?v=20260812-navstyle1">
+<link rel="stylesheet" href="skin-v2.css?v=20260814-safearea1">
 <style id="startup-payroll-page">
 .startup-page{background:var(--yuki);color:var(--ink2);line-height:1.9;line-break:strict}
 .startup-page h1,.startup-page h2,.startup-page h3{word-break:auto-phrase;text-wrap:balance}
 .startup-page p,.startup-page li{ text-wrap:pretty }
-.startup-hero{position:relative;padding:calc(var(--nav-h) + clamp(34px,5vw,70px)) 0 clamp(54px,7vw,92px);overflow:hidden;background:var(--yuki)}
+.startup-hero{position:relative;padding:calc(var(--nav-h) + clamp(28px,3.4vw,46px)) 0 clamp(54px,7vw,92px);overflow:hidden;background:var(--yuki)}
 .startup-breadcrumb{display:none}
-.startup-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.92fr);gap:clamp(32px,5vw,76px);align-items:center;margin-top:clamp(22px,3vw,36px)}
+.startup-hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.92fr);gap:clamp(32px,5vw,76px);align-items:center;margin-top:clamp(16px,2vw,24px)}
 .startup-hero-copy{min-width:0;display:flex;flex-direction:column;align-items:flex-start}
-.startup-kicker{display:inline-flex;align-items:center;gap:10px;color:var(--moegi-t);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em}
+.startup-kicker{display:inline-flex;align-items:center;gap:10px;color:var(--moegi-t);font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.1em}
 .startup-kicker::before{content:"";width:24px;height:2px;background:var(--moegi)}
-.startup-hero h1{margin-top:14px;color:var(--iwa);font-family:var(--disp);font-size:clamp(31px,4.7vw,58px);font-weight:900;line-height:1.43;letter-spacing:.01em}
-.startup-hero h1 strong{color:var(--sugi);background:linear-gradient(color-mix(in srgb,var(--moegi) 36%,transparent),color-mix(in srgb,var(--moegi) 36%,transparent)) no-repeat left 90%/100% 23%}
-.startup-hero-price{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;margin-top:20px;color:var(--sugi);font-family:var(--disp);font-size:clamp(18px,2vw,26px);font-weight:900;line-height:1.5}
+.startup-hero h1{margin-top:10px;color:var(--iwa);font-family:var(--disp);font-size:clamp(28px,4.7vw,52px);font-weight:900;line-height:1.38;letter-spacing:.01em}
+.startup-hero h1 strong{color:var(--iwa);background:linear-gradient(color-mix(in srgb,var(--moegi) 36%,transparent),color-mix(in srgb,var(--moegi) 36%,transparent)) no-repeat left 90%/100% 23%}
+.startup-hero-price{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;margin-top:16px;color:var(--iwa);font-family:var(--disp);font-size:clamp(18px,2vw,26px);font-weight:900;line-height:1.5}
 .startup-hero-price small{color:var(--ink3);font-family:var(--body);font-size:12px;font-weight:700}
-.startup-hero-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px}
+.startup-hero-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px}
 .startup-primary,.startup-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:50px;border-radius:var(--r);font-size:14px;font-weight:700;letter-spacing:.025em;transition:background .25s,transform .25s var(--ease),border-color .25s}
-.startup-primary{padding:13px 24px;color:#fff;background:var(--sugi);box-shadow:0 7px 18px rgba(18,63,48,.15)}
-.startup-primary:hover{background:var(--sugi-7);transform:translateY(-2px)}
-.startup-secondary{padding:10px 3px;color:var(--sugi);border-bottom:1px solid var(--moegi);border-radius:0}
-.startup-secondary:hover{color:var(--sugi-7);border-color:var(--sugi)}
+.startup-primary{padding:13px 24px;color:var(--iwa);background:var(--moegi-l);border:1px solid color-mix(in srgb,var(--moegi) 64%,var(--line));box-shadow:none}
+.startup-primary:hover{background:color-mix(in srgb,var(--moegi-l) 70%,var(--moegi));border-color:var(--moegi);transform:translateY(-2px)}
+.startup-secondary{padding:10px 3px;color:var(--iwa);border-bottom:1px solid var(--moegi);border-radius:0}
+.startup-secondary:hover{color:var(--iwa);border-color:var(--moegi-t)}
+.startup-hero-actions .startup-secondary{min-height:0;padding:6px 2px;font-size:13px;font-weight:600}
 .startup-hero-note{margin-top:11px;color:var(--ink3);font-size:11.5px;line-height:1.75}
 .startup-hero-sign{margin-top:16px;color:var(--ink3);font-size:11.5px;line-height:1.7}
 .startup-hero-sign strong{color:var(--iwa);font-weight:800}
@@ -75,42 +76,53 @@
 .startup-window{background:var(--shiro)}
 .startup-window .startup-section-title{max-width:760px}
 .startup-window .startup-section-lead{max-width:720px}
-.startup-diagram{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.7fr) minmax(0,1fr);gap:clamp(20px,4vw,60px);align-items:center;margin-top:40px;padding-block:30px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.startup-diagram-sources,.startup-diagram-results{display:grid;gap:13px}
-.startup-diagram-sources span,.startup-diagram-results span{display:block;color:var(--iwa);font-family:var(--disp);font-size:clamp(16px,1.8vw,21px);font-weight:800}
-.startup-diagram-sources span{padding-left:20px;border-left:3px solid var(--moegi)}
-.startup-diagram-results span{padding-right:20px;border-right:3px solid var(--moegi);text-align:right}
-.startup-diagram-center{position:relative;padding:26px 18px;color:#fff;background:var(--sugi);font-family:var(--disp);font-size:clamp(18px,2vw,24px);font-weight:900;line-height:1.5;text-align:center}
-.startup-diagram-center::before,.startup-diagram-center::after{content:"";position:absolute;top:50%;width:clamp(20px,4vw,60px);height:1px;background:var(--iwa)}
-.startup-diagram-center::before{right:100%}.startup-diagram-center::after{left:100%}
-.startup-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:38px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.startup-flow-step{padding:23px clamp(15px,2.4vw,28px);border-right:1px solid var(--line)}
-.startup-flow-step:last-child{border-right:0}
-.startup-flow-label{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em}
-.startup-flow-step h3{margin-top:7px;color:var(--iwa);font-family:var(--disp);font-size:16px;font-weight:800}
-.startup-flow-step p{margin-top:6px;color:var(--ink3);font-size:12.5px;line-height:1.8}
-.startup-scope-table{display:grid;grid-template-columns:1fr 1fr;border-top:3px solid var(--iwa);border-bottom:1px solid var(--iwa)}
-.startup-scope-column{padding:0 clamp(18px,4vw,48px) 18px 0}
-.startup-scope-column + .startup-scope-column{padding:0 0 18px clamp(18px,4vw,48px);border-left:3px solid var(--iwa)}
-.startup-scope-column h3{padding:20px 0 16px;color:var(--iwa);font-family:var(--disp);font-size:19px;font-weight:900}
-.startup-scope-column ul{display:grid;gap:0;margin:0;padding:0;list-style:none}
-.startup-scope-column li{padding:13px 0;border-top:1px solid var(--line);color:var(--ink2);font-size:13px;line-height:1.8}
+.startup-scope-table{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2.4vw,28px);margin-top:36px}
+.startup-scope-column{min-width:0;padding:clamp(20px,3vw,30px);background:var(--shiro);border:1px solid var(--line);border-top:4px solid var(--moegi);border-radius:var(--r)}
+.startup-scope-column.is-included{background:color-mix(in srgb,var(--moegi-l) 54%,var(--shiro));border-color:color-mix(in srgb,var(--moegi) 38%,var(--line))}
+.startup-scope-column.is-extra{border-top-color:var(--iwa)}
+.startup-scope-heading{display:grid;grid-template-columns:auto 1fr;column-gap:12px;align-items:center;padding-bottom:16px}
+.startup-scope-heading>span{grid-row:1/3;display:grid;place-items:center;width:36px;height:36px;color:var(--iwa);font-family:var(--mono);font-size:11px;font-weight:800;background:var(--yuki);border:1px solid var(--line);border-radius:50%}
+.startup-scope-column h3{color:var(--iwa);font-family:var(--disp);font-size:19px;font-weight:900;line-height:1.5}
+.startup-scope-heading p{color:var(--ink3);font-size:11px;line-height:1.6}
+.startup-scope-column ul{display:grid;gap:0;margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.startup-scope-column li{position:relative;padding:13px 0 13px 26px;border-bottom:1px solid var(--line);color:var(--ink2);font-size:13px;line-height:1.75}
+.startup-scope-column li::before{position:absolute;left:2px;top:13px;display:grid;place-items:center;width:18px;height:18px;color:var(--iwa);font-family:var(--mono);font-size:11px;font-weight:900;background:var(--shiro);border:1px solid color-mix(in srgb,var(--moegi) 52%,var(--line));border-radius:50%}
+.startup-scope-column.is-included li::before{content:"✓"}
+.startup-scope-column.is-extra li::before{content:"＋";color:var(--ink3);border-color:var(--line)}
 .startup-scope-note{margin-top:15px;color:var(--ink3);font-size:11.5px;line-height:1.8}
-.startup-scope-note a{color:var(--sugi);font-weight:700;border-bottom:1px solid var(--moegi)}
-.startup-price-band{color:#fff;background:var(--sugi-9)}
-.startup-price-band .startup-section-label{color:var(--moegi-b)}
-.startup-price-band .startup-section-title{color:#fff}
-.startup-price-band .startup-section-lead{color:rgba(255,255,255,.76)}
-.startup-price-axis{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,7vw,90px);margin-top:38px;padding-top:28px;border-top:2px solid rgba(255,255,255,.5)}
-.startup-price-axis::before{content:"";position:absolute;left:50%;top:18px;width:2px;height:22px;background:var(--moegi-b);transform:translateX(-50%)}
-.startup-price-stage{position:relative}
-.startup-price-stage::before{content:"";position:absolute;top:-36px;left:0;width:10px;height:10px;border:3px solid var(--moegi-b);border-radius:50%;background:var(--sugi-9)}
-.startup-price-stage span{display:block;color:var(--moegi-b);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em}
-.startup-price-stage strong{display:block;margin-top:5px;color:#fff;font-family:var(--disp);font-size:clamp(28px,4vw,46px);font-weight:900;font-variant-numeric:tabular-nums;line-height:1.2}
-.startup-price-stage small{display:block;margin-top:4px;color:rgba(255,255,255,.72);font-size:11.5px;line-height:1.7}
-.startup-price-band .startup-price-note{margin-top:22px;color:rgba(255,255,255,.72);font-size:12px;line-height:1.8}
-.startup-price-band .startup-primary{margin-top:24px;color:var(--sugi);background:#fff;box-shadow:none}
-.startup-option-layout{display:grid;grid-template-columns:1fr;gap:clamp(30px,5vw,58px);align-items:start}
+.startup-scope-note a{color:var(--iwa);font-weight:700;border-bottom:1px solid var(--moegi)}
+.startup-price-band{color:var(--iwa);background:var(--yuki);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.startup-price-band .startup-section-label{color:var(--moegi-t)}
+.startup-price-band .startup-section-title{color:var(--iwa)}
+.startup-price-band .startup-section-lead{color:var(--ink2)}
+.startup-price-card{display:grid;grid-template-columns:minmax(270px,.82fr) minmax(0,1.18fr);gap:clamp(24px,5vw,64px);align-items:center;margin-top:36px;padding:clamp(24px,4vw,44px);background:var(--shiro);border:1px solid var(--line);border-top:4px solid var(--moegi);border-radius:var(--r);box-shadow:0 18px 48px rgba(35,43,39,.06)}
+.startup-price-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(14px,2.4vw,28px);margin-top:36px}
+.startup-price-option{min-width:0;padding:clamp(22px,3vw,34px);background:var(--shiro);border:1px solid var(--line);border-top:4px solid var(--iwa);border-radius:var(--r);box-shadow:0 18px 48px rgba(35,43,39,.06)}
+.startup-price-option.is-recommended{border-top-color:var(--moegi);background:color-mix(in srgb,var(--moegi-l) 34%,var(--shiro))}
+.startup-price-option-kicker{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:800;letter-spacing:.12em}
+.startup-price-option.is-recommended .startup-price-option-kicker{color:var(--iwa)}
+.startup-price-option-name{margin-top:8px;color:var(--iwa);font-family:var(--disp);font-size:22px;font-weight:900;line-height:1.5}
+.startup-price-option-sub{margin-top:3px;color:var(--ink3);font-size:12px;line-height:1.7}
+.startup-price-option .startup-price-compare{margin-top:18px}
+.startup-price-option .startup-price-main strong{font-size:clamp(42px,4.2vw,62px)}
+.startup-price-option .startup-price-details{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.startup-price-option .startup-price-details h4{color:var(--iwa);font-family:var(--disp);font-size:15px;font-weight:900;line-height:1.6}
+.startup-price-offer{min-width:0}
+.startup-price-badge{display:inline-flex;align-items:center;min-height:30px;padding:5px 12px;color:var(--iwa);font-size:12px;font-weight:900;background:var(--moegi-l);border:1px solid color-mix(in srgb,var(--moegi) 52%,var(--line));border-radius:999px}
+.startup-price-compare{display:flex;align-items:baseline;gap:9px;margin-top:14px;color:var(--ink3);font-size:12px;line-height:1.6}
+.startup-price-compare strong{font-family:var(--disp);font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;text-decoration:line-through;text-decoration-thickness:1px}
+.startup-price-main{display:flex;align-items:baseline;gap:8px;margin-top:3px;color:var(--iwa);font-family:var(--disp);font-weight:900;line-height:1.1}
+.startup-price-main strong{font-size:clamp(46px,6vw,72px);font-variant-numeric:tabular-nums;letter-spacing:-.035em}
+.startup-price-main span{font-size:16px}
+.startup-price-tax{display:block;margin-top:8px;color:var(--ink3);font-size:11px;line-height:1.7}
+.startup-price-details{min-width:0}
+.startup-price-details h3{color:var(--iwa);font-family:var(--disp);font-size:17px;font-weight:900;line-height:1.6}
+.startup-price-includes{display:flex;flex-wrap:wrap;gap:8px;margin:13px 0 0;padding:0;list-style:none}
+.startup-price-includes li{padding:7px 10px;color:var(--ink2);font-size:11.5px;font-weight:700;line-height:1.45;background:var(--yuki);border:1px solid var(--line);border-radius:999px}
+.startup-price-term{margin-top:17px;padding-top:15px;border-top:1px solid var(--line);color:var(--ink2);font-size:12px;line-height:1.85}
+.startup-price-term strong{color:var(--iwa);font-weight:800}
+.startup-price-band .startup-price-note{margin-top:18px;color:var(--ink3);font-size:12px;line-height:1.8}
+.startup-price-band .startup-primary{margin-top:24px}
 .startup-option-art{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .startup-option-art figure{margin:0;text-align:center}
 .startup-option-art img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:contain}
@@ -119,14 +131,14 @@
 .startup-option-item{padding:19px 0;border-bottom:1px solid var(--line)}
 .startup-option-item h3{color:var(--iwa);font-family:var(--disp);font-size:18px;font-weight:800}
 .startup-option-item p{margin-top:6px;color:var(--ink2);font-size:13px;line-height:1.9}
-.startup-option-note{margin-top:16px;color:var(--ink3);font-size:11.5px;line-height:1.85}
+.startup-option-note{max-width:44em;margin-top:16px;color:var(--ink3);font-size:11.5px;line-height:1.85}
 .startup-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .startup-step{padding:22px clamp(14px,2vw,25px);border-right:1px solid var(--line)}
 .startup-step:last-child{border-right:0}
 .startup-step-num{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em}
 .startup-step h3{margin-top:8px;color:var(--iwa);font-family:var(--disp);font-size:16px;font-weight:800}
 .startup-step p{margin-top:6px;color:var(--ink3);font-size:12px;line-height:1.8}
-.startup-mid-cta{display:flex;align-items:center;justify-content:space-between;gap:22px;margin-top:28px;padding:22px 0;border-top:2px solid var(--moegi);border-bottom:1px solid var(--line)}
+.startup-mid-cta{display:flex;align-items:center;justify-content:flex-start;gap:clamp(22px,4vw,54px);margin-top:28px;padding:22px 0;border-top:2px solid var(--moegi);border-bottom:1px solid var(--line)}
 .startup-mid-cta p{color:var(--ink2);font-size:13px;line-height:1.9}
 .startup-faq{display:grid;gap:0;border-top:1px solid var(--line)}
 .startup-faq details{background:transparent;border-bottom:1px solid var(--line)}
@@ -141,7 +153,7 @@
 .startup-rep-text{margin-top:16px;color:var(--ink2);font-size:14px;line-height:2.05}
 .startup-rep-sign{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:22px;padding-top:17px;border-top:1px solid var(--line);color:var(--ink3);font-size:12px}
 .startup-rep-sign strong{color:var(--iwa);font-size:13.5px}
-.startup-rep-sign a{color:var(--sugi);font-weight:700;border-bottom:1px solid var(--moegi)}
+.startup-rep-sign a{color:var(--iwa);font-weight:700;border-bottom:1px solid var(--moegi)}
 .startup-final{background:var(--yuki)}
 .startup-final-inner{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(30px,6vw,82px);align-items:center}
 .startup-final-art{margin:0}
@@ -152,15 +164,12 @@
 .startup-final p{margin-top:13px;color:var(--ink2);font-size:14px;line-height:1.95}
 .startup-final .startup-primary{margin-top:23px}
 .startup-final-note{display:block;margin-top:10px;color:var(--ink3);font-size:11px}
-.startup-page>section{content-visibility:auto;contain-intrinsic-size:auto 700px}
+/* contain-intrinsic-sizeは実測の中央値に合わせる。小さすぎるとスクロール中に高さが変わり、がたつく */
+.startup-page>section{content-visibility:auto;contain-intrinsic-size:auto 950px}
 @media(max-width:900px){
-  .startup-hero-grid,.startup-story-grid,.startup-after-grid,.startup-option-layout,.startup-final-inner{grid-template-columns:1fr;gap:28px}
+  .startup-hero-grid,.startup-story-grid,.startup-after-grid,.startup-final-inner{grid-template-columns:1fr;gap:28px}
   .startup-hero-art,.startup-future-panel{order:2}.startup-hero-copy{order:1}
   .startup-story-art{order:-1}.startup-after-art{order:1}.startup-after-copy{order:2}
-  .startup-diagram{grid-template-columns:1fr;gap:22px}.startup-diagram-center::before,.startup-diagram-center::after{display:none}
-  .startup-diagram-sources span,.startup-diagram-results span{text-align:center;border:0;padding:0}
-  .startup-diagram-sources,.startup-diagram-results{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-  .startup-diagram-center{max-width:340px;margin-inline:auto}
   .startup-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.startup-step:nth-child(2){border-right:0}.startup-step:nth-child(-n+2){border-bottom:1px solid var(--line)}
 }
 @media(max-width:640px){
@@ -181,10 +190,9 @@
   .startup-story-grid{gap:14px}.startup-story-art{order:-1}
   .startup-burden-list{margin-top:22px}.startup-burden-item{grid-template-columns:34px minmax(0,1fr);gap:10px;padding:17px 0}.startup-burden-item h3{font-size:16px}.startup-burden-item p{font-size:12.5px}
   .startup-after-grid{gap:12px}.startup-after-list{margin-top:18px}
-  .startup-diagram{margin-top:25px;padding-block:23px}.startup-diagram-sources,.startup-diagram-results{grid-template-columns:1fr;gap:10px}.startup-diagram-sources span,.startup-diagram-results span{font-size:15px}
-  .startup-flow{grid-template-columns:1fr;margin-top:28px}.startup-flow-step{border-right:0;border-bottom:1px solid var(--line)}.startup-flow-step:last-child{border-bottom:0}
-  .startup-scope-table{grid-template-columns:1fr;border-top-width:2px}.startup-scope-column,.startup-scope-column + .startup-scope-column{padding:0 0 15px;border-left:0}.startup-scope-column + .startup-scope-column{border-top:3px solid var(--iwa);margin-top:10px}.startup-scope-column h3{padding-top:17px;font-size:18px}
-  .startup-price-axis{grid-template-columns:1fr;gap:28px;padding-top:25px}.startup-price-axis::before{left:5px;top:50%;width:2px;height:34px;transform:none}.startup-price-stage::before{top:0;left:-1px}.startup-price-stage{padding-left:24px}.startup-price-stage strong{font-size:31px}
+  .startup-scope-table{grid-template-columns:1fr;gap:14px;margin-top:27px}.startup-scope-column{padding:20px 17px}.startup-scope-column h3{font-size:17px}
+  .startup-price-card{grid-template-columns:1fr;gap:22px;margin-top:27px;padding:22px 17px}.startup-price-main strong{font-size:48px}.startup-price-details{padding-top:20px;border-top:1px solid var(--line)}
+  .startup-price-options{grid-template-columns:1fr;gap:14px;margin-top:27px}.startup-price-option{padding:22px 17px}.startup-price-option .startup-price-main strong{font-size:48px}.startup-price-option .startup-price-details{margin-top:20px;padding-top:18px}
   .startup-option-art{gap:8px}.startup-option-item{padding:17px 0}
   .startup-steps{grid-template-columns:1fr}.startup-step,.startup-step:nth-child(2){border-right:0;border-bottom:1px solid var(--line)}.startup-step:last-child{border-bottom:0}
   .startup-mid-cta{align-items:stretch;flex-direction:column;gap:12px}.startup-mid-cta .startup-primary{width:100%}
@@ -194,7 +202,8 @@
 @media(prefers-reduced-motion:reduce){.startup-primary,.startup-secondary{transition:none}}
 
 /* LP information design: every visual has a declared job. */
-.startup-hero-intro{max-width:31em;margin-top:15px;color:var(--iwa);font-size:clamp(15px,1.5vw,18px);font-weight:700;line-height:1.85}
+.startup-hero-intro{max-width:31em;margin-top:12px;color:var(--iwa);font-size:clamp(15px,1.5vw,18px);font-weight:700;line-height:1.85}
+.startup-hero-detail{max-width:42em;margin-top:13px;color:var(--ink2);font-size:13px;line-height:1.95}
 .startup-hero-proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;width:100%;max-width:690px;margin:23px 0 0;padding:0;list-style:none;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .startup-hero-proof li{display:grid;grid-template-columns:auto 1fr;column-gap:9px;padding:13px 14px 13px 0;border-right:1px solid var(--line)}
 .startup-hero-proof li + li{padding-left:14px}.startup-hero-proof li:last-child{border-right:0}
@@ -203,12 +212,21 @@
 .startup-hero-art,.startup-story-art,.startup-after-art,.startup-option-art figure{position:relative}
 .startup-hero-art,.startup-story-art,.startup-after-art{padding:clamp(12px,1.5vw,20px);background:var(--shiro);border:1px solid color-mix(in srgb,var(--line) 75%,transparent);border-radius:var(--r)}
 .startup-hero-art{padding-top:clamp(30px,3vw,42px)}
-.startup-art-tag{position:absolute;top:12px;left:clamp(12px,1.5vw,20px);z-index:1;color:var(--moegi-t);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.12em}.startup-art-tag-after{color:var(--sugi)}.startup-art-tag-warm{color:#9b6a20}
+.startup-art-tag{position:absolute;top:12px;left:clamp(12px,1.5vw,20px);z-index:1;color:var(--moegi-t);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.12em}.startup-art-tag-after{color:var(--moegi-t)}.startup-art-tag-warm{color:#9b6a20}
 .startup-hero-art figcaption,.startup-story-art figcaption,.startup-after-art figcaption{display:grid;gap:3px;margin-top:11px;padding:11px 3px 2px;border-top:1px solid var(--line)}
 .startup-hero-art figcaption strong,.startup-story-art figcaption strong,.startup-after-art figcaption strong{color:var(--iwa);font-family:var(--disp);font-size:14px;line-height:1.55}.startup-hero-art figcaption small,.startup-story-art figcaption small,.startup-after-art figcaption small{color:var(--ink3);font-size:11px;line-height:1.65}
 .startup-story-art,.startup-after-art{align-self:center}.startup-after-art{background:color-mix(in srgb,var(--yuki) 82%,var(--moegi-b))}
-.startup-diagram{grid-template-columns:minmax(0,1fr) minmax(240px,.75fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);padding:38px 0}
-.startup-diagram-side{display:grid;gap:13px}.startup-diagram-side-label{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em}.startup-diagram-side-result{text-align:right}.startup-diagram-center{display:grid;gap:5px;align-content:center;min-height:116px}.startup-diagram-center small{color:var(--moegi-b);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em}.startup-diagram-sources span,.startup-diagram-results span{font-size:15px}.startup-diagram-sources span{padding:11px 14px;background:color-mix(in srgb,var(--yuki) 68%,var(--moegi-b));border:0;border-left:3px solid var(--moegi)}.startup-diagram-results span{padding:11px 14px;background:color-mix(in srgb,var(--yuki) 72%,var(--sora));border:0;border-right:3px solid var(--moegi)}
+.startup-process-viz{margin:38px 0 0;padding:clamp(18px,3vw,24px);border:1px solid var(--line);border-radius:var(--r);background:var(--shiro);box-shadow:var(--sh-xs)}
+.startup-process-viz-title{display:flex;align-items:baseline;gap:9px;margin:0 0 15px;color:var(--iwa);font-size:15px;font-weight:800;line-height:1.65}
+.startup-process-viz-title::before{content:"図解";flex:0 0 auto;padding:2px 8px;border-radius:999px;background:var(--moegi-l);color:var(--iwa);font-family:var(--mono);font-size:10.5px;letter-spacing:.04em}
+.startup-post-flow{display:flex;align-items:stretch;gap:9px}
+.startup-post-flow-step{min-width:0;flex:1 1 0;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--yuki)}
+.startup-post-flow-step.is-office{border-color:color-mix(in srgb,var(--moegi) 52%,var(--line));box-shadow:inset 0 3px 0 var(--moegi)}
+.startup-post-flow-step b,.startup-post-flow-step span{display:block}
+.startup-post-flow-step b{margin-bottom:6px;color:var(--iwa);font-size:13.5px;line-height:1.55}
+.startup-post-flow-step span{color:var(--ink3);font-size:12.5px;line-height:1.75}
+.startup-post-flow-arrow{align-self:center;flex:0 0 auto;color:var(--moegi-t);font-weight:900}
+.startup-process-viz figcaption{margin-top:14px;color:var(--ink3);font-size:12.5px;line-height:1.8}
 .startup-option-art{align-items:start}.startup-option-art figure{padding:10px 10px 12px;background:var(--yuki);border:1px solid var(--line);border-radius:var(--r)}.startup-option-art figure .startup-art-tag{top:16px;left:17px}.startup-option-art figcaption{display:grid;gap:3px;margin-top:8px;text-align:left}.startup-option-art figcaption strong{color:var(--iwa);font-family:var(--disp);font-size:12px;line-height:1.55}.startup-option-art figcaption small{color:var(--ink3);font-size:10px;line-height:1.6}
 .startup-final-art{position:relative;padding:clamp(12px,1.5vw,20px);padding-top:clamp(30px,3vw,42px);background:var(--shiro);border:1px solid color-mix(in srgb,var(--line) 75%,transparent);border-radius:var(--r)}
 .startup-final-art figcaption{display:grid;gap:3px;margin-top:11px;padding:11px 3px 2px;border-top:1px solid var(--line)}.startup-final-art figcaption strong{color:var(--iwa);font-family:var(--disp);font-size:14px;line-height:1.55}.startup-final-art figcaption small{color:var(--ink3);font-size:11px;line-height:1.65}
@@ -220,54 +238,57 @@
 .startup-point-box li::before{content:"";position:absolute;left:1px;top:.72em;width:8px;height:4px;border-left:2px solid var(--moegi);border-bottom:2px solid var(--moegi);transform:rotate(-45deg)}
 .startup-page-toc{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:16px;padding-block:15px;background:transparent}
 .startup-page-toc ol{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0;padding:0;list-style:none}
-.startup-page-toc a{color:var(--sugi);font-size:11.5px;font-weight:700;border-bottom:1px solid var(--moegi)}
+.startup-page-toc a{color:var(--iwa);font-size:11.5px;font-weight:700;border-bottom:1px solid var(--moegi)}
 .startup-option-visuals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:28px}
-.startup-process-card{padding:clamp(16px,2.4vw,24px);background:var(--yuki);border:1px solid var(--line);border-top:3px solid var(--moegi);border-radius:var(--r)}
-.startup-process-card.is-warm{border-top-color:#c6923d}
+.startup-process-card{padding:clamp(18px,2.4vw,25px);background:var(--shiro);border:1px solid var(--line);border-top:3px solid var(--moegi);border-radius:var(--r)}
+.startup-process-card.is-warm{background:color-mix(in srgb,var(--yuki) 90%,var(--asahi));border-top-color:#c6923d}
 .startup-process-kicker{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em}.startup-process-card.is-warm .startup-process-kicker{color:#9b6a20}
 .startup-process-card h3{margin-top:8px;color:var(--iwa);font-family:var(--disp);font-size:16px;font-weight:900;line-height:1.55}
-.startup-process-steps{display:grid;gap:0;margin:15px 0 0;padding:0;list-style:none;border-top:1px solid var(--line)}
-.startup-process-steps li{display:grid;grid-template-columns:28px 1fr;gap:9px;padding:10px 0;border-bottom:1px solid var(--line);color:var(--ink2);font-size:12px;line-height:1.65}
-.startup-process-steps b{display:grid;place-items:center;width:24px;height:24px;color:var(--sugi);font-family:var(--mono);font-size:10px;background:color-mix(in srgb,var(--moegi-b) 52%,var(--shiro));border-radius:50%}.startup-process-steps span{align-self:center}
+.startup-process-steps{display:grid;gap:0;margin:16px 0 0;padding:0;list-style:none}
+.startup-process-steps li{position:relative;display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;min-height:48px;padding:7px 0;color:var(--ink2);font-size:12px;line-height:1.65}
+.startup-process-steps li:not(:last-child)::after{content:"";position:absolute;left:14px;top:36px;bottom:-3px;width:1px;background:color-mix(in srgb,var(--moegi) 56%,var(--line))}
+.startup-process-steps b{position:relative;z-index:1;display:grid;place-items:center;width:28px;height:28px;color:var(--iwa);font-family:var(--mono);font-size:10px;background:var(--moegi-l);border:1px solid color-mix(in srgb,var(--moegi) 52%,var(--line));border-radius:50%}.startup-process-steps span{align-self:start;padding-top:4px}
 .startup-process-note{margin-top:11px;color:var(--ink3);font-size:11px;line-height:1.75}
 .startup-final-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(280px,.95fr);gap:clamp(30px,6vw,82px);align-items:center}
 .startup-final-check{padding:clamp(20px,3vw,30px);background:var(--shiro);border:1px solid var(--line);border-left:4px solid var(--moegi);border-radius:var(--r)}
 .startup-final-check ul{display:grid;gap:0;margin:14px 0 0;padding:0;list-style:none;border-top:1px solid var(--line)}
 .startup-final-check li{position:relative;padding:12px 0 12px 22px;border-bottom:1px solid var(--line);color:var(--ink2);font-size:12.5px;line-height:1.7}
 .startup-final-check li::before{content:"";position:absolute;left:3px;top:18px;width:8px;height:4px;border-left:2px solid var(--moegi);border-bottom:2px solid var(--moegi);transform:rotate(-45deg)}
-.startup-hero-golden{display:grid;gap:0;width:100%;max-width:670px;margin:23px 0 0;padding:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);list-style:none}
-.startup-hero-golden li{display:grid;grid-template-columns:58px minmax(0,1fr);gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.startup-hero-golden li:last-child{border-bottom:0}
-.startup-hero-golden span{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em}.startup-hero-golden strong{color:var(--iwa);font-family:var(--disp);font-size:13px;line-height:1.55}.startup-hero-golden small{grid-column:2;color:var(--ink3);font-size:11px;line-height:1.55}
-.startup-future-panel{position:relative;min-width:0;padding:clamp(24px,3.5vw,42px);background:var(--sugi);color:#fff;border-radius:var(--r);overflow:hidden}
-.startup-future-panel::after{content:"";position:absolute;right:-40px;bottom:-58px;width:190px;height:190px;border:1px solid rgba(194,229,201,.35);border-radius:50%;box-shadow:0 0 0 18px rgba(194,229,201,.06),0 0 0 36px rgba(194,229,201,.04)}
-.startup-future-kicker{position:relative;z-index:1;color:var(--moegi-b);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.16em}.startup-future-panel h2{position:relative;z-index:1;max-width:14em;margin-top:11px;color:#fff;font-family:var(--disp);font-size:clamp(25px,3vw,38px);font-weight:900;line-height:1.5}.startup-future-panel h2 strong{color:var(--moegi-b)}
-.startup-future-flow{position:relative;z-index:1;display:grid;gap:10px;margin-top:26px}.startup-future-stage{padding:15px 16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);border-radius:var(--r)}.startup-future-stage.is-future{background:var(--moegi-b);border-color:var(--moegi-b);color:var(--sugi-9)}
-.startup-future-stage-label{display:block;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.14em;color:var(--moegi-b)}.startup-future-stage.is-future .startup-future-stage-label{color:var(--sugi)}.startup-future-stage strong{display:block;margin-top:5px;font-family:var(--disp);font-size:16px;line-height:1.55}.startup-future-stage small{display:block;margin-top:4px;color:rgba(255,255,255,.72);font-size:11px;line-height:1.6}.startup-future-stage.is-future small{color:rgba(18,63,48,.78)}
-.startup-future-transfer{display:flex;align-items:center;justify-content:center;gap:9px;color:var(--moegi-b);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.1em}.startup-future-transfer::before,.startup-future-transfer::after{content:"";height:1px;flex:1;background:rgba(194,229,201,.45)}
-.startup-future-route{position:relative;z-index:1;margin-top:19px;padding-top:13px;border-top:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.8);font-size:11px;line-height:1.75}.startup-future-route strong{color:#fff}
+.startup-hero-subsidy{width:100%;max-width:670px;margin:19px 0 0;padding:14px 0 14px 18px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-left:3px solid var(--moegi)}
+.startup-hero-subsidy strong{display:block;color:var(--iwa);font-family:var(--disp);font-size:14px;font-weight:900;line-height:1.65}
+.startup-hero-subsidy p{margin-top:5px;color:var(--ink2);font-size:12px;line-height:1.8}
+.startup-hero-subsidy small{display:block;margin-top:4px;color:var(--ink3);font-size:10.5px;line-height:1.7}
+.startup-future-panel{position:relative;min-width:0;padding:clamp(24px,3.5vw,42px);background:var(--shiro);color:var(--iwa);border:1px solid color-mix(in srgb,var(--moegi) 28%,var(--line));border-top:4px solid var(--moegi);border-radius:var(--r);box-shadow:0 18px 48px rgba(35,43,39,.08);overflow:hidden}
+.startup-future-panel::after{content:"";position:absolute;right:-40px;bottom:-58px;width:190px;height:190px;border:1px solid color-mix(in srgb,var(--moegi) 24%,transparent);border-radius:50%;box-shadow:0 0 0 18px color-mix(in srgb,var(--moegi-l) 48%,transparent),0 0 0 36px color-mix(in srgb,var(--moegi-l) 28%,transparent)}
+.startup-future-kicker{position:relative;z-index:1;color:var(--moegi-t);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.16em}.startup-future-panel h2{position:relative;z-index:1;max-width:16em;margin-top:11px;color:var(--iwa);font-family:var(--disp);font-size:clamp(25px,3vw,38px);font-weight:900;line-height:1.5}.startup-future-panel h2 strong{color:var(--iwa)}.startup-future-title-line{display:block}
+.startup-future-explain{position:relative;z-index:1;margin-top:18px;color:var(--ink2);font-size:13px;line-height:1.9}.startup-future-explain strong{display:block;margin-bottom:5px;color:var(--iwa);font-family:var(--disp);font-size:15px;line-height:1.65}.startup-future-explain-sub{margin-top:12px}.startup-future-note{position:relative;z-index:1;display:block;margin-top:8px;color:var(--ink3);font-size:10.5px;line-height:1.7}.startup-future-route{position:relative;z-index:1;margin-top:21px;padding-top:13px;border-top:1px solid var(--line);color:var(--ink2);font-size:11px;line-height:1.75}.startup-future-route strong{color:var(--iwa)}
 .startup-outcome{max-width:1120px}.startup-outcome .startup-section-head{max-width:850px}.startup-outcome-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:36px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .startup-outcome-item{padding:22px clamp(16px,2.5vw,30px) 24px 0;border-right:1px solid var(--line)}.startup-outcome-item + .startup-outcome-item{padding-left:clamp(16px,2.5vw,30px)}.startup-outcome-item:last-child{padding-right:0;border-right:0}.startup-outcome-item span{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em}.startup-outcome-item h3{margin-top:9px;color:var(--iwa);font-family:var(--disp);font-size:17px;font-weight:900;line-height:1.6}.startup-outcome-item p{margin-top:7px;color:var(--ink3);font-size:12.5px;line-height:1.85}
-@media(max-width:900px){.startup-future-panel{max-width:620px;margin-inline:auto}.startup-future-panel h2{max-width:18em}}
-@media(max-width:640px){.startup-hero-golden{margin-top:17px}.startup-hero-golden li{grid-template-columns:48px minmax(0,1fr);gap:9px;padding:9px 0}.startup-hero-golden strong{font-size:12px}.startup-hero-golden small{font-size:10px}.startup-future-panel{padding:22px 18px}.startup-future-panel h2{font-size:25px}.startup-future-flow{margin-top:20px}.startup-future-stage{padding:13px 14px}.startup-future-stage strong{font-size:14px}.startup-future-stage small{font-size:10.5px}.startup-future-route{font-size:10.5px}.startup-outcome-list{grid-template-columns:1fr;margin-top:25px}.startup-outcome-item,.startup-outcome-item + .startup-outcome-item{padding:16px 0;border-right:0;border-bottom:1px solid var(--line)}.startup-outcome-item:last-child{padding-bottom:0;border-bottom:0}.startup-outcome-item h3{font-size:16px}.startup-outcome-item p{font-size:12px}}
+body > .skip-link,body > .nav .logo-mark,body > .nav .nav-cta,body > .mob-nav .mob-cta,body > .floating .fl-primary,body > .term-pop{color:var(--iwa);background:var(--moegi-l);border:1px solid color-mix(in srgb,var(--moegi) 64%,var(--line));box-shadow:none}
+body > .nav .logo-mark span{color:var(--iwa)}
+body > .nav .nav-links a.active{color:var(--iwa);border-color:var(--moegi)}
+body > .nav .nav-cta:hover,body > .floating .fl-primary:hover{color:var(--iwa);background:color-mix(in srgb,var(--moegi-l) 70%,var(--moegi))}
+body > .floating .fl-icon path{fill:var(--iwa)}
+body > .term-pop b{color:var(--iwa)}
+body > .term-pop[data-side="bottom"]::after{border-bottom-color:var(--moegi-l)}
+body > .term-pop[data-side="top"]::after{border-top-color:var(--moegi-l)}
+@media(max-width:900px){.startup-future-panel{width:100%;max-width:620px;margin-inline:auto}.startup-future-panel h2{max-width:18em}}
+@media(max-width:640px){.startup-hero-subsidy{margin-top:17px;padding:12px 0 12px 14px}.startup-hero-subsidy strong{font-size:13px}.startup-hero-subsidy p{font-size:11.5px}.startup-hero-subsidy small{font-size:10px}.startup-future-panel{padding:22px 18px}.startup-future-panel h2{font-size:25px}.startup-future-explain{font-size:12px}.startup-future-explain strong{font-size:14px}.startup-future-route{font-size:10.5px}.startup-outcome-list{grid-template-columns:1fr;margin-top:25px}.startup-outcome-item,.startup-outcome-item + .startup-outcome-item{padding:16px 0;border-right:0;border-bottom:1px solid var(--line)}.startup-outcome-item:last-child{padding-bottom:0;border-bottom:0}.startup-outcome-item h3{font-size:16px}}
 @media(max-width:900px){
-  .startup-diagram{grid-template-columns:1fr;gap:22px;padding-block:27px}
-  .startup-diagram-center{max-width:340px;margin-inline:auto}
-  .startup-diagram-sources,.startup-diagram-results{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-  .startup-diagram-sources span,.startup-diagram-results span{padding:10px 8px;border:1px solid var(--line);border-left:3px solid var(--moegi);text-align:center;font-size:12.5px;line-height:1.45}
-  .startup-diagram-sources span:last-child,.startup-diagram-results span:last-child{grid-column:1/-1}
-  .startup-diagram-center{min-height:0;padding:18px 14px}
+  .startup-post-flow{flex-direction:column}
+  .startup-post-flow-arrow{transform:rotate(90deg)}
   .startup-option-visuals{grid-template-columns:1fr}
   .startup-final-layout{grid-template-columns:1fr;gap:28px}
 }
 @media(max-width:640px){
-  .startup-hero-intro{margin-top:11px;font-size:14px;line-height:1.75}.startup-hero-proof{margin-top:16px}.startup-hero-proof li,.startup-hero-proof li + li{display:block;padding:10px 7px;text-align:center}.startup-hero-proof span{display:block;margin-bottom:3px}.startup-hero-proof strong{display:block;font-size:10.5px;line-height:1.35}.startup-hero-proof small{display:block;margin-top:2px;font-size:9px;line-height:1.35}.startup-hero-price{margin-top:13px}
-  .startup-hero-art,.startup-story-art,.startup-after-art{padding:12px;padding-top:28px}.startup-art-tag{top:10px;left:12px;font-size:8.5px}.startup-hero-art figcaption,.startup-story-art figcaption,.startup-after-art figcaption{margin-top:8px;padding-top:9px}.startup-hero-art figcaption strong,.startup-story-art figcaption strong,.startup-after-art figcaption strong{font-size:13px}.startup-hero-art figcaption small,.startup-story-art figcaption small,.startup-after-art figcaption small{font-size:10.5px}.startup-diagram{gap:14px;padding-block:22px}.startup-diagram-side{gap:8px}.startup-diagram-side-label{text-align:center;font-size:9px}.startup-diagram-side-result{text-align:left}.startup-diagram-sources span,.startup-diagram-results span{font-size:12px}.startup-diagram-center{padding:16px 12px;font-size:17px}.startup-diagram-center small{font-size:9px}
+  .startup-hero-intro{margin-top:11px;font-size:14px;line-height:1.75}.startup-hero-detail{margin-top:10px;font-size:12px;line-height:1.85}.startup-hero-proof{margin-top:16px}.startup-hero-proof li,.startup-hero-proof li + li{display:block;padding:10px 7px;text-align:center}.startup-hero-proof span{display:block;margin-bottom:3px}.startup-hero-proof strong{display:block;font-size:10.5px;line-height:1.35}.startup-hero-proof small{display:block;margin-top:2px;font-size:9px;line-height:1.35}.startup-hero-price{margin-top:13px}
+  .startup-hero-art,.startup-story-art,.startup-after-art{padding:12px;padding-top:28px}.startup-art-tag{top:10px;left:12px;font-size:8.5px}.startup-hero-art figcaption,.startup-story-art figcaption,.startup-after-art figcaption{margin-top:8px;padding-top:9px}.startup-hero-art figcaption strong,.startup-story-art figcaption strong,.startup-after-art figcaption strong{font-size:13px}.startup-hero-art figcaption small,.startup-story-art figcaption small,.startup-after-art figcaption small{font-size:10.5px}
   .startup-point-box,.startup-page-toc{margin-top:18px;padding:17px 16px}.startup-point-box ul{grid-template-columns:1fr;gap:7px;margin-top:10px}.startup-page-toc{grid-template-columns:1fr;gap:8px}.startup-page-toc ol{gap:5px 14px}
   .startup-option-list{grid-template-columns:1fr}.startup-process-card{padding:16px}.startup-process-card h3{font-size:15px}.startup-process-steps li{font-size:11.5px}.startup-final-check{padding:18px}.startup-final-check li{font-size:12px}
 }
 </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"創業期の労務顧問｜みなの社会保険労務士事務所","description":"創業3年以内・従業員10名までの企業向け。給与計算、労働社会保険手続き、個別労務相談を月額顧問へ。","url":"https://minano-sr.com/startup-payroll.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://minano-sr.com/"},{"@type":"ListItem","position":2,"name":"料金・顧問プラン","item":"https://minano-sr.com/pricing.html"},{"@type":"ListItem","position":3,"name":"創業期の労務顧問","item":"https://minano-sr.com/startup-payroll.html"}]}]}
+{"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"創業期の労務顧問｜みなの社会保険労務士事務所","description":"中小規模の企業向け。給与計算なしのスタート顧問は月25,000円から、給与計算込みのスタンダードは月45,000円から。労働社会保険手続きと労務実務を社労士にまとめます。","url":"https://minano-sr.com/startup-payroll.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://minano-sr.com/"},{"@type":"ListItem","position":2,"name":"料金・顧問プラン","item":"https://minano-sr.com/pricing.html"},{"@type":"ListItem","position":3,"name":"創業期の労務顧問","item":"https://minano-sr.com/startup-payroll.html"}]}]}
 </script>
 </head>
 <body data-nav="B">
@@ -288,28 +309,27 @@
     <div class="w">
       <div class="startup-hero-grid">
         <div class="startup-hero-copy">
-          <p class="startup-kicker">創業3年以内・従業員10名まで</p>
-          <h1>経営者が、<strong>会社を前に進める時間</strong>を取り戻す。</h1>
-          <p class="startup-hero-intro">給与計算・手続き・相談を一つの窓口に。必要な確認だけ受け取り、本業へ戻れる毎月をつくります。</p>
-          <ul class="startup-hero-golden" aria-label="この顧問がつくる変化">
-            <li><span>WHY</span><strong>調べものに、経営者の時間を使わない。</strong><small>期限と必要なことを、ひとりで抱えないために。</small></li>
-            <li><span>HOW</span><strong>給与・手続き・相談を、一つの窓口で整理。</strong><small>共有 → 処理 → 結果と次の判断を返します。</small></li>
-            <li><span>FUTURE</span><strong>任せた後は、採用・営業・現場の判断へ。</strong><small>締め日を、会社の次を考える時間に変えます。</small></li>
-          </ul>
-          <p class="startup-hero-price">月45,000円（税抜）<small>契約開始から12か月間／13か月目以降は月55,000円（税抜）</small></p>
-          <div class="startup-hero-actions"><a class="startup-primary" href="uploads/contact.html?from=startup-payroll">30分の現状確認を申し込む</a><a class="startup-secondary" href="#scope">任せられる範囲を見る →</a></div>
-          <p class="startup-hero-note">初回相談は無料です。この時点で契約は確定しません。</p>
-          <p class="startup-hero-sign">富山県社会保険労務士会所属　<strong>代表 社会保険労務士　近藤 昭宏</strong></p>
+          <p class="startup-kicker">中小規模の企業の労務担当者へ</p>
+          <h1><span class="nw">労務の実務、</span><br><strong><span class="nw">誰が担い</span><wbr><span class="nw">続けますか。</span></strong></h1>
+          <p class="startup-hero-intro"><span class="nw">給与計算も、労働社会保険の手続きも、</span><wbr><span class="nw">イベントが発生するたびに</span><wbr><span class="nw">調べながら進めていませんか。</span></p>
+          <p class="startup-hero-detail"><span class="nw">毎月の給与計算、入退社・社会保険の届出、労務相談を</span><wbr><span class="nw">一つの窓口へ。</span><wbr><span class="nw">実際の手続きや計算は社労士が進め、</span><wbr><span class="nw">確認事項と判断材料をまとめてお返しし、</span><wbr><span class="nw">担当者には最終確認をお願いします。</span></p>
+          <div class="startup-hero-subsidy">
+            <strong><span class="nw">助成金を検討するときに、</span><wbr><span class="nw">必要な情報が揃っている状態へ。</span></strong>
+            <p><span class="nw">申請にも使用する勤怠・賃金・雇用情報を整えることで、</span><wbr><span class="nw">対象になりそうな助成金をご案内し、</span><wbr><span class="nw">申請の準備を進めます。</span></p>
+            <small><span class="nw">助成金の申請代行は別料金です。</span><wbr><span class="nw">支給を保証するものではありません。</span></small>
+          </div>
+          <p class="startup-hero-price"><span class="nw">月25,000円から（税抜）</span><small><span class="nw">給与計算なし・創業3年以内・</span><wbr><span class="nw">従業員5名まで</span><wbr><span class="nw">給与計算・個別相談まで含む場合は月45,000円から</span></small></p>
+          <div class="startup-hero-actions"><a class="startup-primary" href="uploads/contact.html?from=startup-payroll">任せる範囲と料金を相談する</a><a class="startup-secondary" href="#scope">任せられる範囲を見る →</a></div>
+          <p class="startup-hero-note">相談は無料です。この時点で契約は確定しません。</p>
+          <p class="startup-hero-sign"><span class="nw">富山県社会保険労務士会所属</span><wbr> <strong><span class="nw">代表 社会保険労務士</span><wbr> <span class="nw">近藤 昭宏</span></strong></p>
         </div>
         <aside class="startup-future-panel" aria-labelledby="startup-future-title">
-          <p class="startup-future-kicker">任せた後の毎月</p>
-          <h2 id="startup-future-title">経営者は、<strong>確認ではなく判断</strong>に戻る。</h2>
-          <div class="startup-future-flow">
-            <div class="startup-future-stage"><span class="startup-future-stage-label">今の状態</span><strong>締め日になると、労務を調べ始める</strong><small>勤怠・手続き・相談が一度に集まる</small></div>
-            <div class="startup-future-transfer" aria-hidden="true">みなのが引き受ける</div>
-            <div class="startup-future-stage is-future"><span class="startup-future-stage-label">任せた後</span><strong>必要な確認だけ受け、次の仕事へ進む</strong><small>採用・営業・現場の判断に時間を使える</small></div>
-          </div>
-          <p class="startup-future-route"><strong>会社から共有</strong> → みなのが整理・処理 → <strong>会社へ返す</strong></p>
+          <p class="startup-future-kicker">発生する実務を、専門家が代行</p>
+          <h2 id="startup-future-title"><span class="startup-future-title-line">調べる・計算する・届け出る。</span><span class="startup-future-title-line"><strong>実務は社労士へ。</strong></span></h2>
+          <p class="startup-future-explain"><strong>給与・賞与計算、勤怠・手当・入退社情報の照合、労働社会保険の届出を進めます。</strong>発生した実務を、期限と必要書類を確認しながら処理します。</p>
+          <p class="startup-future-explain startup-future-explain-sub">制度改正による変更点も確認し、手続きの進捗と判断材料を整理してお返しします。経営者には、整理された内容をもとに必要な最終判断をお願いします。</p>
+          <small class="startup-future-note">助成金の申請代行は別料金です。支給を保証するものではありません。</small>
+          <p class="startup-future-route"><strong class="nw">会社から情報共有</strong><wbr> → <span class="nw">社労士が実務・照合</span><wbr> → <strong class="nw">会社が最終判断</strong></p>
         </aside>
       </div>
     </div>
@@ -318,46 +338,53 @@
   <section class="startup-section startup-section-white" id="burden">
     <div class="w startup-story-grid">
       <div class="startup-story-copy">
-        <p class="startup-section-label">01 / WHY</p>
-        <h2 class="startup-section-title">本業の時間を、労務の確認で削らないために。</h2>
-        <p class="startup-section-lead">創業期は、営業・採用・資金繰りと同時に、給与や手続きも発生します。経営者が一人で調べ続ける状態を、先に変えます。</p>
+        <p class="startup-section-label">01 / 社内だけで進めると起きること</p>
+        <h2 class="startup-section-title">手続きが発生するたび、経営者が調べる状態を終わらせる。</h2>
+        <p class="startup-section-lead">給与締め、入退社、社会保険の届出には、それぞれ期限と必要書類があります。社内だけで進めると、実際の処理に加えて、制度改正を確認し、正しさや漏れを確かめる仕事まで経営者に残ります。</p>
         <div class="startup-burden-list">
-          <article class="startup-burden-item"><span class="startup-burden-num">01</span><div><h3>給与締めのたびに、確認が集中する</h3><p>勤怠の不備、手当の変更、入退社情報を締め日前後にまとめて確認し、計算まで抱えている。</p></div></article>
-          <article class="startup-burden-item"><span class="startup-burden-num">02</span><div><h3>手続きごとに、期限と必要書類を調べる</h3><p>入社、退社、扶養、月額変更など、発生時期の異なる手続きが一つずつ割り込んでくる。</p></div></article>
-          <article class="startup-burden-item"><span class="startup-burden-num">03</span><div><h3>迷ったときだけ、相談先を探している</h3><p>雇用条件、労働時間、休職や退職の対応を、問題が起きてから誰に聞くか決める状態になっている。</p></div></article>
+          <article class="startup-burden-item"><span class="startup-burden-num">01</span><div><h3>手続きが発生してから、期限と書類を調べる</h3><p>入退社や社会保険の届出が発生するたび、何をいつまでに出すのかを確認するところから始まります。</p></div></article>
+          <article class="startup-burden-item"><span class="startup-burden-num">02</span><div><h3>給与締めのたび、情報を集めて計算する</h3><p>勤怠、手当、入退社情報をそろえ、計算結果と前月からの変更を確認する作業が毎月続きます。</p></div></article>
+          <article class="startup-burden-item"><span class="startup-burden-num">03</span><div><h3>合っているか、漏れていないかを社内で判断できない</h3><p>期限、必要書類、制度改正を調べても、誰に確認すればよいか分からないまま処理が進みます。</p></div></article>
         </div>
       </div>
-      <figure class="startup-story-art"><div class="startup-art-tag">本業と労務がぶつかる</div><img src="assets/illustrations/18_payroll_calculation.webp" width="1600" height="1200" loading="lazy" alt="給与計算のため書類や勤怠を確認している様子"><figcaption><strong>労務を抱えたまま、本業を進めている。</strong><small>給与・手続き・相談が、締め日や期限のたびに割り込みます。</small></figcaption></figure>
+      <figure class="startup-story-art"><div class="startup-art-tag">社内だけで労務を抱える</div><img src="assets/illustrations/18_payroll_calculation.webp" width="1600" height="1200" loading="lazy" alt="給与計算のため書類や勤怠を確認している様子"><figcaption><strong>実務だけでなく、正しさを確かめる仕事も残る。</strong><small>給与・手続き・相談のたびに、期限、必要書類、制度改正の確認が必要です。</small></figcaption></figure>
     </div>
   </section>
 
   <section class="startup-section" id="after">
     <div class="w startup-outcome">
-      <div class="startup-section-head"><p class="startup-section-label">02 / FUTURE</p><h2 class="startup-section-title">任せた先にあるのは、経営者が判断に戻れる毎月。</h2><p class="startup-section-lead">労務の実務を外に出す価値は、作業を減らすことだけではありません。空いた時間を、会社の次の一手に使えることです。</p></div>
-      <div class="startup-outcome-list"><article class="startup-outcome-item"><span>01 / TIME</span><h3>締め日を、調べものではなく次の仕事に。</h3><p>勤怠や手続きの確認に追われず、採用・営業・現場の判断へ戻れます。</p></article><article class="startup-outcome-item"><span>02 / RELIEF</span><h3>迷ったときに、相談先を探さない。</h3><p>雇用条件や入退社など、日々の疑問を同じ窓口で確認できます。</p></article><article class="startup-outcome-item"><span>03 / GROWTH</span><h3>会社の成長に合わせて、整え方を選べる。</h3><p>勤怠のシステム化や助成金も、必要性と条件を確認してから進めます。</p></article></div>
+      <div class="startup-section-head"><p class="startup-section-label">02 / 社労士に任せる価値</p><h2 class="startup-section-title">申請・計算・照合を、毎月実際に進める専門家がいる。</h2><p class="startup-section-lead">相談に答えるだけではありません。給与計算と労働社会保険の手続きを実際に進め、会社には処理結果と最終確認が必要な点をまとめてお返しします。</p></div>
+      <div class="startup-outcome-list"><article class="startup-outcome-item"><span>01 / DEADLINE</span><h3>期限と必要書類を、手続きごとに調べ続けない。</h3><p>入退社や社会保険の届出について、期限と必要書類を確認し、実際の手続きを進めます。</p></article><article class="startup-outcome-item"><span>02 / EXECUTION</span><h3>給与計算と届出を、発生するたびに進めてもらえる。</h3><p>勤怠・手当・入退社情報を照合し、給与計算と届出の実務を継続して担います。</p></article><article class="startup-outcome-item"><span>03 / DECISION</span><h3>最終確認に必要な材料が、まとまって届く。</h3><p>処理結果、確認事項、選択肢をまとめ、経営者が判断すべき点を明確にしてお返しします。</p></article></div>
     </div>
   </section>
 
   <section class="startup-section startup-section-white startup-window" id="one-window">
-     <div class="w"><div class="startup-section-head"><p class="startup-section-label">03 / HOW</p><h2 class="startup-section-title">毎月のやりとりを、一つの流れにします。</h2><p class="startup-section-lead">会社から共有いただく情報を、給与計算・行政への届出・労務相談へつなぎます。処理の結果、不足資料、次に決めることを一つにまとめてお返しします。</p></div>
-      <div class="startup-diagram" aria-label="会社から共有する情報がみなの社会保険労務士事務所に集まり、結果が会社へ戻る図"><div class="startup-diagram-side"><span class="startup-diagram-side-label">会社から共有</span><div class="startup-diagram-sources"><span>勤務表・変更情報</span><span>入退社・扶養の情報</span><span>困ったこと・確認したいこと</span></div></div><div class="startup-diagram-center"><small>整理・処理・相談</small>みなの社会保険労務士事務所</div><div class="startup-diagram-side startup-diagram-side-result"><span class="startup-diagram-side-label">会社へお返し</span><div class="startup-diagram-results"><span>給与計算の結果</span><span>手続きの進捗と不足資料</span><span>次に決めること</span></div></div></div>
-      <div class="startup-flow"><article class="startup-flow-step"><span class="startup-flow-label">FROM COMPANY</span><h3>会社から共有</h3><p>勤務表、変更情報、雇用や労務に関する相談をお送りください。</p></article><article class="startup-flow-step"><span class="startup-flow-label">MINANO SR</span><h3>まとめて処理・整理</h3><p>給与計算、定例・年次手続き、個別労務相談を進めます。</p></article><article class="startup-flow-step"><span class="startup-flow-label">BACK TO BUSINESS</span><h3>会社へお返し</h3><p>計算結果、手続きの進捗、不足資料、判断材料を共有します。</p></article></div>
+     <div class="w"><div class="startup-section-head"><p class="startup-section-label">03 / 毎月の流れ</p><h2 class="startup-section-title">実務は社労士へ。会社は、必要な最終判断に集中できます。</h2><p class="startup-section-lead">会社から共有いただく情報をもとに、給与計算・行政への届出・労務相談を社労士が進めます。処理結果、確認事項、判断材料を一つにまとめてお返しするため、会社は必要な最終判断に集中できます。</p></div>
+      <figure class="startup-process-viz" data-visual="flow">
+        <p class="startup-process-viz-title">実務を進め、会社の最終判断につなぐ3段階</p>
+        <div class="startup-post-flow">
+          <div class="startup-post-flow-step"><b>会社から共有</b><span>勤怠・入退社・相談内容</span></div><span class="startup-post-flow-arrow" aria-hidden="true">→</span>
+          <div class="startup-post-flow-step is-office"><b>社労士が実務・照合</b><span>給与計算・届出・期限と制度改正の確認</span></div><span class="startup-post-flow-arrow" aria-hidden="true">→</span>
+          <div class="startup-post-flow-step"><b>会社が最終判断</b><span>整理された処理結果・確認事項・判断材料</span></div>
+        </div>
+        <figcaption>日頃の情報を整えておくと、助成金の提案や申請前の準備にもつながります。申請代行は別料金です。</figcaption>
+      </figure>
     </div>
   </section>
 
-  <section class="startup-section" id="scope"><div class="w"><div class="startup-section-head"><p class="startup-section-label">04 / WHAT</p><h2 class="startup-section-title">任せるのは、毎月の労務実務です。</h2><p class="startup-section-lead">給与計算・手続き・相談を顧問の中心に置き、導入支援や申請代行などは必要なときだけ別途ご提案します。</p></div><div class="startup-scope-table"><div class="startup-scope-column"><h3>月額に含む</h3><ul><li>給与・賞与計算（月次）</li><li>定例・年次の労働社会保険手続き</li><li>個別の労務相談</li><li>就業規則の年次レビューと改定提案</li><li>法改正情報と助成金情報のご案内</li></ul></div><div class="startup-scope-column"><h3>別料金</h3><ul><li>勤怠システムの導入・定着支援</li><li>助成金の申請代行</li><li>就業規則の新規作成・全面改定</li><li>年末調整の資料整理・税理士連携</li><li>料金ページ記載の申請・実費</li></ul></div></div><p class="startup-scope-note">別料金の業務は、必要性を確認したうえで事前にお見積りします。固定料金は<a href="pricing.html">料金ページ</a>でご確認ください。</p></div></section>
+  <section class="startup-section" id="scope"><div class="w"><div class="startup-section-head"><p class="startup-section-label">04 / 任せられる業務</p><h2 class="startup-section-title">任せるのは、毎月の労務実務です。</h2><p class="startup-section-lead">給与計算・手続き・相談を顧問の中心に置き、導入支援や申請代行などは必要なときだけ別途ご提案します。</p></div><div class="startup-scope-table"><article class="startup-scope-column is-included"><div class="startup-scope-heading"><span aria-hidden="true">01</span><h3>月額顧問料に含む</h3><p>毎月・定例の実務</p></div><ul><li>給与・賞与計算</li><li>定例・年次の労働社会保険手続き</li><li>個別の労務相談</li><li>就業規則の年次レビューと改定提案</li><li>助成金情報のご案内と、申請に備えた労務情報の整理</li></ul></article><article class="startup-scope-column is-extra"><div class="startup-scope-heading"><span aria-hidden="true">02</span><h3>必要なときだけ別料金</h3><p>導入・申請などの個別対応</p></div><ul><li>勤怠システムの導入・定着支援</li><li>助成金の申請代行</li><li>就業規則の新規作成・全面改定</li><li>年末調整の資料整理・税理士連携</li><li>料金ページ記載の申請・実費</li></ul></article></div><p class="startup-scope-note">別料金の業務は、必要性を確認したうえで事前にお見積りします。固定料金は<a href="pricing.html">料金ページ</a>でご確認ください。</p></div></section>
 
-  <section class="startup-section startup-price-band" id="price"><div class="w"><div class="startup-section-head"><p class="startup-section-label">05 / PRICE</p><h2 class="startup-section-title">創業3年以内・従業員10名まで、月45,000円（税抜）。</h2><p class="startup-section-lead">対象は、契約開始日時点で創業3年以内・従業員10名までの企業さまです。</p></div><div class="startup-price-axis"><div class="startup-price-stage"><span>契約開始から12か月間</span><strong>45,000円</strong><small>月額・税抜</small></div><div class="startup-price-stage"><span>13か月目以降</span><strong>55,000円</strong><small>月額・税抜</small></div></div><p class="startup-price-note">従業員が11名以上になった場合の料金、31名以上・複数拠点などの個別設計は料金ページに記載しています。</p><a class="startup-primary" href="uploads/contact.html?from=startup-payroll-price">30分の現状確認を申し込む</a></div></section>
+  <section class="startup-section startup-price-band" id="price"><div class="w"><div class="startup-section-head"><p class="startup-section-label">05 / 料金</p><h2 class="startup-section-title">必要な範囲から、月25,000円から。</h2><p class="startup-section-lead">給与計算なしのスタート顧問と、給与・賞与計算まで含むスタンダード。どこまで任せるかを選べます。創業3年以内は、どちらも通常料金から毎月10,000円割引です。</p></div><div class="startup-price-options"><article class="startup-price-option"><p class="startup-price-option-kicker">給与計算なし</p><h3 class="startup-price-option-name">スタート顧問</h3><p class="startup-price-option-sub">入退社から年次手続きまで</p><p class="startup-price-compare"><span>通常月額</span><strong>35,000円</strong></p><p class="startup-price-main"><strong>25,000円</strong><span>／月</span></p><small class="startup-price-tax">創業3年以内・従業員5名まで・税抜</small><div class="startup-price-details"><h4>含まれる主な業務</h4><ul class="startup-price-includes"><li>社会保険・雇用保険手続き</li><li>年度更新・算定・賞与支払届</li><li>助成金情報のご案内</li><li>法改正情報の配信</li></ul><p class="startup-price-term"><strong>給与計算・個別労務相談・就業規則の年次レビューは含みません。</strong><br>必要になったときは、スタンダードへの変更をご相談いただけます。</p></div></article><article class="startup-price-option is-recommended"><p class="startup-price-option-kicker">給与計算まで任せるなら</p><h3 class="startup-price-option-name">スタンダード</h3><p class="startup-price-option-sub">実務をまとめて一つの窓口へ</p><p class="startup-price-compare"><span>通常月額</span><strong>55,000円</strong></p><p class="startup-price-main"><strong>45,000円</strong><span>／月</span></p><small class="startup-price-tax">創業3年以内・従業員10名まで・税抜</small><div class="startup-price-details"><h4>含まれる主な業務</h4><ul class="startup-price-includes"><li>給与・賞与計算</li><li>労働社会保険手続き</li><li>個別の労務相談</li><li>就業規則の年次レビュー</li></ul><p class="startup-price-term"><strong>創業3周年まで割引。</strong><br>契約開始から創業3周年までが12か月未満の場合も、契約開始から12か月間は割引を適用します。</p></div></article></div><p class="startup-price-note">11人目以降は1名につき月2,500円（税抜）を加算します。スタート顧問は6人目以降1名につき月2,000円（税抜）を加算します。31名以上・複数拠点などは個別にお見積りします。詳しい業務範囲は<a href="pricing.html">料金ページ</a>でご確認ください。</p><a class="startup-primary" href="uploads/contact.html?from=startup-payroll-price">任せる範囲と料金を相談する</a><p class="startup-hero-note">相談は無料です。この時点で契約は確定しません。</p></div></section>
 
-  <section class="startup-section startup-section-white" id="options"><div class="w startup-option-layout"><div><p class="startup-section-label">06 / NEXT IMPROVEMENT</p><h2 class="startup-section-title">今のやり方を確認してから、次の改善へ。</h2><p class="startup-section-lead">勤怠のシステム化も助成金も、先に契約・購入するのではなく、会社の現状と予定に合うかを確認してからご提案します。</p><div class="startup-option-visuals"><article class="startup-process-card"><p class="startup-process-kicker">01 / 勤怠を整える</p><h3>紙・Excelから、運用できる形へ。</h3><ol class="startup-process-steps"><li><b>01</b><span>今の締め方と、集計で困る箇所を確認</span></li><li><b>02</b><span>必要な機能と、会社で続けられる方法を比較</span></li><li><b>03</b><span>導入・定着支援の要否と費用を提示</span></li></ol><p class="startup-process-note">顧問開始時に無理にシステムを変える必要はありません。</p></article><article class="startup-process-card is-warm"><p class="startup-process-kicker">02 / 助成金を確認する</p><h3>実施前に、対象可能性を確認。</h3><ol class="startup-process-steps"><li><b>01</b><span>制度の要件と、会社の現状を確認</span></li><li><b>02</b><span>実施時期・購入前の手順・証拠書類を整理</span></li><li><b>03</b><span>申請支援の範囲と費用を提示</span></li></ol><p class="startup-process-note">助成金の支給は保証せず、確認できた条件だけをお伝えします。</p></article></div></div><div><div class="startup-option-list"><article class="startup-option-item"><h3>勤怠のシステム化</h3><p>紙やExcelのままでも顧問は始められます。運用が回らなくなってきた段階で、必要性と費用をあわせてご提案します。</p></article><article class="startup-option-item"><h3>助成金の対象可能性</h3><p>制度の要件、実施時期、必要な証拠書類を確認したうえでご提案します。購入・契約・運用変更の前にご相談ください。</p></article></div><p class="startup-option-note">助成金の支給は保証できません。対象年度の要件、実際の運用、証拠書類を確認したうえで受任可否をご案内します。</p></div></div></section>
+  <section class="startup-section startup-section-white" id="options"><div class="w"><div class="startup-section-head"><p class="startup-section-label">06 / 次にできること</p><h2 class="startup-section-title">今のやり方を確認してから、次の改善へ。</h2><p class="startup-section-lead">勤怠のシステム化も助成金も、先に契約・購入するのではなく、会社の現状と予定に合うかを確認してからご提案します。</p></div><div class="startup-option-visuals"><article class="startup-process-card"><p class="startup-process-kicker">01 / 勤怠を整える</p><h3>紙・Excelから、運用できる形へ。</h3><ol class="startup-process-steps"><li><b>01</b><span>今の締め方と、集計で困る箇所を確認</span></li><li><b>02</b><span>必要な機能と、会社で続けられる方法を比較</span></li><li><b>03</b><span>導入・定着支援の要否と費用を提示</span></li></ol><p class="startup-process-note">顧問開始時に無理にシステムを変える必要はありません。</p></article><article class="startup-process-card is-warm"><p class="startup-process-kicker">02 / 助成金を検討する</p><h3>申請を考える前から、必要な情報を整えます。</h3><ol class="startup-process-steps"><li><b>01</b><span>勤怠・賃金・雇用の情報を日頃から整理</span></li><li><b>02</b><span>対象になりそうな制度の要件と実施時期を確認</span></li><li><b>03</b><span>申請する場合の手順・証拠書類・費用をご案内</span></li></ol><p class="startup-process-note">助成金の申請代行は別料金です。支給を保証するものではありません。</p></article></div><p class="startup-option-note">紙やExcelのままでも顧問は始められます。購入・契約・運用変更の前にご相談ください。助成金は対象年度の要件、実際の運用、証拠書類を確認したうえで受任可否をご案内します。</p></div></section>
 
-  <section class="startup-section" id="consultation"><div class="w"><div class="startup-section-head"><p class="startup-section-label">07 / FIRST 30 MINUTES</p><h2 class="startup-section-title">最初の30分で、任せる範囲を整理します。</h2><p class="startup-section-lead">依頼内容が決まっていなくても構いません。現在の担当、使用中の勤怠・給与方法、直近の困りごとから確認します。</p></div><div class="startup-steps"><article class="startup-step"><span class="startup-step-num">STEP 01</span><h3>フォームから申込</h3><p>会社規模と気になる業務だけ入力してください。</p></article><article class="startup-step"><span class="startup-step-num">STEP 02</span><h3>30分の現状確認</h3><p>現状と優先順位を整理します。</p></article><article class="startup-step"><span class="startup-step-num">STEP 03</span><h3>範囲と料金をご提示</h3><p>月額に含む業務、別料金、会社側の担当を明示します。</p></article><article class="startup-step"><span class="startup-step-num">STEP 04</span><h3>合意後に開始</h3><p>必要資料、連絡方法、最初の締め日を決めます。</p></article></div><div class="startup-mid-cta"><p><strong>初回相談は無料です。</strong><br>まず、今どこに負担が集まっているかを一緒に整理します。</p><a class="startup-primary" href="uploads/contact.html?from=startup-payroll-process">30分の現状確認を申し込む</a></div></div></section>
+  <section class="startup-section" id="consultation"><div class="w"><div class="startup-section-head"><p class="startup-section-label">07 / 初回の無料相談</p><h2 class="startup-section-title">最初の30分で、任せる範囲を整理します。</h2><p class="startup-section-lead">依頼内容が決まっていなくても構いません。現在の進め方、発生している給与・手続き、使用中の勤怠・給与方法、正しさや漏れに不安がある業務から確認します。</p></div><div class="startup-steps"><article class="startup-step"><span class="startup-step-num">STEP 01</span><h3>フォームから申込</h3><p>会社規模と気になる業務だけ入力してください。</p></article><article class="startup-step"><span class="startup-step-num">STEP 02</span><h3>30分の現状確認</h3><p>現状と優先順位を整理します。</p></article><article class="startup-step"><span class="startup-step-num">STEP 03</span><h3>範囲と料金をご提示</h3><p>月額に含む業務、別料金、会社側の担当を明示します。</p></article><article class="startup-step"><span class="startup-step-num">STEP 04</span><h3>合意後に開始</h3><p>必要資料、連絡方法、最初の締め日を決めます。</p></article></div><div class="startup-mid-cta"><p><strong>初回相談は無料です。</strong><br>今の進め方と、社労士へ任せたい実務を一緒に整理します。</p><a class="startup-primary" href="uploads/contact.html?from=startup-payroll-process">任せる範囲と料金を相談する</a></div></div></section>
 
-  <section class="startup-section startup-section-white" id="faq"><div class="w"><div class="startup-section-head"><p class="startup-section-label">08 / FAQ</p><h2 class="startup-section-title">申込前によくある確認</h2></div><div class="startup-faq"><details><summary>「創業3年以内」は、いつを基準にしますか？</summary><div class="startup-faq-answer">契約開始日時点で、法人設立日または個人事業の開業日から3年以内であることを基準とします。料金は契約開始から12か月間、13か月目から通常料金となります。</div></details><details><summary>月額45,000円には、どこまで含まれますか？</summary><div class="startup-faq-answer">従業員10名までの給与・賞与計算、定例・年次の労働社会保険手続き、個別労務相談、就業規則の年次レビュー・改定提案を含みます。詳細は料金ページの業務範囲を正本とします。</div></details><details><summary>勤怠システムや助成金申請も含まれますか？</summary><div class="startup-faq-answer">月額顧問料には含まれません。勤怠DXの導入・定着支援と助成金申請支援は、必要性や対象要件を確認して別途お見積もりします。助成金の支給は保証できません。</div></details><details><summary>年末調整や決算も任せられますか？</summary><div class="startup-faq-answer">給与計算には対応します。年末調整に必要な資料整理と給与データ準備、税理士との連携は別料金です。税務判断、税務書類の作成、決算・申告は税理士の業務となります。</div></details><details><summary>従業員が10名を超えた場合はどうなりますか？</summary><div class="startup-faq-answer">11人目以降は、1名あたり月額2,500円（税抜）を加算します。31名以上、複数拠点、特殊な勤務体系などは業務範囲を確認して個別にお見積もりします。</div></details></div></div></section>
+  <section class="startup-section startup-section-white" id="faq"><div class="w"><div class="startup-section-head"><p class="startup-section-label">08 / よくある質問</p><h2 class="startup-section-title">申込前によくある確認</h2></div><div class="startup-faq"><details><summary>「創業3年以内」は、いつを基準にしますか？</summary><div class="startup-faq-answer">契約開始日時点で、法人設立日または個人事業の開業日から3年未満であることを基準とします。通常は創業3周年を迎えるまで、各プランの通常月額から10,000円を割り引きます。契約開始から創業3周年までが12か月未満の場合も、契約開始から12か月間は割引を適用し、その後は通常料金となります。</div></details><details><summary>月額25,000円には、どこまで含まれますか？</summary><div class="startup-faq-answer">給与計算なしのスタート顧問です。創業3年以内・従業員5名までの場合、社会保険・雇用保険の手続き、年度更新・算定・賞与支払届、助成金情報のご案内、法改正情報の配信などを含みます。給与計算、個別労務相談、就業規則の年次レビューは含みません。</div></details><details><summary>給与計算込みの月額45,000円には、どこまで含まれますか？</summary><div class="startup-faq-answer">創業3年以内・従業員10名までのスタンダードです。給与・賞与計算、定例・年次の労働社会保険手続き、個別労務相談、就業規則の年次レビュー・改定提案などを含みます。詳細は料金ページの業務範囲を正本とします。</div></details><details><summary>勤怠システムや助成金申請も含まれますか？</summary><div class="startup-faq-answer">勤怠システムの導入支援と、助成金の申請代行は月額顧問料に含まれません。必要性や対象要件を確認して別途お見積もりします。助成金の支給は保証できません。</div></details><details><summary>年末調整や決算も任せられますか？</summary><div class="startup-faq-answer">給与計算には対応します。年末調整に必要な資料整理と給与データ準備、税理士との連携は別料金です。税務判断、税務書類の作成、決算・申告は税理士の業務となります。</div></details><details><summary>従業員が10名を超えた場合はどうなりますか？</summary><div class="startup-faq-answer">スタート顧問は6人目以降、1名あたり月額2,000円、スタンダードは11人目以降、1名あたり月額2,500円（いずれも税抜）を加算します。31名以上、複数拠点、特殊な勤務体系などは業務範囲を確認して個別にお見積もりします。</div></details></div></div></section>
 
-  <section class="startup-section startup-rep" id="message"><div class="w"><div class="startup-rep-inner"><p class="startup-section-label">09 / REPRESENTATIVE</p><p class="startup-rep-quote">お引き受けするのは、近藤昭宏です。</p><p class="startup-rep-text">創業期は、営業、採用、資金繰り、現場づくりが同時に進みます。労務の実務と相談先を先に整えておくことで、経営者が一人で調べ続ける状態を減らしたいと考えています。できることと別料金になることを先にお伝えし、会社に合う進め方を一緒に整理します。</p><div class="startup-rep-sign"><span><strong>代表 社会保険労務士　近藤 昭宏</strong><br>富山県社会保険労務士会 所属</span><a href="about.html">代表の考え方を見る →</a></div></div></div></section>
+  <section class="startup-section startup-rep" id="message"><div class="w"><div class="startup-rep-inner"><p class="startup-section-label">09 / 担当する社労士</p><p class="startup-rep-quote">お引き受けするのは、社会保険労務士です。</p><p class="startup-rep-text">給与計算と労働社会保険の手続きは、期限と必要書類を確認するだけでなく、実際に計算し、照合し、届け出るところまで進める必要があります。その実務を社労士が担い、会社には必要な情報の共有と最終確認をお願いします。できることと別料金になることを先にお伝えし、会社に合う進め方を一緒に整理します。</p><div class="startup-rep-sign"><span><strong>代表 社会保険労務士　近藤 昭宏</strong><br>富山県社会保険労務士会 所属</span><a href="about.html">代表の考え方を見る →</a></div></div></div></section>
 
-  <section class="startup-section startup-final" id="final-contact"><div class="w startup-final-layout"><div class="startup-final-copy"><span class="startup-final-label">10 / FREE FIRST CONSULTATION</span><h2>まず30分、<br>現状を伺います。</h2><p>現在のやり方と困りごとを確認し、月額に含む範囲、別料金、開始までに必要な準備をお伝えします。</p><a class="startup-primary" href="uploads/contact.html?from=startup-payroll-final">30分の現状確認を申し込む</a><small class="startup-final-note">初回相談無料・オンライン可。平日9:00–18:00</small></div><aside class="startup-final-check" aria-labelledby="startup-final-check-title"><p class="startup-section-label" id="startup-final-check-title">30 MINUTES / CONFIRM</p><ul><li>今の給与・勤怠の進め方</li><li>期限や負担が集まっている箇所</li><li>任せる範囲と、次に決めること</li></ul></aside></div></section>
+  <section class="startup-section startup-final" id="final-contact"><div class="w startup-final-layout"><div class="startup-final-copy"><span class="startup-final-label">10 / 初回の無料相談</span><h2>まず30分、<br>現状を伺います。</h2><p>現在のやり方と困りごとを確認し、月額に含む範囲、別料金、開始までに必要な準備をお伝えします。</p><a class="startup-primary" href="uploads/contact.html?from=startup-payroll-final">任せる範囲と料金を相談する</a><small class="startup-final-note">初回相談無料・オンライン可。平日9:00–18:00</small></div><aside class="startup-final-check" aria-labelledby="startup-final-check-title"><p class="startup-section-label" id="startup-final-check-title">初回相談で確認すること</p><ul><li>現在、誰がどこまで担当しているか</li><li>正しさや漏れに不安がある業務とフロー</li><li>会社に残す確認と、社労士へ任せる実務</li></ul></aside></div></section>
 </main>
 
 <footer class="footer"><div class="footer-inner"><div class="footer-grid"><div><div class="footer-logo"><div class="logo-mark"><span>み</span></div><div class="logo-text"><b>みなの社会保険労務士事務所</b><small>複雑な労務を、シンプルに。</small></div></div><p class="footer-desc">助成金活用・手続き代行・DX支援で、中小企業の労務コストを最適化します。</p><address class="footer-contact"><span class="footer-contact-row footer-contact-address">〒931-8333 富山県富山市蓮町1丁目7-4　SCOP TOYAMA</span><span class="footer-contact-row"><a href="tel:090-8259-8774">TEL: 090-8259-8774</a><span class="footer-contact-hours">平日 9:00–18:00</span></span></address></div><div><p class="footer-h">サービス</p><ul class="footer-ul"><li><a href="services.html">サービス一覧</a></li><li><a href="uploads/service-joseikin.html">助成金申請</a></li><li><a href="uploads/service-shugyo-kisoku.html">就業規則作成</a></li><li><a href="uploads/service-shakai-hoken.html">社会保険手続き</a></li><li><a href="uploads/service-kyuyo-keisan.html">給与計算</a></li><li><a href="uploads/service-romu-sodan.html">労務相談</a></li></ul></div><div><p class="footer-h">支援の進め方</p><ul class="footer-ul"><li><a href="support.html">支援全体を見る</a></li><li><a href="uploads/case-seizogyo.html">製造業</a></li><li><a href="uploads/case-inshoku.html">飲食業</a></li><li><a href="uploads/case-kaigo.html">介護業</a></li><li><a href="uploads/case-kensetsu.html">建設業</a></li></ul></div><div><p class="footer-h">コンテンツ</p><ul class="footer-ul"><li><a href="pricing.html">料金・顧問プラン</a></li><li><a href="about.html">事務所案内</a></li><li><a href="blog.html">コラム・ブログ</a></li><li><a href="infographic.html">社労士とは？</a></li><li><a href="portal.html">公式情報</a></li></ul></div><div><p class="footer-h">お問い合わせ</p><ul class="footer-ul"><li><a href="uploads/contact.html?from=startup-payroll-final">30分の現状確認</a></li><li><a href="tel:090-8259-8774">電話: 090-8259-8774</a></li><li><a href="mailto:contact@minano-sr.com">contact@minano-sr.com</a></li><li><a href="privacy-policy.html">プライバシーポリシー</a></li></ul></div></div><div class="footer-bottom"><p class="footer-copy">© 2026 みなの社会保険労務士事務所. All rights reserved.</p><div class="footer-badges"><span class="footer-badge">富山県社会保険労務士会</span></div></div></div></footer>
@@ -365,7 +392,7 @@
 <script>
 var ticking=false;if(window.__pgScroll)window.removeEventListener('scroll',window.__pgScroll);window.__pgScroll=function(){if(ticking)return;ticking=true;requestAnimationFrame(function(){var prog=document.getElementById('prog'),nav=document.getElementById('nav');var p=scrollY/(document.documentElement.scrollHeight-innerHeight||1);if(prog)prog.style.width=(p*100)+'%';if(nav){nav.classList.toggle('solid',scrollY>60);nav.classList.toggle('shrink',scrollY>240)}ticking=false})};window.addEventListener('scroll',window.__pgScroll,{passive:true});function toggleNav(){document.getElementById('mobNav').classList.toggle('open')}function closeNav(){document.getElementById('mobNav').classList.remove('open')}
 </script>
-<script defer src="link-keep.js?v=20260723-conversion1"></script><script defer src="header-motion.js?v=20260809-nav1"></script><script defer src="terms.js?v=20260812-terms1"></script>
+<script defer src="link-keep.js?v=20260814-entryparam1"></script><script defer src="header-motion.js?v=20260809-nav1"></script><script defer src="terms.js?v=20260812-terms1"></script>
 <script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/startup-payroll.html"}' async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

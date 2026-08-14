@@ -723,7 +723,9 @@ function mnSplitLabel(el, text) {
     try {
       var u = new URL(url, location.href);
       var cur = new URLSearchParams(location.search);
-      var keep = /^(?:t|from|utm_source|utm_medium|utm_campaign|utm_content|utm_term|gclid|fbclid)$/i;
+      // link-keep.js の keepQuery と同じ内容にすること。SPA遷移はこちらが先に処理するため、
+      // 片方だけに足しても引き継がれない。entry は「サイトのどこから専用LPへ入ったか」。
+      var keep = /^(?:t|from|entry|utm_source|utm_medium|utm_campaign|utm_content|utm_term|gclid|fbclid)$/i;
       cur.forEach(function (v, k) {
         if (keep.test(k) && !u.searchParams.has(k)) u.searchParams.set(k, v);
       });

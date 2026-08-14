@@ -15,7 +15,11 @@
 (function () {
   var q = location.search;
   if (!q || q.length < 2) return; // no token/query → inert on real deployments
-  var keepQuery = /^(?:t|from|utm_source|utm_medium|utm_campaign|utm_content|utm_term|gclid|fbclid)$/i;
+  // page-enter.js の withQuery() 内 keep と同じ内容にすること。SPA遷移はあちらが先に処理する。
+  // entry は「サイトのどこから専用LPへ入ったか」。from は「そのページのどのCTAを押したか」で、
+  // LP内のCTAは自前の from を持つため、下の !dst.has(k) により入口の from は上書きされて消える。
+  // 入口とCTAは別の軸なので、別名で持たせて両方を問い合わせフォームまで届ける。
+  var keepQuery = /^(?:t|from|entry|utm_source|utm_medium|utm_campaign|utm_content|utm_term|gclid|fbclid)$/i;
 
   document.addEventListener(
     'click',
