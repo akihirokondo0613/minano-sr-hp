@@ -148,6 +148,7 @@ const office = {
   areaServed: [
     '富山県', '富山市', '高岡市', '射水市', '砺波市', '魚津市',
     '滑川市', '黒部市', '氷見市', '小矢部市', '南砺市',
+    '上市町', '立山町', '入善町', '朝日町',
     '石川県', '日本',
   ],
   address: {
@@ -232,7 +233,11 @@ for (const [relativePath, name] of Object.entries(services)) {
       '@id': 'https://minano-sr.com/#office',
       name: 'みなの社会保険労務士事務所',
     },
-    areaServed: ['富山県', '石川県', '日本'],
+    areaServed: [
+      '富山県', '富山市', '高岡市', '射水市', '砺波市', '魚津市',
+      '滑川市', '黒部市', '氷見市', '小矢部市', '南砺市',
+      '上市町', '立山町', '入善町', '朝日町', '石川県', '日本',
+    ],
     offers: {
       '@type': 'Offer',
       url: 'https://minano-sr.com/pricing.html',
