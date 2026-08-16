@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -44,7 +44,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/about.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -56,7 +56,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/uploads/service-joseikin.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -110,7 +110,13 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/gyomu-kaizen-joseikin-2026.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://minano-sr.com/blog/gyomu-kaizen-toyama-2026.html</loc>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -128,13 +134,13 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/jinzai-kaihatsu-joseikin-2026.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://minano-sr.com/blog/joseikin-career-up-2026.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -170,7 +176,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/kaigo-technology-jininhaichi-2027.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -182,7 +188,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/kintai-dx-donyu-junbi.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -254,7 +260,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/ryoritsu-shien-josei.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -332,7 +338,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/trial-koyo-joseikin-2026.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -356,7 +362,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/startup-payroll.html</loc>
-    <lastmod>2026-08-14</lastmod>
+    <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
