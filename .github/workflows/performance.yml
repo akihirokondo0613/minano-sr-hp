@@ -11,31 +11,39 @@ jobs:
   hero-layout:
     name: Hero layout (Chromium + WebKit)
     runs-on: ubuntu-latest
+    # ブラウザと依存を同梱したPlaywright公式イメージで動かす。
+    # 以前は playwright install --with-deps が Ubuntu パッケージを179個取りに行っており、
+    # ミラーが遅い日に20分でも30分でも足りずキャンセルされた（2026-08-18に計3回）。
+    # イメージに入っているものを使えばこの取得自体が不要になる。
+    # イメージのタグは playwright のバージョンと必ず合わせること。ずれるとブラウザが見つからない。
+    container:
+      image: mcr.microsoft.com/playwright:v1.61.1-noble
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 22
-
-      - name: Playwrightブラウザのキャッシュ
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-1.61.1-${{ runner.os }}
+      - name: gitの所有者チェックを通す
+        # コンテナ内はrootで、チェックアウト先の所有者と一致しないためgitが拒否する。
+        # 拒否されると run-layout-checks.cjs が比較baseを解決できず、変更記事だけの検証から
+        # 全43記事へfallbackする。実行時間が7分増え、スクリーンショットでディスクを使い切って
+        # 検証サーバーが落ちる（2026-08-18のrun 32091442251はこれで、検査自体は全項目合格していた）。
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
       - name: Playwrightを準備
+        # ブラウザはイメージの /ms-playwright にあるので、ダウンロードを抑止する。
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
         run: |
           npm install --no-save --no-package-lock playwright@1.61.1 pngjs@7.0.0
-          npx playwright install --with-deps chromium webkit
+          node -e "const{chromium,webkit}=require('playwright');console.log('chromium:',chromium.executablePath());console.log('webkit:',webkit.executablePath())"
 
       - name: 日本語フォントを準備
+        # コンテナ内はrootなのでsudoは使わない。取得するのは1パッケージのみ。
         run: |
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends fonts-noto-cjk
+          apt-get update
+          apt-get install --yes --no-install-recommends fonts-noto-cjk
           fc-cache -f
           fc-match 'Noto Sans CJK JP'
 
