@@ -350,6 +350,9 @@ article.post .post-action li {
 
 article.post .post-action li::marker { color: var(--moegi-b); }
 
+article.post .post-action .term { color: var(--moegi-b); border-bottom-color: var(--moegi-b); }
+article.post .post-action .term::after { background: var(--moegi-b); color: var(--sugi); }
+
 .post-mobile-break { display: none; }
 
 @media (max-width: 620px) {
