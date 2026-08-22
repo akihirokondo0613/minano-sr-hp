@@ -429,8 +429,14 @@ function probeA11y(config = {}) {
     const intentionallyClippedMedia = element.matches(
       'image-slot > img[data-image-slot-public], .image-slot > img[data-image-slot-public]',
     ) && ['hidden', 'clip'].includes(getComputedStyle(element.parentElement).overflowX);
+    // 流れるカード列（トップのTOPICS）は、視野より広い列をclipで見せる構成。
+    // 列とカードのはみ出しは設計どおりなので、親が実際にclip/hiddenのときだけ除く。
+    const marquee = element.closest('.tp-marquee');
+    const intentionallyMarquee = Boolean(marquee)
+      && ['hidden', 'clip'].includes(getComputedStyle(marquee).overflowX);
     if (!intentionallyOffscreen
         && !intentionallyClippedMedia
+        && !intentionallyMarquee
         && (rect.right > viewportWidth + overflowTolerance || rect.left < -overflowTolerance)
         && !hasScrollableAncestor(element)) {
       overflow.push({

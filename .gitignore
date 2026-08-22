@@ -2,3 +2,4 @@
 .thumbnail
 _backup_*/
 *.zip
+.claude/
