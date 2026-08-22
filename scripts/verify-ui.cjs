@@ -212,7 +212,6 @@ function recordConsoleError(target) {
   const illustrationIds = [
     'home-svc-joseikin', 'home-svc-kisoku', 'home-svc-shaho', 'home-svc-kyuyo', 'home-svc-sodan', 'home-svc-dx',
     'home-stage-startup', 'home-stage-growth', 'home-stage-org',
-    'news-thumb-1', 'news-thumb-2', 'news-thumb-3',
   ];
   const illustrationFailures = await imagePage.evaluate(ids => ids.flatMap(id => {
     const slot = document.getElementById(id);
@@ -233,20 +232,29 @@ function recordConsoleError(target) {
       const colors = [row, frame, slot].map(el => el && getComputedStyle(el).backgroundColor);
       return colors.every(color => color === 'rgb(254, 254, 254)') ? [] : [index + 1];
     });
-    const newsRows = [...document.querySelectorAll('.news-row')];
-    const newsBackgroundFailures = newsRows.flatMap((row, index) => {
-      const frame = row.querySelector('.news-thumb');
-      const slot = frame?.querySelector('image-slot');
-      const colors = [row, frame, slot].map(el => el && getComputedStyle(el).backgroundColor);
-      return colors.every(color => color === 'rgb(254, 254, 254)') ? [] : [index + 1];
-    });
+    // TOPICSは無限マーキー。列の複製が読み上げ・タブ順から外れているかまで見る。
+    const marquee = document.getElementById('tp-marquee');
+    const groups = marquee ? [...marquee.querySelectorAll('.tp-group')] : [];
+    const sourceGroup = groups.find(group => !group.hasAttribute('data-tp-clone'));
+    const cloneGroup = groups.find(group => group.hasAttribute('data-tp-clone'));
+    const topics = !marquee || !sourceGroup ? null : {
+      live: marquee.classList.contains('is-live'),
+      cards: sourceGroup.querySelectorAll('.tp-card').length,
+      cloneCards: cloneGroup ? cloneGroup.querySelectorAll('.tp-card').length : 0,
+      cloneHidden: cloneGroup ? cloneGroup.getAttribute('aria-hidden') === 'true' : false,
+      cloneTabbable: cloneGroup
+        ? [...cloneGroup.querySelectorAll('a')].filter(link => link.tabIndex >= 0).length : -1,
+      animation: getComputedStyle(sourceGroup).animationName,
+      direction: getComputedStyle(sourceGroup).animationDirection,
+      toggleHidden: document.getElementById('tp-toggle')?.hidden,
+      thumbs: marquee.querySelectorAll('image-slot').length,
+    };
     return {
       startupSource: startup?.getAttribute('src') || '',
       aboutCaptions: document.querySelectorAll('.trio-cap').length,
       serviceRows: serviceRows.length,
       serviceBackgroundFailures,
-      newsRows: newsRows.length,
-      newsBackgroundFailures,
+      topics,
     };
   });
   if (visualCleanup.startupSource !== 'assets/illustrations/stage-startup-v2.webp') {
@@ -256,15 +264,20 @@ function recordConsoleError(target) {
   if (visualCleanup.serviceRows !== 6 || visualCleanup.serviceBackgroundFailures.length) {
     failures.push(`サービス一覧: 画像背景の継ぎ目対策が不正 ${visualCleanup.serviceBackgroundFailures.join(', ')}`);
   }
-  if (visualCleanup.newsRows !== 3 || visualCleanup.newsBackgroundFailures.length) {
-    failures.push(`記事一覧: 画像背景の継ぎ目対策が不正 ${visualCleanup.newsBackgroundFailures.join(', ')}`);
+  const topics = visualCleanup.topics;
+  const topicsOk = topics && topics.live && topics.cards >= 8
+    && topics.cloneCards === topics.cards && topics.cloneHidden && topics.cloneTabbable === 0
+    && topics.animation === 'tp-scroll' && topics.direction === 'reverse'
+    && topics.toggleHidden === false && topics.thumbs === 0;
+  if (!topicsOk) {
+    failures.push(`記事カードの自動スクロール: 構成が不正 ${JSON.stringify(topics)}`);
   }
   results.push({ publicImageSlots: slotState.total, broken: slotState.broken.length,
     adjusted: slotState.adjusted, cropFailures: slotState.cropFailures.length,
     containedIllustrations: illustrationIds.length - illustrationFailures.length,
     aboutCaptions: visualCleanup.aboutCaptions,
     seamlessServiceRows: visualCleanup.serviceRows - visualCleanup.serviceBackgroundFailures.length,
-    seamlessNewsRows: visualCleanup.newsRows - visualCleanup.newsBackgroundFailures.length });
+    topicsMarquee: topics });
   await imagePage.close();
 
   const cropPage = await browser.newPage({ viewport: { width: 390, height: 844 } });

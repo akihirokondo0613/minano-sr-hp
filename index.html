@@ -395,6 +395,55 @@ main > section:not(.hero) {
   .home-startup-offer-link{justify-self:start}
 }
 </style>
+<style id="home-topics-marquee">
+/* 06 TOPICS ― 記事カードの無限マーキー。
+   型は「同じカード列を2つ並べ、1列分＋隙間だけ動かして原点へ戻す」定番構成
+   （Smashing Magazine / Ryan Mulligan の infinite marquee）。
+   2列目はJSで複製し、aria-hidden と tabindex="-1" で読み上げ・タブ順から外す。
+   表示は3状態。
+     is-live           自動で流れる（JSあり・動きを減らす設定でない）
+     is-live.is-paused 停止ボタン／ホバー中の一時停止
+     上記以外          素の横スクロール列（JSなし・reduced motion・キーボード操作時） */
+.tp-marquee{--tp-gap:clamp(12px,1.4vw,18px);--tp-dur:60s;display:flex;gap:var(--tp-gap);padding-block:8px 30px;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tp-marquee::-webkit-scrollbar{display:none}
+.tp-marquee.is-live{overflow:hidden;--tp-fade:linear-gradient(to right,transparent 0,#000 clamp(28px,7vw,110px),#000 calc(100% - clamp(28px,7vw,110px)),transparent 100%);-webkit-mask-image:var(--tp-fade);mask-image:var(--tp-fade)}
+/* clipならスクロールコンテナにならないので、フォーカス移動で列がずれない。
+   縦をvisibleに戻せるのもclipだけで、カードのホバー影が切れずに済む。 */
+@supports (overflow:clip){.tp-marquee.is-live{overflow-x:clip;overflow-y:visible}}
+.tp-group{display:flex;gap:var(--tp-gap);flex-shrink:0;list-style:none;margin:0;padding:0}
+.tp-marquee.is-live .tp-group{min-inline-size:100%;justify-content:space-around;animation:tp-scroll var(--tp-dur) linear infinite reverse}
+/* 1列分＋隙間だけ進めると、隣の列が元の位置に重なって継ぎ目が消える。reverseで左→右に流す。 */
+@keyframes tp-scroll{to{transform:translateX(calc(-100% - var(--tp-gap)))}}
+/* WCAG2.2.2。ホバーに加え、指で触る端末のために停止ボタンも置く。 */
+.tp-marquee.is-live:hover .tp-group,
+.tp-marquee.is-live.is-paused .tp-group{animation-play-state:paused}
+/* 自動で流れないときは、左端を本文の版面に合わせた素の横スクロール列にする。 */
+.tp-marquee:not(.is-live){padding-inline:clamp(20px,4.5vw,48px);scroll-padding-inline:clamp(20px,4.5vw,48px)}
+.tp-marquee:not(.is-live) .tp-group[data-tp-clone]{display:none}
+.tp-item{display:flex;flex-shrink:0}
+.tp-card{display:flex;flex-direction:column;gap:9px;inline-size:clamp(228px,23vw,262px);padding:15px 17px 14px;background:#fefefe;border:1px solid var(--line);border-radius:var(--r-lg);transition:border-color .3s,transform .3s var(--ease),box-shadow .35s var(--ease)}
+.tp-card:hover{border-color:var(--moegi);transform:translateY(-3px);box-shadow:0 12px 30px rgba(18,63,48,.08)}
+.tp-card:focus-visible{border-color:var(--moegi);outline:2px solid var(--sugi);outline-offset:2px}
+.tp-cat{align-self:flex-start;font-size:11px;font-weight:700;color:var(--sugi);background:var(--moegi-l);padding:3px 12px;border-radius:999px}
+.tp-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden;font-size:13.5px;font-weight:700;line-height:1.72;color:var(--iwa)}
+.tp-date{margin-top:auto;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--ink4)}
+.tp-toggle{margin-inline-start:auto;display:inline-flex;align-items:center;gap:7px;min-block-size:32px;padding:0 14px;border:1px solid color-mix(in srgb,var(--sugi) 22%,transparent);border-radius:999px;background:var(--shiro);color:var(--sugi);font-family:inherit;font-size:11.5px;font-weight:700;cursor:pointer;transition:border-color .3s,background .3s}
+.tp-toggle:hover{border-color:var(--moegi);background:var(--moegi-l)}
+.tp-toggle-ic{inline-size:9px;block-size:10px;border-inline:3px solid currentColor;box-sizing:border-box}
+.tp-toggle.is-paused .tp-toggle-ic{inline-size:0;block-size:0;border:5px solid transparent;border-inline-start:8px solid currentColor}
+@media (max-width:760px){
+  .tp-marquee{--tp-dur:46s;padding-block:6px 24px}
+  .tp-card{inline-size:clamp(206px,62vw,232px);padding:13px 15px 12px}
+  .tp-title{font-size:13px}
+  .news-sec .pub-live{gap:10px 14px;padding:11px 18px;margin-bottom:20px}
+  .news-sec .pub-live-txt{font-size:12px}
+}
+@media (prefers-reduced-motion:reduce){
+  /* 共通CSSの一括抑制（animation-duration:.001ms）だと無限ループが極端に速くなる。
+     動きを止めるのではなく、マーキー自体をやめて素の横スクロール列に戻す。 */
+  .tp-card{transition:none}
+}
+</style>
 <!-- Structured Data: LocalBusiness -->
 <script type="application/ld+json" data-schema="localbusiness">
 {
@@ -869,27 +918,90 @@ main > section:not(.hero) {
         <p class="sec-sub">経営者の方に向けて、労務の最新情報をかみくだいて発信しています。</p>
       </div>
     </div>
-    <div class="news-list rv d1">
-      <a class="news-row" href="blog/kaigo-hoshu-kaitei-2027.html">
-        <span class="news-thumb" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="news-thumb-1" src="assets/illustrations/service-labor-consultation.webp" fit="contain" placeholder="2027年度介護報酬改定に向けて人員・賃金データを整理する様子"></image-slot></span>
-        <span class="news-meta"><span class="news-tag">法改正情報</span></span>
-        <span class="news-title">2027年度介護報酬改定はどう進む？｜確定事項と審議中の論点</span>
-        <span class="news-arr" aria-hidden="true">→</span>
-      </a>
-      <a class="news-row" href="blog/kaigo-shogu-new-services-2026.html">
-        <span class="news-thumb" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="news-thumb-2" src="assets/illustrations/service-payroll.webp" fit="contain" placeholder="訪問看護などに新設された処遇改善加算と賃金改善を確認する様子"></image-slot></span>
-        <span class="news-meta"><span class="news-tag">法改正情報</span></span>
-        <span class="news-title">訪問看護・訪問リハ・居宅介護支援の処遇改善加算｜2026年6月新設</span>
-        <span class="news-arr" aria-hidden="true">→</span>
-      </a>
-      <a class="news-row" href="blog/toyama-koyou-josei-2026-05.html">
-        <span class="news-thumb" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="news-thumb-3" src="assets/illustrations/about-toyama-local-support.webp" fit="contain" placeholder="富山県の採用市場を地域データから確認する様子"></image-slot></span>
-        <span class="news-meta"><span class="news-tag">経営・採用</span></span>
-        <span class="news-title">富山県の有効求人倍率は1.46倍｜2026年5月の採用市場</span>
-        <span class="news-arr" aria-hidden="true">→</span>
-      </a>
-
+    <div class="pub-live rv d1">
+      <!-- home-topics-stats:start --><span class="pub-live-txt">公開記事 <b>43</b>本 ／ <b>7</b>分野 ／ 最新記事 <b>2026.08.16</b></span><!-- home-topics-stats:end -->
+      <button type="button" class="tp-toggle" id="tp-toggle" hidden aria-label="記事の自動スクロールを停止する">
+        <span class="tp-toggle-ic" aria-hidden="true"></span><span class="tp-toggle-t">停止</span>
+      </button>
     </div>
+  </div>
+  <div class="tp-marquee rv d1" id="tp-marquee">
+      <ul class="tp-group" role="list" aria-label="最近公開した記事">
+      <!-- home-topics-cards:start -->
+        <li class="tp-item"><a class="tp-card" href="blog/gyomu-kaizen-toyama-2026.html">
+          <span class="tp-cat">助成金</span>
+          <span class="tp-title">【令和8年度】富山県の業務改善助成金｜締切9月30日見込みと順序</span>
+          <time class="tp-date" datetime="2026-08-16">2026.08.16</time>
+        </a></li>
+        <li class="tp-item"><a class="tp-card" href="blog/kensetsu-kokuho-hojinnari.html">
+          <span class="tp-cat">社会保険</span>
+          <span class="tp-title">建設国保は法人成り後も続けられる｜適用除外承認と協会けんぽ比較</span>
+          <time class="tp-date" datetime="2026-08-09">2026.08.09</time>
+        </a></li>
+        <li class="tp-item"><a class="tp-card" href="blog/shika-gikoujo-shienryo-2026.html">
+          <span class="tp-cat">法改正情報</span>
+          <span class="tp-title">【令和8年度】歯科技工所ベースアップ支援料｜届出と委託費の渡し方</span>
+          <time class="tp-date" datetime="2026-08-09">2026.08.09</time>
+        </a></li>
+        <li class="tp-item"><a class="tp-card" href="blog/shika-baseup-hyokaryo-2026.html">
+          <span class="tp-cat">法改正情報</span>
+          <span class="tp-title">【令和8年度】歯科ベースアップ評価料｜届出と8月報告</span>
+          <time class="tp-date" datetime="2026-08-08">2026.08.08</time>
+        </a></li>
+        <li class="tp-item"><a class="tp-card" href="blog/trial-koyo-joseikin-2026.html">
+          <span class="tp-cat">助成金</span>
+          <span class="tp-title">【令和8年度】トライアル雇用助成金｜月額最大4万円の要件と期限</span>
+          <time class="tp-date" datetime="2026-08-01">2026.08.01</time>
+        </a></li>
+        <li class="tp-item"><a class="tp-card" href="blog/jinzai-kaihatsu-joseikin-2026.html">
+          <span class="tp-cat">助成金</span>
+          <span class="tp-title">【令和8年度】人材開発支援助成金｜人材育成支援コースの金額と期限</span>
+          <time class="tp-date" datetime="2026-08-01">2026.08.01</time>
+        </a></li>
+        <li class="tp-item"><a class="tp-card" href="blog/gyomu-kaizen-joseikin-2026.html">
+          <span class="tp-cat">助成金</span>
+          <span class="tp-title">【令和8年度】業務改善助成金｜50円以上の引上げが条件に</span>
+          <time class="tp-date" datetime="2026-07-31">2026.07.31</time>
+        </a></li>
+        <li class="tp-item"><a class="tp-card" href="blog/kaigo-hoshu-kaitei-2027.html">
+          <span class="tp-cat">法改正情報</span>
+          <span class="tp-title">2027年度介護報酬改定はどう進む？｜確定事項と審議中の論点</span>
+          <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
+        </a></li>
+        <li class="tp-item"><a class="tp-card" href="blog/kaigo-shogu-new-services-2026.html">
+          <span class="tp-cat">法改正情報</span>
+          <span class="tp-title">訪問看護等3サービスの処遇改善加算｜2026年6月新設</span>
+          <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
+        </a></li>
+        <li class="tp-item"><a class="tp-card" href="blog/toyama-koyou-josei-2026-05.html">
+          <span class="tp-cat">経営・採用</span>
+          <span class="tp-title">富山県の有効求人倍率は1.46倍｜2026年5月の採用市場</span>
+          <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
+        </a></li>
+        <li class="tp-item"><a class="tp-card" href="blog/tokutei-chiiki-kyotaku-service-2027.html">
+          <span class="tp-cat">法改正情報</span>
+          <span class="tp-title">特定地域居宅サービスとは｜2027年の確定事項と未確定事項</span>
+          <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
+        </a></li>
+        <li class="tp-item"><a class="tp-card" href="blog/kaigo-technology-jininhaichi-2027.html">
+          <span class="tp-cat">システム導入</span>
+          <span class="tp-title">介護テクノロジーで人員基準は変わる？｜勤務表と効果測定の準備</span>
+          <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
+        </a></li>
+        <li class="tp-item"><a class="tp-card" href="blog/kaigo-shogu-haibun-rule-2026.html">
+          <span class="tp-cat">経営・採用</span>
+          <span class="tp-title">介護の処遇改善加算は誰に配分できる？｜職種・賃金項目・記録の実務</span>
+          <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
+        </a></li>
+        <li class="tp-item"><a class="tp-card" href="blog/kaigo-shogu-career-path-2026.html">
+          <span class="tp-cat">就業規則</span>
+          <span class="tp-title">介護の処遇改善加算と就業規則｜キャリアパス要件Ⅰ〜Ⅲの整え方</span>
+          <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
+        </a></li>
+      <!-- home-topics-cards:end -->
+      </ul>
+  </div>
+  <div class="w">
     <div class="news-more rv d2">
       <a href="blog.html" class="link-more">コラムの一覧を見る →</a>
     </div>
@@ -1094,6 +1206,53 @@ var co=new IntersectionObserver(function(entries){
   });
 },{threshold:.6});
 document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
+
+// 06 TOPICS の無限マーキー。列を1つ複製して継ぎ目を消す。
+// SPAのbody差し替えで再実行されるため、複製とリスナーは毎回作り直す（冪等）。
+(function(){
+  var mq=document.getElementById('tp-marquee'),btn=document.getElementById('tp-toggle');
+  if(!mq)return;
+  var group=mq.querySelector('.tp-group:not([data-tp-clone])');
+  if(!group)return;
+  Array.prototype.forEach.call(mq.querySelectorAll('.tp-group[data-tp-clone]'),function(n){n.remove()});
+  mq.classList.remove('is-live','is-paused');
+  if(btn&&window.__tpToggle)btn.removeEventListener('click',window.__tpToggle);
+  if(window.__tpFocus)mq.removeEventListener('focusin',window.__tpFocus);
+  window.__tpToggle=null;window.__tpFocus=null;
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    if(btn)btn.hidden=true;
+    return;   // 動きを減らす設定では素の横スクロール列のまま出す
+  }
+  var clone=group.cloneNode(true);
+  clone.setAttribute('aria-hidden','true');
+  clone.setAttribute('data-tp-clone','1');
+  clone.removeAttribute('aria-label');
+  clone.removeAttribute('role');
+  Array.prototype.forEach.call(clone.querySelectorAll('a'),function(a){a.setAttribute('tabindex','-1')});
+  mq.appendChild(clone);
+  mq.classList.add('is-live');
+  // キーボードでカードに入ったら、流れる列では追えないので素の横スクロール列へ切り替える。
+  window.__tpFocus=function(){
+    mq.classList.remove('is-live','is-paused');
+    if(btn)btn.hidden=true;
+    mq.removeEventListener('focusin',window.__tpFocus);
+  };
+  mq.addEventListener('focusin',window.__tpFocus);
+  if(!btn)return;
+  btn.hidden=false;
+  btn.classList.remove('is-paused');
+  btn.setAttribute('aria-label','記事の自動スクロールを停止する');
+  var label0=btn.querySelector('.tp-toggle-t');
+  if(label0)label0.textContent='停止';
+  window.__tpToggle=function(){
+    var paused=mq.classList.toggle('is-paused');
+    btn.classList.toggle('is-paused',paused);
+    btn.setAttribute('aria-label',paused?'記事の自動スクロールを再開する':'記事の自動スクロールを停止する');
+    var label=btn.querySelector('.tp-toggle-t');
+    if(label)label.textContent=paused?'再生':'停止';
+  };
+  btn.addEventListener('click',window.__tpToggle);
+})();
 
 // 受付時間ブロックはJS不要（静的なリスト表示）
 </script>

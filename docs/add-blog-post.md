@@ -3,6 +3,7 @@
 ## 正本と作業開始
 
 - 公開記事のメタデータ正本は `blog/articles.json`。記事HTML、`blog.html` の一覧・表示件数、`articles.json`、`sitemap.xml` の同期を崩さない。
+- トップの 06 TOPICS（流れるカード列と公開本数）は `blog/articles.json` から `scripts/sync-home-topics.mjs` が生成する。`index.html` のカードと数値を手で書き換えない。
 - 管理画面 `admin-post.html` が出力するのは下書きセットであり、公開完成物ではない。図解、根拠、相談導線、監査、sitemap同期を終えるまで公開しない。
 - 新規記事は `minano-blog-post` スキルと同梱の `assets/new_post.py` を使う。テンプレートを変えた場合は `admin-post.html` の `buildArticle()` と Codex／Claude両環境の生成器を同時に見直す。
 - 本文を書く前に `reader`（誰が読むか）、`problem`（何に困っているか）、`outcome`（読後に何ができるか）、`service`（相談先）を決め、`articles.json` と本文冒頭の読者マップを一致させる。
@@ -32,6 +33,7 @@
 ```bash
 node scripts/sync-blog-read-times.mjs
 node scripts/sync-blog-dates.mjs
+node scripts/sync-home-topics.mjs
 node gen-sitemap.js
 ```
 
@@ -43,6 +45,7 @@ node gen-sitemap.js
 node scripts/audit-blog.mjs --check
 node scripts/sync-blog-read-times.mjs --check
 node scripts/sync-blog-dates.mjs --check
+node scripts/sync-home-topics.mjs --check
 node scripts/check-structured-data.mjs
 node scripts/preflight.mjs
 ```

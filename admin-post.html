@@ -359,15 +359,16 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none}
 
     <div class="step">
       <div class="step-h">
-        <span class="n">4</span><b>（任意）トップページの TOPICS を入れ替える</b>
+        <span class="n">4</span><b>トップページの TOPICS を更新する</b>
         <span class="where">
-          トップの TOPICS は最新3件の手動リストです。新記事を載せる場合は <code>index.html</code> の
-          <code>&lt;div class="news-list"&gt;</code> 内の<b>一番上</b>に下のコードを貼り、<b>一番下の1件を削除</b>して3件を保ちます。
-          サムネイルはカテゴリとタイトルから自動生成されます。
+          トップの TOPICS は流れるカード列で、<code>blog/articles.json</code> から自動生成します。
+          手で貼り付ける作業はありません。ステップ3を反映したあと、リポジトリで下のコマンドを実行してください。
+          公開記事の本数・分野数・最新記事の日付も同時に更新されます。
+          （実行し忘れは <code>node scripts/preflight.mjs</code> が検出します）
         </span>
       </div>
       <div class="step-body">
-        <textarea id="o-newsrow" rows="8" readonly></textarea>
+        <textarea id="o-newsrow" rows="2" readonly></textarea>
         <div class="step-actions">
           <button id="btn-cp-newsrow">コピー</button>
           <span class="copied" id="c-newsrow">コピーしました ✓</span>
@@ -613,7 +614,7 @@ $('btn-gen').addEventListener('click',function(){
   $('o-fname').textContent=v.slug+'.html';
   $('o-artrow').value='      <a href="blog/'+v.slug+'.html" class="art-row" data-cat="'+v.cat+'">\n        <div class="art-thumb">'+thumbSvg(v.cat,v.title)+'</div>\n        <time class="art-date" datetime="'+v.date+'">'+v.date.replaceAll('-','.')+'</time>\n        <div class="art-body">\n          <span class="art-cat-badge">'+CATS[v.cat]+'</span>\n          <h2 class="art-title">'+esc(v.title)+'</h2>\n          <p class="art-excerpt">'+esc(v.desc)+'</p>\n        </div>\n        <span class="art-read">読む →</span>\n      </a>\n';
   $('o-json').value='  {\n    "slug": "'+v.slug+'",\n    "cat": "'+v.cat+'",\n    "catLabel": "'+CATS[v.cat]+'",\n    "date": "'+v.date+'",\n    "dateJp": "'+dateJp(v.date)+'",\n    "read": "'+v.read+'",\n    "updated": "'+v.date+'",\n    "title": "'+jesc(v.title)+'",\n    "description": "'+jesc(v.desc)+'",\n    "keywords": "'+jesc(v.keywords)+'",\n    "h1": "'+jesc(v.title)+'",\n    "reader": "'+jesc(v.reader)+'",\n    "problem": "'+jesc(v.problem)+'",\n    "outcome": "'+jesc(v.outcome)+'",\n    "service": "'+jesc(v.service)+'"\n  },';
-  $('o-newsrow').value='      <a class="news-row" href="blog/'+v.slug+'.html">\n        <span class="news-thumb">'+thumbSvg(v.cat,v.title)+'</span>\n        <span class="news-meta"><span class="news-tag">'+CATS[v.cat]+'</span></span>\n        <span class="news-title">'+esc(v.title)+'</span>\n        <span class="news-arr" aria-hidden="true">→</span>\n      </a>\n';
+  $('o-newsrow').value='node scripts/sync-home-topics.mjs';
   $('out').hidden=false;
   var r=$('out').getBoundingClientRect();
   window.scrollTo({top:r.top+(window.scrollY||0)-16,behavior:'smooth'});
