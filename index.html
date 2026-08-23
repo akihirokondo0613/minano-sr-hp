@@ -433,11 +433,20 @@ main > section:not(.hero) {
 .tp-card{display:flex;flex-direction:column;gap:8px;inline-size:clamp(168px,17vw,200px);padding:11px 11px 12px;background:#fefefe;border:1px solid var(--line);border-radius:var(--r-lg);transition:border-color .3s,transform .3s var(--ease),box-shadow .35s var(--ease)}
 .tp-card:hover{border-color:var(--moegi);transform:translateY(-3px);box-shadow:0 10px 24px rgba(18,63,48,.08)}
 .tp-card:focus-visible{border-color:var(--moegi);outline:2px solid var(--sugi);outline-offset:2px}
-/* サムネイルの正本は blog.html の一覧。scripts/sync-home-topics.mjs が同じSVGを写す。 */
-.tp-thumb{display:block;border-radius:var(--r);overflow:hidden}
-.tp-thumb svg{display:block;inline-size:100%;block-size:auto}
-.tp-cat{align-self:flex-start;font-size:10px;font-weight:700;color:var(--sugi);background:var(--moegi-l);padding:2px 10px;border-radius:999px}
-.tp-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;font-size:12.5px;font-weight:700;line-height:1.65;color:var(--iwa)}
+/* カード上部の帯。図ではなく分野名の文字と色でテーマを示す。
+   地はすべて白文字で4.5:1以上（実測 5.02〜15.36）。色だけに頼らず分野名も読める。 */
+.tp-thumb{display:grid;place-items:center;aspect-ratio:16/7;border-radius:var(--r);padding:8px 10px;
+  background:var(--tp-c,var(--sugi));color:#fff;
+  font-family:var(--disp);font-size:clamp(12.5px,1.15vw,14.5px);font-weight:800;letter-spacing:.08em;
+  line-height:1.5;text-align:center;word-break:auto-phrase}
+.tp-thumb[data-cat="kaisei"]  {--tp-c:#123F30}  /* 法改正情報 ― 深杉 */
+.tp-thumb[data-cat="joseikin"]{--tp-c:#1E7A4B}  /* 助成金 ― 萌木の濃い側 */
+.tp-thumb[data-cat="hoken"]   {--tp-c:#3E6E88}  /* 社会保険 ― 山影 */
+.tp-thumb[data-cat="shugyo"]  {--tp-c:#55606B}  /* 就業規則 ― 石 */
+.tp-thumb[data-cat="keiei"]   {--tp-c:#94661F}  /* 経営・採用 ― 朝日の濃い側 */
+.tp-thumb[data-cat="trouble"] {--tp-c:#8C4A3C}  /* 労務トラブル ― 土 */
+.tp-thumb[data-cat="system"]  {--tp-c:#2A6E7A}  /* システム導入 ― 青緑 */
+.tp-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden;font-size:12.5px;font-weight:700;line-height:1.65;color:var(--iwa)}
 .tp-date{margin-top:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--ink4)}
 /* 前後ボタン。カードに重ねず見出し行に置くので、スマホでも指が当たる位置が変わらない。 */
 .tp-nav{margin-inline-start:auto;display:flex;gap:8px}
@@ -964,86 +973,72 @@ main > section:not(.hero) {
     <ul class="tp-rail rv d1" id="tp-rail" role="list" aria-label="最近公開した記事">
       <!-- home-topics-cards:start -->
         <li class="tp-item"><a class="tp-card" href="blog/gyomu-kaizen-toyama-2026.html">
-          <span class="tp-thumb" aria-hidden="true"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="system-ui,sans-serif"><rect x="8" y="12" width="124" height="64" rx="9" fill="#F7FBF8" stroke="#A8D8B8"/><text x="70" y="33" text-anchor="middle" font-size="10" font-weight="700" fill="#1E7A4B">富山県 令和8年度</text><rect x="18" y="40" width="40" height="22" rx="5" fill="#fff" stroke="#123F30" stroke-width="1.6"/><text x="38" y="55" text-anchor="middle" font-size="9" font-weight="700" fill="#123F30">9/1</text><path d="M62 51h16M74 47l5 4-5 4" fill="none" stroke="#3DAA6A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="82" y="40" width="40" height="22" rx="5" fill="#B03A2E"/><text x="102" y="55" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">9/30</text><text x="70" y="72" text-anchor="middle" font-size="8" fill="#5D6962">締切まで約1か月</text></g></svg></span>
-          <span class="tp-cat">助成金</span>
+          <span class="tp-thumb" data-cat="joseikin">助成金</span>
           <span class="tp-title">【令和8年度】富山県の業務改善助成金｜締切9月30日見込みと順序</span>
           <time class="tp-date" datetime="2026-08-16">2026.08.16</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/kensetsu-kokuho-hojinnari.html">
-          <span class="tp-thumb" aria-hidden="true"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="system-ui,sans-serif"><rect x="8" y="12" width="124" height="64" rx="9" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="16" y="34" width="34" height="24" rx="5" fill="#fff" stroke="#123F30" stroke-width="1.6"/><text x="33" y="50" text-anchor="middle" font-size="9" font-weight="700" fill="#123F30">個人</text><path d="M54 46h24M74 42l5 4-5 4" fill="none" stroke="#3DAA6A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><text x="66" y="37" text-anchor="middle" font-size="8" font-weight="700" fill="#1E7A4B">14日以内</text><rect x="84" y="34" width="39" height="24" rx="5" fill="#123F30"/><text x="103" y="50" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">法人</text><text x="70" y="70" text-anchor="middle" font-size="8" fill="#5D6962">建設国保はそのまま続けられる</text></g></svg></span>
-          <span class="tp-cat">社会保険</span>
+          <span class="tp-thumb" data-cat="hoken">社会保険</span>
           <span class="tp-title">建設国保は法人成り後も続けられる｜適用除外承認と協会けんぽ比較</span>
           <time class="tp-date" datetime="2026-08-09">2026.08.09</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/shika-gikoujo-shienryo-2026.html">
-          <span class="tp-thumb" aria-hidden="true"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="system-ui,sans-serif"><rect x="8" y="12" width="124" height="64" rx="9" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="17" y="28" width="36" height="26" rx="5" fill="#fff" stroke="#123F30" stroke-width="1.6"/><text x="35" y="45" text-anchor="middle" font-size="9" font-weight="700" fill="#123F30">医院</text><path d="M57 41h22M75 37l5 4-5 4" fill="none" stroke="#3DAA6A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><text x="68" y="32" text-anchor="middle" font-size="8" font-weight="700" fill="#1E7A4B">150円</text><rect x="85" y="28" width="38" height="26" rx="5" fill="#123F30"/><text x="104" y="45" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">技工所</text><text x="70" y="67" text-anchor="middle" font-size="8" fill="#5D6962">全額を委託費に上乗せ</text></g></svg></span>
-          <span class="tp-cat">法改正情報</span>
+          <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
           <span class="tp-title">【令和8年度】歯科技工所ベースアップ支援料｜届出と委託費の渡し方</span>
           <time class="tp-date" datetime="2026-08-09">2026.08.09</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/shika-baseup-hyokaryo-2026.html">
-          <span class="tp-thumb" aria-hidden="true"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="12" width="124" height="64" rx="9" fill="#F7FBF8" stroke="#A8D8B8"/><path d="M27 28c-5 0-8 4-7 9 1 4 3 6 3 12 0 7 3 12 6 12 2 0 2-8 5-8s3 8 5 8c3 0 6-5 6-12 0-6 2-8 3-12 1-5-2-9-7-9-3 0-4 2-7 2s-4-2-7-2z" fill="#fff" stroke="#123F30" stroke-width="1.6"/><rect x="60" y="49" width="22" height="12" rx="3" fill="#A8D8B8"/><rect x="91" y="38" width="28" height="23" rx="3" fill="#123F30"/><path d="M80 33h27M103 29l5 4-5 4" fill="none" stroke="#3DAA6A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><text x="71" y="58" text-anchor="middle" font-size="8" font-weight="700" fill="#123F30">21</text><text x="105" y="54" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">31</text></g></svg></span>
-          <span class="tp-cat">法改正情報</span>
+          <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
           <span class="tp-title">【令和8年度】歯科ベースアップ評価料｜届出と8月報告</span>
           <time class="tp-date" datetime="2026-08-08">2026.08.08</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/trial-koyo-joseikin-2026.html">
-          <span class="tp-thumb" aria-hidden="true"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="14" width="124" height="60" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="26" y="46" width="18" height="18" fill="#A8D8B8"/><rect x="52" y="36" width="18" height="28" fill="#3DAA6A"/><rect x="78" y="26" width="18" height="38" fill="#123F30"/><circle cx="112" cy="32" r="10" fill="#fff" stroke="#006E3C" stroke-width="2"/><text x="112" y="36" text-anchor="middle" font-size="10" font-weight="700" fill="#006E3C">¥</text></g></svg></span>
-          <span class="tp-cat">助成金</span>
+          <span class="tp-thumb" data-cat="joseikin">助成金</span>
           <span class="tp-title">【令和8年度】トライアル雇用助成金｜月額最大4万円の要件と期限</span>
           <time class="tp-date" datetime="2026-08-01">2026.08.01</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/jinzai-kaihatsu-joseikin-2026.html">
-          <span class="tp-thumb" aria-hidden="true"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="14" width="124" height="60" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="26" y="46" width="18" height="18" fill="#A8D8B8"/><rect x="52" y="36" width="18" height="28" fill="#3DAA6A"/><rect x="78" y="26" width="18" height="38" fill="#123F30"/><circle cx="112" cy="32" r="10" fill="#fff" stroke="#006E3C" stroke-width="2"/><text x="112" y="36" text-anchor="middle" font-size="10" font-weight="700" fill="#006E3C">¥</text></g></svg></span>
-          <span class="tp-cat">助成金</span>
+          <span class="tp-thumb" data-cat="joseikin">助成金</span>
           <span class="tp-title">【令和8年度】人材開発支援助成金｜人材育成支援コースの金額と期限</span>
           <time class="tp-date" datetime="2026-08-01">2026.08.01</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/gyomu-kaizen-joseikin-2026.html">
-          <span class="tp-thumb" aria-hidden="true"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="14" width="124" height="60" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="26" y="48" width="16" height="16" fill="#A8D8B8"/><rect x="50" y="38" width="16" height="26" fill="#3DAA6A"/><rect x="74" y="26" width="16" height="38" fill="#123F30"/><path d="M26 40l24-10 24-12" stroke="#A8442E" stroke-width="2" fill="none"/><circle cx="106" cy="34" r="10" fill="#fff" stroke="#006E3C" stroke-width="2"/><text x="106" y="38" text-anchor="middle" font-size="10" font-weight="700" fill="#006E3C">¥</text></g></svg></span>
-          <span class="tp-cat">助成金</span>
+          <span class="tp-thumb" data-cat="joseikin">助成金</span>
           <span class="tp-title">【令和8年度】業務改善助成金｜50円以上の引上げが条件に</span>
           <time class="tp-date" datetime="2026-07-31">2026.07.31</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/kaigo-hoshu-kaitei-2027.html">
-          <span class="tp-thumb" aria-hidden="true"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="16" width="124" height="56" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><path d="M20 54h100" stroke="#A8D8B8" stroke-width="2"/><circle cx="29" cy="54" r="6" fill="#123F30"/><circle cx="62" cy="54" r="6" fill="#3DAA6A"/><circle cx="95" cy="54" r="6" fill="#E4F4EA" stroke="#3DAA6A"/><circle cx="117" cy="54" r="6" fill="#fff" stroke="#123F30"/><text x="29" y="35" text-anchor="middle" font-size="6.5" fill="#123F30">春〜夏</text><text x="62" y="35" text-anchor="middle" font-size="6.5" fill="#123F30">秋〜冬</text><text x="106" y="35" text-anchor="middle" font-size="6.5" font-weight="700" fill="#123F30">2027年</text></g></svg></span>
-          <span class="tp-cat">法改正情報</span>
+          <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
           <span class="tp-title">2027年度介護報酬改定はどう進む？｜確定事項と審議中の論点</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/kaigo-shogu-new-services-2026.html">
-          <span class="tp-thumb" aria-hidden="true"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="16" width="124" height="56" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="14" y="27" width="34" height="34" rx="7" fill="#123F30"/><text x="31" y="47" text-anchor="middle" font-size="7.5" font-weight="700" fill="#fff">6月新設</text><path d="M53 44h8" stroke="#3DAA6A" stroke-width="1.5"/><rect x="62" y="23" width="61" height="17" rx="5" fill="#EEF8F2"/><text x="92.5" y="34" text-anchor="middle" font-size="6.3" font-weight="700" fill="#123F30">訪問看護・訪問リハ</text><rect x="62" y="47" width="61" height="17" rx="5" fill="#E4F4EA"/><text x="92.5" y="58" text-anchor="middle" font-size="6.3" font-weight="700" fill="#123F30">居宅介護支援</text></g></svg></span>
-          <span class="tp-cat">法改正情報</span>
+          <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
           <span class="tp-title">訪問看護等3サービスの処遇改善加算｜2026年6月新設</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/toyama-koyou-josei-2026-05.html">
-          <span class="tp-thumb" aria-hidden="true"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="16" width="124" height="56" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="16" y="25" width="48" height="38" rx="7" fill="#123F30"/><text x="40" y="41" text-anchor="middle" font-size="6.5" fill="#CDE8D6">有効求人倍率</text><text x="40" y="55" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">1.46</text><rect x="72" y="25" width="48" height="38" rx="7" fill="#EEF8F2"/><text x="96" y="41" text-anchor="middle" font-size="6.5" fill="#657069">新規求人倍率</text><text x="96" y="55" text-anchor="middle" font-size="12" font-weight="800" fill="#006E3C">2.28</text></g></svg></span>
-          <span class="tp-cat">経営・採用</span>
+          <span class="tp-thumb" data-cat="keiei">経営・採用</span>
           <span class="tp-title">富山県の有効求人倍率は1.46倍｜2026年5月の採用市場</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/tokutei-chiiki-kyotaku-service-2027.html">
-          <span class="tp-thumb" aria-hidden="true"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="16" width="124" height="56" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><path d="M18 57 38 35l16 16 21-27 26 33z" fill="#D4EDE0"/><rect x="78" y="39" width="35" height="23" rx="3" fill="#fff" stroke="#123F30"/><path d="m75 42 20-15 21 15" fill="none" stroke="#123F30" stroke-width="2"/><text x="47" y="68" text-anchor="middle" font-size="6.5" font-weight="700" fill="#123F30">人口減少地域</text><text x="96" y="54" text-anchor="middle" font-size="6.5" font-weight="700" fill="#006E3C">新制度</text></g></svg></span>
-          <span class="tp-cat">法改正情報</span>
+          <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
           <span class="tp-title">特定地域居宅サービスとは｜2027年の確定事項と未確定事項</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/kaigo-technology-jininhaichi-2027.html">
-          <span class="tp-thumb" aria-hidden="true"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="16" width="124" height="56" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="17" y="25" width="43" height="31" rx="5" fill="#123F30"/><rect x="22" y="30" width="33" height="21" rx="2" fill="#E4F4EA"/><path d="M29 61h19" stroke="#123F30" stroke-width="3"/><path d="M66 43h13" stroke="#3DAA6A" stroke-width="2"/><rect x="80" y="25" width="42" height="38" rx="6" fill="#EEF8F2"/><path d="M88 52h7l5-17 6 22 5-12h5" fill="none" stroke="#006E3C" stroke-width="2"/><text x="101" y="69" text-anchor="middle" font-size="5.8" font-weight="700" fill="#123F30">導入前後を測る</text></g></svg></span>
-          <span class="tp-cat">システム導入</span>
+          <span class="tp-thumb" data-cat="system">システム導入</span>
           <span class="tp-title">介護テクノロジーで人員基準は変わる？｜勤務表と効果測定の準備</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/kaigo-shogu-haibun-rule-2026.html">
-          <span class="tp-thumb" aria-hidden="true"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="16" width="124" height="56" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><circle cx="28" cy="36" r="9" fill="#123F30"/><circle cx="51" cy="36" r="9" fill="#3DAA6A"/><circle cx="74" cy="36" r="9" fill="#A8D8B8"/><circle cx="97" cy="36" r="9" fill="#E4F4EA" stroke="#3DAA6A"/><path d="M22 58h81" stroke="#123F30" stroke-width="2"/><path d="m97 53 8 5-8 5" fill="none" stroke="#123F30" stroke-width="2"/><text x="66" y="70" text-anchor="middle" font-size="6.5" font-weight="700" fill="#123F30">対象・配分・記録</text></g></svg></span>
-          <span class="tp-cat">経営・採用</span>
+          <span class="tp-thumb" data-cat="keiei">経営・採用</span>
           <span class="tp-title">介護の処遇改善加算は誰に配分できる？｜職種・賃金項目・記録の実務</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/kaigo-shogu-career-path-2026.html">
-          <span class="tp-thumb" aria-hidden="true"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="16" width="124" height="56" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="19" y="52" width="29" height="12" rx="3" fill="#D4EDE0"/><rect x="52" y="39" width="29" height="25" rx="3" fill="#A8D8B8"/><rect x="85" y="25" width="29" height="39" rx="3" fill="#123F30"/><text x="33.5" y="61" text-anchor="middle" font-size="6" font-weight="700" fill="#123F30">職位</text><text x="66.5" y="54" text-anchor="middle" font-size="6" font-weight="700" fill="#123F30">研修</text><text x="99.5" y="47" text-anchor="middle" font-size="6" font-weight="700" fill="#fff">昇給</text></g></svg></span>
-          <span class="tp-cat">就業規則</span>
+          <span class="tp-thumb" data-cat="shugyo">就業規則</span>
           <span class="tp-title">介護の処遇改善加算と就業規則｜キャリアパス要件Ⅰ〜Ⅲの整え方</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>

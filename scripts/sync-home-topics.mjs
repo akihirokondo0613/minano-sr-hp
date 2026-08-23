@@ -5,10 +5,10 @@
  *
  * 生成対象は次の2か所。手作業で書き換えず、記事を追加したらこのスクリプトを実行する。
  *   - 公開状況の数値（公開記事の本数・分野数・最新記事の日付）
- *   - 流れるカード列（新しい順の記事カード）
+ *   - 横送りのカード列（新しい順の記事カード）
  *
- * カードのサムネイルは blog.html の一覧が持つ記事ごとのSVGをそのまま取り出して使う。
- * 図はここで作らず、正本を blog.html の一覧に一本化する。
+ * カード上部の帯は、図ではなく分野名の文字で何の話かを示す。色は分野ごとに
+ * index.html の .tp-thumb[data-cat] が持ち、ここは分野キーと表示名だけを出す。
  *
  * --check を付けると差分の有無だけを判定し、ズレていれば失敗する（公開前チェック用）。
  */
@@ -20,7 +20,6 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const indexPath = path.join(root, 'index.html');
-const blogPath = path.join(root, 'blog.html');
 const articlesPath = path.join(root, 'blog', 'articles.json');
 
 /** マーキーは1周の見た目を保つため件数を固定する。増減はここだけを変える。 */
@@ -52,21 +51,6 @@ function replaceRegion(source, name, body) {
   return source.slice(0, startIndex + start.length) + body + source.slice(endIndex);
 }
 
-/** blog.html の一覧から slug ごとの .art-thumb のSVGを取り出す。 */
-function collectThumbs(blogSource) {
-  const thumbs = new Map();
-  const rowPattern = /<a\s+href="blog\/([a-z0-9-]+)\.html"[^>]*class="art-row"[\s\S]*?<div class="art-thumb">([\s\S]*?)<\/div>/g;
-  for (const match of blogSource.matchAll(rowPattern)) {
-    const [, slug, svg] = match;
-    const trimmed = svg.trim();
-    if (!trimmed.startsWith('<svg') || !trimmed.endsWith('</svg>')) continue;
-    if (thumbs.has(slug)) throw new Error(`blog.html: ${slug} の記事行が重複しています`);
-    thumbs.set(slug, trimmed);
-  }
-  if (!thumbs.size) throw new Error('blog.html: 記事一覧のサムネイルを取得できません');
-  return thumbs;
-}
-
 function normalizeArticles(raw) {
   if (!Array.isArray(raw) || !raw.length) {
     throw new Error('blog/articles.json: 記事が1件もありません');
@@ -94,15 +78,12 @@ function buildStats(articles) {
     + '</span>';
 }
 
-function buildCards(articles, thumbs) {
+function buildCards(articles) {
   const lines = articles.slice(0, CARD_COUNT).map((article) => {
     const href = `blog/${article.slug}.html`;
-    const thumb = thumbs.get(article.slug);
-    if (!thumb) throw new Error(`blog.html: ${article.slug} のサムネイルが見つかりません`);
     return [
       '        <li class="tp-item"><a class="tp-card" href="' + escapeHtml(href) + '">',
-      `          <span class="tp-thumb" aria-hidden="true">${thumb}</span>`,
-      `          <span class="tp-cat">${escapeHtml(article.catLabel)}</span>`,
+      `          <span class="tp-thumb" data-cat="${escapeHtml(article.cat)}">${escapeHtml(article.catLabel)}</span>`,
       `          <span class="tp-title">${escapeHtml(article.title)}</span>`,
       `          <time class="tp-date" datetime="${escapeHtml(article.date)}">${escapeHtml(article.date.replaceAll('-', '.'))}</time>`,
       '        </a></li>',
@@ -116,9 +97,8 @@ async function main() {
     throw new Error(`未対応の引数です: ${unknownArgs.join(', ')}`);
   }
 
-  const [indexSource, blogSource, articlesSource] = await Promise.all([
+  const [indexSource, articlesSource] = await Promise.all([
     readFile(indexPath, 'utf8'),
-    readFile(blogPath, 'utf8'),
     readFile(articlesPath, 'utf8'),
   ]);
   const articles = normalizeArticles(JSON.parse(articlesSource));
@@ -127,7 +107,7 @@ async function main() {
   }
 
   let generated = replaceRegion(indexSource, 'home-topics-stats', buildStats(articles));
-  generated = replaceRegion(generated, 'home-topics-cards', buildCards(articles, collectThumbs(blogSource)));
+  generated = replaceRegion(generated, 'home-topics-cards', buildCards(articles));
 
   if (generated === indexSource) {
     console.log('トップのTOPICSは最新です');
