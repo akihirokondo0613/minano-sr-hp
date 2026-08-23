@@ -232,24 +232,27 @@ function recordConsoleError(target) {
       const colors = [row, frame, slot].map(el => el && getComputedStyle(el).backgroundColor);
       return colors.every(color => color === 'rgb(254, 254, 254)') ? [] : [index + 1];
     });
-    // TOPICSは無限マーキー。列の複製が読み上げ・タブ順から外れているかまで見る。
-    const marquee = document.getElementById('tp-marquee');
-    const groups = marquee ? [...marquee.querySelectorAll('.tp-group')] : [];
-    const sourceGroup = groups.find(group => !group.hasAttribute('data-tp-clone'));
-    const cloneGroup = groups.find(group => group.hasAttribute('data-tp-clone'));
-    const topics = !marquee || !sourceGroup ? null : {
-      live: marquee.classList.contains('is-live'),
-      cards: sourceGroup.querySelectorAll('.tp-card').length,
-      cloneCards: cloneGroup ? cloneGroup.querySelectorAll('.tp-card').length : 0,
-      cloneHidden: cloneGroup ? cloneGroup.getAttribute('aria-hidden') === 'true' : false,
-      cloneTabbable: cloneGroup
-        ? [...cloneGroup.querySelectorAll('a')].filter(link => link.tabIndex >= 0).length : -1,
-      animation: getComputedStyle(sourceGroup).animationName,
-      direction: getComputedStyle(sourceGroup).animationDirection,
-      toggleHidden: document.getElementById('tp-toggle')?.hidden,
+    // TOPICSは自動では動かさない横送りレール。送りはスクロールスナップ＋前後ボタン。
+    const rail = document.getElementById('tp-rail');
+    const nav = document.getElementById('tp-nav');
+    const railStyle = rail && getComputedStyle(rail);
+    const cardEl = rail && rail.querySelector('.tp-card');
+    const topics = !rail || !cardEl ? null : {
+      cards: rail.querySelectorAll('.tp-card').length,
       // サムネイルは blog.html の一覧SVGの写し。編集用image-slotは置かない。
-      thumbs: sourceGroup.querySelectorAll('.tp-thumb > svg').length,
-      imageSlots: marquee.querySelectorAll('image-slot').length,
+      thumbs: rail.querySelectorAll('.tp-thumb > svg').length,
+      imageSlots: rail.querySelectorAll('image-slot').length,
+      animation: railStyle.animationName,
+      overflowX: railStyle.overflowX,
+      snap: railStyle.scrollSnapType,
+      scrollable: rail.scrollWidth > rail.clientWidth + 1,
+      // 画面に2枚ぶん近く出ていること（1枚だけだと送りの意味がない）
+      visibleCards: Number(((rail.clientWidth + (parseFloat(railStyle.columnGap) || 0))
+        / (cardEl.getBoundingClientRect().width + (parseFloat(railStyle.columnGap) || 0))).toFixed(2)),
+      arrows: nav ? nav.querySelectorAll('.tp-arrow[aria-label]').length : 0,
+      navHidden: nav ? nav.hidden : true,
+      prevDisabled: nav ? nav.querySelector('.tp-arrow[data-tp-dir="-1"]').disabled : null,
+      nextDisabled: nav ? nav.querySelector('.tp-arrow[data-tp-dir="1"]').disabled : null,
     };
     return {
       startupSource: startup?.getAttribute('src') || '',
@@ -267,13 +270,15 @@ function recordConsoleError(target) {
     failures.push(`サービス一覧: 画像背景の継ぎ目対策が不正 ${visualCleanup.serviceBackgroundFailures.join(', ')}`);
   }
   const topics = visualCleanup.topics;
-  const topicsOk = topics && topics.live && topics.cards >= 8
-    && topics.cloneCards === topics.cards && topics.cloneHidden && topics.cloneTabbable === 0
-    && topics.animation === 'tp-scroll' && topics.direction === 'reverse'
-    && topics.toggleHidden === false
-    && topics.thumbs === topics.cards && topics.imageSlots === 0;
+  const topicsOk = topics && topics.cards >= 8
+    && topics.thumbs === topics.cards && topics.imageSlots === 0
+    && topics.animation === 'none' && topics.overflowX === 'auto'
+    && topics.snap.startsWith('x ') && topics.scrollable
+    && topics.visibleCards >= 1.9
+    && topics.arrows === 2 && topics.navHidden === false
+    && topics.prevDisabled === true && topics.nextDisabled === false;
   if (!topicsOk) {
-    failures.push(`記事カードの自動スクロール: 構成が不正 ${JSON.stringify(topics)}`);
+    failures.push(`記事カードの横送り: 構成が不正 ${JSON.stringify(topics)}`);
   }
   results.push({ publicImageSlots: slotState.total, broken: slotState.broken.length,
     adjusted: slotState.adjusted, cropFailures: slotState.cropFailures.length,
