@@ -61,6 +61,29 @@ p, li, dd, dt, figcaption, blockquote, summary { text-wrap: pretty; word-break: 
 /* 本文中のリンクは文節改行の対象から外す。出典名や制度名は一つの長い文節に
    なりやすく、器より長いと折り返せずに溢れる（320pxのブログ本文で20px実測）。 */
 p a, li a, dd a { word-break: normal; }
+
+/* ── iPhone（Safari）の改行 ───────────────────────────────────────────
+   auto-phrase は Chromium にしか無く、Safari/Firefox では normal に解決される。
+   そこで scripts/sync-phrase-breaks.mjs が文節の切れ目へ <wbr> を置き、
+   ここで「文節以外では折らない」を足して、どのブラウザでも同じ位置で折る。
+   逃げ道は overflow-wrap:break-word にする。anywhere は min-content 幅を
+   1文字まで下げてしまい、flex/grid の列がその幅まで潰れる
+   （ブログのliで、右の説明が2文字ずつの縦書きのようになった実測がある）。
+
+   auto-phrase が使えるブラウザ（Chromium系）では当てない。keep-all は
+   逆に min-content 幅を最長の文節まで押し上げるので、列組みが
+   数px～15px広がる（support.html の320pxで実測）。
+   auto-phrase が効くなら、そちらのほうが副作用が無い。
+   印の無い要素は今までどおり auto-phrase のまま。 */
+@supports not (word-break: auto-phrase) {
+  h1:has(wbr), h2:has(wbr), h3:has(wbr), h4:has(wbr), h5:has(wbr),
+  p:has(wbr), li:has(wbr), dd:has(wbr), dt:has(wbr),
+  figcaption:has(wbr), blockquote:has(wbr), summary:has(wbr),
+  .tp-title:has(wbr), .rp-title:has(wbr), .jk-guide-n:has(wbr) {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+}
 /* 表のセルは文節改行の対象から外す。列が狭いと文節が丸ごと入りきらず、
    折り返せずにセルからはみ出す（uploads/case-*.html の360px幅で実測23〜62px）。 */
 td, th { text-wrap: pretty; }
@@ -377,8 +400,8 @@ main > section:not(.hero) {
   contain-intrinsic-size: auto 900px;
 }
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20260823-phrase1" media="print" data-async-style onload="this.media='all';this.onload=null">
-<noscript><link rel="stylesheet" href="skin-v2.css?v=20260823-phrase1"></noscript>
+<link rel="stylesheet" href="skin-v2.css?v=20260823-wbr1" media="print" data-async-style onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="skin-v2.css?v=20260823-wbr1"></noscript>
 <style id="home-hero-legibility">
 @media(max-width:700px){
   /* 本文が写真の建物・木立に重なる帯（ヒーロー高の45〜75%）まで白を残す。
@@ -788,10 +811,10 @@ main > section:not(.hero) {
     <div class="sec-head has-photo home-why-head rv">
       <div class="sec-head-idx"><span class="idx-num">01</span><span class="idx-lat">MISSION</span><span class="idx-jp">理念</span></div>
       <div class="sec-head-body home-why-copy">
-        <h2 class="sec-h">複雑になった労務を、<br><strong>シンプルで、使える形に。</strong></h2>
+        <h2 class="sec-h">複雑に<wbr>なった<wbr>労務を、<br><strong>シンプルで、使える形に。</strong></h2>
         <div class="home-why-intro">
-          <p>企業が成長するにつれて、規程や手続き、勤怠・給与のルールは継ぎ接ぎになり、現場の負担が増えていきます。</p>
-          <p>私たちは複雑に絡み合った労務管理を一つずつほどき、本来の目的を残したまま、現場で続けられる仕組みへ整えます。</p>
+          <p>企業が<wbr>成長するに<wbr>つれて、<wbr>規程や<wbr>手続き、<wbr>勤怠・給与の<wbr>ルールは<wbr>継ぎ接ぎに<wbr>なり、<wbr>現場の<wbr>負担が<wbr>増えていきます。</p>
+          <p>私たちは<wbr>複雑に<wbr>絡み合った<wbr>労務管理を<wbr>一つずつほどき、<wbr>本来の<wbr>目的を<wbr>残したまま、<wbr>現場で<wbr>続けられる<wbr>仕組みへ<wbr>整えます。</p>
         </div>
       </div>
       <div class="sec-photo home-why-photo"><div class="ph-frame"><image-slot id="home-why-main" src="assets/photos/why-main.webp" placeholder="経営者との打ち合わせシーン"></image-slot></div></div>
@@ -799,18 +822,18 @@ main > section:not(.hero) {
     <div class="why-beliefs home-why-beliefs rv d2" aria-label="3つの支援方針">
       <article class="belief-card">
         <div class="bc-num">01</div>
-        <h3 class="bc-title">コストを意識した経営支援</h3>
-        <p class="bc-desc">助成金の活用と手続きの効率化を、費用対効果も見ながら提案します。</p>
+        <h3 class="bc-title">コストを<wbr>意識した<wbr>経営支援</h3>
+        <p class="bc-desc">助成金の<wbr>活用と<wbr>手続きの<wbr>効率化を、<wbr>費用対効果も<wbr>見ながら<wbr>提案します。</p>
       </article>
       <article class="belief-card">
         <div class="bc-num">02</div>
         <h3 class="bc-title">一つずつほどく実務</h3>
-        <p class="bc-desc">継ぎ接ぎになった規程と運用を整理し、本来の意図を残して整え直します。</p>
+        <p class="bc-desc">継ぎ接ぎに<wbr>なった<wbr>規程と<wbr>運用を<wbr>整理し、<wbr>本来の<wbr>意図を<wbr>残して<wbr>整え直します。</p>
       </article>
       <article class="belief-card">
         <div class="bc-num">03</div>
         <h3 class="bc-title">長く使える仕組み化</h3>
-        <p class="bc-desc">法改正や組織の変化にも対応しやすい、現場で続けられる形を目指します。</p>
+        <p class="bc-desc">法改正や<wbr>組織の<wbr>変化にも<wbr>対応しやすい、<wbr>現場で<wbr>続けられる<wbr>形を<wbr>目指します。</p>
       </article>
     </div>
     <div class="home-why-more rv d3"><a href="services.html#approach" class="link-more">私たちの支援姿勢を見る →</a></div>
@@ -822,7 +845,7 @@ main > section:not(.hero) {
   <div class="w">
     <div class="sec-head rv">
       <div class="sec-head-idx"><span class="idx-num">02</span><span class="idx-lat">SERVICES</span><span class="idx-jp">サービス</span></div>
-      <div class="sec-head-body"><h2 class="sec-h">必要な支援を、<strong>一つの窓口で。</strong></h2><p class="sec-sub">手続き・給与計算・助成金・規程整備・労務相談・DXを、会社の状況に合わせて組み合わせます。</p></div>
+      <div class="sec-head-body"><h2 class="sec-h">必要な<wbr>支援を、<wbr><strong>一つの窓口で。</strong></h2><p class="sec-sub">手続き・給与計算・<wbr>助成金・<wbr>規程整備・労務相談・<wbr>DXを、<wbr>会社の<wbr>状況に<wbr>合わせて<wbr>組み合わせます。</p></div>
     </div>
     <div class="svc-list home-service-list">
       <a href="uploads/service-joseikin.html" class="svc-row rv">
@@ -871,12 +894,12 @@ main > section:not(.hero) {
   <div class="w">
     <div class="sec-head rv">
       <div class="sec-head-idx"><span class="idx-num">03</span><span class="idx-lat">SUPPORT</span><span class="idx-jp">支援の進め方</span></div>
-      <div class="sec-head-body"><h2 class="sec-h">会社の段階に合う順番で、<strong>労務を整えます。</strong></h2><p class="sec-sub">創業期・拡大期・組織強化期で、先に整えるべきものは変わります。</p></div>
+      <div class="sec-head-body"><h2 class="sec-h">会社の<wbr>段階に<wbr>合う<wbr>順番で、<wbr><strong>労務を整えます。</strong></h2><p class="sec-sub">創業期・<wbr>拡大期・<wbr>組織強化期で、<wbr>先に<wbr>整えるべきものは<wbr>変わります。</p></div>
     </div>
     <div class="home-phase-grid">
-      <article class="home-phase-card rv"><div class="home-phase-media"><image-slot id="home-stage-startup" src="assets/illustrations/stage-startup-v2.webp" fit="contain" placeholder="創業期のイラスト"></image-slot></div><div class="home-phase-body"><p class="home-phase-label">PHASE 01</p><h3 class="home-phase-title">仕組みをつくる</h3><p class="home-phase-scale">従業員10名程度まで</p><p class="home-phase-desc">加入手続き、雇用契約、給与計算など、最初の土台を整えます。</p></div></article>
-      <article class="home-phase-card rv d1"><div class="home-phase-media"><image-slot id="home-stage-growth" src="assets/illustrations/stage-growth.webp" fit="contain" placeholder="拡大期のイラスト"></image-slot></div><div class="home-phase-body"><p class="home-phase-label">PHASE 02</p><h3 class="home-phase-title">仕組みを整える</h3><p class="home-phase-scale">従業員10〜50名程度</p><p class="home-phase-desc">規程、勤怠、育児・介護対応を見直し、運用のずれを減らします。</p></div></article>
-      <article class="home-phase-card rv d2"><div class="home-phase-media"><image-slot id="home-stage-org" src="assets/illustrations/stage-organization.webp" fit="contain" placeholder="組織強化期のイラスト"></image-slot></div><div class="home-phase-body"><p class="home-phase-label">PHASE 03</p><h3 class="home-phase-title">仕組みを強くする</h3><p class="home-phase-scale">従業員50名以上</p><p class="home-phase-desc">評価、賃金、管理職育成まで、組織運営を支える制度へ広げます。</p></div></article>
+      <article class="home-phase-card rv"><div class="home-phase-media"><image-slot id="home-stage-startup" src="assets/illustrations/stage-startup-v2.webp" fit="contain" placeholder="創業期のイラスト"></image-slot></div><div class="home-phase-body"><p class="home-phase-label">PHASE 01</p><h3 class="home-phase-title">仕組みをつくる</h3><p class="home-phase-scale">従業員10名程度まで</p><p class="home-phase-desc">加入手続き、<wbr>雇用契約、<wbr>給与計算など、<wbr>最初の<wbr>土台を<wbr>整えます。</p></div></article>
+      <article class="home-phase-card rv d1"><div class="home-phase-media"><image-slot id="home-stage-growth" src="assets/illustrations/stage-growth.webp" fit="contain" placeholder="拡大期のイラスト"></image-slot></div><div class="home-phase-body"><p class="home-phase-label">PHASE 02</p><h3 class="home-phase-title">仕組みを整える</h3><p class="home-phase-scale">従業員10〜50名程度</p><p class="home-phase-desc">規程、<wbr>勤怠、<wbr>育児・介護対応を<wbr>見直し、<wbr>運用の<wbr>ずれを<wbr>減らします。</p></div></article>
+      <article class="home-phase-card rv d2"><div class="home-phase-media"><image-slot id="home-stage-org" src="assets/illustrations/stage-organization.webp" fit="contain" placeholder="組織強化期のイラスト"></image-slot></div><div class="home-phase-body"><p class="home-phase-label">PHASE 03</p><h3 class="home-phase-title">仕組みを強くする</h3><p class="home-phase-scale">従業員50名以上</p><p class="home-phase-desc">評価、<wbr>賃金、<wbr>管理職育成まで、<wbr>組織運営を<wbr>支える<wbr>制度へ<wbr>広げます。</p></div></article>
     </div>
     <div class="home-section-more rv"><a href="support.html" class="link-more">支援の進め方・業種別事例を見る →</a></div>
   </div>
@@ -887,35 +910,35 @@ main > section:not(.hero) {
   <div class="w">
     <div class="sec-head rv">
       <div class="sec-head-idx"><span class="idx-num">04</span><span class="idx-lat">PRICING</span><span class="idx-jp">料金</span></div>
-      <div class="sec-head-body"><h2 class="sec-h">業務範囲と料金がわかる、<strong>3つの選び方。</strong></h2><p class="sec-sub">手続き中心、給与計算込み、31名以上・個別設計。主な業務範囲と料金を掲載しています。</p></div>
+      <div class="sec-head-body"><h2 class="sec-h">業務範囲と<wbr>料金が<wbr>わかる、<wbr><strong>3つの選び方。</strong></h2><p class="sec-sub">手続き中心、<wbr>給与計算込み、<wbr>31名以上・<wbr>個別設計。<wbr>主な<wbr>業務範囲と<wbr>料金を<wbr>掲載しています。</p></div>
     </div>
     <div class="home-plan-grid">
       <article class="home-plan-card">
         <p class="home-plan-en">BASIC</p><h3 class="home-plan-name">スタート顧問プラン</h3>
-        <p class="home-plan-price">¥35,000<small>／月（税抜）</small></p><p class="home-plan-unit">従業員5名まで</p>
-        <p class="home-plan-founder">創業3年以内：¥25,000／月（創業3周年まで・最低12か月間）</p>
-        <p class="home-plan-feature">年次手続きまで顧問料に含みます</p>
-        <ul class="home-plan-list"><li>入退社・月額変更・扶養届・労使協定</li><li>年度更新・算定基礎届・賞与支払届</li><li>出産・育児・介護・高年齢の給付申請</li></ul>
+        <p class="home-plan-price">¥35,000<small>／月<wbr>（税抜）</small></p><p class="home-plan-unit">従業員5名まで</p>
+        <p class="home-plan-founder">創業<wbr>3年以内：<wbr>¥25,000／月<wbr>（創業3<wbr>周年まで・最低12か<wbr>月間）</p>
+        <p class="home-plan-feature">年次手続きまで<wbr>顧問料に<wbr>含みます</p>
+        <ul class="home-plan-list"><li>入退社・<wbr>月額変更・<wbr>扶養届・労使協定</li><li>年度更新・算定基礎届・賞与支払届</li><li>出産・育児・介護・<wbr>高年齢の<wbr>給付申請</li></ul>
         <a href="pricing.html#plan-basic" class="home-plan-link">詳しい内容を見る →</a>
       </article>
       <article class="home-plan-card is-main">
         <span class="home-plan-recommend">おすすめ</span><p class="home-plan-en">STANDARD</p><h3 class="home-plan-name">スタンダードプラン</h3>
-        <p class="home-plan-price">¥55,000<small>／月（税抜）</small></p><p class="home-plan-unit">従業員10名まで</p>
-        <p class="home-plan-founder">創業3年以内：¥45,000／月（創業3周年まで・最低12か月間）</p>
-        <p class="home-plan-feature">手続きに加えて給与・賞与計算まで</p>
-        <ul class="home-plan-list"><li>スタート顧問プランの全業務</li><li>給与・賞与計算と個別労務相談</li><li>就業規則の年次レビュー</li></ul>
+        <p class="home-plan-price">¥55,000<small>／月<wbr>（税抜）</small></p><p class="home-plan-unit">従業員10名まで</p>
+        <p class="home-plan-founder">創業<wbr>3年以内：<wbr>¥45,000／月<wbr>（創業3<wbr>周年まで・最低12か<wbr>月間）</p>
+        <p class="home-plan-feature">手続きに<wbr>加えて<wbr>給与・賞与計算まで</p>
+        <ul class="home-plan-list"><li>スタート顧問プランの<wbr>全業務</li><li>給与・賞与計算と<wbr>個別労務相談</li><li>就業規則の年次レビュー</li></ul>
         <a href="pricing.html#plan-standard" class="home-plan-link">詳しい内容を見る →</a>
       </article>
       <article class="home-plan-card">
         <p class="home-plan-en">CUSTOM</p><h3 class="home-plan-name">カスタムプラン</h3>
-        <p class="home-plan-price is-estimate">お見積もり</p><p class="home-plan-unit">内容・規模に応じてご提示</p>
-        <p class="home-plan-founder">月額契約は創業割（創業3周年まで・最低12か月間）の対象</p>
-        <p class="home-plan-feature">人数・体制に合わせて月額業務を設計</p>
-        <ul class="home-plan-list"><li>従業員31名以上・複数拠点でのご依頼</li><li>複数の定例業務を組み合わせたい場合</li><li>社内の担当範囲に合わせた業務分担</li></ul>
+        <p class="home-plan-price is-estimate">お見積もり</p><p class="home-plan-unit">内容・<wbr>規模に<wbr>応じて<wbr>ご提示</p>
+        <p class="home-plan-founder">月額契約は<wbr>創業割<wbr>（創業3<wbr>周年まで・最低12か<wbr>月間）の<wbr>対象</p>
+        <p class="home-plan-feature">人数・<wbr>体制に<wbr>合わせて<wbr>月額業務を<wbr>設計</p>
+        <ul class="home-plan-list"><li>従業員31名以上・<wbr>複数拠点での<wbr>ご依頼</li><li>複数の<wbr>定例業務を<wbr>組み合わせたい<wbr>場合</li><li>社内の<wbr>担当範囲に<wbr>合わせた<wbr>業務分担</li></ul>
         <a href="pricing.html#plan-custom" class="home-plan-link">詳しい内容を見る →</a>
       </article>
     </div>
-    <p class="home-plan-note">表示価格は税抜です。年度更新・算定基礎届・賞与支払届は顧問料に含まれます。傷病手当金・労災の初回申請、年末調整用データ整備・税理士連携、助成金申請は別料金です。固定額は料金ページで確認できます。</p>
+    <p class="home-plan-note">表示価格は<wbr>税抜で<wbr>す。年度更新・算定基礎届・賞与支払届は<wbr>顧問料に<wbr>含<wbr>まれ<wbr>ます。傷病手当金・<wbr>労災の<wbr>初回申請、<wbr>年末調整用<wbr>データ整備・<wbr>税理士連携、<wbr>助成金申請は<wbr>別料金です。<wbr>固定額は<wbr>料金ページで<wbr>確認できます。</p>
     <div class="home-section-more rv"><a href="pricing.html" class="link-more">料金・顧問プランを詳しく見る →</a></div>
   </div>
 </section>
@@ -927,7 +950,7 @@ main > section:not(.hero) {
       <aside class="faq-aside rv">
         <div class="sec-head-idx"><span class="idx-num">05</span><span class="idx-lat">FAQ</span><span class="idx-jp">よくある質問</span></div>
         <h2 class="sec-h">ご相談の、<strong>その前に。</strong></h2>
-        <p class="sec-sub">よくいただく疑問をまとめました。ここにない点も、初回のご相談で遠慮なくお尋ねください。</p>
+        <p class="sec-sub">よく<wbr>いただく<wbr>疑問を<wbr>まとめました。<wbr>ここに<wbr>ない<wbr>点も、<wbr>初回の<wbr>ご相談で<wbr>遠慮なく<wbr>お尋ねください。</p>
       </aside>
       <div class="faq-wrap rv d1">
       <div class="faq-item">
@@ -985,8 +1008,8 @@ main > section:not(.hero) {
     <div class="sec-head rv">
       <div class="sec-head-idx"><span class="idx-num">06</span><span class="idx-lat">TOPICS</span><span class="idx-jp">お知らせ・コラム</span></div>
       <div class="sec-head-body">
-        <h2 class="sec-h">法改正も助成金も、<strong>「いま」をわかりやすく。</strong></h2>
-        <p class="sec-sub">経営者の方に向けて、労務の最新情報をかみくだいて発信しています。</p>
+        <h2 class="sec-h">法改正も<wbr>助成金も、<wbr><strong>「いま」をわかりやすく。</strong></h2>
+        <p class="sec-sub">経営者の<wbr>方に<wbr>向けて、<wbr>労務の<wbr>最新情報を<wbr>かみくだいて<wbr>発信しています。</p>
       </div>
     </div>
     <div class="pub-live rv d1">
@@ -997,72 +1020,72 @@ main > section:not(.hero) {
       <!-- home-topics-cards:start -->
         <li class="tp-item"><a class="tp-card" href="blog/gyomu-kaizen-toyama-2026.html">
           <span class="tp-thumb" data-cat="joseikin">助成金</span>
-          <span class="tp-title">【令和8年度】富山県の業務改善助成金｜締切9月30日見込みと順序</span>
+          <span class="tp-title">【令和8年度】<wbr>富山県の<wbr>業務改善助成金<wbr>｜締切9月<wbr>30日見込みと<wbr>順序</span>
           <time class="tp-date" datetime="2026-08-16">2026.08.16</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/kensetsu-kokuho-hojinnari.html">
           <span class="tp-thumb" data-cat="hoken">社会保険</span>
-          <span class="tp-title">建設国保は法人成り後も続けられる｜適用除外承認と協会けんぽ比較</span>
+          <span class="tp-title">建設国保は<wbr>法人成り後も<wbr>続けられる<wbr>｜適用除外承認と<wbr>協会けんぽ比較</span>
           <time class="tp-date" datetime="2026-08-09">2026.08.09</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/shika-gikoujo-shienryo-2026.html">
           <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
-          <span class="tp-title">【令和8年度】歯科技工所ベースアップ支援料｜届出と委託費の渡し方</span>
+          <span class="tp-title">【令和8年度】<wbr>歯科技工所<wbr>ベースアップ支援料｜<wbr>届出と<wbr>委託費の<wbr>渡し方</span>
           <time class="tp-date" datetime="2026-08-09">2026.08.09</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/shika-baseup-hyokaryo-2026.html">
           <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
-          <span class="tp-title">【令和8年度】歯科ベースアップ評価料｜届出と8月報告</span>
+          <span class="tp-title">【令和8年度】<wbr>歯科<wbr>ベースアップ評価料｜<wbr>届出と<wbr>8月報告</span>
           <time class="tp-date" datetime="2026-08-08">2026.08.08</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/trial-koyo-joseikin-2026.html">
           <span class="tp-thumb" data-cat="joseikin">助成金</span>
-          <span class="tp-title">【令和8年度】トライアル雇用助成金｜月額最大4万円の要件と期限</span>
+          <span class="tp-title">【令和8年度】<wbr>トラ<wbr>イアル雇用助成金<wbr>｜月額最大4<wbr>万円の<wbr>要件と<wbr>期限</span>
           <time class="tp-date" datetime="2026-08-01">2026.08.01</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/jinzai-kaihatsu-joseikin-2026.html">
           <span class="tp-thumb" data-cat="joseikin">助成金</span>
-          <span class="tp-title">【令和8年度】人材開発支援助成金｜人材育成支援コースの金額と期限</span>
+          <span class="tp-title">【令和8年度】<wbr>人材開発支援助成金｜<wbr>人材育成支援<wbr>コースの<wbr>金額と<wbr>期限</span>
           <time class="tp-date" datetime="2026-08-01">2026.08.01</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/gyomu-kaizen-joseikin-2026.html">
           <span class="tp-thumb" data-cat="joseikin">助成金</span>
-          <span class="tp-title">【令和8年度】業務改善助成金｜50円以上の引上げが条件に</span>
+          <span class="tp-title">【令和8年度】<wbr>業務改善助成金<wbr>｜50円以上の<wbr>引上げが<wbr>条件に</span>
           <time class="tp-date" datetime="2026-07-31">2026.07.31</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/kaigo-hoshu-kaitei-2027.html">
           <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
-          <span class="tp-title">2027年度介護報酬改定はどう進む？｜確定事項と審議中の論点</span>
+          <span class="tp-title">2027<wbr>年度介護報酬改定は<wbr>どう<wbr>進む？<wbr>｜確定事項と<wbr>審議中の<wbr>論点</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/kaigo-shogu-new-services-2026.html">
           <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
-          <span class="tp-title">訪問看護等3サービスの処遇改善加算｜2026年6月新設</span>
+          <span class="tp-title">訪問看護等3<wbr>サービスの<wbr>処遇改善加算<wbr>｜2026年<wbr>6月新設</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/toyama-koyou-josei-2026-05.html">
           <span class="tp-thumb" data-cat="keiei">経営・採用</span>
-          <span class="tp-title">富山県の有効求人倍率は1.46倍｜2026年5月の採用市場</span>
+          <span class="tp-title">富山県の<wbr>有効求人倍率は<wbr>1.46<wbr>倍｜2026年<wbr>5月の<wbr>採用市場</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/tokutei-chiiki-kyotaku-service-2027.html">
           <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
-          <span class="tp-title">特定地域居宅サービスとは｜2027年の確定事項と未確定事項</span>
+          <span class="tp-title">特定地域居宅<wbr>サービスとは<wbr>｜2027年の<wbr>確定事項と<wbr>未確定事項</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/kaigo-technology-jininhaichi-2027.html">
           <span class="tp-thumb" data-cat="system">システム導入</span>
-          <span class="tp-title">介護テクノロジーで人員基準は変わる？｜勤務表と効果測定の準備</span>
+          <span class="tp-title">介護テクノロジーで<wbr>人員基準は<wbr>変わる？<wbr>｜勤務表と<wbr>効果測定の<wbr>準備</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/kaigo-shogu-haibun-rule-2026.html">
           <span class="tp-thumb" data-cat="keiei">経営・採用</span>
-          <span class="tp-title">介護の処遇改善加算は誰に配分できる？｜職種・賃金項目・記録の実務</span>
+          <span class="tp-title">介護の<wbr>処遇改善加算は<wbr>誰に<wbr>配分できる？<wbr>｜職種・<wbr>賃金項目・記録の<wbr>実務</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/kaigo-shogu-career-path-2026.html">
           <span class="tp-thumb" data-cat="shugyo">就業規則</span>
-          <span class="tp-title">介護の処遇改善加算と就業規則｜キャリアパス要件Ⅰ〜Ⅲの整え方</span>
+          <span class="tp-title">介護の<wbr>処遇改善加算と<wbr>就業規則｜キャリ<wbr>アパス要件Ⅰ〜Ⅲの<wbr>整え方</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
       <!-- home-topics-cards:end -->
@@ -1091,10 +1114,10 @@ main > section:not(.hero) {
   <div class="about-inner">
     <div class="sec-head rv">
       <div class="sec-head-idx"><span class="idx-num">07</span><span class="idx-lat">ABOUT</span><span class="idx-jp">事務所案内</span></div>
-      <div class="sec-head-body"><h2 class="sec-h">日々の労務に、<strong>確かな手続きを。</strong></h2><p class="sec-sub">業務内容やご希望に合わせて、相談方法と進め方を調整します。</p></div>
+      <div class="sec-head-body"><h2 class="sec-h">日々の<wbr>労務に、<wbr><strong>確かな手続きを。</strong></h2><p class="sec-sub">業務内容や<wbr>ご希望に<wbr>合わせて、<wbr>相談方法と<wbr>進め方を<wbr>調整します。</p></div>
     </div>
     <div class="home-about-card" style="grid-template-columns:minmax(0,1fr);grid-template-areas:'copy';gap:0">
-      <div class="home-about-copy rv d1"><h3 class="rep-h">複雑なルールを、<strong>運用しやすい形に。</strong></h3><p style="max-inline-size:none">むずかしい言葉をそのまま使わず、明日からの現場で使える形にしてお渡しします。地域に根ざした相談相手として、会社の状況を一緒に整理します。</p><div class="home-about-meta"><span>代表　近藤 昭宏</span><span>富山県富山市蓮町1丁目7-4　SCOP TOYAMA</span><span>平日 9:00–18:00</span></div><div><a href="about.html" class="link-more">代表・事務所情報を見る →</a></div></div>
+      <div class="home-about-copy rv d1"><h3 class="rep-h">複雑な<wbr>ルールを、<wbr><strong>運用しやすい形に。</strong></h3><p style="max-inline-size:none">むずかしい<wbr>言葉を<wbr>そのまま<wbr>使わず、<wbr>明日からの<wbr>現場で<wbr>使える<wbr>形に<wbr>してお渡しします。<wbr>地域に<wbr>根ざした<wbr>相談相手と<wbr>して、<wbr>会社の<wbr>状況を<wbr>一緒に<wbr>整理します。</p><div class="home-about-meta"><span>代表　近藤 昭宏</span><span>富山県富山市蓮町1丁目7-4　SCOP TOYAMA</span><span>平日 9:00–18:00</span></div><div><a href="about.html" class="link-more">代表・事務所情報を見る →</a></div></div>
     </div>
   </div>
 </section>
@@ -1106,14 +1129,14 @@ main > section:not(.hero) {
   <div class="final-inner rv">
     <span class="final-label"><i class="live-dot" aria-hidden="true"></i>無料相談受付中</span>
     <h2 class="final-h">
-      まずは現状を聞かせてください。<br class="sp-br"><strong>無料でご相談いただけます。</strong>
+      まずは<wbr>現状を<wbr>聞かせてください。<br class="sp-br"><strong>無料でご相談いただけます。</strong>
     </h2>
     <p class="final-p"><span class="nw">助成金、手続きの効率化、トラブル予防——</span><wbr><span class="nw">どこから手をつければいいか、</span><wbr><span class="nw">一緒に考えます。</span></p>
     <div class="final-btns">
       <a href="uploads/contact.html" class="btn-white">フォームから相談する</a>
       <a href="tel:090-8259-8774" class="btn-ghost">090-8259-8774</a>
     </div>
-    <p class="final-note">平日 9:00–18:00　/　土日祝のフォーム送信は翌営業日にご返信</p>
+    <p class="final-note">平日 9<wbr>:<wbr>00–<wbr>18<wbr>:00　/　土日祝の<wbr>フォーム送信は<wbr>翌営業日に<wbr>ご返信</p>
   </div>
 </section>
 
@@ -1127,7 +1150,7 @@ main > section:not(.hero) {
           <div class="logo-mark"><span>み</span></div>
           <div class="logo-text"><b>みなの社会保険労務士事務所</b><small>複雑な労務を、シンプルに。</small></div>
         </div>
-        <p class="footer-desc">助成金活用・手続き代行・DX支援で、中小企業の労務コストを最適化します。</p>
+        <p class="footer-desc">助成金活用・<wbr>手続き代行・<wbr>DX支援で、<wbr>中小企業の<wbr>労務コストを<wbr>最適化します。</p>
         
         <address class="footer-contact">
           <span class="footer-contact-row footer-contact-address">〒931-8333 富山県富山市蓮町1丁目7-4　SCOP TOYAMA</span>
@@ -1179,7 +1202,7 @@ main > section:not(.hero) {
       </div>
     </div>
     <div class="footer-bottom">
-      <p class="footer-copy">© 2026 みなの社会保険労務士事務所. All rights reserved.</p>
+      <p class="footer-copy">© 2026 みなの<wbr>社会保険労務士事務所<wbr>. All rights reserved.</p>
       <div class="footer-badges">
         <span class="footer-badge">富山県社会保険労務士会</span>
       </div>

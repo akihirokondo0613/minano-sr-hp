@@ -1,0 +1,51 @@
+{
+  "_note": "助成金ページ 02「うちは対象になる？」の正本。scripts/sync-joseikin-check.mjs が joseikin.html のマーカー区間を生成する。制度名・金額・境目は data/joseikin-guides.json から引くので、ここには書かない（gyomu-kaizen だけは解説ページを持たないので extra に置く）。",
+  "groups": [
+    {
+      "title": "いま雇っている人の処遇を変える",
+      "items": [
+        { "ask": "パートや契約社員を正社員にした、またはこれからする予定がある", "hits": ["career-up"] },
+        { "ask": "パート・契約社員の時給や手当を引き上げた、または引き上げる予定がある", "hits": ["career-up"] },
+        { "ask": "社内でいちばん低い時給が、改定後の最低賃金に近い。設備やソフトを入れて効率化したい", "hits": ["gyomu-kaizen"] }
+      ]
+    },
+    {
+      "title": "人を採る・育てる",
+      "items": [
+        { "ask": "未経験の方や、就職に不安のある方を試しに雇ってみたい", "hits": ["koyou-kaihatsu"] },
+        { "ask": "従業員に外部研修を受けさせたい、または社内研修を計画している", "hits": ["jinzai-kaihatsu"] }
+      ]
+    },
+    {
+      "title": "休みと働き方を整える",
+      "items": [
+        { "ask": "育児休業を取る（取った）従業員がいる。妊娠・出産の報告を受けた", "hits": ["ryoritsu"] },
+        { "ask": "残業を減らしたい、年次有給休暇の取得を進めたい", "hits": ["hatarakikata"] },
+        { "ask": "人事評価や手当の制度を整えたい。現場の負担を減らす機器を入れたい", "hits": ["jinzai-kakuho"] }
+      ]
+    },
+    {
+      "title": "先を見て備える",
+      "items": [
+        { "ask": "定年を65歳より先へ延ばしたい、または定年の定めをなくしたい", "hits": ["65sai-cho"] },
+        { "ask": "受注が減ったが、従業員を減らさずに乗り切りたい", "hits": ["koyou-chosei"] }
+      ]
+    }
+  ],
+  "anchors": {
+    "career-up": "career-up",
+    "gyomu-kaizen": "gyomu-kaizen",
+    "ryoritsu": "ryoritsu",
+    "jinzai-kaihatsu": "jinzai",
+    "koyou-kaihatsu": "trial"
+  },
+  "extra": {
+    "gyomu-kaizen": {
+      "name": "業務改善助成金",
+      "amount": "30万円〜最大600万円",
+      "wall": "賃上げと設備の導入より前に、交付申請書を労働局へ提出",
+      "guide": "blog/gyomu-kaizen-toyama-2026.html",
+      "guideLabel": "富山県の締切と順序"
+    }
+  }
+}

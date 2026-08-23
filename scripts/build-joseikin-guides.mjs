@@ -14,6 +14,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import { markPhrases } from './lib/phrase-breaks.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dataPath = path.join(root, 'data', 'joseikin-guides.json');
@@ -296,13 +297,15 @@ async function main() {
     if (!/^[a-z0-9-]+$/.test(guide.slug)) throw new Error(`slugが不正です: ${guide.slug}`);
 
     const rel = `uploads/joseikin-${guide.slug}.html`;
-    const generated = donor.top
+    // 文節印（<wbr>）はここで入れる。あとから sync-phrase-breaks.mjs に
+    // 差し込ませると、この生成器の --check が毎回落ちる。
+    const generated = markPhrases(donor.top
       + buildHead(guide, meta) + '\n'
       + donor.assets
       + buildBreadcrumbSchema(guide)
       + donor.middle.replace('</head>', `${STYLE}\n</head>`)
       + buildMain(guide, meta, guides)
-      + donor.tail.replaceAll('/uploads/service-romu-sodan.html', `/${rel}`);
+      + donor.tail.replaceAll('/uploads/service-romu-sodan.html', `/${rel}`)).html;
 
     for (const must of ['service.css?v=', 'wave-skin.css?v=', 'id="brand-v2"', '<main id="main">', 'jgd-wall']) {
       if (!generated.includes(must)) throw new Error(`${rel}: 生成物に ${must} がありません`);

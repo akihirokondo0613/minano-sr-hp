@@ -414,6 +414,12 @@ async function runTaskPool(tasks, limit = 2) {
         output: 'blog-link-decoration.json',
       },
       {
+        name: '文節印の置き場所',
+        command: process.execPath,
+        args: ['scripts/test-phrase-breaks.cjs', base, '--json'],
+        output: 'phrase-breaks.json',
+      },
+      {
         name: 'ルート泣き別れ',
         command: process.execPath,
         args: [
