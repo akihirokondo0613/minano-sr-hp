@@ -46,6 +46,10 @@ const tasks = [
     args: ['scripts/sync-home-topics.mjs', '--check'],
   },
   {
+    name: '助成金の解説ページの同期確認',
+    args: ['scripts/build-joseikin-guides.mjs', '--check'],
+  },
+  {
     name: '構造化データの同期確認',
     args: ['scripts/sync-structured-data.mjs', '--check'],
   },

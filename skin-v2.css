@@ -668,7 +668,7 @@ main > section:not(.hero) {
 
 /* ---------- 専門用語ツールチップ（UI改善 2026-08-12） ---------- */
 .term { color: var(--sugi); font-weight: 700; border-bottom: 1.5px dashed var(--moegi); cursor: help; padding-bottom: 1px; }
-.term::after { content: '?'; display: inline-flex; width: 13px; height: 13px; align-items: center; justify-content: center; margin-left: 3px; border-radius: 50%; background: var(--moegi); color: var(--shiro); font-family: var(--mono); font-size: 8.5px; font-weight: 700; line-height: 1; vertical-align: 2px; }
+.term::after { content: '?'; display: inline-flex; width: 13px; height: 13px; align-items: center; justify-content: center; margin-left: 3px; border-radius: 50%; background: var(--moegi-t); color: var(--shiro); font-family: var(--mono); font-size: 8.5px; font-weight: 700; line-height: 1; vertical-align: 2px; }
 .term:focus-visible { outline: 2px solid var(--moegi); outline-offset: 3px; border-radius: 3px; }
 .term-pop { position: fixed; left: 0; top: 0; z-index: 10020; width: min(288px, calc(100vw - 24px)); padding: 13px 15px; border-radius: 11px; background: var(--sugi); color: var(--shiro); box-shadow: 0 16px 34px -12px rgba(11,42,31,.5); font-size: 12px; font-weight: 400; letter-spacing: .01em; line-height: 1.85; text-align: left; opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-5px); transition: opacity .22s var(--ease), transform .22s var(--ease); }
 .term-pop[data-open="true"] { opacity: 1; visibility: visible; transform: translateY(0); }
