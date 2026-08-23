@@ -404,6 +404,22 @@ article.post .post-action .term::after { background: var(--moegi-b); color: var(
   .post-toc-mobile { display: none; }
 }
 
+/* ═══ 大きい画面での読みやすさ（2026-08-23） ═══
+   実測：1920pxで記事+目次は1052px（画面の55%）、本文は15.5px・47字/行だった。
+   行長は足りていて、狭く見える原因は「文字が小さい」ことと
+   「図解・表まで本文と同じ幅に閉じ込めている」ことの2つ。
+   本文の行長（40〜45字）は崩さず、文字を上げ、図解だけ広げる。 */
+@media (min-width: 1120px) {
+  article.post p, article.post li { font-size: 17px; }
+}
+@media (min-width: 1400px) {
+  .post-toc-layout { width: min(calc(100% - 32px), 1212px); grid-template-columns: 980px minmax(0, 200px); }
+  .post-toc-layout > article.post { width: 980px; max-width: 980px; }
+  /* 本文だけ行長を抑える。左端は図解とそろえる（中央寄せにすると左端が食い違う）。 */
+  article.post > p, article.post > ul, article.post > ol { max-width: 760px; margin-inline: 0; }
+  .related-posts-inner { max-width: 980px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .post-toc-card .post-toc-link,
   .post-toc-mobile-panel .post-toc-link,

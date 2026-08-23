@@ -443,6 +443,22 @@ async function inspectToc(page, width) {
         mobileIsDetails: mobile?.tagName === 'DETAILS',
         mobileOpen: mobile?.hasAttribute('open') || false,
         articleWidth: articleRect?.width || 0,
+        // 器の幅ではなく本文の行長を見る。図解や表は本文より広くてよい。
+        proseLine: (() => {
+          const article = document.querySelector('article.post');
+          const target = article
+            && [...article.querySelectorAll(':scope > p')].find((p) => p.textContent.trim().length > 60);
+          if (!target) return { width: 0, chars: 0 };
+          const cs = getComputedStyle(target);
+          const probe = document.createElement('span');
+          probe.textContent = 'あ';
+          probe.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;font:' + cs.font;
+          document.body.appendChild(probe);
+          const em = probe.getBoundingClientRect().width;
+          probe.remove();
+          const width = target.getBoundingClientRect().width;
+          return { width, chars: em > 0 ? width / em : 0 };
+        })(),
         duplicateIds: [...new Set(duplicateIds)],
       };
     }, { desktopMin: TOC_DESKTOP_MIN });
@@ -486,8 +502,16 @@ async function inspectToc(page, width) {
     failures.push('目次リンクの順序または参照先が対象h2と一致しません');
   }
   if (initial.progressCount !== 1) failures.push(`表示目次のprogressbarが${initial.progressCount}件です`);
-  if (initial.articleWidth <= 0 || initial.articleWidth > 821) {
-    failures.push(`記事本文幅が820px以下ではありません（${initial.articleWidth.toFixed(1)}px）`);
+  // 2026-08-23：器の幅の上限（820px）から、本文列そのものの幅の検査へ変えた。
+  // 守りたいのは読みやすい行長で、図解・表まで本文と同じ幅に閉じ込める必要はない。
+  // 全角換算の字数はエンジンでフォント実幅が変わり同じ版でも47〜51字に振れるため、実幅で見る。
+  if (initial.articleWidth <= 0 || initial.articleWidth > 1000) {
+    failures.push(`記事の器が1000pxを超えています（${initial.articleWidth.toFixed(1)}px）`);
+  }
+  if (!(initial.proseLine.width > 0 && initial.proseLine.width <= 800)) {
+    failures.push(
+      `本文列の幅が800pxを超えています（${initial.proseLine.width.toFixed(1)}px / 約${initial.proseLine.chars.toFixed(1)}字）`,
+    );
   }
   if (initial.duplicateIds.length) {
     failures.push(`重複idがあります: ${initial.duplicateIds.slice(0, 8).join(', ')}`);
