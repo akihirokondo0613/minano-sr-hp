@@ -239,8 +239,13 @@ function recordConsoleError(target) {
     const cardEl = rail && rail.querySelector('.tp-card');
     const topics = !rail || !cardEl ? null : {
       cards: rail.querySelectorAll('.tp-card').length,
-      // サムネイルは blog.html の一覧SVGの写し。編集用image-slotは置かない。
-      thumbs: rail.querySelectorAll('.tp-thumb > svg').length,
+      // カード上部の帯は図ではなく分野名の文字。分野ごとに色が付いていること。
+      thumbs: rail.querySelectorAll('.tp-thumb[data-cat]').length,
+      thumbShapes: rail.querySelectorAll('.tp-thumb svg, .tp-thumb img').length,
+      thumbColors: new Set([...rail.querySelectorAll('.tp-thumb')]
+        .map((el) => getComputedStyle(el).backgroundColor)).size,
+      thumbTextEmpty: [...rail.querySelectorAll('.tp-thumb')]
+        .filter((el) => !el.textContent.trim()).length,
       imageSlots: rail.querySelectorAll('image-slot').length,
       animation: railStyle.animationName,
       overflowX: railStyle.overflowX,
@@ -272,6 +277,7 @@ function recordConsoleError(target) {
   const topics = visualCleanup.topics;
   const topicsOk = topics && topics.cards >= 8
     && topics.thumbs === topics.cards && topics.imageSlots === 0
+    && topics.thumbShapes === 0 && topics.thumbTextEmpty === 0 && topics.thumbColors >= 3
     && topics.animation === 'none' && topics.overflowX === 'auto'
     && topics.snap.startsWith('x ') && topics.scrollable
     && topics.visibleCards >= 1.9
