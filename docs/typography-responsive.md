@@ -7,6 +7,11 @@
 - 文節を `.nw` で括る場合は、隣接する文節の境界へ `<wbr>` を一つ置く。WebKitは隣接nowrap要素の境界を改行機会にしない。
 - 長い文節自体をnowrapにしない。文節の実幅を測ってから採用する。
 - 句読点の孤立には `hanging-punctuation:allow-end`、末尾一文字の泣き別れには `text-wrap:pretty` を先に検討する。`balance` は孤立防止の代わりではない。
+- 本文（`p, li, dd, dt, figcaption, blockquote, summary`）と見出し（`h1`〜`h5`）には `word-break: auto-phrase` を当てる。これが無いと文節の途中で切れ、末尾に1〜2文字だけ残る行が出る。3系統（`skin-v2.css` / `wave-skin.css` / `uploads/service.css`）すべてに同じ規則を置く。
+- **`auto-phrase` には必ず逃げ道を用意する。** 文節が器より長いと折り返せずに溢れる。`overflow-wrap: break-word` を併記し、本文中のリンク（`p a, li a, dd a`）は `word-break: normal` に戻す。出典名・制度名は一つの長い文節になりやすく、320pxのブログ本文で20pxはみ出した実測がある。
+- **表のセル（`td, th`）は `auto-phrase` の対象外にする。** 列が狭いと文節が入りきらず、折り返せずにセルからはみ出す（`uploads/case-*.html` の360px幅で23〜62pxのはみ出しを実測）。
+- 連絡先の英数字（メール・電話・URL）は `word-break: keep-all; overflow-wrap: anywhere` で行中の分断を防ぐ。
+- **`word-break: auto-phrase` も `text-wrap: pretty` も WebKit では効かない**（Playwright WebKitで `word-break` は `normal`、`text-wrap` は `wrap` に解決される）。iPhoneでの文節改行が要るなら、CSSではなくビルド時に `<wbr>` を埋める方式（BudouX等）を検討する。CSSだけで直ったと説明しない。
 - `uploads/` 配下は `skin-v2.css` を読まない。共通の組版規則を追加するときは `wave-skin.css` にも反映する。
 
 ## レイアウト設計

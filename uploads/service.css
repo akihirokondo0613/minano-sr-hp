@@ -28,6 +28,18 @@ html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 24px);font-si
   --serif:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",YuGothic,Meiryo,sans-serif; /* @kind font */
 }
 body{font-family:var(--sans);background:#fff;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.85;font-weight:400;letter-spacing:.02em;line-break:strict}
+/* 本文も文節で折る（skin-v2.css・wave-skin.css と同じ規則）。 */
+/* 文節が器より長いときの逃げ道。auto-phrase だけだと折り返せずに溢れる
+   （320pxのブログ本文で長い固有名詞が20pxはみ出した）。
+   break-word は min-content を変えないので、桁組みには影響しない。 */
+p,li,dd,dt,figcaption,blockquote,summary{text-wrap:pretty;word-break:auto-phrase;overflow-wrap:break-word}
+/* 本文中のリンクは文節改行の対象から外す。出典名や制度名は一つの長い文節に
+   なりやすく、器より長いと折り返せずに溢れる（320pxのブログ本文で20px実測）。 */
+p a,li a,dd a{word-break:normal}
+/* 表のセルは文節改行の対象から外す。列が狭いと文節が丸ごと入りきらず、
+   折り返せずにセルからはみ出す（uploads/case-*.html の360px幅で実測23〜62px）。 */
+td,th{text-wrap:pretty}
+h1,h2,h3,h4,h5{word-break:auto-phrase}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;height:auto;display:block}
 ::selection{background:var(--g100);color:var(--ink)}

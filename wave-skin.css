@@ -108,8 +108,21 @@ body{min-width:320px}
 /* 日本語の行末処理。uploads配下はskin-v2.cssを読まないため、同じ規則をここにも置く。
    iPhone（WebKit）で句読点だけが次の行に落ちる「泣き別れ」の対策。Chromiumは未対応で無害。 */
 h1, h2, h3, h4, p, li, dt, dd, figcaption, blockquote, td, th { hanging-punctuation: allow-end; }
-p, li, dd, figcaption { text-wrap: pretty; }
+/* 本文も文節で折る。ルート系（skin-v2.css）と同じ規則をここにも置く。 */
+/* 文節が器より長いときの逃げ道。auto-phrase だけだと折り返せずに溢れる
+   （320pxのブログ本文で長い固有名詞が20pxはみ出した）。
+   break-word は min-content を変えないので、桁組みには影響しない。 */
+p, li, dd, dt, figcaption, blockquote, summary { text-wrap: pretty; word-break: auto-phrase; overflow-wrap: break-word; }
+/* 本文中のリンクは文節改行の対象から外す。出典名や制度名は一つの長い文節に
+   なりやすく、器より長いと折り返せずに溢れる（320pxのブログ本文で20px実測）。 */
+p a, li a, dd a { word-break: normal; }
+/* 表のセルは文節改行の対象から外す。列が狭いと文節が丸ごと入りきらず、
+   折り返せずにセルからはみ出す（uploads/case-*.html の360px幅で実測23〜62px）。 */
+td, th { text-wrap: pretty; }
 .sec-h, h3, h4, blockquote { text-wrap: pretty; }
+h1, h2, h3, h4, h5 { word-break: auto-phrase; }
+.footer-ul a[href^="mailto:"], .footer-ul a[href^="tel:"],
+.footer-contact a, address a { word-break: keep-all; overflow-wrap: anywhere; }
 
 /* 専門用語ツールチップ（uploads配下もルートページと同じUIにする） */
 .term{color:var(--g800);font-weight:700;border-bottom:1.5px dashed var(--g500);cursor:help;padding-bottom:1px}

@@ -13,14 +13,30 @@ html.pv-on, html.pv-mark, html.pv-lift { scroll-behavior: auto !important; overf
 body { margin: 0; line-break: strict; }
 img, picture, video, canvas, svg { max-width: 100%; }
 table { max-width: 100%; }
-h1, h2, h3 { line-height: 1.5; text-wrap: balance; word-break: auto-phrase; }
-p, li { text-wrap: pretty; }
+h1, h2, h3, h4, h5 { line-height: 1.5; text-wrap: balance; word-break: auto-phrase; }
+/* 本文も文節で折る。auto-phrase を当てていないと「〜したい会 / 社」のように
+   文節の途中で切れ、末尾に1〜2文字だけ残る行が出る（実測で狭幅ほど増える）。
+   Chromium系で効き、未対応ブラウザは無視するので無害。 */
+/* 文節が器より長いときの逃げ道。auto-phrase だけだと折り返せずに溢れる
+   （320pxのブログ本文で長い固有名詞が20pxはみ出した）。
+   break-word は min-content を変えないので、桁組みには影響しない。 */
+p, li, dd, dt, figcaption, blockquote, summary { text-wrap: pretty; word-break: auto-phrase; overflow-wrap: break-word; }
+/* 本文中のリンクは文節改行の対象から外す。出典名や制度名は一つの長い文節に
+   なりやすく、器より長いと折り返せずに溢れる（320pxのブログ本文で20px実測）。 */
+p a, li a, dd a { word-break: normal; }
+/* 表のセルは文節改行の対象から外す。列が狭いと文節が丸ごと入りきらず、
+   折り返せずにセルからはみ出す（uploads/case-*.html の360px幅で実測23〜62px）。 */
+td, th { text-wrap: pretty; }
 /* 日本語の行末処理。iPhone（WebKit）で句点だけが次の行に落ちる「泣き別れ」が
    出ていたため、句読点を行末にぶら下げる。Chromiumは未対応で無害。
    dd・figcaption は text-wrap 未指定だったので、末尾1文字の孤立を避ける pretty を足す。 */
 h1, h2, h3, h4, p, li, dt, dd, figcaption, blockquote, td, th { hanging-punctuation: allow-end; }
 dd, figcaption { text-wrap: pretty; }
 .nobr, .nw { white-space: nowrap; }
+/* 連絡先の英数字（メール・電話・URL）は途中で割らない。
+   フッターの contact@minano-sr.com が全ページで「…m / c…」と分かれていた。 */
+.footer-ul a[href^="mailto:"], .footer-ul a[href^="tel:"],
+.footer-contact a, address a { word-break: keep-all; overflow-wrap: anywhere; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: .001ms !important;
