@@ -5,15 +5,42 @@
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <script defer src="page-enter.js?v=20260814-entryparam1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
+
+<link rel="stylesheet" href="skin-v2.css?v=20260823-navjoseikin1">
+<meta name="theme-color" content="#123F30">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3E%E3%81%BF%3C/text%3E%3C/svg%3E">
+<!-- Structured Data: BreadcrumbList -->
+<script type="application/ld+json" data-schema="breadcrumblist">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ホーム",
+      "item": "https://minano-sr.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "助成金",
+      "item": "https://minano-sr.com/joseikin.html"
+    }
+  ]
+}
+</script>
+</head>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>令和8年度 使いやすい助成金5選｜みなの社会保険労務士事務所</title>
-<meta name="description" content="令和8年度、中小企業でも使いやすい定番の助成金5選を、対象になる会社・金額の目安・申請の注意点にしぼって社労士がわかりやすく解説します。">
+<title>助成金の申請サポート｜着手金0円・成功報酬制｜みなの社会保険労務士事務所</title>
+<meta name="description" content="自社で使える助成金があるかを、社会保険労務士が一緒に確かめます。対象の確認から計画届・実行・支給申請・受給後の報告まで一続きで対応。着手金0円、受給できなければ報酬はいただきません。富山を中心に全国対応。">
 
 <link rel="canonical" href="https://minano-sr.com/joseikin.html">
 <meta property="og:url" content="https://minano-sr.com/joseikin.html">
 <meta property="og:type" content="website">
-<meta property="og:title" content="令和8年度 使いやすい助成金5選｜みなの社会保険労務士事務所">
-<meta property="og:description" content="令和8年度、中小企業でも使いやすい定番の助成金5選を、対象になる会社・金額の目安・申請の注意点にしぼって社労士がわかりやすく解説します。">
+<meta property="og:title" content="助成金の申請サポート｜着手金0円・成功報酬制｜みなの社会保険労務士事務所">
+<meta property="og:description" content="自社で使える助成金があるかを、社会保険労務士が一緒に確かめます。対象の確認から計画届・実行・支給申請・受給後の報告まで一続きで対応。着手金0円、受給できなければ報酬はいただきません。富山を中心に全国対応。">
 <meta property="og:site_name" content="みなの社会保険労務士事務所">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://minano-sr.com/assets/og/minano-og.png">
@@ -39,12 +66,6 @@
 .jk-intro{font-size:15.5px;color:var(--ink2);line-height:2.1;letter-spacing:.02em;max-width:44em;text-wrap:pretty;word-break:auto-phrase}
 .jk-intro strong{color:var(--sugi);background:linear-gradient(color-mix(in srgb,var(--moegi) 38%,transparent),color-mix(in srgb,var(--moegi) 38%,transparent)) no-repeat left 88% / 100% 28%}
 
-/* 目次 */
-.jk-toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:10px;margin-top:clamp(26px,3.5vw,38px)}
-.jk-toc a{display:flex;flex-direction:column;gap:6px;padding:14px 16px;background:var(--shiro);border:1px solid var(--line);border-radius:var(--r);transition:border-color .3s,transform .3s var(--ease),box-shadow .3s;color:var(--iwa)}
-.jk-toc a:hover{border-color:var(--moegi);transform:translateY(-2px);box-shadow:0 12px 28px rgba(18,63,48,.08)}
-.jk-toc .n{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.18em;color:var(--moegi-t)}
-.jk-toc .t{font-size:13px;font-weight:700;line-height:1.6;letter-spacing:.01em;word-break:auto-phrase}
 
 /* 共通の鉄則 */
 .jk-rule{margin-top:clamp(30px,4.5vw,48px);background:var(--sugi);border-radius:var(--r-lg);padding:clamp(26px,3.6vw,40px) clamp(22px,3.6vw,40px);color:#fff}
@@ -128,8 +149,6 @@
 }
 @media(max-width:560px){
   .jg{padding:20px 16px}
-  .jk-toc{grid-template-columns:1fr;gap:8px}
-  .jk-toc a{flex-direction:row;align-items:baseline;gap:12px;padding:12px 14px}
   .jg-head{grid-template-columns:auto 1fr;gap:12px}
   .jg-num{font-size:30px;padding-top:4px}
   .jg-head h2{font-size:18px}
@@ -138,32 +157,110 @@
   .jg-voice .av{width:36px;height:36px;border-radius:9px;font-size:17px}
   .jk-cta .btn-primary{padding:16px 22px;font-size:14px}
 }
-</style>
-<link rel="stylesheet" href="skin-v2.css?v=20260823-navjoseikin1">
-<meta name="theme-color" content="#123F30">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3E%E3%81%BF%3C/text%3E%3C/svg%3E">
-<!-- Structured Data: BreadcrumbList -->
-<script type="application/ld+json" data-schema="breadcrumblist">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "ホーム",
-      "item": "https://minano-sr.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "令和8年度 使いやすい助成金5選",
-      "item": "https://minano-sr.com/joseikin.html"
-    }
-  ]
+
+/* ═══ 依頼導線用の追加（2026-08-23） ═══ */
+.jk-hero-txt .lead{max-width:40em}
+.jk-hero-cta{display:flex;flex-wrap:wrap;gap:12px 16px;margin-top:clamp(20px,2.8vw,28px)}
+.jk-hero-cta .btn-primary{padding:16px 30px;font-size:15px}
+.jk-hero-sub{display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:0 20px;border:1px solid color-mix(in srgb,var(--sugi) 24%,transparent);border-radius:var(--r);background:var(--shiro);color:var(--sugi);font-size:14px;font-weight:700;transition:border-color .3s,background .3s}
+.jk-hero-sub:hover{border-color:var(--moegi);background:var(--moegi-l)}
+.jk-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:clamp(18px,2.4vw,24px)}
+.jk-chip{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--ink2);background:var(--shiro);border:1px solid var(--line);border-radius:999px;padding:7px 14px}
+.jk-chip::before{content:'';inline-size:6px;block-size:6px;border-radius:50%;background:var(--moegi);flex-shrink:0}
+
+.jk-sec{margin-top:clamp(38px,5.5vw,64px)}
+.jk-sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:clamp(16px,2.4vw,22px)}
+.jk-sec-head .n{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.16em;color:var(--moegi-t);flex-shrink:0}
+.jk-sec-head h2{font-family:var(--disp);font-size:clamp(19px,2.6vw,25px);font-weight:900;line-height:1.5;letter-spacing:.015em;color:var(--iwa);margin:0;text-wrap:pretty;word-break:auto-phrase}
+.jk-sec-lead{font-size:14px;color:var(--ink2);line-height:2;max-width:44em;margin:0 0 clamp(18px,2.6vw,24px);text-wrap:pretty;word-break:auto-phrase}
+
+/* いま動かせるもの */
+.jk-now{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px}
+.jk-now-card{display:flex;flex-direction:column;gap:10px;background:var(--shiro);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(18px,2.4vw,24px);transition:border-color .3s,transform .3s var(--ease),box-shadow .3s}
+.jk-now-card:hover{border-color:var(--moegi);transform:translateY(-2px);box-shadow:0 12px 28px rgba(18,63,48,.08)}
+.jk-now-card.is-urgent{border-color:color-mix(in srgb,var(--asahi) 55%,var(--line));background:color-mix(in srgb,var(--asahi) 6%,var(--shiro))}
+.jk-now-tag{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--sugi);background:var(--moegi-l);padding:4px 12px;border-radius:999px}
+.jk-now-card.is-urgent .jk-now-tag{background:var(--asahi);color:var(--iwa)}
+.jk-now-card h3{font-family:var(--disp);font-size:16px;font-weight:800;line-height:1.6;color:var(--iwa);margin:0;word-break:auto-phrase}
+.jk-now-card p{margin:0;font-size:13px;color:var(--ink2);line-height:1.95;text-wrap:pretty}
+.jk-now-card .arr{margin-top:auto;font-size:12.5px;font-weight:700;color:var(--sugi)}
+
+/* 対象チェック */
+.jk-check{background:var(--sugi);border-radius:var(--r-lg);padding:clamp(24px,3.4vw,38px);color:#fff}
+.jk-check h2{color:#fff}
+.jk-check .jk-sec-head .n{color:var(--moegi-b)}
+.jk-check-lead{font-size:13.5px;line-height:2;color:rgba(255,255,255,.9);margin:0 0 clamp(18px,2.6vw,24px);max-width:44em;text-wrap:pretty}
+.jk-q{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;border:0}
+.jk-q legend{position:absolute;inline-size:1px;block-size:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.jk-q label{display:flex;align-items:flex-start;gap:13px;padding:14px 16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);cursor:pointer;transition:background .25s,border-color .25s}
+.jk-q label:hover{background:rgba(255,255,255,.13);border-color:var(--moegi-b)}
+.jk-q label:has(input:checked){background:rgba(67,193,126,.2);border-color:var(--moegi-b)}
+.jk-q input{inline-size:20px;block-size:20px;flex-shrink:0;margin:1px 0 0;accent-color:var(--moegi-b);cursor:pointer}
+.jk-q span{font-size:13.5px;line-height:1.85;color:#fff;text-wrap:pretty;word-break:auto-phrase}
+.jk-result{margin-top:clamp(18px,2.6vw,24px);background:rgba(255,255,255,.96);border-radius:var(--r-lg);padding:clamp(18px,2.6vw,24px)}
+.jk-result-h{font-family:var(--disp);font-size:15px;font-weight:800;color:var(--iwa);margin:0 0 12px;line-height:1.7;word-break:auto-phrase}
+.jk-hits{display:flex;flex-direction:column;gap:8px;list-style:none;margin:0 0 14px;padding:0}
+.jk-hits li{margin:0}
+.jk-hits a{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--yuki);border:1px solid var(--line);border-radius:var(--r);font-size:13.5px;font-weight:700;color:var(--iwa);transition:border-color .3s,background .3s}
+.jk-hits a:hover{border-color:var(--moegi);background:var(--moegi-l)}
+.jk-hits a::after{content:'詳しく →';margin-inline-start:auto;font-size:11.5px;font-weight:600;color:var(--moegi-t);white-space:nowrap}
+.jk-result-note{margin:0;font-size:12px;color:var(--ink3);line-height:1.95;text-wrap:pretty}
+.jk-result .btn-primary{margin-top:14px;display:inline-block;font-size:14px;padding:14px 26px}
+
+/* 費用 */
+.jk-fee{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
+.jk-fee-card{background:var(--shiro);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(20px,2.6vw,26px)}
+.jk-fee-card.is-main{background:var(--moegi-l);border-color:color-mix(in srgb,var(--moegi) 34%,var(--line))}
+.jk-fee-card h3{font-family:var(--disp);font-size:13.5px;font-weight:800;letter-spacing:.04em;color:var(--sugi);margin:0 0 8px}
+.jk-fee-num{font-family:var(--disp);font-size:clamp(22px,3.2vw,30px);font-weight:900;line-height:1.4;color:var(--sugi);margin:0 0 8px;word-break:auto-phrase}
+.jk-fee-card p{margin:0;font-size:12.5px;color:var(--ink2);line-height:1.95;text-wrap:pretty}
+.jk-fee-note{margin:14px 0 0;font-size:12px;color:var(--ink3);line-height:2;text-wrap:pretty}
+
+/* 進め方 */
+.jk-steps{list-style:none;margin:0;padding:0;counter-reset:jkstep;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px}
+.jk-steps li{counter-increment:jkstep;background:var(--shiro);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(16px,2.2vw,22px);position:relative}
+.jk-steps li::before{content:counter(jkstep);display:grid;place-items:center;inline-size:28px;block-size:28px;border-radius:50%;background:var(--sugi);color:#fff;font-family:var(--mono);font-size:13px;font-weight:600;margin-bottom:10px}
+.jk-steps b{display:block;font-family:var(--disp);font-size:14px;font-weight:800;color:var(--iwa);line-height:1.6;margin-bottom:6px;word-break:auto-phrase}
+.jk-steps span{font-size:12.5px;color:var(--ink2);line-height:1.95;text-wrap:pretty}
+
+/* 落ちどころ */
+.jk-pit{background:color-mix(in srgb,var(--asahi) 7%,var(--shiro));border:1px solid color-mix(in srgb,var(--asahi) 40%,var(--line));border-radius:var(--r-lg);padding:clamp(20px,2.8vw,28px)}
+.jk-pit ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:10px 22px}
+.jk-pit li{position:relative;padding-left:26px;font-size:13.5px;color:var(--ink2);line-height:1.9;text-wrap:pretty}
+.jk-pit li::before{content:'!';position:absolute;left:0;top:4px;inline-size:17px;block-size:17px;border-radius:5px;background:var(--asahi);color:var(--iwa);font-size:11.5px;font-weight:700;display:grid;place-items:center}
+
+/* よくある不安 */
+.jk-qa{display:flex;flex-direction:column;gap:10px}
+.jk-qa details{background:var(--shiro);border:1px solid var(--line);border-radius:var(--r-lg);transition:border-color .3s}
+.jk-qa details[open]{border-color:var(--moegi)}
+.jk-qa summary{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;font-size:14px;font-weight:700;color:var(--iwa);line-height:1.7;list-style:none;word-break:auto-phrase}
+.jk-qa summary::-webkit-details-marker{display:none}
+.jk-qa summary::before{content:'Q';flex-shrink:0;inline-size:24px;block-size:24px;border-radius:7px;background:var(--moegi-l);color:var(--sugi);font-family:var(--mono);font-size:12px;font-weight:700;display:grid;place-items:center}
+.jk-qa summary::after{content:'';margin-inline-start:auto;inline-size:9px;block-size:9px;border-right:2px solid var(--ink4);border-bottom:2px solid var(--ink4);transform:rotate(45deg) translateY(-2px);flex-shrink:0;transition:transform .3s}
+.jk-qa details[open] summary::after{transform:rotate(-135deg) translateY(-2px)}
+.jk-qa .a{padding:0 20px 18px 58px;font-size:13.5px;color:var(--ink2);line-height:2;text-wrap:pretty}
+
+/* 担当者 */
+.jk-person{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(16px,2.6vw,26px);align-items:start;background:var(--shiro);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(22px,3vw,30px)}
+.jk-person .av{inline-size:64px;block-size:64px;border-radius:16px;background:var(--sugi);display:grid;place-items:center;font-family:var(--disp);font-size:28px;font-weight:900;color:#fff}
+.jk-person b{display:block;font-family:var(--disp);font-size:17px;font-weight:800;color:var(--iwa);line-height:1.6}
+.jk-person .meta{display:flex;flex-wrap:wrap;gap:4px 14px;margin:6px 0 12px;font-size:12px;color:var(--ink3)}
+.jk-person p{margin:0;font-size:13.5px;color:var(--ink2);line-height:2;max-width:42em;text-wrap:pretty}
+.jk-person .link-more{margin-top:14px}
+
+@media(max-width:560px){
+  .jk-hero-cta{gap:10px}
+  .jk-hero-cta .btn-primary,.jk-hero-sub{inline-size:100%;justify-content:center}
+  .jk-check{padding:20px 16px}
+  .jk-qa summary{padding:14px 16px;font-size:13.5px;gap:11px}
+  .jk-qa .a{padding:0 16px 16px 51px;font-size:13px}
+  .jk-person{grid-template-columns:1fr;gap:14px}
+  .jk-person .av{inline-size:52px;block-size:52px;border-radius:13px;font-size:23px}
 }
-</script>
-</head>
+@media(prefers-reduced-motion:reduce){
+  .jk-now-card,.jk-q label,.jk-hits a,.jk-qa details{transition:none}
+}
+</style>
 <body>
 <a class="skip-link" href="#main">本文へスキップ</a>
 <div id="prog"></div>
@@ -201,16 +298,26 @@
   <a href="uploads/contact.html" class="mob-cta">→ 無料相談を申し込む</a>
 </div>
 <main id="main">
-  <header class="page-hero" data-screen-label="助成金5選ヒーロー">
+  <header class="page-hero" data-screen-label="助成金ヒーロー">
     <div class="page-hero-inner jk-hero-inner">
       <div class="jk-hero-txt">
       <nav class="breadcrumb">
         <a href="/">ホーム</a><span>›</span>
-        <span>令和8年度 使いやすい助成金5選</span>
+        <span>助成金</span>
       </nav>
-      <span class="page-kicker">Grants 2026</span>
-      <h1>令和8年度<br><span class="nw">使いやすい助成金5選</span></h1>
-      <p class="lead">助成金は種類が多く、どれが自社に関係あるのか分かりにくいものです。このページでは、業種を問わず使う場面が多い5つを、『どんな会社に向くか・いくら・何に注意するか』に絞ってご紹介します。すべてに共通する鉄則はひとつ、<strong>取組を始める前の準備が必要</strong>なことです。</p>
+      <span class="page-kicker">助成金の申請サポート</span>
+      <h1>使える助成金があるか、<br><span class="nw">まず一緒に</span><wbr><span class="nw">確かめませんか。</span></h1>
+      <p class="lead">助成金は、要件を満たして手順どおりに進めれば、<strong>原則として返済のいらない資金</strong>になります。ただし種類が多く、しかも「取り組む前に出す書類」が要件になっているものがほとんどです。動いたあとでは間に合いません。対象になるかの確認から、計画の届出・実行・支給申請・受給後の報告まで一続きでお引き受けします。</p>
+      <div class="jk-hero-cta">
+        <a href="uploads/contact.html" class="btn-primary">無料で相談する</a>
+        <a href="#check" class="jk-hero-sub">対象になりそうか見る<span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="jk-chips">
+        <span class="jk-chip">着手金 0円</span>
+        <span class="jk-chip">受給できなければ報酬なし</span>
+        <span class="jk-chip">オンライン・訪問どちらも</span>
+        <span class="jk-chip">富山を中心に全国対応</span>
+      </div>
       </div>
       <div class="jk-hero-ill"><image-slot id="jk-hero-ill" src="assets/illustrations/grant-overview.webp" fit="contain" placeholder="イラスト：助成金の申請支援（推奨 4:3）"></image-slot></div>
     </div>
@@ -218,14 +325,115 @@
 
   <div class="jk-wrap">
 
-    <nav class="jk-toc" aria-label="掲載制度">
-      <a href="#career-up"><span class="n">01</span><span class="t">キャリアアップ助成金（正社員化コース）</span></a>
-      <a href="#gyomu-kaizen"><span class="n">02</span><span class="t">業務改善助成金</span></a>
-      <a href="#ryoritsu"><span class="n">03</span><span class="t">両立支援等助成金（育児休業の支援）</span></a>
-      <a href="#jinzai"><span class="n">04</span><span class="t">人材開発支援助成金（人材育成支援コース）</span></a>
-      <a href="#trial"><span class="n">05</span><span class="t">トライアル雇用助成金（一般トライアルコース）</span></a>
-    </nav>
+    <!-- ═══ 01 いま動かせるもの ═══
+         時期もののため、締切が過ぎたら中身を差し替えるかカードごと消す。
+         次の見直し 2026-10-01（令和8年度 業務改善助成金の締切見込み 9/30 の翌日）。 -->
+    <section class="jk-sec" id="now" data-screen-label="01 いま動かせるもの">
+      <div class="jk-sec-head"><span class="n">01</span><h2>いま、動かせるもの</h2></div>
+      <p class="jk-sec-lead">助成金には「募集期間があるもの」と「通年で使えるもの」があります。期限のあるものは、過ぎるとその年度はもう使えません。</p>
+      <div class="jk-now">
+        <a class="jk-now-card is-urgent" href="blog/gyomu-kaizen-toyama-2026.html">
+          <span class="jk-now-tag">締切 9月30日（見込み）</span>
+          <h3>業務改善助成金</h3>
+          <p>賃上げと設備投資をセットで行う制度。申請は9月30日締切の見込みで、賃上げと設備の導入をそれまでに終える必要があります。富山県の最低賃金は10月1日に1,119円へ改定される見込みです。</p>
+          <span class="arr">締切と進め方を読む →</span>
+        </a>
+        <a class="jk-now-card" href="#career-up">
+          <span class="jk-now-tag">通年</span>
+          <h3>キャリアアップ助成金</h3>
+          <p>パート・契約社員を正社員にしたときの制度。転換の前に計画を出しておくことが要件です。</p>
+          <span class="arr">要件と金額を見る →</span>
+        </a>
+        <a class="jk-now-card" href="#ryoritsu">
+          <span class="jk-now-tag">通年</span>
+          <h3>両立支援等助成金</h3>
+          <p>育児休業の取得と職場復帰を支える制度。妊娠・出産の報告を受けた時点が動き出しどきです。</p>
+          <span class="arr">要件と金額を見る →</span>
+        </a>
+      </div>
+    </section>
 
+    <!-- ═══ 02 対象チェック ═══ -->
+    <section class="jk-sec jk-check" id="check" data-screen-label="02 対象チェック">
+      <div class="jk-sec-head"><span class="n">02</span><h2>うちは対象になる？</h2></div>
+      <p class="jk-check-lead">当てはまるものにチェックを入れてください。このページで扱う5制度のうち、候補になりそうなものが下に出ます。入力した内容はどこにも送信されません。</p>
+      <form id="jk-check-form">
+        <fieldset class="jk-q">
+          <legend>自社の状況にあてはまるもの</legend>
+          <label><input type="checkbox" data-jk="career-up"><span>パートや契約社員を正社員にした、またはこれからする予定がある</span></label>
+          <label><input type="checkbox" data-jk="gyomu-kaizen"><span>社内でいちばん低い時給が、改定後の最低賃金に近い。設備やソフトを入れて効率化したい</span></label>
+          <label><input type="checkbox" data-jk="ryoritsu"><span>育児休業を取る（取った）従業員がいる。妊娠・出産の報告を受けた</span></label>
+          <label><input type="checkbox" data-jk="jinzai"><span>従業員に外部研修を受けさせたい、または社内研修を計画している</span></label>
+          <label><input type="checkbox" data-jk="trial"><span>未経験の方や、就職に不安のある方を試しに雇ってみたい</span></label>
+        </fieldset>
+      </form>
+      <div class="jk-result" id="jk-result" role="status" aria-live="polite">
+        <p class="jk-result-h" id="jk-result-h">チェックを入れると、候補になりそうな制度が出ます。</p>
+        <ul class="jk-hits" id="jk-hits" hidden></ul>
+        <p class="jk-result-note">これは目安です。実際に使えるかは、従業員数・雇用形態・賃金台帳の状況・時期などで変わります。当てはまるものが無くても、ほかの制度が使える場合があります。無料相談で一緒に確かめます。</p>
+        <a href="uploads/contact.html" class="btn-primary">この内容で無料相談する</a>
+      </div>
+    </section>
+
+    <!-- ═══ 03 費用 ═══ -->
+    <section class="jk-sec" id="fee" data-screen-label="03 費用">
+      <div class="jk-sec-head"><span class="n">03</span><h2>費用は、受給できたときだけ。</h2></div>
+      <p class="jk-sec-lead">着手金はいただきません。報酬は受給が決まったあとの成功報酬です。受給に至らなかった場合、報酬は発生しません。</p>
+      <div class="jk-fee">
+        <div class="jk-fee-card is-main">
+          <h3>スポットでご依頼</h3>
+          <p class="jk-fee-num">受給額の20%</p>
+          <p>顧問契約なしで、助成金の申請だけをご依頼いただく場合。着手金0円。</p>
+        </div>
+        <div class="jk-fee-card">
+          <h3>顧問契約がある場合</h3>
+          <p class="jk-fee-num">受給額の15%</p>
+          <p>日ごろの労務状況を把握しているぶん、準備が早く進みます。</p>
+        </div>
+        <div class="jk-fee-card">
+          <h3>受給できなかったとき</h3>
+          <p class="jk-fee-num">0円</p>
+          <p>報酬はいただきません。郵送費などの実費だけ、上乗せなしの実額でご請求します。</p>
+        </div>
+      </div>
+      <p class="jk-fee-note">表示はすべて税抜です。たとえば100万円を受給した場合、スポットの報酬は20万円、顧問契約がある場合は15万円になります。金額は<a href="pricing.html" class="link-more" style="margin-top:0;display:inline">料金ページ</a>と同じです。</p>
+    </section>
+
+    <!-- ═══ 04 進め方 ═══ -->
+    <section class="jk-sec" id="flow" data-screen-label="04 進め方">
+      <div class="jk-sec-head"><span class="n">04</span><h2>ご相談から受給までの進め方</h2></div>
+      <p class="jk-sec-lead">制度によりますが、最初のご相談から入金まで半年から1年ほどかかることが多いです。書類づくりだけでなく、取り組みの順序を先に決めることが要になります。</p>
+      <ol class="jk-steps">
+        <li><b>無料相談</b><span>30〜60分。いま考えていること、これからの採用や賃金の予定を伺います。オンラインでも構いません。</span></li>
+        <li><b>対象の確認</b><span>使えそうな制度と、必要な準備・順序をお渡しします。ここまでは費用がかかりません。</span></li>
+        <li><b>先に出す書類</b><span>計画の届出や就業規則の整備。多くの制度は、これを取り組みの前に済ませることが要件です。</span></li>
+        <li><b>取り組みの実行</b><span>賃上げ・正社員化・研修など。あとで求められる記録の残し方も一緒に決めます。</span></li>
+        <li><b>支給申請</b><span>賃金台帳や出勤簿を揃え、申請書類を作成して提出します。</span></li>
+        <li><b>受給とその後</b><span>支給決定・入金の確認まで。制度によっては受給後の報告が必要なので、そこまで見ます。</span></li>
+      </ol>
+    </section>
+
+    <!-- ═══ 05 落ちどころ ═══ -->
+    <section class="jk-sec" id="pitfall" data-screen-label="05 落ちどころ">
+      <div class="jk-sec-head"><span class="n">05</span><h2>自社で申請してつまずく場所</h2></div>
+      <p class="jk-sec-lead">ご自身で申請することもできます。実際につまずきやすいのは、書類の書き方より「順序」と「日ごろの記録」です。先にお伝えしておきます。</p>
+      <div class="jk-pit">
+        <ul>
+          <li>先に正社員化や設備導入をしてしまい、事前の届出が間に合わなかった</li>
+          <li>就業規則が実態と合っておらず、要件を満たしていないと判断された</li>
+          <li>賃金台帳や出勤簿の記載が揃わず、支給申請の段階で止まった</li>
+          <li>対象となる従業員の要件をひとつ外していた（雇用期間・年齢・保険の加入など）</li>
+          <li>申請期限を過ぎた。多くの制度で1日の遅れも認められません</li>
+          <li>複数の制度を同時に使えるつもりでいたが、併給できない組み合わせだった</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ═══ 06 制度の詳細（既存） ═══ -->
+    <section class="jk-sec" id="seido" data-screen-label="06 制度の詳細">
+      <div class="jk-sec-head"><span class="n">06</span><h2>令和8年度、使う場面が多い5つ</h2></div>
+      <p class="jk-sec-lead">業種を問わず使う場面が多い5つを、「どんな会社に向くか・いくら・何に注意するか」に絞ってまとめました。</p>
+    </section>
     <section class="jk-rule" data-screen-label="共通の鉄則">
       <h2>共通の鉄則</h2>
       <p>5つすべてに共通：『実施してから』では間に合いません。計画の提出や社内体制の整備を取組の前に済ませることが要件になっています。迷ったら、動く前にご相談ください。</p>
@@ -525,13 +733,59 @@
       <p class="jg-official"><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/trial_koyou.html" target="_blank" rel="noopener">厚生労働省｜トライアル雇用助成金（公式ページ）</a></p>
     </section>
 
+
+    <!-- ═══ 07 よくある不安 ═══ -->
+    <section class="jk-sec" id="qa" data-screen-label="07 よくある不安">
+      <div class="jk-sec-head"><span class="n">07</span><h2>ご相談の前に、よくいただく質問</h2></div>
+      <div class="jk-qa">
+        <details>
+          <summary>顧問契約を結ばないと頼めませんか。</summary>
+          <div class="a">いいえ。助成金の申請だけをスポットでお引き受けします。顧問契約をおすすめすることはありますが、お断りいただいて構いません。報酬率が変わるだけで、対応の中身は同じです。</div>
+        </details>
+        <details>
+          <summary>受給できなかったら、費用はどうなりますか。</summary>
+          <div class="a">報酬はいただきません。着手金も0円です。郵送費などの実費が発生した場合のみ、上乗せなしの実額でご請求します。なお、助成金には審査があり、要件を満たしていても支給されない場合があります。受給をお約束するものではありません。</div>
+        </details>
+        <details>
+          <summary>従業員が数名の会社でも対象になりますか。</summary>
+          <div class="a">従業員1名からご相談いただけます。ここで扱う5つの制度は、いずれも中小企業向けの区分が中心です。むしろ、人数が少ない会社ほど1人あたりの助成額が経営に効きます。</div>
+        </details>
+        <details>
+          <summary>いまからでも間に合いますか。</summary>
+          <div class="a">制度によります。通年で使えるものは、取り組みを始める前であれば間に合います。募集期間があるものは締切次第で、令和8年度の業務改善助成金は9月30日が締切の見込みです。この場合は賃上げと設備の導入を締切までに終える必要があるため、8月中のご相談が安全です。まず現状をお聞かせください。</div>
+        </details>
+        <details>
+          <summary>自社で申請してもよいものですか。</summary>
+          <div class="a">もちろん可能です。制度がひとつだけで、就業規則と賃金台帳が整っていれば、ご自身で進めるほうが早い場合もあります。専門家に任せる価値が出るのは、複数の制度を組み合わせるとき、就業規則の改定が必要なとき、そして「いつ何をするか」の順序を間違えたくないときです。相談の結果、自社で進めたほうがよいと判断すればそうお伝えします。</div>
+        </details>
+        <details>
+          <summary>まだ何も決まっていないのですが、話だけでもいいですか。</summary>
+          <div class="a">歓迎します。「人を増やそうか迷っている」「時給を上げたいが原資が心配」という段階でのご相談がいちばん動きやすいです。取り組みを始める前でないと使えない制度が多いためです。</div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ═══ 08 担当する人 ═══ -->
+    <section class="jk-sec" id="person" data-screen-label="08 担当する人">
+      <div class="jk-sec-head"><span class="n">08</span><h2>お話を伺うのは、この人です</h2></div>
+      <div class="jk-person">
+        <div class="av" aria-hidden="true">み</div>
+        <div>
+          <b>近藤 昭宏</b>
+          <div class="meta"><span>社会保険労務士 第16260009号</span><span>富山県社会保険労務士会</span></div>
+          <p>助成金は「もらえるかどうか」より先に、その取り組みが会社にとって必要かどうかだと考えています。助成金のために無理な正社員化や賃上げをしても、続かなければ意味がありません。すでに考えている打ち手があるなら、それに合う制度を探して順序を整える——という進め方をご提案します。むずかしい言葉はそのまま使わず、明日から現場で使える形にしてお渡しします。</p>
+          <a href="about.html" class="link-more">代表・事務所の情報を見る →</a>
+        </div>
+      </div>
+    </section>
+
     <section class="jk-note" data-screen-label="共通免責">
       <h2>共通免責</h2>
-      <p>本ページは令和8年度の制度情報をもとに作成しています。助成金には審査があり、掲載内容は受給をお約束するものではありません。要件・金額は年度により変わります。最新の情報は厚生労働省の公式資料をご確認いただくか、当事務所へお問い合わせください。（最終更新：2026年7月12日）</p>
+      <p>本ページは令和8年度の制度情報をもとに作成しています。助成金には審査があり、掲載内容は受給をお約束するものではありません。要件・金額・締切は年度や政策により変わり、締切について「見込み」と記載したものは公示前の予定です。最新の情報は厚生労働省など各制度の公式資料をご確認いただくか、当事務所へお問い合わせください。（最終更新：2026年8月23日）</p>
     </section>
 
     <div class="jk-cta" data-screen-label="CTA">
-      <a href="uploads/contact.html" class="btn-primary">うちは対象になる？を無料相談で確認する</a>
+      <a href="uploads/contact.html" class="btn-primary">うちで使える助成金があるか、無料で相談する</a>
     </div>
 
   </div>
@@ -635,5 +889,46 @@
 <script defer src="terms.js?v=20260812-terms1"></script>
 <script id="pf-hover">(function(){var d={};function pf(u){if(d[u])return;d[u]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u;document.head.appendChild(l);}function h(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var hr=a.getAttribute("href");if(!hr||hr[0]==="#"||/^(mailto:|tel:|https?:)/.test(hr))return;if(a.target==="_blank")return;pf(a.href);}document.addEventListener("mouseover",h,{passive:true});document.addEventListener("touchstart",h,{passive:true});})();</script>
 <script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/joseikin.html"}' async src="//gc.zgo.at/count.js"></script>
+<script>
+// 対象チェック。入力はどこにも送らず、この場で候補を出すだけ。
+// SPAのbody差し替えで再実行されるため、リスナーは毎回張り直す（冪等）。
+(function(){
+  var form=document.getElementById('jk-check-form');
+  var hits=document.getElementById('jk-hits');
+  var head=document.getElementById('jk-result-h');
+  if(!form||!hits||!head)return;
+  var NAMES={
+    'career-up':'キャリアアップ助成金（正社員化コース）',
+    'gyomu-kaizen':'業務改善助成金',
+    'ryoritsu':'両立支援等助成金（育児休業の支援）',
+    'jinzai':'人材開発支援助成金（人材育成支援コース）',
+    'trial':'トライアル雇用助成金（一般トライアルコース）'
+  };
+  function render(){
+    var boxes=Array.prototype.slice.call(form.querySelectorAll('input[type=checkbox]'));
+    var picked=boxes.filter(function(b){return b.checked}).map(function(b){return b.getAttribute('data-jk')});
+    hits.textContent='';
+    if(!picked.length){
+      hits.hidden=true;
+      head.textContent=boxes.some(function(b){return b.indeterminate})?'':'チェックを入れると、候補になりそうな制度が出ます。';
+      return;
+    }
+    picked.forEach(function(key){
+      var li=document.createElement('li');
+      var a=document.createElement('a');
+      a.href='#'+key;
+      a.textContent=NAMES[key]||key;
+      li.appendChild(a);
+      hits.appendChild(li);
+    });
+    hits.hidden=false;
+    head.textContent='この5つのなかでは、'+picked.length+'件が候補になりそうです。';
+  }
+  if(window.__jkCheck)form.removeEventListener('change',window.__jkCheck);
+  window.__jkCheck=render;
+  form.addEventListener('change',render);
+  render();
+})();
+</script>
 </body>
 </html>
