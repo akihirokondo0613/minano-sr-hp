@@ -113,7 +113,7 @@ p, li, dd, figcaption { text-wrap: pretty; }
 
 /* 専門用語ツールチップ（uploads配下もルートページと同じUIにする） */
 .term{color:var(--g800);font-weight:700;border-bottom:1.5px dashed var(--g500);cursor:help;padding-bottom:1px}
-.term::after{content:'?';display:inline-flex;width:13px;height:13px;align-items:center;justify-content:center;margin-left:3px;border-radius:50%;background:var(--g500);color:#fff;font-size:8.5px;font-weight:700;line-height:1;vertical-align:2px}
+.term::after{content:'?';display:inline-flex;width:13px;height:13px;align-items:center;justify-content:center;margin-left:3px;border-radius:50%;background:var(--g600);color:#fff;font-size:8.5px;font-weight:700;line-height:1;vertical-align:2px}
 .term:focus-visible{outline:2px solid var(--g500);outline-offset:3px;border-radius:3px}
 .term-pop{position:fixed;left:0;top:0;z-index:10020;width:min(288px,calc(100vw - 24px));padding:13px 15px;border-radius:11px;background:var(--g800);color:#fff;box-shadow:0 16px 34px -12px rgba(11,42,31,.5);font-size:12px;font-weight:400;letter-spacing:.01em;line-height:1.85;text-align:left;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-5px);transition:opacity .22s var(--ease,cubic-bezier(.22,1,.36,1)),transform .22s var(--ease,cubic-bezier(.22,1,.36,1))}
 .term-pop[data-open="true"]{opacity:1;visibility:visible;transform:translateY(0)}

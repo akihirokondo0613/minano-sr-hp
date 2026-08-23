@@ -6,7 +6,7 @@
 <script defer src="page-enter.js?v=20260814-entryparam1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 
-<link rel="stylesheet" href="skin-v2.css?v=20260823-navjoseikin1">
+<link rel="stylesheet" href="skin-v2.css?v=20260823-termbadge1">
 <meta name="theme-color" content="#123F30">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3E%E3%81%BF%3C/text%3E%3C/svg%3E">
 <!-- Structured Data: BreadcrumbList -->
@@ -239,6 +239,18 @@
 .jk-qa summary::after{content:'';margin-inline-start:auto;inline-size:9px;block-size:9px;border-right:2px solid var(--ink4);border-bottom:2px solid var(--ink4);transform:rotate(45deg) translateY(-2px);flex-shrink:0;transition:transform .3s}
 .jk-qa details[open] summary::after{transform:rotate(-135deg) translateY(-2px)}
 .jk-qa .a{padding:0 20px 18px 58px;font-size:13.5px;color:var(--ink2);line-height:2;text-wrap:pretty}
+
+/* 制度別の解説カード */
+.jk-guides{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,215px),1fr));gap:10px}
+.jk-guides a{display:flex;flex-direction:column;gap:5px;background:var(--shiro);border:1px solid var(--line);border-radius:var(--r);padding:15px 17px;color:var(--iwa);transition:border-color .3s,transform .3s var(--ease),box-shadow .3s}
+.jk-guides a:hover{border-color:var(--moegi);transform:translateY(-2px);box-shadow:0 12px 28px rgba(18,63,48,.08)}
+.jk-guide-n{font-family:var(--disp);font-size:13.5px;font-weight:800;line-height:1.55;word-break:auto-phrase}
+.jk-guide-t{font-size:11.5px;color:var(--ink3)}
+/* 制度ブロックからの解説リンク */
+.jg-guide{margin:8px 0 0;font-size:12.5px}
+.jg-guide a{display:inline-flex;align-items:center;gap:7px;color:var(--sugi);font-weight:700;letter-spacing:.02em;border-bottom:1.5px solid var(--moegi);padding-bottom:2px;transition:opacity .3s}
+.jg-guide a:hover{opacity:.75}
+@media(prefers-reduced-motion:reduce){.jk-guides a{transition:none}}
 
 /* 担当者 */
 .jk-person{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(16px,2.6vw,26px);align-items:start;background:var(--shiro);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(22px,3vw,30px)}
@@ -496,6 +508,7 @@
         </div>
       </aside>
       <p class="jg-official"><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/part_haken/jigyounushi/career.html" target="_blank" rel="noopener">厚生労働省｜キャリアアップ助成金（公式ページ）</a></p>
+      <p class="jg-guide"><a href="uploads/joseikin-career-up.html">図解でくわしく見る｜キャリアアップ助成金の要件・金額・順序 →</a></p>
     </section>
 
     <!-- ═══ 02 業務改善 ═══ -->
@@ -555,6 +568,7 @@
         </div>
       </aside>
       <p class="jg-official"><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html" target="_blank" rel="noopener">厚生労働省｜業務改善助成金（公式ページ）</a></p>
+      <p class="jg-guide"><a href="blog/gyomu-kaizen-toyama-2026.html">図解でくわしく見る｜富山県の業務改善助成金・締切と順序 →</a></p>
     </section>
 
     <!-- ═══ 03 両立支援 ═══ -->
@@ -614,6 +628,7 @@
         </div>
       </aside>
       <p class="jg-official"><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kodomo/shokuba_kosodate/ryouritsu01/index.html" target="_blank" rel="noopener">厚生労働省｜両立支援等助成金（公式ページ）</a></p>
+      <p class="jg-guide"><a href="uploads/joseikin-ryoritsu.html">図解でくわしく見る｜両立支援等助成金の要件・金額・順序 →</a></p>
     </section>
 
     <!-- ═══ 04 人材開発 ═══ -->
@@ -673,6 +688,7 @@
         </div>
       </aside>
       <p class="jg-official"><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/jinzaikaihatsu/index.html" target="_blank" rel="noopener">厚生労働省｜人材開発支援助成金（公式ページ）</a></p>
+      <p class="jg-guide"><a href="uploads/joseikin-jinzai-kaihatsu.html">図解でくわしく見る｜人材開発支援助成金の要件・金額・順序 →</a></p>
     </section>
 
     <!-- ═══ 05 トライアル雇用 ═══ -->
@@ -731,9 +747,50 @@
         </div>
       </aside>
       <p class="jg-official"><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/trial_koyou.html" target="_blank" rel="noopener">厚生労働省｜トライアル雇用助成金（公式ページ）</a></p>
+      <p class="jg-guide"><a href="uploads/joseikin-koyou-kaihatsu.html">図解でくわしく見る｜トライアル雇用助成金の要件・金額・順序 →</a></p>
     </section>
 
 
+
+    <!-- ═══ 06.5 制度別の解説 ═══ -->
+    <section class="jk-sec" id="guides" data-screen-label="制度別の解説">
+      <div class="jk-sec-head"><span class="n">＋</span><h2>制度ごとの図解解説</h2></div>
+      <p class="jk-sec-lead">主要8制度について、要件・金額・申請の順序を制度ごとにまとめました。とくに「先に動くと対象外になる境目」を先頭に置いています。</p>
+      <div class="jk-guides">
+        <a href="uploads/joseikin-career-up.html">
+          <span class="jk-guide-n">キャリアアップ助成金</span>
+          <span class="jk-guide-t">非正規から正社員へ</span>
+        </a>
+        <a href="uploads/joseikin-ryoritsu.html">
+          <span class="jk-guide-n">両立支援等助成金</span>
+          <span class="jk-guide-t">育児・介護との両立</span>
+        </a>
+        <a href="uploads/joseikin-jinzai-kaihatsu.html">
+          <span class="jk-guide-n">人材開発支援助成金</span>
+          <span class="jk-guide-t">研修の費用と賃金</span>
+        </a>
+        <a href="uploads/joseikin-jinzai-kakuho.html">
+          <span class="jk-guide-n">人材確保等支援助成金</span>
+          <span class="jk-guide-t">制度づくりと職場環境</span>
+        </a>
+        <a href="uploads/joseikin-koyou-kaihatsu.html">
+          <span class="jk-guide-n">特定求職者雇用開発助成金・トライアル雇用助成金</span>
+          <span class="jk-guide-t">採用したときの助成</span>
+        </a>
+        <a href="uploads/joseikin-65sai-cho.html">
+          <span class="jk-guide-n">65歳超雇用推進助成金</span>
+          <span class="jk-guide-t">定年の引上げ・廃止</span>
+        </a>
+        <a href="uploads/joseikin-hatarakikata.html">
+          <span class="jk-guide-n">働き方改革推進支援助成金</span>
+          <span class="jk-guide-t">残業削減と年休</span>
+        </a>
+        <a href="uploads/joseikin-koyou-chosei.html">
+          <span class="jk-guide-n">雇用調整助成金</span>
+          <span class="jk-guide-t">休業させたときの助成</span>
+        </a>
+      </div>
+    </section>
     <!-- ═══ 07 よくある不安 ═══ -->
     <section class="jk-sec" id="qa" data-screen-label="07 よくある不安">
       <div class="jk-sec-head"><span class="n">07</span><h2>ご相談の前に、よくいただく質問</h2></div>
