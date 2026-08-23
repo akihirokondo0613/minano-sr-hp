@@ -267,7 +267,7 @@ for (const [relativePath, name] of Object.entries(services)) {
       {
         '@type': 'ListItem',
         position: 2,
-        name: '令和8年度 使いやすい助成金5選',
+        name: '助成金',
         item: 'https://minano-sr.com/joseikin.html',
       },
     ],
