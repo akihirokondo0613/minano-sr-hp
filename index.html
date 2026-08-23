@@ -420,61 +420,48 @@ main > section:not(.hero) {
 @media (prefers-reduced-motion:reduce){.hero-spot{transition:none}}
 </style>
 <style id="home-topics-marquee">
-/* 06 TOPICS ― 記事カードの無限マーキー。
-   型は「同じカード列を2つ並べ、1列分＋隙間だけ動かして原点へ戻す」定番構成
-   （Smashing Magazine / Ryan Mulligan の infinite marquee）。
-   2列目はJSで複製し、aria-hidden と tabindex="-1" で読み上げ・タブ順から外す。
-   表示は3状態。
-     is-live           自動で流れる（JSあり・動きを減らす設定でない）
-     is-live.is-paused 停止ボタン／ホバー中の一時停止
-     上記以外          素の横スクロール列（JSなし・reduced motion・キーボード操作時） */
-.tp-marquee{--tp-gap:clamp(12px,1.4vw,18px);--tp-dur:60s;display:flex;gap:var(--tp-gap);padding-block:8px 30px;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.tp-marquee::-webkit-scrollbar{display:none}
-.tp-marquee.is-live{overflow:hidden;--tp-fade:linear-gradient(to right,transparent 0,#000 clamp(28px,7vw,110px),#000 calc(100% - clamp(28px,7vw,110px)),transparent 100%);-webkit-mask-image:var(--tp-fade);mask-image:var(--tp-fade)}
-/* clipならスクロールコンテナにならないので、フォーカス移動で列がずれない。
-   縦をvisibleに戻せるのもclipだけで、カードのホバー影が切れずに済む。 */
-@supports (overflow:clip){.tp-marquee.is-live{overflow-x:clip;overflow-y:visible}}
-.tp-group{display:flex;gap:var(--tp-gap);flex-shrink:0;list-style:none;margin:0;padding:0}
-.tp-marquee.is-live .tp-group{min-inline-size:100%;justify-content:space-around;animation:tp-scroll var(--tp-dur) linear infinite reverse}
-/* 1列分＋隙間だけ進めると、隣の列が元の位置に重なって継ぎ目が消える。reverseで左→右に流す。 */
-@keyframes tp-scroll{to{transform:translateX(calc(-100% - var(--tp-gap)))}}
-/* WCAG2.2.2。ホバーに加え、指で触る端末のために停止ボタンも置く。 */
-.tp-marquee.is-live:hover .tp-group,
-.tp-marquee.is-live.is-paused .tp-group{animation-play-state:paused}
-/* 自動で流れないときは、左端を本文の版面に合わせた素の横スクロール列にする。 */
-.tp-marquee:not(.is-live){padding-inline:clamp(20px,4.5vw,48px);scroll-padding-inline:clamp(20px,4.5vw,48px)}
-.tp-marquee:not(.is-live) .tp-group[data-tp-clone]{display:none}
-.tp-item{display:flex;flex-shrink:0}
-.tp-card{display:flex;flex-direction:column;gap:9px;inline-size:clamp(228px,23vw,262px);padding:13px 13px 14px;background:#fefefe;border:1px solid var(--line);border-radius:var(--r-lg);transition:border-color .3s,transform .3s var(--ease),box-shadow .35s var(--ease)}
+/* 06 TOPICS ― 記事カードの横送りレール。
+   自動では動かさず、スワイプと前後ボタンで送る。中身はCSSのスクロールスナップで、
+   ボタンは scrollBy() を呼ぶだけ。JSが無くても素の横スクロール列として使える。 */
+.tp-rail{--tp-gap:clamp(10px,1.1vw,14px);
+  display:flex;gap:var(--tp-gap);list-style:none;margin:0;padding:6px 2px 12px;
+  overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;
+  scroll-snap-type:x mandatory;scroll-padding-inline-start:2px;scrollbar-width:none}
+.tp-rail::-webkit-scrollbar{display:none}
+.tp-rail:focus-visible{outline:2px solid var(--sugi);outline-offset:4px;border-radius:var(--r)}
+.tp-item{display:flex;flex:0 0 auto;scroll-snap-align:start}
+.tp-card{display:flex;flex-direction:column;gap:8px;inline-size:clamp(168px,17vw,200px);padding:11px 11px 12px;background:#fefefe;border:1px solid var(--line);border-radius:var(--r-lg);transition:border-color .3s,transform .3s var(--ease),box-shadow .35s var(--ease)}
+.tp-card:hover{border-color:var(--moegi);transform:translateY(-3px);box-shadow:0 10px 24px rgba(18,63,48,.08)}
+.tp-card:focus-visible{border-color:var(--moegi);outline:2px solid var(--sugi);outline-offset:2px}
 /* サムネイルの正本は blog.html の一覧。scripts/sync-home-topics.mjs が同じSVGを写す。 */
 .tp-thumb{display:block;border-radius:var(--r);overflow:hidden}
 .tp-thumb svg{display:block;inline-size:100%;block-size:auto}
-.tp-card:hover{border-color:var(--moegi);transform:translateY(-3px);box-shadow:0 12px 30px rgba(18,63,48,.08)}
-.tp-card:focus-visible{border-color:var(--moegi);outline:2px solid var(--sugi);outline-offset:2px}
-.tp-cat{align-self:flex-start;font-size:10.5px;font-weight:700;color:var(--sugi);background:var(--moegi-l);padding:3px 11px;border-radius:999px}
-.tp-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;font-size:13px;font-weight:700;line-height:1.68;color:var(--iwa)}
-.tp-date{margin-top:auto;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--ink4)}
-.tp-toggle{margin-inline-start:auto;display:inline-flex;align-items:center;gap:7px;min-block-size:32px;padding:0 14px;border:1px solid color-mix(in srgb,var(--sugi) 22%,transparent);border-radius:999px;background:var(--shiro);color:var(--sugi);font-family:inherit;font-size:11.5px;font-weight:700;cursor:pointer;transition:border-color .3s,background .3s}
-.tp-toggle:hover{border-color:var(--moegi);background:var(--moegi-l)}
-.tp-toggle-ic{inline-size:9px;block-size:10px;border-inline:3px solid currentColor;box-sizing:border-box}
-.tp-toggle.is-paused .tp-toggle-ic{inline-size:0;block-size:0;border:5px solid transparent;border-inline-start:8px solid currentColor}
+.tp-cat{align-self:flex-start;font-size:10px;font-weight:700;color:var(--sugi);background:var(--moegi-l);padding:2px 10px;border-radius:999px}
+.tp-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;font-size:12.5px;font-weight:700;line-height:1.65;color:var(--iwa)}
+.tp-date{margin-top:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--ink4)}
+/* 前後ボタン。カードに重ねず見出し行に置くので、スマホでも指が当たる位置が変わらない。 */
+.tp-nav{margin-inline-start:auto;display:flex;gap:8px}
+.tp-arrow{inline-size:34px;block-size:34px;display:inline-grid;place-items:center;border:1px solid color-mix(in srgb,var(--sugi) 22%,transparent);border-radius:50%;background:var(--shiro);color:var(--sugi);cursor:pointer;padding:0;transition:border-color .3s,background .3s,color .3s,opacity .3s}
+.tp-arrow:hover:not(:disabled){border-color:var(--moegi);background:var(--moegi-l)}
+.tp-arrow:focus-visible{outline:2px solid var(--sugi);outline-offset:2px}
+.tp-arrow:disabled{opacity:.34;cursor:default}
 @media (max-width:760px){
-  .tp-marquee{--tp-dur:46s;padding-block:4px 18px}
-  .tp-card{inline-size:clamp(192px,54vw,208px);padding:10px 10px 11px;gap:7px}
-  .tp-title{font-size:12.5px}
-  .news-sec .pub-live{gap:8px 12px;padding:9px 16px;margin-bottom:16px}
+  .tp-rail{padding:4px 2px 10px}
+  .tp-card{inline-size:clamp(144px,43vw,168px);padding:9px 9px 10px;gap:7px}
+  .tp-title{font-size:12px}
+  .news-sec .pub-live{gap:8px 12px;padding:8px 10px 8px 16px;margin-bottom:14px}
   .news-sec .pub-live-txt{font-size:11.5px}
-  .news-sec .news-more{margin-top:12px}
-  .news-sec .link-more{margin-top:16px}
+  .news-sec .news-more{margin-top:10px}
+  .news-sec .link-more{margin-top:14px}
+  .tp-arrow{inline-size:32px;block-size:32px}
 }
-/* 狭い画面では「最新記事」を畳み、数値と停止ボタンを1行に収める。 */
+/* 狭い画面では「最新記事」を畳み、数値と前後ボタンを1行に収める。 */
 @media (max-width:560px){
   .news-sec .pub-live-latest{display:none}
 }
 @media (prefers-reduced-motion:reduce){
-  /* 共通CSSの一括抑制（animation-duration:.001ms）だと無限ループが極端に速くなる。
-     動きを止めるのではなく、マーキー自体をやめて素の横スクロール列に戻す。 */
   .tp-card{transition:none}
+  .tp-rail{scroll-behavior:auto}
 }
 </style>
 <!-- Structured Data: LocalBusiness -->
@@ -965,13 +952,16 @@ main > section:not(.hero) {
     </div>
     <div class="pub-live rv d1">
       <!-- home-topics-stats:start --><span class="pub-live-txt">公開記事 <b>43</b>本 ／ <b>7</b>分野<span class="pub-live-latest"> ／ 最新記事 <b>2026.08.16</b></span></span><!-- home-topics-stats:end -->
-      <button type="button" class="tp-toggle" id="tp-toggle" hidden aria-label="記事の自動スクロールを停止する">
-        <span class="tp-toggle-ic" aria-hidden="true"></span><span class="tp-toggle-t">停止</span>
-      </button>
+      <div class="tp-nav" id="tp-nav" hidden>
+        <button type="button" class="tp-arrow" data-tp-dir="-1" aria-controls="tp-rail" aria-label="前の記事を見る">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <button type="button" class="tp-arrow" data-tp-dir="1" aria-controls="tp-rail" aria-label="次の記事を見る">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
     </div>
-  </div>
-  <div class="tp-marquee rv d1" id="tp-marquee">
-      <ul class="tp-group" role="list" aria-label="最近公開した記事">
+    <ul class="tp-rail rv d1" id="tp-rail" role="list" aria-label="最近公開した記事">
       <!-- home-topics-cards:start -->
         <li class="tp-item"><a class="tp-card" href="blog/gyomu-kaizen-toyama-2026.html">
           <span class="tp-thumb" aria-hidden="true"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="system-ui,sans-serif"><rect x="8" y="12" width="124" height="64" rx="9" fill="#F7FBF8" stroke="#A8D8B8"/><text x="70" y="33" text-anchor="middle" font-size="10" font-weight="700" fill="#1E7A4B">富山県 令和8年度</text><rect x="18" y="40" width="40" height="22" rx="5" fill="#fff" stroke="#123F30" stroke-width="1.6"/><text x="38" y="55" text-anchor="middle" font-size="9" font-weight="700" fill="#123F30">9/1</text><path d="M62 51h16M74 47l5 4-5 4" fill="none" stroke="#3DAA6A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="82" y="40" width="40" height="22" rx="5" fill="#B03A2E"/><text x="102" y="55" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">9/30</text><text x="70" y="72" text-anchor="middle" font-size="8" fill="#5D6962">締切まで約1か月</text></g></svg></span>
@@ -1058,9 +1048,7 @@ main > section:not(.hero) {
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
       <!-- home-topics-cards:end -->
-      </ul>
-  </div>
-  <div class="w">
+    </ul>
     <div class="news-more rv d2">
       <a href="blog.html" class="link-more">コラムの一覧を見る →</a>
     </div>
@@ -1266,51 +1254,46 @@ var co=new IntersectionObserver(function(entries){
 },{threshold:.6});
 document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
 
-// 06 TOPICS の無限マーキー。列を1つ複製して継ぎ目を消す。
-// SPAのbody差し替えで再実行されるため、複製とリスナーは毎回作り直す（冪等）。
+// 06 TOPICS の記事カード送り。送りはCSSのスクロールスナップに任せ、
+// ここは「1画面ぶん進める」と「端で止まったらボタンを無効にする」だけを担う。
+// SPAのbody差し替えで再実行されるため、リスナーは毎回張り直す（冪等）。
 (function(){
-  var mq=document.getElementById('tp-marquee'),btn=document.getElementById('tp-toggle');
-  if(!mq)return;
-  var group=mq.querySelector('.tp-group:not([data-tp-clone])');
-  if(!group)return;
-  Array.prototype.forEach.call(mq.querySelectorAll('.tp-group[data-tp-clone]'),function(n){n.remove()});
-  mq.classList.remove('is-live','is-paused');
-  if(btn&&window.__tpToggle)btn.removeEventListener('click',window.__tpToggle);
-  if(window.__tpFocus)mq.removeEventListener('focusin',window.__tpFocus);
-  window.__tpToggle=null;window.__tpFocus=null;
-  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    if(btn)btn.hidden=true;
-    return;   // 動きを減らす設定では素の横スクロール列のまま出す
+  var rail=document.getElementById('tp-rail'),nav=document.getElementById('tp-nav');
+  if(!rail||!nav)return;
+  var arrows=Array.prototype.slice.call(nav.querySelectorAll('.tp-arrow'));
+  if(!arrows.length)return;
+  if(window.__tpRail){
+    window.removeEventListener('resize',window.__tpRail.sync);
+    rail.removeEventListener('scroll',window.__tpRail.sync);
+    arrows.forEach(function(b){b.removeEventListener('click',window.__tpRail.click)});
   }
-  var clone=group.cloneNode(true);
-  clone.setAttribute('aria-hidden','true');
-  clone.setAttribute('data-tp-clone','1');
-  clone.removeAttribute('aria-label');
-  clone.removeAttribute('role');
-  Array.prototype.forEach.call(clone.querySelectorAll('a'),function(a){a.setAttribute('tabindex','-1')});
-  mq.appendChild(clone);
-  mq.classList.add('is-live');
-  // キーボードでカードに入ったら、流れる列では追えないので素の横スクロール列へ切り替える。
-  window.__tpFocus=function(){
-    mq.classList.remove('is-live','is-paused');
-    if(btn)btn.hidden=true;
-    mq.removeEventListener('focusin',window.__tpFocus);
-  };
-  mq.addEventListener('focusin',window.__tpFocus);
-  if(!btn)return;
-  btn.hidden=false;
-  btn.classList.remove('is-paused');
-  btn.setAttribute('aria-label','記事の自動スクロールを停止する');
-  var label0=btn.querySelector('.tp-toggle-t');
-  if(label0)label0.textContent='停止';
-  window.__tpToggle=function(){
-    var paused=mq.classList.toggle('is-paused');
-    btn.classList.toggle('is-paused',paused);
-    btn.setAttribute('aria-label',paused?'記事の自動スクロールを再開する':'記事の自動スクロールを停止する');
-    var label=btn.querySelector('.tp-toggle-t');
-    if(label)label.textContent=paused?'再生':'停止';
-  };
-  btn.addEventListener('click',window.__tpToggle);
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function step(){
+    var first=rail.querySelector('.tp-item');
+    if(!first)return rail.clientWidth;
+    var gap=parseFloat(getComputedStyle(rail).columnGap)||0;
+    var one=first.getBoundingClientRect().width+gap;
+    var per=Math.max(1,Math.floor((rail.clientWidth+gap)/one));   // 見えている枚数ぶん送る
+    return one*per;
+  }
+  function sync(){
+    var max=rail.scrollWidth-rail.clientWidth;
+    // レール自体が収まりきるならボタンは出さない
+    nav.hidden = max<=1;
+    arrows[0].disabled = rail.scrollLeft<=1;
+    arrows[1].disabled = rail.scrollLeft>=max-1;
+  }
+  function click(e){
+    var dir=Number(e.currentTarget.getAttribute('data-tp-dir'))||1;
+    rail.scrollBy({left:dir*step(),behavior:reduce?'auto':'smooth'});
+  }
+  window.__tpRail={sync:sync,click:click};
+  arrows.forEach(function(b){b.addEventListener('click',click)});
+  rail.addEventListener('scroll',sync,{passive:true});
+  window.addEventListener('resize',sync,{passive:true});
+  // 画像デコード後に幅が確定することがあるので、次フレームでも測り直す
+  sync();
+  requestAnimationFrame(sync);
 })();
 
 // 受付時間ブロックはJS不要（静的なリスト表示）
