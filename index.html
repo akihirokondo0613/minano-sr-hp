@@ -1276,12 +1276,18 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
     var per=Math.max(1,Math.floor((rail.clientWidth+gap)/one));   // 見えている枚数ぶん送る
     return one*per;
   }
-  function sync(){
+  var queued=false;
+  function measure(){
+    queued=false;
     var max=rail.scrollWidth-rail.clientWidth;
-    // レール自体が収まりきるならボタンは出さない
-    nav.hidden = max<=1;
+    nav.hidden = max<=1;   // レール自体が収まりきるならボタンは出さない
     arrows[0].disabled = rail.scrollLeft<=1;
     arrows[1].disabled = rail.scrollLeft>=max-1;
+  }
+  function sync(){
+    if(queued)return;
+    queued=true;
+    requestAnimationFrame(measure);
   }
   function click(e){
     var dir=Number(e.currentTarget.getAttribute('data-tp-dir'))||1;
@@ -1292,8 +1298,8 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
   rail.addEventListener('scroll',sync,{passive:true});
   window.addEventListener('resize',sync,{passive:true});
   // 画像デコード後に幅が確定することがあるので、次フレームでも測り直す
-  sync();
-  requestAnimationFrame(sync);
+  measure();
+  requestAnimationFrame(measure);
 })();
 
 // 受付時間ブロックはJS不要（静的なリスト表示）
