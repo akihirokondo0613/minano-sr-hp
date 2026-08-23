@@ -247,7 +247,9 @@ function recordConsoleError(target) {
       animation: getComputedStyle(sourceGroup).animationName,
       direction: getComputedStyle(sourceGroup).animationDirection,
       toggleHidden: document.getElementById('tp-toggle')?.hidden,
-      thumbs: marquee.querySelectorAll('image-slot').length,
+      // サムネイルは blog.html の一覧SVGの写し。編集用image-slotは置かない。
+      thumbs: sourceGroup.querySelectorAll('.tp-thumb > svg').length,
+      imageSlots: marquee.querySelectorAll('image-slot').length,
     };
     return {
       startupSource: startup?.getAttribute('src') || '',
@@ -268,7 +270,8 @@ function recordConsoleError(target) {
   const topicsOk = topics && topics.live && topics.cards >= 8
     && topics.cloneCards === topics.cards && topics.cloneHidden && topics.cloneTabbable === 0
     && topics.animation === 'tp-scroll' && topics.direction === 'reverse'
-    && topics.toggleHidden === false && topics.thumbs === 0;
+    && topics.toggleHidden === false
+    && topics.thumbs === topics.cards && topics.imageSlots === 0;
   if (!topicsOk) {
     failures.push(`記事カードの自動スクロール: 構成が不正 ${JSON.stringify(topics)}`);
   }

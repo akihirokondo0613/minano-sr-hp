@@ -17,6 +17,17 @@ function probeLineBreaks() {
   targets.forEach((el) => {
     const cs = getComputedStyle(el);
     if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) === 0) return;
+    // 行数を切り詰めた文字は、はみ出した行が見えないまま矩形だけ残る。
+    // 見えない行の末尾1文字を「泣き別れ」と数えないよう、自身・祖先・子孫のclampを見る。
+    const clamped = (node) => {
+      const value = getComputedStyle(node).webkitLineClamp;
+      return Boolean(value) && value !== 'none';
+    };
+    let ancestorClamped = false;
+    for (let cur = el; cur && cur !== document.documentElement; cur = cur.parentElement) {
+      if (clamped(cur)) { ancestorClamped = true; break; }
+    }
+    if (ancestorClamped || [...el.querySelectorAll('*')].some(clamped)) return;
     // strong/a/span等のインライン要素内も含める。最寄りの監査対象が自身の文字だけを採り、
     // li内のpなどを親子双方で二重計上しない。
     const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
