@@ -423,14 +423,18 @@ main > section:not(.hero) {
 /* 06 TOPICS ― 記事カードの横送りレール。
    自動では動かさず、スワイプと前後ボタンで送る。中身はCSSのスクロールスナップで、
    ボタンは scrollBy() を呼ぶだけ。JSが無くても素の横スクロール列として使える。 */
+.tp-railwrap{--tp-card:clamp(168px,17vw,200px);--tp-pad:11px;--tp-rail-top:6px;
+  /* 矢印は帯の縦中心に置く。帯の高さは (カード幅 − 左右padding) × 7/16。 */
+  --tp-arrow-y:calc(var(--tp-rail-top) + var(--tp-pad) + (var(--tp-card) - var(--tp-pad) * 2) * 7 / 32);
+  position:relative}
 .tp-rail{--tp-gap:clamp(10px,1.1vw,14px);
-  display:flex;gap:var(--tp-gap);list-style:none;margin:0;padding:6px 2px 12px;
+  display:flex;gap:var(--tp-gap);list-style:none;margin:0;padding:var(--tp-rail-top) 2px 12px;
   overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;
   scroll-snap-type:x mandatory;scroll-padding-inline-start:2px;scrollbar-width:none}
 .tp-rail::-webkit-scrollbar{display:none}
 .tp-rail:focus-visible{outline:2px solid var(--sugi);outline-offset:4px;border-radius:var(--r)}
 .tp-item{display:flex;flex:0 0 auto;scroll-snap-align:start}
-.tp-card{display:flex;flex-direction:column;gap:8px;inline-size:clamp(168px,17vw,200px);padding:11px 11px 12px;background:#fefefe;border:1px solid var(--line);border-radius:var(--r-lg);transition:border-color .3s,transform .3s var(--ease),box-shadow .35s var(--ease)}
+.tp-card{display:flex;flex-direction:column;gap:8px;inline-size:var(--tp-card);padding:var(--tp-pad) var(--tp-pad) 12px;background:#fefefe;border:1px solid var(--line);border-radius:var(--r-lg);transition:border-color .3s,transform .3s var(--ease),box-shadow .35s var(--ease)}
 .tp-card:hover{border-color:var(--moegi);transform:translateY(-3px);box-shadow:0 10px 24px rgba(18,63,48,.08)}
 .tp-card:focus-visible{border-color:var(--moegi);outline:2px solid var(--sugi);outline-offset:2px}
 /* カード上部の帯。図ではなく分野名の文字と色でテーマを示す。
@@ -448,21 +452,31 @@ main > section:not(.hero) {
 .tp-thumb[data-cat="system"]  {--tp-c:#2A6E7A}  /* システム導入 ― 青緑 */
 .tp-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden;font-size:12.5px;font-weight:700;line-height:1.65;color:var(--iwa)}
 .tp-date{margin-top:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--ink4)}
-/* 前後ボタン。カードに重ねず見出し行に置くので、スマホでも指が当たる位置が変わらない。 */
-.tp-nav{margin-inline-start:auto;display:flex;gap:8px}
-.tp-arrow{inline-size:34px;block-size:34px;display:inline-grid;place-items:center;border:1px solid color-mix(in srgb,var(--sugi) 22%,transparent);border-radius:50%;background:var(--shiro);color:var(--sugi);cursor:pointer;padding:0;transition:border-color .3s,background .3s,color .3s,opacity .3s}
+/* 前後ボタンはカード列の左右端、帯と同じ高さに置く。版面の余白側へ半分出して文字を隠さない。 */
+.tp-nav{position:absolute;inset:0;pointer-events:none}
+.tp-arrow{position:absolute;top:var(--tp-arrow-y);transform:translateY(-50%);z-index:2;pointer-events:auto;
+  inline-size:38px;block-size:38px;display:grid;place-items:center;
+  border:1px solid color-mix(in srgb,var(--sugi) 18%,var(--line));border-radius:50%;
+  background:var(--shiro);color:var(--sugi);cursor:pointer;padding:0;
+  box-shadow:0 3px 12px rgba(18,63,48,.16);
+  transition:border-color .3s,background .3s,color .3s,opacity .3s}
+.tp-arrow[data-tp-dir="-1"]{inset-inline-start:-16px}
+.tp-arrow[data-tp-dir="1"]{inset-inline-end:-16px}
 .tp-arrow:hover:not(:disabled){border-color:var(--moegi);background:var(--moegi-l)}
 .tp-arrow:focus-visible{outline:2px solid var(--sugi);outline-offset:2px}
-.tp-arrow:disabled{opacity:.34;cursor:default}
+.tp-arrow:disabled{opacity:0;pointer-events:none}
 @media (max-width:760px){
-  .tp-rail{padding:4px 2px 10px}
-  .tp-card{inline-size:clamp(144px,43vw,168px);padding:9px 9px 10px;gap:7px}
+  .tp-railwrap{--tp-card:clamp(144px,43vw,168px);--tp-pad:9px;--tp-rail-top:4px}
+  .tp-rail{padding:var(--tp-rail-top) 2px 10px}
+  .tp-card{padding:var(--tp-pad) var(--tp-pad) 10px;gap:7px}
   .tp-title{font-size:12px}
   .news-sec .pub-live{gap:8px 12px;padding:8px 10px 8px 16px;margin-bottom:14px}
   .news-sec .pub-live-txt{font-size:11.5px}
   .news-sec .news-more{margin-top:10px}
   .news-sec .link-more{margin-top:14px}
-  .tp-arrow{inline-size:32px;block-size:32px}
+  .tp-arrow{inline-size:34px;block-size:34px}
+  .tp-arrow[data-tp-dir="-1"]{inset-inline-start:-13px}
+  .tp-arrow[data-tp-dir="1"]{inset-inline-end:-13px}
 }
 /* 狭い画面では「最新記事」を畳み、数値と前後ボタンを1行に収める。 */
 @media (max-width:560px){
@@ -961,16 +975,9 @@ main > section:not(.hero) {
     </div>
     <div class="pub-live rv d1">
       <!-- home-topics-stats:start --><span class="pub-live-txt">公開記事 <b>43</b>本 ／ <b>7</b>分野<span class="pub-live-latest"> ／ 最新記事 <b>2026.08.16</b></span></span><!-- home-topics-stats:end -->
-      <div class="tp-nav" id="tp-nav" hidden>
-        <button type="button" class="tp-arrow" data-tp-dir="-1" aria-controls="tp-rail" aria-label="前の記事を見る">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
-        </button>
-        <button type="button" class="tp-arrow" data-tp-dir="1" aria-controls="tp-rail" aria-label="次の記事を見る">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
-        </button>
-      </div>
     </div>
-    <ul class="tp-rail rv d1" id="tp-rail" role="list" aria-label="最近公開した記事">
+    <div class="tp-railwrap rv d1">
+    <ul class="tp-rail" id="tp-rail" role="list" aria-label="最近公開した記事">
       <!-- home-topics-cards:start -->
         <li class="tp-item"><a class="tp-card" href="blog/gyomu-kaizen-toyama-2026.html">
           <span class="tp-thumb" data-cat="joseikin">助成金</span>
@@ -1044,6 +1051,15 @@ main > section:not(.hero) {
         </a></li>
       <!-- home-topics-cards:end -->
     </ul>
+      <div class="tp-nav" id="tp-nav" hidden>
+        <button type="button" class="tp-arrow" data-tp-dir="-1" aria-controls="tp-rail" aria-label="前の記事を見る">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <button type="button" class="tp-arrow" data-tp-dir="1" aria-controls="tp-rail" aria-label="次の記事を見る">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
     <div class="news-more rv d2">
       <a href="blog.html" class="link-more">コラムの一覧を見る →</a>
     </div>
