@@ -55,6 +55,18 @@ CSSの競合は同じプロパティだけでなく、`border-bottom`と`text-de
 - 共通フッターの所在地、電話、営業時間、メールの改行構造をページごとに独自化しない。表示、テンプレート、構造化データを同時に確認する。
 
 大規模な見た目変更の採否と巻き戻し経緯は[デザイン変更の履歴](incidents/design-history.md)を参照する。
+## グリッドの列は `minmax(0, 1fr)` で置く
+
+`1fr` は `minmax(auto, 1fr)` と同じで、min-content までしか縮まない。列の中身に長い語があるとそこで止まり、行ごと器からはみ出す。`.svc-row` の3列目がこれで、`services.html` の320px〜390pxで行が20〜74pxはみ出していた（Chromiumで実測・iPhoneに文節改行を入れる前から）。新しくグリッドを組むときは `minmax(0, 1fr)` を既定にする。
+
+## 助成金ページ 02「うちは対象になる？」
+
+- 設問と結果カードは生成物。手で直さない。正本は `data/joseikin-check.json`（何を聞くか・どの制度に当たるか）と `data/joseikin-guides.json`（制度名・金額の目安・「先にやること」）で、`scripts/sync-joseikin-check.mjs` が `joseikin.html` の `jk-check-q` / `jk-check-cards` を書き換える。
+- **金額は制度の合計ではなく代表コースの目安を出し、「主なコースで」を添える。** 06 の `jg-amount` は制度全体の上限を出しているので、断り書きが無いと同じページで数字が食い違って見える。
+- 結果カードは全制度ぶんHTMLに置き、JSは `hidden` を外すだけにする。JSが動かなくても中身が読め、検索エンジンからも本文として見える。
+- 選んだ内容は URL に載せず `sessionStorage`（`mn:joseikin-check`）で相談フォームへ渡し、`uploads/contact.html` 側が読んだら消す。
+- 制度をひとつ足すときは、`data/joseikin-check.json` に設問を足し、解説ページを持たない制度なら `extra` に表示用の4項目を書く。生成器が出どころの無い制度を見つけたら失敗する。
+
 
 ## 対象回帰を測る
 

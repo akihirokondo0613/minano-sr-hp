@@ -6,7 +6,7 @@
 <script defer src="page-enter.js?v=20260814-entryparam1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 
-<link rel="stylesheet" href="skin-v2.css?v=20260823-phrase1">
+<link rel="stylesheet" href="skin-v2.css?v=20260823-wbr1">
 <meta name="theme-color" content="#123F30">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3E%E3%81%BF%3C/text%3E%3C/svg%3E">
 <!-- Structured Data: BreadcrumbList -->
@@ -190,22 +190,39 @@
 .jk-check h2{color:#fff}
 .jk-check .jk-sec-head .n{color:var(--moegi-b)}
 .jk-check-lead{font-size:13.5px;line-height:2;color:rgba(255,255,255,.9);margin:0 0 clamp(18px,2.6vw,24px);max-width:44em;text-wrap:pretty}
-.jk-q{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;border:0}
-.jk-q legend{position:absolute;inline-size:1px;block-size:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-.jk-q label{display:flex;align-items:flex-start;gap:13px;padding:14px 16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);border-radius:var(--r);cursor:pointer;transition:background .25s,border-color .25s}
-.jk-q label:hover{background:rgba(255,255,255,.13);border-color:var(--moegi-b)}
-.jk-q label:has(input:checked){background:rgba(67,193,126,.2);border-color:var(--moegi-b)}
-.jk-q input{inline-size:20px;block-size:20px;flex-shrink:0;margin:1px 0 0;accent-color:var(--moegi-b);cursor:pointer}
-.jk-q span{font-size:13.5px;line-height:1.85;color:#fff;text-wrap:pretty;word-break:auto-phrase}
-.jk-result{margin-top:clamp(18px,2.6vw,24px);background:rgba(255,255,255,.96);border-radius:var(--r-lg);padding:clamp(18px,2.6vw,24px)}
+.jk-check-lead b{color:var(--moegi-b);font-weight:800}
+/* 設問。4つの束に分けて、束ごとに見出しを出す。10問を平らに並べると読み飛ばされる。 */
+#jk-check-form{display:grid;gap:clamp(18px,2.4vw,26px);grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))}
+.jk-q{margin:0;padding:0;border:0;min-inline-size:0}
+.jk-q legend{padding:0;margin:0 0 9px;font-family:var(--disp);font-size:11.5px;font-weight:800;letter-spacing:.1em;color:var(--moegi-b)}
+.jk-q-list{display:flex;flex-direction:column;gap:8px}
+.jk-q-item{display:flex;align-items:flex-start;gap:12px;padding:13px 15px;min-block-size:44px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.24);border-radius:var(--r);cursor:pointer;transition:background .25s,border-color .25s}
+.jk-q-item:hover{background:rgba(255,255,255,.14);border-color:var(--moegi-b)}
+.jk-q-item:has(input:checked){background:rgba(67,193,126,.22);border-color:var(--moegi-b)}
+.jk-q-item:has(input:focus-visible){outline:2px solid var(--moegi-b);outline-offset:2px}
+.jk-q-item input{inline-size:22px;block-size:22px;flex-shrink:0;margin:0;accent-color:var(--moegi-b);cursor:pointer}
+.jk-q-item span{font-size:13.5px;line-height:1.8;color:#fff;text-wrap:pretty;word-break:auto-phrase}
+/* 結果 */
+.jk-result{margin-top:clamp(20px,2.8vw,26px);background:rgba(255,255,255,.96);border-radius:var(--r-lg);padding:clamp(18px,2.6vw,24px)}
 .jk-result-h{font-family:var(--disp);font-size:15px;font-weight:800;color:var(--iwa);margin:0 0 12px;line-height:1.7;word-break:auto-phrase}
-.jk-hits{display:flex;flex-direction:column;gap:8px;list-style:none;margin:0 0 14px;padding:0}
-.jk-hits li{margin:0}
-.jk-hits a{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--yuki);border:1px solid var(--line);border-radius:var(--r);font-size:13.5px;font-weight:700;color:var(--iwa);transition:border-color .3s,background .3s}
-.jk-hits a:hover{border-color:var(--moegi);background:var(--moegi-l)}
-.jk-hits a::after{content:'詳しく →';margin-inline-start:auto;font-size:11.5px;font-weight:600;color:var(--moegi-t);white-space:nowrap}
-.jk-result-note{margin:0;font-size:12px;color:var(--ink3);line-height:1.95;text-wrap:pretty}
-.jk-result .btn-primary{margin-top:14px;display:inline-block;font-size:14px;padding:14px 26px}
+.jk-hits{display:grid;gap:10px;list-style:none;margin:0;padding:0}
+.jk-hits:not(:has(li:not([hidden]))){margin:0}
+.jk-hit{background:var(--yuki);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.jk-hit-name{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin:0 0 9px;font-family:var(--disp);font-size:14.5px;font-weight:800;color:var(--sugi);line-height:1.6}
+.jk-hit-amt{font-size:13px;font-weight:800;color:var(--iwa);letter-spacing:.01em}
+.jk-hit-amt-l{margin-inline-end:5px;font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--ink3)}
+/* この事務所が売りにしている「順序」を、候補ごとに1行で見せる */
+.jk-hit-wall{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 9px;margin:0 0 10px;padding:9px 11px;background:var(--shiro);border:1px dashed color-mix(in srgb,var(--moegi) 55%,var(--line));border-radius:9px;font-size:12.5px;line-height:1.8;color:var(--ink2);text-wrap:pretty}
+.jk-hit-tag{padding:2px 8px;border-radius:99px;background:var(--moegi-t);color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.04em;white-space:nowrap}
+.jk-hit-links{display:flex;flex-wrap:wrap;gap:8px 16px;margin:0}
+.jk-hit-links a{font-size:12.5px;font-weight:700;color:var(--moegi-t);border-bottom:1.5px solid color-mix(in srgb,var(--moegi) 50%,transparent);padding-bottom:1px;transition:opacity .3s}
+.jk-hit-links a:hover{opacity:.7}
+.jk-hit-links a::after{content:' →';letter-spacing:-.02em}
+.jk-result-note{margin:14px 0 0;font-size:12px;color:var(--ink3);line-height:1.95;text-wrap:pretty}
+.jk-result-act{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:16px}
+.jk-result-act .btn-primary{display:inline-block;font-size:14px;padding:14px 26px}
+.jk-clear{appearance:none;background:none;border:0;padding:8px 4px;font:inherit;font-size:12.5px;font-weight:700;color:var(--ink3);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.jk-clear:hover{color:var(--iwa)}
 
 /* 費用 */
 .jk-fee{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
@@ -270,7 +287,7 @@
   .jk-person .av{inline-size:52px;block-size:52px;border-radius:13px;font-size:23px}
 }
 @media(prefers-reduced-motion:reduce){
-  .jk-now-card,.jk-q label,.jk-hits a,.jk-qa details{transition:none}
+  .jk-now-card,.jk-q-item,.jk-hit-links a,.jk-qa details{transition:none}
 }
 </style>
 <body>
@@ -318,8 +335,8 @@
         <span>助成金</span>
       </nav>
       <span class="page-kicker">助成金の申請サポート</span>
-      <h1>使える助成金があるか、<br><span class="nw">まず一緒に</span><wbr><span class="nw">確かめませんか。</span></h1>
-      <p class="lead">助成金は、要件を満たして手順どおりに進めれば、<strong>原則として返済のいらない資金</strong>になります。ただし種類が多く、しかも「取り組む前に出す書類」が要件になっているものがほとんどです。動いたあとでは間に合いません。対象になるかの確認から、計画の届出・実行・支給申請・受給後の報告まで一続きでお引き受けします。</p>
+      <h1>使える<wbr>助成金が<wbr>あるか、<br><span class="nw">まず一緒に</span><wbr><span class="nw">確かめませんか。</span></h1>
+      <p class="lead">助成金は、<wbr>要件を<wbr>満たして<wbr>手順<wbr>どおりに<wbr>進めれば、<wbr><strong>原則と<wbr>して<wbr>返済の<wbr>いらない<wbr>資金</strong>に<wbr>なります。<wbr>ただし種類が<wbr>多く、<wbr>しかも<wbr>「取り組む前に<wbr>出す書類」が<wbr>要件に<wbr>なっている<wbr>ものが<wbr>ほとんどです。<wbr>動いた<wbr>あとでは<wbr>間に<wbr>合いません。<wbr>対象に<wbr>なるかの<wbr>確認から、<wbr>計画の<wbr>届出・実行・<wbr>支給申請・受給後の<wbr>報告まで<wbr>一続きで<wbr>お引き<wbr>受けします。</p>
       <div class="jk-hero-cta">
         <a href="uploads/contact.html" class="btn-primary">無料で相談する</a>
         <a href="#check" class="jk-hero-sub">対象になりそうか見る<span aria-hidden="true">↓</span></a>
@@ -342,24 +359,24 @@
          次の見直し 2026-10-01（令和8年度 業務改善助成金の締切見込み 9/30 の翌日）。 -->
     <section class="jk-sec" id="now" data-screen-label="01 いま動かせるもの">
       <div class="jk-sec-head"><span class="n">01</span><h2>いま、動かせるもの</h2></div>
-      <p class="jk-sec-lead">助成金には「募集期間があるもの」と「通年で使えるもの」があります。期限のあるものは、過ぎるとその年度はもう使えません。</p>
+      <p class="jk-sec-lead">助成金には<wbr>「募集期間が<wbr>ある<wbr>もの」と<wbr>「通年で<wbr>使える<wbr>もの」が<wbr>あります。<wbr>期限の<wbr>ある<wbr>ものは、<wbr>過ぎると<wbr>その<wbr>年度は<wbr>もう<wbr>使えません。</p>
       <div class="jk-now">
         <a class="jk-now-card is-urgent" href="blog/gyomu-kaizen-toyama-2026.html">
           <span class="jk-now-tag">締切 9月30日（見込み）</span>
           <h3>業務改善助成金</h3>
-          <p>賃上げと設備投資をセットで行う制度。申請は9月30日締切の見込みで、賃上げと設備の導入をそれまでに終える必要があります。富山県の最低賃金は10月1日に1,119円へ改定される見込みです。</p>
+          <p>賃上げと<wbr>設備投資を<wbr>セットで<wbr>行う<wbr>制度。<wbr>申請は<wbr>9月30日締切の<wbr>見込みで、<wbr>賃上げと<wbr>設備の<wbr>導入を<wbr>それまでに<wbr>終える<wbr>必要が<wbr>あります。<wbr>富山県の<wbr>最低賃金は<wbr>10月1日に<wbr>1,119円へ<wbr>改定される<wbr>見込みです。</p>
           <span class="arr">締切と進め方を読む →</span>
         </a>
         <a class="jk-now-card" href="#career-up">
           <span class="jk-now-tag">通年</span>
           <h3>キャリアアップ助成金</h3>
-          <p>パート・契約社員を正社員にしたときの制度。転換の前に計画を出しておくことが要件です。</p>
+          <p>パート・契約社員を<wbr>正社員に<wbr>した<wbr>ときの<wbr>制度。<wbr>転換の<wbr>前に<wbr>計画を<wbr>出しておくことが<wbr>要件です。</p>
           <span class="arr">要件と金額を見る →</span>
         </a>
         <a class="jk-now-card" href="#ryoritsu">
           <span class="jk-now-tag">通年</span>
           <h3>両立支援等助成金</h3>
-          <p>育児休業の取得と職場復帰を支える制度。妊娠・出産の報告を受けた時点が動き出しどきです。</p>
+          <p>育児休業の<wbr>取得と<wbr>職場復帰を<wbr>支える<wbr>制度。<wbr>妊娠・出産の<wbr>報告を<wbr>受けた<wbr>時点が<wbr>動き出しどきです。</p>
           <span class="arr">要件と金額を見る →</span>
         </a>
       </div>
@@ -368,87 +385,162 @@
     <!-- ═══ 02 対象チェック ═══ -->
     <section class="jk-sec jk-check" id="check" data-screen-label="02 対象チェック">
       <div class="jk-sec-head"><span class="n">02</span><h2>うちは対象になる？</h2></div>
-      <p class="jk-check-lead">当てはまるものにチェックを入れてください。このページで扱う5制度のうち、候補になりそうなものが下に出ます。入力した内容はどこにも送信されません。</p>
+      <p class="jk-check-lead">当ては<wbr>まる<wbr>ものを<wbr>選ぶと、<wbr>候補に<wbr>なりそうな<wbr>制度と、<wbr><b>いま先に<wbr>やること</b>が<wbr>下に<wbr>出ます。<wbr>入力した<wbr>内容は<wbr>どこにも<wbr>送信されません。</p>
       <form id="jk-check-form">
-        <fieldset class="jk-q">
-          <legend>自社の状況にあてはまるもの</legend>
-          <label><input type="checkbox" data-jk="career-up"><span>パートや契約社員を正社員にした、またはこれからする予定がある</span></label>
-          <label><input type="checkbox" data-jk="gyomu-kaizen"><span>社内でいちばん低い時給が、改定後の最低賃金に近い。設備やソフトを入れて効率化したい</span></label>
-          <label><input type="checkbox" data-jk="ryoritsu"><span>育児休業を取る（取った）従業員がいる。妊娠・出産の報告を受けた</span></label>
-          <label><input type="checkbox" data-jk="jinzai"><span>従業員に外部研修を受けさせたい、または社内研修を計画している</span></label>
-          <label><input type="checkbox" data-jk="trial"><span>未経験の方や、就職に不安のある方を試しに雇ってみたい</span></label>
-        </fieldset>
+        <!-- jk-check-q:start -->
+          <fieldset class="jk-q">
+            <legend>いま雇っている人の処遇を変える</legend>
+            <div class="jk-q-list">
+              <label class="jk-q-item"><input type="checkbox" data-jk="career-up"><span>パートや契約社員を正社員にした、またはこれからする予定がある</span></label>
+              <label class="jk-q-item"><input type="checkbox" data-jk="career-up"><span>パート・契約社員の時給や手当を引き上げた、または引き上げる予定がある</span></label>
+              <label class="jk-q-item"><input type="checkbox" data-jk="gyomu-kaizen"><span>社内でいちばん低い時給が、改定後の最低賃金に近い。設備やソフトを入れて効率化したい</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="jk-q">
+            <legend>人を採る・育てる</legend>
+            <div class="jk-q-list">
+              <label class="jk-q-item"><input type="checkbox" data-jk="koyou-kaihatsu"><span>未経験の方や、就職に不安のある方を試しに雇ってみたい</span></label>
+              <label class="jk-q-item"><input type="checkbox" data-jk="jinzai-kaihatsu"><span>従業員に外部研修を受けさせたい、または社内研修を計画している</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="jk-q">
+            <legend>休みと働き方を整える</legend>
+            <div class="jk-q-list">
+              <label class="jk-q-item"><input type="checkbox" data-jk="ryoritsu"><span>育児休業を取る（取った）従業員がいる。妊娠・出産の報告を受けた</span></label>
+              <label class="jk-q-item"><input type="checkbox" data-jk="hatarakikata"><span>残業を減らしたい、年次有給休暇の取得を進めたい</span></label>
+              <label class="jk-q-item"><input type="checkbox" data-jk="jinzai-kakuho"><span>人事評価や手当の制度を整えたい。現場の負担を減らす機器を入れたい</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="jk-q">
+            <legend>先を見て備える</legend>
+            <div class="jk-q-list">
+              <label class="jk-q-item"><input type="checkbox" data-jk="65sai-cho"><span>定年を65歳より先へ延ばしたい、または定年の定めをなくしたい</span></label>
+              <label class="jk-q-item"><input type="checkbox" data-jk="koyou-chosei"><span>受注が減ったが、従業員を減らさずに乗り切りたい</span></label>
+            </div>
+          </fieldset>
+        <!-- jk-check-q:end -->
       </form>
-      <div class="jk-result" id="jk-result" role="status" aria-live="polite">
-        <p class="jk-result-h" id="jk-result-h">チェックを入れると、候補になりそうな制度が出ます。</p>
-        <ul class="jk-hits" id="jk-hits" hidden></ul>
-        <p class="jk-result-note">これは目安です。実際に使えるかは、従業員数・雇用形態・賃金台帳の状況・時期などで変わります。当てはまるものが無くても、ほかの制度が使える場合があります。無料相談で一緒に確かめます。</p>
-        <a href="uploads/contact.html" class="btn-primary">この内容で無料相談する</a>
+      <div class="jk-result" id="jk-result">
+        <p class="jk-result-h" id="jk-result-h">上から<wbr>当ては<wbr>まる<wbr>ものを<wbr>選んでください。</p>
+        <ul class="jk-hits" id="jk-hits" aria-live="polite">
+        <!-- jk-check-cards:start -->
+          <li class="jk-hit" data-jk="career-up" data-name="キャリアアップ助成金" hidden>
+            <p class="jk-hit-name">キャリ<wbr>ア<wbr>アップ<wbr>助成金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>1<wbr>人 最大<wbr>80<wbr>万円</span></p>
+            <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>キャリ<wbr>アアップ計画書を<wbr>労働局へ<wbr>提出</p>
+            <p class="jk-hit-links"><a class="nw" href="#career-up">このページで見る</a><a class="nw" href="uploads/joseikin-career-up.html">図解でくわしく</a></p>
+          </li>
+          <li class="jk-hit" data-jk="gyomu-kaizen" data-name="業務改善助成金" hidden>
+            <p class="jk-hit-name">業務改善助成<wbr>金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>30<wbr>万円〜<wbr>最大600万円</span></p>
+            <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>賃上げと<wbr>設備の<wbr>導入より<wbr>前に、<wbr>交付申請書を<wbr>労働局へ<wbr>提出</p>
+            <p class="jk-hit-links"><a class="nw" href="#gyomu-kaizen">このページで見る</a><a class="nw" href="blog/gyomu-kaizen-toyama-2026.html">図解でくわしく</a></p>
+          </li>
+          <li class="jk-hit" data-jk="koyou-kaihatsu" data-name="特定求職者雇用開発助成金・トライアル雇用助成金" hidden>
+            <p class="jk-hit-name">特定<wbr>求職者雇<wbr>用開発助成金・<wbr>トラ<wbr>イアル<wbr>雇用助成<wbr>金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>1<wbr>人 60<wbr>万円</span></p>
+            <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>ハロー<wbr>ワー<wbr>ク<wbr>等へ<wbr>求人を<wbr>出し、<wbr>紹介を<wbr>受ける</p>
+            <p class="jk-hit-links"><a class="nw" href="#trial">このページで見る</a><a class="nw" href="uploads/joseikin-koyou-kaihatsu.html">図解でくわしく</a></p>
+          </li>
+          <li class="jk-hit" data-jk="jinzai-kaihatsu" data-name="人材開発支援助成金" hidden>
+            <p class="jk-hit-name">人<wbr>材開発支援<wbr>助成<wbr>金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>経費<wbr>の<wbr>45〜<wbr>70%＋賃金助成</span></p>
+            <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>職業<wbr>訓練実<wbr>施計画届<wbr>を<wbr>労働局へ<wbr>提出</p>
+            <p class="jk-hit-links"><a class="nw" href="#jinzai">このページで見る</a><a class="nw" href="uploads/joseikin-jinzai-kaihatsu.html">図解でくわしく</a></p>
+          </li>
+          <li class="jk-hit" data-jk="ryoritsu" data-name="両立支援等助成金" hidden>
+            <p class="jk-hit-name">両立支援等助成<wbr>金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>1<wbr>人目 20<wbr>万〜<wbr>30万円</span></p>
+            <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>就業規則<wbr>の<wbr>規定・雇用環境の<wbr>整備・面談と<wbr>プラン作成・<wbr>引継ぎ</p>
+            <p class="jk-hit-links"><a class="nw" href="#ryoritsu">このページで見る</a><a class="nw" href="uploads/joseikin-ryoritsu.html">図解でくわしく</a></p>
+          </li>
+          <li class="jk-hit" data-jk="hatarakikata" data-name="働き方改革推進支援助成金" hidden>
+            <p class="jk-hit-name">働き<wbr>方<wbr>改革推進支援<wbr>助成<wbr>金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>費用<wbr>の<wbr>3/4</span></p>
+            <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>交付<wbr>申請 → 交付決定</p>
+            <p class="jk-hit-links"><a class="nw" href="uploads/joseikin-hatarakikata.html">図解でくわしく</a></p>
+          </li>
+          <li class="jk-hit" data-jk="jinzai-kakuho" data-name="人材確保等支援助成金" hidden>
+            <p class="jk-hit-name">人<wbr>材確保等支援助成<wbr>金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>各<wbr>40<wbr>万円</span></p>
+            <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>計画届を<wbr>労働局・<wbr>ハローワークへ<wbr>提出</p>
+            <p class="jk-hit-links"><a class="nw" href="uploads/joseikin-jinzai-kakuho.html">図解でくわしく</a></p>
+          </li>
+          <li class="jk-hit" data-jk="65sai-cho" data-name="65歳超雇用推進助成金" hidden>
+            <p class="jk-hit-name">65<wbr>歳超<wbr>雇用推進助成<wbr>金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>15<wbr>万〜<wbr>240万円</span></p>
+            <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>すべての<wbr>就業規則を<wbr>点検し、<wbr>古い<wbr>定年年齢を<wbr>残さず直す</p>
+            <p class="jk-hit-links"><a class="nw" href="uploads/joseikin-65sai-cho.html">図解でくわしく</a></p>
+          </li>
+          <li class="jk-hit" data-jk="koyou-chosei" data-name="雇用調整助成金" hidden>
+            <p class="jk-hit-name">雇用調整助成<wbr>金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>休業<wbr>手当<wbr>の<wbr>2/3</span></p>
+            <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>労使協定の<wbr>締結 → 計画届の<wbr>提出</p>
+            <p class="jk-hit-links"><a class="nw" href="uploads/joseikin-koyou-chosei.html">図解でくわしく</a></p>
+          </li>
+        <!-- jk-check-cards:end -->
+        </ul>
+        <p class="jk-result-note">金額は<wbr>令和8年度の<wbr>目安です。<wbr>実際に<wbr>使えるかは、<wbr>従業員数・<wbr>雇用形態・賃金台帳の<wbr>状況・<wbr>時期などで<wbr>変わります。<wbr>当ては<wbr>まる<wbr>ものが<wbr>無くても、<wbr>ほかの<wbr>制度が<wbr>使える<wbr>場合が<wbr>あります。</p>
+        <div class="jk-result-act">
+          <a href="uploads/contact.html?from=joseikin" class="btn-primary" id="jk-cta">この内容で無料相談する</a>
+          <button type="button" class="jk-clear" id="jk-clear" hidden>選び直す</button>
+        </div>
       </div>
     </section>
 
     <!-- ═══ 03 費用 ═══ -->
     <section class="jk-sec" id="fee" data-screen-label="03 費用">
-      <div class="jk-sec-head"><span class="n">03</span><h2>費用は、受給できたときだけ。</h2></div>
-      <p class="jk-sec-lead">着手金はいただきません。報酬は受給が決まったあとの成功報酬です。受給に至らなかった場合、報酬は発生しません。</p>
+      <div class="jk-sec-head"><span class="n">03</span><h2>費用は、<wbr>受給できた<wbr>ときだけ。</h2></div>
+      <p class="jk-sec-lead">着手金は<wbr>いただきません。<wbr>報酬は<wbr>受給が<wbr>決まった<wbr>あとの<wbr>成功報酬です。<wbr>受給に<wbr>至らなかった<wbr>場合、<wbr>報酬は<wbr>発生しません。</p>
       <div class="jk-fee">
         <div class="jk-fee-card is-main">
           <h3>スポットでご依頼</h3>
           <p class="jk-fee-num">受給額の20%</p>
-          <p>顧問契約なしで、助成金の申請だけをご依頼いただく場合。着手金0円。</p>
+          <p>顧問契約なしで、<wbr>助成金の<wbr>申請だけを<wbr>ご依頼いただく<wbr>場合。<wbr>着手金0円。</p>
         </div>
         <div class="jk-fee-card">
           <h3>顧問契約がある場合</h3>
           <p class="jk-fee-num">受給額の15%</p>
-          <p>日ごろの労務状況を把握しているぶん、準備が早く進みます。</p>
+          <p>日<wbr>ごろの<wbr>労務状況を<wbr>把握している<wbr>ぶん、<wbr>準備が<wbr>早く<wbr>進みます。</p>
         </div>
         <div class="jk-fee-card">
           <h3>受給できなかったとき</h3>
           <p class="jk-fee-num">0円</p>
-          <p>報酬はいただきません。郵送費などの実費だけ、上乗せなしの実額でご請求します。</p>
+          <p>報酬は<wbr>いただきません。<wbr>郵送費などの<wbr>実費だけ、<wbr>上乗せなしの<wbr>実額で<wbr>ご請求します。</p>
         </div>
       </div>
-      <p class="jk-fee-note">表示はすべて税抜です。たとえば100万円を受給した場合、スポットの報酬は20万円、顧問契約がある場合は15万円になります。金額は<a href="pricing.html" class="link-more" style="margin-top:0;display:inline">料金ページ</a>と同じです。</p>
+      <p class="jk-fee-note">表示は<wbr>すべて<wbr>税抜です。<wbr>たとえば<wbr>100万円を<wbr>受給した<wbr>場合、<wbr>スポットの<wbr>報酬は<wbr>20万円、<wbr>顧問契約が<wbr>ある<wbr>場合は<wbr>15万円に<wbr>なります。<wbr>金額は<wbr><a href="pricing.html" class="link-more" style="margin-top:0;display:inline">料金ページ</a>と<wbr>同じです。</p>
     </section>
 
     <!-- ═══ 04 進め方 ═══ -->
     <section class="jk-sec" id="flow" data-screen-label="04 進め方">
-      <div class="jk-sec-head"><span class="n">04</span><h2>ご相談から受給までの進め方</h2></div>
-      <p class="jk-sec-lead">制度によりますが、最初のご相談から入金まで半年から1年ほどかかることが多いです。書類づくりだけでなく、取り組みの順序を先に決めることが要になります。</p>
+      <div class="jk-sec-head"><span class="n">04</span><h2>ご相談から<wbr>受給までの<wbr>進め方</h2></div>
+      <p class="jk-sec-lead">制度に<wbr>よりますが、<wbr>最初の<wbr>ご相談から<wbr>入金まで<wbr>半年から<wbr>1年ほど<wbr>かかる<wbr>ことが<wbr>多いです。<wbr>書類づくりだけで<wbr>なく、<wbr>取り組みの<wbr>順序を<wbr>先に<wbr>決める<wbr>ことが<wbr>要に<wbr>なります。</p>
       <ol class="jk-steps">
-        <li><b>無料相談</b><span>30〜60分。いま考えていること、これからの採用や賃金の予定を伺います。オンラインでも構いません。</span></li>
-        <li><b>対象の確認</b><span>使えそうな制度と、必要な準備・順序をお渡しします。ここまでは費用がかかりません。</span></li>
-        <li><b>先に出す書類</b><span>計画の届出や就業規則の整備。多くの制度は、これを取り組みの前に済ませることが要件です。</span></li>
-        <li><b>取り組みの実行</b><span>賃上げ・正社員化・研修など。あとで求められる記録の残し方も一緒に決めます。</span></li>
-        <li><b>支給申請</b><span>賃金台帳や出勤簿を揃え、申請書類を作成して提出します。</span></li>
-        <li><b>受給とその後</b><span>支給決定・入金の確認まで。制度によっては受給後の報告が必要なので、そこまで見ます。</span></li>
+        <li><b>無料相談</b><span>30〜<wbr>60分。<wbr>いま考えている<wbr>こと、<wbr>これからの<wbr>採用や<wbr>賃金の<wbr>予定を<wbr>伺います。<wbr>オンラインでも<wbr>構いません。</span></li>
+        <li><b>対象の<wbr>確認</b><span>使えそうな<wbr>制度と、<wbr>必要な<wbr>準備・順序を<wbr>お渡しします。<wbr>ここまでは<wbr>費用が<wbr>かかりません。</span></li>
+        <li><b>先に<wbr>出す書類</b><span>計画の<wbr>届出や<wbr>就業規則の<wbr>整備。<wbr>多くの<wbr>制度は、<wbr>これを<wbr>取り組みの<wbr>前に<wbr>済ませる<wbr>ことが<wbr>要件です。</span></li>
+        <li><b>取り組みの<wbr>実行</b><span>賃上げ・<wbr>正社員化・<wbr>研修など。<wbr>あとで<wbr>求められる<wbr>記録の<wbr>残し方も<wbr>一緒に<wbr>決めます。</span></li>
+        <li><b>支<wbr>給<wbr>申<wbr>請</b><span>賃金台帳や出勤簿を<wbr>揃え、<wbr>申請書類を<wbr>作成して<wbr>提出します。</span></li>
+        <li><b>受給と<wbr>その<wbr>後</b><span>支給決定・入金の<wbr>確認まで。<wbr>制度に<wbr>よっては<wbr>受給後の<wbr>報告が<wbr>必要なので、<wbr>そこまで<wbr>見ます。</span></li>
       </ol>
     </section>
 
     <!-- ═══ 05 落ちどころ ═══ -->
     <section class="jk-sec" id="pitfall" data-screen-label="05 落ちどころ">
-      <div class="jk-sec-head"><span class="n">05</span><h2>自社で申請してつまずく場所</h2></div>
-      <p class="jk-sec-lead">ご自身で申請することもできます。実際につまずきやすいのは、書類の書き方より「順序」と「日ごろの記録」です。先にお伝えしておきます。</p>
+      <div class="jk-sec-head"><span class="n">05</span><h2>自社で<wbr>申請してつまずく<wbr>場所</h2></div>
+      <p class="jk-sec-lead">ご自身で<wbr>申請する<wbr>こともできます。<wbr>実際に<wbr>つまずきやすいのは、<wbr>書類の<wbr>書き方より<wbr>「順序」と<wbr>「日<wbr>ごろの<wbr>記録」です。<wbr>先に<wbr>お伝えしておきます。</p>
       <div class="jk-pit">
         <ul>
-          <li>先に正社員化や設備導入をしてしまい、事前の届出が間に合わなかった</li>
-          <li>就業規則が実態と合っておらず、要件を満たしていないと判断された</li>
-          <li>賃金台帳や出勤簿の記載が揃わず、支給申請の段階で止まった</li>
-          <li>対象となる従業員の要件をひとつ外していた（雇用期間・年齢・保険の加入など）</li>
-          <li>申請期限を過ぎた。多くの制度で1日の遅れも認められません</li>
-          <li>複数の制度を同時に使えるつもりでいたが、併給できない組み合わせだった</li>
+          <li>先に<wbr>正社員化や<wbr>設備導入を<wbr>してしまい、<wbr>事前の<wbr>届出が<wbr>間に<wbr>合わなかった</li>
+          <li>就業規則が<wbr>実態と<wbr>合って<wbr>おらず、<wbr>要件を<wbr>満たしていないと<wbr>判断された</li>
+          <li>賃金台帳や出勤簿の<wbr>記載が<wbr>揃わず、<wbr>支給申請の<wbr>段階で<wbr>止まった</li>
+          <li>対象と<wbr>なる<wbr>従業員の<wbr>要件を<wbr>ひとつ外していた<wbr>（雇用期間・年齢・<wbr>保険の<wbr>加入など）</li>
+          <li>申請期限を<wbr>過ぎた。<wbr>多くの<wbr>制度で<wbr>1日の<wbr>遅れも<wbr>認められません</li>
+          <li>複数の<wbr>制度を<wbr>同時に<wbr>使える<wbr>つもりで<wbr>いたが、<wbr>併給できない<wbr>組み合わせだった</li>
         </ul>
       </div>
     </section>
 
     <!-- ═══ 06 制度の詳細（既存） ═══ -->
     <section class="jk-sec" id="seido" data-screen-label="06 制度の詳細">
-      <div class="jk-sec-head"><span class="n">06</span><h2>令和8年度、使う場面が多い5つ</h2></div>
-      <p class="jk-sec-lead">業種を問わず使う場面が多い5つを、「どんな会社に向くか・いくら・何に注意するか」に絞ってまとめました。</p>
+      <div class="jk-sec-head"><span class="n">06</span><h2>令和8年度、<wbr>使う<wbr>場面が<wbr>多い<wbr>5つ</h2></div>
+      <p class="jk-sec-lead">業種を<wbr>問わず<wbr>使う<wbr>場面が<wbr>多い<wbr>5つを、<wbr>「どんな<wbr>会社に<wbr>向くか・いくら・何に<wbr>注意するか」に<wbr>絞って<wbr>まとめました。</p>
     </section>
     <section class="jk-rule" data-screen-label="共通の鉄則">
       <h2>共通の鉄則</h2>
-      <p>5つすべてに共通：『実施してから』では間に合いません。計画の提出や社内体制の整備を取組の前に済ませることが要件になっています。迷ったら、動く前にご相談ください。</p>
+      <p>5つすべてに<wbr>共通：<wbr>『実施してから』では<wbr>間に<wbr>合いません。<wbr>計画の<wbr>提出や<wbr>社内体制の<wbr>整備を<wbr>取組の<wbr>前に<wbr>済ませる<wbr>ことが<wbr>要件に<wbr>なっています。<wbr>迷ったら、<wbr>動く<wbr>前に<wbr>ご相談ください。</p>
     </section>
 
     <!-- ═══ 01 キャリアアップ ═══ -->
@@ -456,55 +548,55 @@
       <div class="jg-head">
         <span class="jg-num">01</span>
         <div>
-          <h2>キャリアアップ助成金（正社員化コース）</h2>
-          <p class="jg-catch">パート・契約社員の正社員化で、1人最大80万円</p>
+          <h2>キャリアアップ助成金<wbr>（正社員化コース）</h2>
+          <p class="jg-catch">パート・契約社員の<wbr>正社員化で、<wbr>1人最大80万円</p>
         </div>
       </div>
-      <p class="jg-lead">パートや契約社員などを正社員に切り替えた会社が、一定の要件を満たすと国から受け取れる助成金です。数ある助成金の中でも特に利用が多い定番で、はじめて助成金に取り組む会社にも向いています。</p>
+      <p class="jg-lead">パートや<wbr>契約社員などを<wbr>正社員に<wbr>切り替えた<wbr>会社が、<wbr>一定の<wbr>要件を<wbr>満たすと<wbr>国から<wbr>受け取れる<wbr>助成金です。<wbr>数ある<wbr>助成金の<wbr>中でも<wbr>特に<wbr>利用が<wbr>多い<wbr>定番で、<wbr>はじめて<wbr>助成金に<wbr>取り組む会社にも<wbr>向いています。</p>
       <div class="jg-grid">
         <div class="jg-block jg-fit">
           <h3>こんな会社に</h3>
           <div class="jg-ill"><image-slot id="jk-ill-career" src="assets/illustrations/grant-career-up.webp" fit="contain" placeholder="イラスト：パートから正社員へのステップアップ（推奨 4:3）"></image-slot></div>
           <ul>
-            <li>パートや契約社員を長く雇っている会社</li>
-            <li>頑張っている人を正社員にしてあげたい会社</li>
-            <li>人手不足で採用より定着に力を入れたい会社</li>
+            <li>パートや<wbr>契約社員を<wbr>長く<wbr>雇っている<wbr>会社</li>
+            <li>頑張っている<wbr>人を<wbr>正社員に<wbr>してあげたい<wbr>会社</li>
+            <li>人手不足で<wbr>採用より<wbr>定着に<wbr>力を<wbr>入れたい<wbr>会社</li>
           </ul>
         </div>
         <div class="jg-block jg-money">
           <h3>いくら</h3>
-          <p class="jg-amount">1人あたり最大80万円（中小企業・令和8年度）</p>
+          <p class="jg-amount">1人あたり<wbr>最大80万円<wbr>（中小企業・<wbr>令和8年度）</p>
           <ul>
-            <li>パート・契約社員などから正社員へ: 1人最大80万円（40万円×2回に分けて支給）</li>
-            <li>満額の対象は勤続3年以上のパート・契約社員の方など（3年未満でも対象になる場合があります）。勤続が通算5年を超える方などは最大40万円</li>
-            <li>契約期間の定めがない従業員（無期雇用）から正社員への転換は最大40万円</li>
-            <li>正社員転換のルールを新たに就業規則に定めたり、転換実績などを自社サイト等で公表したりすると、最大80万円の上乗せも（各1事業所1回）</li>
+            <li>パート・<wbr>契約社員などから<wbr>正社員へ<wbr>: 1人最大80万円<wbr>（40万円×2回に<wbr>分けて<wbr>支給）</li>
+            <li>満額の<wbr>対象は<wbr>勤続3年以上の<wbr>パート・契約社員の<wbr>方など<wbr>（3年未満でも<wbr>対象に<wbr>なる<wbr>場合が<wbr>あります）。<wbr>勤続が<wbr>通算5年を<wbr>超える<wbr>方などは<wbr>最大40万円</li>
+            <li>契約期間の<wbr>定めが<wbr>ない<wbr>従業員<wbr>（無期雇用）から<wbr>正社員への<wbr>転換は<wbr>最大40万円</li>
+            <li>正社員転換の<wbr>ルールを<wbr>新たに<wbr>就業規則に<wbr>定めたり、<wbr>転換実績などを<wbr>自社サイト等で<wbr>公表したりすると、<wbr>最大80万円の<wbr>上乗せも<wbr>（各1事業所1回）</li>
           </ul>
         </div>
       </div>
       <div class="jg-block jg-flowbox">
         <h3>申請の流れ</h3>
         <ol class="jg-flow">
-          <li><span>キャリアアップ計画書を労働局に提出</span></li>
-          <li><span>就業規則に正社員転換のルールを規定</span></li>
-          <li><span>正社員へ転換し、賃金を3%以上アップ</span></li>
-          <li><span>転換後6か月分の賃金を支払う</span></li>
-          <li><span>6か月目の賃金の支払日の翌日から2か月以内に支給申請</span></li>
+          <li><span>キャリ<wbr>アアップ計画書を<wbr>労働局に<wbr>提出</span></li>
+          <li><span>就業規則に<wbr>正社員転換の<wbr>ルールを<wbr>規定</span></li>
+          <li><span>正社員へ<wbr>転換し、<wbr>賃金を<wbr>3%以上<wbr>アップ</span></li>
+          <li><span>転換後6か<wbr>月分の<wbr>賃金を<wbr>支払う</span></li>
+          <li><span>6か<wbr>月目の<wbr>賃金の<wbr>支払日の<wbr>翌日から<wbr>2か<wbr>月以内に<wbr>支給申請</span></li>
         </ol>
       </div>
       <div class="jg-block jg-care">
         <h3>ここに注意</h3>
         <ul>
-          <li>転換の前に計画書の提出が必要です。転換してからの後付け申請はできません</li>
-          <li>賃金3%アップの計算に使う手当は、就業規則に載っていないと算入できません</li>
-          <li>支給には審査があり、要件や書類に不備があると受給できないことがあります</li>
+          <li>転換の<wbr>前に<wbr>計画書の<wbr>提出が<wbr>必要です。<wbr>転換してからの<wbr>後付け申請は<wbr>できません</li>
+          <li>賃金3%アップの<wbr>計算に<wbr>使う<wbr>手当は、<wbr>就業規則に<wbr>載っていないと<wbr>算入できません</li>
+          <li>支給には<wbr>審査が<wbr>あり、<wbr>要件や<wbr>書類に<wbr>不備が<wbr>あると<wbr>受給できない<wbr>ことがあります</li>
         </ul>
       </div>
       <aside class="jg-voice">
         <span class="av" aria-hidden="true">み</span>
         <div>
           <h3>社労士からひとこと</h3>
-          <p>「先に転換してしまってから相談に来られる」ケースが本当に多い制度です。正社員にしたい人が決まった段階、できれば転換の2〜3か月前にご相談いただければ、計画書の提出から順序よく準備できます。</p>
+          <p>「先に<wbr>転換してしまってから<wbr>相談に<wbr>来られる」<wbr>ケースが<wbr>本当に<wbr>多い<wbr>制度です。<wbr>正社員に<wbr>したい<wbr>人が<wbr>決まった<wbr>段階、<wbr>できれば<wbr>転換の<wbr>2〜3か<wbr>月前に<wbr>ご相談いただければ、<wbr>計画書の<wbr>提出から<wbr>順序よく<wbr>準備できます。</p>
         </div>
       </aside>
       <p class="jg-official"><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/part_haken/jigyounushi/career.html" target="_blank" rel="noopener">厚生労働省｜キャリアアップ助成金（公式ページ）</a></p>
@@ -517,54 +609,54 @@
         <span class="jg-num">02</span>
         <div>
           <h2>業務改善助成金</h2>
-          <p class="jg-catch">賃上げと設備投資、セットで最大600万円</p>
+          <p class="jg-catch">賃上げと<wbr>設備投資、<wbr>セットで<wbr>最大600万円</p>
         </div>
       </div>
-      <p class="jg-lead">社内でいちばん低い時給を50円以上引き上げ、あわせて仕事の効率を上げる機械やシステムを導入すると、その費用の一部を国が助成する、中小企業・小規模事業者向けの制度です（令和8年度）。</p>
+      <p class="jg-lead">社内で<wbr>いちばん低い<wbr>時給を<wbr>50円以上引き上げ、<wbr>あわせて<wbr>仕事の<wbr>効率を<wbr>上げる<wbr>機械や<wbr>システムを<wbr>導入すると、<wbr>その<wbr>費用の<wbr>一部を<wbr>国が<wbr>助成する、<wbr>中小企業・<wbr>小規模事業者向けの<wbr>制度です<wbr>（令和8年度）。</p>
       <div class="jg-grid">
         <div class="jg-block jg-fit">
           <h3>こんな会社に</h3>
           <div class="jg-ill"><image-slot id="jk-ill-gyomu" src="assets/illustrations/grant-productivity.webp" fit="contain" placeholder="イラスト：賃上げと生産性向上（推奨 4:3）"></image-slot></div>
           <ul>
-            <li>パートや社員の時給を上げたいと考えている会社</li>
-            <li>機械やソフトを入れて作業を効率化したい会社</li>
-            <li>社内の最低時給が、今年改定される地域の最低賃金（改定後の額）を下回りそうな会社</li>
+            <li>パートや<wbr>社員の<wbr>時給を<wbr>上げたいと<wbr>考えている<wbr>会社</li>
+            <li>機械や<wbr>ソフトを<wbr>入れて<wbr>作業を<wbr>効率化したい<wbr>会社</li>
+            <li>社内の<wbr>最低時給が、<wbr>今年改定される<wbr>地域の<wbr>最低賃金<wbr>（改定後の<wbr>額）を<wbr>下回りそうな<wbr>会社</li>
           </ul>
         </div>
         <div class="jg-block jg-money">
           <h3>いくら</h3>
-          <p class="jg-amount">30万円〜最大600万円（令和8年度）</p>
+          <p class="jg-amount">30万円〜<wbr>最大600万円<wbr>（令和8年度）</p>
           <ul>
-            <li>引上げ額（50円・70円・90円）と人数、会社の規模で上限額が決まります。最大600万円は、10人以上の時給を90円引き上げ、物価高騰の影響など一定の要件を満たす場合に限られます</li>
-            <li>設備費用の4分の3または5分の4を助成（社内の最低時給1,050円未満は5分の4）</li>
-            <li>助成額は「設備費用×助成率」と上限額のいずれか低い方</li>
-            <li>例：8人の時給を90円上げ600万円の設備を導入なら最大450万円</li>
+            <li>引上げ額<wbr>（50円・<wbr>70円・90円）と<wbr>人数、<wbr>会社の<wbr>規模で<wbr>上限額が<wbr>決まります。<wbr>最大600万円は、<wbr>10人以上の<wbr>時給を<wbr>90円引き上げ、<wbr>物価高騰の<wbr>影響など<wbr>一定の<wbr>要件を<wbr>満たす<wbr>場合に<wbr>限られます</li>
+            <li>設備費用の<wbr>4分の<wbr>3または<wbr>5分の<wbr>4を<wbr>助成<wbr>（社内の<wbr>最低時給<wbr>1,050円未満は<wbr>5分の<wbr>4）</li>
+            <li>助成額は<wbr>「設備費用×<wbr>助成率」と<wbr>上限額の<wbr>いずれか<wbr>低い<wbr>方</li>
+            <li>例：8人の<wbr>時給を<wbr>90円上<wbr>げ600万円の<wbr>設備を<wbr>導入なら<wbr>最大450万円</li>
           </ul>
         </div>
       </div>
       <div class="jg-block jg-flowbox">
         <h3>申請の流れ</h3>
         <ol class="jg-flow">
-          <li><span>導入したい設備と賃上げの計画を立てる</span></li>
-          <li><span>労働局に交付申請書を提出</span></li>
-          <li><span>申請後に時給を引上げ（地域の最低賃金の発効日前日まで）</span></li>
-          <li><span>交付決定後に設備を発注・導入</span></li>
-          <li><span>実績報告書を提出し、審査を経て支給</span></li>
+          <li><span>導入したい<wbr>設備と<wbr>賃上げの<wbr>計画を<wbr>立てる</span></li>
+          <li><span>労働局に<wbr>交付申請書を<wbr>提出</span></li>
+          <li><span>申請後に<wbr>時給を<wbr>引上げ<wbr>（地域の<wbr>最低賃金の<wbr>発効日前日まで）</span></li>
+          <li><span>交付決定後に<wbr>設備を<wbr>発注・<wbr>導入</span></li>
+          <li><span>実績報告書を<wbr>提出し、<wbr>審査を<wbr>経て<wbr>支給</span></li>
         </ol>
       </div>
       <div class="jg-block jg-care">
         <h3>ここに注意</h3>
         <ul>
-          <li>設備の発注は交付決定の前に行うと対象外。時給の引上げも申請前に行うと対象外です（引上げは申請後であれば、交付決定を待たずに実施できます）</li>
-          <li>申請受付は令和8年9月1日から。期限は、都道府県ごとに新しい最低賃金が始まる日の前日か令和8年11月30日の早い方。受付期間が短いため早めの準備を</li>
-          <li>審査があり、解雇など不交付となる事由に当てはまると受給できません</li>
+          <li>設備の<wbr>発注は<wbr>交付決定の<wbr>前に<wbr>行うと<wbr>対象外。<wbr>時給の<wbr>引上げも<wbr>申請前に<wbr>行うと<wbr>対象外です<wbr>（引上げは<wbr>申請後であれば、<wbr>交付決定を<wbr>待たずに<wbr>実施できます）</li>
+          <li>申請受付は<wbr>令和8年9月<wbr>1日から。<wbr>期限は、<wbr>都道府県ごとに<wbr>新しい<wbr>最低賃金が<wbr>始まる<wbr>日の<wbr>前日か<wbr>令和<wbr>8年11月30日の<wbr>早い方。<wbr>受付期間が<wbr>短いため早めの<wbr>準備を</li>
+          <li>審査が<wbr>あり、<wbr>解雇など<wbr>不交付と<wbr>なる<wbr>事由に<wbr>当ては<wbr>まると<wbr>受給できません</li>
         </ul>
       </div>
       <aside class="jg-voice">
         <span class="av" aria-hidden="true">み</span>
         <div>
           <h3>社労士からひとこと</h3>
-          <p>毎年の最低賃金引上げは避けられません。どうせ上げるなら、この助成金で設備投資と組み合わせるのが得策です。ただし交付決定前の発注はよくある失敗例。導入を思い立ったら、まずご相談ください。</p>
+          <p>毎年の<wbr>最低賃金引上げは<wbr>避けられません。<wbr>どうせ上げるなら、<wbr>この<wbr>助成金で<wbr>設備投資と<wbr>組み合わせるのが<wbr>得策です。<wbr>ただし交付決定前の<wbr>発注は<wbr>よく<wbr>ある<wbr>失敗例。<wbr>導入を<wbr>思い<wbr>立ったら、<wbr>まず<wbr>ご相談ください。</p>
         </div>
       </aside>
       <p class="jg-official"><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/zigyonushi/shienjigyou/03.html" target="_blank" rel="noopener">厚生労働省｜業務改善助成金（公式ページ）</a></p>
@@ -576,55 +668,55 @@
       <div class="jg-head">
         <span class="jg-num">03</span>
         <div>
-          <h2>両立支援等助成金（育児休業の支援）</h2>
-          <p class="jg-catch">「育休で人が抜けたら回らない」に、国の支援があります</p>
+          <h2>両立支援等助成金<wbr>（育児休業の<wbr>支援）</h2>
+          <p class="jg-catch">「育休で<wbr>人が<wbr>抜けたら<wbr>回らない」に、<wbr>国の<wbr>支援が<wbr>あります</p>
         </div>
       </div>
-      <p class="jg-lead">社員が育休を取るとき、社内の準備から休んでいる間の仕事のカバーまで、会社の負担を国が支える助成金です。男性の育休や、代わりに働く社員への手当などコースが分かれています。</p>
+      <p class="jg-lead">社員が<wbr>育休を<wbr>取る<wbr>とき、<wbr>社内の<wbr>準備から<wbr>休んでいる間の<wbr>仕事の<wbr>カバーまで、<wbr>会社の<wbr>負担を<wbr>国が<wbr>支える<wbr>助成金です。<wbr>男性の<wbr>育休や、<wbr>代わりに<wbr>働く<wbr>社員への<wbr>手当など<wbr>コースが<wbr>分かれています。</p>
       <div class="jg-grid">
         <div class="jg-block jg-fit">
           <h3>こんな会社に</h3>
           <div class="jg-ill"><image-slot id="jk-ill-ryoritsu" src="assets/illustrations/grant-parental-leave.webp" fit="contain" placeholder="イラスト：男性の育児休業（推奨 4:3）"></image-slot></div>
           <ul>
-            <li>男性社員に初めて育休を取ってもらう会社</li>
-            <li>社員から妊娠・出産の報告を受けたばかりの会社</li>
-            <li>休む社員の仕事を残るメンバーでカバーする会社</li>
+            <li>男性社員に<wbr>初めて<wbr>育休を<wbr>取って<wbr>もらう<wbr>会社</li>
+            <li>社員から<wbr>妊娠・出産の<wbr>報告を<wbr>受けたばかりの<wbr>会社</li>
+            <li>休む社員の<wbr>仕事を<wbr>残る<wbr>メンバーで<wbr>カバーする<wbr>会社</li>
           </ul>
         </div>
         <div class="jg-block jg-money">
           <h3>いくら</h3>
-          <p class="jg-amount">育休1件あたり最大240万円（令和8年度）</p>
+          <p class="jg-amount">育休1件あたり<wbr>最大240万円<wbr>（令和8年度）</p>
           <ul>
-            <li>男性の育休：1人目20万円、2・3人目各10万円。取得率が30ポイント以上（例：20%→50%）上がった場合等は60万円（1社1回）</li>
-            <li>育休を取った社員につき、取得時30万円＋職場復帰時30万円（合計最大60万円。対象人数には上限があります）</li>
-            <li>育休中の仕事を代わりに担う社員への手当：会社が支払った手当の4分の3を助成（月ごとの上限あり・最大240万円）</li>
-            <li>引き継ぎなど業務体制の整備に最大20万円。中小企業向けのコースが中心です（令和8年度の額）</li>
+            <li>男性の<wbr>育休：1<wbr>人目20万円、<wbr>2・<wbr>3人目各10万円。<wbr>取得率が<wbr>30ポイント以上<wbr>（例：<wbr>20%→50%）<wbr>上がった<wbr>場合等は<wbr>60万円<wbr>（1社1回）</li>
+            <li>育休を<wbr>取った<wbr>社員に<wbr>つき、<wbr>取得時<wbr>30万円＋職場復帰時<wbr>30万円<wbr>（合計最大60万円。<wbr>対象人数には<wbr>上限が<wbr>あります）</li>
+            <li>育休中の<wbr>仕事を<wbr>代わりに<wbr>担う<wbr>社員への<wbr>手当：会社が<wbr>支払った<wbr>手当の<wbr>4分の<wbr>3を<wbr>助成<wbr>（月ごとの<wbr>上限あり・<wbr>最大240万円）</li>
+            <li>引き継ぎなど<wbr>業務体制の<wbr>整備に<wbr>最大20万円。<wbr>中小企業向けの<wbr>コースが<wbr>中心です<wbr>（令和8年度の<wbr>額）</li>
           </ul>
         </div>
       </div>
       <div class="jg-block jg-flowbox">
         <h3>申請の流れ</h3>
         <ol class="jg-flow">
-          <li><span>妊娠・出産の報告を受けたら準備を始める</span></li>
-          <li><span>研修・相談窓口など社内の環境を整える</span></li>
-          <li><span>育休前に面談し、復帰支援プランを作る</span></li>
-          <li><span>育休を取得し、職場に復帰する</span></li>
-          <li><span>期限内に労働局へ申請する</span></li>
+          <li><span>妊娠・出産の<wbr>報告を<wbr>受けたら<wbr>準備を<wbr>始める</span></li>
+          <li><span>研修・相談窓口など<wbr>社内の<wbr>環境を<wbr>整える</span></li>
+          <li><span>育休前に<wbr>面談し、<wbr>復帰支援プランを<wbr>作る</span></li>
+          <li><span>育休を<wbr>取得し、<wbr>職場に<wbr>復帰する</span></li>
+          <li><span>期限内に<wbr>労働局へ<wbr>申請する</span></li>
         </ol>
       </div>
       <div class="jg-block jg-care">
         <h3>ここに注意</h3>
         <ul>
-          <li>準備は育休が始まる「前」が鉄則。育休後にプランや面談を後付けすることはできません</li>
-          <li>支給には審査があります。育休規程の整備・周知が前提で、未整備のままでは申請できません</li>
-          <li>申請期限はコースごとに違います。男性育休は育休終了の翌日から2か月以内が目安です</li>
+          <li>準備は<wbr>育休が<wbr>始まる<wbr>「前」が<wbr>鉄則。<wbr>育休後に<wbr>プランや<wbr>面談を<wbr>後付けする<wbr>ことは<wbr>できません</li>
+          <li>支給には<wbr>審査が<wbr>あります。<wbr>育休規程の<wbr>整備・<wbr>周知が<wbr>前提で、<wbr>未整備の<wbr>ままでは<wbr>申請できません</li>
+          <li>申請期限は<wbr>コースごとに<wbr>違います。<wbr>男性育休は<wbr>育休終了の<wbr>翌日から<wbr>2か<wbr>月以内が<wbr>目安です</li>
         </ul>
       </div>
       <aside class="jg-voice">
         <span class="av" aria-hidden="true">み</span>
         <div>
           <h3>社労士からひとこと</h3>
-          <p>この助成金は、妊娠・出産の報告を受けた時点で動けるかが分かれ目です。育休に入ってからでは間に合わないことが多いので、対象になりそうな社員がいたら早めにご相談ください。</p>
+          <p>この<wbr>助成金は、<wbr>妊娠・出産の<wbr>報告を<wbr>受けた<wbr>時点で<wbr>動けるかが<wbr>分かれ目です。<wbr>育休に<wbr>入ってからでは間に<wbr>合わない<wbr>ことが<wbr>多いので、<wbr>対象に<wbr>なりそうな<wbr>社員が<wbr>いたら<wbr>早めに<wbr>ご相談ください。</p>
         </div>
       </aside>
       <p class="jg-official"><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kodomo/shokuba_kosodate/ryouritsu01/index.html" target="_blank" rel="noopener">厚生労働省｜両立支援等助成金（公式ページ）</a></p>
@@ -636,55 +728,55 @@
       <div class="jg-head">
         <span class="jg-num">04</span>
         <div>
-          <h2>人材開発支援助成金（人材育成支援コース）</h2>
-          <p class="jg-catch">社員研修の費用と研修中の賃金、その一部を助成</p>
+          <h2>人材開発支援助成金<wbr>（人材育成支援<wbr>コース）</h2>
+          <p class="jg-catch">社員研修の<wbr>費用と<wbr>研修中の<wbr>賃金、<wbr>その<wbr>一部を<wbr>助成</p>
         </div>
       </div>
-      <p class="jg-lead">従業員に仕事に関わる研修（10時間以上）を受けさせた会社に、研修費用の一部と研修中の賃金の一部を国が助成する制度です。外部講座のほか、講師を招いた社内研修も対象になり得ます。</p>
+      <p class="jg-lead">従業員に<wbr>仕事に<wbr>関わる<wbr>研修<wbr>（10時間以上）を<wbr>受けさせた<wbr>会社に、<wbr>研修費用の<wbr>一部と<wbr>研修中の<wbr>賃金の<wbr>一部を<wbr>国が<wbr>助成する<wbr>制度です。<wbr>外部講座の<wbr>ほか、<wbr>講師を<wbr>招いた<wbr>社内研修も<wbr>対象に<wbr>なり得ます。</p>
       <div class="jg-grid">
         <div class="jg-block jg-fit">
           <h3>こんな会社に</h3>
           <div class="jg-ill"><image-slot id="jk-ill-jinzai" src="assets/illustrations/grant-training.webp" fit="contain" placeholder="イラスト：研修・人材育成（推奨 4:3）"></image-slot></div>
           <ul>
-            <li>社員を外部の研修や講習に行かせている会社</li>
-            <li>講師を招いた社内研修を計画している会社</li>
-            <li>パート・契約社員の育成に力を入れたい会社</li>
+            <li>社員を<wbr>外部の<wbr>研修や<wbr>講習に<wbr>行かせている<wbr>会社</li>
+            <li>講師を<wbr>招いた<wbr>社内研修を<wbr>計画している<wbr>会社</li>
+            <li>パート・契約社員の<wbr>育成に<wbr>力を<wbr>入れたい<wbr>会社</li>
           </ul>
         </div>
         <div class="jg-block jg-money">
           <h3>いくら</h3>
-          <p class="jg-amount">研修費用の45〜70％＋賃金1人1時間800円（中小企業・令和8年度）</p>
+          <p class="jg-amount">研修費用の<wbr>45〜<wbr>70％＋賃金1人<wbr>1時間<wbr>800円<wbr>（中小企業・<wbr>令和8年度）</p>
           <ul>
-            <li>経費助成率は正社員の研修で45％、パートなど非正規社員の研修は70％（中小企業）</li>
-            <li>賃金助成は研修を受けた時間1人1時間あたり800円（中小企業）</li>
-            <li>研修後に賃上げ等の要件を満たすと、経費助成率＋15％・賃金助成＋200円の加算あり</li>
-            <li>経費助成の上限は研修時間に応じて1人15万〜50万円（中小企業・令和8年度）</li>
+            <li>経費助成率は<wbr>正社員の<wbr>研修で<wbr>45％、<wbr>パートなど<wbr>非正規社員の<wbr>研修は<wbr>70％<wbr>（中小企業）</li>
+            <li>賃金助成は<wbr>研修を<wbr>受けた<wbr>時間1人1時間<wbr>あたり800円<wbr>（中小企業）</li>
+            <li>研修後に<wbr>賃上げ等の<wbr>要件を<wbr>満たすと、<wbr>経費助成率＋15％・<wbr>賃金助成＋200円の<wbr>加算あり</li>
+            <li>経費助成の<wbr>上限は<wbr>研修時間に<wbr>応じて<wbr>1人15万〜50万円<wbr>（中小企業・<wbr>令和8年度）</li>
           </ul>
         </div>
       </div>
       <div class="jg-block jg-flowbox">
         <h3>申請の流れ</h3>
         <ol class="jg-flow">
-          <li><span>研修の内容・日程・対象者を決める</span></li>
-          <li><span>訓練開始日の6か月前〜1か月前の間に計画届を労働局へ提出</span></li>
-          <li><span>計画どおり研修を実施し、出席記録を残す</span></li>
-          <li><span>研修終了の翌日から2か月以内に支給申請</span></li>
-          <li><span>労働局の審査を経て支給決定</span></li>
+          <li><span>研修の<wbr>内容・<wbr>日程・対象者を<wbr>決める</span></li>
+          <li><span>訓練開始日の<wbr>6か<wbr>月前〜1か<wbr>月前の<wbr>間に<wbr>計画届を<wbr>労働局へ<wbr>提出</span></li>
+          <li><span>計画ど<wbr>おり研修を<wbr>実施し、<wbr>出席記録を<wbr>残す</span></li>
+          <li><span>研修終了の<wbr>翌日から<wbr>2か<wbr>月以内に<wbr>支給申請</span></li>
+          <li><span>労働局の<wbr>審査を<wbr>経て<wbr>支給決定</span></li>
         </ol>
       </div>
       <div class="jg-block jg-care">
         <h3>ここに注意</h3>
         <ul>
-          <li>計画届を出す前に始めた研修は対象外。提出できるのは開始日の6か月前から1か月前までの間です</li>
-          <li>出席簿やカリキュラムなどの実施記録に不備があると、支給されないことがあります</li>
-          <li>経費の申請には、受講料が適正な価格であることを説明する書類（疎明書・様式第28号）など、見積書とは別の書類の準備が必要</li>
+          <li>計画届を<wbr>出す前に<wbr>始めた<wbr>研修は<wbr>対象外。<wbr>提出できるのは<wbr>開始日の<wbr>6か<wbr>月前から<wbr>1か<wbr>月前までの間です</li>
+          <li>出席簿や<wbr>カリキュラムなどの<wbr>実施記録に<wbr>不備が<wbr>あると、<wbr>支給されない<wbr>ことがあります</li>
+          <li>経費の<wbr>申請には、<wbr>受講料が<wbr>適正な<wbr>価格である<wbr>ことを<wbr>説明する<wbr>書類<wbr>（疎明書・<wbr>様式第28号）など、<wbr>見積書とは<wbr>別の<wbr>書類の<wbr>準備が<wbr>必要</li>
         </ul>
       </div>
       <aside class="jg-voice">
         <span class="av" aria-hidden="true">み</span>
         <div>
           <h3>社労士からひとこと</h3>
-          <p>この助成金は「先に計画届、あとから研修」の順番がすべてです。研修の話が出た段階でご相談いただければ、提出期限から逆算した段取りをご提案できます。社内研修や資格取得の講座も対象になり得ます。</p>
+          <p>この<wbr>助成金は<wbr>「先に<wbr>計画届、<wbr>あとから<wbr>研修」の<wbr>順番が<wbr>すべてです。<wbr>研修の<wbr>話が<wbr>出た<wbr>段階で<wbr>ご相談いただければ、<wbr>提出期限から<wbr>逆算した<wbr>段取りを<wbr>ご提案できます。<wbr>社内研修や<wbr>資格取得の<wbr>講座も<wbr>対象に<wbr>なり得ます。</p>
         </div>
       </aside>
       <p class="jg-official"><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/jinzaikaihatsu/index.html" target="_blank" rel="noopener">厚生労働省｜人材開発支援助成金（公式ページ）</a></p>
@@ -696,54 +788,54 @@
       <div class="jg-head">
         <span class="jg-num">05</span>
         <div>
-          <h2>トライアル雇用助成金（一般トライアルコース）</h2>
-          <p class="jg-catch">3か月の「お試し雇用」で、採用のミスマッチを防ぐ</p>
+          <h2>トライアル雇用助成金<wbr>（一般<wbr>トライアルコース）</h2>
+          <p class="jg-catch">3か月の<wbr>「お試し雇用」で、<wbr>採用の<wbr>ミスマッチを<wbr>防ぐ</p>
         </div>
       </div>
-      <p class="jg-lead">職業経験の少なさなどから就職が難しい方を、ハローワークなどの紹介で、その後の正式採用を前提に原則3か月間お試しで雇い入れた場合、要件を満たすと国から助成金を受けられる制度です。</p>
+      <p class="jg-lead">職業経験の<wbr>少な<wbr>さなどから<wbr>就職が<wbr>難しい<wbr>方を、<wbr>ハローワークなどの<wbr>紹介で、<wbr>その後の<wbr>正式採用を<wbr>前提に<wbr>原則3か<wbr>月間<wbr>お試しで<wbr>雇い<wbr>入れた<wbr>場合、<wbr>要件を<wbr>満たすと<wbr>国から<wbr>助成金を<wbr>受けられる<wbr>制度です。</p>
       <div class="jg-grid">
         <div class="jg-block jg-fit">
           <h3>こんな会社に</h3>
           <div class="jg-ill"><image-slot id="jk-ill-trial" src="assets/illustrations/grant-trial-employment.webp" fit="contain" placeholder="イラスト：トライアル雇用からの採用（推奨 4:3）"></image-slot></div>
           <ul>
-            <li>未経験者を採用したいが定着が不安な会社</li>
-            <li>人手不足で採用のハードルを下げたい会社</li>
-            <li>面接だけでは見極めが難しいと感じる会社</li>
+            <li>未経験者を<wbr>採用したいが<wbr>定着が<wbr>不安な<wbr>会社</li>
+            <li>人手不足で<wbr>採用の<wbr>ハードルを<wbr>下げたい<wbr>会社</li>
+            <li>面接だけでは<wbr>見極めが<wbr>難しいと<wbr>感じる<wbr>会社</li>
           </ul>
         </div>
         <div class="jg-block jg-money">
           <h3>いくら</h3>
-          <p class="jg-amount">1人あたり月額最大4万円×最長3か月（令和8年度）</p>
+          <p class="jg-amount">1人<wbr>あたり<wbr>月額最大4万円×<wbr>最長3か<wbr>月<wbr>（令和8年度）</p>
           <ul>
-            <li>3か月フルに受給できれば1人あたり合計最大12万円</li>
-            <li>母子家庭のお母さん・父子家庭のお父さんの雇入れは月額最大5万円</li>
-            <li>ハローワークなどの紹介で雇い入れた場合が対象（直接応募は対象外）</li>
+            <li>3か<wbr>月フルに<wbr>受給できれば<wbr>1人<wbr>あたり合計最大12<wbr>万円</li>
+            <li>母子家庭の<wbr>お母さん・父子家庭の<wbr>お父さんの<wbr>雇入れは<wbr>月額最大5万円</li>
+            <li>ハローワークなどの<wbr>紹介で<wbr>雇い<wbr>入れた<wbr>場合が<wbr>対象<wbr>（直接応募は<wbr>対象外）</li>
           </ul>
         </div>
       </div>
       <div class="jg-block jg-flowbox">
         <h3>申請の流れ</h3>
         <ol class="jg-flow">
-          <li><span>ハローワークにトライアル雇用求人を出す</span></li>
-          <li><span>紹介を受けて面接・雇入れ（原則3か月）</span></li>
-          <li><span>開始から2週間以内に、ハローワークへ実施計画書を提出</span></li>
-          <li><span>終了翌日から2か月以内に支給申請</span></li>
+          <li><span>ハローワークに<wbr>トライアル雇用求人を<wbr>出す</span></li>
+          <li><span>紹介を<wbr>受けて<wbr>面接・雇入れ<wbr>（原則3か<wbr>月）</span></li>
+          <li><span>開始から<wbr>2週間以内に、<wbr>ハローワークへ<wbr>実施計画書を<wbr>提出</span></li>
+          <li><span>終了翌日から<wbr>2か<wbr>月以内に<wbr>支給申請</span></li>
           <li><span>審査のうえ支給決定</span></li>
         </ol>
       </div>
       <div class="jg-block jg-care">
         <h3>ここに注意</h3>
         <ul>
-          <li>先に自社で選考・採用を進めた後からの利用はできません（ハローワークの紹介が先）</li>
-          <li>開始から2週間以内の実施計画書の提出を忘れると支給されないおそれがあります</li>
-          <li>対象となる求職者に条件があり、審査のうえ支給が決まります</li>
+          <li>先に<wbr>自社で<wbr>選考・採用を<wbr>進めた<wbr>後からの<wbr>利用は<wbr>できません<wbr>（ハローワークの<wbr>紹介が<wbr>先）</li>
+          <li>開始から<wbr>2週間以内の<wbr>実施計画書の<wbr>提出を<wbr>忘れると<wbr>支給されない<wbr>おそれが<wbr>あります</li>
+          <li>対象と<wbr>なる<wbr>求職者に<wbr>条件が<wbr>あり、<wbr>審査の<wbr>うえ支給が<wbr>決まります</li>
         </ul>
       </div>
       <aside class="jg-voice">
         <span class="av" aria-hidden="true">み</span>
         <div>
           <h3>社労士からひとこと</h3>
-          <p>順番を間違えると使えなくなる助成金です。「いい人がいたのでもう決めた」では手遅れなので、採用を考え始めた段階で、ハローワークに求人を出す前にご相談いただくのが安心です。</p>
+          <p>順番を<wbr>間違えると<wbr>使えなくなる<wbr>助成金です。<wbr>「いい<wbr>人が<wbr>いたのでも<wbr>う<wbr>決めた」では<wbr>手遅れなので、<wbr>採用を<wbr>考え始めた<wbr>段階で、<wbr>ハローワークに<wbr>求人を<wbr>出す前に<wbr>ご相談いただくのが<wbr>安心です。</p>
         </div>
       </aside>
       <p class="jg-official"><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/kyufukin/trial_koyou.html" target="_blank" rel="noopener">厚生労働省｜トライアル雇用助成金（公式ページ）</a></p>
@@ -755,7 +847,7 @@
     <!-- ═══ 06.5 制度別の解説 ═══ -->
     <section class="jk-sec" id="guides" data-screen-label="制度別の解説">
       <div class="jk-sec-head"><span class="n">＋</span><h2>制度ごとの図解解説</h2></div>
-      <p class="jk-sec-lead">主要8制度について、要件・金額・申請の順序を制度ごとにまとめました。とくに「先に動くと対象外になる境目」を先頭に置いています。</p>
+      <p class="jk-sec-lead">主要8<wbr>制度に<wbr>ついて、<wbr>要件・金額・申請の<wbr>順序を<wbr>制度ごとに<wbr>まとめました。<wbr>とくに<wbr>「先に<wbr>動くと<wbr>対象外に<wbr>なる<wbr>境目」を<wbr>先頭に<wbr>置いています。</p>
       <div class="jk-guides">
         <a href="uploads/joseikin-career-up.html">
           <span class="jk-guide-n">キャリアアップ助成金</span>
@@ -774,7 +866,7 @@
           <span class="jk-guide-t">制度づくりと職場環境</span>
         </a>
         <a href="uploads/joseikin-koyou-kaihatsu.html">
-          <span class="jk-guide-n">特定求職者雇用開発助成金・トライアル雇用助成金</span>
+          <span class="jk-guide-n">特定<wbr>求職者雇<wbr>用開発助成金・<wbr>トライアル雇用助成金</span>
           <span class="jk-guide-t">採用したときの助成</span>
         </a>
         <a href="uploads/joseikin-65sai-cho.html">
@@ -782,7 +874,7 @@
           <span class="jk-guide-t">定年の引上げ・廃止</span>
         </a>
         <a href="uploads/joseikin-hatarakikata.html">
-          <span class="jk-guide-n">働き方改革推進支援助成金</span>
+          <span class="jk-guide-n">働き<wbr>方改革推進支援助成金</span>
           <span class="jk-guide-t">残業削減と年休</span>
         </a>
         <a href="uploads/joseikin-koyou-chosei.html">
@@ -793,30 +885,30 @@
     </section>
     <!-- ═══ 07 よくある不安 ═══ -->
     <section class="jk-sec" id="qa" data-screen-label="07 よくある不安">
-      <div class="jk-sec-head"><span class="n">07</span><h2>ご相談の前に、よくいただく質問</h2></div>
+      <div class="jk-sec-head"><span class="n">07</span><h2>ご相談の<wbr>前に、<wbr>よく<wbr>いただく<wbr>質問</h2></div>
       <div class="jk-qa">
         <details>
-          <summary>顧問契約を結ばないと頼めませんか。</summary>
+          <summary>顧問契約を<wbr>結ば<wbr>ないと<wbr>頼めませんか。</summary>
           <div class="a">いいえ。助成金の申請だけをスポットでお引き受けします。顧問契約をおすすめすることはありますが、お断りいただいて構いません。報酬率が変わるだけで、対応の中身は同じです。</div>
         </details>
         <details>
-          <summary>受給できなかったら、費用はどうなりますか。</summary>
+          <summary>受給できなかったら、<wbr>費用は<wbr>どうなりますか。</summary>
           <div class="a">報酬はいただきません。着手金も0円です。郵送費などの実費が発生した場合のみ、上乗せなしの実額でご請求します。なお、助成金には審査があり、要件を満たしていても支給されない場合があります。受給をお約束するものではありません。</div>
         </details>
         <details>
-          <summary>従業員が数名の会社でも対象になりますか。</summary>
+          <summary>従業員が<wbr>数名の<wbr>会社でも<wbr>対象に<wbr>なりますか。</summary>
           <div class="a">従業員1名からご相談いただけます。ここで扱う5つの制度は、いずれも中小企業向けの区分が中心です。むしろ、人数が少ない会社ほど1人あたりの助成額が経営に効きます。</div>
         </details>
         <details>
-          <summary>いまからでも間に合いますか。</summary>
+          <summary>いまから<wbr>でも間に<wbr>合いますか。</summary>
           <div class="a">制度によります。通年で使えるものは、取り組みを始める前であれば間に合います。募集期間があるものは締切次第で、令和8年度の業務改善助成金は9月30日が締切の見込みです。この場合は賃上げと設備の導入を締切までに終える必要があるため、8月中のご相談が安全です。まず現状をお聞かせください。</div>
         </details>
         <details>
-          <summary>自社で申請してもよいものですか。</summary>
+          <summary>自社で<wbr>申請しても<wbr>よい<wbr>ものですか。</summary>
           <div class="a">もちろん可能です。制度がひとつだけで、就業規則と賃金台帳が整っていれば、ご自身で進めるほうが早い場合もあります。専門家に任せる価値が出るのは、複数の制度を組み合わせるとき、就業規則の改定が必要なとき、そして「いつ何をするか」の順序を間違えたくないときです。相談の結果、自社で進めたほうがよいと判断すればそうお伝えします。</div>
         </details>
         <details>
-          <summary>まだ何も決まっていないのですが、話だけでもいいですか。</summary>
+          <summary>まだ<wbr>何も<wbr>決まってい<wbr>ないのですが、<wbr>話だけでも<wbr>いいですか。</summary>
           <div class="a">歓迎します。「人を増やそうか迷っている」「時給を上げたいが原資が心配」という段階でのご相談がいちばん動きやすいです。取り組みを始める前でないと使えない制度が多いためです。</div>
         </details>
       </div>
@@ -824,13 +916,13 @@
 
     <!-- ═══ 08 担当する人 ═══ -->
     <section class="jk-sec" id="person" data-screen-label="08 担当する人">
-      <div class="jk-sec-head"><span class="n">08</span><h2>お話を伺うのは、この人です</h2></div>
+      <div class="jk-sec-head"><span class="n">08</span><h2>お話を<wbr>伺うのは、<wbr>この<wbr>人です</h2></div>
       <div class="jk-person">
         <div class="av" aria-hidden="true">み</div>
         <div>
           <b>近藤 昭宏</b>
           <div class="meta"><span>社会保険労務士 第16260009号</span><span>富山県社会保険労務士会</span></div>
-          <p>助成金は「もらえるかどうか」より先に、その取り組みが会社にとって必要かどうかだと考えています。助成金のために無理な正社員化や賃上げをしても、続かなければ意味がありません。すでに考えている打ち手があるなら、それに合う制度を探して順序を整える——という進め方をご提案します。むずかしい言葉はそのまま使わず、明日から現場で使える形にしてお渡しします。</p>
+          <p>助成金は<wbr>「もらえるか<wbr>どうか」より<wbr>先に、<wbr>その<wbr>取り組みが<wbr>会社に<wbr>とって<wbr>必要か<wbr>どうかだと<wbr>考えています。<wbr>助成金の<wbr>ために<wbr>無理な<wbr>正社員化や賃上げを<wbr>しても、<wbr>続かなければ<wbr>意味が<wbr>ありません。<wbr>すでに<wbr>考えている<wbr>打ち手が<wbr>あるなら、<wbr>それに<wbr>合う<wbr>制度を<wbr>探して<wbr>順序を<wbr>整える——と<wbr>いう<wbr>進め方を<wbr>ご提案します。<wbr>むずかしい<wbr>言葉は<wbr>そのまま<wbr>使わず、<wbr>明日から<wbr>現場で<wbr>使える<wbr>形に<wbr>してお渡しします。</p>
           <a href="about.html" class="link-more">代表・事務所の情報を見る →</a>
         </div>
       </div>
@@ -838,7 +930,7 @@
 
     <section class="jk-note" data-screen-label="共通免責">
       <h2>共通免責</h2>
-      <p>本ページは令和8年度の制度情報をもとに作成しています。助成金には審査があり、掲載内容は受給をお約束するものではありません。要件・金額・締切は年度や政策により変わり、締切について「見込み」と記載したものは公示前の予定です。最新の情報は厚生労働省など各制度の公式資料をご確認いただくか、当事務所へお問い合わせください。（最終更新：2026年8月23日）</p>
+      <p>本ページは<wbr>令和8年度の<wbr>制度情報を<wbr>もとに<wbr>作成しています。<wbr>助成金には<wbr>審査が<wbr>あり、<wbr>掲載内容は<wbr>受給を<wbr>お約束する<wbr>ものではありません。<wbr>要件・金額・締切は<wbr>年度や<wbr>政策に<wbr>より<wbr>変わり、<wbr>締切に<wbr>ついて<wbr>「見込み」と<wbr>記載した<wbr>ものは<wbr>公示前の<wbr>予定です。<wbr>最新の<wbr>情報は<wbr>厚生労働省など<wbr>各制度の<wbr>公式資料を<wbr>ご確認いただくか、<wbr>当事務所へ<wbr>お問い合わせ<wbr>ください。<wbr>（最終更新：2026<wbr>年<wbr>8月23日）</p>
     </section>
 
     <div class="jk-cta" data-screen-label="CTA">
@@ -856,7 +948,7 @@
           <div class="logo-mark"><span>み</span></div>
           <div class="logo-text"><b>みなの社会保険労務士事務所</b><small>複雑な労務を、シンプルに。</small></div>
         </div>
-        <p class="footer-desc">助成金活用・手続き代行・DX支援で、中小企業の労務コストを最適化します。</p>
+        <p class="footer-desc">助成金活用・<wbr>手続き代行・<wbr>DX支援で、<wbr>中小企業の<wbr>労務コストを<wbr>最適化します。</p>
         <address class="footer-contact">
           <span class="footer-contact-row footer-contact-address">〒931-8333 富山県富山市蓮町1丁目7-4　SCOP TOYAMA</span>
           <span class="footer-contact-row"><a href="tel:090-8259-8774">TEL: 090-8259-8774</a><span class="footer-contact-hours">平日 9:00–18:00</span></span>
@@ -907,7 +999,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p class="footer-copy">© 2026 みなの社会保険労務士事務所. All rights reserved.</p>
+      <p class="footer-copy">© 2026 みなの<wbr>社会保険労務士事務所<wbr>. All rights reserved.</p>
       <div class="footer-badges">
         <span class="footer-badge">富山県社会保険労務士会</span>
       </div>
@@ -948,42 +1040,56 @@
 <script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/joseikin.html"}' async src="//gc.zgo.at/count.js"></script>
 <script>
 // 対象チェック。入力はどこにも送らず、この場で候補を出すだけ。
+// カードは生成済みのHTML（jk-check-cards）にあり、ここは hidden を外すだけにする。
+// 設問と制度データの正本は data/joseikin-check.json ＋ data/joseikin-guides.json。
 // SPAのbody差し替えで再実行されるため、リスナーは毎回張り直す（冪等）。
 (function(){
   var form=document.getElementById('jk-check-form');
   var hits=document.getElementById('jk-hits');
   var head=document.getElementById('jk-result-h');
-  if(!form||!hits||!head)return;
-  var NAMES={
-    'career-up':'キャリアアップ助成金（正社員化コース）',
-    'gyomu-kaizen':'業務改善助成金',
-    'ryoritsu':'両立支援等助成金（育児休業の支援）',
-    'jinzai':'人材開発支援助成金（人材育成支援コース）',
-    'trial':'トライアル雇用助成金（一般トライアルコース）'
-  };
+  var cta=document.getElementById('jk-cta');
+  var clear=document.getElementById('jk-clear');
+  if(!form||!hits||!head||!cta||!clear)return;
+  var cards=Array.prototype.slice.call(hits.querySelectorAll('.jk-hit'));
+  var boxes=Array.prototype.slice.call(form.querySelectorAll('input[type=checkbox]'));
+
   function render(){
-    var boxes=Array.prototype.slice.call(form.querySelectorAll('input[type=checkbox]'));
-    var picked=boxes.filter(function(b){return b.checked}).map(function(b){return b.getAttribute('data-jk')});
-    hits.textContent='';
-    if(!picked.length){
-      hits.hidden=true;
-      head.textContent=boxes.some(function(b){return b.indeterminate})?'':'チェックを入れると、候補になりそうな制度が出ます。';
-      return;
-    }
-    picked.forEach(function(key){
-      var li=document.createElement('li');
-      var a=document.createElement('a');
-      a.href='#'+key;
-      a.textContent=NAMES[key]||key;
-      li.appendChild(a);
-      hits.appendChild(li);
+    var picked={};
+    boxes.forEach(function(b){
+      if(!b.checked)return;
+      (b.getAttribute('data-jk')||'').split(/\s+/).forEach(function(k){ if(k)picked[k]=1; });
     });
-    hits.hidden=false;
-    head.textContent='この5つのなかでは、'+picked.length+'件が候補になりそうです。';
+    var names=[];
+    cards.forEach(function(li){
+      var on=!!picked[li.getAttribute('data-jk')];
+      li.hidden=!on;
+      if(on)names.push(li.getAttribute('data-name'));
+    });
+    clear.hidden=names.length===0;
+    if(names.length){
+      head.textContent='候補になりそうなのは、この'+names.length+'つです。どれも「先にやること」が要件になっています。';
+    }else{
+      head.textContent='上から当てはまるものを選んでください。';
+    }
+    // 選んだ結果を相談フォームへ引き継ぐ。URLには載せず、同じタブの中だけで渡す。
+    try{
+      if(names.length)sessionStorage.setItem('mn:joseikin-check',JSON.stringify(names));
+      else sessionStorage.removeItem('mn:joseikin-check');
+    }catch(e){}
   }
-  if(window.__jkCheck)form.removeEventListener('change',window.__jkCheck);
+
+  if(window.__jkCheck){
+    form.removeEventListener('change',window.__jkCheck);
+    clear.removeEventListener('click',window.__jkClear);
+  }
   window.__jkCheck=render;
+  window.__jkClear=function(){
+    boxes.forEach(function(b){ b.checked=false; });
+    render();
+    form.scrollIntoView({block:'start',behavior:'smooth'});
+  };
   form.addEventListener('change',render);
+  clear.addEventListener('click',window.__jkClear);
   render();
 })();
 </script>

@@ -24,6 +24,29 @@ p, li, dd, dt, figcaption, blockquote, summary { text-wrap: pretty; word-break: 
 /* 本文中のリンクは文節改行の対象から外す。出典名や制度名は一つの長い文節に
    なりやすく、器より長いと折り返せずに溢れる（320pxのブログ本文で20px実測）。 */
 p a, li a, dd a { word-break: normal; }
+
+/* ── iPhone（Safari）の改行 ───────────────────────────────────────────
+   auto-phrase は Chromium にしか無く、Safari/Firefox では normal に解決される。
+   そこで scripts/sync-phrase-breaks.mjs が文節の切れ目へ <wbr> を置き、
+   ここで「文節以外では折らない」を足して、どのブラウザでも同じ位置で折る。
+   逃げ道は overflow-wrap:break-word にする。anywhere は min-content 幅を
+   1文字まで下げてしまい、flex/grid の列がその幅まで潰れる
+   （ブログのliで、右の説明が2文字ずつの縦書きのようになった実測がある）。
+
+   auto-phrase が使えるブラウザ（Chromium系）では当てない。keep-all は
+   逆に min-content 幅を最長の文節まで押し上げるので、列組みが
+   数px～15px広がる（support.html の320pxで実測）。
+   auto-phrase が効くなら、そちらのほうが副作用が無い。
+   印の無い要素は今までどおり auto-phrase のまま。 */
+@supports not (word-break: auto-phrase) {
+  h1:has(wbr), h2:has(wbr), h3:has(wbr), h4:has(wbr), h5:has(wbr),
+  p:has(wbr), li:has(wbr), dd:has(wbr), dt:has(wbr),
+  figcaption:has(wbr), blockquote:has(wbr), summary:has(wbr),
+  .tp-title:has(wbr), .rp-title:has(wbr), .jk-guide-n:has(wbr) {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+}
 /* 表のセルは文節改行の対象から外す。列が狭いと文節が丸ごと入りきらず、
    折り返せずにセルからはみ出す（uploads/case-*.html の360px幅で実測23〜62px）。 */
 td, th { text-wrap: pretty; }
@@ -438,7 +461,10 @@ main > section:not(.hero) {
 /* ---------- サービス一覧 ---------- */
 .svc-sec { background: var(--shiro); }
 .svc-list { display: flex; flex-direction: column; gap: 12px; }
-.svc-row { display: grid; grid-template-columns: 56px 112px 1fr 48px; align-items: center; gap: clamp(14px, 2vw, 28px); padding: clamp(16px, 2.2vw, 22px) clamp(16px, 2.4vw, 28px); background: #fefefe; border: 1px solid var(--line); border-radius: var(--r-lg); transition: border-color .3s, box-shadow .35s var(--ease), transform .3s var(--ease); position: relative; }
+/* 3列目は minmax(0, 1fr)。既定の 1fr は min-content までしか縮まないので、
+   iPhoneで keep-all を当てると「雇用関係助成金申請サポート」のような
+   漢字続きが列を押し広げ、320pxで行が62pxはみ出した（実測）。 */
+.svc-row { display: grid; grid-template-columns: 56px 112px minmax(0, 1fr) 48px; align-items: center; gap: clamp(14px, 2vw, 28px); padding: clamp(16px, 2.2vw, 22px) clamp(16px, 2.4vw, 28px); background: #fefefe; border: 1px solid var(--line); border-radius: var(--r-lg); transition: border-color .3s, box-shadow .35s var(--ease), transform .3s var(--ease); position: relative; }
 .svc-row:hover { border-color: var(--moegi); box-shadow: 0 14px 34px rgba(18,63,48,.09); transform: translateX(4px); }
 .svc-row:active { border-color: var(--moegi); transform: translateX(6px) scale(.992); }
 .svc-row.is-selected { border-color: var(--moegi); animation: svc-card-selected .48s var(--ease) both; }
@@ -457,7 +483,7 @@ main > section:not(.hero) {
 .svc-cta p { color: rgba(255,255,255,.86); font-size: 14px; line-height: 2; letter-spacing: .03em; max-width: 38em; }
 .svc-cta .btn-primary { background: #fff; color: var(--sugi); box-shadow: none; }
 .svc-cta .btn-primary:hover { background: var(--moegi-l); }
-@media (max-width: 760px) { .svc-row { grid-template-columns: 30px 72px 1fr 20px; gap: 12px; } .svc-num { font-size: 17px; } .svc-ill { width: 72px; } }
+@media (max-width: 760px) { .svc-row { grid-template-columns: 30px 72px minmax(0, 1fr) 20px; gap: 12px; } .svc-num { font-size: 17px; } .svc-ill { width: 72px; } }
 
 /* ---------- SUBSIDY（明るい面・他セクションと同調） ---------- */
 .subsidy-sec { background: var(--yuki); padding-block: clamp(72px, 9.5vw, 132px); position: relative; overflow: hidden; }

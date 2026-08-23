@@ -121,6 +121,29 @@ p a, li a, dd a { word-break: normal; }
 td, th { text-wrap: pretty; }
 .sec-h, h3, h4, blockquote { text-wrap: pretty; }
 h1, h2, h3, h4, h5 { word-break: auto-phrase; }
+
+/* ── iPhone（Safari）の改行 ───────────────────────────────────────────
+   auto-phrase は Chromium にしか無く、Safari/Firefox では normal に解決される。
+   そこで scripts/sync-phrase-breaks.mjs が文節の切れ目へ <wbr> を置き、
+   ここで「文節以外では折らない」を足して、どのブラウザでも同じ位置で折る。
+   逃げ道は overflow-wrap:break-word にする。anywhere は min-content 幅を
+   1文字まで下げてしまい、flex/grid の列がその幅まで潰れる
+   （ブログのliで、右の説明が2文字ずつの縦書きのようになった実測がある）。
+
+   auto-phrase が使えるブラウザ（Chromium系）では当てない。keep-all は
+   逆に min-content 幅を最長の文節まで押し上げるので、列組みが
+   数px～15px広がる（support.html の320pxで実測）。
+   auto-phrase が効くなら、そちらのほうが副作用が無い。
+   印の無い要素は今までどおり auto-phrase のまま。 */
+@supports not (word-break: auto-phrase) {
+  h1:has(wbr), h2:has(wbr), h3:has(wbr), h4:has(wbr), h5:has(wbr),
+  p:has(wbr), li:has(wbr), dd:has(wbr), dt:has(wbr),
+  figcaption:has(wbr), blockquote:has(wbr), summary:has(wbr),
+  .tp-title:has(wbr), .rp-title:has(wbr), .jk-guide-n:has(wbr) {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+}
 .footer-ul a[href^="mailto:"], .footer-ul a[href^="tel:"],
 .footer-contact a, address a { word-break: keep-all; overflow-wrap: anywhere; }
 

@@ -40,6 +40,16 @@ p a,li a,dd a{word-break:normal}
    折り返せずにセルからはみ出す（uploads/case-*.html の360px幅で実測23〜62px）。 */
 td,th{text-wrap:pretty}
 h1,h2,h3,h4,h5{word-break:auto-phrase}
+/* iPhone（Safari）の改行。auto-phrase は Chromium 専用なので、
+   sync-phrase-breaks.mjs が置いた <wbr> と keep-all で位置を決める。
+   逃げ道は break-word。anywhere は min-content 幅を1文字まで下げ、
+   flex/grid の列をその幅まで潰す。auto-phrase が効くブラウザには当てない。
+   keep-all は逆に min-content 幅を押し上げ、列組みを広げてしまう。 */
+@supports not (word-break:auto-phrase){
+h1:has(wbr),h2:has(wbr),h3:has(wbr),h4:has(wbr),h5:has(wbr),
+p:has(wbr),li:has(wbr),dd:has(wbr),dt:has(wbr),figcaption:has(wbr),blockquote:has(wbr),summary:has(wbr),
+.tp-title:has(wbr),.rp-title:has(wbr),.jk-guide-n:has(wbr){word-break:keep-all;overflow-wrap:break-word}
+}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;height:auto;display:block}
 ::selection{background:var(--g100);color:var(--ink)}

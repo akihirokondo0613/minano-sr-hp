@@ -11,7 +11,22 @@
 - **`auto-phrase` には必ず逃げ道を用意する。** 文節が器より長いと折り返せずに溢れる。`overflow-wrap: break-word` を併記し、本文中のリンク（`p a, li a, dd a`）は `word-break: normal` に戻す。出典名・制度名は一つの長い文節になりやすく、320pxのブログ本文で20pxはみ出した実測がある。
 - **表のセル（`td, th`）は `auto-phrase` の対象外にする。** 列が狭いと文節が入りきらず、折り返せずにセルからはみ出す（`uploads/case-*.html` の360px幅で23〜62pxのはみ出しを実測）。
 - 連絡先の英数字（メール・電話・URL）は `word-break: keep-all; overflow-wrap: anywhere` で行中の分断を防ぐ。
-- **`word-break: auto-phrase` も `text-wrap: pretty` も WebKit では効かない**（Playwright WebKitで `word-break` は `normal`、`text-wrap` は `wrap` に解決される）。iPhoneでの文節改行が要るなら、CSSではなくビルド時に `<wbr>` を埋める方式（BudouX等）を検討する。CSSだけで直ったと説明しない。
+- **`word-break: auto-phrase` も `text-wrap: pretty` も WebKit では効かない**（Playwright WebKitで `word-break` は `normal`、`text-wrap` は `wrap` に解決される）。CSSだけで直ったと説明しない。
+- **iPhoneの文節改行は `<wbr>` をビルド時に埋めて解く**（2026-08-23導入）。`scripts/sync-phrase-breaks.mjs` が同梱BudouX（`scripts/lib/budoux-ja.mjs`、Apache-2.0）で切れ目を出し、CSS側の `@supports not (word-break: auto-phrase)` の中で `:has(wbr)` に `word-break: keep-all; overflow-wrap: break-word` を当てる。守るべき決めごと:
+  - **`<wbr>` を入れるだけでは何も変わらない。** 日本語はもともとどこでも折れるので、`keep-all` と対で使う。
+  - **`@supports not (word-break: auto-phrase)` で囲う。** Chromium系には当てない。`keep-all` は min-content 幅を最長の文節まで押し上げるので、列組みが数px〜15px広がる（`support.html` の320pxで実測）。auto-phrase が効くならそちらのほうが副作用が無い。
+  - **逃げ道は `overflow-wrap: break-word`。** `anywhere` は min-content 幅を1文字まで下げるので、flex/grid の列がその幅まで潰れる（ブログの `li` で、右の説明が32pxまで縮んで2文字ずつ折れた）。
+  - **印は文字の直後にだけ置く。** 開始タグの手前までは戻してよい（`…、<wbr><strong>…` にしないと `<strong>` が1行に居座って器から出る）が、**閉じタグの直後には置かない**。`<wbr>` は要素なので、flex/grid の箱の直下だと1個のアイテムとして数えられ、列がずれる。
+  - **人が置いた `<wbr>` は剥がさない。** 生成器が剥がすのは「文字と文字のあいだ」にある印だけ。`<span class="nw">…</span><wbr><span class="nw">…</span>` のような手置きの印を消すと `test-home-hero.cjs` が落ちる。
+  - **用語（`terms.js`）は前後の境目も外す。** 実行時に `<span class="term">` で包まれるので、語の直前・直後の `<wbr>` が独立したアイテムになる。
+  - **漢字と漢字のあいだでは折らない。** BudouXは統計モデルで、「中／小企業」「人／材開発支援助成金」「随時／改定」のように熟語や制度名を割る。全78ページで356か所あり、ほぼ全部が誤りだった。
+  - **禁則を自前で外す。** `<wbr>` は `line-break: strict` より強い明示の切れ目なので、「合わせる｜：」のように行頭に置けない字の前へ入れないよう生成器で弾く。
+  - **10文字を超える塊は割る。** 器に収まらないと逃げ道が禁則を無視して折る（句点だけが次の行へ落ちる）か、折れずに溢れる。割る場所が無ければ熟語の中でも折る（「雇用関係助成金申請サポート」は、そうしないと `services.html` の320pxで62pxはみ出した）。
+  - **英数字の途中では折らない。** BudouXは日本語のモデルなので「S｜TEP 03」のように割ることがある。
+  - **用語辞書（`terms.js`）の語の中では折らない。** `<wbr>` でテキストノードが割れると、その語だけツールチップが静かに消える。
+  - **WebKitの `scrollWidth` は数px増えることがある。** `keep-all` を当てた要素の「折れない幅」がレイアウトオーバーフローとして記録されるためで、`<wbr>` も `overflow-wrap` も min-content には数えられない。`window.scrollX` は0のまま（`overflow-x: clip` が効く）で、要素・テキストとも器から出ないので実害は無い。`audit-a11y.cjs` の「ページ自体の横スクロール」に出たら、要素単位のはみ出しと `window.scrollX` で確かめてから判断する。
+  - **置き場所は実測で守る。** 静的検査ではCSSの子孫セレクタ（`.sec-h strong` など）が読めないので、`scripts/test-phrase-breaks.cjs` が全ページをブラウザで開き、nowrapの中／flex・gridの独立アイテムになった `<wbr>` を落とす。`run-layout-checks.cjs` に入っている。
+  - 生成物（トップTOPICS・関連記事・助成金の解説ページ・助成金の対象チェック）は、各生成器が `scripts/lib/phrase-breaks.mjs` の `markPhrases()` を通す。あとから差し込むと生成器の `--check` が毎回落ちる。
 - `uploads/` 配下は `skin-v2.css` を読まない。共通の組版規則を追加するときは `wave-skin.css` にも反映する。
 
 ## レイアウト設計
@@ -42,6 +57,7 @@
 - ブログ全記事: `scripts/test-blog-articles.cjs`
 - 泣き別れ: `scripts/audit-line-breaks.cjs`
 - 全公開ページのアクセシビリティ・横幅: `scripts/audit-a11y.cjs`
+- 文節印の置き場所: `scripts/test-phrase-breaks.cjs`
 - 統合実行: `scripts/run-layout-checks.cjs`
 
 各スクリプトが持つ画面幅、エンジン、閾値、三重カウントを、実行時間短縮だけを理由に減らさない。短縮は重複巡回と待ち時間の削減に限る。

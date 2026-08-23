@@ -50,6 +50,15 @@ const tasks = [
     args: ['scripts/build-joseikin-guides.mjs', '--check'],
   },
   {
+    name: '助成金の対象チェックの同期確認',
+    args: ['scripts/sync-joseikin-check.mjs', '--check'],
+  },
+  {
+    // 生成物の中の見出しは各生成器が印を打つので、それらの後ろに置く。
+    name: '文節印（改行位置）の同期確認',
+    args: ['scripts/sync-phrase-breaks.mjs', '--check'],
+  },
+  {
     name: '構造化データの同期確認',
     args: ['scripts/sync-structured-data.mjs', '--check'],
   },

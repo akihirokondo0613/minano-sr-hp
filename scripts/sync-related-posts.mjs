@@ -10,6 +10,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { markPhrases } from './lib/phrase-breaks.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const checkOnly = process.argv.includes('--check');
@@ -62,7 +63,9 @@ function renderSection(current) {
       ].join('\n'),
     )
     .join('\n');
-  return [
+  // 生成した見出しにも文節印（<wbr>）を入れておく。あとから
+  // sync-phrase-breaks.mjs に差し込ませると、この生成器の --check が毎回落ちる。
+  return markPhrases([
     '<section class="related-posts" aria-labelledby="related-posts-t">',
     '  <div class="related-posts-inner">',
     '    <h2 class="related-posts-t" id="related-posts-t">あわせて読みたい</h2>',
@@ -72,7 +75,7 @@ function renderSection(current) {
     '  </div>',
     '</section>',
     '',
-  ].join('\n');
+  ].join('\n')).html;
 }
 
 let changed = 0;
@@ -139,7 +142,9 @@ function renderServiceSection(entry) {
       ].join('\n'),
     )
     .join('\n');
-  return [
+  // 生成した見出しにも文節印（<wbr>）を入れておく。あとから
+  // sync-phrase-breaks.mjs に差し込ませると、この生成器の --check が毎回落ちる。
+  return markPhrases([
     '  <section class="related-posts" aria-labelledby="related-posts-t">',
     '    <div class="related-posts-inner">',
     `      <h2 class="related-posts-t" id="related-posts-t">${escapeHtml(entry.label)}</h2>`,
@@ -149,7 +154,7 @@ function renderServiceSection(entry) {
     '    </div>',
     '  </section>',
     '  ',
-  ].join('\n');
+  ].join('\n')).html;
 }
 
 for (const entry of SERVICE_MAP) {

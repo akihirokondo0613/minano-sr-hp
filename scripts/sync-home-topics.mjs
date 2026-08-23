@@ -17,6 +17,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import { markPhrases } from './lib/phrase-breaks.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const indexPath = path.join(root, 'index.html');
@@ -106,8 +107,10 @@ async function main() {
     throw new Error(`blog/articles.json: カードに必要な${CARD_COUNT}件に足りません（現在${articles.length}件）`);
   }
 
-  let generated = replaceRegion(indexSource, 'home-topics-stats', buildStats(articles));
-  generated = replaceRegion(generated, 'home-topics-cards', buildCards(articles));
+  // 生成した見出しにも文節印（<wbr>）を入れておく。あとから
+  // sync-phrase-breaks.mjs に差し込ませると、この生成器の --check が毎回落ちる。
+  let generated = replaceRegion(indexSource, 'home-topics-stats', markPhrases(buildStats(articles)).html);
+  generated = replaceRegion(generated, 'home-topics-cards', markPhrases(buildCards(articles)).html);
 
   if (generated === indexSource) {
     console.log('トップのTOPICSは最新です');
