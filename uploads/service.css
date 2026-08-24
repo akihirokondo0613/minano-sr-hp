@@ -201,6 +201,16 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
 .tools-row span{font-size:clamp(16px,2vw,21px);font-weight:700;color:var(--ink4);letter-spacing:.02em}
 
 /* ─── 申し添え（料金は本体へ誘導）─── */
+/* 業務ページの料金抜粋（正本 pricing.html／scripts/sync-service-prices.mjs が生成） */
+.svc-fee{max-width:880px;margin:0 auto}
+.svc-fee-list{border-top:1px solid var(--line)}
+.svc-fee-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 24px;padding:16px 4px;border-bottom:1px solid var(--line)}
+.svc-fee-name{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.8}
+.svc-fee-price{font-size:14.5px;font-weight:700;color:var(--g700);line-height:1.8;justify-self:end;text-align:right}
+.svc-fee-desc{grid-column:1/-1;font-size:13px;color:var(--ink2);line-height:1.85;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
+.svc-fee-note{margin-top:16px;font-size:12.5px;color:var(--ink3);line-height:1.9;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
+.svc-fee-cta{margin-top:20px}
+@media(max-width:700px){.svc-fee-row{grid-template-columns:1fr}.svc-fee-price{justify-self:start;text-align:left}}
 .price-note{max-width:720px;margin:0 auto;border:1px solid var(--line);border-radius:var(--r);background:var(--g25);padding:clamp(28px,4vw,40px);text-align:center}
 .price-note h3{font-size:clamp(19px,2.4vw,24px);font-weight:700;color:var(--ink);margin-bottom:14px;letter-spacing:.01em}
 .price-note p{font-size:15px;color:var(--ink2);line-height:1.95;letter-spacing:.02em;margin-bottom:24px;text-wrap:pretty;word-break:auto-phrase}
