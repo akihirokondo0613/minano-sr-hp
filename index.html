@@ -79,7 +79,8 @@ p a, li a, dd a { word-break: normal; }
   h1:has(wbr), h2:has(wbr), h3:has(wbr), h4:has(wbr), h5:has(wbr),
   p:has(wbr), li:has(wbr), dd:has(wbr), dt:has(wbr),
   figcaption:has(wbr), blockquote:has(wbr), summary:has(wbr),
-  .tp-title:has(wbr), .rp-title:has(wbr), .jk-guide-n:has(wbr) {
+  .tp-title:has(wbr), .rp-title:has(wbr), .jk-guide-n:has(wbr),
+  .svc-info-name:has(wbr), .svc-info-desc:has(wbr) {
     word-break: keep-all;
     overflow-wrap: break-word;
   }
@@ -400,8 +401,8 @@ main > section:not(.hero) {
   contain-intrinsic-size: auto 900px;
 }
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20260823-wbr1" media="print" data-async-style onload="this.media='all';this.onload=null">
-<noscript><link rel="stylesheet" href="skin-v2.css?v=20260823-wbr1"></noscript>
+<link rel="stylesheet" href="skin-v2.css?v=20260824-svcscale1" media="print" data-async-style onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="skin-v2.css?v=20260824-svcscale1"></noscript>
 <style id="home-hero-legibility">
 @media(max-width:700px){
   /* 本文が写真の建物・木立に重なる帯（ヒーロー高の45〜75%）まで白を残す。
@@ -851,37 +852,37 @@ main > section:not(.hero) {
       <a href="uploads/service-joseikin.html" class="svc-row rv">
         <span class="svc-num">01</span>
         <span class="svc-ill" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="home-svc-joseikin" src="assets/illustrations/service-subsidy.webp" fit="contain" placeholder="雇用関係助成金申請サポートのイラスト"></image-slot></span>
-        <span><span class="svc-info-name">雇用関係助成金申請サポート</span><span class="svc-info-desc">対象制度の確認から申請まで、要件と期限を整理して伴走します。</span></span>
+        <span><span class="svc-info-name">雇用関係助成金<wbr>申請サポート</span><span class="svc-info-desc">対象制度の<wbr>確認から<wbr>申請まで、<wbr>要件と<wbr>期限を<wbr>整理して<wbr>伴走します。</span></span>
         <span class="svc-arr" aria-hidden="true">→</span>
       </a>
       <a href="uploads/service-shugyo-kisoku.html" class="svc-row rv">
         <span class="svc-num">02</span>
         <span class="svc-ill" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="home-svc-kisoku" src="assets/illustrations/service-work-rules.webp" fit="contain" placeholder="就業規則の作成・見直しのイラスト"></image-slot></span>
-        <span><span class="svc-info-name">就業規則の作成・見直し</span><span class="svc-info-desc">会社の実態と法改正に合う、運用しやすい規程へ整えます。</span></span>
+        <span><span class="svc-info-name">就業規則の<wbr>作成・見直し</span><span class="svc-info-desc">会社の<wbr>実態と<wbr>法改正に<wbr>合う、<wbr>運用しやすい<wbr>規程へ<wbr>整えます。</span></span>
         <span class="svc-arr" aria-hidden="true">→</span>
       </a>
       <a href="uploads/service-shakai-hoken.html" class="svc-row rv">
         <span class="svc-num">03</span>
         <span class="svc-ill" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="home-svc-shaho" src="assets/illustrations/service-social-insurance.webp" fit="contain" placeholder="社会保険・労働保険手続き代行のイラスト"></image-slot></span>
-        <span><span class="svc-info-name">社会保険・労働保険手続き代行</span><span class="svc-info-desc">入退社や年度更新、算定基礎届などを期限に沿って進めます。</span></span>
+        <span><span class="svc-info-name">社会保険・<wbr>労働保険<wbr>手続き代行</span><span class="svc-info-desc">入退社<wbr>や年度更新、算定基礎届な<wbr>どを<wbr>期限に<wbr>沿って<wbr>進めます。</span></span>
         <span class="svc-arr" aria-hidden="true">→</span>
       </a>
       <a href="uploads/service-kyuyo-keisan.html" class="svc-row rv">
         <span class="svc-num">04</span>
         <span class="svc-ill" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="home-svc-kyuyo" src="assets/illustrations/service-payroll.webp" fit="contain" placeholder="給与計算アウトソーシングのイラスト"></image-slot></span>
-        <span><span class="svc-info-name">給与計算アウトソーシング</span><span class="svc-info-desc">毎月の給与・賞与計算を、従業員1名規模から支援します。</span></span>
+        <span><span class="svc-info-name">給与計算<wbr>アウトソーシング</span><span class="svc-info-desc">毎月の<wbr>給与・賞与計算を、<wbr>従業員1名規模から<wbr>支援します。</span></span>
         <span class="svc-arr" aria-hidden="true">→</span>
       </a>
       <a href="uploads/service-romu-sodan.html" class="svc-row rv">
         <span class="svc-num">05</span>
         <span class="svc-ill" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="home-svc-sodan" src="assets/illustrations/service-labor-consultation.webp" fit="contain" placeholder="労務トラブルのご相談のイラスト"></image-slot></span>
-        <span><span class="svc-info-name">労務トラブルのご相談</span><span class="svc-info-desc">退職・残業代・ハラスメントへの対応と予防策を整理します。</span></span>
+        <span><span class="svc-info-name">労務トラブルの<wbr>ご相談</span><span class="svc-info-desc">退職・残業代・<wbr>ハラスメントへの<wbr>対応と<wbr>予防策を<wbr>整理します。</span></span>
         <span class="svc-arr" aria-hidden="true">→</span>
       </a>
       <a href="uploads/service-dx.html" class="svc-row rv">
         <span class="svc-num">06</span>
         <span class="svc-ill" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="home-svc-dx" src="assets/illustrations/service-dx.webp" fit="contain" placeholder="労務システム導入・DX支援のイラスト"></image-slot></span>
-        <span><span class="svc-info-name">労務システム導入・DX支援</span><span class="svc-info-desc">勤怠・給与・手続きの情報をつなぎ、運用の定着まで支援します。</span></span>
+        <span><span class="svc-info-name">労務システム導入・<wbr>DX支援</span><span class="svc-info-desc">勤怠・給与・<wbr>手続きの<wbr>情報を<wbr>つなぎ、<wbr>運用の<wbr>定着まで<wbr>支援します。</span></span>
         <span class="svc-arr" aria-hidden="true">→</span>
       </a>
     </div>

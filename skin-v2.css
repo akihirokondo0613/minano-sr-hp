@@ -42,7 +42,8 @@ p a, li a, dd a { word-break: normal; }
   h1:has(wbr), h2:has(wbr), h3:has(wbr), h4:has(wbr), h5:has(wbr),
   p:has(wbr), li:has(wbr), dd:has(wbr), dt:has(wbr),
   figcaption:has(wbr), blockquote:has(wbr), summary:has(wbr),
-  .tp-title:has(wbr), .rp-title:has(wbr), .jk-guide-n:has(wbr) {
+  .tp-title:has(wbr), .rp-title:has(wbr), .jk-guide-n:has(wbr),
+  .svc-info-name:has(wbr), .svc-info-desc:has(wbr) {
     word-break: keep-all;
     overflow-wrap: break-word;
   }
@@ -474,8 +475,8 @@ main > section:not(.hero) {
 .svc-row:hover .svc-num { -webkit-text-stroke-color: var(--moegi); }
 .svc-ill { width: 112px; aspect-ratio: 4/3; overflow: hidden; border-radius: var(--r); background: #fefefe; align-self: center; }
 .svc-ill image-slot { display: block; width: 100%; height: 100%; background: #fefefe; }
-.svc-info-name { font-family: var(--disp); font-size: clamp(16.5px, 1.7vw, 19px); font-weight: 800; letter-spacing: .01em; color: var(--iwa); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.svc-info-desc { font-size: 13px; line-height: 1.9; color: var(--ink3); margin-top: 4px; }
+.svc-info-name { font-family: var(--disp); font-size: clamp(17.5px, 1.9vw, 21px); font-weight: 800; letter-spacing: .01em; color: var(--iwa); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; text-wrap: pretty; word-break: auto-phrase; }
+.svc-info-desc { font-size: 14.5px; line-height: 1.9; color: var(--ink3); margin-top: 4px; word-break: auto-phrase; }
 .svc-arr { font-size: 18px; color: var(--ink4); transition: color .3s, transform .3s var(--ease); justify-self: end; }
 .svc-row:hover .svc-arr { color: var(--sugi); transform: translateX(5px); }
 .svc-feat-badge { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-body); font-size: 10.5px; font-weight: 700; letter-spacing: .08em; color: var(--iwa); background: var(--asahi); padding: 4px 12px; border-radius: 999px; }
@@ -1332,8 +1333,10 @@ article.post .note { font-size: 12.5px; color: var(--ink3); margin-top: -1em; ma
 .home-why-more { margin-top: clamp(22px, 2.8vw, 32px); text-align: left; }
 .home-why-more .link-more { color: var(--sugi); }
 
-.home-service-list .svc-row { grid-template-columns: 52px 92px minmax(0, 1fr) 36px; padding-block: 13px; }
-.home-service-list .svc-ill { width: 92px; }
+.home-service-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 470px), 1fr)); gap: 14px; }
+.home-service-list .svc-row { grid-template-columns: 44px 96px minmax(0, 1fr) 28px; padding-block: 17px; }
+.home-service-list .svc-num { font-size: 20px; }
+.home-service-list .svc-ill { width: 96px; }
 .home-service-list .svc-info-desc { white-space: normal; }
 
 .home-phase-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 22px); }
