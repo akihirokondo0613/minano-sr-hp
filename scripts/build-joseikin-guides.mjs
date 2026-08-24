@@ -194,7 +194,7 @@ function buildMain(guide, meta, guides) {
           </ul>
         </div>
       </div>
-      ${guide.toyama ? `<p class="jgd-toyama"><b>富山の場合</b>${esc(guide.toyama)}</p>` : ''}
+      ${guide.toyama ? `<p class="jgd-toyama"><b>富山の場合</b>${esc(guide.toyama)}${guide.toyamaOffice ? `<a class="jgd-toyama-l" href="toyama-madoguchi.html#mdg-${esc(guide.toyamaOffice)}">この窓口の所在地・電話を見る →</a>` : ''}</p>` : ''}
     </div>
   </section>
 
@@ -258,6 +258,8 @@ const STYLE = `<style id="joseikin-guide">
 .jgd-care li{position:relative;padding-left:26px;font-size:13.5px;color:#37423B;line-height:1.9;text-wrap:pretty}
 .jgd-care li::before{content:'!';position:absolute;left:0;top:4px;inline-size:17px;block-size:17px;border-radius:5px;background:#E5A63C;color:#1E2721;font-size:11.5px;font-weight:700;display:grid;place-items:center}
 .jgd-toyama{margin:clamp(18px,2.4vw,24px) 0 0;font-size:13.5px;line-height:2;color:#37423B;background:#fff;border-left:3px solid #2E9E63;padding:14px 18px;border-radius:0 var(--r) var(--r) 0;text-wrap:pretty}
+.jgd-toyama-l{display:inline-block;margin-top:8px;font-size:12.5px;font-weight:700;color:#1C5842;text-decoration:none;border-bottom:1px solid #9ED0B6}
+.jgd-toyama-l:hover{border-bottom-color:#1C5842}
 .jgd-toyama b{display:block;font-size:12.5px;color:#1C5842;letter-spacing:.04em;margin-bottom:4px}
 .jgd-official{margin:0 0 clamp(20px,2.6vw,26px);font-size:13px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
 .jgd-official a{display:inline-flex;align-items:center;gap:7px;color:#1E7A4B;font-weight:700;border-bottom:1.5px solid #2E9E63;padding-bottom:2px}
@@ -277,11 +279,17 @@ const STYLE = `<style id="joseikin-guide">
 async function main() {
   if (unknownArgs.length) throw new Error(`未対応の引数です: ${unknownArgs.join(', ')}`);
 
-  const [dataSource, donorSource] = await Promise.all([
+  const [dataSource, donorSource, madoguchiSource] = await Promise.all([
     readFile(dataPath, 'utf8'),
     readFile(donorPath, 'utf8'),
+    readFile(path.join(root, 'data/toyama-madoguchi.json'), 'utf8'),
   ]);
   const meta = JSON.parse(dataSource);
+  // 「富山の場合」から窓口一覧へ深く結ぶ。窓口の住所・電話はあちらが正本なので、
+  // ここは id で指すだけにする。id が消えたら黙ってリンク切れにせず止める。
+  const madoguchiIds = new Set(
+    JSON.parse(madoguchiSource).groups.flatMap((g) => g.offices.map((o) => o.id)),
+  );
   const guides = meta.guides;
   if (!Array.isArray(guides) || !guides.length) throw new Error('data/joseikin-guides.json: guidesが空です');
 
@@ -295,6 +303,12 @@ async function main() {
       }
     }
     if (!/^[a-z0-9-]+$/.test(guide.slug)) throw new Error(`slugが不正です: ${guide.slug}`);
+    if (guide.toyamaOffice && !madoguchiIds.has(guide.toyamaOffice)) {
+      throw new Error(`${guide.slug}: toyamaOffice=${guide.toyamaOffice} が data/toyama-madoguchi.json にありません`);
+    }
+    if (guide.toyamaOffice && !guide.toyama) {
+      throw new Error(`${guide.slug}: toyamaOffice を書くなら toyama の本文も要ります`);
+    }
 
     const rel = `uploads/joseikin-${guide.slug}.html`;
     // 文節印（<wbr>）はここで入れる。あとから sync-phrase-breaks.mjs に
