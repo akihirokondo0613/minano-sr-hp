@@ -50,6 +50,10 @@ const tasks = [
     args: ['scripts/build-joseikin-guides.mjs', '--check'],
   },
   {
+    name: '業務ページ料金の同期確認',
+    args: ['scripts/sync-service-prices.mjs', '--check'],
+  },
+  {
     name: '助成金の対象チェックの同期確認',
     args: ['scripts/sync-joseikin-check.mjs', '--check'],
   },
