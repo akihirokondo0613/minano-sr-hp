@@ -164,8 +164,18 @@ for (const entry of SERVICE_MAP) {
   const anchor = '<section class="final-cta">';
   if (!source.includes(anchor)) throw new Error(`${entry.file}: final-cta がありません`);
 
-  const stripped = source.replace(/  <section class="related-posts"[\s\S]*?<\/section>\n  /, '');
+  // 既存ブロックは字下げごと、全部剥がしてから1つだけ入れ直す。
+  // 以前は先頭2スペースを字下げに決め打ちしていたので、隣の生成器が字下げを変えると
+  // 剥がれないまま新しいブロックが足され、黙って2つになった（#138 で5ページに発生）。
+  const stripped = source.replace(/[ \t]*<section class="related-posts"[\s\S]*?<\/section>\n[ \t]*/g, '');
   const next = stripped.replace(anchor, `${renderServiceSection(entry)}${anchor}`);
+  // 剥がす正規表現は字下げまで含めて一致させている。ページ側の字下げが変わると
+  // 既存ブロックが剥がれないまま新しいブロックが足され、黙って2つになる。
+  // 実際に service-dx.html でこれが起きたので、増えていたら止める。
+  const sections = (next.match(/<section class="related-posts"/g) || []).length;
+  if (sections !== 1) {
+    throw new Error(`${entry.file}: 関連記事のセクションが${sections}個あります。字下げが変わって既存ブロックを剥がせていない可能性があります`);
+  }
   if (next === source) continue;
   changed += 1;
   if (!checkOnly) {
