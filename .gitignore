@@ -3,3 +3,10 @@
 _backup_*/
 *.zip
 .claude/
+
+# data/ は public ブランチにそのまま載る＝本番に公開される。
+# 調査中に出典ページを保存すると、官公庁のページを自社ドメインで再公開することになる。
+# data/ に置いてよいのは生成器が読む JSON だけ。
+data/*.html
+data/*.txt
+data/*.pdf

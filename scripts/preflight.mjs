@@ -113,6 +113,10 @@ const tasks = [
     args: ['gen-sitemap.js'],
   },
   {
+    name: '重複idの検査',
+    args: ['scripts/check-duplicate-ids.mjs'],
+  },
+  {
     name: '静的な性能検査',
     args: ['scripts/check-performance-budget.mjs'],
   },
