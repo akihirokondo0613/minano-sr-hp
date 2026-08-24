@@ -475,8 +475,11 @@ main > section:not(.hero) {
 .svc-row:hover .svc-num { -webkit-text-stroke-color: var(--moegi); }
 .svc-ill { width: 112px; aspect-ratio: 4/3; overflow: hidden; border-radius: var(--r); background: #fefefe; align-self: center; }
 .svc-ill image-slot { display: block; width: 100%; height: 100%; background: #fefefe; }
-.svc-info-name { font-family: var(--disp); font-size: clamp(17.5px, 1.9vw, 21px); font-weight: 800; letter-spacing: .01em; color: var(--iwa); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; text-wrap: pretty; word-break: auto-phrase; }
-.svc-info-desc { font-size: 14.5px; line-height: 1.9; color: var(--ink3); margin-top: 4px; word-break: auto-phrase; }
+.svc-info-name { font-family: var(--disp); font-size: clamp(19px, 2.05vw, 23px); font-weight: 800; letter-spacing: .01em; color: var(--iwa); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; text-wrap: pretty; word-break: auto-phrase; }
+.svc-info-desc { font-size: 14px; line-height: 1.8; color: var(--ink3); margin-top: 5px; word-break: auto-phrase; opacity: 0; transform: translateY(-2px); transition: opacity .28s var(--ease), transform .28s var(--ease); }
+.svc-row:hover .svc-info-desc, .svc-row:focus-visible .svc-info-desc, .svc-row:focus-within .svc-info-desc { opacity: 1; transform: none; }
+@media (hover: none) { .svc-info-desc { display: none; } }
+@media (prefers-reduced-motion: reduce) { .svc-info-desc { transition: none; transform: none; } }
 .svc-arr { font-size: 18px; color: var(--ink4); transition: color .3s, transform .3s var(--ease); justify-self: end; }
 .svc-row:hover .svc-arr { color: var(--sugi); transform: translateX(5px); }
 .svc-feat-badge { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-body); font-size: 10.5px; font-weight: 700; letter-spacing: .08em; color: var(--iwa); background: var(--asahi); padding: 4px 12px; border-radius: 999px; }
@@ -1336,6 +1339,8 @@ article.post .note { font-size: 12.5px; color: var(--ink3); margin-top: -1em; ma
 .home-service-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 470px), 1fr)); gap: 14px; }
 .home-service-list .svc-row { grid-template-columns: 44px 96px minmax(0, 1fr) 28px; padding-block: 17px; }
 .home-service-list .svc-num { font-size: 20px; }
+.home-service-list .svc-row > span:nth-of-type(3) { display: flex; flex-direction: column; justify-content: center; min-height: 108px; }
+.home-service-list .svc-info-desc { font-size: 13.5px; line-height: 1.7; }
 .home-service-list .svc-ill { width: 96px; }
 .home-service-list .svc-info-desc { white-space: normal; }
 
