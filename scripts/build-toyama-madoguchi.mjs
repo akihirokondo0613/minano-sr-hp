@@ -113,10 +113,10 @@ const STYLE = `<style id="madoguchi">
 .mdg-quick th{width:56%;font-size:14.5px;font-weight:700;color:var(--ink);padding-right:20px;text-wrap:pretty;word-break:auto-phrase}
 .mdg-quick td{font-size:14px;color:var(--g700);font-weight:700;text-wrap:pretty;word-break:auto-phrase}
 @media(max-width:700px){.mdg-quick th,.mdg-quick td{display:block;width:100%}.mdg-quick th{border-bottom:none;padding:14px 4px 2px}.mdg-quick td{padding:2px 4px 14px}}
-.mdg-group{margin-top:clamp(30px,4vw,48px)}
+.mdg-group{margin-top:clamp(30px,4vw,48px);scroll-margin-top:96px}
 .mdg-group-lead{font-size:14.5px;color:var(--ink2);line-height:1.95;letter-spacing:.02em;margin:0 0 20px;max-width:44em;text-wrap:pretty;word-break:auto-phrase}
 .mdg-list{display:grid;gap:14px}
-.mdg-office{border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;background:#fff}
+.mdg-office{border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;background:#fff;scroll-margin-top:96px}
 .mdg-office-n{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);margin:0 0 10px;line-height:1.6;text-wrap:pretty;word-break:auto-phrase}
 .mdg-dl{display:grid;grid-template-columns:76px minmax(0,1fr);gap:6px 16px;margin:0 0 12px}
 .mdg-dl dt{font-size:12px;font-weight:700;color:var(--ink3);letter-spacing:.06em;padding-top:2px}
@@ -147,7 +147,7 @@ function officeBlock(office) {
     office.jurisdiction ? ['管轄', esc(office.jurisdiction)] : null,
   ].filter(Boolean);
   return [
-    '        <div class="mdg-office">',
+    `        <div class="mdg-office" id="mdg-${esc(office.id)}">`,
     `          <p class="mdg-office-n">${esc(office.name)}</p>`,
     '          <dl class="mdg-dl">',
     ...rows.map(([k, v]) => `            <dt>${k}</dt><dd>${v}</dd>`),
@@ -169,7 +169,7 @@ function buildMain(data) {
     .join('\n');
 
   const groups = data.groups.map((g) => `
-    <div class="mdg-group rv">
+    <div class="mdg-group rv" id="mdg-g-${esc(g.key)}">
       <h3 class="sec-h" style="font-size:clamp(20px,2.6vw,27px)">${esc(g.title)}</h3>
       <p class="mdg-group-lead">${esc(g.lead)}</p>
       <div class="mdg-list">
