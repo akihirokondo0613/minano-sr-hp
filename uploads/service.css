@@ -205,20 +205,20 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
 .svc-fee{max-width:880px;margin:0 auto}
 .svc-fee-list{border-top:1px solid var(--line)}
 .svc-fee-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 24px;padding:16px 4px;border-bottom:1px solid var(--line)}
-.svc-fee-name{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.8}
-.svc-fee-price{font-size:14.5px;font-weight:700;color:var(--g700);line-height:1.8;justify-self:end;text-align:right}
-.svc-fee-desc{grid-column:1/-1;font-size:13px;color:var(--ink2);line-height:1.85;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
-.svc-fee-note{margin-top:16px;font-size:12.5px;color:var(--ink3);line-height:1.9;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
+.svc-fee-name{font-size:15.5px;font-weight:700;color:var(--ink);line-height:1.8}
+.svc-fee-price{font-size:15.5px;font-weight:700;color:var(--g700);line-height:1.8;justify-self:end;text-align:right}
+.svc-fee-desc{grid-column:1/-1;font-size:14px;color:var(--ink2);line-height:1.85;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
+.svc-fee-note{margin-top:16px;font-size:13.5px;color:var(--ink3);line-height:1.9;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
 .svc-fee-cta{margin-top:20px}
 @media(max-width:700px){.svc-fee-row{grid-template-columns:1fr}.svc-fee-price{justify-self:start;text-align:left}}
 
 /* ---------- 富山の窓口（業務ページ・sync-service-toyama.mjs が生成） ---------- */
 .svct{max-width:880px;margin:0 auto;scroll-margin-top:96px}
 .svct-leads{display:grid;gap:14px}
-.svct-lead{font-size:14.5px;color:var(--ink2);line-height:1.95;letter-spacing:.02em;margin:0;text-wrap:pretty;word-break:auto-phrase}
+.svct-lead{font-size:16px;color:var(--ink2);line-height:1.95;letter-spacing:.02em;margin:0;text-wrap:pretty;word-break:auto-phrase}
 .svct-tablewrap{margin-top:clamp(22px,3vw,32px);overflow-x:auto;-webkit-overflow-scrolling:touch}
-.svct-table{border-collapse:collapse;width:100%;min-width:0;font-size:13.5px}
-.svct-table caption{caption-side:top;text-align:left;font-size:12.5px;color:var(--ink3);letter-spacing:.04em;padding-bottom:10px;text-wrap:pretty;word-break:auto-phrase}
+.svct-table{border-collapse:collapse;width:100%;min-width:0;font-size:14.5px}
+.svct-table caption{caption-side:top;text-align:left;font-size:13.5px;color:var(--ink3);letter-spacing:.04em;padding-bottom:10px;text-wrap:pretty;word-break:auto-phrase}
 .svct-table th,.svct-table td{border-bottom:1px solid var(--line);padding:11px 14px;text-align:left;vertical-align:top;line-height:1.75}
 .svct-table thead th{font-size:12px;font-weight:700;color:var(--g700);letter-spacing:.04em;border-bottom:2px solid var(--g300);white-space:nowrap}
 .svct-table tbody th{font-weight:700;color:var(--ink);white-space:nowrap}
@@ -227,27 +227,27 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
 .svct-sep{color:var(--ink4);padding:0 2px}
 .svct-offices{margin-top:clamp(22px,3vw,32px);display:grid;gap:12px}
 .svct-office{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff}
-.svct-office-n{font-size:14.5px;font-weight:700;margin:0 0 6px;line-height:1.7;text-wrap:pretty;word-break:auto-phrase}
+.svct-office-n{font-size:15.5px;font-weight:700;margin:0 0 6px;line-height:1.7;text-wrap:pretty;word-break:auto-phrase}
 .svct-office-n a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--g300)}
 .svct-office-n a:hover{color:var(--g700);border-bottom-color:var(--g700)}
-.svct-office-r{font-size:13px;color:var(--ink2);line-height:1.85;letter-spacing:.02em;margin:0 0 10px;text-wrap:pretty;word-break:auto-phrase}
-.svct-dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 16px;margin:0;font-size:12.5px;color:var(--ink3);line-height:1.8}
+.svct-office-r{font-size:14px;color:var(--ink2);line-height:1.85;letter-spacing:.02em;margin:0 0 10px;text-wrap:pretty;word-break:auto-phrase}
+.svct-dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 16px;margin:0;font-size:13.5px;color:var(--ink3);line-height:1.8}
 .svct-dl dt{font-weight:700;color:var(--ink4);white-space:nowrap}
 .svct-dl dd{margin:0;text-wrap:pretty;word-break:auto-phrase}
-.svct-note{margin-top:18px;font-size:12.5px;color:var(--ink3);line-height:1.9;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
+.svct-note{margin-top:18px;font-size:13.5px;color:var(--ink3);line-height:1.9;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
 .svct-cta{margin-top:20px}
 /* ---------- 給与計算の範囲対比と人数別単価（sync-service-prices.mjs が生成） ---------- */
 .kyu-cmp{margin-top:clamp(20px,3vw,28px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
 .kyu-cmp-i{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff}
-.kyu-cmp-t{font-size:13.5px;font-weight:700;color:var(--g700);margin:0 0 8px;letter-spacing:.03em}
+.kyu-cmp-t{font-size:14.5px;font-weight:700;color:var(--g700);margin:0 0 8px;letter-spacing:.03em}
 .kyu-cmp-i ul{margin:0;padding-left:18px;display:grid;gap:5px}
-.kyu-cmp-i li{font-size:13px;color:var(--ink2);line-height:1.8;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
+.kyu-cmp-i li{font-size:14px;color:var(--ink2);line-height:1.8;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
 .kyu-table{margin-top:14px}
 .kyu-table td{white-space:nowrap}
-.kyu-per{display:block;font-size:11.5px;font-weight:400;color:var(--ink3)}
+.kyu-per{display:block;font-size:12px;font-weight:400;color:var(--ink3)}
 @media(max-width:560px){.kyu-table td{white-space:normal}}
 
-@media(max-width:700px){.svct-table{font-size:13px}.svct-table th,.svct-table td{padding:10px}}
+@media(max-width:700px){.svct-table{font-size:14px}.svct-table th,.svct-table td{padding:10px}}
 /* 狭い幅では横スクロールをやめて、市町村ごとの塊に積み上げる。
    3列目が画面外に切れると、そこに何かあること自体に気づけないため。 */
 @media(max-width:560px){
@@ -262,12 +262,12 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
   .svct-table td a{word-break:auto-phrase}
 }
 .svct-nums{margin-top:clamp(22px,3vw,32px);display:grid;gap:12px}
-.svct-nums-c{font-size:12.5px;color:var(--ink3);letter-spacing:.04em;margin:0;text-wrap:pretty;word-break:auto-phrase}
+.svct-nums-c{font-size:13.5px;color:var(--ink3);letter-spacing:.04em;margin:0;text-wrap:pretty;word-break:auto-phrase}
 .svct-num{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 20px;align-items:baseline}
-.svct-num-l{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.7;margin:0;text-wrap:pretty;word-break:auto-phrase}
-.svct-num-v{font-size:17px;font-weight:700;color:var(--g700);line-height:1.5;margin:0;justify-self:end;text-align:right;word-break:keep-all}
-.svct-num-n{grid-column:1/-1;font-size:12.5px;color:var(--ink2);line-height:1.9;letter-spacing:.02em;margin:6px 0 0;text-wrap:pretty;word-break:auto-phrase}
-.svct-num-s{grid-column:1/-1;font-size:11.5px;color:var(--ink4);letter-spacing:.03em;margin:8px 0 0}
+.svct-num-l{font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.7;margin:0;text-wrap:pretty;word-break:auto-phrase}
+.svct-num-v{font-size:19px;font-weight:700;color:var(--g700);line-height:1.5;margin:0;justify-self:end;text-align:right;word-break:keep-all}
+.svct-num-n{grid-column:1/-1;font-size:13.5px;color:var(--ink2);line-height:1.9;letter-spacing:.02em;margin:6px 0 0;text-wrap:pretty;word-break:auto-phrase}
+.svct-num-s{grid-column:1/-1;font-size:12px;color:var(--ink4);letter-spacing:.03em;margin:8px 0 0}
 .svct-num-s a{color:var(--ink4);text-decoration:none;border-bottom:1px solid var(--line);word-break:break-word}
 .svct-num-s a:hover{color:var(--g700);border-bottom-color:var(--g700)}
 @media(max-width:560px){.svct-num{grid-template-columns:1fr}.svct-num-v{justify-self:start;text-align:left;margin-top:4px}}
