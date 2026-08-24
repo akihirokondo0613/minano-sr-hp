@@ -148,18 +148,18 @@ const SAITEI_STYLE = `<style id="saitei-chingin">
 .stc-tl li:last-child{padding-bottom:0}
 .stc-tl li::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--g500);border:2px solid #fff}
 .stc-tl li.stc-todo::before{background:#fff;border:2px solid var(--g500)}
-.stc-tl-d{font-size:12.5px;font-weight:700;color:var(--g700);letter-spacing:.04em}
-.stc-tl-t{font-size:14.5px;font-weight:700;color:var(--ink);margin:2px 0 4px;line-height:1.7;text-wrap:pretty;word-break:auto-phrase}
-.stc-tl-x{font-size:13px;color:var(--ink2);line-height:1.9;letter-spacing:.02em;margin:0;text-wrap:pretty;word-break:auto-phrase}
-.stc-table{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:8px}
+.stc-tl-d{font-size:13.5px;font-weight:700;color:var(--g700);letter-spacing:.04em}
+.stc-tl-t{font-size:15.5px;font-weight:700;color:var(--ink);margin:2px 0 4px;line-height:1.7;text-wrap:pretty;word-break:auto-phrase}
+.stc-tl-x{font-size:14px;color:var(--ink2);line-height:1.9;letter-spacing:.02em;margin:0;text-wrap:pretty;word-break:auto-phrase}
+.stc-table{border-collapse:collapse;width:100%;font-size:14.5px;margin-top:8px}
 .stc-table th,.stc-table td{border-bottom:1px solid var(--line);padding:11px 12px;text-align:left;vertical-align:top;line-height:1.75}
 .stc-table thead th{font-size:12px;font-weight:700;color:var(--g700);letter-spacing:.04em;border-bottom:2px solid var(--g300);white-space:nowrap}
 .stc-table td.stc-amt{font-weight:700;color:var(--ink);white-space:nowrap}
 .stc-tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .stc-check{display:grid;gap:12px}
 .stc-check-i{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff}
-.stc-check-t{font-size:14px;font-weight:700;color:var(--ink);margin:0 0 6px;line-height:1.7}
-.stc-check-d{font-size:13px;color:var(--ink2);line-height:1.9;letter-spacing:.02em;margin:0;text-wrap:pretty;word-break:auto-phrase}
+.stc-check-t{font-size:15px;font-weight:700;color:var(--ink);margin:0 0 6px;line-height:1.7}
+.stc-check-d{font-size:14px;color:var(--ink2);line-height:1.9;letter-spacing:.02em;margin:0;text-wrap:pretty;word-break:auto-phrase}
 </style>`;
 
 function buildSaiteiMain(ctx) {
@@ -297,10 +297,10 @@ ${CTA}
 const CHINAGE_STYLE = `<style id="chinage-oen">
 .cho-hojo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
 .cho-hojo-i{border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:#fff;text-align:center}
-.cho-hojo-w{font-size:13px;font-weight:700;color:var(--ink3);margin:0 0 6px}
-.cho-hojo-r{font-size:17px;font-weight:700;color:var(--g700);margin:0;line-height:1.6}
-.cho-hojo-c{font-size:12.5px;color:var(--ink3);margin:4px 0 0}
-.cho-seido{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:8px}
+.cho-hojo-w{font-size:14px;font-weight:700;color:var(--ink3);margin:0 0 6px}
+.cho-hojo-r{font-size:19px;font-weight:700;color:var(--g700);margin:0;line-height:1.6}
+.cho-hojo-c{font-size:13.5px;color:var(--ink3);margin:4px 0 0}
+.cho-seido{border-collapse:collapse;width:100%;font-size:14.5px;margin-top:8px}
 .cho-seido th,.cho-seido td{border-bottom:1px solid var(--line);padding:12px;text-align:left;vertical-align:top;line-height:1.8}
 .cho-seido thead th{font-size:12px;font-weight:700;color:var(--g700);letter-spacing:.04em;border-bottom:2px solid var(--g300);white-space:nowrap}
 .cho-seido td a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--g300);font-weight:700}
@@ -309,8 +309,8 @@ const CHINAGE_STYLE = `<style id="chinage-oen">
 .cho-flow{list-style:none;margin:0;padding:0;display:grid;gap:12px;counter-reset:cho}
 .cho-flow li{position:relative;border:1px solid var(--line);border-radius:12px;padding:16px 18px 16px 56px;background:#fff;counter-increment:cho}
 .cho-flow li::before{content:counter(cho);position:absolute;left:18px;top:16px;width:26px;height:26px;border-radius:50%;background:var(--g500);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
-.cho-flow-t{font-size:14px;font-weight:700;color:var(--ink);margin:0 0 6px;line-height:1.7}
-.cho-flow-d{font-size:13px;color:var(--ink2);line-height:1.9;letter-spacing:.02em;margin:0;text-wrap:pretty;word-break:auto-phrase}
+.cho-flow-t{font-size:15px;font-weight:700;color:var(--ink);margin:0 0 6px;line-height:1.7}
+.cho-flow-d{font-size:14px;color:var(--ink2);line-height:1.9;letter-spacing:.02em;margin:0;text-wrap:pretty;word-break:auto-phrase}
 </style>`;
 
 function buildChinageMain(ctx) {
