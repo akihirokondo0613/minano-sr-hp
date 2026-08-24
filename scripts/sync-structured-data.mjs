@@ -209,7 +209,7 @@ for (const { relativePath, pairs } of faqPages) {
 
 const services = {
   'uploads/service-dx.html': '労務システム導入・DX支援',
-  'uploads/service-joseikin.html': '雇用関係助成金申請サポート',
+  'uploads/service-joseikin.html': '助成金申請サポート',
   'uploads/service-kyuyo-keisan.html': '給与計算アウトソーシング',
   'uploads/service-romu-sodan.html': '労務トラブルのご相談',
   'uploads/service-shakai-hoken.html': '社会保険・労働保険手続き代行',
