@@ -50,6 +50,10 @@ const tasks = [
     args: ['scripts/build-joseikin-guides.mjs', '--check'],
   },
   {
+    name: '富山の窓口一覧の同期確認',
+    args: ['scripts/build-toyama-madoguchi.mjs', '--check'],
+  },
+  {
     name: '業務ページ料金の同期確認',
     args: ['scripts/sync-service-prices.mjs', '--check'],
   },
