@@ -44,6 +44,8 @@ const DISPLAY_CLASSES = new Set([
   'tp-title',      // トップ 06 TOPICS のカード見出し
   'rp-title',      // 記事末「あわせて読みたい」のタイトル
   'jk-guide-n',    // 助成金ページ・制度別ガイドのカード名
+  'svc-info-desc', // サービス一覧カードの説明。題（svc-info-name）は漢字連続で強制分割が
+                   // 「サ/ポート」に落ちるため対象外＝手置きの<wbr>で折る（sync対象だと手置きも剥がれる）
 ]);
 
 const TARGET_TAGS = new Set([
@@ -74,6 +76,11 @@ function classesOf(attrs) {
 }
 
 function isTarget(name, attrs) {
+  // svc-info-name（サービス一覧カードの題）は h3 でも処理しない。
+  // 漢字連続の題は文節境界が全部禁止され、10文字上限の強制分割が
+  // 「サ/ポート」のような語中に落ちるため、印は手置きで管理する
+  // （syncの対象にすると手置きの印も剥がされる）。
+  if (classesOf(attrs).includes('svc-info-name')) return false;
   if (TARGET_TAGS.has(name)) return true;
   return classesOf(attrs).some((c) => DISPLAY_CLASSES.has(c));
 }
