@@ -128,7 +128,7 @@ function planRow(plan) {
   ].filter(Boolean).join('\n');
 }
 
-function section({ heading, sub, body, note, alt }) {
+function section({ heading, sub, body, note, alt, extra }) {
   return [
     `<section class="sec${alt ? ' sec-alt' : ''}" id="fee">`,
     '  <div class="w">',
@@ -142,11 +142,84 @@ function section({ heading, sub, body, note, alt }) {
     '      <div class="svc-fee-list">',
     body,
     '      </div>',
+    extra || '',
     `      <p class="svc-fee-note">${note}</p>`,
     '      <p class="svc-fee-cta"><a class="btn-secondary" href="../pricing.html">料金の全体を見る →</a></p>',
     '    </div>',
     '  </div>',
     '</section>',
+  ].filter(Boolean).join('\n');
+}
+
+/** 「¥55,000」「+¥2,500/月」のような表記から数値を取り出す */
+function yen(text, label) {
+  const m = String(text).replaceAll(',', '').match(/¥(\d+)/);
+  if (!m) throw new Error(`金額を読み取れません（${label}）: ${text}`);
+  return Number(m[1]);
+}
+
+/**
+ * 給与計算の人数別早見表と、経理代行との範囲の違い。
+ * 「富山 給与計算 代行 料金」で来る人は1人あたりの単価で比べる。ただし検索結果に並ぶ
+ * 経理代行・BPOの公表単価は計算作業だけの値段なので、含む範囲を先に示さずに
+ * 単価だけ出すと「高い」という印象だけが残る。対比→単価の順で置く。
+ * 数値はすべて pricing.html から取り出して計算する（実額をここに書かない）。
+ */
+function kyuyoExtra({ rows, plans }) {
+  const std = plans.standard;
+  const stdBase = yen(std.price, 'スタンダード月額');
+  const includedM = std.unit.match(/従業員(\d+)名まで/);
+  if (!includedM) throw new Error(`スタンダードの人数上限を読み取れません: ${std.unit}`);
+  const included = Number(includedM[1]);
+  const addPer = yen(std.add, 'スタンダード加算');
+  const tanpatsu = findRow(rows, 'spot', '単発の給与・賞与計算').price;
+  const tanBase = yen(tanpatsu, '単発の基本');
+  const tanM = tanpatsu.replaceAll(',', '').match(/1名¥(\d+)/);
+  if (!tanM) throw new Error(`単発の1名単価を読み取れません: ${tanpatsu}`);
+  const tanPer = Number(tanM[1]);
+
+  const fmt = (n) => `¥${n.toLocaleString('ja-JP')}`;
+  const per = (total, n) => (total % n === 0 ? fmt(total / n) : `約${fmt(Math.round(total / n / 10) * 10)}`);
+  const trRows = [5, 10, 20, 30].map((n) => {
+    const stdTotal = stdBase + Math.max(0, n - included) * addPer;
+    const tanTotal = tanBase + n * tanPer;
+    return `          <tr><th scope="row">${n}名</th>`
+      + `<td>${fmt(stdTotal)}<span class="kyu-per">（1人あたり ${per(stdTotal, n)}）</span></td>`
+      + `<td>${fmt(tanTotal)}<span class="kyu-per">（1人あたり ${per(tanTotal, n)}）</span></td></tr>`;
+  }).join('\n');
+
+  return [
+    '      <div class="kyu-cmp rv d2">',
+    '        <div class="kyu-cmp-i">',
+    '          <p class="kyu-cmp-t">この料金に含まれるもの</p>',
+    '          <ul>',
+    '            <li>毎月の給与計算・賞与計算</li>',
+    '            <li>入退社の社会保険・雇用保険手続き（顧問に含む）</li>',
+    '            <li>随時改定・算定基礎届の判定と提出</li>',
+    '            <li>労務相談、就業規則の年次レビュー</li>',
+    '            <li>法改正や富山県の最低賃金・協会けんぽ料率の反映</li>',
+    '          </ul>',
+    '        </div>',
+    '        <div class="kyu-cmp-i">',
+    '          <p class="kyu-cmp-t">計算だけの代行と比べるときの注意</p>',
+    '          <ul>',
+    '            <li>経理代行・給与計算BPOの単価は、計算作業だけの値段です</li>',
+    '            <li>労働社会保険の書類作成・提出代行を業として行えるのは社会保険労務士です（社会保険労務士法）</li>',
+    '            <li>年末調整の税額計算は税理士業務のため、当事務所は提携税理士へ連携します</li>',
+    '          </ul>',
+    '        </div>',
+    '      </div>',
+    '      <div class="svct-tablewrap rv d2">',
+    '        <table class="svct-table kyu-table">',
+    '          <caption>従業員数ごとの月額の目安（税抜）。スタンダードは顧問・労務相談を含む総額を人数で割った参考値です。</caption>',
+    '          <thead>',
+    '            <tr><th scope="col">従業員数</th><th scope="col">スタンダード（顧問＋給与計算）</th><th scope="col">単発（給与計算のみ）</th></tr>',
+    '          </thead>',
+    '          <tbody>',
+    trRows,
+    '          </tbody>',
+    '        </table>',
+    '      </div>',
   ].join('\n');
 }
 
@@ -191,6 +264,7 @@ function buildPages({ rows, plans }) {
           spot('賞与支払届'),
           spot('年末調整の資料整理・税理士連携'),
         ].join('\n'),
+        extra: kyuyoExtra({ rows, plans }),
         note: '表示は税抜です。スタンダードプランは顧問（相談・手続き）と給与計算をあわせた月額です。'
           + '年末調整の税額計算そのものは税理士法上の税理士業務のため、提携税理士へ連携します。',
       }),

@@ -236,6 +236,17 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
 .svct-dl dd{margin:0;text-wrap:pretty;word-break:auto-phrase}
 .svct-note{margin-top:18px;font-size:12.5px;color:var(--ink3);line-height:1.9;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
 .svct-cta{margin-top:20px}
+/* ---------- 給与計算の範囲対比と人数別単価（sync-service-prices.mjs が生成） ---------- */
+.kyu-cmp{margin-top:clamp(20px,3vw,28px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+.kyu-cmp-i{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff}
+.kyu-cmp-t{font-size:13.5px;font-weight:700;color:var(--g700);margin:0 0 8px;letter-spacing:.03em}
+.kyu-cmp-i ul{margin:0;padding-left:18px;display:grid;gap:5px}
+.kyu-cmp-i li{font-size:13px;color:var(--ink2);line-height:1.8;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
+.kyu-table{margin-top:14px}
+.kyu-table td{white-space:nowrap}
+.kyu-per{display:block;font-size:11.5px;font-weight:400;color:var(--ink3)}
+@media(max-width:560px){.kyu-table td{white-space:normal}}
+
 @media(max-width:700px){.svct-table{font-size:13px}.svct-table th,.svct-table td{padding:10px}}
 /* 狭い幅では横スクロールをやめて、市町村ごとの塊に積み上げる。
    3列目が画面外に切れると、そこに何かあること自体に気づけないため。 */
