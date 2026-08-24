@@ -194,6 +194,9 @@ function buildSection(page) {
     buildNumbers(page.numbers),
     buildOffices(page.offices),
     page.note ? `      <p class="svct-note rv d2">${esc(page.note)}</p>` : '',
+    page.moreLinks?.length
+      ? `      <p class="svct-note rv d2">${page.moreLinks.map((l) => `<a href="${esc(l.href)}">${esc(l.label)}</a>`).join('／')}</p>`
+      : '',
     '      <p class="svct-cta rv d3"><a class="btn-secondary" href="toyama-madoguchi.html">富山の窓口一覧をすべて見る →</a></p>',
     '    </div>',
     '  </div>',

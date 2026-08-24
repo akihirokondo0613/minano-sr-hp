@@ -63,6 +63,11 @@ const tasks = [
     args: ['scripts/sync-service-toyama.mjs', '--check'],
   },
   {
+    // 最低賃金の数値は service-toyama.json、窓口は toyama-madoguchi.json を読むので、その後ろに置く。
+    name: '富山ローカルページの同期確認',
+    args: ['scripts/build-toyama-local-pages.mjs', '--check'],
+  },
+  {
     name: '助成金の対象チェックの同期確認',
     args: ['scripts/sync-joseikin-check.mjs', '--check'],
   },
