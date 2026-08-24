@@ -216,7 +216,10 @@ async function createStaticServer(serverState) {
       }
       await pipeline(fs.createReadStream(filePath), response);
     } catch (error) {
-      if (!/ECONNRESET|ERR_STREAM_PREMATURE_CLOSE/.test(String(error))) {
+      // どれもブラウザ側が先に接続を閉じたときの競合。検証の失敗ではないので数えない。
+      // ERR_STREAM_UNABLE_TO_PIPE は Playwright がコンテキストを閉じた直後の pipeline() が投げる
+      // （全タスク合格なのにこのエラーだけで CI が落ちた実績あり）。
+      if (!/ECONNRESET|ERR_STREAM_PREMATURE_CLOSE|ERR_STREAM_UNABLE_TO_PIPE|ERR_STREAM_DESTROYED/.test(String(error))) {
         serverState.errors.push(String(error));
       }
       if (!response.headersSent) response.writeHead(500);
