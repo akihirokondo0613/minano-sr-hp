@@ -187,7 +187,7 @@ const KANJI = /[\u3005\u3006\u3007\u4E00-\u9FFF\u3400-\u4DBF]/;
  */
 const NOWRAP_CLASSES = new Set([
   'nw', 'nobr',
-  'jk-hit-tag', 'jk-hit-amt-l',
+  'jk-hit-tag', 'jk-hit-amt-l', 'jg-amount-l',
   'optional-details-state', 'optional-details-state-open', 'optional-details-state-closed',
 ]);
 /**

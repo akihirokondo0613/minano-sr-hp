@@ -70,10 +70,11 @@ function pages() {
       const all = document.querySelectorAll('wbr');
       const label = (el) => el.tagName.toLowerCase()
         + (typeof el.className === 'string' && el.className ? `.${el.className.split(/\s+/)[0]}` : '');
-      // 前後がテキストか行内要素なら、匿名アイテムの中にいるので安全。
-      const inline = (node) => !!node && (node.nodeType === 3
-        ? node.nodeValue.trim().length > 0
-        : (node.nodeType === 1 && getComputedStyle(node).display.startsWith('inline')));
+      // 片側がテキストなら匿名アイテムに吸収されるので安全。
+      // 両隣とも要素（＝どちらもアイテム）のときだけ、<wbr>が独立したアイテムになる。
+      // flex/gridの直下では要素の display がブロック化されるため、
+      // display を見るのではなく「テキストか否か」で判定する。
+      const absorbing = (node) => !!node && node.nodeType === 3 && node.nodeValue.trim().length > 0;
       for (const wbr of all) {
         const parent = wbr.parentElement;
         if (!parent) continue;
@@ -83,7 +84,7 @@ function pages() {
         }
         const display = getComputedStyle(parent).display;
         if (display.includes('flex') || display.includes('grid')) {
-          if (!inline(wbr.previousSibling) || !inline(wbr.nextSibling)) {
+          if (!absorbing(wbr.previousSibling) && !absorbing(wbr.nextSibling)) {
             asItem.push(`${label(parent)}（display:${display}）`);
           }
         }

@@ -99,6 +99,9 @@
 .jg-money{background:var(--moegi-l);border-color:color-mix(in srgb,var(--moegi) 32%,var(--line))}
 .jg:nth-of-type(even) .jg-block.jg-money{background:var(--moegi-l)}
 .jg-amount{font-family:var(--disp);font-size:clamp(19px,2.7vw,26px);font-weight:900;line-height:1.55;letter-spacing:.01em;color:var(--sugi);margin:0 0 14px;padding-bottom:14px;border-bottom:1.5px solid color-mix(in srgb,var(--moegi) 42%,transparent);text-wrap:pretty;word-break:auto-phrase}
+/* どのコースの数字かを添える。制度の合計ではないので、02のカードと
+   食い違って見えないようにする。 */
+.jg-amount-l{display:block;margin-bottom:4px;font-family:var(--sans);font-size:11.5px;font-weight:700;letter-spacing:.06em;color:var(--ink3);white-space:nowrap}
 .jg-money ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
 .jg-money li{position:relative;padding-left:20px;font-size:13px;color:var(--ink2);line-height:1.85}
 .jg-money li::before{content:'';position:absolute;left:2px;top:11px;width:8px;height:2px;background:var(--moegi-t)}
@@ -425,47 +428,47 @@
         <ul class="jk-hits" id="jk-hits" aria-live="polite">
         <!-- jk-check-cards:start -->
           <li class="jk-hit" data-jk="career-up" data-name="キャリアアップ助成金" hidden>
-            <p class="jk-hit-name">キャリ<wbr>ア<wbr>アップ<wbr>助成金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>1<wbr>人 最大<wbr>80<wbr>万円</span></p>
+            <p class="jk-hit-name">キャリ<wbr>ア<wbr>アップ<wbr>助<wbr>成金<span class="jk-hit-amt"><span class="jk-hit-amt-l">正社員化コース</span>1<wbr>人 最大80万円</span></p>
             <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>キャリ<wbr>アアップ計画書を<wbr>労働局へ<wbr>提出</p>
             <p class="jk-hit-links"><a class="nw" href="#career-up">このページで見る</a><a class="nw" href="uploads/joseikin-career-up.html">図解でくわしく</a></p>
           </li>
           <li class="jk-hit" data-jk="gyomu-kaizen" data-name="業務改善助成金" hidden>
-            <p class="jk-hit-name">業務改善助成<wbr>金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>30<wbr>万円〜<wbr>最大600万円</span></p>
+            <p class="jk-hit-name">業務改善助成金<wbr><span class="jk-hit-amt">30万円〜<wbr>最大600万円</span></p>
             <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>賃上げと<wbr>設備の<wbr>導入より<wbr>前に、<wbr>交付申請書を<wbr>労働局へ<wbr>提出</p>
             <p class="jk-hit-links"><a class="nw" href="#gyomu-kaizen">このページで見る</a><a class="nw" href="blog/gyomu-kaizen-toyama-2026.html">図解でくわしく</a></p>
           </li>
           <li class="jk-hit" data-jk="koyou-kaihatsu" data-name="特定求職者雇用開発助成金・トライアル雇用助成金" hidden>
-            <p class="jk-hit-name">特定<wbr>求職者雇<wbr>用開発助成金・<wbr>トラ<wbr>イアル<wbr>雇用助成<wbr>金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>1<wbr>人 60<wbr>万円</span></p>
+            <p class="jk-hit-name">特定<wbr>求職者雇<wbr>用開発助成金・<wbr>トラ<wbr>イアル雇用助成金<wbr><span class="jk-hit-amt"><span class="jk-hit-amt-l">トライアル雇用助成金（一般）</span>月<wbr>額<wbr>最大<wbr>4<wbr>万円×<wbr>最長3か<wbr>月</span></p>
             <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>ハロー<wbr>ワー<wbr>ク<wbr>等へ<wbr>求人を<wbr>出し、<wbr>紹介を<wbr>受ける</p>
             <p class="jk-hit-links"><a class="nw" href="#trial">このページで見る</a><a class="nw" href="uploads/joseikin-koyou-kaihatsu.html">図解でくわしく</a></p>
           </li>
           <li class="jk-hit" data-jk="jinzai-kaihatsu" data-name="人材開発支援助成金" hidden>
-            <p class="jk-hit-name">人<wbr>材開発支援<wbr>助成<wbr>金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>経費<wbr>の<wbr>45〜<wbr>70%＋賃金助成</span></p>
+            <p class="jk-hit-name">人<wbr>材開発支援<wbr>助成金<wbr><span class="jk-hit-amt"><span class="jk-hit-amt-l">人材育成支援コース（10時間以上のOFF-JT）</span>経<wbr>費<wbr>の<wbr>45〜<wbr>70%＋賃金助成</span></p>
             <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>職業<wbr>訓練実<wbr>施計画届<wbr>を<wbr>労働局へ<wbr>提出</p>
             <p class="jk-hit-links"><a class="nw" href="#jinzai">このページで見る</a><a class="nw" href="uploads/joseikin-jinzai-kaihatsu.html">図解でくわしく</a></p>
           </li>
           <li class="jk-hit" data-jk="ryoritsu" data-name="両立支援等助成金" hidden>
-            <p class="jk-hit-name">両立支援等助成<wbr>金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>1<wbr>人目 20<wbr>万〜<wbr>30万円</span></p>
+            <p class="jk-hit-name">両立支援等助<wbr>成<wbr>金<wbr><span class="jk-hit-amt"><span class="jk-hit-amt-l">出生時両立支援コース（男性の育休）</span>1<wbr>人目 20万〜<wbr>30万円</span></p>
             <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>就業規則<wbr>の<wbr>規定・雇用環境の<wbr>整備・面談と<wbr>プラン作成・<wbr>引継ぎ</p>
             <p class="jk-hit-links"><a class="nw" href="#ryoritsu">このページで見る</a><a class="nw" href="uploads/joseikin-ryoritsu.html">図解でくわしく</a></p>
           </li>
           <li class="jk-hit" data-jk="hatarakikata" data-name="働き方改革推進支援助成金" hidden>
-            <p class="jk-hit-name">働き<wbr>方<wbr>改革推進支援<wbr>助成<wbr>金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>費用<wbr>の<wbr>3/4</span></p>
+            <p class="jk-hit-name">働き<wbr>方<wbr>改革推進支援<wbr>助<wbr>成<wbr>金<wbr><span class="jk-hit-amt"><span class="jk-hit-amt-l">労働時間短縮・年休促進支援コース</span>費<wbr>用<wbr>の<wbr>3/4</span></p>
             <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>交付<wbr>申請 → 交付決定</p>
             <p class="jk-hit-links"><a class="nw" href="uploads/joseikin-hatarakikata.html">図解でくわしく</a></p>
           </li>
           <li class="jk-hit" data-jk="jinzai-kakuho" data-name="人材確保等支援助成金" hidden>
-            <p class="jk-hit-name">人<wbr>材確保等支援助成<wbr>金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>各<wbr>40<wbr>万円</span></p>
+            <p class="jk-hit-name">人<wbr>材<wbr>確<wbr>保<wbr>等<wbr>支<wbr>援<wbr>助<wbr>成<wbr>金<wbr><span class="jk-hit-amt"><span class="jk-hit-amt-l">雇用管理制度（賃金規定・諸手当・人事評価）</span>各<wbr>40万円</span></p>
             <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>計画届を<wbr>労働局・<wbr>ハローワークへ<wbr>提出</p>
             <p class="jk-hit-links"><a class="nw" href="uploads/joseikin-jinzai-kakuho.html">図解でくわしく</a></p>
           </li>
           <li class="jk-hit" data-jk="65sai-cho" data-name="65歳超雇用推進助成金" hidden>
-            <p class="jk-hit-name">65<wbr>歳超<wbr>雇用推進助成<wbr>金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>15<wbr>万〜<wbr>240万円</span></p>
+            <p class="jk-hit-name">65<wbr>歳超雇用推進助成金<wbr><span class="jk-hit-amt"><span class="jk-hit-amt-l">65歳超継続雇用促進コース</span>15<wbr>万〜<wbr>240万円</span></p>
             <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>すべての<wbr>就業規則を<wbr>点検し、<wbr>古い<wbr>定年年齢を<wbr>残さず直す</p>
             <p class="jk-hit-links"><a class="nw" href="uploads/joseikin-65sai-cho.html">図解でくわしく</a></p>
           </li>
           <li class="jk-hit" data-jk="koyou-chosei" data-name="雇用調整助成金" hidden>
-            <p class="jk-hit-name">雇用調整助成<wbr>金<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>休業<wbr>手当<wbr>の<wbr>2/3</span></p>
+            <p class="jk-hit-name">雇用調整<wbr>助成金<span class="jk-hit-amt"><span class="jk-hit-amt-l">休業</span>休業<wbr>手当<wbr>の<wbr>2/3</span></p>
             <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>労使協定の<wbr>締結 → 計画届の<wbr>提出</p>
             <p class="jk-hit-links"><a class="nw" href="uploads/joseikin-koyou-chosei.html">図解でくわしく</a></p>
           </li>
@@ -565,7 +568,7 @@
         </div>
         <div class="jg-block jg-money">
           <h3>いくら</h3>
-          <p class="jg-amount">1人あたり<wbr>最大80万円<wbr>（中小企業・<wbr>令和8年度）</p>
+          <p class="jg-amount"><span class="jg-amount-l">正社員化コース</span>1人<wbr>あたり<wbr>最大80万円<wbr>（中小企業・<wbr>令和8年度）</p>
           <ul>
             <li>パート・<wbr>契約社員などから<wbr>正社員へ<wbr>: 1人最大80万円<wbr>（40万円×2回に<wbr>分けて<wbr>支給）</li>
             <li>満額の<wbr>対象は<wbr>勤続3年以上の<wbr>パート・契約社員の<wbr>方など<wbr>（3年未満でも<wbr>対象に<wbr>なる<wbr>場合が<wbr>あります）。<wbr>勤続が<wbr>通算5年を<wbr>超える<wbr>方などは<wbr>最大40万円</li>
@@ -685,7 +688,7 @@
         </div>
         <div class="jg-block jg-money">
           <h3>いくら</h3>
-          <p class="jg-amount">育休1件あたり<wbr>最大240万円<wbr>（令和8年度）</p>
+          <p class="jg-amount"><span class="jg-amount-l">育休中等業務代替支援コース</span>育<wbr>休<wbr>1件<wbr>あたり<wbr>最大240万円<wbr>（令和8年度）</p>
           <ul>
             <li>男性の<wbr>育休：1<wbr>人目20万円、<wbr>2・<wbr>3人目各10万円。<wbr>取得率が<wbr>30ポイント以上<wbr>（例：<wbr>20%→50%）<wbr>上がった<wbr>場合等は<wbr>60万円<wbr>（1社1回）</li>
             <li>育休を<wbr>取った<wbr>社員に<wbr>つき、<wbr>取得時<wbr>30万円＋職場復帰時<wbr>30万円<wbr>（合計最大60万円。<wbr>対象人数には<wbr>上限が<wbr>あります）</li>
@@ -745,7 +748,7 @@
         </div>
         <div class="jg-block jg-money">
           <h3>いくら</h3>
-          <p class="jg-amount">研修費用の<wbr>45〜<wbr>70％＋賃金1人<wbr>1時間<wbr>800円<wbr>（中小企業・<wbr>令和8年度）</p>
+          <p class="jg-amount"><span class="jg-amount-l">人材育成支援コース</span>研<wbr>修費用<wbr>の<wbr>45〜<wbr>70％＋賃金1人<wbr>1時間<wbr>800円<wbr>（中小企業・<wbr>令和8年度）</p>
           <ul>
             <li>経費助成率は<wbr>正社員の<wbr>研修で<wbr>45％、<wbr>パートなど<wbr>非正規社員の<wbr>研修は<wbr>70％<wbr>（中小企業）</li>
             <li>賃金助成は<wbr>研修を<wbr>受けた<wbr>時間1人1時間<wbr>あたり800円<wbr>（中小企業）</li>
