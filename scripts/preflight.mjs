@@ -54,6 +54,11 @@ const tasks = [
     args: ['scripts/sync-joseikin-check.mjs', '--check'],
   },
   {
+    // 文節印より先に置く。リンクで包んでから印を打ち直す順序にそろえる。
+    name: '本文の制度リンクの同期確認',
+    args: ['scripts/sync-inline-links.mjs', '--check'],
+  },
+  {
     // 生成物の中の見出しは各生成器が印を打つので、それらの後ろに置く。
     name: '文節印（改行位置）の同期確認',
     args: ['scripts/sync-phrase-breaks.mjs', '--check'],

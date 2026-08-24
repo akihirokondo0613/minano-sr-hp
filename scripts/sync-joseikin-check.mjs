@@ -58,11 +58,14 @@ function programOf(key) {
   const guide = guides.get(key);
   if (!extra && !guide) throw new Error(`data/joseikin-check.json: 制度 ${key} の出どころがありません`);
   const anchor = data.anchors?.[key];
+  // どのコースの金額を出すか。06セクションと同じコースを指すよう data/joseikin-check.json で選ぶ。
+  const at = data.amountIndex?.[key] ?? 0;
   const program = extra
-    ? { name: extra.name, amount: extra.amount, wall: extra.wall, guide: extra.guide, guideLabel: extra.guideLabel }
+    ? { name: extra.name, course: extra.course ?? '', amount: extra.amount, wall: extra.wall, guide: extra.guide, guideLabel: extra.guideLabel }
     : {
       name: guide.name,
-      amount: guide.amounts?.[0]?.value ?? '',
+      course: guide.amounts?.[at]?.name ?? '',
+      amount: guide.amounts?.[at]?.value ?? '',
       wall: guide.wall?.before ?? '',
       guide: `uploads/joseikin-${guide.slug}.html`,
       guideLabel: guide.short ?? '',
@@ -110,9 +113,9 @@ const cardsHtml = order.map((key) => {
   return [
     `          <li class="jk-hit" data-jk="${esc(key)}" data-name="${esc(p.name)}" hidden>`,
     '            <p class="jk-hit-name">' + esc(p.name)
-      // 金額は制度の合計ではなく代表コースの目安。06の「最大◯万円」と
-      // 食い違って見えないよう、何の数字かを添える。
-      + `<span class="jk-hit-amt"><span class="jk-hit-amt-l">主なコースで</span>${esc(p.amount)}</span></p>`,
+      // 金額は制度の合計ではなく特定のコースの目安。06の「最大◯万円」と
+      // 食い違って見えないよう、どのコースの数字かを添える。
+      + `<span class="jk-hit-amt">${p.course ? `<span class="jk-hit-amt-l">${esc(p.course)}</span>` : ''}${esc(p.amount)}</span></p>`,
     '            <p class="jk-hit-wall"><span class="jk-hit-tag">先にやること</span>'
       + esc(p.wall) + '</p>',
     `            <p class="jk-hit-links">${links.join('')}</p>`,

@@ -1,0 +1,9 @@
+{
+  "_note": "ブログ本文からサービスページへ結ぶ語。制度名は data/joseikin-guides.json から自動で足されるので、ここには書かない。terms.js の用語（ツールチップが付く25語）は自動で外れる＝重ねない。語を足すときは『その語で来た読者に、そのページを見せて意味があるか』で決める。一般語（助成金・社会保険など単体）は広すぎるので入れない。",
+  "terms": [
+    { "text": "就業規則", "href": "uploads/service-shugyo-kisoku.html" },
+    { "text": "給与計算", "href": "uploads/service-kyuyo-keisan.html" },
+    { "text": "労務トラブル", "href": "uploads/service-romu-sodan.html" },
+    { "text": "ハラスメント", "href": "uploads/service-romu-sodan.html" }
+  ]
+}
