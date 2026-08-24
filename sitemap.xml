@@ -211,6 +211,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://minano-sr.com/blog/mudan-kekkin-taio.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://minano-sr.com/blog/natsu-shoyo-tetsuzuki.html</loc>
     <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
@@ -260,6 +266,12 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/ryoritsu-shien-josei.html</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://minano-sr.com/blog/saitei-chingin-kyuyo-keisan-2026.html</loc>
     <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
