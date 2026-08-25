@@ -6,7 +6,7 @@
 <script defer src="page-enter.js?v=20260814-entryparam1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 
-<link rel="stylesheet" href="skin-v2.css?v=20260825-heroline1">
+<link rel="stylesheet" href="skin-v2.css?v=20260826-spfix1">
 <meta name="theme-color" content="#123F30">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3E%E3%81%BF%3C/text%3E%3C/svg%3E">
 <!-- Structured Data: BreadcrumbList -->
@@ -58,8 +58,10 @@
 .jk-hero-ill image-slot{display:block;width:100%;height:100%}
 .jk-hero-txt h1{text-wrap:pretty;word-break:auto-phrase}
 @media(max-width:760px){
-  .jk-hero-inner{grid-template-columns:minmax(0,1fr) clamp(120px,32vw,220px);gap:16px;align-items:start}
-  .jk-hero-ill{align-self:center;margin-top:0}
+  /* スマホは1カラム。横に絵の列を残すと本文が細い柱になって読めない */
+  .jk-hero-inner{grid-template-columns:1fr;gap:20px}
+  .jk-hero-ill{width:min(62vw,240px);margin-inline:auto}
+  .jk-hero-cta{justify-content:center}
 }
 /* ページ器 */
 .jk-wrap{max-width:980px;margin:0 auto;padding:clamp(30px,4.5vw,56px) clamp(20px,5vw,40px) clamp(56px,8vw,96px)}
@@ -156,7 +158,8 @@
   .jg-num{font-size:30px;padding-top:4px}
   .jg-head h2{font-size:18px}
   .jg-catch{font-size:14px;margin-top:6px}
-  .jg-voice{grid-template-columns:auto 1fr;gap:12px}
+  /* スマホはアイコンの列を残さない。本文が細い柱になって読みにくいため */
+  .jg-voice{grid-template-columns:1fr;gap:10px}
   .jg-voice .av{width:36px;height:36px;border-radius:9px;font-size:17px}
   .jk-cta .btn-primary{padding:16px 22px;font-size:14px}
 }
