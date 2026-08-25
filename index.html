@@ -400,6 +400,22 @@ main > section:not(.hero) {
   content-visibility: auto;
   contain-intrinsic-size: auto 900px;
 }
+
+/* スマホ: ヒーローの帯・補助ピルを省いて要素を絞る */
+@media (max-width: 640px) {
+  .hero-summary { display: none; }
+  .hero-trust { display: none; }
+  .hero-btns .hero-sub-link, .hero-sub-link { display: none; }
+  .hero-btns { justify-content: center; }
+  .hero-btns .btn-primary { width: 100%; text-align: center; }
+  .hero-spot { text-align: center; }
+  .hero-spot-badge { margin-inline: auto; }
+  .home-startup-offer-rail { text-align: center; }
+  .home-startup-offer-meta { justify-content: center; }
+  .home-startup-offer-link { margin-inline: auto; }
+  .hero-btns { margin-top: 26px; }
+  .floating .fl-mini { display: none; }
+}
 </style>
 <link rel="stylesheet" href="skin-v2.css?v=20260825-mobcenter3" media="print" data-async-style onload="this.media='all';this.onload=null">
 <noscript><link rel="stylesheet" href="skin-v2.css?v=20260825-mobcenter3"></noscript>
