@@ -1017,8 +1017,8 @@ html.nav-menu-open #navspy-chip { opacity: 0 !important; visibility: hidden !imp
   .pub-y { grid-column: 1 / -1; }
   .pub-m { min-width: 0; }
   .pub-m > span { white-space: normal; text-align: center; }
-  .art-row { grid-template-columns: 92px minmax(0, 1fr); column-gap: 12px; padding: 14px; }
-  .art-thumb { width: 92px; }
+  .art-row { grid-template-columns: 92px minmax(0, 1fr); column-gap: 12px; padding: 14px; align-items: start; }
+  .art-thumb { width: 92px; margin-top: 2px; }
 }
 
 /* メルマガ購読（hidden温存中・接続後に表示される想定のスタイル） */

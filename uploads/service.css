@@ -552,3 +552,9 @@ section:has(.svct) .sec-head,
 section:has(.svc-fee) .sec-head { max-width: 880px; margin-inline: auto; }
 section:has(.svct) .sec-head .sec-sub,
 section:has(.svc-fee) .sec-head .sec-sub { max-width: none; }
+
+/* スマホ: FLOWのSTEPラベル列を残さない。本文が半分の幅に潰れるため */
+@media (max-width: 640px){
+  .flow-item{grid-template-columns:1fr;gap:6px;padding-left:24px}
+  .flow-n{padding-top:0}
+}
