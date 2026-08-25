@@ -544,3 +544,11 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
   .btn-row { justify-content: center; }
   .floating .fl-mini { display: none; }
 }
+
+/* 見出し帯（.sec-head）は幅いっぱい、本文（.svct）は880pxの中央寄せだったため、
+   左端が90pxずれ、導入文だけ本文より180px狭くて不自然な位置で折り返していた。
+   本文を持つセクションでは、見出し帯を本文と同じ幅・同じ左端に揃える。 */
+section:has(.svct) .sec-head,
+section:has(.svc-fee) .sec-head { max-width: 880px; margin-inline: auto; }
+section:has(.svct) .sec-head .sec-sub,
+section:has(.svc-fee) .sec-head .sec-sub { max-width: none; }
