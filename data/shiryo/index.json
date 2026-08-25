@@ -1,0 +1,42 @@
+{
+  "_note": "資料室（shiryo.html）に並べるカードの正本。ページ数・容量は sync-shiryo-cards.mjs が実ファイルから測って埋めるので、ここには書かない。 accent は帯の色（kuni=国の制度・杉／ken=県の制度・藍／jitsumu=実務リファレンス・墨）。",
+  "groups": [
+    {
+      "id": "jigyonushi",
+      "title": "事業主の方へ",
+      "lead": "助成金・補助金の資料です。登録は不要で、そのまま保存できます。",
+      "items": [
+        {
+          "slug": "chinage-oen-2026",
+          "title": "富山県賃上げ応援補助金",
+          "lead": "国の助成金の申請を社労士に頼んだとき、その報酬の最大3分の2が補助されます。",
+          "tags": [
+            "富山限定",
+            "県の制度"
+          ],
+          "pdf": "assets/download/chinage-oen-2026.pdf",
+          "cover": "assets/shiryo/chinage-oen-2026-cover.webp",
+          "web": "uploads/toyama-chinage-oen-hojokin.html",
+          "checkedAt": "2026-08-24",
+          "accent": "ken"
+        },
+        {
+          "slug": "gyomu-kaizen-toyama-2026",
+          "title": "業務改善助成金（令和8年度）",
+          "lead": "最低賃金の引上げにあわせて設備を入れると、設備費の一部が国から助成されます。",
+          "tags": [
+            "国の制度",
+            "9月1日 受付開始"
+          ],
+          "pdf": "assets/download/gyomu-kaizen-toyama-2026.pdf",
+          "cover": "assets/shiryo/gyomu-kaizen-toyama-2026-cover.webp",
+          "web": "blog/gyomu-kaizen-toyama-2026.html",
+          "checkedAt": "2026-08-19",
+          "accent": "kuni"
+        }
+      ],
+      "lat": "FOR BUSINESS",
+      "h": "持ち帰って、社内で共有できる形に。"
+    }
+  ]
+}
