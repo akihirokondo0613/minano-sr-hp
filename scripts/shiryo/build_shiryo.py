@@ -142,6 +142,11 @@ body{font-family:var(--g);color:var(--iwa);background:var(--shiro);-webkit-print
 .trap .tt{font-size:9.2pt;font-weight:800;color:#7A5A08}
 .trap .td{font-size:8.4pt;line-height:1.75;color:#5C4406;margin-top:1.5mm}
 
+.stbl{width:100%;border-collapse:collapse;font-size:9pt;margin-top:1mm}
+.stbl th,.stbl td{border-bottom:1px solid var(--line);padding:2.4mm 3mm;text-align:left;vertical-align:top;line-height:1.6}
+.stbl th{font-weight:700;color:var(--sugi);background:var(--moegi-l);font-size:8.4pt;letter-spacing:.02em}
+.stbl td.num{text-align:right;font-family:var(--m);white-space:nowrap}
+.stbl caption{caption-side:top;text-align:left;font-size:8pt;color:var(--ink3);padding-bottom:2mm}
 .card{border:1px solid var(--line);border-radius:3mm;padding:5mm}
 .card .cd{font-size:8.6pt;line-height:1.8;color:var(--ink2)}
 
@@ -178,131 +183,183 @@ def header(o, to_line):
 </div>"""
 
 
-def build_html(cfg, ken, madoguchi):
-    o = cfg["office"]
-    ex = cfg["example"]
-    office_ken = next(
-        (x for x in iter_offices(madoguchi) if x.get("id") == ken["officeId"]), {}
-    )
+# ---------------------------------------------------------------- ブロック（資料の部品）
+def blk_hero(b, ctx):
+    ill = data_uri(b.get("illust", ""))
+    ill_tag = f'<div class="illwrap"><img src="{ill}" alt=""></div>' if ill else ""
+    note = f'<div class="note">{esc(b["note"])}</div>' if b.get("note") else ""
+    return f"""<div class="head">
+    <div class="kick">{esc(b.get("kicker", ""))}</div>
+    <h1>{b["headline"]}</h1>
+    {note}
+    {ill_tag}
+  </div>"""
 
-    ill = data_uri(cfg.get("illust", ""))
-    ill_tag = (
-        f'<div class="illwrap"><img src="{ill}" alt=""></div>' if ill else ""
-    )
 
-    facts = "".join(
+def blk_calc(b, ctx):
+    def box(item, cls):
+        return (f'<div class="box {cls}"><div class="lb">{esc(item["label"])}</div>'
+                f'<div class="yn">{esc(item["yen"])}</div></div>')
+    memo = f'<div class="memo">{esc(b["note"])}</div>' if b.get("note") else ""
+    return f"""<div class="calc">
+    <div class="cap">{esc(b.get("caption", ""))}</div>
+    {box(b["pay"], "pay")}
+    <div class="op">{esc(b.get("op1", "−"))}</div>
+    {box(b["back"], "back")}
+    <div class="op">＝</div>
+    {box(b["net"], "net")}
+    {memo}
+  </div>"""
+
+
+def blk_rates(b, ctx):
+    rows = "".join(
+        f'<div class="rate"><div><div class="who">{esc(r["who"])}</div>'
+        f'<div class="r">{esc(r["rate"])}</div></div>'
+        f'<div class="cap2">{esc(r["cap"])}</div></div>'
+        for r in b["items"]
+    )
+    return f'<div class="rates">{rows}</div>'
+
+
+def blk_facts(b, ctx):
+    rows = "".join(
         f'<div class="fact"><div class="ft">{esc(f["t"])}</div>'
         f'<div class="fd">{esc(f["d"])}</div></div>'
-        for f in cfg["facts"]
+        for f in b["items"]
     )
-    rates = "".join(
-        f'<div class="rate"><div><div class="who">{esc(h["who"])}</div>'
-        f'<div class="r">{esc(h["rate"])}</div></div>'
-        f'<div class="cap2">{esc(h["cap"])}</div></div>'
-        for h in ken["hojo"]
-    )
-    chips = "".join(f'<span class="chip">{esc(s["name"])}</span>' for s in ken["seido"])
-    steps = "".join(
+    title = f'<div class="st">{esc(b["title"])}</div>' if b.get("title") else ""
+    return f'{title}<div class="facts">{rows}</div>'
+
+
+def blk_chips(b, ctx):
+    chips = "".join(f'<span class="chip">{esc(c)}</span>' for c in b["items"])
+    title = f'<div class="st">{esc(b["title"])}</div>' if b.get("title") else ""
+    return f'{title}<div class="chips">{chips}</div>'
+
+
+def blk_card(b, ctx):
+    title = f'<div class="ct">{esc(b["title"])}</div>' if b.get("title") else ""
+    fill = " fill" if b.get("fill") else ""
+    mt = ' style="margin-top:4mm"' if b.get("gap", True) else ""
+    return f'<div class="card{fill}"{mt}>{title}<div class="cd">{b["text"]}</div></div>'
+
+
+def blk_steps(b, ctx):
+    rows = "".join(
         f'<div class="step"><div class="stt">{esc(s["t"])}</div>'
         f'<div class="std">{esc(s["d"])}</div></div>'
-        for s in cfg["steps"]
+        for s in b["items"]
     )
-    traps = "".join(
+    title = f'<div class="st">{esc(b["title"])}</div>' if b.get("title") else ""
+    n = len(b["items"])
+    return f'{title}<div class="steps" style="grid-template-columns:repeat({n},1fr)">{rows}</div>'
+
+
+def blk_traps(b, ctx):
+    rows = "".join(
         f'<div class="trap"><div class="tt">{esc(t["t"])}</div>'
         f'<div class="td">{esc(t["d"])}</div></div>'
-        for t in cfg["traps"]
+        for t in b["items"]
     )
-    disc = "".join(f"<p>※ {esc(d)}</p>" for d in cfg["disclaimer"])
-    qr = qr_svg(cfg["qr"]["url"])
-    qr_small = qr_svg(cfg["qr"]["url"], size_mm=17)
-    stamps = (
-        f'<div class="stamps"><span class="stamp">作成 {esc(cfg["createdAt"])}</span>'
-        f'<span class="stamp">根拠の確認 {esc(ken["checkedAt"])}</span>'
-        f'<span class="stamp">次回見直し {esc(cfg["reviewNext"])}</span></div>'
+    title = f'<div class="st">{esc(b["title"])}</div>' if b.get("title") else ""
+    return f'{title}<div class="traps">{rows}</div>'
+
+
+def blk_two(b, ctx):
+    """左右2枚のカード。"""
+    cards = "".join(
+        f'<div class="card{" fill" if c.get("fill") else ""}">'
+        f'<div class="ct">{esc(c["title"])}</div><div class="cd">{c["text"]}</div></div>'
+        for c in b["items"]
     )
+    title = f'<div class="st">{esc(b["title"])}</div>' if b.get("title") else ""
+    return f'{title}<div class="rates" style="margin-top:0">{cards}</div>'
 
-    p1 = f"""
-  {header(o, cfg["audience"])}
-  <div class="head">
-    <div class="kick">{esc(cfg["kicker"])}</div>
-    <h1>{cfg["headline"]}</h1>
-    <div class="note">{esc(cfg["headnote"])}</div>
-    {ill_tag}
-  </div>
 
-  <div class="calc">
-    <div class="cap">{esc(ex["caption"])}</div>
-    <div class="box pay"><div class="lb">{esc(ex["pay"]["label"])}</div><div class="yn">{esc(ex["pay"]["yen"])}</div></div>
-    <div class="op">−</div>
-    <div class="box back"><div class="lb">{esc(ex["back"]["label"])}</div><div class="yn">{esc(ex["back"]["yen"])}</div></div>
-    <div class="op">＝</div>
-    <div class="box net"><div class="lb">{esc(ex["net"]["label"])}</div><div class="yn">{esc(ex["net"]["yen"])}</div></div>
-    <div class="memo">{esc(ex["note"])}</div>
-  </div>
+def blk_table(b, ctx):
+    head = "".join(f"<th>{esc(h)}</th>" for h in b["head"])
+    rows = "".join(
+        "<tr>" + "".join(
+            f'<td class="num">{esc(c)}</td>' if i and str(c).strip().startswith(("−", "＋", "¥", "約"))
+            else f"<td>{c}</td>"
+            for i, c in enumerate(r)
+        ) + "</tr>"
+        for r in b["rows"]
+    )
+    cap = f'<caption>{esc(b["caption"])}</caption>' if b.get("caption") else ""
+    title = f'<div class="st">{esc(b["title"])}</div>' if b.get("title") else ""
+    return f'{title}<table class="stbl">{cap}<tr>{head}</tr>{rows}</table>'
 
-  <div class="rates">{rates}</div>
 
-  <div class="st">対象になるのは</div>
-  <div class="facts">{facts}</div>
-
-  <div class="st">入口になる国の6制度</div>
-  <div class="chips">{chips}</div>
-  <div class="card" style="margin-top:4mm"><div class="cd">{esc(cfg["ourFee"])}</div></div>
-
-  <div class="webnav">
+def blk_webnav(b, ctx):
+    return f"""<div class="webnav">
     <div>
-      <div class="wt">対象制度ごとの要件や、申請の様式まで</div>
-      <div class="wd">くわしい解説をWebに載せています。スマートフォンで読み取ってご覧ください。</div>
-      <div class="wu">{esc(cfg["qr"]["url"])}</div>
+      <div class="wt">{esc(b.get("title", "くわしい解説はWebに載せています"))}</div>
+      <div class="wd">{esc(b.get("text", "スマートフォンで読み取ってご覧ください。"))}</div>
+      <div class="wu">{esc(ctx["qr"]["url"])}</div>
     </div>
-    <div class="qrbox sm">{qr_small}</div>
-  </div>
-"""
+    <div class="qrbox sm">{ctx["qr_small"]}</div>
+  </div>"""
 
-    p2 = f"""
-  {header(o, "お手続きと、ご相談のご案内")}
 
-  <div class="st" style="margin-top:2mm">ご相談から、補助金の入金まで</div>
-  <div class="steps">{steps}</div>
-
-  <div class="st">先に知っておいていただきたいこと</div>
-  <div class="traps">{traps}</div>
-
-  <div class="st">国の助成金と、県の補助金のちがい</div>
-  <div class="rates" style="margin-top:0">
-    <div class="card"><div class="cd"><b style="color:var(--sugi)">国の助成金</b><br>
-    賃上げ・設備投資・訓練など、<b>取組そのもの</b>への支援。金額は制度と規模で決まります。</div></div>
-    <div class="card" style="background:var(--moegi-l);border-color:var(--moegi)"><div class="cd"><b style="color:var(--sugi)">県の補助金（この資料）</b><br>
-    その申請を<b>社労士に頼んだ費用</b>への支援。国の支給決定を受けてから県へ申請します。</div></div>
-  </div>
-
-  <div class="st">申請先</div>
-  <div class="card">
-    <div class="cd"><b>{esc(office_ken.get("name", ""))}</b><br>
-    {esc(office_ken.get("address", ""))}<br>
-    電話 {esc(office_ken.get("tel", ""))}</div>
-  </div>
-
-  <div class="cta">
+def blk_cta(b, ctx):
+    o = ctx["office"]
+    return f"""<div class="cta">
     <div>
-      <div class="t">対象になるか、まずご確認ください。</div>
-      <div class="d">いま検討している取組と、依頼の時期をうかがえば判定できます。ご相談は無料です。</div>
+      <div class="t">{esc(b.get("title", "対象になるか、まずご確認ください。"))}</div>
+      <div class="d">{esc(b.get("text", "ご相談は無料です。"))}</div>
       <div class="tel">{esc(o["tel"])}</div>
       <div class="sub">{esc(o["telNote"])}　／　{esc(o["mail"])}　／　{esc(o["url"])}<br>
       {esc(o["name"])}　{esc(o["person"])}　{esc(o["belong"])}<br>{esc(o["address"])}</div>
     </div>
-    <div class="qrbox">{qr}<div class="ql">{esc(cfg["qr"]["label"])}</div></div>
-  </div>
+    <div class="qrbox">{ctx["qr"]["svg"]}<div class="ql">{esc(ctx["qr"]["label"])}</div></div>
+  </div>"""
 
-  <div class="foot">
+
+BLOCKS = {
+    "hero": blk_hero, "calc": blk_calc, "rates": blk_rates, "facts": blk_facts,
+    "chips": blk_chips, "card": blk_card, "steps": blk_steps, "traps": blk_traps,
+    "two": blk_two, "table": blk_table, "webnav": blk_webnav, "cta": blk_cta,
+}
+
+
+def render_blocks(blocks, ctx):
+    return "\n  ".join(BLOCKS[b["type"]](b, ctx) for b in blocks)
+
+
+def build_html(cfg, common):
+    o = common["office"]
+    qr_big = qr_svg(cfg["qr"]["url"])
+    ctx = {
+        "office": o,
+        "qr": {**cfg["qr"], "svg": qr_big},
+        "qr_small": qr_svg(cfg["qr"]["url"], size_mm=17),
+    }
+
+    disc = "".join(
+        f"<p>※ {esc(d)}</p>"
+        for d in cfg.get("disclaimer", []) + common["disclaimerCommon"]
+    )
+    stamps = (
+        f'<div class="stamps"><span class="stamp">作成 {esc(cfg["createdAt"])}</span>'
+        f'<span class="stamp">根拠の確認 {esc(cfg["checkedAt"])}</span>'
+        f'<span class="stamp">次回見直し {esc(cfg["reviewNext"])}</span></div>'
+    )
+    sources = "　／　".join(cfg["sources"])
+    foot = f"""<div class="foot">
     {disc}
-    <p>※ {esc(ken["caveat"])}</p>
-    <div class="src">出典：富山県 公式ページ {esc(ken["source"])}</div>
+    <div class="src">出典：{esc(sources)}</div>
     {stamps}
-  </div>
-"""
+  </div>"""
 
-    pages = [p1, p2]
+    pages = []
+    for i, page in enumerate(cfg["pages"]):
+        head = header(o, page.get("to", cfg["audience"]))
+        body = render_blocks(page["blocks"], ctx)
+        tail = foot if i == len(cfg["pages"]) - 1 else ""
+        pages.append(f"\n  {head}\n  {body}\n  {tail}")
+
     n = len(pages)
     body = "".join(
         f'<section class="page">{pg}<div class="pn">{i} / {n}</div></section>'
@@ -310,13 +367,13 @@ def build_html(cfg, ken, madoguchi):
     )
     return (
         f'<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8">'
-        f"<title>{esc(cfg['title'])}｜{esc(o['name'])}</title>"
+        f'<title>{esc(cfg["title"])}｜{esc(o["name"])}</title>'
         f"<style>{CSS}</style></head><body>{body}</body></html>"
     )
 
 
 def build_thumb(pdf_path, slug, top_ratio=0.56, width_px=760):
-    """PDFの1ページ目から、カード用のサムネイル（表紙の上部を縦長に切り出したWebP）を作る。
+    """PDFの1ページ目から、カード用のサムネイル（表紙の上部を切り出したWebP）を作る。
 
     小さく載せても見出しと数字が読めるように、全体を縮小せず上部だけを使う。
     """
@@ -357,13 +414,12 @@ def main():
     if not cfg_path.exists():
         sys.exit(f"資料データがありません: {cfg_path}")
     cfg = load(cfg_path)
-    ken = load(DATA / "toyama-chinage-oen.json")
-    madoguchi = load(DATA / "toyama-madoguchi.json")
+    common = load(DATA / "shiryo" / "_common.json")
 
-    # 作成日は正本の確認日に合わせる（勝手に「今日」にしない）
-    cfg.setdefault("createdAt", ken["checkedAt"])
+    # 作成日は根拠を確認した日に合わせる（勝手に「今日」にしない）
+    cfg.setdefault("createdAt", cfg["checkedAt"])
 
-    doc = build_html(cfg, ken, madoguchi)
+    doc = build_html(cfg, common)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
     if html_only:
