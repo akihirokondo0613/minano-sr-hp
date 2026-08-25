@@ -1,5 +1,5 @@
 {
-  "_note": "資料室（shiryo.html）に並べるカードの正本。ページ数・容量は sync-shiryo-cards.mjs が実ファイルから測って埋めるので、ここには書かない。",
+  "_note": "資料室（shiryo.html）に並べるカードの正本。ページ数・容量は sync-shiryo-cards.mjs が実ファイルから測って埋めるので、ここには書かない。 accent は帯の色（kuni=国の制度・杉／ken=県の制度・藍／jitsumu=実務リファレンス・墨）。",
   "groups": [
     {
       "id": "jigyonushi",
@@ -17,7 +17,8 @@
           "pdf": "assets/download/chinage-oen-2026.pdf",
           "cover": "assets/shiryo/chinage-oen-2026-cover.webp",
           "web": "uploads/toyama-chinage-oen-hojokin.html",
-          "checkedAt": "2026-08-24"
+          "checkedAt": "2026-08-24",
+          "accent": "ken"
         },
         {
           "slug": "gyomu-kaizen-toyama-2026",
@@ -30,7 +31,8 @@
           "pdf": "assets/download/gyomu-kaizen-toyama-2026.pdf",
           "cover": "assets/shiryo/gyomu-kaizen-toyama-2026-cover.webp",
           "web": "blog/gyomu-kaizen-toyama-2026.html",
-          "checkedAt": "2026-08-19"
+          "checkedAt": "2026-08-19",
+          "accent": "kuni"
         }
       ],
       "lat": "FOR BUSINESS",

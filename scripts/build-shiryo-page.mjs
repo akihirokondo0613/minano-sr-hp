@@ -127,6 +127,15 @@ const STYLE = `<style id="shiryo">
 .sr-card:hover{border-color:var(--moegi);box-shadow:0 14px 32px rgba(18,63,48,.1);transform:translateY(-3px)}
 .sr-card:focus-visible{outline:2px solid var(--sugi);outline-offset:3px}
 .sr-head{background:var(--sugi);color:#fff;padding:15px 17px 14px}
+/* 制度の出どころで帯の色を変える。数が増えても、並びで見分けられるようにするため */
+.sr-card[data-accent="ken"] .sr-head{background:#1B4A63}
+.sr-card[data-accent="ken"] .sr-tag{background:#7FC4E0;color:#0E3548}
+.sr-card[data-accent="ken"] .sr-lead{color:#cfe4ef}
+.sr-card[data-accent="jitsumu"] .sr-head{background:#33403A}
+.sr-card[data-accent="jitsumu"] .sr-tag{background:#B9C9BF;color:#26302B}
+.sr-card[data-accent="jitsumu"] .sr-lead{color:#d3dcd6}
+.sr-card[data-accent="ken"]:hover{border-color:#7FC4E0}
+.sr-card[data-accent="jitsumu"]:hover{border-color:#B9C9BF}
 .sr-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
 .sr-tag{font-size:10.5px;font-weight:700;letter-spacing:.03em;color:var(--sugi);background:var(--moegi);border-radius:999px;padding:2px 9px}
 .sr-title{font-family:var(--disp);font-size:16px;font-weight:800;line-height:1.55;letter-spacing:.01em}
@@ -179,7 +188,7 @@ async function buildCard(item) {
   const [{ size }, pages] = await Promise.all([stat(pdfAbs), pdfPageCount(pdfAbs)]);
   const tags = item.tags.map((t) => `<span class="sr-tag">${esc(t)}</span>`).join('');
   return `      <div class="sr-item rv">
-        <a class="sr-card" href="${esc(item.pdf)}" download aria-label="${esc(item.title)}のPDFをダウンロード（${pages}ページ・${fmtSize(size)}）">
+        <a class="sr-card" data-accent="${esc(item.accent || 'kuni')}" href="${esc(item.pdf)}" download aria-label="${esc(item.title)}のPDFをダウンロード（${pages}ページ・${fmtSize(size)}）">
           <div class="sr-head">
             <div class="sr-tags">${tags}</div>
             <div class="sr-title">${esc(item.title)}</div>

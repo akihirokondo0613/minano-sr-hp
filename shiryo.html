@@ -130,6 +130,15 @@
 .sr-card:hover{border-color:var(--moegi);box-shadow:0 14px 32px rgba(18,63,48,.1);transform:translateY(-3px)}
 .sr-card:focus-visible{outline:2px solid var(--sugi);outline-offset:3px}
 .sr-head{background:var(--sugi);color:#fff;padding:15px 17px 14px}
+/* 制度の出どころで帯の色を変える。数が増えても、並びで見分けられるようにするため */
+.sr-card[data-accent="ken"] .sr-head{background:#1B4A63}
+.sr-card[data-accent="ken"] .sr-tag{background:#7FC4E0;color:#0E3548}
+.sr-card[data-accent="ken"] .sr-lead{color:#cfe4ef}
+.sr-card[data-accent="jitsumu"] .sr-head{background:#33403A}
+.sr-card[data-accent="jitsumu"] .sr-tag{background:#B9C9BF;color:#26302B}
+.sr-card[data-accent="jitsumu"] .sr-lead{color:#d3dcd6}
+.sr-card[data-accent="ken"]:hover{border-color:#7FC4E0}
+.sr-card[data-accent="jitsumu"]:hover{border-color:#B9C9BF}
 .sr-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
 .sr-tag{font-size:10.5px;font-weight:700;letter-spacing:.03em;color:var(--sugi);background:var(--moegi);border-radius:999px;padding:2px 9px}
 .sr-title{font-family:var(--disp);font-size:16px;font-weight:800;line-height:1.55;letter-spacing:.01em}
@@ -180,7 +189,7 @@
       </div>
       <div class="sr-grid">
       <div class="sr-item rv">
-        <a class="sr-card" href="assets/download/chinage-oen-2026.pdf" download aria-label="富山県賃上げ応援補助金のPDFをダウンロード（2ページ・499KB）">
+        <a class="sr-card" data-accent="ken" href="assets/download/chinage-oen-2026.pdf" download aria-label="富山県賃上げ応援補助金のPDFをダウンロード（2ページ・499KB）">
           <div class="sr-head">
             <div class="sr-tags"><span class="sr-tag">富山限定</span><span class="sr-tag">県の制度</span></div>
             <div class="sr-title">富山県賃上げ応援補助金</div>
@@ -193,7 +202,7 @@
         <a class="sr-web" href="uploads/toyama-chinage-oen-hojokin.html">Webで読む<span aria-hidden="true">→</span></a>
       </div>
       <div class="sr-item rv">
-        <a class="sr-card" href="assets/download/gyomu-kaizen-toyama-2026.pdf" download aria-label="業務改善助成金（令和8年度）のPDFをダウンロード（6ページ・1.2MB）">
+        <a class="sr-card" data-accent="kuni" href="assets/download/gyomu-kaizen-toyama-2026.pdf" download aria-label="業務改善助成金（令和8年度）のPDFをダウンロード（6ページ・1.2MB）">
           <div class="sr-head">
             <div class="sr-tags"><span class="sr-tag">国の制度</span><span class="sr-tag">9月1日 受付開始</span></div>
             <div class="sr-title">業務改善助成金（令和8年度）</div>
