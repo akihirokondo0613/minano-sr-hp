@@ -415,9 +415,18 @@ main > section:not(.hero) {
   .page-hero-inner .breadcrumb { justify-content: center; }
   .page-sub, .page-hero .lead { margin-inline: auto; }
   .page-hero .pub-board, .page-hero .hub-snapshot { text-align: left; }
+  .faq-aside { text-align: center; }
+  .jk-sec-head, .startup-hero-copy, .cat-head { text-align: center; }
+  .jg-block > h3, .jg-block > p, .startup-scope-heading { text-align: center; }
+  .startup-scope-heading { justify-content: center; }
+  .jk-sec-head > *, .cat-head > * { margin-inline: auto; }
+  .startup-hero-copy .btn-row, .startup-hero-copy .hero-btns { justify-content: center; }
+  .faq-aside .sec-head-idx { justify-content: center; }
+  .faq-aside .sec-sub { margin-inline: auto; }
   .sec-head { justify-items: center; text-align: center; }
   .sec-head-idx { justify-content: center; }
-  .sec-head-idx::after { margin-inline: auto; }
+  /* 見えない下線飾りが幅を取り、中央寄せが左にずれて見えるので消す */
+  .sec-head-idx::after { display: none; }
   .sec-sub { margin-inline: auto; }
   .sec-head.has-photo { grid-template-columns: 1fr; }
   .sec-head.has-photo .sec-photo { max-width: 300px; width: 100%; margin-inline: auto; }
