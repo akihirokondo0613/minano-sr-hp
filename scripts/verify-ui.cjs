@@ -117,6 +117,7 @@ function recordConsoleError(target) {
         stateRequests: performance.getEntriesByType('resource').filter(r => r.name.includes('.image-slots.state.json')).length,
         googleFontRequests: performance.getEntriesByType('resource').filter(r => /fonts\.(googleapis|gstatic)\.com/.test(r.name)).length,
         summaryColumns,
+        summaryDisplay: getComputedStyle(document.querySelector('.hero-summary')).display,
         planListDisplay: getComputedStyle(document.querySelector('.home-plan-list')).display,
         planFeatureDisplay: getComputedStyle(document.querySelector('.home-plan-feature')).display,
         aboutPhotoCount: document.querySelectorAll('.home-about-photo, #home-representative').length,
@@ -142,10 +143,10 @@ function recordConsoleError(target) {
     if (state.aboutPhotoCount || state.aboutCopyWidthRatio < 0.98 || state.aboutTextWidthRatio < 0.98) {
       failures.push(`${viewport.width}px: 事務所案内の代表画像撤去・本文幅が不正です`);
     }
-    if (viewport.width <= 430) {
-      if (state.summaryColumns !== 1) failures.push(`${viewport.width}px: ヒーロー直下サマリーが1列ではありません`);
-    } else if (viewport.width <= 640 && state.summaryColumns !== 2) {
-      failures.push(`${viewport.width}px: ヒーロー直下サマリーが2列ではありません`);
+    if (viewport.width <= 640) {
+      if (state.summaryDisplay !== 'none') {
+        failures.push(`${viewport.width}px: スマホではヒーロー直下サマリーを表示しません（display=${state.summaryDisplay}）`);
+      }
     }
     if (viewport.width <= 640) {
       if (state.planListDisplay !== 'none' || state.planFeatureDisplay === 'none') failures.push(`${viewport.width}px: スマホ料金カードの情報量が不正です`);
