@@ -377,9 +377,13 @@ main > section:not(.hero) {
   .home-startup-offer-meta { justify-content: center; }
   .home-startup-offer-link { margin-inline: auto; }
   .hero-btns { margin-top: 26px; }
-  /* スマホは横幅が狭く、原稿どおりの改行だと行数が増えるので自然に流す */
-  .hero-sub br { display: none; }
   .floating .fl-mini { display: none; }
+}
+
+/* スマホは原稿どおりの改行だと行が余るので自然に流す。
+   320px級の端末だけは、長い文節が行に収まらず横へはみ出すため元の改行を残す。 */
+@media (min-width: 360px) and (max-width: 640px) {
+  .hero-sub br { display: none; }
 }
 
 /* ---------- セクション見出し（等高線ナンバー） ---------- */
