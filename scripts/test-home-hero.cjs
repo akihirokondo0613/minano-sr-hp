@@ -290,6 +290,12 @@ async function measure(page) {
   }
 
   if (asJson) {
+    // JSONは巨大で、失敗時に process.exit するとログ側で末尾が切れて failures が読めない。
+    // 失敗の要点だけ先に stderr へ出す（実行ログはこちらを優先表示する）。
+    if (failures.length) {
+      console.error(`失敗: ${failures.length}件`);
+      for (const failure of failures) console.error(`- ${failure}`);
+    }
     console.log(JSON.stringify({ base, epsilon: EPSILON, results, failures }, null, 2));
   } else {
     for (const result of results) {
