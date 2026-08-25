@@ -33,6 +33,34 @@
           "web": "blog/gyomu-kaizen-toyama-2026.html",
           "checkedAt": "2026-08-24",
           "accent": "kuni"
+        },
+        {
+          "slug": "judokitsuen-2026",
+          "title": "受動喫煙防止対策助成金（令和8年度）",
+          "lead": "喫煙室をつくる飲食店へ。工事費の3分の2、上限100万円が国から助成されます。",
+          "tags": [
+            "国の制度",
+            "飲食店向け"
+          ],
+          "accent": "kuni",
+          "pdf": "assets/download/judokitsuen-2026.pdf",
+          "cover": "assets/shiryo/judokitsuen-2026-cover.webp",
+          "web": "joseikin.html",
+          "checkedAt": "2026-08-25"
+        },
+        {
+          "slug": "ryoritsu-2026",
+          "title": "両立支援等助成金（令和8年度）",
+          "lead": "育休の取得と職場復帰を支える制度。妊娠・出産の報告を受けた日が動き出しどきです。",
+          "tags": [
+            "国の制度",
+            "県の上乗せあり"
+          ],
+          "accent": "kuni",
+          "pdf": "assets/download/ryoritsu-2026.pdf",
+          "cover": "assets/shiryo/ryoritsu-2026-cover.webp",
+          "web": "uploads/joseikin-ryoritsu.html",
+          "checkedAt": "2026-08-23"
         }
       ],
       "lat": "FOR BUSINESS",
