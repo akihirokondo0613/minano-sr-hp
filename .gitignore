@@ -10,3 +10,5 @@ _backup_*/
 data/*.html
 data/*.txt
 data/*.pdf
+node_modules/
+package-lock.json
