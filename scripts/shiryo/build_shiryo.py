@@ -315,6 +315,38 @@ def build_html(cfg, ken, madoguchi):
     )
 
 
+def build_thumb(pdf_path, slug, top_ratio=0.56, width_px=760):
+    """PDFの1ページ目から、カード用のサムネイル（表紙の上部を縦長に切り出したWebP）を作る。
+
+    小さく載せても見出しと数字が読めるように、全体を縮小せず上部だけを使う。
+    """
+    from PIL import Image
+
+    gs = shutil.which("gs")
+    if not gs:
+        print("警告: ghostscript が無いためサムネイルを作れません")
+        return None
+
+    out = ROOT / "assets" / "shiryo" / f"{slug}-cover.webp"
+    out.parent.mkdir(parents=True, exist_ok=True)
+
+    with tempfile.TemporaryDirectory() as td:
+        png = pathlib.Path(td) / "cover.png"
+        subprocess.run(
+            [gs, "-dNOPAUSE", "-dBATCH", "-dQUIET", "-sDEVICE=png16m", "-r200",
+             "-dFirstPage=1", "-dLastPage=1", f"-sOutputFile={png}", str(pdf_path)],
+            check=True,
+        )
+        im = Image.open(png).convert("RGB")
+        im = im.crop((0, 0, im.width, int(im.height * top_ratio)))
+        h = int(im.height * (width_px / im.width))
+        im = im.resize((width_px, h), Image.LANCZOS)
+        im.save(out, "WEBP", quality=82, method=6)
+
+    print(f"表紙: {out.relative_to(ROOT)}（{out.stat().st_size / 1024:.0f}KB）")
+    return out
+
+
 def main():
     if len(sys.argv) < 2:
         sys.exit("使い方: python3 scripts/shiryo/build_shiryo.py <資料ID> [--html]")
@@ -382,6 +414,7 @@ def main():
             print("警告: ghostscript が無いため未圧縮のまま出力しました")
 
     print(f"PDF : {out.relative_to(ROOT)}（{out.stat().st_size / 1024 / 1024:.2f}MB）")
+    build_thumb(out, slug)
 
 
 if __name__ == "__main__":
