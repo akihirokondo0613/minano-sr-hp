@@ -369,13 +369,14 @@ main > section:not(.hero) {
   .hero-summary { display: none; }
   .hero-trust { display: none; }
   .hero-btns .hero-sub-link, .hero-sub-link { display: none; }
-  .hero-btns { justify-content: center; }
-  .hero-btns .btn-primary { width: 100%; text-align: center; }
+  .hero-btns { justify-content: center; width: 100%; }
+  .hero-btns .btn-primary { flex: 0 0 100%; width: 100%; text-align: center; }
   .hero-spot { text-align: center; }
   .hero-spot-badge { margin-inline: auto; }
   .home-startup-offer-rail { text-align: center; }
   .home-startup-offer-meta { justify-content: center; }
   .home-startup-offer-link { margin-inline: auto; }
+  .home-startup-offer-text, .home-startup-offer-title { text-wrap: pretty; }
   .hero-btns { margin-top: 26px; }
   .floating .fl-mini { display: none; }
 }
@@ -384,6 +385,10 @@ main > section:not(.hero) {
    320px級の端末だけは、長い文節が行に収まらず横へはみ出すため元の改行を残す。 */
 @media (min-width: 360px) and (max-width: 640px) {
   .hero-sub br { display: none; }
+  /* 「手続きも、給与計算も、助成金も。」を1行に収める。
+     320px級は文字が小さくなりすぎるので既定のサイズのままにする。 */
+  .hero-overlay { padding-inline: 14px; }
+  .hero-h1 { font-size: min(5.4vw, 30px); text-wrap: initial; }
 }
 
 /* ---------- セクション見出し（等高線ナンバー） ---------- */
@@ -414,7 +419,7 @@ main > section:not(.hero) {
 @media (max-width: 640px) {
   .hero-overlay { text-align: center; }
   .hero-sub { margin-inline: auto; }
-  .hero-btns { justify-content: center; }
+  .hero-btns { justify-content: center; width: 100%; }
   .why-label.hero-label { display: flex; width: fit-content; margin-inline: auto; }
   .hero-trust { justify-content: center; }
   .page-hero-inner { text-align: center; }
