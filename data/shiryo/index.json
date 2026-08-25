@@ -21,17 +21,17 @@
           "accent": "ken"
         },
         {
-          "slug": "gyomu-kaizen-toyama-2026",
+          "slug": "gyomu-kaizen-2026",
           "title": "業務改善助成金（令和8年度）",
-          "lead": "最低賃金の引上げにあわせて設備を入れると、設備費の一部が国から助成されます。",
+          "lead": "10月からの賃上げに合わせて設備を入れると、その費用の4分の3が国から助成されます。",
           "tags": [
             "国の制度",
             "9月1日 受付開始"
           ],
-          "pdf": "assets/download/gyomu-kaizen-toyama-2026.pdf",
-          "cover": "assets/shiryo/gyomu-kaizen-toyama-2026-cover.webp",
+          "pdf": "assets/download/gyomu-kaizen-2026.pdf",
+          "cover": "assets/shiryo/gyomu-kaizen-2026-cover.webp",
           "web": "blog/gyomu-kaizen-toyama-2026.html",
-          "checkedAt": "2026-08-19",
+          "checkedAt": "2026-08-24",
           "accent": "kuni"
         }
       ],
