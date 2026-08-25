@@ -364,6 +364,22 @@ main > section:not(.hero) {
   contain-intrinsic-size: auto 900px;
 }
 
+/* スマホ: ヒーローの帯・補助ピルを省いて要素を絞る */
+@media (max-width: 640px) {
+  .hero-summary { display: none; }
+  .hero-trust { display: none; }
+  .hero-btns .hero-sub-link, .hero-sub-link { display: none; }
+  .hero-btns { justify-content: center; }
+  .hero-btns .btn-primary { width: 100%; text-align: center; }
+  .hero-spot { text-align: center; }
+  .hero-spot-badge { margin-inline: auto; }
+  .home-startup-offer-rail { text-align: center; }
+  .home-startup-offer-meta { justify-content: center; }
+  .home-startup-offer-link { margin-inline: auto; }
+  .hero-btns { margin-top: 26px; }
+  .floating .fl-mini { display: none; }
+}
+
 /* ---------- セクション見出し（等高線ナンバー） ---------- */
 .sec-head { display: grid; grid-template-columns: 112px 1fr; gap: clamp(18px, 3vw, 44px); margin-bottom: clamp(40px, 5.5vw, 68px); align-items: start; }
 .sec-head.has-photo { grid-template-columns: 112px minmax(0, 1fr) clamp(200px, 19vw, 270px); }
@@ -395,7 +411,6 @@ main > section:not(.hero) {
   .hero-btns { justify-content: center; }
   .why-label.hero-label { display: flex; width: fit-content; margin-inline: auto; }
   .hero-trust { justify-content: center; }
-  .hero-spot { text-align: left; }
   .page-hero-inner { text-align: center; }
   .page-hero-inner .breadcrumb { justify-content: center; }
   .page-sub, .page-hero .lead { margin-inline: auto; }
@@ -1519,6 +1534,16 @@ html { scroll-padding-top: 88px; }
   .home-why-copy .sec-h { order: 1; }
   .sec-head.has-photo .home-why-photo { position: static; order: 2; display: block; width: min(100%, 240px); max-width: 240px; margin: 2px auto 4px; }
   .home-why-intro { order: 3; }
+}
+
+/* スマホ: 料金プランのタイトル・価格も中央に */
+@media (max-width: 640px) {
+  .plan { text-align: center; }
+  .plan-btn { margin-inline: auto; }
+  .plan-features li, .plan-feature-sub { text-align: left; }
+  .plan-badge, .plan-name, .plan-tagline, .plan-price, .plan-unit, .plan-founder, .plan-section, .plan-note, .plan-inherit { text-align: center; }
+  .plan-price { justify-content: center; }
+  .plan-hot-label { left: 50%; right: auto; transform: translateX(-50%); }
 }
 
 /* スマホ: カードの中身も中央に（他のスマホ指定より後に置く） */

@@ -157,6 +157,7 @@ async function measure(page) {
       documentScrollWidth: document.documentElement.scrollWidth,
       summaryColumns: getComputedStyle(document.querySelector('.hs-inner'))
         .gridTemplateColumns.split(' ').filter(Boolean).length,
+      summaryDisplay: getComputedStyle(document.querySelector('.hero-summary')).display,
       h1Phrases,
       subPhrases,
       h1Boundaries: boundariesOf('.hero-h1'),
@@ -267,11 +268,17 @@ async function measure(page) {
         if (width <= 700 && result.metrics.label.width >= result.metrics.h1.width - EPSILON) {
           failures.push(`${engineName}@${width}px: 淡緑ラベルが本文幅まで引き伸ばされています`);
         }
-        const expectedSummaryColumns = width <= 430 ? 1 : 2;
-        if (result.summaryColumns !== expectedSummaryColumns) {
+        // スマホ（640px以下）はヒーローの情報を絞るためサマリー帯を出さない
+        if (width <= 640) {
+          if (result.summaryDisplay !== 'none') {
+            failures.push(
+              `${engineName}@${width}px: スマホではヒーロー直下サマリーを表示しません`
+              + `（display=${result.summaryDisplay}）`,
+            );
+          }
+        } else if (result.summaryColumns !== 2) {
           failures.push(
-            `${engineName}@${width}px: ヒーロー直下サマリーが`
-            + `${expectedSummaryColumns}列ではありません（${result.summaryColumns}列）`,
+            `${engineName}@${width}px: ヒーロー直下サマリーが2列ではありません（${result.summaryColumns}列）`,
           );
         }
         if (errors.length) failures.push(`${engineName}@${width}px: ${errors.join(' / ')}`);

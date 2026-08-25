@@ -523,3 +523,24 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
 .rp-title { font-size: 14px; font-weight: 700; line-height: 1.65; color: var(--ink); word-break: auto-phrase; }
 .rp-read { font-size: 11px; color: var(--ink4); letter-spacing: .04em; margin-top: auto; }
 @media (prefers-reduced-motion: reduce) { .rp-card { transition: none; } }
+
+/* スマホ: 左右対称に。見出し・タイトル・数値を中央へ寄せ、箇条書きと表は左のまま */
+@media (max-width: 640px) {
+  .page-hero-inner { text-align: center; }
+  .page-hero-inner .breadcrumb { justify-content: center; }
+  .page-hero-cta { justify-content: center; }
+  .page-kicker { justify-content: center; margin-inline: auto; }
+  .lead, .sec-sub { margin-inline: auto; }
+  .sec-head, .sec-head-body, .sec-head-c { text-align: center; }
+  .sec-kicker { justify-content: center; margin-inline: auto; }
+  .line-cell { text-align: center; }
+  .line-cell-h { justify-content: center; }
+  .line-cell ul, .line-cell ol, .line-cell li { text-align: left; }
+  .svct-lead, .svct-note, .svct-cta { text-align: center; }
+  .svct-nums-c, .svct-num { text-align: center; }
+  .svc-fee-row { text-align: center; }
+  .svc-fee-cta { justify-content: center; }
+  .rp-card, .related-posts-t { text-align: center; }
+  .btn-row { justify-content: center; }
+  .floating .fl-mini { display: none; }
+}
