@@ -114,6 +114,10 @@ const tasks = [
     args: ['scripts/submit-indexnow.mjs', '--check'],
   },
   {
+    name: '士業向けページ',
+    args: ['scripts/build-partner-page.mjs', '--check'],
+  },
+  {
     name: '資料室ページ',
     args: ['scripts/build-shiryo-page.mjs', '--check'],
   },
