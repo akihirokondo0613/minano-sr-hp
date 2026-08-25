@@ -1520,3 +1520,26 @@ html { scroll-padding-top: 88px; }
   .sec-head.has-photo .home-why-photo { position: static; order: 2; display: block; width: min(100%, 240px); max-width: 240px; margin: 2px auto 4px; }
   .home-why-intro { order: 3; }
 }
+
+/* スマホ: カードの中身も中央に（他のスマホ指定より後に置く） */
+@media (max-width: 640px) {
+  .home-why-beliefs .belief-card { justify-items: center; text-align: center; grid-template-columns: minmax(0, 1fr); grid-template-areas: "num" "title" "desc"; row-gap: 2px; padding: 18px 4px; }
+  .home-why-beliefs .bc-desc { margin-top: 4px; }
+  .home-phase-card { grid-template-columns: minmax(0, 1fr); text-align: center; }
+  .home-phase-body { grid-column: 1; grid-row: 1; padding: 18px 18px 4px; }
+  .home-phase-media { grid-column: 1; grid-row: 2; width: min(100%, 190px); margin-inline: auto; padding-bottom: 14px; }
+  .home-plan-card, .how-card, .voice-card, .home-topic-card { text-align: center; }
+  .home-plan-card { align-items: center; }
+  .home-plan-link { align-self: center; }
+  .home-phase-body { padding-bottom: 10px; }
+  .how-card .hc-icon, .how-card .hc-num { margin-inline: auto; }
+  .hc-tags, .svc-tags, .stags { justify-content: center; }
+  .how-card .link-more, .how-card .hc-link { align-self: center; }
+  .home-service-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .home-service-list .svc-row { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center; gap: 2px; padding: 14px 10px 12px; }
+  .home-service-list .svc-row > span:nth-of-type(3) { min-height: 0; display: block; }
+  .home-service-list .svc-ill { width: 78px; }
+  .home-service-list .svc-num { font-size: 13px; }
+  .home-service-list .svc-info-name { font-size: 14.5px; line-height: 1.55; }
+  .home-service-list .svc-arr { display: none; }
+}
