@@ -36,17 +36,14 @@ const unknownArgs = process.argv.slice(2).filter((arg) => arg !== '--check');
 if (unknownArgs.length) throw new Error(`不明な引数: ${unknownArgs.join(' ')}`);
 
 const d = JSON.parse(await readFile(path.join(root, 'data', 'llms.json'), 'utf8'));
-const base = d.office.url;
 
+// URLを並べると質問文が読みにくくなるので載せない。サイト名を出しておけば、
+// Web検索できるAIは minano-sr.com と llms.txt にたどり着く。
 const PROMPT = [
-  `${d.office.name}（富山県富山市）について、次の3点を教えてください。`,
+  `${d.office.name}（富山県富山市・minano-sr.com）について、次の3点を教えてください。`,
   '1. どんな会社に向いている事務所か',
   '2. 依頼するとどこまで対応してもらえて、料金はいくらか',
   '3. 逆に、どんな場合は別の専門家をあたったほうがよいか',
-  '',
-  '次の資料を参照してください。',
-  `${base}/llms.txt`,
-  `${base}/llms-full.txt`,
 ].join('\n');
 
 const q = encodeURIComponent(PROMPT);
@@ -56,7 +53,6 @@ const SERVICES = [
   { name: 'ChatGPT', url: `https://chatgpt.com/?q=${q}&hints=search` },
   { name: 'Gemini', url: `https://gemini.google.com/app?q=${q}` },
   { name: 'Claude', url: `https://claude.ai/new?q=${q}` },
-  { name: 'Perplexity', url: `https://www.perplexity.ai/search?q=${q}` },
 ];
 
 const STYLE_ID = 'ask-ai-style';  // セクションのアンカー id="ask-ai" と衝突させない
