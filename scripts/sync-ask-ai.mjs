@@ -69,7 +69,8 @@ const STYLE = `<style id="${STYLE_ID}">
 .aa-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;background:var(--shiro);border:1px solid var(--line);font-size:13.5px;font-weight:700;color:var(--iwa);text-decoration:none;transition:border-color .3s,transform .3s var(--ease),box-shadow .3s}
 .aa-btn:hover{border-color:var(--moegi);transform:translateY(-2px);box-shadow:0 8px 20px rgba(18,63,48,.08)}
 .aa-btn .dot{width:8px;height:8px;border-radius:50%;background:var(--moegi);flex-shrink:0}
-.aa-note{margin-top:20px;font-size:11.5px;line-height:1.85;color:var(--ink3);max-width:40em;margin-inline:auto}
+.aa-after{margin-top:18px;font-size:13.5px;font-weight:700;color:var(--sugi)}
+.aa-note{margin-top:14px;font-size:11.5px;line-height:1.85;color:var(--ink3);max-width:40em;margin-inline:auto}
 @media (max-width: 640px){
   .aa-btns{flex-direction:column;gap:8px}
   .aa-btn{width:100%;justify-content:center}
@@ -83,7 +84,7 @@ function buildBlock() {
   ).join('\n');
 
   return `<!-- ask-ai:start -->
-<section class="sec">
+<section class="sec" id="ask-ai">
   <div class="w">
     <div class="aa rv">
       <div class="aa-kick">ASK AI</div>
@@ -92,6 +93,7 @@ function buildBlock() {
       <div class="aa-btns">
 ${btns}
       </div>
+      <p class="aa-after">AIの答えを見たうえで、気になる点は下のフォームやお電話でお尋ねください。</p>
       <p class="aa-note">※ 回答はそれぞれのAIが生成するもので、当事務所が作成したものではありません。制度や金額を誤って説明する場合がありますので、正確な内容は当サイトの各ページ、または直接のご相談でお確かめください。AIサービスの仕様によっては、質問が自動で入力されないことがあります。</p>
     </div>
   </div>
