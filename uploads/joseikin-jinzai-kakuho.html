@@ -21,7 +21,7 @@
 <meta property="og:image:alt" content="みなの社会保険労務士事務所のトップページ｜会社の労務を、まるごと任せられる。">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://minano-sr.com/assets/og/minano-og.png">
-<link rel="stylesheet" href="service.css?v=20260826-spfix1">
+<link rel="stylesheet" href="service.css?v=20260827-askai1">
 <style id="brand-v2">
 :root{--r:16px}
 h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Gothic","Zen Maru Fallback","BIZ UDPGothic","Hiragino Kaku Gothic ProN","Hiragino Sans",sans-serif}
@@ -31,6 +31,26 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
 <link rel="stylesheet" href="../wave-skin.css?v=20260824-termbadge1">
 <meta name="theme-color" content="#123F30">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3E%E3%81%BF%3C/text%3E%3C/svg%3E">
+<style id="ask-ai-style">
+.fl-ai{width:46px;height:46px;border-radius:50%;background:var(--sugi);border:1px solid var(--sugi);display:grid;place-items:center;box-shadow:0 8px 22px rgba(18,63,48,.2);cursor:pointer;padding:0;transition:transform .3s var(--ease),background .3s}
+.fl-ai:hover{transform:translateY(-2px);background:var(--sugi-7,#0d2f24)}
+.fl-ai svg{width:22px;height:22px;display:block}
+.aa-pop{position:fixed;inset:auto clamp(14px,2vw,26px) calc(max(clamp(14px,2vw,26px), env(safe-area-inset-bottom) + 12px) + 118px) auto;width:min(320px,calc(100vw - 28px));margin:0;padding:20px 22px 18px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--shiro);box-shadow:0 18px 44px rgba(18,63,48,.18);z-index:230}
+.aa-pop::backdrop{background:rgba(26,31,28,.28)}
+.aa-pop-k{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.2em;color:var(--moegi-t)}
+.aa-pop-h{font-family:var(--disp);font-size:15.5px;font-weight:800;line-height:1.6;color:var(--iwa);margin-top:7px}
+.aa-pop-d{margin-top:8px;font-size:12.5px;line-height:1.8;color:var(--ink3)}
+.aa-pop-btns{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.aa-pop-btns a{display:flex;align-items:center;gap:9px;padding:11px 15px;border-radius:999px;background:var(--yuki);border:1px solid var(--line);font-size:13px;font-weight:700;color:var(--iwa);text-decoration:none;transition:border-color .3s,background .3s}
+.aa-pop-btns a:hover{border-color:var(--moegi);background:var(--moegi-l)}
+.aa-pop-btns .dot{width:7px;height:7px;border-radius:50%;background:var(--moegi);flex-shrink:0}
+.aa-pop-note{margin-top:12px;font-size:10.5px;line-height:1.75;color:var(--ink4)}
+.aa-pop-close{position:absolute;top:10px;right:12px;width:28px;height:28px;border:0;background:transparent;color:var(--ink4);font-size:18px;line-height:1;cursor:pointer;border-radius:50%}
+.aa-pop-close:hover{background:var(--yuki);color:var(--iwa)}
+@media (max-width: 640px){
+  .aa-pop{inset:auto 14px calc(max(14px, env(safe-area-inset-bottom) + 12px) + 112px) 14px;width:auto}
+}
+</style>
 <!-- Structured Data: BreadcrumbList -->
 <script type="application/ld+json" data-schema="breadcrumblist">
 {
@@ -365,8 +385,25 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
     </div>
   </div>
 </footer>
+<!-- ask-ai:start -->
+<div id="ask-ai-pop" popover class="aa-pop">
+  <button class="aa-pop-close" popovertarget="ask-ai-pop" popovertargetaction="hide" type="button" aria-label="閉じる">×</button>
+  <div class="aa-pop-k">ASK AI</div>
+  <p class="aa-pop-h">この<wbr>事務所が<wbr>御社に<wbr>合うか、<wbr>AIに<wbr>聞けます。</p>
+  <p class="aa-pop-d">普段お使いの<wbr>AIに、<wbr>向いている<wbr>会社・料金・逆に<wbr>向いていない<wbr>場合を<wbr>聞けます。<wbr>押すと<wbr>質問が<wbr>入った<wbr>状態で<wbr>開きます。</p>
+  <div class="aa-pop-btns">
+    <a href="https://chatgpt.com/?q=%E3%81%BF%E3%81%AA%E3%81%AE%E7%A4%BE%E4%BC%9A%E4%BF%9D%E9%99%BA%E5%8A%B4%E5%8B%99%E5%A3%AB%E4%BA%8B%E5%8B%99%E6%89%80%EF%BC%88%E5%AF%8C%E5%B1%B1%E7%9C%8C%E5%AF%8C%E5%B1%B1%E5%B8%82%E3%83%BBminano-sr.com%EF%BC%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E3%80%81%E6%AC%A1%E3%81%AE3%E7%82%B9%E3%82%92%E6%95%99%E3%81%88%E3%81%A6%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%82%0A1.%20%E3%81%A9%E3%82%93%E3%81%AA%E4%BC%9A%E7%A4%BE%E3%81%AB%E5%90%91%E3%81%84%E3%81%A6%E3%81%84%E3%82%8B%E4%BA%8B%E5%8B%99%E6%89%80%E3%81%8B%0A2.%20%E4%BE%9D%E9%A0%BC%E3%81%99%E3%82%8B%E3%81%A8%E3%81%A9%E3%81%93%E3%81%BE%E3%81%A7%E5%AF%BE%E5%BF%9C%E3%81%97%E3%81%A6%E3%82%82%E3%82%89%E3%81%88%E3%81%A6%E3%80%81%E6%96%99%E9%87%91%E3%81%AF%E3%81%84%E3%81%8F%E3%82%89%E3%81%8B%0A3.%20%E9%80%86%E3%81%AB%E3%80%81%E3%81%A9%E3%82%93%E3%81%AA%E5%A0%B4%E5%90%88%E3%81%AF%E5%88%A5%E3%81%AE%E5%B0%82%E9%96%80%E5%AE%B6%E3%82%92%E3%81%82%E3%81%9F%E3%81%A3%E3%81%9F%E3%81%BB%E3%81%86%E3%81%8C%E3%82%88%E3%81%84%E3%81%8B&hints=search" target="_blank" rel="noopener nofollow"><span class="dot" aria-hidden="true"></span>ChatGPTで開く</a>
+    <a href="https://gemini.google.com/app?q=%E3%81%BF%E3%81%AA%E3%81%AE%E7%A4%BE%E4%BC%9A%E4%BF%9D%E9%99%BA%E5%8A%B4%E5%8B%99%E5%A3%AB%E4%BA%8B%E5%8B%99%E6%89%80%EF%BC%88%E5%AF%8C%E5%B1%B1%E7%9C%8C%E5%AF%8C%E5%B1%B1%E5%B8%82%E3%83%BBminano-sr.com%EF%BC%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E3%80%81%E6%AC%A1%E3%81%AE3%E7%82%B9%E3%82%92%E6%95%99%E3%81%88%E3%81%A6%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%82%0A1.%20%E3%81%A9%E3%82%93%E3%81%AA%E4%BC%9A%E7%A4%BE%E3%81%AB%E5%90%91%E3%81%84%E3%81%A6%E3%81%84%E3%82%8B%E4%BA%8B%E5%8B%99%E6%89%80%E3%81%8B%0A2.%20%E4%BE%9D%E9%A0%BC%E3%81%99%E3%82%8B%E3%81%A8%E3%81%A9%E3%81%93%E3%81%BE%E3%81%A7%E5%AF%BE%E5%BF%9C%E3%81%97%E3%81%A6%E3%82%82%E3%82%89%E3%81%88%E3%81%A6%E3%80%81%E6%96%99%E9%87%91%E3%81%AF%E3%81%84%E3%81%8F%E3%82%89%E3%81%8B%0A3.%20%E9%80%86%E3%81%AB%E3%80%81%E3%81%A9%E3%82%93%E3%81%AA%E5%A0%B4%E5%90%88%E3%81%AF%E5%88%A5%E3%81%AE%E5%B0%82%E9%96%80%E5%AE%B6%E3%82%92%E3%81%82%E3%81%9F%E3%81%A3%E3%81%9F%E3%81%BB%E3%81%86%E3%81%8C%E3%82%88%E3%81%84%E3%81%8B" target="_blank" rel="noopener nofollow"><span class="dot" aria-hidden="true"></span>Geminiで開く</a>
+    <a href="https://claude.ai/new?q=%E3%81%BF%E3%81%AA%E3%81%AE%E7%A4%BE%E4%BC%9A%E4%BF%9D%E9%99%BA%E5%8A%B4%E5%8B%99%E5%A3%AB%E4%BA%8B%E5%8B%99%E6%89%80%EF%BC%88%E5%AF%8C%E5%B1%B1%E7%9C%8C%E5%AF%8C%E5%B1%B1%E5%B8%82%E3%83%BBminano-sr.com%EF%BC%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E3%80%81%E6%AC%A1%E3%81%AE3%E7%82%B9%E3%82%92%E6%95%99%E3%81%88%E3%81%A6%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E3%80%82%0A1.%20%E3%81%A9%E3%82%93%E3%81%AA%E4%BC%9A%E7%A4%BE%E3%81%AB%E5%90%91%E3%81%84%E3%81%A6%E3%81%84%E3%82%8B%E4%BA%8B%E5%8B%99%E6%89%80%E3%81%8B%0A2.%20%E4%BE%9D%E9%A0%BC%E3%81%99%E3%82%8B%E3%81%A8%E3%81%A9%E3%81%93%E3%81%BE%E3%81%A7%E5%AF%BE%E5%BF%9C%E3%81%97%E3%81%A6%E3%82%82%E3%82%89%E3%81%88%E3%81%A6%E3%80%81%E6%96%99%E9%87%91%E3%81%AF%E3%81%84%E3%81%8F%E3%82%89%E3%81%8B%0A3.%20%E9%80%86%E3%81%AB%E3%80%81%E3%81%A9%E3%82%93%E3%81%AA%E5%A0%B4%E5%90%88%E3%81%AF%E5%88%A5%E3%81%AE%E5%B0%82%E9%96%80%E5%AE%B6%E3%82%92%E3%81%82%E3%81%9F%E3%81%A3%E3%81%9F%E3%81%BB%E3%81%86%E3%81%8C%E3%82%88%E3%81%84%E3%81%8B" target="_blank" rel="noopener nofollow"><span class="dot" aria-hidden="true"></span>Claudeで開く</a>
+  </div>
+  <p class="aa-pop-note">※ 回答は<wbr>各AIが<wbr>生成する<wbr>もので、<wbr>当事務所が<wbr>作成した<wbr>ものではありません。<wbr>制度や<wbr>金額が<wbr>誤っている<wbr>場合が<wbr>あります。</p>
+</div>
+<!-- ask-ai:end -->
 <div class="floating" id="fl">
   <div class="fl-mini">
+    <button class="fl-ai" popovertarget="ask-ai-pop" type="button" aria-label="AIに聞く">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5 13.8 11.3 12 16l-1.8-4.7L5.5 9.5l4.7-1.8L12 3z" fill="#fff"/><path d="M18.5 15.5l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9.9-2.3z" fill="#8FC9A9"/></svg>
+    </button>
     <a href="tel:090-8259-8774" class="fl-icon" aria-label="電話で問い合わせ"><svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 16.2c-1.2 0-2.4-.2-3.5-.6a1 1 0 0 0-1 .25l-1.6 1.6a14.5 14.5 0 0 1-6.4-6.4l1.6-1.6a1 1 0 0 0 .25-1c-.4-1.1-.6-2.3-.6-3.5a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1A16.5 16.5 0 0 0 19.5 21a1 1 0 0 0 1-1v-2.8a1 1 0 0 0-1-1z" fill="#123F30"/></svg></a>
   </div>
   <a href="contact.html" class="fl-primary">
