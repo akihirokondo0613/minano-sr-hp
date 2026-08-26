@@ -114,6 +114,14 @@ const tasks = [
     args: ['scripts/submit-indexnow.mjs', '--check'],
   },
   {
+    name: 'llms.txt',
+    args: ['scripts/build-llms.mjs', '--check'],
+  },
+  {
+    name: 'AIに聞いてみるブロック',
+    args: ['scripts/sync-ask-ai.mjs', '--check'],
+  },
+  {
     name: '士業向けページ',
     args: ['scripts/build-partner-page.mjs', '--check'],
   },
