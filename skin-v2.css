@@ -378,7 +378,8 @@ main > section:not(.hero) {
   .home-startup-offer-link { margin-inline: auto; }
   .home-startup-offer-text, .home-startup-offer-title { text-wrap: pretty; }
   .hero-btns { margin-top: 26px; }
-  .floating .fl-mini { display: none; }
+  /* スマホは電話アイコンを出さない（導線は下の相談バーに集約）。AIに聞くボタンは残す */
+  .floating .fl-icon { display: none; }
 }
 
 /* スマホは原稿どおりの改行だと行が余るので自然に流す。

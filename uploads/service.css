@@ -542,7 +542,8 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
   .svc-fee-cta { justify-content: center; }
   .rp-card, .related-posts-t { text-align: center; }
   .btn-row { justify-content: center; }
-  .floating .fl-mini { display: none; }
+  /* スマホは電話アイコンを出さない（導線は下の相談バーに集約）。AIに聞くボタンは残す */
+  .floating .fl-icon { display: none; }
 }
 
 /* 見出し帯（.sec-head）は幅いっぱい、本文（.svct）は880pxの中央寄せだったため、
