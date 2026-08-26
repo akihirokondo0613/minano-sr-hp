@@ -52,10 +52,11 @@ const PROMPT = [
 
 const q = encodeURIComponent(PROMPT);
 
-/** 各サービスの「質問を入れた状態で開く」URL。仕様が変わることがあるので、ここだけ直せばよい形にする。 */
+/** 各サービスの「質問を入れた状態で開く」URL。仕様が変わることがあるので、ここだけ直せばよい形にする。
+ *  Geminiは 2026-08-27 に実機で確認したところ、?q= を付けても入力欄が空のまま開いたため外した。
+ *  Googleが公式に用意しているパラメータではないので、今後も当てにしない。 */
 const SERVICES = [
   { name: 'ChatGPT', url: `https://chatgpt.com/?q=${q}&hints=search` },
-  { name: 'Gemini', url: `https://gemini.google.com/app?q=${q}` },
   { name: 'Claude', url: `https://claude.ai/new?q=${q}` },
 ];
 
