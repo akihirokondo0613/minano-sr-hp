@@ -59,7 +59,7 @@ const SERVICES = [
   { name: 'Perplexity', url: `https://www.perplexity.ai/search?q=${q}` },
 ];
 
-const STYLE_ID = 'ask-ai';
+const STYLE_ID = 'ask-ai-style';  // セクションのアンカー id="ask-ai" と衝突させない
 const STYLE = `<style id="${STYLE_ID}">
 .aa{background:var(--yuki);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(24px,3.4vw,44px) clamp(20px,3vw,40px);text-align:center}
 .aa-kick{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--moegi-t)}
@@ -113,6 +113,13 @@ for (const name of targets) {
     throw new Error(`${name} に ask-ai のマーカーがありません（<!-- ask-ai:start --> と <!-- ask-ai:end -->）`);
   }
   let next = source.slice(0, start) + block + source.slice(end + '<!-- ask-ai:end -->'.length);
+
+  // 旧版の <style id="ask-ai"> が残っていれば取り除く（アンカーidと重複するため）
+  const legacy = next.indexOf('<style id="ask-ai">');
+  if (legacy >= 0) {
+    const legacyEnd = next.indexOf('</style>', legacy) + '</style>'.length;
+    next = next.slice(0, legacy) + next.slice(legacyEnd);
+  }
 
   // ページ固有CSSは head の末尾に置く（無ければ足す・あれば差し替える）
   const styleOpen = `<style id="${STYLE_ID}">`;
