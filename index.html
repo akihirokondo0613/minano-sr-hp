@@ -79,7 +79,7 @@ p a, li a, dd a { word-break: normal; }
   h1:has(wbr), h2:has(wbr), h3:has(wbr), h4:has(wbr), h5:has(wbr),
   p:has(wbr), li:has(wbr), dd:has(wbr), dt:has(wbr),
   figcaption:has(wbr), blockquote:has(wbr), summary:has(wbr),
-  .tp-title:has(wbr), .rp-title:has(wbr), .jk-guide-n:has(wbr),
+  .tp-title:has(wbr), .tp-desc:has(wbr), .rp-title:has(wbr), .jk-guide-n:has(wbr),
   .svc-info-name:has(wbr), .svc-info-desc:has(wbr) {
     word-break: keep-all;
     overflow-wrap: break-word;
@@ -429,8 +429,8 @@ main > section:not(.hero) {
   .hero-h1 { font-size: min(5.4vw, 30px); text-wrap: initial; }
 }
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20260827-askai1" media="print" data-async-style onload="this.media='all';this.onload=null">
-<noscript><link rel="stylesheet" href="skin-v2.css?v=20260827-askai1"></noscript>
+<link rel="stylesheet" href="skin-v2.css?v=20260828-topics1" media="print" data-async-style onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="skin-v2.css?v=20260828-topics1"></noscript>
 <style id="home-hero-legibility">
 @media(max-width:700px){
   /* 本文が写真の建物・木立に重なる帯（ヒーロー高の45〜75%）まで白を残す。
@@ -530,7 +530,8 @@ main > section:not(.hero) {
 .tp-thumb[data-cat="keiei"]   {--tp-c:#94661F}  /* 経営・採用 ― 朝日の濃い側 */
 .tp-thumb[data-cat="trouble"] {--tp-c:#8C4A3C}  /* 労務トラブル ― 土 */
 .tp-thumb[data-cat="system"]  {--tp-c:#2A6E7A}  /* システム導入 ― 青緑 */
-.tp-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden;font-size:12.5px;font-weight:700;line-height:1.65;color:var(--iwa)}
+.tp-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;font-size:12.5px;font-weight:700;line-height:1.65;color:var(--iwa)}
+.tp-desc{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;margin-top:-2px;font-size:11px;line-height:1.7;color:var(--ink3)}
 .tp-date{margin-top:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--ink4)}
 /* 前後ボタンはカード列の左右端、帯と同じ高さに置く。版面の余白側へ半分出して文字を隠さない。 */
 .tp-nav{position:absolute;inset:0;pointer-events:none}
@@ -550,6 +551,7 @@ main > section:not(.hero) {
   .tp-rail{padding:var(--tp-rail-top) 2px 10px}
   .tp-card{padding:var(--tp-pad) var(--tp-pad) 10px;gap:7px}
   .tp-title{font-size:12px}
+  .tp-desc{font-size:10.5px}
   .news-sec .pub-live{gap:8px 12px;padding:8px 10px 8px 16px;margin-bottom:14px}
   .news-sec .pub-live-txt{font-size:11.5px}
   .news-sec .news-more{margin-top:10px}
@@ -1081,72 +1083,86 @@ main > section:not(.hero) {
       <!-- home-topics-cards:start -->
         <li class="tp-item"><a class="tp-card" href="blog/saitei-chingin-kyuyo-keisan-2026.html">
           <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
-          <span class="tp-title">富山の<wbr>最低賃金は<wbr>1,119円へ<wbr>｜給与計算で<wbr>先に<wbr>直す<wbr>5つの<wbr>箇所</span>
+          <span class="tp-title">富山の<wbr>最低賃金は<wbr>1,119円へ</span>
+          <span class="tp-desc">富山県の最低賃金は1,119円への引上げが答申され、10月1日発効の見込みです。対象者の洗い出し、月給者の時間額換算、締め日をまたぐ計算、割増単価、原資に使える3つの制度まで給与計算の実務を整理します。</span>
           <time class="tp-date" datetime="2026-08-24">2026.08.24</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/mudan-kekkin-taio.html">
           <span class="tp-thumb" data-cat="trouble">労務トラブル</span>
-          <span class="tp-title">無断欠勤で<wbr>連絡が<wbr>取れない<wbr>従業員への<wbr>対応｜解雇を<wbr>急ぐ前の<wbr>手順</span>
+          <span class="tp-title">無断欠勤で<wbr>連絡が<wbr>取れない<wbr>従業員への<wbr>対応</span>
+          <span class="tp-desc">従業員が無断欠勤し連絡が取れないとき、すぐ解雇すると争いの種になります。安否確認と記録、就業規則の確認、退職・解雇の3つの出口、労働基準監督署への解雇予告除外認定、給与と保険の事後処理まで順序で解説します。</span>
           <time class="tp-date" datetime="2026-08-24">2026.08.24</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/gyomu-kaizen-toyama-2026.html">
           <span class="tp-thumb" data-cat="joseikin">助成金</span>
-          <span class="tp-title">【令和8年度】<wbr>富山県の<wbr>業務改善助成金<wbr>｜締切9月<wbr>30日見込みと<wbr>順序</span>
+          <span class="tp-title">【令和8年度】<wbr>富山県の<wbr>業務改善助成金</span>
+          <span class="tp-desc">富山県の最低賃金は令和8年10月1日に1,119円へ改定される見込みです。業務改善助成金の締切は9月30日見込み。対象判定、申請・賃上げ・設備導入の順序、県の上乗せ補助2制度を図解で整理します。</span>
           <time class="tp-date" datetime="2026-08-16">2026.08.16</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/kensetsu-kokuho-hojinnari.html">
           <span class="tp-thumb" data-cat="hoken">社会保険</span>
-          <span class="tp-title">建設国保は<wbr>法人成り後も<wbr>続けられる<wbr>｜適用除外承認と<wbr>協会けんぽ比較</span>
+          <span class="tp-title">建設国保は<wbr>法人成り後も<wbr>続けられる</span>
+          <span class="tp-desc">適用除外承認を受ければ、建設国保は法人成り後も継続できます。事実発生日から14日以内の手続きと、令和8年度の富山県建設国保・協会けんぽの保険料を家族構成別に比較します。</span>
           <time class="tp-date" datetime="2026-08-09">2026.08.09</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/shika-gikoujo-shienryo-2026.html">
           <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
-          <span class="tp-title">【令和8年度】<wbr>歯科技工所<wbr>ベースアップ支援料｜<wbr>届出と<wbr>委託費の<wbr>渡し方</span>
+          <span class="tp-title">【令和8年度】<wbr>歯科技工所<wbr>ベースアップ支援料</span>
+          <span class="tp-desc">歯科技工所ベースアップ支援料を図解で解説。1装置15点をなぜ医院が届け出るのか、委託費への上乗せ方、消費税の扱い、翌年8月の実績報告までを歯科医院向けに整理します。</span>
           <time class="tp-date" datetime="2026-08-09">2026.08.09</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/shika-baseup-hyokaryo-2026.html">
           <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
-          <span class="tp-title">【令和8年度】<wbr>歯科<wbr>ベースアップ評価料｜<wbr>届出と<wbr>8月報告</span>
+          <span class="tp-title">【令和8年度】<wbr>歯科<wbr>ベースアップ評価料</span>
+          <span class="tp-desc">令和8年度の歯科外来・在宅ベースアップ評価料を図解。届出後の8月報告、継続的賃上げの点数、対象職員、賃金配分、様式95・96・98の選び方、収入実績額の計算まで歯科医院向けに整理します。</span>
           <time class="tp-date" datetime="2026-08-08">2026.08.08</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/trial-koyo-joseikin-2026.html">
           <span class="tp-thumb" data-cat="joseikin">助成金</span>
-          <span class="tp-title">【令和8年度】<wbr>トラ<wbr>イアル雇用助成金<wbr>｜月額最大4<wbr>万円の<wbr>要件と<wbr>期限</span>
+          <span class="tp-title">【令和8年度】<wbr>トライアル雇用助成金</span>
+          <span class="tp-desc">令和8年度のトライアル雇用助成金（一般トライアルコース）は月額最大4万円（最長3か月）です。ハローワーク等の紹介を受けてから選考を始めることが前提で、自社応募や縁故採用は対象外です。要件と提出期限を解説します。</span>
           <time class="tp-date" datetime="2026-08-01">2026.08.01</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/jinzai-kaihatsu-joseikin-2026.html">
           <span class="tp-thumb" data-cat="joseikin">助成金</span>
-          <span class="tp-title">【令和8年度】<wbr>人材開発支援助成金｜<wbr>人材育成支援<wbr>コースの<wbr>金額と<wbr>期限</span>
+          <span class="tp-title">【令和8年度】<wbr>人材開発支援助成金</span>
+          <span class="tp-desc">令和8年度の人材開発支援助成金（人材育成支援コース）を解説します。中高年齢者実習型訓練の新設、賃金助成・経費助成の金額、計画届の提出期限など、申請前に押さえておきたい要点をまとめました。</span>
           <time class="tp-date" datetime="2026-08-01">2026.08.01</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/gyomu-kaizen-joseikin-2026.html">
           <span class="tp-thumb" data-cat="joseikin">助成金</span>
-          <span class="tp-title">【令和8年度】<wbr>業務改善助成金<wbr>｜50円以上の<wbr>引上げが<wbr>条件に</span>
+          <span class="tp-title">【令和8年度】<wbr>業務改善助成金</span>
+          <span class="tp-desc">令和8年度の業務改善助成金は、事業場内最低賃金の引上げ額が30円以上から50円以上に変わりました。50・70・90円の3コースと助成上限額、令和8年9月1日からの申請期間、交付決定前に発注できない点を解説します。</span>
           <time class="tp-date" datetime="2026-07-31">2026.07.31</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/kaigo-hoshu-kaitei-2027.html">
           <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
-          <span class="tp-title">2027<wbr>年度介護報酬改定は<wbr>どう<wbr>進む？<wbr>｜確定事項と<wbr>審議中の<wbr>論点</span>
+          <span class="tp-title">2027<wbr>年度介護報酬改定は<wbr>どう<wbr>進む？</span>
+          <span class="tp-desc">2027年度介護報酬改定の検討スケジュールと、2026年7月28日時点で決まっていること・未確定のことを整理。介護事業所が今からそろえる人員・賃金・勤怠データを解説します。</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/kaigo-shogu-new-services-2026.html">
           <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
-          <span class="tp-title">訪問看護等3<wbr>サービスの<wbr>処遇改善加算<wbr>｜2026年<wbr>6月新設</span>
+          <span class="tp-title">訪問看護等3<wbr>サービスの<wbr>処遇改善加算</span>
+          <span class="tp-desc">2026年6月に訪問看護、訪問リハビリテーション、居宅介護支援・介護予防支援へ新設された処遇改善加算を解説。加算率1.8％・1.5％・2.1％の違いと取得ルート、6月の特例期限を過ぎた場合の年度途中の届出を整理します。</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/toyama-koyou-josei-2026-05.html">
           <span class="tp-thumb" data-cat="keiei">経営・採用</span>
-          <span class="tp-title">富山県の<wbr>有効求人倍率は<wbr>1.46<wbr>倍｜2026年<wbr>5月の<wbr>採用市場</span>
+          <span class="tp-title">富山県の<wbr>有効求人倍率は<wbr>1.46倍</span>
+          <span class="tp-desc">2026年5月の富山県有効求人倍率は1.46倍、新規求人倍率は2.28倍。全国値との比較、正社員求人の動き、ハローワーク統計を自社の採用計画へ落とす方法を解説します。</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/tokutei-chiiki-kyotaku-service-2027.html">
           <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
-          <span class="tp-title">特定地域居宅<wbr>サービスとは<wbr>｜2027年の<wbr>確定事項と<wbr>未確定事項</span>
+          <span class="tp-title">特定地域居宅<wbr>サービスとは</span>
+          <span class="tp-desc">2027年施行予定の特定地域居宅サービスについて、法律で決まった枠組みと今後決まる人員配置・包括評価を区別して解説。中山間地域の介護事業者が今から確認する労務課題も整理します。</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
         <li class="tp-item"><a class="tp-card" href="blog/kaigo-technology-jininhaichi-2027.html">
           <span class="tp-thumb" data-cat="system">システム導入</span>
-          <span class="tp-title">介護テクノロジーで<wbr>人員基準は<wbr>変わる？<wbr>｜勤務表と<wbr>効果測定の<wbr>準備</span>
+          <span class="tp-title">介護テクノロジーで<wbr>人員基準は<wbr>変わる？</span>
+          <span class="tp-desc">介護記録ソフトや見守り機器を導入しても、人員基準が自動で緩和されるわけではありません。2027年度改定の審議状況と、勤務表・残業・研修時間を測る導入前後の実務を整理します。</span>
           <time class="tp-date" datetime="2026-07-28">2026.07.28</time>
         </a></li>
       <!-- home-topics-cards:end -->

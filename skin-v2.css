@@ -42,7 +42,7 @@ p a, li a, dd a { word-break: normal; }
   h1:has(wbr), h2:has(wbr), h3:has(wbr), h4:has(wbr), h5:has(wbr),
   p:has(wbr), li:has(wbr), dd:has(wbr), dt:has(wbr),
   figcaption:has(wbr), blockquote:has(wbr), summary:has(wbr),
-  .tp-title:has(wbr), .rp-title:has(wbr), .jk-guide-n:has(wbr),
+  .tp-title:has(wbr), .tp-desc:has(wbr), .rp-title:has(wbr), .jk-guide-n:has(wbr),
   .svc-info-name:has(wbr), .svc-info-desc:has(wbr) {
     word-break: keep-all;
     overflow-wrap: break-word;
