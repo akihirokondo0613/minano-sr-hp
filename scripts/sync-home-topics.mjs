@@ -7,7 +7,7 @@
  *   - 公開状況の数値（公開記事の本数・分野数・最新記事の日付）
  *   - 横送りのカード列（新しい順の記事カード）
  *
- * カード上部の帯は、図ではなく分野名の文字で何の話かを示す。色は分野ごとに
+ * カードは 帯（分野名）→タイトル→概要→日付 の並びで統一する。帯は図ではなく分野名の文字で何の話かを示す。色は分野ごとに
  * index.html の .tp-thumb[data-cat] が持ち、ここは分野キーと表示名だけを出す。
  *
  * --check を付けると差分の有無だけを判定し、ズレていれば失敗する（公開前チェック用）。
@@ -57,7 +57,7 @@ function normalizeArticles(raw) {
     throw new Error('blog/articles.json: 記事が1件もありません');
   }
   for (const article of raw) {
-    for (const key of ['slug', 'cat', 'catLabel', 'date', 'title']) {
+    for (const key of ['slug', 'cat', 'catLabel', 'date', 'title', 'description']) {
       if (typeof article?.[key] !== 'string' || !article[key].trim()) {
         throw new Error(`blog/articles.json: ${key} が空の記事があります（slug: ${article?.slug ?? '不明'}）`);
       }
@@ -82,10 +82,14 @@ function buildStats(articles) {
 function buildCards(articles) {
   const lines = articles.slice(0, CARD_COUNT).map((article) => {
     const href = `blog/${article.slug}.html`;
+    // カードは「タイトル→概要」の2段で統一する。記事タイトルの「｜」以降は
+    // 副題で概要と重複するため、カードでは主部だけを出す（記事ページは全文のまま）。
+    const title = article.title.split('｜')[0].trim();
     return [
       '        <li class="tp-item"><a class="tp-card" href="' + escapeHtml(href) + '">',
       `          <span class="tp-thumb" data-cat="${escapeHtml(article.cat)}">${escapeHtml(article.catLabel)}</span>`,
-      `          <span class="tp-title">${escapeHtml(article.title)}</span>`,
+      `          <span class="tp-title">${escapeHtml(title)}</span>`,
+      `          <span class="tp-desc">${escapeHtml(article.description)}</span>`,
       `          <time class="tp-date" datetime="${escapeHtml(article.date)}">${escapeHtml(article.date.replaceAll('-', '.'))}</time>`,
       '        </a></li>',
     ].join('\n');
