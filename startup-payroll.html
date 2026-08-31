@@ -556,6 +556,22 @@
 @media(max-width:420px){#burden .startup-section-title{font-size:min(21px,5.3vw)}}
 .startup-section-lead{max-width:52em;font-size:clamp(14px,1.15vw,16.5px)}
 .startup-future-panel h2.startup-future-headline{font-size:clamp(17px,1.75vw,27px)}
+/* 06「なぜ助成金を勧めるのか」：カードにせず罫線だけの3列（他セクションと同じ組み） */
+.startup-why{margin-top:clamp(12px,1.4vw,18px)}
+.startup-why-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:clamp(14px,1.6vw,20px) 0 0;padding:0;list-style:none;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.startup-why-list li{padding:22px clamp(16px,2.5vw,30px) 24px 0;border-right:1px solid var(--line)}
+.startup-why-list li + li{padding-left:clamp(16px,2.5vw,30px)}
+.startup-why-list li:last-child{padding-right:0;border-right:0}
+.startup-why-list span{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em}
+.startup-why-list h3{margin-top:9px;color:var(--iwa);font-family:var(--disp);font-size:clamp(15px,1.35vw,19px);font-weight:900;line-height:1.6}
+.startup-why-list p{margin-top:8px;color:var(--ink3);font-size:clamp(12.5px,1vw,14px);line-height:1.9}
+.startup-why-note{margin-top:13px;color:var(--ink3);font-size:11.5px;line-height:1.8}
+@media(max-width:840px){
+  .startup-why-list{grid-template-columns:minmax(0,1fr)}
+  .startup-why-list li,.startup-why-list li + li{padding:16px 0;border-right:0;border-bottom:1px solid var(--line)}
+  .startup-why-list li:last-child{padding-bottom:0;border-bottom:0}
+}
+/* 広い画面で帯の中の文が3〜4割しか使わず、意味のない位置で折れていた。器いっぱいに伸ばす */
 /* 濃い緑の2ブロックは .w の外に出して全幅の帯にする（100vwを使わないのでスクロールバー分がずれない） */
 .lp-band{padding:0;border-radius:0;box-shadow:none}
 .lp-band>.w{padding-block:clamp(38px,5vw,72px)}
@@ -570,7 +586,9 @@
   .lp-band.startup-cost .startup-cost-term.is-sum b{font-size:clamp(40px,5.6vw,84px)}
   .lp-band.startup-cost .startup-cost-op{font-size:clamp(20px,2.4vw,34px)}
   .lp-band.startup-cost .startup-cost-eq{column-gap:clamp(16px,2.2vw,32px)}
-  .lp-band.startup-cost .startup-cost-plus{font-size:clamp(14px,1.2vw,17px);max-width:56em}
+  .lp-band.startup-cost .startup-cost-plus{font-size:clamp(14px,1.2vw,17px);max-width:none}
+  .lp-band.startup-cost .startup-cost-note{max-width:none}
+  .lp-band.startup-annual-sum .startup-annual-sum-note{max-width:none}
 }
 .startup-cost-term b{font-size:clamp(20px,2.4vw,34px)}
 .startup-cost-term.is-sum b{font-size:clamp(30px,4.2vw,58px);white-space:nowrap}
@@ -672,6 +690,21 @@
 .startup-cost-note,.startup-joseikin-note,.startup-rep-text,.startup-option-note,
 .startup-annual-sum-note,.startup-cost-plus{max-width:46em}
 .startup-section-lead{max-width:44em;font-size:var(--lp-lead)}
+/* 広い画面では読む文の幅も上げる。46em／780pxのままだと器の4割しか使わず、
+   意味のない位置で3〜4行に折れていた（注記は1〜2行に収まるので上限を外す） */
+@media(min-width:1200px){
+  .startup-scope-note,.startup-price-note,.startup-lookback-note,
+  .startup-wide .startup-annual-note,
+  .startup-joseikin-grid .startup-story-copy>.startup-joseikin-note{max-width:none}
+  .startup-section-head{max-width:1080px}
+  .startup-section-lead,.startup-wide .startup-section-lead,
+  .startup-window .startup-section-lead{max-width:58em}
+}
+@media(min-width:1600px){
+  .startup-section-head{max-width:1240px}
+  .startup-section-lead,.startup-wide .startup-section-lead,
+  .startup-window .startup-section-lead{max-width:64em}
+}
 
 /* ⑥ 詳細度で負けていた箇所と、スケールから外れて残った値の始末 */
 .startup-price-option .startup-price-details h4,.startup-future-explain strong{font-size:var(--lp-h4)}
@@ -734,6 +767,52 @@
 .startup-page strong,.startup-page b,.startup-page em,.startup-page dd,
 .startup-page h4{text-wrap:pretty}
 .startup-page .nw{white-space:nowrap;text-wrap-mode:nowrap}
+
+/* ══ 章の中の3拍（なぜ／どうやって／何を実現するのか） ══════════════
+   長い章は、読み手が「いま何の話か」を見失う。拍の名前を先に置いて現在地を示す。 */
+.lp-beat{display:flex;flex-wrap:wrap;align-items:baseline;gap:7px 15px;margin:clamp(36px,4.4vw,64px) 0 0}
+.lp-beat:first-of-type{margin-top:clamp(26px,3vw,40px)}
+.lp-beat em{flex:0 0 auto;font-style:normal;font-family:var(--mono);font-size:10.5px;font-weight:700;
+  letter-spacing:.14em;color:var(--moegi-t);padding:4px 12px;border-radius:999px;
+  border:1px solid color-mix(in srgb,var(--moegi) 44%,transparent)}
+.lp-beat span{min-width:0;color:var(--iwa);font-family:var(--disp);font-weight:900;
+  font-size:clamp(16px,1.65vw,24px);line-height:1.6}
+@media(max-width:520px){.lp-beat{gap:6px 10px}.lp-beat em{font-size:9.5px;padding:3px 10px}}
+
+/* ══ 合わせると動く（トップのメニューと同じ運動） ════════════════════
+   ・下線が左から右へ引かれる（ナビと同じ scaleX / origin:left）
+   ・地がごく薄く染まり、面が2pxだけ持ち上がる
+   ・補足の1行が下から出る。場所は常に確保してあるので、他の要素は動かない
+   タッチ端末・狭い画面・reduced-motion では最初から出しておく（hoverが無い） */
+.startup-why-list li{position:relative;display:flex;flex-direction:column;
+  transition:background-color .32s cubic-bezier(.22,.7,.28,1),transform .32s cubic-bezier(.22,.7,.28,1)}
+.startup-why-list li>p{margin-bottom:11px}
+.startup-why-list li::after{content:'';position:absolute;left:0;right:1px;bottom:-1px;height:3px;
+  border-radius:2px;background:var(--moegi);transform:scaleX(0);transform-origin:left;
+  transition:transform .32s cubic-bezier(.22,.7,.28,1)}
+.startup-why-more{display:block;margin-top:auto;padding-top:9px;color:var(--moegi-t);
+  font-size:11.5px;line-height:1.75;
+  border-top:1px dashed color-mix(in srgb,var(--moegi) 40%,transparent);
+  opacity:0;transform:translateY(6px);
+  transition:opacity .3s cubic-bezier(.22,.7,.28,1),transform .3s cubic-bezier(.22,.7,.28,1)}
+@media(hover:hover){
+  .startup-why-list li:hover{background:color-mix(in srgb,var(--moegi) 7%,transparent);transform:translateY(-2px)}
+  .startup-why-list li:hover::after,.startup-why-list li:focus-within::after{transform:scaleX(1)}
+  .startup-why-list li:hover .startup-why-more,
+  .startup-why-list li:focus-within .startup-why-more{opacity:1;transform:none}
+  /* 3ステップは角丸のカードなので、トップの記事カードと同じ持ち上がりにする */
+  .startup-ready-flow li{transition:border-color .3s,transform .3s cubic-bezier(.22,.7,.28,1),box-shadow .35s cubic-bezier(.22,.7,.28,1)}
+  .startup-ready-flow li:hover{border-color:var(--moegi);transform:translateY(-3px);box-shadow:0 10px 24px rgba(18,63,48,.08)}
+}
+@media(hover:none),(max-width:840px){
+  .startup-why-more{opacity:1;transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .startup-why-list li,.startup-why-list li::after,.startup-why-more,
+  .startup-ready-flow li{transition:none}
+  .startup-why-more{opacity:1;transform:none}
+  .startup-why-list li:hover,.startup-ready-flow li:hover{transform:none}
+}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"労務の顧問と給与計算｜富山の社労士 月25,000円から","description":"富山の社会保険労務士事務所みなのの労務顧問。給与計算なしのスタート顧問は月25,000円から、給与計算と個別労務相談まで含むスタンダードは月45,000円から。いずれも創業3年以内の割引適用時の金額で、通常は35,000円・55,000円からです。","url":"https://minano-sr.com/startup-payroll.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://minano-sr.com/"},{"@type":"ListItem","position":2,"name":"料金・顧問プラン","item":"https://minano-sr.com/pricing.html"},{"@type":"ListItem","position":3,"name":"創業期の労務顧問","item":"https://minano-sr.com/startup-payroll.html"}]}]}
@@ -771,7 +850,7 @@
             <li><strong><span class="nw">助成金は記録で</span><br><span class="nw">決まります</span></strong><small><span class="nw">過去2年の記録が</span><br><span class="nw">見られます</span></small></li>
             <li><strong><span class="nw">社会保険労務士が</span><br><span class="nw">担当します</span></strong><small><span class="nw">登録番号</span><br><span class="nw">第16260009号</span></small></li>
           </ul>
-          <p class="startup-hero-sign">助成金の<wbr>申請代行は<wbr>月額顧問料に<wbr>含まれず、<wbr>別料金です。<wbr>支給を<wbr>保証する<wbr>ものではありません。</p>
+          <p class="startup-hero-sign">助成金は<wbr>対象要件と<wbr>記録の<wbr>確認が<wbr>必要です。<wbr>支給を<wbr>保証する<wbr>ものではありません。</p>
         </div>
         <aside class="startup-future-panel" aria-labelledby="startup-future-title">
           <p class="startup-future-kicker">発生する<wbr>実務を、<wbr>専門家が<wbr>代行</p>
@@ -784,7 +863,7 @@
     </div>
   </header>
 
-  <div class="startup-toc-band"><div class="w"><nav class="startup-page-toc" aria-label="このページの内容"><p class="startup-page-toc-title">このページの内容</p><ol><li><a href="#scope">任せられる業務</a></li><li><a href="#annual">年度更新・算定基礎届</a></li><li><a href="#price">料金</a></li><li><a href="#joseikin">助成金の準備</a></li><li><a href="#consultation">相談の流れ</a></li><li><a href="#faq">よくある質問</a></li></ol></nav></div></div>
+  <div class="startup-toc-band"><div class="w"><nav class="startup-page-toc" aria-label="このページの内容"><p class="startup-page-toc-title">このページの内容</p><ol><li><a href="#scope">任せられる業務</a></li><li><a href="#annual">年度更新・算定基礎届</a></li><li><a href="#joseikin">助成金</a></li><li><a href="#price">料金</a></li><li><a href="#consultation">相談の流れ</a></li><li><a href="#faq">よくある質問</a></li></ol></nav></div></div>
 
   <section class="startup-section startup-section-white" id="burden">
     <div class="w startup-story-grid">
@@ -809,8 +888,8 @@
           <i class="startup-cost-op" aria-hidden="true">=</i>
           <div class="startup-cost-term is-sum"><span>自社で対応している分</span><b>月25,000円</b></div>
         </div>
-        <p class="startup-cost-plus">スタート顧問<wbr>（創業3年以内・<wbr>従業員5名まで）は<wbr><strong>月25,000円</strong>。<wbr>同じ<wbr>月額の<wbr>中で、<wbr><strong>助成金の<wbr>申請に<wbr>必要な<wbr>記録も<wbr>整った<wbr>状態が<wbr>続きます。</strong></p>
-        <p class="startup-cost-note">時間と<wbr>単価は<wbr>仮の<wbr>置き方です。<wbr>実際の<wbr>作業量は<wbr>会社に<wbr>よって<wbr>異なります。<wbr>助成金の<wbr>申請代行は<wbr>別料金で、<wbr>支給を<wbr>保証する<wbr>ものではありません。</p>
+        <p class="startup-cost-plus">スタート顧問<wbr>（創業3年以内・<wbr>従業員5名まで）は<wbr><strong>月25,000円</strong>。<wbr>同じ<wbr>月額の<wbr>中で、<wbr><strong>助成金の<wbr>申請に<wbr>備えた<wbr>労務情報の<wbr>整理まで<wbr>含みます。</strong></p>
+        <p class="startup-cost-note">時間と<wbr>単価は<wbr>仮の<wbr>置き方です。<wbr>実際の<wbr>作業量は<wbr>会社に<wbr>よって<wbr>異なります。<wbr>助成金の<wbr>支給を<wbr>保証する<wbr>ものではありません。</p>
       </div></div>
   </section>
 
@@ -823,7 +902,7 @@
           <div class="startup-post-flow-step is-office"><b>社労士が実務・照合</b><span>給与計算・届出・期限と制度改正の確認</span></div><span class="startup-post-flow-arrow" aria-hidden="true">→</span>
           <div class="startup-post-flow-step"><b>会社が最終判断</b><span>整理された処理結果・確認事項・判断材料</span></div>
         </div>
-        <figcaption>日頃の<wbr>情報を<wbr>整えて<wbr>おくと、<wbr>助成金の<wbr>提案や<wbr>申請前の<wbr>準備に<wbr>もつながります。<wbr>申請代行は<wbr>別料金です。</figcaption>
+        <figcaption>日頃の<wbr>情報を<wbr>整えて<wbr>おくと、<wbr>助成金の<wbr>提案や<wbr>申請前の<wbr>準備に<wbr>もつながります。</figcaption>
       </figure>
       <div class="startup-outcome-list"><article class="startup-outcome-item"><span>01 / DEADLINE</span><h3>期限と<wbr>必要書類を、<wbr>手続きごとに<wbr>調べ続けない。</h3><p>入退社や<wbr>社会保険の<wbr>届出に<wbr>ついて、<wbr>期限と<wbr>必要書類を<wbr>確認し、<wbr>実際の<wbr>手続きを<wbr>進めます。</p></article><article class="startup-outcome-item"><span>02 / EXECUTION</span><h3>給与計算と<wbr>届出を、<wbr>発生する<wbr>たびに<wbr>進めて<wbr>もらえる。</h3><p>勤怠・<wbr>手当・入退社情報を<wbr>照合し、<wbr>給与計算と<wbr>届出の<wbr>実務を<wbr>継続して<wbr>担います。</p></article><article class="startup-outcome-item"><span>03 / DECISION</span><h3>最終確認に<wbr>必要な<wbr>材料が、<wbr>まとまって<wbr>届く。</h3><p>処理結果、<wbr>確認事項、<wbr>選択肢を<wbr>まとめ、<wbr>経営者が<wbr>判断すべき点を<wbr>明確に<wbr>してお返しします。</p></article></div>
     </div>
@@ -831,21 +910,29 @@
 
   <section class="startup-section" id="scope"><div class="w"><div class="startup-section-head"><p class="startup-section-label">03 / 任せられる<wbr>業務</p><h2 class="startup-section-title"><span class="nw">任せるのは、</span><br><span class="nw">毎月の労務実務です。</span></h2><p class="startup-section-lead"><strong>給与計算・<wbr>手続き・相談</strong>を<wbr>顧問の<wbr>中心に<wbr>置き、<wbr>導入支援や<wbr>申請代行などは<wbr>必要な<wbr>ときだけ別途<wbr>ご提案します。</p></div><div class="startup-scope-table"><article class="startup-scope-column is-included"><div class="startup-scope-heading"><span aria-hidden="true">01</span><h3>月額顧問料に含む</h3><p>毎月・定例の実務</p></div><ul><li>給与・賞与計算</li><li>定例・年次の<wbr>労働社会保険手続き</li><li>個別の労務相談</li><li>就業規則の<wbr>年次レビューと<wbr>改定提案</li><li>助成金情報の<wbr>ご案内と、<wbr>申請に<wbr>備えた<wbr>労務情報の<wbr>整理</li></ul></article><article class="startup-scope-column is-extra"><div class="startup-scope-heading"><span aria-hidden="true">02</span><h3>必要なときだけ別料金</h3><p>導入・申請などの<wbr>個別対応</p></div><ul><li>勤怠システムの<wbr>導入・定着支援</li><li>助成金の申請代行</li><li>就業規則の<wbr>新規作成・<wbr>全面改定</li><li>年末調整の<wbr>資料整理・税理士連携</li><li>料金ページ記載の<wbr>申請・実費</li></ul></article></div><p class="startup-scope-note">別料金の<wbr>業務は、<wbr>必要性を<wbr>確認したうえで<wbr>事前に<wbr>お見積りします。<wbr>固定料金は<wbr><a href="pricing.html">料金ページ</a>で<wbr>ご確認ください。</p></div></section>
 
-  <section class="startup-section startup-section-white" id="annual"><div class="w startup-wide"><div class="startup-section-head"><p class="startup-section-label">04 / 年に<wbr>一度の<wbr>実務</p><h2 class="startup-section-title"><span class="nw">年に一度の山も、</span><wbr><mark><span class="nw">月額の中です</span></mark>。</h2><p class="startup-section-lead">労働保険の年度更新（<wbr>6〜<wbr>7月）と、<wbr>社会保険<wbr>の算定基礎届（<wbr>7月）。<wbr>どちらも<wbr>期限が<wbr>決まっていて、<wbr>その<wbr>時期だけ<strong>手が<wbr>止まる<wbr>作業</strong>です。<wbr>顧問契約の<wbr>ない<wbr>方には<wbr>単発の<wbr>固定料金で<wbr>お受けしていますが、<wbr>顧問プランでは<wbr>いずれも<wbr><strong>月額に<wbr>含みます</strong>。</p></div>
+  <section class="startup-section startup-section-white" id="annual"><div class="w startup-wide"><div class="startup-section-head"><p class="startup-section-label">04 / 年に<wbr>一度の<wbr>実務</p><h2 class="startup-section-title"><span class="nw">年に一度の山も、</span><wbr><mark><span class="nw">月額の中です</span></mark>。</h2><p class="startup-section-lead">労働保険の年度更新（<wbr>6〜<wbr>7月）と、<wbr>社会保険<wbr>の算定基礎届（<wbr>7月）。<wbr>どちらも<wbr>期限が<wbr>決まっていて、<wbr>その<wbr>時期だけ<strong>手が<wbr>止まる<wbr>作業</strong>です。<wbr>顧問契約の<wbr>ない<wbr>方には<wbr>単発の<wbr>固定料金で<wbr>お受けしていますが、<wbr>顧問プランでは<wbr>いずれも<wbr><strong>月額に<wbr>含みます</strong>。<wbr>毎月の<wbr>手続きを<wbr>預かる<wbr>事務所が<wbr><strong>当然に<wbr>担うべき仕事</strong>だと<wbr>考えているからです。</p></div>
     <div class="startup-annual-grid">
       <article class="startup-annual-item"><p class="startup-annual-when">毎年 6〜7月</p><h3>労働保険の年度更新</h3><p class="startup-annual-spot">顧問契約が<wbr>ない<wbr>場合<wbr><b><span class="nw">30,000円</span></b><small><span class="nw">基本25,000円</span>＋<wbr><span class="nw">対象者1名1,000円</span>×<wbr><span class="nw">5名</span></small></p><p class="startup-annual-badge">月額顧問料に含む</p></article>
       <article class="startup-annual-item"><p class="startup-annual-when">毎年 7月</p><h3>社会保険の算定基礎届</h3><p class="startup-annual-spot">顧問契約が<wbr>ない<wbr>場合<wbr><b><span class="nw">30,000円</span></b><small><span class="nw">基本25,000円</span>＋<wbr><span class="nw">対象者1名1,000円</span>×<wbr><span class="nw">5名</span></small></p><p class="startup-annual-badge">月額顧問料に含む</p></article>
       <article class="startup-annual-item"><p class="startup-annual-when">賞与のつど</p><h3>賞与支払届</h3><p class="startup-annual-spot">顧問契約が<wbr>ない<wbr>場合<b><span class="nw">55,000円</span></b><small>（<wbr><span class="nw">基本20,000円</span>＋<wbr><span class="nw">対象者1名1,500円</span>×<wbr><span class="nw">5名</span>）<wbr>×<span class="nw">年2回</span></small></p><p class="startup-annual-badge">月額顧問料に含む</p></article>
     </div>
   </div>
-  <div class="lp-band startup-annual-sum"><div class="w startup-wide"><div class="startup-annual-sum-fig"><p class="startup-annual-sum-label">従業員<span class="nw">5名</span>・<wbr>賞与<span class="nw">年2回</span>の<wbr>会社の<wbr>場合</p><div class="startup-annual-compare"><div class="startup-annual-compare-before"><span>顧問契約がないと</span><b><span class="nw">年115,000円</span></b></div><span class="startup-annual-compare-arrow" aria-hidden="true">→</span><div class="startup-annual-compare-after"><span>顧問プランなら追加</span><b>0<i>円</i></b><small>月額顧問料に含みます</small></div></div></div><p class="startup-annual-sum-note">スタート顧問は<wbr><span class="nw">月25,000円</span>（<wbr><span class="nw">年300,000円</span>）<wbr>です。年度更新の<wbr>時期に<wbr>なって<wbr>も、算定基礎届の<wbr>時期に<wbr>なっても、<wbr>この<wbr>3つで<wbr>追加で<wbr>いただく<wbr>費用は<wbr>ありません。</p></div></div>
+  <div class="lp-band startup-annual-sum"><div class="w startup-wide"><div class="startup-annual-sum-fig"><p class="startup-annual-sum-label">従業員<span class="nw">5名</span>・<wbr>賞与<span class="nw">年2回</span>の<wbr>会社の<wbr>場合</p><div class="startup-annual-compare"><div class="startup-annual-compare-before"><span>顧問契約がないと</span><b><span class="nw">年115,000円</span></b></div><span class="startup-annual-compare-arrow" aria-hidden="true">→</span><div class="startup-annual-compare-after"><span>顧問プランなら追加</span><b>0<i>円</i></b><small>月額顧問料に含みます</small></div></div></div><p class="startup-annual-sum-note">スタート顧問は<wbr><span class="nw">月25,000円</span>（<wbr><span class="nw">年300,000円</span>）<wbr>です。年度更新の<wbr>時期に<wbr>なって<wbr>も、算定基礎届の<wbr>時期に<wbr>なっても、<wbr>この<wbr>3つで<wbr>追加で<wbr>いただく<wbr>費用は<wbr>ありません。<wbr><strong>料金を<wbr>分かりやすく<wbr>したい</strong>ので、<wbr>時期に<wbr>よって<wbr>金額が<wbr>動く<wbr>形に<wbr>していません。</p></div></div>
   <div class="w startup-wide">
     <p class="startup-annual-note">金額は<wbr>当事務所の<wbr>スポット料金<wbr>（顧問契約の<wbr>ない<wbr>方の<wbr>固定額・税抜）を、<wbr>従業員<span class="nw">5名</span>・<wbr>賞与<span class="nw">年2回</span>と<wbr>して<wbr>計算した<wbr>ものです。<wbr>実際の<wbr>人数・回数に<wbr>より<wbr>変わります。<wbr>スポット料金は<wbr><a href="pricing.html">料金ページ</a>に<wbr>掲載しています。</p>
   </div></section>
 
-  <section class="startup-section startup-price-band" id="price"><div class="w startup-wide"><div class="startup-section-head"><p class="startup-section-label">05 / 料金</p><h2 class="startup-section-title"><span class="nw">必要な範囲から、</span><wbr><mark><span class="nw">月25,000円から</span></mark>。</h2><p class="startup-section-lead">給与計算なしの<wbr>スタート顧問と、<wbr>給与・賞与計算まで<wbr>含むスタンダード。<wbr><strong>どこまで<wbr>任せるか</strong>を<wbr>選べます。<wbr>創業3年以内は、<wbr>どちらも<wbr>通常料金から<wbr>毎月<wbr>10<wbr>,000円割引です。</p></div><div class="startup-price-options"><article class="startup-price-option"><p class="startup-price-option-kicker">給与計算なし</p><h3 class="startup-price-option-name">スタート顧問</h3><p class="startup-price-option-sub">入退社から<wbr>年次手続きまで</p><p class="startup-price-compare"><span>通常月額</span><strong>35,000円</strong></p><p class="startup-price-main"><strong>25,000円</strong><span>／月</span></p><small class="startup-price-tax">創業3年以内・従業員5名まで・税抜</small><div class="startup-price-details"><h4>含まれる主な業務</h4><ul class="startup-price-includes"><li>社会保険・<wbr>雇用保険手続き</li><li>労働保険の年度更新</li><li>社会保険の算定基礎届</li><li>賞与支払届</li><li>助成金情報のご案内</li><li>法改正情報の配信</li></ul><p class="startup-price-term"><strong>給与計算・<wbr>個別労務相談・<wbr>就業規則の<wbr>年次レビューは<wbr>含みません。</strong><br>必要に<wbr>なった<wbr>ときは、<wbr>スタンダードへの<wbr>変更を<wbr>ご相談いただけます。</p></div></article><article class="startup-price-option is-recommended"><p class="startup-price-option-kicker">給与計算まで任せるなら</p><h3 class="startup-price-option-name">スタンダード</h3><p class="startup-price-option-sub">実務を<wbr>まとめて<wbr>一つの<wbr>窓口へ</p><p class="startup-price-compare"><span>通常月額</span><strong>55,000円</strong></p><p class="startup-price-main"><strong>45,000円</strong><span>／月</span></p><small class="startup-price-tax">創業3年以内・従業員10名まで・税抜</small><div class="startup-price-details"><h4>含まれる主な業務</h4><ul class="startup-price-includes"><li>給与・賞与計算</li><li>労働社会保険手続き</li><li>労働保険の年度更新</li><li>社会保険の算定基礎届</li><li>賞与支払届</li><li>個別の労務相談</li><li>就業規則の年次レビュー</li></ul><p class="startup-price-term"><strong>創業3周年まで<wbr>割引。</strong><br>契約開始から<wbr>創業3周年までが<wbr>12か<wbr>月未満の<wbr>場合も、<wbr>契約開始から<wbr>12か<wbr>月間は<wbr>割引を<wbr>適用します。</p></div></article></div><p class="startup-price-note">11人目以降は<wbr>1名に<wbr>つき月2,500円<wbr>（税抜）を<wbr>加算します。<wbr>スタート顧問は<wbr>6人目以降<wbr>1名に<wbr>つき月2,000円<wbr>（税抜）を<wbr>加算します。<wbr>31名以上・<wbr>複数拠点などは<wbr>個別に<wbr>お見積りします。<wbr>詳しい<wbr>業務範囲は<wbr><a href="pricing.html">料金ページ</a>で<wbr>ご確認ください。</p><a class="startup-primary" href="uploads/contact.html?from=startup-payroll-price">任せる範囲と料金を相談する</a><p class="startup-hero-note">相談は<wbr>無料です。<wbr>この<wbr>時点で<wbr>契約は<wbr>確定しません。</p></div></section>
-
-  <section class="startup-section" id="joseikin"><div class="w startup-wide"><div class="startup-section-head"><p class="startup-section-label">06 / 助成金の準備</p><h2 class="startup-section-title"><span class="nw">助成金は、</span><wbr><span class="nw">思い立った時点では</span><wbr><mark><span class="nw">間に合いません</span></mark>。</h2><p class="startup-section-lead">雇用関係の<wbr>助成金は、<wbr>申請の<wbr>ときに<wbr>用意する<wbr>書類だけで<wbr>決まりません。<wbr>過去の<wbr><strong>労務管理の<wbr>記録</strong>で、<wbr>対象に<wbr>なるかどうかが<wbr>決まります。<wbr>記録が<wbr>残っていなければ、<wbr><strong>申請の<wbr>入口で<wbr>終わります</strong>。</p></div>
+  <section class="startup-section" id="joseikin"><div class="w startup-wide"><div class="startup-section-head"><p class="startup-section-label">05 / 助成金</p><h2 class="startup-section-title"><span class="nw">助成金は、</span><wbr><span class="nw">思い立った時点では</span><wbr><mark><span class="nw">間に合いません</span></mark>。</h2><p class="startup-section-lead">難しいのは、<wbr>制度を<wbr>探す<wbr>ことではありません。<wbr><strong>自社が<wbr>要件を<wbr>満たしているかを<wbr>確かめる</strong>ことと、<wbr>満たすように<wbr>記録を<wbr>整える<wbr>ことです。</p></div>
+    <p class="lp-beat"><em>なぜ</em><span>助成金を勧めるのか</span></p>
+    <div class="startup-why">
+      <ul class="startup-why-list">
+        <li><span>01 / NATIONAL</span><h3>国の<wbr>制度は、<wbr>原則と<wbr>して<wbr>全国同じ。</h3><p>自治体独自の<wbr>制度は、<wbr>地域に<wbr>よって<wbr>数も<wbr>規模も<wbr>違います。<wbr>雇用関係の<wbr>助成金は<wbr>国の<wbr>制度で、<wbr>原則と<wbr>して<wbr>全国同じ要綱で<wbr>判断されます。<wbr>富山の<wbr>会社も、<wbr>同じ<wbr>制度に<wbr>申請できます。</p><small class="startup-why-more">例：働き方改革推進支援助成金、キャリアアップ助成金など。</small></li>
+        <li><span>02 / CHECK</span><h3>止まるのは、<wbr>確認の<wbr>ところ。</h3><p>制度は<wbr>公表されています。<wbr>それでも、<wbr>自社が<wbr>要件を<wbr>満た<wbr>している<wbr>かは賃金台帳や<wbr>勤怠の<wbr>記録を<wbr>見なければ<wbr>分かりません。<wbr>確認しないまま、<wbr>申請できる<wbr>時期が<wbr>過ぎてしまう<wbr>ことがあります。</p><small class="startup-why-more">まず、会社に残っている記録で何が確認できるかを見ます。</small></li>
+        <li><span>03 / MONTHLY</span><h3>毎月見ているから、<wbr>気づける。</h3><p>毎月の<wbr>手続きを<wbr>担当していれば、<wbr>賃金や<wbr>勤怠の<wbr>情報は<wbr>手続きの<wbr>たびに<wbr>手元に<wbr>あります。<wbr>対象に<wbr>なりそうな<wbr>ときに、<wbr>その<wbr>時点で<wbr>お伝えできます。</p><small class="startup-why-more">お伝えするのは、要件・必要な書類・実施する時期です。</small></li>
+      </ul>
+      <p class="startup-why-note">一部に<wbr>対象地域が<wbr>定められた<wbr>制度も<wbr>あります。<wbr>対象に<wbr>なるかどうかは、<wbr>制度ごとの<wbr>要件と<wbr>会社の<wbr>実際の<wbr>運用に<wbr>よって<wbr>決まります。</p>
+    </div>
+    <p class="lp-beat"><em>どうやって</em><span>対象に<wbr>なるかどうかは、<wbr>過去の<wbr>記録で<wbr>決まります</span></p>
     <figure class="startup-lookback"><figcaption class="startup-lookback-title">審査で<wbr>見られるのは、<wbr>申請より<wbr>前の<wbr>記録です</figcaption>
       <div class="startup-lookback-track"><div class="startup-lookback-band"><b>要件の対象になる2年間</b><span>この期間の記録が審査の対象になります</span></div><div class="startup-lookback-now"><b>今日</b><span>申請を検討</span></div><p class="startup-lookback-back">この<wbr>期間の<wbr>記録は、<wbr>あとから<wbr>作れません</p></div>
       <p class="startup-lookback-note">確認<wbr>されるのは賃金台帳や<wbr>タイムカードなどの<wbr>記録です。<wbr>対象期間と<wbr>確認書類は<wbr>制度ごとに<wbr>異なります。<wbr>上図は<wbr>働き<wbr>方改革推進支援助成金<wbr>（勤務間<wbr>インターバル導入<wbr>コース）の<wbr>例です。</p></figure>
@@ -855,16 +942,19 @@
         <p class="startup-joseikin-p">この<wbr>コー<wbr>スには、36協定を<wbr>締結している<wbr>こと、<wbr>および原則と<wbr>して、<wbr><span class="nw">令和8年4月1日</span>以前<wbr>の<wbr>2年間に、<wbr><strong><span class="nw">少なくとも1か月</span></strong>、<wbr><span class="nw">月45時間</span>（<wbr>1年単位の<wbr>変形労働時間制で<wbr>働く<wbr>労働者は<wbr><span class="nw">月42時間</span>）を<wbr>超える<wbr>時間外労働の<wbr>実態が<wbr>あった<wbr>こと、と<wbr>いう<wbr>要件が<wbr>あります<wbr>（<wbr><span class="nw">令和8年度</span>交付<wbr>要綱 第<wbr>5条第2号）。<wbr>実態が<wbr>あったか<wbr>どうかは、<wbr>会社が<wbr>保存<wbr>している賃金台帳や<wbr>タイムカードなどの<wbr>記録で<wbr>確認されます。</p>
         <p class="startup-joseikin-p">制度を<wbr>導入する<wbr>意思が<wbr>あっても、<wbr>記録が<wbr>残っていなければ<wbr>確認できません。<wbr>そして<wbr>その<wbr>記録は、<wbr>申請を<wbr>決めてから<wbr><strong>遡って<wbr>作る<wbr>ことができません</strong>。</p>
         <p class="startup-joseikin-p"><strong>毎月の<wbr>給与計算と<wbr>労働社会保険の<wbr>手続きを<wbr>続ける<wbr>ことは、<wbr>そのまま<wbr>申請できる<wbr>状態を<wbr>保つことに<wbr>つなが<wbr>ります。</strong>助成金を<wbr>検討する<wbr>段に<wbr>なってから、<wbr>書類を<wbr>遡って<wbr>整えな<wbr>おす必要が<wbr>ありません。</p>
-        <p class="startup-joseikin-note">要件は<wbr>年度ごとに<wbr>変わります。<wbr>対象に<wbr>なるかどうかは、<wbr>対象年度の<wbr>交付要綱・支給要領と<wbr>会社の<wbr>実際の<wbr>運用、<wbr>証拠書類を<wbr>確認したうえで<wbr>ご案内します。<wbr>当事務所が<wbr>支給を<wbr>保証する<wbr>ものではありません。<wbr>助成金の<wbr>申請代行は<wbr>月額顧問料に<wbr>含まれず、<wbr>別料金です。</p>
+        <p class="startup-joseikin-note">要件は<wbr>年度ごとに<wbr>変わります。<wbr>対象に<wbr>なるかどうかは、<wbr>対象年度の<wbr>交付要綱・支給要領と<wbr>会社の<wbr>実際の<wbr>運用、<wbr>証拠書類を<wbr>確認したうえで<wbr>ご案内します。<wbr>当事務所が<wbr>支給を<wbr>保証する<wbr>ものではありません。</p>
       </div>
       <figure class="startup-story-art"><div class="startup-art-tag">助成金を検討する</div><img src="assets/illustrations/04_subsidy_support_female.webp" width="1664" height="936" loading="lazy" alt="助成金の制度内容と要件を確認している様子"><figcaption><strong>制度を<wbr>探す前に、<wbr>記録が<wbr>そろって<wbr>いるか。</strong><small>対象に<wbr>なりそうな<wbr>制度は、<wbr>会社の<wbr>実態と<wbr>記録から<wbr>絞り込みます。</small></figcaption></figure>
     </div>
+    <p class="lp-beat"><em>何を<wbr>実現するのか</em><span>毎月の<wbr>実務が、<wbr>そのまま<wbr>申請できる<wbr>状態を<wbr>つくります</span></p>
     <ol class="startup-ready-flow">
       <li><span class="startup-ready-when">毎月</span><b>記録が整っていく</b><p>勤怠・賃金・雇用の<wbr>情報を、<wbr>給与計算と<wbr>手続きの<wbr>たびに<wbr>整えます。</p><em>月額顧問料に含む</em></li>
       <li><span class="startup-ready-when">検討するとき</span><b>制度を絞り込む</b><p>会社の<wbr>実態と<wbr>記録から、<wbr>対象に<wbr>なりそうな<wbr>制度と<wbr>実施時期を<wbr>確認します。</p><em>月額顧問料に含む</em></li>
       <li><span class="startup-ready-when">申請するなら</span><b>手順と費用を出す</b><p>必要な<wbr>証拠書類・<wbr>手順・費用を<wbr>ご案内してから<wbr>着手します。</p><em>別料金</em></li>
     </ol>
   </div></section>
+
+  <section class="startup-section startup-price-band" id="price"><div class="w startup-wide"><div class="startup-section-head"><p class="startup-section-label">06 / 料金</p><h2 class="startup-section-title"><span class="nw">必要な範囲から、</span><wbr><mark><span class="nw">月25,000円から</span></mark>。</h2><p class="startup-section-lead">給与計算なしの<wbr>スタート顧問と、<wbr>給与・賞与計算まで<wbr>含むスタンダード。<wbr><strong>どこまで<wbr>任せるか</strong>を<wbr>選べます。<wbr>創業3年以内は、<wbr>どちらも<wbr>通常料金から<wbr>毎月<wbr>10<wbr>,000円割引です。</p></div><div class="startup-price-options"><article class="startup-price-option"><p class="startup-price-option-kicker">給与計算なし</p><h3 class="startup-price-option-name">スタート顧問</h3><p class="startup-price-option-sub">入退社から<wbr>年次手続きまで</p><p class="startup-price-compare"><span>通常月額</span><strong>35,000円</strong></p><p class="startup-price-main"><strong>25,000円</strong><span>／月</span></p><small class="startup-price-tax">創業3年以内・従業員5名まで・税抜</small><div class="startup-price-details"><h4>含まれる主な業務</h4><ul class="startup-price-includes"><li>社会保険・<wbr>雇用保険手続き</li><li>労働保険の年度更新</li><li>社会保険の算定基礎届</li><li>賞与支払届</li><li>助成金情報のご案内</li><li>法改正情報の配信</li></ul><p class="startup-price-term"><strong>給与計算・<wbr>個別労務相談・<wbr>就業規則の<wbr>年次レビューは<wbr>含みません。</strong><br>必要に<wbr>なった<wbr>ときは、<wbr>スタンダードへの<wbr>変更を<wbr>ご相談いただけます。</p></div></article><article class="startup-price-option is-recommended"><p class="startup-price-option-kicker">給与計算まで任せるなら</p><h3 class="startup-price-option-name">スタンダード</h3><p class="startup-price-option-sub">実務を<wbr>まとめて<wbr>一つの<wbr>窓口へ</p><p class="startup-price-compare"><span>通常月額</span><strong>55,000円</strong></p><p class="startup-price-main"><strong>45,000円</strong><span>／月</span></p><small class="startup-price-tax">創業3年以内・従業員10名まで・税抜</small><div class="startup-price-details"><h4>含まれる主な業務</h4><ul class="startup-price-includes"><li>給与・賞与計算</li><li>労働社会保険手続き</li><li>労働保険の年度更新</li><li>社会保険の算定基礎届</li><li>賞与支払届</li><li>個別の労務相談</li><li>就業規則の年次レビュー</li></ul><p class="startup-price-term"><strong>創業3周年まで<wbr>割引。</strong><br>契約開始から<wbr>創業3周年までが<wbr>12か<wbr>月未満の<wbr>場合も、<wbr>契約開始から<wbr>12か<wbr>月間は<wbr>割引を<wbr>適用します。</p></div></article></div><p class="startup-price-note">11人目以降は<wbr>1名に<wbr>つき月2,500円<wbr>（税抜）を<wbr>加算します。<wbr>スタート顧問は<wbr>6人目以降<wbr>1名に<wbr>つき月2,000円<wbr>（税抜）を<wbr>加算します。<wbr>31名以上・<wbr>複数拠点などは<wbr>個別に<wbr>お見積りします。<wbr>詳しい<wbr>業務範囲は<wbr><a href="pricing.html">料金ページ</a>で<wbr>ご確認ください。</p><a class="startup-primary" href="uploads/contact.html?from=startup-payroll-price">任せる範囲と料金を相談する</a><p class="startup-hero-note">相談は<wbr>無料です。<wbr>この<wbr>時点で<wbr>契約は<wbr>確定しません。</p></div></section>
 
   <section class="startup-section" id="consultation"><div class="w"><div class="startup-consult-top"><div class="startup-section-head"><p class="startup-section-label">07 / 初回の<wbr>無料相談</p><h2 class="startup-section-title"><span class="nw">最初の30分で、</span><wbr><span class="nw">任せる範囲を</span><wbr><span class="nw">整理します。</span></h2><p class="startup-section-lead">依頼内容が<wbr><strong>決まってい<wbr>なくても</strong><wbr>構いません。<wbr>現在の<wbr>進め方、<wbr>発生している<wbr>給与・<wbr>手続き、<wbr>使用中の<wbr>勤怠・給与方法、<wbr>正しさや<wbr>漏れに<wbr>不安が<wbr>ある<wbr>業務から<wbr>確認します。</p></div><figure class="startup-consult-art"><img src="assets/illustrations/startup-consultation.webp" width="1456" height="1092" loading="lazy" alt="現状と優先順位を一緒に整理している相談の様子"><figcaption>依頼内容が<wbr>決まっていない<wbr>段階から<wbr>ご相談いただけます。</figcaption></figure></div><div class="startup-steps"><article class="startup-step"><span class="startup-step-num">STEP 01</span><h3>フォームから申込</h3><p>会社規模と<wbr>気に<wbr>なる<wbr>業務だけ<wbr>入力してください。</p></article><article class="startup-step"><span class="startup-step-num">STEP 02</span><h3>30分の現状確認</h3><p>現状と<wbr>優先順位を<wbr>整理します。</p></article><article class="startup-step"><span class="startup-step-num">STEP 03</span><h3>範囲と料金をご提示</h3><p>月額に<wbr>含む業務、<wbr>別料金、<wbr>会社側の<wbr>担当を<wbr>明示します。</p></article><article class="startup-step"><span class="startup-step-num">STEP 04</span><h3>合意後に開始</h3><p>必要資料、<wbr>連絡方法、<wbr>最初の<wbr>締め日を<wbr>決めます。</p></article></div><div class="startup-mid-cta"><p><strong>初回相談は<wbr>無料です。</strong><br>今の<wbr>進め方と、<wbr>社労士へ<wbr>任せたい<wbr>実務を<wbr>一緒に<wbr>整理します。</p><a class="startup-primary" href="uploads/contact.html?from=startup-payroll-process">任せる範囲と料金を相談する</a></div></div></section>
 
@@ -894,7 +984,8 @@ var ticking=false;if(window.__pgScroll)window.removeEventListener('scroll',windo
     '.startup-step', '.startup-consult-art', '.startup-story-art',
     '.startup-cost-eq', '.startup-cost-plus', '.startup-annual-compare',
     '.startup-annual-sum-note', '.startup-faq details', '.startup-rep-inner',
-    '.startup-final-check', '.startup-joseikin-h3', '.startup-joseikin-p'].join(',');
+    '.startup-final-check', '.startup-joseikin-h3', '.startup-joseikin-p',
+    '.lp-beat', '.startup-why-list li'].join(',');
   var items = [].slice.call(page.querySelectorAll(sel));
   if (!items.length) return;
   var order = new WeakMap();
