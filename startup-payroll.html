@@ -560,13 +560,20 @@
 .lp-band{padding:0;border-radius:0;box-shadow:none}
 .lp-band>.w{padding-block:clamp(38px,5vw,72px)}
 .lp-band.startup-annual-sum>.w{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);gap:clamp(20px,5vw,80px);align-items:center}
-.lp-band.startup-cost>.w{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(30px,5vw,80px);row-gap:clamp(18px,2.4vw,32px);align-items:start}
-.lp-band.startup-cost .startup-cost-title{grid-column:1/-1}
-.lp-band.startup-cost .startup-cost-eq{grid-column:1/-1;margin-top:0}
-.lp-band.startup-cost .startup-cost-plus{grid-column:1;margin-top:0;padding-top:18px;border-top:1px solid color-mix(in srgb,var(--moegi) 26%,transparent)}
-.lp-band.startup-cost .startup-cost-note{grid-column:2;margin-top:0;padding-top:18px;border-top:1px solid color-mix(in srgb,var(--moegi) 26%,transparent)}
+.lp-band.startup-cost>.w{display:grid;grid-template-columns:minmax(0,1fr);row-gap:clamp(18px,2.4vw,30px)}
+.lp-band.startup-cost .startup-cost-eq{margin-top:0}
+.lp-band.startup-cost .startup-cost-plus{margin-top:0}
+.lp-band.startup-cost .startup-cost-note{margin-top:0;padding-top:16px;border-top:1px solid color-mix(in srgb,var(--moegi) 26%,transparent)}
+@media(min-width:1000px){
+  /* 式が器の4割しか使わず左に寄っていた。広い画面では字を大きくして幅を埋める */
+  .lp-band.startup-cost .startup-cost-term b{font-size:clamp(26px,3.1vw,46px)}
+  .lp-band.startup-cost .startup-cost-term.is-sum b{font-size:clamp(40px,5.6vw,84px)}
+  .lp-band.startup-cost .startup-cost-op{font-size:clamp(20px,2.4vw,34px)}
+  .lp-band.startup-cost .startup-cost-eq{column-gap:clamp(16px,2.2vw,32px)}
+  .lp-band.startup-cost .startup-cost-plus{font-size:clamp(14px,1.2vw,17px);max-width:56em}
+}
 .startup-cost-term b{font-size:clamp(20px,2.4vw,34px)}
-.startup-cost-term.is-sum b{font-size:clamp(30px,4.2vw,58px)}
+.startup-cost-term.is-sum b{font-size:clamp(30px,4.2vw,58px);white-space:nowrap}
 .startup-cost-op{font-size:clamp(16px,1.9vw,26px)}
 .startup-annual-compare-after b{font-size:clamp(46px,6.2vw,88px)}
 .startup-annual-compare-before b{font-size:clamp(18px,2vw,26px)}
@@ -658,7 +665,7 @@
 .startup-burden-item h3,.startup-outcome-item h3,.startup-annual-item h3,
 .startup-ready-flow b,.startup-scope-column h3{font-size:var(--lp-h3)}
 .startup-cost-title{font-size:var(--lp-h2)}
-.startup-cost-term.is-sum b{font-size:clamp(30px,4.2vw,58px)}
+.startup-cost-term.is-sum b{font-size:clamp(30px,4.2vw,58px);white-space:nowrap}
 
 /* ⑤ 読む文にだけ幅の上限（見る要素＝カード・図解は広いまま） */
 .startup-scope-note,.startup-lookback-note,.startup-price-note,.startup-annual-note,
