@@ -275,7 +275,7 @@
   .startup-final-layout{grid-template-columns:1fr;gap:28px}
 }
 @media(max-width:640px){
-  .startup-hero-intro{margin-top:11px;font-size:14px;line-height:1.75}.startup-hero-detail{margin-top:10px;font-size:12px;line-height:1.85}.startup-hero-proof{margin-top:16px}.startup-hero-proof li,.startup-hero-proof li + li{padding:10px 7px;text-align:center}.startup-hero-proof strong{font-size:10.5px;line-height:1.4}.startup-hero-proof small{margin-top:3px;font-size:9px;line-height:1.4}.startup-hero-price{margin-top:13px}
+  .startup-hero-intro{margin-top:11px;font-size:14px;line-height:1.75}.startup-hero-detail{margin-top:10px;font-size:12px;line-height:1.85}.startup-hero-proof{margin-top:16px}.startup-hero-proof li,.startup-hero-proof li + li{padding:10px 9px 10px 0}.startup-hero-proof strong{font-size:10.5px;line-height:1.4}.startup-hero-proof small{margin-top:3px;font-size:9px;line-height:1.4}.startup-hero-price{margin-top:13px}
   .startup-hero-art,.startup-story-art,.startup-after-art{padding:12px;padding-top:28px}.startup-art-tag{top:10px;left:12px;font-size:8.5px}.startup-hero-art figcaption,.startup-story-art figcaption,.startup-after-art figcaption{margin-top:8px;padding-top:9px}.startup-hero-art figcaption strong,.startup-story-art figcaption strong,.startup-after-art figcaption strong{font-size:13px}.startup-hero-art figcaption small,.startup-story-art figcaption small,.startup-after-art figcaption small{font-size:10.5px}
   .startup-point-box,.startup-page-toc{margin-top:18px;padding:17px 16px}.startup-point-box ul{grid-template-columns:1fr;gap:7px;margin-top:10px}.startup-page-toc{grid-template-columns:1fr;gap:8px}.startup-page-toc ol{gap:5px 14px}
   .startup-option-list{grid-template-columns:1fr}.startup-process-card{padding:16px}.startup-process-card h3{font-size:15px}.startup-process-steps li{font-size:11.5px}.startup-final-check{padding:18px}.startup-final-check li{font-size:12px}
@@ -677,6 +677,26 @@
   :root{--lp-note:12px;--lp-body:13.5px;--lp-h4:18px;--lp-h3:19px;--lp-h2:21px;--lp-lead:14.5px}
 }
 
+
+/* ══ スマホの手直し（2026-08-31 実機指摘） ═════════════════════════
+   ・共有スキンの `.startup-hero-copy{text-align:center}`（640px以下）で
+     ヒーローだけ中央、以降は左揃えになり揃っていなかった。左揃えに統一する
+   ・イラストが画面高の28〜29%を占めていたので、高さで頭を打たせる */
+@media(max-width:640px){
+  .startup-hero-copy{text-align:left}
+  .startup-hero-copy .startup-hero-intro,.startup-hero-copy .startup-hero-price,
+  .startup-hero-copy .startup-kicker{margin-inline:0}
+  .startup-hero-actions{align-items:stretch}
+  .startup-hero-proof li:first-child{padding-left:0}
+  .startup-future-art img,.startup-story-art img,.startup-consult-art img{max-width:220px;margin-inline:auto}
+  .startup-joseikin-grid .startup-story-art img{max-width:292px;margin-inline:auto}
+  .startup-story-art,.startup-consult-art{padding:14px 14px 12px}
+  .startup-future-art{margin-top:12px}
+}
+@media(max-width:390px){
+  .startup-future-art img,.startup-story-art img,.startup-consult-art img{max-width:196px}
+  .startup-joseikin-grid .startup-story-art img{max-width:260px}
+}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"労務の顧問と給与計算｜富山の社労士 月25,000円から","description":"富山の社会保険労務士事務所みなのの労務顧問。給与計算なしのスタート顧問は月25,000円から、給与計算と個別労務相談まで含むスタンダードは月45,000円から。いずれも創業3年以内の割引適用時の金額で、通常は35,000円・55,000円からです。","url":"https://minano-sr.com/startup-payroll.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://minano-sr.com/"},{"@type":"ListItem","position":2,"name":"料金・顧問プラン","item":"https://minano-sr.com/pricing.html"},{"@type":"ListItem","position":3,"name":"創業期の労務顧問","item":"https://minano-sr.com/startup-payroll.html"}]}]}
