@@ -14,6 +14,7 @@ const expectedAssets = [
   'terms.js',
   'post-toc.js',
   'nav-spy.js',
+  'ads.js',
 ];
 
 function loadAssetVersions() {

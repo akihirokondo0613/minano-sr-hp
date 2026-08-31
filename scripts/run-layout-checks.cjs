@@ -108,6 +108,7 @@ function selectBlogScope() {
     'terms.js',
     'nav-spy.js',
     'header-motion.js',
+    'ads.js',
   ]);
   if (changedFiles.some((file) => sharedFiles.has(file) || file.startsWith('scripts/'))) {
     return selectAll('共通資産または検証基盤の変更', baseRef, changedFiles);

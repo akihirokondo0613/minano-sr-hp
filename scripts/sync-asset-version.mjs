@@ -17,6 +17,7 @@ const assetFiles = new Map([
   ['terms.js', 'terms.js'],
   ['post-toc.js', 'post-toc.js'],
   ['nav-spy.js', 'nav-spy.js'],
+  ['ads.js', 'ads.js'],
 ]);
 
 function loadAssetVersions() {
