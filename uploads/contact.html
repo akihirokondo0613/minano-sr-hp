@@ -1199,14 +1199,24 @@ function handleSubmit(event) {
 var urlParams = new URLSearchParams(window.location.search);
 var fromPlan = urlParams.get('from');
 if (fromPlan) {
-  const fromBase = fromPlan.replace(/-(price|final)$/, '');
+  const fromBase = fromPlan.replace(/-(price|process|final)$/, '');
   const entry = {
     start:    ["スタート顧問プランについて詳しく知りたいです。", "顧問契約について"],
     standard: ["スタンダードプランについて詳しく知りたいです。", "顧問契約について"],
     custom:   ["31名以上プランについて、従業員数に応じた顧問料と業務範囲を相談したいです。", "顧問契約について"],
     sim:      ["料金シミュレーターの結果をもとに、顧問プランを相談したいです。", "顧問契約について"],
-    "startup-payroll": ["創業期向けの給与・手続き顧問について、任せられる範囲と料金を確認したいです。", "顧問契約について"],
+    "startup-payroll": ["労務の顧問について、任せられる範囲と料金を確認したいです。", "顧問契約について"],
     joseikin: ["助成金の申請サポートについて相談したいです。", "助成金申請"],
+    // 制度別ガイド（uploads/joseikin-*.html）からの遷移。キーが無いとプリフィルが効かず、
+    // 相談内容が空のフォームに着地する
+    "joseikin-hatarakikata": ["働き方改革推進支援助成金について相談したいです。", "助成金申請"],
+    "joseikin-career-up": ["キャリアアップ助成金について相談したいです。", "助成金申請"],
+    "joseikin-jinzai-kaihatsu": ["人材開発支援助成金について相談したいです。", "助成金申請"],
+    "joseikin-jinzai-kakuho": ["人材確保等支援助成金について相談したいです。", "助成金申請"],
+    "joseikin-koyou-chosei": ["雇用調整助成金について相談したいです。", "助成金申請"],
+    "joseikin-koyou-kaihatsu": ["特定求職者雇用開発助成金・トライアル雇用助成金について相談したいです。", "助成金申請"],
+    "joseikin-ryoritsu": ["両立支援等助成金について相談したいです。", "助成金申請"],
+    "joseikin-65sai-cho": ["65歳超雇用推進助成金について相談したいです。", "助成金申請"],
     shugyo:   ["就業規則の作成・見直しについて相談したいです。", "就業規則の作成・改定"],
     shaho:    ["社会保険・労働保険の手続き代行について相談したいです。", "社会保険・労働保険手続き"],
     kyuyo:    ["給与計算アウトソーシングについて相談したいです。", "給与計算アウトソース"],
