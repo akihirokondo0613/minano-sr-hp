@@ -718,6 +718,15 @@
      賃金台帳／36協定）は破線と二重になるので対象から外す */
 .startup-section-lead strong,.startup-rep-text strong,
 .startup-joseikin-p strong{color:var(--iwa);font-weight:800}
+
+/* ══ 行末に1〜2字だけ残る行をなくす（2026-08-31） ═══════════════════
+   text-wrap:pretty は p と li にしか当たっておらず、figcaption・summary・
+   small・strong に12件の孤立行が残っていた（WebKit のみ・320〜480px）。
+   同じ指定を、文が入りうる要素すべてへ広げる。 */
+.startup-page figcaption,.startup-page summary,.startup-page small,
+.startup-page strong,.startup-page b,.startup-page em,.startup-page dd,
+.startup-page h4{text-wrap:pretty}
+.startup-page .nw{white-space:nowrap;text-wrap-mode:nowrap}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"労務の顧問と給与計算｜富山の社労士 月25,000円から","description":"富山の社会保険労務士事務所みなのの労務顧問。給与計算なしのスタート顧問は月25,000円から、給与計算と個別労務相談まで含むスタンダードは月45,000円から。いずれも創業3年以内の割引適用時の金額で、通常は35,000円・55,000円からです。","url":"https://minano-sr.com/startup-payroll.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://minano-sr.com/"},{"@type":"ListItem","position":2,"name":"料金・顧問プラン","item":"https://minano-sr.com/pricing.html"},{"@type":"ListItem","position":3,"name":"創業期の労務顧問","item":"https://minano-sr.com/startup-payroll.html"}]}]}
