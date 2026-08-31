@@ -451,7 +451,10 @@
 /* パネルの緑の上ボーダーも外す。四辺を同じ線にして、影と装飾円で立体感を出す */
 .startup-future-panel{border:1px solid var(--lp-edge);border-radius:16px;box-shadow:none;overflow:visible}
 .startup-future-panel::after{display:none}
-.startup-hero-proof li{display:flex;flex-direction:column;gap:4px}
+.startup-hero-proof{grid-template-rows:auto auto}
+.startup-hero-proof li{display:grid;grid-row:span 2;grid-template-rows:subgrid;row-gap:4px}
+@supports not (grid-template-rows:subgrid){.startup-hero-proof li{display:flex;flex-direction:column;gap:4px}
+  .startup-hero-proof strong{min-height:calc(2 * 1.6em)}}
 .startup-hero-proof small{margin-top:0}
 .startup-scope-column{border:1px solid var(--lp-edge);border-radius:12px}
 .startup-scope-column.is-included{background:var(--lp-fill);border-color:color-mix(in srgb,var(--moegi) 30%,transparent)}
