@@ -275,7 +275,7 @@
   .startup-final-layout{grid-template-columns:1fr;gap:28px}
 }
 @media(max-width:640px){
-  .startup-hero-intro{margin-top:11px;font-size:14px;line-height:1.75}.startup-hero-detail{margin-top:10px;font-size:12px;line-height:1.85}.startup-hero-proof{margin-top:16px}.startup-hero-proof li,.startup-hero-proof li + li{padding:10px 9px 10px 0}.startup-hero-proof strong{font-size:10.5px;line-height:1.4}.startup-hero-proof small{margin-top:3px;font-size:9px;line-height:1.4}.startup-hero-price{margin-top:13px}
+  .startup-hero-intro{margin-top:11px;font-size:14px;line-height:1.75}.startup-hero-detail{margin-top:10px;font-size:12px;line-height:1.85}.startup-hero-proof{margin-top:16px}.startup-hero-proof li,.startup-hero-proof li + li{padding:10px 9px}.startup-hero-proof li:first-child{padding-left:0}.startup-hero-proof li:last-child{padding-right:0}.startup-hero-proof strong{font-size:10.5px;line-height:1.4}.startup-hero-proof small{margin-top:3px;font-size:9px;line-height:1.4}.startup-hero-price{margin-top:13px}
   .startup-hero-art,.startup-story-art,.startup-after-art{padding:12px;padding-top:28px}.startup-art-tag{top:10px;left:12px;font-size:8.5px}.startup-hero-art figcaption,.startup-story-art figcaption,.startup-after-art figcaption{margin-top:8px;padding-top:9px}.startup-hero-art figcaption strong,.startup-story-art figcaption strong,.startup-after-art figcaption strong{font-size:13px}.startup-hero-art figcaption small,.startup-story-art figcaption small,.startup-after-art figcaption small{font-size:10.5px}
   .startup-point-box,.startup-page-toc{margin-top:18px;padding:17px 16px}.startup-point-box ul{grid-template-columns:1fr;gap:7px;margin-top:10px}.startup-page-toc{grid-template-columns:1fr;gap:8px}.startup-page-toc ol{gap:5px 14px}
   .startup-option-list{grid-template-columns:1fr}.startup-process-card{padding:16px}.startup-process-card h3{font-size:15px}.startup-process-steps li{font-size:11.5px}.startup-final-check{padding:18px}.startup-final-check li{font-size:12px}
@@ -691,6 +691,15 @@
   .startup-hero-copy .startup-kicker{margin-inline:0}
   .startup-hero-actions{align-items:stretch}
   .startup-hero-proof li:first-child{padding-left:0}
+}
+@media(max-width:520px){
+  .startup-hero-proof{grid-template-columns:minmax(0,1fr);grid-template-rows:none;border-bottom:1px solid var(--line)}
+  .startup-hero-proof li{display:block;grid-row:auto;padding:9px 0;border-right:0;border-bottom:1px solid var(--line)}
+  .startup-hero-proof li:last-child{border-bottom:0;padding-bottom:0}
+  .startup-hero-proof br{display:none}
+  .startup-hero-proof .nw{white-space:normal}
+  .startup-hero-proof strong{font-size:12.5px}
+  .startup-hero-proof small{font-size:11.5px;margin-top:2px}
   .startup-future-art img,.startup-story-art img,.startup-consult-art img{max-width:220px;margin-inline:auto}
   .startup-joseikin-grid .startup-story-art img{max-width:292px;margin-inline:auto}
   .startup-story-art,.startup-consult-art{padding:14px 14px 12px}
@@ -733,9 +742,9 @@
           <div class="startup-hero-actions"><a class="startup-primary" href="uploads/contact.html?from=startup-payroll">任せる範囲と料金を相談する</a><a class="startup-secondary" href="#scope">任せられる範囲を見る →</a></div>
           <p class="startup-hero-note">相談は<wbr>無料です。<wbr>この<wbr>時点で<wbr>契約は<wbr>確定しません。</p>
           <ul class="startup-hero-proof">
-            <li><strong>年に<wbr>一度の<wbr>届出も<wbr>月額の<wbr>中</strong><small>年度更新・算定基礎届も<wbr>含みます</small></li>
-            <li><strong>助成金は<wbr>記録で<wbr>決まります</strong><small>過去2年の<wbr>記録が<wbr>見られます</small></li>
-            <li><strong>社労士が<wbr><span class="nw">担当します</span></strong><small><span class="nw">社会保険労務士</span> <span class="nw">第16260009号</span></small></li>
+            <li><strong><span class="nw">年に一度の届出も</span><br><span class="nw">月額の中</span></strong><small><span class="nw">年度更新・算定基礎届も</span><br><span class="nw">含みます</span></small></li>
+            <li><strong><span class="nw">助成金は記録で</span><br><span class="nw">決まります</span></strong><small><span class="nw">過去2年の記録が</span><br><span class="nw">見られます</span></small></li>
+            <li><strong><span class="nw">社会保険労務士が</span><br><span class="nw">担当します</span></strong><small><span class="nw">登録番号</span><br><span class="nw">第16260009号</span></small></li>
           </ul>
           <p class="startup-hero-sign">助成金の<wbr>申請代行は<wbr>月額顧問料に<wbr>含まれず、<wbr>別料金です。<wbr>支給を<wbr>保証する<wbr>ものではありません。</p>
         </div>
