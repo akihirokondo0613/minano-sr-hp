@@ -12,6 +12,7 @@
 | forms.json を作る | `scripts/shoshiki/make_json.py` |
 | HTML（一覧・各書式・DLページ） | `scripts/shoshiki/build_shoshiki.py` → `shoshiki.html`、`shoshiki/D-xx.html`、`shoshiki/dl/word-7kq3x9/index.html` |
 | 書式の描画（HTML と Word） | `scripts/shoshiki/render_forms.py` |
+| 配布物のファイル名（ASCII） | `scripts/shoshiki/shoshiki_names.py`（`build_shoshiki.py` と `build_zip.py` が共有。標準ライブラリだけ。CI の runner に openpyxl が無いので `build_shoshiki.py` から `build_zip.py` を import しない） |
 | Excel帳簿・Word一式 zip | `scripts/shoshiki/build_zip.py` → `shoshiki/D-31_shukkinbo.xlsx`、`shoshiki/D-32_nenkyu-kanribo.xlsx`、`shoshiki/dl/word-7kq3x9/shanai-shoshiki-word-YYYYMM.zip` |
 | preflight の検査 | `scripts/build-shoshiki-page.mjs --check`（HTML が最新か） |
 | メール登録（Word一式） | Googleフォーム https://forms.gle/vFUpB3fqzetNHQQKA（contact@ のアカウント。作り直さない） |
