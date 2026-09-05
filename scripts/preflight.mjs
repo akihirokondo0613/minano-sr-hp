@@ -130,6 +130,10 @@ const tasks = [
     args: ['scripts/build-shiryo-page.mjs', '--check'],
   },
   {
+    name: '社内書式ページ',
+    args: ['scripts/build-shoshiki-page.mjs', '--check'],
+  },
+  {
     name: 'sitemap生成',
     args: ['gen-sitemap.js'],
   },

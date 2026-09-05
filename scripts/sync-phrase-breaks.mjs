@@ -36,7 +36,9 @@ const statsOnly = args.includes('--stats');
 
 /** 公開しないHTML。記事生成テンプレートと社内カタログ。 */
 const SKIP_FILES = new Set(['admin-post.html', 'icon-catalog.html']);
-const SKIP_DIRS = new Set(['node_modules', 'scripts', 'docs', '.github']);
+// shoshiki/ は社内書式の印刷用ページ（独自CSS・.t が nowrap・contenteditable）。サイトの keep-all CSS を
+// 読まないので印は効かず、nowrap の中に入って test-phrase-breaks に落ちる。一覧 shoshiki.html はルートなので対象のまま。
+const SKIP_DIRS = new Set(['node_modules', 'scripts', 'docs', '.github', 'shoshiki']);
 
 function htmlFiles() {
   const out = [];

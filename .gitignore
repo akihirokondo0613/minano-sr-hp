@@ -2,6 +2,8 @@
 .thumbnail
 _backup_*/
 *.zip
+# 社内書式のWord一式（メール登録の配布物）だけは公開する。deploy の rm -f *.zip はルート直下しか消さない
+!shoshiki/dl/**/*.zip
 .claude/
 
 # data/ は public ブランチにそのまま載る＝本番に公開される。
@@ -12,3 +14,4 @@ data/*.txt
 data/*.pdf
 node_modules/
 package-lock.json
+__pycache__/
