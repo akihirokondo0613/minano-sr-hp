@@ -165,8 +165,7 @@ CSS = """
 .qk.xl::before{background:#C9A227}
 .qk.xl::after{content:'Excel';font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.04em;color:var(--ink4)}
 .sh-scenes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:12px;align-items:start}
-.sh-scene{min-width:0;background:var(--shiro);border:1px solid var(--line);border-radius:14px;padding:14px 16px 10px 18px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
-.sh-scene::before{content:'';position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;background:var(--moegi)}
+.sh-scene{min-width:0;background:var(--shiro);border:1px solid var(--line);border-radius:14px;padding:14px 16px 10px;display:flex;flex-direction:column;gap:10px}
 .sh-scene-h{display:flex;align-items:center;gap:12px}
 .sh-scene-h .kmono{width:44px;height:44px;font-size:14px;border-radius:10px}
 .sh-scene-t{min-width:0;flex:1}
