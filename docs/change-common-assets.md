@@ -62,7 +62,7 @@
 
 ## SPAの現行ルール
 
-現行の`page-enter.js`は、`/blog/`記事行きを除く内部通常遷移をfetch、head/body差し替え、`pushState`で処理する。旧方式のprerender、sessionStorage引き継ぎ、複数カーテン層を戻さない。旧方式の設計記録は[ページ遷移旧方式](incidents/page-enter-v1.md)に分離する。
+現行の`page-enter.js`は、`/blog/`記事行きと社内書式（`shoshiki.html`・`shoshiki/`配下、`isFormDest`。詳細は[shoshiki.md](shoshiki.md)）を除く内部通常遷移をfetch、head/body差し替え、`pushState`で処理する。旧方式のprerender、sessionStorage引き継ぎ、複数カーテン層を戻さない。旧方式の設計記録は[ページ遷移旧方式](incidents/page-enter-v1.md)に分離する。
 
 - `blog/`配下の記事へ向かうリンクは素の遷移とし、クリック横取り、DOM差し替え、カーテンを開始しない。`blog.html`の一覧は通常のSPA対象であり、記事から非ブログへ向かう遷移も現行SPAの対象。
 - 同一ページのアンカーはカーテンを出さず即時スクロールする。`index.html`の有無を正規化し、`popstate`では直前pathnameとの比較も行う。

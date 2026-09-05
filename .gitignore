@@ -15,3 +15,4 @@ data/*.pdf
 node_modules/
 package-lock.json
 __pycache__/
+scripts/shoshiki/_build/

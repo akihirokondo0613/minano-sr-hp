@@ -1,6 +1,7 @@
 # 社内書式ページの生成器（リポジトリ内の複製）。正本の文面は data/shoshiki/forms.json。
 # 元の生成器は 顧問先用書式ページ_作業/04_書式生成/render_forms.py（Desktop・Drive外）。
 # ここでは HTML（編集用）だけを使う。docx/PDF の生成は元の作業フォルダで行う。
+import datetime as _dt
 import html as H
 import json
 import pathlib
@@ -8,7 +9,9 @@ import re
 
 HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parent.parent
-DATA = json.loads((REPO / "data" / "shoshiki" / "forms.json").read_text(encoding="utf-8"))
+DATA = json.loads(
+    (REPO / "data" / "shoshiki" / "forms.json").read_text(encoding="utf-8")
+)
 META = DATA["meta"]
 CO = META["company_placeholder"]
 
@@ -75,7 +78,6 @@ table.f td{min-height:8mm;height:8mm}
 .box{border:0.6pt solid var(--rule);margin:2.5mm 0 3mm}
 .box .h{padding:1.4mm 2.2mm;font-size:9.5pt;font-weight:700;border-bottom:0.6pt solid var(--rule)}
 .box .b{padding:2mm}
-.foot{position:absolute;left:18mm;right:18mm;bottom:7mm;font-size:7.5pt;color:var(--ink2);text-align:right}
 .t[contenteditable]:hover{outline:1px dashed var(--accent)}
 .t[contenteditable]:focus{outline:2px solid var(--accent);background:#F3FBF6}
 .bl[contenteditable]:focus{outline:2px solid var(--accent);background:#F3FBF6}
@@ -98,9 +100,11 @@ table.f td{min-height:8mm;height:8mm}
 """
 
 JS = """
+(function(){
 document.querySelectorAll('.bx').forEach(b=>b.addEventListener('click',()=>{b.textContent=b.textContent==='☐'?'☑':'☐';}));
-function pdf(){window.print();}
+window.pdf=function(){window.print();};
 // ── 会社情報（ブラウザ内にだけ保存。どこにも送信しない） ──
+// 関数は即時関数で包み、onclick から使うものだけ window に出す（他ページのJSと同名の const が衝突しないように）
 const CO_KEY='shoshiki.company';
 const CO_FIELDS=['name','title','rep','addr','tel','dept'];
 function coLoad(){try{return JSON.parse(localStorage.getItem(CO_KEY)||'{}');}catch(e){return {};}}
@@ -115,13 +119,16 @@ function coInit(){
   CO_FIELDS.forEach(k=>{const i=document.getElementById('co-'+k); if(!i) return; i.value=o[k]||'';
     i.oninput=()=>{const c=coLoad(); c[k]=i.value; coSave(c); coApply(c);};});
 }
-function coToggle(){document.getElementById('cfg').classList.toggle('open');}
-function coExport(){const o=coLoad(); const a=document.createElement('a');
-  a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(o,null,1)); a.download='会社情報.json'; a.click();}
-function coImport(inp){const f=inp.files[0]; if(!f) return; const r=new FileReader();
-  r.onload=()=>{try{const o=JSON.parse(r.result); coSave(o); coInit();}catch(e){alert('読み込めませんでした');}}; r.readAsText(f);}
-function coClear(){if(confirm('保存した会社情報を消しますか？')){localStorage.removeItem(CO_KEY); coInit();}}
+window.coToggle=function(){document.getElementById('cfg').classList.toggle('open');};
+window.coExport=function(){const o=coLoad(); const a=document.createElement('a');
+  a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(o,null,1)); a.download='会社情報.json'; a.click();};
+window.coImport=function(inp){const f=inp.files[0]; if(!f) return; const r=new FileReader();
+  r.onload=()=>{try{const o=JSON.parse(r.result); coSave(o); coInit();}catch(e){alert('読み込めませんでした');}}; r.readAsText(f);};
+window.coClear=function(){if(confirm('保存した会社情報を消しますか？')){localStorage.removeItem(CO_KEY); coInit();}};
 coInit();
+// 戻る／進むでキャッシュから復帰したときも保存内容を読み直す
+window.addEventListener('pageshow',e=>{if(e.persisted) coInit();});
+})();
 """
 
 CFG_HTML = (
@@ -135,7 +142,7 @@ CFG_HTML = (
     '</div><div class="btns"><button onclick="coExport()">設定をファイルに書き出す</button>'
     '<button onclick="document.getElementById(\'co-file\').click()">設定ファイルを読み込む</button><input type="file" id="co-file" accept=".json" style="display:none" onchange="coImport(this)">'
     '<button onclick="coClear()">消去</button></div>'
-    '<p class="hint">入力した会社情報はこのブラウザの中にだけ保存され、どこにも送信されません。書式の宛名・発信者欄・右下の社名に自動で入ります。別のPCで使うときは「書き出す」で保存したファイルを読み込んでください。</p></div>'
+    '<p class="hint">入力した会社情報はこのブラウザの中にだけ保存され、どこにも送信されません。書式の宛名・発信者欄に自動で入ります。別のPCで使うときは「書き出す」で保存したファイルを読み込んでください。</p></div>'
 )
 
 
@@ -148,13 +155,26 @@ def seg_html(seg, ed, lead=""):
     kind = seg[0]
     ce = ' contenteditable="true"' if ed else ""
     if kind == "text":
-        if seg[1] == CO:
-            return f'<span class="t co-name"{ce}>{esc(seg[1])}</span>'
-        return f'<span class="t"{ce}>{esc(seg[1])}</span>'
+        t = seg[1]
+        if CO in t:
+            # 「【会社名】（以下「会社」）と…」のように文中に含まれる場合も、会社名の部分だけ差し込み先にする
+            out = []
+            for i, part in enumerate(t.split(CO)):
+                if i:
+                    out.append(f'<span class="t co-name"{ce}>{esc(CO)}</span>')
+                if part:
+                    out.append(f'<span class="t"{ce}>{esc(part)}</span>')
+            return "".join(out)
+        return f'<span class="t"{ce}>{esc(t)}</span>'
     if kind == "choices":
-        opts = [f'<span class="opt"><span class="bx">☐</span>{rich(o, ed)}</span>' for o in seg[1]]
+        opts = [
+            f'<span class="opt"><span class="bx">☐</span>{rich(o, ed)}</span>'
+            for o in seg[1]
+        ]
         if lead:
-            opts[0] = f'<span class="nb"><span class="t"{ce}>{esc(lead)}</span>{opts[0]}</span>'
+            opts[0] = (
+                f'<span class="nb"><span class="t"{ce}>{esc(lead)}</span>{opts[0]}</span>'
+            )
         return '<span class="grp">' + "".join(opts) + "</span>"
     if kind == "date":
         return f'<span class="dt"><span class="bl y"{ce}></span>年<span class="bl"{ce}></span>月<span class="bl"{ce}></span>日</span>'
@@ -173,10 +193,15 @@ def rich(s, ed):
         seg = segs[i]
         nxt = segs[i + 1] if i + 1 < len(segs) else None
         # 「生年月日：」＋日付、「氏名：」＋短い空欄 は同じ行に置く（末尾の短い語だけ nowrap で束ねる）
-        if seg[0] == "text" and nxt and nxt[0] == "choices" and seg[1].rstrip().endswith("："):
+        if (
+            seg[0] == "text"
+            and nxt
+            and nxt[0] == "choices"
+            and seg[1].rstrip().endswith("：")
+        ):
             txt = seg[1]
             m = re.search(r"[^\s　]{1,14}：$", txt.rstrip())
-            head, tail = (txt[: m.start()], txt[m.start():]) if m else ("", txt)
+            head, tail = (txt[: m.start()], txt[m.start() :]) if m else ("", txt)
             if head:
                 out.append(seg_html(("text", head), ed))
             out.append(seg_html(nxt, ed, lead=tail))
@@ -190,7 +215,7 @@ def rich(s, ed):
         ):
             txt = seg[1]
             m = re.search(r"[^\s　]{1,14}[：（]$", txt.rstrip())
-            head, tail = (txt[: m.start()], txt[m.start():]) if m else ("", txt)
+            head, tail = (txt[: m.start()], txt[m.start() :]) if m else ("", txt)
             if head:
                 out.append(seg_html(("text", head), ed))
             unit = ""
@@ -199,9 +224,15 @@ def rich(s, ed):
                 m2 = re.match(r"([^　\s]{1,4})(?=$|　|\s)", nn[1])
                 if m2 and not nn[1].startswith(("：", "（")):
                     unit = m2.group(1)
-            out.append('<span class="nb">' + seg_html(("text", tail), ed) + seg_html(nxt, ed) + (seg_html(("text", unit), ed) if unit else "") + "</span>")
+            out.append(
+                '<span class="nb">'
+                + seg_html(("text", tail), ed)
+                + seg_html(nxt, ed)
+                + (seg_html(("text", unit), ed) if unit else "")
+                + "</span>"
+            )
             if unit:
-                rest = nn[1][len(unit):]
+                rest = nn[1][len(unit) :]
                 segs[i + 2] = ("text", rest)
             i += 2
             continue
@@ -213,13 +244,19 @@ def rich(s, ed):
 def addressee_html(to, ed, f=None):
     ce = ' contenteditable="true"' if ed else ""
     if f is not None and "addr" in f:
-        return '<div class="to">' + "".join(f"<div>{rich(x, ed)}</div>" for x in f["addr"]) + "</div>"
+        return (
+            '<div class="to">'
+            + "".join(f"<div>{rich(x, ed)}</div>" for x in f["addr"])
+            + "</div>"
+        )
     if to in ("会社", "保証人"):
         return f'<div class="to"><div class="t co-name"{ce}>{esc(CO)}</div><div><span class="t co-title"{ce}>代表取締役</span><span class="bl co-rep" style="min-width:36mm"{ce}></span>殿</div></div>'
     if to == "本人":
-        return (f'<div class="to"><div><span class="bl" style="min-width:48mm"{ce}></span>殿</div>'
-                f'<div class="sender"><div class="t co-name"{ce}>{esc(CO)}</div><div>所在地：<span class="bl co-addr" style="min-width:60mm"{ce}></span></div>'
-                f'<div>担当者：<span class="bl co-dept" style="min-width:36mm"{ce}></span>　電話：<span class="bl co-tel" style="min-width:30mm"{ce}></span></div></div></div>')
+        return (
+            f'<div class="to"><div><span class="bl" style="min-width:48mm"{ce}></span>殿</div>'
+            f'<div class="sender"><div class="t co-name"{ce}>{esc(CO)}</div><div>所在地：<span class="bl co-addr" style="min-width:60mm"{ce}></span></div>'
+            f'<div>担当者：<span class="bl co-dept" style="min-width:36mm"{ce}></span>　電話：<span class="bl co-tel" style="min-width:30mm"{ce}></span></div></div></div>'
+        )
     if to == "主治医":
         return f'<div class="to"><div><span class="bl" style="min-width:44mm"{ce}></span>病院・医院</div><div><span class="bl" style="min-width:44mm"{ce}></span>先生　御机下</div></div>'
     if to == "会社←主治医":
@@ -248,7 +285,12 @@ def signature_rows(to, f=None):
 
 def is_wide(f):
     """ラベルが12字以上なら列幅52mm（本文の表と署名欄の両方を数える）"""
-    labels = [r["label"] for blk in f["blocks"] if blk["type"] == "fields" for r in blk["rows"]]
+    labels = [
+        r["label"]
+        for blk in f["blocks"]
+        if blk["type"] == "fields"
+        for r in blk["rows"]
+    ]
     labels += [r[0] for r in signature_rows(f["to"], f)]
     return any(len(x) >= 12 for x in labels)
 
@@ -258,7 +300,11 @@ def fields_html(rows, ed, wide=False):
     for r in rows:
         lab, val = (r["label"], r["value"]) if isinstance(r, dict) else r
         hm = re.search(r"\{h(\d+)\}", val)
-        tall = f' style="height:{hm.group(1)}mm"' if hm else (' style="height:13mm"' if val == "" else "")
+        tall = (
+            f' style="height:{hm.group(1)}mm"'
+            if hm
+            else (' style="height:13mm"' if val == "" else "")
+        )
         val = re.sub(r"\{h\d+\}", "", val)
         h.append(
             f'<tr><th class="{"w" if wide else ""}"><span class="t"{' contenteditable="true"' if ed else ""}>{esc(lab)}</span></th><td{tall}>{rich(val, ed)}</td></tr>'
@@ -309,7 +355,7 @@ def form_html(f, ed):
     for blk in company:
         b.append(fields_html(blk["rows"], ed, wide))
     b.append(
-        f'<div class="foot"><span class="co-name">{esc(CO)}</span></div>'
+        ""  # 右下の社名（フッター）は廃止（2026-09-06・本人指示「場合によっては不自然」）
     )
     return '<div class="page">' + "".join(b) + "</div>"
 
@@ -381,7 +427,10 @@ def build_docx(f, path):
 
         def wlen(t):
             """表示幅（全角1・半角0.5）"""
-            return sum(0.5 if ord(c) < 0x3000 or 0xFF61 <= ord(c) <= 0xFF9F else 1 for c in t)
+            return sum(
+                0.5 if ord(c) < 0x3000 or 0xFF61 <= ord(c) <= 0xFF9F else 1 for c in t
+            )
+
         # 1) 語に分ける
         toks = []  # ("w", text) | ("sp",) | ("br",) | ("g", [options])
         for seg in parse(s):
@@ -407,8 +456,35 @@ def build_docx(f, path):
                 prev = merged[-1][1]
                 cur = t[1]
                 joinable = (
-                    prev.endswith(("：", "（", "→", "〜", "／", "〒", "－", "第", "金", "約"))
-                    or cur.startswith(("）", "円", "名", "日", "時", "分", "回", "か月", "年", "月", "％", "人", "件", "km", "まで", "頃", "限り", "を", "に", "から", "へ", "支部"))
+                    prev.endswith(
+                        ("：", "（", "→", "〜", "／", "〒", "－", "第", "金", "約")
+                    )
+                    or cur.startswith(
+                        (
+                            "）",
+                            "円",
+                            "名",
+                            "日",
+                            "時",
+                            "分",
+                            "回",
+                            "か月",
+                            "年",
+                            "月",
+                            "％",
+                            "人",
+                            "件",
+                            "km",
+                            "まで",
+                            "頃",
+                            "限り",
+                            "を",
+                            "に",
+                            "から",
+                            "へ",
+                            "支部",
+                        )
+                    )
                     or (len(cur) <= 3 and not cur.endswith("："))
                     or cur.startswith("（")
                     or prev.endswith("＿")
@@ -423,7 +499,15 @@ def build_docx(f, path):
 
         def put(word):
             cur = lines[-1]
-            sep = "" if (not cur or cur.endswith(("：", "（")) or word.startswith(("）", "」", "、", "。"))) else "　"
+            sep = (
+                ""
+                if (
+                    not cur
+                    or cur.endswith(("：", "（"))
+                    or word.startswith(("）", "」", "、", "。"))
+                )
+                else "　"
+            )
             if cur.strip() and wlen(cur) + wlen(sep) + wlen(word) > limit:
                 lines.append(word)
             else:
@@ -455,7 +539,11 @@ def build_docx(f, path):
                     for o in opts:
                         put(o)
                     # 最終行が選択肢1つだけなら、前の行の末尾の選択肢を送って2つ以上にする
-                    if len(lines) - start >= 2 and lines[-1].count("□ ") == 1 and lines[-2].count("□ ") >= 2:
+                    if (
+                        len(lines) - start >= 2
+                        and lines[-1].count("□ ") == 1
+                        and lines[-2].count("□ ") >= 2
+                    ):
                         prev = lines[-2]
                         k = prev.rfind("□ ")
                         moved = prev[k:]
@@ -522,7 +610,11 @@ def build_docx(f, path):
         # body の末尾は sectPr なので、その手前の要素を見る
         elems = [e for e in doc.element.body if not e.tag.endswith("}sectPr")]
         last = elems[-1] if elems else None
-        if last is not None and last.tag.endswith("}p") and not (last.xpath("string(.)") == " "):
+        if (
+            last is not None
+            and last.tag.endswith("}p")
+            and not (last.xpath("string(.)") == " ")
+        ):
             gap = doc.add_paragraph()
             gap.paragraph_format.space_after = Pt(0)
             gap.paragraph_format.line_spacing = Pt(5)
@@ -565,6 +657,14 @@ def build_docx(f, path):
         sf(tail.add_run(" "), 1)
 
     doc = Document()
+    # 文書のプロパティ（python-docx の雛形は作成者 python-docx・2013年のままなので上書きする）
+    cp = doc.core_properties
+    cp.title = f["title"]
+    cp.author = META.get("issuer", "")
+    cp.last_modified_by = META.get("issuer", "")
+    cp.comments = ""
+    cp.created = _dt.datetime.fromisoformat(META["as_of"])
+    cp.modified = cp.created
     sec = doc.sections[0]
     sec.page_width, sec.page_height = Mm(210), Mm(297)
     sec.left_margin = sec.right_margin = Mm(18)
@@ -587,7 +687,9 @@ def build_docx(f, path):
         para(doc, "＿" * 14 + "　殿", after=2)
         para(doc, CO, align="right", after=0)
         para(doc, "所在地：" + "＿" * 17, align="right", after=0)
-        para(doc, "担当者：" + "＿" * 10 + "　電話：" + "＿" * 8, align="right", after=7)
+        para(
+            doc, "担当者：" + "＿" * 10 + "　電話：" + "＿" * 8, align="right", after=7
+        )
     elif to == "主治医":
         para(doc, "＿" * 12 + "　病院・医院", after=0)
         para(doc, "＿" * 12 + "　先生　御机下", after=7)
@@ -639,150 +741,11 @@ def build_docx(f, path):
         table(doc, sig, wide)
     for blk in company:
         table(doc, blk["rows"], wide)
-    fp = sec.footer.paragraphs[0]
-    no_autospace(fp)
-    fp.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    sf(
-        fp.add_run(
-            CO
-        ),
-        7.5,
-    )
+    # フッター（右下の社名）は入れない（2026-09-06）
     doc.save(path)
 
 
-# ───────────────────────────────────────────────
-# 解説HTML
-# ───────────────────────────────────────────────
-def build_guide(path, forms, title, lede, files):
-    e = esc
-    cats = {}
-    for f in forms:
-        cats.setdefault(f["cat"], []).append(f)
-    rows = []
-    for cat, fs in cats.items():
-        rows.append(f"<h2>{e(cat)}</h2>")
-        for f in fs:
-            g = f["guide"]
-            rows.append(
-                f'<section><h3><span class="no">{e(f["no"])}</span>{e(f["title"])}<small>{e(files.get(f["no"], ""))}</small></h3>'
-                f"<dl><dt>用途</dt><dd>{e(g['use'])}</dd><dt>法令・根拠</dt><dd>{e(g['law'])}</dd><dt>運用の注意</dt><dd>{e(g['ops'])}</dd></dl></section>"
-            )
-    doc = f"""<!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{e(title)}</title>
-<style>
-body{{margin:0;padding:32px 24px 80px;font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;font-size:14px;line-height:1.8;color:#1E2721;background:#F9FAF7}}
-.wrap{{max-width:900px;margin:0 auto}}
-h1{{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:26px;margin:0 0 6px}}
-.lede{{color:#4A554D;margin:0 0 6px;max-width:64ch}}
-.meta{{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#78837B;margin-bottom:28px;padding-bottom:16px;border-bottom:2px solid #1E2721}}
-h2{{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:18px;margin:36px 0 8px;letter-spacing:.04em}}
-section{{background:#fff;border:1px solid #DCE3DB;border-radius:2px;padding:14px 18px;margin-top:10px}}
-h3{{margin:0 0 6px;font-size:15px}} h3 .no{{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#2E9E63;margin-right:10px;letter-spacing:.1em}}
-h3 small{{display:block;font-weight:400;font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#78837B;margin-top:2px}}
-dl{{margin:0;display:grid;grid-template-columns:90px 1fr;gap:4px 12px}} dt{{font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#78837B;letter-spacing:.08em;padding-top:3px}} dd{{margin:0;font-size:13.5px}}
-.notes{{margin-top:36px;padding-top:16px;border-top:1px solid #DCE3DB;color:#4A554D;font-size:13px}}
-@media print{{body{{background:#fff;padding:0}} section{{page-break-inside:avoid}}}}
-</style></head><body><div class="wrap">
-<h1>{e(title)}</h1>
-<p class="lede">{e(lede)}</p>
-<div class="meta">作成 {e(META["as_of"])}　書式 {len(forms)} 本　正本 04_書式生成/forms.json（生成器 render_forms.py）　会社名は「{e(CO)}」のプレースホルダ</div>
-{"".join(rows)}
-<div class="notes"><b>3つの形式</b><br>・<b>HTML（編集用）</b>：ブラウザで開くとそのまま記入・編集できる。☐をクリックで☑、下線の空欄に入力、文章も打ち替え可。「印刷・PDFに保存」で配布用PDFに。保存はブラウザの「名前を付けて保存」（Webページ・完全）。<br>・<b>PDF</b>：印刷して手書きする用。<br>・<b>Word（docx）</b>：文面を大きく直したい人向け。選択肢や空欄が途中で折れないよう語単位で組んである。<br><br><b>共通の注意</b><br>・法令の条番号は作成時点の理解で書いている。顧問先に渡す前に e-Gov の現行条文で確認する。<br>・押印欄は設けていない（署名で足りる）。押印が必要な会社は追加する。<br>・損害賠償の「予定」、違約金、退職後の広い競業避止は無効になりやすいので入れていない。<br>・厚労省の公式様式があるもの（労働条件通知書、育児・介護休業の申出書等、36協定）は様式庫と 06_育児介護休業資料 のものを使い、ここでは作っていない。</div>
-</div></body></html>
-"""
-    path.write_text(doc, encoding="utf-8")
-
-
-# ───────────────────────────────────────────────
-# PDF（Playwright）＋ 1頁検査
-# ───────────────────────────────────────────────
-async def to_pdf(jobs):
-    from playwright.async_api import async_playwright
-
-    bad = []
-    async with async_playwright() as p:
-        br = await p.chromium.launch()
-        pg = await br.new_page()
-        for html_path, pdf_path, png_path in jobs:
-            await pg.goto(pathlib.Path(html_path).resolve().as_uri())
-            await pg.wait_for_timeout(120)
-            # 1頁検査：.page の高さが 297mm を超えていないか（印刷時の高さ固定前に測る）
-            hpx = await pg.evaluate("document.querySelector('.page').scrollHeight")
-            mm = hpx / 96 * 25.4
-            if mm > 297.5:
-                bad.append((pathlib.Path(html_path).name, round(mm)))
-            await pg.pdf(
-                path=str(pdf_path),
-                format="A4",
-                print_background=True,
-                prefer_css_page_size=True,
-            )
-            if png_path:
-                await pg.screenshot(path=str(png_path), full_page=True)
-        await br.close()
-    return bad
-
-
-def main():
-    no_docx = "--no-docx" in sys.argv
-    for d in (OUT_D, OUT_E):
-        if d.exists():
-            shutil.rmtree(d)
-        d.mkdir(parents=True)
-    forms = [f for f in DATA["forms"] if f.get("kind") != "xlsx"]
-    xl = [f for f in DATA["forms"] if f.get("kind") == "xlsx"]
-    jobs = []
-    files = {}
-    for f in forms:
-        root = OUT_E if f["to"] == "社労士" else OUT_D
-        base = f"{f['no']}_{f['title']}"
-        for sub in ("HTML編集用", "PDF", "Word"):
-            (root / f["cat"] / sub).mkdir(parents=True, exist_ok=True)
-        hp = root / f["cat"] / "HTML編集用" / f"{base}.html"
-        hp.write_text(page(f, True), encoding="utf-8")
-        # PDF用は編集バー無しの静的版を一時生成
-        tmp = root / f["cat"] / "PDF" / f"_{base}.html"
-        tmp.write_text(page(f, False), encoding="utf-8")
-        jobs.append((tmp, root / f["cat"] / "PDF" / f"{base}.pdf", None))
-        if not no_docx:
-            build_docx(f, root / f["cat"] / "Word" / f"{base}.docx")
-        files[f["no"]] = f"{f['cat']}/（HTML編集用・PDF・Word）/{base}"
-    bad = asyncio.run(to_pdf(jobs))
-    for tmp, _, _ in jobs:
-        tmp.unlink()
-    # Excel帳簿（既存の生成関数を流用）
-    import build_shanai_forms as B
-
-    d = OUT_D / "08_帳簿（Excel）"
-    d.mkdir(exist_ok=True)
-    B.build_shukkinbo(d / "D-31_出勤簿.xlsx")
-    B.build_yukyu(d / "D-32_年次有給休暇管理簿.xlsx")
-    files["D-31"] = "08_帳簿（Excel）/D-31_出勤簿.xlsx"
-    files["D-32"] = "08_帳簿（Excel）/D-32_年次有給休暇管理簿.xlsx"
-    d_forms = [f for f in forms if f["to"] != "社労士"] + xl
-    e_forms = [f for f in forms if f["to"] == "社労士"]
-    build_guide(
-        OUT_D / "00_社内書式一覧と解説.html",
-        d_forms,
-        "社内申請書式 一覧と解説",
-        "既存資産に無かった社内様式を、みなの社会保険労務士事務所版として新規に作成した。会社と従業員の間で使う申請・届出・誓約・通知の書式で、社労士へ出す連絡票ではない。",
-        files,
-    )
-    build_guide(
-        OUT_E / "00_助成金相談票_一覧と解説.html",
-        e_forms,
-        "助成金相談票 一覧と解説",
-        "顧問先が事務所に出す助成金の事前相談票。アクエルドの4種（採用・教育・育児・その他）に対応してみなの版として新規に作成した。制度の要件は年度で変わるので、受給を保証しない旨を各票に入れてある。",
-        files,
-    )
-    print(
-        f"forms {len(forms)}（D {len(d_forms) - len(xl)}＋E {len(e_forms)}）＋Excel {len(xl)}"
-    )
-    print("1頁超え:", bad or "なし")
-    return 1 if bad else 0
-
-
 if __name__ == "__main__":
-    print("このファイルは build_shoshiki.py から import して使う")
+    print(
+        "このモジュールは build_shoshiki.py / build_zip.py から import して使う（HTML＝page()、Word＝build_docx()）"
+    )

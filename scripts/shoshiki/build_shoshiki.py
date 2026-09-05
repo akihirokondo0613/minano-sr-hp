@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # 社内書式ページの生成器。
-#   python3 scripts/shoshiki/build_shoshiki.py          … shoshiki.html と shoshiki/*.html を書き出す
+#   python3 scripts/shoshiki/build_shoshiki.py          … shoshiki.html・shoshiki/*.html・shoshiki/dl/word-7kq3x9/index.html を書き出す
 #   python3 scripts/shoshiki/build_shoshiki.py --check  … 書き出さず、差分があれば exit 1
-# 正本: data/shoshiki/forms.json（文面）。donor は portal.html（head・nav・footer の骨格を借りる）。
+# 正本: data/shoshiki/forms.json（文面。作り方は make_json.py と docs/shoshiki.md）。donor は portal.html（head・nav・footer の骨格を借りる）。
 # 書式ページ（shoshiki/D-xx.html）は印刷用の独立HTMLで、会社情報はブラウザ内（localStorage）にだけ保存する。
+# Excel帳簿と Word一式 zip は build_zip.py が作る（ここでは扱わない）。
 import html
 import json
 import pathlib
@@ -15,6 +16,7 @@ HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE))
 import render_forms as R  # noqa: E402
+from build_zip import XLSX_FILES, ZIP_NAME  # noqa: E402
 
 e = html.escape
 DATA = R.DATA
@@ -22,12 +24,15 @@ META = DATA["meta"]
 AS_OF = META["as_of"]
 DOMAIN = "https://minano-sr.com"
 PAGE = "shoshiki.html"
+DL_PATH = "shoshiki/dl/word-7kq3x9"
 FORM_URL = "https://forms.gle/vFUpB3fqzetNHQQKA"  # Word一式のメール登録（Googleフォーム・contact@・2026-09-05）
 FORMS = [f for f in DATA["forms"] if f.get("to") != "社労士"]
 BY_NO = {f["no"]: f for f in FORMS}
+N_FORMS = len([f for f in FORMS if not f.get("kind")])
+N_XLSX = len([f for f in FORMS if f.get("kind")])
 
-TITLE = "社内書式のひな形｜入社から退職まで52本を無料で｜みなの社会保険労務士事務所"
-DESC = "入社誓約書・有給休暇申請書・身上異動届・休職届・退職届・労働者代表の選出・就業規則意見書など、会社と従業員の間で使う社内書式52本。ブラウザで記入して印刷でき、会社名を入れると全書式に自動で入ります。登録不要。"
+TITLE = f"社内書式のひな形｜入社から退職まで{N_FORMS + N_XLSX}本を無料で｜みなの社会保険労務士事務所"
+DESC = f"入社誓約書・有給休暇申請書・身上異動届・休職届・退職届・労働者代表の選出・就業規則意見書など、会社と従業員の間で使う社内書式{N_FORMS + N_XLSX}本。ブラウザで記入して印刷でき、会社名を入れると全書式に自動で入ります。登録不要。"
 
 CAT_NOTE = {
     "01_入社": "内定から入社までに取り交わす書類",
@@ -55,9 +60,12 @@ CAT_ORDER = [
     "11_人事・賃金",
     "08_帳簿（Excel）",
 ]
+# 場面から探す: (2文字のアイコン, 見出し, 一言, 書式番号)
 SCENES = [
     (
+        "採用",
         "人を採用する",
+        "内定から入社日までに取り交わす",
         [
             "D-01",
             "D-02",
@@ -72,31 +80,77 @@ SCENES = [
             "D-38",
         ],
     ),
-    ("残業・休暇・欠勤", ["D-11", "D-12", "D-13", "D-14", "D-50", "D-31", "D-32"]),
-    ("住所・氏名・扶養・口座が変わった", ["D-16", "D-07"]),
-    ("副業をしたいと言われた", ["D-15"]),
-    ("病気で長く休む・復帰する", ["D-17", "D-18", "D-19", "D-20", "D-21"]),
-    ("出産・育児・介護", ["D-47", "D-30"]),
-    ("問題行動があった", ["D-22", "D-46", "D-44", "D-45", "D-23"]),
     (
+        "勤怠",
+        "残業・休暇・欠勤",
+        "日々の申請と承認。帳簿も",
+        ["D-11", "D-12", "D-13", "D-14", "D-50", "D-31", "D-32"],
+    ),
+    (
+        "変更",
+        "住所・氏名・扶養・口座が変わった",
+        "社会保険・税の手続の起点になる届",
+        ["D-16", "D-07"],
+    ),
+    ("副業", "副業をしたいと言われた", "届出制にして労働時間を把握する", ["D-15"]),
+    (
+        "休職",
+        "病気で長く休む・復帰する",
+        "主治医の意見をもらって会社が判断",
+        ["D-17", "D-18", "D-19", "D-20", "D-21"],
+    ),
+    ("育介", "出産・育児・介護", "厚労省の様式に無い分を補う", ["D-47", "D-30"]),
+    (
+        "懲戒",
+        "問題行動があった",
+        "注意→事実確認→弁明→処分の順に",
+        ["D-22", "D-46", "D-44", "D-45", "D-23"],
+    ),
+    (
+        "退職",
         "退職する・辞めてもらう",
+        "合意退職と解雇で使う書類が違う",
         ["D-24", "D-25", "D-26", "D-27", "D-28", "D-51", "D-42", "D-43", "D-29"],
     ),
-    ("定年を迎える人がいる", ["D-48", "D-49"]),
-    ("36協定・就業規則を出す", ["D-34", "D-35", "D-36", "D-37", "D-38", "D-40"]),
-    ("給与の支払い方を決める", ["D-39", "D-40", "D-41"]),
-    ("証明書を求められた", ["D-33", "D-43"]),
+    (
+        "定年",
+        "定年を迎える人がいる",
+        "継続雇用の希望確認と条件の通知",
+        ["D-48", "D-49"],
+    ),
+    (
+        "協定",
+        "36協定・就業規則を出す",
+        "労働者代表の選出から意見聴取まで",
+        ["D-34", "D-35", "D-36", "D-37", "D-38", "D-40"],
+    ),
+    (
+        "給与",
+        "給与の支払い方を決める",
+        "口座振込の同意と控除の協定",
+        ["D-39", "D-40", "D-41"],
+    ),
+    ("証明", "証明書を求められた", "本人の請求に応じて会社が発行", ["D-33", "D-43"]),
 ]
 
 
 def href(f):
     if f.get("kind") == "xlsx":
-        return f"shoshiki/{f['no']}_{f['title']}.xlsx"
+        return f"shoshiki/{XLSX_FILES[f['no']]}"
     return f"shoshiki/{f['no']}.html"
 
 
+def link_attrs(f):
+    """xlsx は download 属性で日本語の表示名にし、SPA遷移の対象からも外す"""
+    if f.get("kind") == "xlsx":
+        return (
+            f' href="{e(href(f))}" download="{e(f["no"] + "_" + f["title"] + ".xlsx")}"'
+        )
+    return f' href="{e(href(f))}"'
+
+
 CSS = """
-/* 社内書式：会社情報の設定・場面チップ・分類表 */
+/* 社内書式：会社情報の設定・場面カード・分類表 */
 .sh-set{background:var(--shiro);border:1px solid var(--line);border-radius:14px;padding:18px 20px 16px}
 .sh-set .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 16px}
 .sh-set label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--ink3);font-weight:700}
@@ -105,14 +159,22 @@ CSS = """
 .sh-set button{font:inherit;font-size:12.5px;font-weight:700;padding:7px 12px;border:1px solid var(--moegi-t);background:var(--shiro);color:var(--sugi);border-radius:8px;cursor:pointer}
 .sh-set .hint{margin:10px 0 0;font-size:12px;line-height:1.9;color:var(--ink4)}
 .sh-now{font-weight:700;color:var(--sugi)}
-.qk-list{display:flex;flex-wrap:wrap;gap:10px}
-.qk{display:inline-flex;align-items:center;gap:8px;background:var(--shiro);border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-size:13px;font-weight:700;color:var(--ink2);letter-spacing:.02em;text-decoration:none;transition:border-color .34s cubic-bezier(.22,.61,.36,1),transform .34s cubic-bezier(.22,.61,.36,1)}
-.qk::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--moegi);flex-shrink:0}
+.qk{display:inline-flex;align-items:center;gap:7px;background:var(--shiro);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:600;color:var(--ink2);letter-spacing:.02em;text-decoration:none;transition:border-color .34s cubic-bezier(.22,.61,.36,1),transform .34s cubic-bezier(.22,.61,.36,1)}
+.qk::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--moegi);flex-shrink:0}
 .qk:hover{border-color:var(--moegi-t);transform:translateY(-2px);color:var(--sugi)}
-.sh-scenes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:12px}
-.sh-scene{min-width:0;background:var(--shiro);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
-.sh-scene h3{margin:0 0 8px;font-size:14px;font-family:var(--disp);font-weight:800;color:var(--iwa)}
-.sh-scene .qk{padding:6px 12px;font-size:12.5px;margin:2px 4px 2px 0}
+.qk.xl::before{background:#C9A227}
+.qk.xl::after{content:'Excel';font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.04em;color:var(--ink4)}
+.sh-scenes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:12px;align-items:start}
+.sh-scene{min-width:0;background:var(--shiro);border:1px solid var(--line);border-radius:14px;padding:14px 16px 10px 18px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+.sh-scene::before{content:'';position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;background:var(--moegi)}
+.sh-scene-h{display:flex;align-items:center;gap:12px}
+.sh-scene-h .kmono{width:44px;height:44px;font-size:14px;border-radius:10px}
+.sh-scene-t{min-width:0;flex:1}
+.sh-scene-t h3{margin:0;font-size:16.5px;letter-spacing:.02em;font-family:var(--disp);font-weight:800;color:var(--iwa);line-height:1.4}
+.sh-scene-t p{margin:2px 0 0;font-size:12.5px;line-height:1.6;color:var(--ink3)}
+.sh-cnt{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--sugi);background:var(--moegi-l);padding:3px 9px;border-radius:999px;line-height:1.4;letter-spacing:.06em;white-space:nowrap;align-self:flex-start}
+.sh-scene-l{display:flex;flex-wrap:wrap;gap:8px 6px;padding-top:10px;padding-bottom:4px;border-top:1px dashed var(--line2)}
+@media(max-width:760px){.qk{font-size:13px;padding:8px 14px}}
 .sh-cat{margin-top:22px}
 .sh-cat h3{margin:0 0 2px;font-size:15.5px;font-family:var(--disp);font-weight:800;color:var(--iwa)}
 .sh-cat .note{margin:0 0 8px;font-size:12.5px;color:var(--ink4)}
@@ -137,13 +199,19 @@ CSS = """
 
 def scene_block():
     out = ['<div class="sh-scenes">']
-    for name, nos in SCENES:
+    for icon, name, lead, nos in SCENES:
+        fs = [BY_NO[n] for n in nos if n in BY_NO]
         links = "".join(
-            f'<a class="qk" href="{e(href(BY_NO[n]))}">{e(BY_NO[n]["title"])}</a>'
-            for n in nos
-            if n in BY_NO
+            f'<a class="qk{" xl" if f.get("kind") == "xlsx" else ""}"{link_attrs(f)}>{e(f["title"])}</a>'
+            for f in fs
         )
-        out.append(f'<div class="sh-scene"><h3>{e(name)}</h3>{links}</div>')
+        out.append(
+            '<div class="sh-scene">'
+            f'<div class="sh-scene-h"><span class="kmono" aria-hidden="true">{e(icon)}</span>'
+            f'<div class="sh-scene-t"><h3>{e(name)}</h3><p>{e(lead)}</p></div>'
+            f'<span class="sh-cnt">{len(fs)}本</span></div>'
+            f'<div class="sh-scene-l">{links}</div></div>'
+        )
     out.append("</div>")
     return "".join(out)
 
@@ -166,15 +234,14 @@ def cat_blocks():
         for f in fs:
             go = "Excel ↓" if f.get("kind") == "xlsx" else "記入する →"
             out.append(
-                f'<tr><td class="no">{e(f["no"])}</td><td class="nm"><a href="{e(href(f))}">{e(f["title"])}</a></td><td class="use">{e(f["guide"]["use"])}</td><td class="go"><a href="{e(href(f))}">{go}</a></td></tr>'
+                f'<tr><td class="no">{e(f["no"])}</td><td class="nm"><a{link_attrs(f)}>{e(f["title"])}</a></td>'
+                f'<td class="use">{e(f["guide"]["use"])}</td><td class="go"><a{link_attrs(f)}>{go}</a></td></tr>'
             )
         out.append("</tbody></table></div></div>")
     return "".join(out)
 
 
 def main_html():
-    n_forms = len([f for f in FORMS if not f.get("kind")])
-    n_xlsx = len([f for f in FORMS if f.get("kind")])
     set_panel = (
         '<div class="sh-set" id="cfg-wrap"><div class="row">'
         '<label>会社名<input id="co-name" placeholder="株式会社○○"></label>'
@@ -184,9 +251,10 @@ def main_html():
         '<label>電話<input id="co-tel" placeholder="076-000-0000"></label>'
         '<label>担当部署・担当者<input id="co-dept" placeholder="総務部 ○○"></label>'
         '</div><div class="btns"><button type="button" onclick="coExport()">設定をファイルに書き出す</button>'
-        '<button type="button" onclick="document.getElementById(\'co-file\').click()">設定ファイルを読み込む</button><input type="file" id="co-file" accept=".json" style="display:none" onchange="coImport(this)">'
+        '<button type="button" onclick="document.getElementById(\'co-file\').click()">設定ファイルを読み込む</button>'
+        '<input type="file" id="co-file" accept=".json" style="display:none" onchange="coImport(this)">'
         '<button type="button" onclick="coClear()">消去</button></div>'
-        '<p class="hint">いま設定されている会社名：<span class="co-name sh-now">【会社名】</span>。入力した内容はこのブラウザの中にだけ保存され、当事務所には送信されません。各書式を開くと宛名・発信者欄・右下の社名に自動で入ります。別のPCで使うときは「書き出す」で保存したファイルを読み込んでください。</p></div>'
+        '<p class="hint">いま設定されている会社名：<span class="co-name sh-now">【会社名】</span>。入力した内容はこのブラウザの中にだけ保存され、当事務所には送信されません。各書式を開くと宛名・発信者欄に自動で入ります。別のPCで使うときは「書き出す」で保存したファイルを読み込んでください。</p></div>'
     )
     return f"""<main id="main" class="content">
 
@@ -195,7 +263,7 @@ def main_html():
       <div class="cat-icon kmono" aria-hidden="true">社名</div>
       <h2 class="cat-title">会社情報を入れる</h2>
     </div>
-    <p class="cat-desc">最初に一度だけ入力してください。すべての書式の宛名・発信者欄・右下の社名に入ります。</p>
+    <p class="cat-desc">最初に一度だけ入力してください。すべての書式の宛名・発信者欄に入ります。</p>
     {set_panel}
   </section>
 
@@ -213,7 +281,7 @@ def main_html():
       <div class="cat-icon kmono" aria-hidden="true">一覧</div>
       <h2 class="cat-title">分類から探す</h2>
     </div>
-    <p class="cat-desc">書式{n_forms}本と帳簿{n_xlsx}本。用途の欄に、その書式が要る理由を一行で書いています。</p>
+    <p class="cat-desc">書式{N_FORMS}本と帳簿{N_XLSX}本。用途の欄に、その書式が要る理由を一行で書いています。</p>
     {cat_blocks()}
   </section>
 
@@ -223,7 +291,7 @@ def main_html():
       <h2 class="cat-title">Word版を一式でほしい方へ</h2>
     </div>
     <div class="sh-word">
-      <p>全書式のWord版（zip）を、メール登録の方にお渡しします。法改正で書式を更新したときは、希望された方にだけお知らせします。登録した内容は書式のお渡しと更新案内にしか使いません。</p>
+      <p>全書式のWord版（zip）を、メール登録の方にお渡しします。送信後の画面にダウンロードページのリンクが表示されます。法改正で書式を更新したときは、希望された方にだけお知らせします。登録した内容は書式のお渡しと更新案内にしか使いません。</p>
       <a class="gbtn" href="{e(FORM_URL)}" target="_blank" rel="noopener">メール登録してWord一式を受け取る ↗</a>
     </div>
   </section>
@@ -409,6 +477,52 @@ def build_form(f):
     return s
 
 
+def build_dl_page():
+    """Word一式のダウンロードページ。Googleフォームの確認メッセージからここへ来る。
+    日本語のファイル名を含むURLは自動リンクが途中で切れるので、ディレクトリのURLで案内し、ここからzipへ。"""
+    zpath = REPO / DL_PATH / ZIP_NAME
+    size_mb = f"{zpath.stat().st_size / 1024 / 1024:.1f}MB" if zpath.exists() else ""
+    items = "".join(f"<li>{e(f['no'])}　{e(f['title'])}</li>" for f in FORMS)
+    return f"""<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>社内書式 Word一式のダウンロード</title>
+<style>
+body{{margin:0;padding:32px 20px 80px;font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;font-size:14.5px;line-height:1.85;color:#1E2721;background:#F9FAF7}}
+.wrap{{max-width:680px;margin:0 auto}}
+h1{{font-size:22px;margin:0 0 8px;letter-spacing:.03em}}
+.lede{{color:#4A554D;margin:0 0 20px}}
+.dl{{display:inline-block;padding:14px 26px;background:#1C5842;color:#fff;border-radius:999px;text-decoration:none;font-weight:700;font-size:16px}}
+.dl:hover{{background:#2E9E63}}
+.meta{{font-size:12.5px;color:#78837B;margin:8px 0 26px}}
+h2{{font-size:15px;margin:26px 0 6px}}
+ol,ul{{padding-left:1.4em;margin:0}} li{{margin:2px 0}}
+details{{margin-top:8px}} summary{{cursor:pointer;color:#1C5842;font-weight:700}}
+.list li{{font-size:13px;color:#4A554D}}
+.foot{{margin-top:36px;padding-top:14px;border-top:1px solid #DCE3DB;font-size:12.5px;color:#4A554D}}
+a{{color:#1C5842}}
+</style></head><body><div class="wrap">
+<h1>社内書式 Word一式のダウンロード</h1>
+<p class="lede">メール登録ありがとうございます。下のボタンから保存してください。</p>
+<a class="dl" href="{e(ZIP_NAME)}" download>ダウンロード（zip{"・" + size_mb if size_mb else ""}）</a>
+<p class="meta">Word {N_FORMS}本＋Excel {N_XLSX}本＋README。{e(AS_OF)}版。開けない場合は <a href="mailto:contact@minano-sr.com">contact@minano-sr.com</a> へ。</p>
+<h2>使い方</h2>
+<ol>
+<li>必要な書式（.docx）をWordで開きます。</li>
+<li>「【会社名】」を自社名に置き換えます（Ctrl+H または ⌘+H で「すべて置換」）。</li>
+<li>宛名の代表者名・所在地・担当者を書き入れ、文面を自社の就業規則・実情に合わせて直します。</li>
+</ol>
+<h2>利用条件</h2>
+<ul>
+<li>自社内での利用と改変は自由です。第三者への再配布・販売はご遠慮ください。</li>
+<li>法令は作成時点の理解に基づく一般的な内容です。就業規則・労使協定と食い違うときは規程が優先します。解雇・懲戒・労使協定などは、使う前に専門家にご確認ください。</li>
+</ul>
+<details><summary>収録一覧（{N_FORMS + N_XLSX}本）</summary><ul class="list">{items}</ul></details>
+<p class="foot">ブラウザで記入できる版は <a href="../../../shoshiki.html">社内書式のひな形</a> にあります（会社名を入れると全書式に入ります）。<br>作成・提供：みなの社会保険労務士事務所（富山市）</p>
+</div></body></html>
+"""
+
+
 def mark_phrases(text):
     """文節の切れ目に <wbr> を置く（scripts/lib/phrase-breaks.mjs と同じ関数を通す）。
     一覧ページだけに使う。書式ページ shoshiki/ は sync-phrase-breaks の SKIP_DIRS で対象外にしてある。"""
@@ -430,13 +544,15 @@ def mark_phrases(text):
 
 def main():
     check = "--check" in sys.argv
-    outputs = {REPO / PAGE: mark_phrases(build_index())}
+    outputs = {
+        REPO / PAGE: mark_phrases(build_index()),
+        REPO / DL_PATH / "index.html": build_dl_page(),
+    }
     for f in FORMS:
         if f.get("kind") == "xlsx":
             continue
-        outputs[REPO / "shoshiki" / f"{f['no']}.html"] = build_form(
-            f
-        )  # 書式ページは印刷用の独立CSS（.t が nowrap）なので文節印は入れない
+        # 書式ページは印刷用の独立CSS（.t が nowrap）なので文節印は入れない
+        outputs[REPO / "shoshiki" / f"{f['no']}.html"] = build_form(f)
     diff = []
     for p, content in outputs.items():
         cur = p.read_text(encoding="utf-8") if p.exists() else None

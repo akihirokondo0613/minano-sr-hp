@@ -1,0 +1,2 @@
+# Googleフォームの確認メッセージなど、古い zip 名や途中で切れたリンクで来ても、ダウンロードページに届くようにする
+ErrorDocument 404 /shoshiki/dl/word-7kq3x9/index.html
