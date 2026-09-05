@@ -469,6 +469,13 @@ main > section:not(.hero) {
   .home-startup-offer-link{justify-self:center}
 }
 </style>
+<style id="home-tool-pill">
+/* ヒーローの「社内書式のひな形（無料ツール）」ピル。critical-home は skin-v2.css と同期しているのでここに置く。
+   PCは他の補助ピルと同じ見た目、スマホ（640px以下）は補助ピルが隠れるので主ボタンの下に全幅で出す */
+@media (max-width: 640px) {
+  .hero-btns .hero-sub-link.hero-tool-link { display: inline-flex; justify-content: center; flex: 0 0 100%; width: 100%; min-height: 44px; }
+}
+</style>
 <style id="home-spot-card">
 /* ヒーローのスポット業務カード。写真の上に置くので、白い面と枠で本文から独立させる。
    中身は期間限定。差し替え時期は index.html 側のコメントに書く。 */
@@ -816,6 +823,7 @@ main > section:not(.hero) {
       <div class="hero-btns">
         <a href="uploads/contact.html" class="btn-primary">無料で相談する</a>
         <a href="infographic.html" class="hero-sub-link">社労士とは？ →</a>
+        <a href="shoshiki.html" class="hero-sub-link hero-tool-link"><span class="nw">社内書式のひな形</span><span class="nw">（無料ツール）→</span></a>
       </div>
       <!-- スポット業務カード：時期が来たら中身を差し替えるか、このブロックごと消す。
            次の見直し 2026-10-01（令和8年度の業務改善助成金の締切見込み 9/30 の翌日）。 -->

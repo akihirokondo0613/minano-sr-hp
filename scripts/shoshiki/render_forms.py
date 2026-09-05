@@ -67,7 +67,9 @@ table.f td{min-height:8mm;height:8mm}
 .grp > :not(:last-child){margin-right:1.4em}
 .opt .bx{display:inline-block;width:1.1em;cursor:pointer;user-select:none}
 .lab{white-space:nowrap}
-.bl{display:inline-block;border-bottom:0.6pt solid var(--ink);min-width:8mm;height:1.35em;vertical-align:-0.15em;margin:0 .35em;padding:0 .3em}
+.bl{display:inline-block;border-bottom:0.6pt solid var(--ink);min-width:8mm;height:1.35em;vertical-align:-0.15em;margin:0 .35em;padding:0 .3em;text-align:center}
+/* 会社情報（宛名の代表者・所在地・担当者・電話）が差し込まれた欄は下線を消す。空欄のままなら手書き用に下線を残す */
+.bl.co-rep:not(:empty),.bl.co-addr:not(:empty),.bl.co-dept:not(:empty),.bl.co-tel:not(:empty){border-bottom-color:transparent}
 .dt{white-space:nowrap}
 .nb{white-space:nowrap}
 .dt .bl{min-width:9mm;margin:0 .2em}
