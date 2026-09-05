@@ -9,7 +9,9 @@ h1{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:16pt;font-weig
 .date{text-align:right;margin:0 0 3mm}
 .to{margin:0 0 4mm}
 .to div{margin:0}
-.sender{text-align:right;margin-top:1.5mm;line-height:1.7}
+.to .sender{display:table;margin:1.5mm 0 0 auto;line-height:1.7;text-align:left}  /* .to div{margin:0} より強くする */
+/* 発信者欄（所在地・担当者・電話）は左揃えで、ラベルの直後から値が続く形。右端に寄せた箱の中で左揃えにする */
+.sender .bl{text-align:left}
 p{margin:0 0 1.6mm}
 p.note{font-size:9pt;color:var(--ink2);margin-top:1.5mm}
 table.f{width:100%;border-collapse:collapse;table-layout:fixed;margin:2.5mm 0 3mm}
