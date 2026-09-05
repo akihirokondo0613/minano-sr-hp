@@ -1,7 +1,7 @@
 /**
  * 社内書式ページの生成器（Python）を preflight から呼ぶための薄い入口。
  *
- *   node scripts/build-shoshiki-page.mjs           生成（shoshiki.html と shoshiki/*.html を書き出す）
+ *   node scripts/build-shoshiki-page.mjs           生成（shoshiki.html・shoshiki/*.html・shoshiki/dl/word-7kq3x9/index.html を書き出す）
  *   node scripts/build-shoshiki-page.mjs --check   差分があれば失敗（preflight用）
  *
  * 本体は scripts/shoshiki/build_shoshiki.py。正本は data/shoshiki/forms.json。
