@@ -70,7 +70,7 @@ table.f td{min-height:8mm;height:8mm}
 .opt .bx{display:inline-block;width:1.1em;cursor:pointer;user-select:none}
 .lab{white-space:nowrap}
 .bl{display:inline-block;border-bottom:0.6pt solid var(--ink);min-width:8mm;min-height:1.35em;line-height:1.35em;vertical-align:baseline;margin:0 .35em;padding:0 .3em .05em;text-align:center}
-/* 入力前の空欄は箱の高さだけ確保し、下線を文字の基線より少し下に置く。入力後は文字の基線を周りの文字（ラベル）と揃える。
+/* 入力前の空欄は箱の高さだけ確保し、下線を文字の基線より少し下に置く（旧版より約2px下。入力済みの欄と下線の高さが揃う位置）。入力後は文字の基線を周りの文字（ラベル）と揃える。
    以前は height 固定＋行送りより低い箱だったため、入力した文字が箱から下へはみ出して低く見えた */
 .bl:empty{height:1.35em;vertical-align:-0.15em}
 /* 会社情報（宛名の代表者・所在地・担当者・電話）が差し込まれた欄は下線を消す。空欄のままなら手書き用に下線を残す */

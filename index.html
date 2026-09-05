@@ -512,10 +512,11 @@ main > section:not(.hero) {
 .tool-card:focus-visible{border-color:var(--moegi);outline:2px solid var(--sugi);outline-offset:2px}
 .tool-band{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:clamp(18px,2.2vw,26px) 16px;
   background:var(--tool-c,var(--sugi));color:#fff;text-align:center;overflow:hidden}
-.tool-band::after{content:'';position:absolute;inset:auto -20% -55% auto;width:62%;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.08)}
+.tool-band::after{content:'';position:absolute;inset:auto -12% -70% auto;width:38%;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.08)}  /* 右下隅に小さく。文字域に縁が掛からない大きさ（320〜1440で確認） */
 .tool-band[data-tone="tool"]{--tool-c:#1E7A4B}
 .tool-band[data-tone="gov"]{--tool-c:#3E6E88}
-.tool-kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em}  /* 白のまま（4.5:1 を守る） */
+.tool-kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;white-space:nowrap}
+@media (max-width:360px){.tool-kicker{font-size:10px;letter-spacing:.1em}}  /* 320px で2行に折れない */  /* 白のまま（4.5:1 を守る） */
 .tool-mark{font-family:var(--disp);font-size:clamp(18px,1.9vw,23px);font-weight:900;letter-spacing:.1em;line-height:1.3}
 .tool-body{display:flex;flex-direction:column;gap:9px;padding:clamp(14px,1.6vw,20px) clamp(14px,1.6vw,20px) clamp(16px,1.8vw,20px);flex:1}
 .tool-title{font-family:var(--disp);font-size:clamp(15px,1.4vw,17.5px);font-weight:800;line-height:1.5;color:var(--iwa)}
@@ -1227,7 +1228,7 @@ main > section:not(.hero) {
       <div class="sec-head-idx"><span class="idx-num">07</span><span class="idx-lat">TOOLS</span><span class="idx-jp">ツール・公式窓口</span></div>
       <div class="sec-head-body">
         <h2 class="sec-h">探す手間を、<br class="sp-br"><strong>先に減らしておく。</strong></h2>
-        <p class="sec-sub">社内書式は<wbr>ブラウザで<wbr>記入して<wbr>印刷、<wbr>行政の<wbr>公式窓口は<wbr>一か<wbr>所に<wbr>まとめました。<wbr>どちらも<wbr>無料・登録不要です。</p>
+        <p class="sec-sub">社内書式は<wbr>ブラウザで<wbr>記入して<wbr>印刷、<wbr>行政の<wbr>公式窓口は<wbr>1か所に<wbr>まとめました。<wbr>どちらも<wbr>無料・登録不要です。</p>
       </div>
     </div>
     <div class="tool-grid">
@@ -1235,7 +1236,7 @@ main > section:not(.hero) {
         <span class="tool-band" data-tone="tool"><span class="tool-kicker">FREE TOOL</span><span class="tool-mark">社内書式</span></span>
         <span class="tool-body">
           <span class="tool-title"><span class="nw">社内書式の</span><span class="nw">ひな形 51本</span></span>
-          <span class="tool-desc">入社誓約書・有給休暇申請書・休職届・退職届・労働者代表の選出など、会社と従業員の間で使う書式をブラウザで記入して印刷。会社名を入れると全書式に自動で入ります。</span>
+          <span class="tool-desc">入社誓約書・有給休暇申請書・休職届・退職届・労働者代表の選出など、会社と従業員の間で使う書式をブラウザで記入して印刷。会社名を入れると各書式に自動で入ります。</span>
           <span class="tool-tags"><span>入社</span><span>勤怠・休暇</span><span>休職・復職</span><span>退職</span><span>36協定・就業規則</span></span>
           <span class="tool-link">書式一覧を開く <span aria-hidden="true">→</span></span>
         </span>
