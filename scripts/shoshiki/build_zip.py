@@ -14,16 +14,11 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE))
 import forms_base as B  # noqa: E402
 import render_forms as R  # noqa: E402
+from shoshiki_names import XLSX_FILES, ZIP_NAME  # noqa: E402
 
 DATA = R.DATA
 AS_OF = DATA["meta"]["as_of"]
-VER = AS_OF[:7].replace("-", "")  # 202609
 DL_DIR = REPO / "shoshiki" / "dl" / "word-7kq3x9"
-ZIP_NAME = f"shanai-shoshiki-word-{VER}.zip"
-XLSX_FILES = {  # 番号 → サイトに置く ASCII 名（表示名は forms.json の title）
-    "D-31": "D-31_shukkinbo.xlsx",
-    "D-32": "D-32_nenkyu-kanribo.xlsx",
-}
 XLSX_BUILDERS = {"D-31": B.build_shukkinbo, "D-32": B.build_yukyu}
 BUILD = HERE / "_build"
 FORMS = [f for f in DATA["forms"] if f.get("to") != "社労士"]

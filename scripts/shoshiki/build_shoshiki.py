@@ -16,7 +16,7 @@ HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE))
 import render_forms as R  # noqa: E402
-from build_zip import XLSX_FILES, ZIP_NAME  # noqa: E402
+from shoshiki_names import XLSX_FILES, ZIP_NAME  # noqa: E402  build_zip（openpyxl依存）は import しない
 
 e = html.escape
 DATA = R.DATA
