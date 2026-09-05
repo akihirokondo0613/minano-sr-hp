@@ -411,7 +411,7 @@ def build_form(f):
 
 def mark_phrases(text):
     """文節の切れ目に <wbr> を置く（scripts/lib/phrase-breaks.mjs と同じ関数を通す）。
-    他の生成器と同様、生成物は最初から印つきで書き出し、sync-phrase-breaks --check で差が出ないようにする。"""
+    一覧ページだけに使う。書式ページ shoshiki/ は sync-phrase-breaks の SKIP_DIRS で対象外にしてある。"""
     lib = (REPO / "scripts" / "lib" / "phrase-breaks.mjs").as_uri()
     js = (
         f"import({lib!r}).then(m=>{{let b='';process.stdin.setEncoding('utf8');"
@@ -434,7 +434,9 @@ def main():
     for f in FORMS:
         if f.get("kind") == "xlsx":
             continue
-        outputs[REPO / "shoshiki" / f"{f['no']}.html"] = mark_phrases(build_form(f))
+        outputs[REPO / "shoshiki" / f"{f['no']}.html"] = build_form(
+            f
+        )  # 書式ページは印刷用の独立CSS（.t が nowrap）なので文節印は入れない
     diff = []
     for p, content in outputs.items():
         cur = p.read_text(encoding="utf-8") if p.exists() else None
