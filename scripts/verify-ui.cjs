@@ -173,7 +173,9 @@ function recordConsoleError(target) {
       scrollTo(0, 0);
     });
     renderedHomeHeights[width] = await heightPage.evaluate(() => document.documentElement.scrollHeight);
-    if (renderedHomeHeights[width] > 9500) failures.push(`${width}px: トップページ全長が目標超過 ${renderedHomeHeights[width]}px`);
+    // 目標 10200px。2026-09-06 に本人の依頼で「07 ツール・公式窓口」のカード節（390pxで約560px）を足したため 9500 から引き上げた。
+    // ヒーローの期間限定カード（.hero-spot・約130px）を外したら 10000 に戻してよい。
+    if (renderedHomeHeights[width] > 10200) failures.push(`${width}px: トップページ全長が目標超過 ${renderedHomeHeights[width]}px`);
     await heightPage.close();
   }
   results.push({ renderedHomeHeights });

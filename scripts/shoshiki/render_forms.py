@@ -1,6 +1,6 @@
 # 社内書式ページの生成器（リポジトリ内の複製）。正本の文面は data/shoshiki/forms.json。
 # 元の生成器は 顧問先用書式ページ_作業/04_書式生成/render_forms.py（Desktop・Drive外）。
-# ここでは HTML（編集用）だけを使う。docx/PDF の生成は元の作業フォルダで行う。
+# HTML＝page()、Word＝build_docx()。build_shoshiki.py / build_zip.py から import して使う。
 import datetime as _dt
 import html as H
 import json
@@ -69,7 +69,10 @@ table.f td{min-height:8mm;height:8mm}
 .grp > :not(:last-child){margin-right:1.4em}
 .opt .bx{display:inline-block;width:1.1em;cursor:pointer;user-select:none}
 .lab{white-space:nowrap}
-.bl{display:inline-block;border-bottom:0.6pt solid var(--ink);min-width:8mm;height:1.35em;vertical-align:-0.15em;margin:0 .35em;padding:0 .3em;text-align:center}
+.bl{display:inline-block;border-bottom:0.6pt solid var(--ink);min-width:8mm;min-height:1.35em;line-height:1.35em;vertical-align:baseline;margin:0 .35em;padding:0 .3em .05em;text-align:center}
+/* 入力前の空欄は箱の高さだけ確保し、下線を文字の基線より少し下に置く。入力後は文字の基線を周りの文字（ラベル）と揃える。
+   以前は height 固定＋行送りより低い箱だったため、入力した文字が箱から下へはみ出して低く見えた */
+.bl:empty{height:1.35em;vertical-align:-0.15em}
 /* 会社情報（宛名の代表者・所在地・担当者・電話）が差し込まれた欄は下線を消す。空欄のままなら手書き用に下線を残す */
 .bl.co-rep:not(:empty),.bl.co-addr:not(:empty),.bl.co-dept:not(:empty),.bl.co-tel:not(:empty){border-bottom-color:transparent}
 .dt{white-space:nowrap}
@@ -103,9 +106,18 @@ table.f td{min-height:8mm;height:8mm}
 @media print{html,body{background:#fff}.page{margin:0;box-shadow:none;width:210mm;height:297mm;page-break-after:always}.bar{display:none}.t[contenteditable]:hover,.t[contenteditable]:focus,.bl:focus{outline:none;background:transparent}}
 """
 
-JS = """
+JS = r"""
 (function(){
 document.querySelectorAll('.bx').forEach(b=>b.addEventListener('click',()=>{b.textContent=b.textContent==='☐'?'☑':'☐';}));
+// 下線の記入欄（.bl）は1行欄。Enter で改行が入るとラベルより1行上に跳ねるので確定扱いにする（IMEの変換確定は除く）。
+// 貼り付けは改行を落として文字として入れる。編集を終えたら末尾の空行を捨てる。
+document.querySelectorAll('.bl[contenteditable]').forEach(e=>{
+  e.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&!ev.isComposing){ev.preventDefault();e.blur();}});
+  e.addEventListener('paste',ev=>{ev.preventDefault();const t=(ev.clipboardData||window.clipboardData).getData('text').replace(/\s*[\r\n]+\s*/g,' ');document.execCommand('insertText',false,t);});
+  e.addEventListener('blur',()=>{e.innerHTML=e.innerHTML.replace(/(<br\s*\/?>|\s|&nbsp;)+$/,'');});
+});
+// 空の枠（td）は複数行を許すが、末尾に残った空行は捨てる
+document.querySelectorAll('td.t[contenteditable]').forEach(e=>e.addEventListener('blur',()=>{e.innerHTML=e.innerHTML.replace(/(<br\s*\/?>|\s|&nbsp;)+$/,'');}));
 window.pdf=function(){window.print();};
 // ── 会社情報（ブラウザ内にだけ保存。どこにも送信しない） ──
 // 関数は即時関数で包み、onclick から使うものだけ window に出す（他ページのJSと同名の const が衝突しないように）
@@ -311,7 +323,13 @@ def fields_html(rows, ed, wide=False):
         )
         val = re.sub(r"\{h\d+\}", "", val)
         h.append(
-            f'<tr><th class="{"w" if wide else ""}"><span class="t"{' contenteditable="true"' if ed else ""}>{esc(lab)}</span></th><td{tall}>{rich(val, ed)}</td></tr>'
+            f'<tr><th class="{"w" if wide else ""}"><span class="t"{' contenteditable="true"' if ed else ""}>{esc(lab)}</span></th>'
+            + (
+                f'<td class="t"{tall} contenteditable="true"></td>'
+                if ed and val == ""
+                else f"<td{tall}>{rich(val, ed)}</td>"
+            )
+            + "</tr>"
         )
     h.append("</table>")
     return "".join(h)
@@ -368,7 +386,7 @@ def page(f, ed):
     bar = ""
     if ed:
         bar = (
-            '<div class="bar"><b>編集モード</b><span>文字をクリックして打ち替え／☐をクリックで☑／下線の空欄に入力できます。</span>'
+            '<div class="bar"><b>編集モード</b><span>文字をクリックして打ち替え／☐をクリックで☑／下線の空欄や空の枠をクリックして入力できます。</span>'
             '<button onclick="coToggle()">会社情報</button><button onclick="pdf()">印刷・PDFに保存</button><span>（印刷先を「PDFに保存」に）</span></div>'
             + CFG_HTML
         )

@@ -225,7 +225,7 @@ def cat_blocks():
         if not fs:
             continue
         out.append(
-            f'<div class="sh-cat"><h3>{e(cat.split("_", 1)[1])}</h3><p class="note">{e(CAT_NOTE.get(cat, ""))}</p>'
+            f'<div class="sh-cat"><h3>{e(cat.split("_", 1)[1].replace("_", "・"))}</h3><p class="note">{e(CAT_NOTE.get(cat, ""))}</p>'
         )
         out.append(
             '<div class="sh-tblwrap"><table class="sh-tbl"><thead><tr><th>番号</th><th>書式</th><th>用途</th><th></th></tr></thead><tbody>'
