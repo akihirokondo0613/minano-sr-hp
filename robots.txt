@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /shoshiki/dl/
 
 Sitemap: https://minano-sr.com/sitemap.xml

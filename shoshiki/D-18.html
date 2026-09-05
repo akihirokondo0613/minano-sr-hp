@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="robots" content="noindex,follow"><meta name="viewport" content="width=820"><title>D-18 職場復帰支援に関する情報提供依頼書</title><style>
+:root{--ink:#1E2721;--ink2:#4A554D;--rule:#8A948C;--rule2:#C9D1CB;--shade:#EEF2EE;--brand:#1C5842;--accent:#2E9E63}
+*{box-sizing:border-box}
+html,body{margin:0;background:#E9ECE8}
+body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;color:var(--ink);font-size:10.5pt;line-height:1.6;line-break:strict;text-wrap:pretty}
+.page{width:210mm;min-height:297mm;margin:12mm auto;background:#fff;padding:15mm 18mm 14mm;position:relative;box-shadow:0 2px 12px rgba(0,0,0,.12)}
+h1{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:16pt;font-weight:600;text-align:center;margin:0 0 4mm;letter-spacing:.06em}
+.date{text-align:right;margin:0 0 3mm}
+.to{margin:0 0 4mm}
+.to div{margin:0}
+.sender{text-align:right;margin-top:1.5mm;line-height:1.7}
+p{margin:0 0 1.6mm}
+p.note{font-size:9pt;color:var(--ink2);margin-top:1.5mm}
+table.f{width:100%;border-collapse:collapse;table-layout:fixed;margin:2.5mm 0 3mm}
+table.f th,table.f td{border:0.6pt solid var(--rule);padding:1.6mm 2.2mm;vertical-align:middle;font-size:9.5pt;line-height:1.55}
+table.f th{width:42mm;text-align:left;font-weight:700}
+table.f th.w{width:52mm}
+table.f td{min-height:8mm;height:8mm}
+.opt{display:inline-block;white-space:nowrap}
+.grp > :not(:last-child){margin-right:1.4em}
+.opt .bx{display:inline-block;width:1.1em;cursor:pointer;user-select:none}
+.lab{white-space:nowrap}
+.bl{display:inline-block;border-bottom:0.6pt solid var(--ink);min-width:8mm;height:1.35em;vertical-align:-0.15em;margin:0 .35em;padding:0 .3em}
+.dt{white-space:nowrap}
+.nb{white-space:nowrap}
+.dt .bl{min-width:9mm;margin:0 .2em}
+.dt .bl.y{min-width:12mm}
+.checks{margin:1mm 0 3mm}
+.checks h4{margin:0 0 1mm;font-size:10pt}
+.checks div{padding-left:1.5em;text-indent:-1.5em;margin:0 0 .8mm}
+.box{border:0.6pt solid var(--rule);margin:2.5mm 0 3mm}
+.box .h{padding:1.4mm 2.2mm;font-size:9.5pt;font-weight:700;border-bottom:0.6pt solid var(--rule)}
+.box .b{padding:2mm}
+.foot{position:absolute;left:18mm;right:18mm;bottom:7mm;font-size:7.5pt;color:var(--ink2);text-align:right}
+.t[contenteditable]:hover{outline:1px dashed var(--accent)}
+.t[contenteditable]:focus{outline:2px solid var(--accent);background:#F3FBF6}
+.bl[contenteditable]:focus{outline:2px solid var(--accent);background:#F3FBF6}
+.bar{position:sticky;top:0;z-index:9;background:var(--brand);color:#fff;padding:8px 16px;font-size:12.5px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.bar b{font-size:13.5px}
+.bar button{font:inherit;padding:5px 12px;border:1px solid #fff;background:#fff;color:var(--brand);border-radius:3px;cursor:pointer;font-weight:700}
+.bar span{opacity:.9}
+.cfg{background:#fff;border-bottom:1px solid #C9D1CB;padding:12px 16px;display:none;font-size:13px}
+.cfg.open{display:block}
+.cfg .row{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;max-width:980px;margin:0 auto}
+.cfg label{display:flex;flex-direction:column;gap:2px;font-size:11.5px;color:#4A554D}
+.cfg input{font:inherit;font-size:13.5px;padding:4px 8px;border:1px solid #C9D1CB;border-radius:3px;min-width:180px}
+.cfg input.wide{min-width:320px}
+.cfg .btns{display:flex;gap:8px;margin:8px auto 0;max-width:980px}
+.cfg button{font:inherit;font-size:12.5px;padding:4px 10px;border:1px solid #1C5842;background:#fff;color:#1C5842;border-radius:3px;cursor:pointer}
+.cfg .hint{font-size:11.5px;color:#4A554D;margin:6px auto 0;max-width:980px}
+@media print{.cfg{display:none!important}}
+@page{size:A4;margin:0}
+@media print{html,body{background:#fff}.page{margin:0;box-shadow:none;width:210mm;height:297mm;page-break-after:always}.bar{display:none}.t[contenteditable]:hover,.t[contenteditable]:focus,.bl:focus{outline:none;background:transparent}}
+</style></head><body><div class="bar"><a href="../shoshiki.html" style="color:#fff;text-decoration:none;font-weight:700">← 社内書式一覧</a><b>編集モード</b><span>文字をクリックして打ち替え／☐をクリックで☑／下線の空欄に入力できます。</span><button onclick="coToggle()">会社情報</button><button onclick="pdf()">印刷・PDFに保存</button><span>（印刷先を「PDFに保存」に）</span></div><div class="cfg" id="cfg"><div class="row"><label>会社名<input id="co-name" class="wide" placeholder="株式会社○○"></label><label>代表者の役職<input id="co-title" placeholder="代表取締役"></label><label>代表者氏名<input id="co-rep" placeholder="○○ ○○"></label><label>所在地<input id="co-addr" class="wide" placeholder="富山市○○1-2-3"></label><label>電話<input id="co-tel" placeholder="076-000-0000"></label><label>担当部署・担当者<input id="co-dept" placeholder="総務部 ○○"></label></div><div class="btns"><button onclick="coExport()">設定をファイルに書き出す</button><button onclick="document.getElementById('co-file').click()">設定ファイルを読み込む</button><input type="file" id="co-file" accept=".json" style="display:none" onchange="coImport(this)"><button onclick="coClear()">消去</button></div><p class="hint">入力した<wbr>会社情報は<wbr>この<wbr>ブラウザの<wbr>中にだけ保存され、<wbr>どこにも<wbr>送信されません。<wbr>書式の<wbr>宛名・発信者欄・<wbr>右下の<wbr>社名に<wbr>自動で<wbr>入ります。<wbr>別の<wbr>PCで<wbr>使う<wbr>ときは<wbr>「書き出す」で<wbr>保存した<wbr>ファイルを<wbr>読み込んでください。</p></div><div class="page"><h1 class="t" contenteditable="true">職場復帰支援に<wbr>関する<wbr>情報提供依頼書</h1><div class="date"><span class="dt"><span class="bl y" contenteditable="true"></span>年<span class="bl" contenteditable="true"></span>月<span class="bl" contenteditable="true"></span>日</span></div><div class="to"><div><span class="bl" style="min-width:44mm" contenteditable="true"></span>病院・医院</div><div><span class="bl" style="min-width:44mm" contenteditable="true"></span>先生　御机下</div></div><p><span class="t" contenteditable="true">当社の<wbr>従業員</span><span class="bl" style="min-width:30mm" contenteditable="true"></span><span class="t" contenteditable="true">の<wbr>職場復帰支援の<wbr>ため、<wbr>下記の<wbr>とおり情報提供を<wbr>お願いいたします。</span></p><p><span class="t" contenteditable="true">本依頼は<wbr>本人の<wbr>同意に<wbr>基づく<wbr>ものであり、<wbr>提供いただいた<wbr>情報は<wbr>職場復帰の<wbr>可否判断と<wbr>復帰後の<wbr>配慮の<wbr>検討にのみ<wbr>使用し、<wbr>それ以外の<wbr>目的には<wbr>使用しません。</span></p><table class="f"><tr><th class="w"><span class="t" contenteditable="true">従業員氏名</span></th><td style="height:13mm"></td></tr><tr><th class="w"><span class="t" contenteditable="true">休職開始日</span></th><td><span class="dt"><span class="bl y" contenteditable="true"></span>年<span class="bl" contenteditable="true"></span>月<span class="bl" contenteditable="true"></span>日</span></td></tr><tr><th class="w"><span class="t" contenteditable="true">当社の業務内容</span></th><td style="height:13mm"></td></tr><tr><th class="w"><span class="t" contenteditable="true">当社の勤務条件</span></th><td><span class="nb"><span class="t" contenteditable="true">所定労働時間：</span><span class="bl" style="min-width:8mm" contenteditable="true"></span><span class="t" contenteditable="true">時〜</span></span><span class="t" contenteditable="true"></span><span class="bl" style="min-width:8mm" contenteditable="true"></span><span class="t" contenteditable="true">時　</span><span class="nb"><span class="t" contenteditable="true">所定休日：</span><span class="bl" style="min-width:24mm" contenteditable="true"></span></span><span class="t" contenteditable="true">　</span><span class="grp"><span class="nb"><span class="t" contenteditable="true">残業：</span><span class="opt"><span class="bx">☐</span><span class="t" contenteditable="true">有</span></span></span><span class="opt"><span class="bx">☐</span><span class="t" contenteditable="true">無</span></span></span></td></tr><tr><th class="w"><span class="t" contenteditable="true">復帰後に会社が用意できる配慮</span></th><td><span class="grp"><span class="opt"><span class="bx">☐</span><span class="t" contenteditable="true">短時間勤務</span></span><span class="opt"><span class="bx">☐</span><span class="t" contenteditable="true">残業免除</span></span><span class="opt"><span class="bx">☐</span><span class="t" contenteditable="true">業務内容の変更</span></span><span class="opt"><span class="bx">☐</span><span class="t" contenteditable="true">段階的な復帰</span></span><span class="opt"><span class="bx">☐</span><span class="t" contenteditable="true">その他</span></span></span></td></tr></table><div class="checks"><h4 class="t" contenteditable="true">情報提供を<wbr>お願いしたい<wbr>事項</h4><div><span class="bx">☐</span>　<span class="t" contenteditable="true">現在の症状と治療状況</span></div><div><span class="bx">☐</span>　<span class="t" contenteditable="true">職場復帰の可否と、可能な場合の時期の目安</span></div><div><span class="bx">☐</span>　<span class="t" contenteditable="true">復帰にあたって必要な就業上の配慮（勤務時間・業務内容・通院など）</span></div><div><span class="bx">☐</span>　<span class="t" contenteditable="true">復帰後の見通し（通院頻度、再発のおそれ、注意すべき事項）</span></div></div><p><span class="t" contenteditable="true">本人同意欄：私は、<wbr>上記の<wbr>情報を<wbr>主治医が<wbr>会社に<wbr>提供する<wbr>ことに<wbr>同意します。</span></p><table class="f"><tr><th class="w"><span class="t" contenteditable="true">本人署名</span></th><td><span class="bl" style="min-width:48mm" contenteditable="true"></span><span class="t" contenteditable="true">　</span><span class="nb"><span class="t" contenteditable="true">日付：</span><span class="dt"><span class="bl y" contenteditable="true"></span>年<span class="bl" contenteditable="true"></span>月<span class="bl" contenteditable="true"></span>日</span></span></td></tr><tr><th class="w"><span class="t" contenteditable="true">会社担当者</span></th><td><span class="nb"><span class="t" contenteditable="true">所属：</span><span class="bl" style="min-width:24mm" contenteditable="true"></span></span><span class="t" contenteditable="true">　</span><span class="nb"><span class="t" contenteditable="true">氏名：</span><span class="bl" style="min-width:24mm" contenteditable="true"></span></span><span class="t" contenteditable="true">　</span><span class="nb"><span class="t" contenteditable="true">電話：</span><span class="bl" style="min-width:28mm" contenteditable="true"></span></span></td></tr></table><div class="foot"><span class="co-name">【会社名】</span></div></div><script>
+document.querySelectorAll('.bx').forEach(b=>b.addEventListener('click',()=>{b.textContent=b.textContent==='☐'?'☑':'☐';}));
+function pdf(){window.print();}
+// ── 会社情報（ブラウザ内にだけ保存。どこにも送信しない） ──
+const CO_KEY='shoshiki.company';
+const CO_FIELDS=['name','title','rep','addr','tel','dept'];
+function coLoad(){try{return JSON.parse(localStorage.getItem(CO_KEY)||'{}');}catch(e){return {};}}
+function coSave(o){try{localStorage.setItem(CO_KEY,JSON.stringify(o));}catch(e){}}
+function coApply(o){
+  const set=(sel,v,def)=>document.querySelectorAll(sel).forEach(el=>{el.textContent=(v&&v.trim())?v.trim():(def||'');});
+  set('.co-name',o.name,'【会社名】'); set('.co-title',o.title,'代表取締役'); set('.co-rep',o.rep,'');
+  set('.co-addr',o.addr,''); set('.co-tel',o.tel,''); set('.co-dept',o.dept,'');
+}
+function coInit(){
+  const o=coLoad(); coApply(o);
+  CO_FIELDS.forEach(k=>{const i=document.getElementById('co-'+k); if(!i) return; i.value=o[k]||'';
+    i.oninput=()=>{const c=coLoad(); c[k]=i.value; coSave(c); coApply(c);};});
+}
+function coToggle(){document.getElementById('cfg').classList.toggle('open');}
+function coExport(){const o=coLoad(); const a=document.createElement('a');
+  a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(o,null,1)); a.download='会社情報.json'; a.click();}
+function coImport(inp){const f=inp.files[0]; if(!f) return; const r=new FileReader();
+  r.onload=()=>{try{const o=JSON.parse(r.result); coSave(o); coInit();}catch(e){alert('読み込めませんでした');}}; r.readAsText(f);}
+function coClear(){if(confirm('保存した会社情報を消しますか？')){localStorage.removeItem(CO_KEY); coInit();}}
+coInit();
+</script></body></html>
