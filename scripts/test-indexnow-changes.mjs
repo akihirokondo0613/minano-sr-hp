@@ -46,6 +46,9 @@ assert.doesNotThrow(() => assertCoveredPublicHtmlPath('.github/maintenance.html'
 assert.doesNotThrow(() => assertCoveredPublicHtmlPath('docs/example.html'));
 assert.doesNotThrow(() => assertCoveredPublicHtmlPath('scripts/fixture.html'));
 assert.doesNotThrow(() => assertCoveredPublicHtmlPath('scripts/tool.mjs'));
+assert.doesNotThrow(() => assertCoveredPublicHtmlPath('shoshiki/D-01.html'));
+assert.equal(publicUrlForHtmlPath('shoshiki/D-01.html', origin), null);
+assert.equal(publicUrlForHtmlPath('shoshiki.html', origin), `${origin}/shoshiki.html`);
 assert.deepEqual(publicUrlsFromDiffRecords([
   { code: 'M', path: '.github/maintenance.html' },
   { code: 'M', path: 'docs/example.html' },
