@@ -314,7 +314,7 @@ function buildMain() {
     <div class="pt-contact rv">
       <div class="page-label" style="justify-content:center">お問い合わせ</div>
       <h2 class="sec-h" style="margin-top:6px">まずは、お電話でご確認ください。</h2>
-      <a class="tel" href="tel:090-8259-8774">090-8259-8774</a>
+      <a class="tel" href="tel:076-460-2562">076-460-2562</a>
       <p class="sub">受付 平日9:00〜18:00　／　contact@minano-sr.com<br>
       みなの社会保険労務士事務所　社会保険労務士　近藤 昭宏（富山県社会保険労務士会 所属）<br>
       〒931-8333 富山県富山市蓮町1丁目7-4　SCOP TOYAMA</p>
