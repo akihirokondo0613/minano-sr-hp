@@ -55,9 +55,11 @@ h1{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:16pt;font-weig
 .date{text-align:right;margin:0 0 3mm}
 .to{margin:0 0 4mm}
 .to div{margin:0}
-.to .sender{display:table;margin:1.5mm 0 0 auto;line-height:1.7;text-align:left}  /* .to div{margin:0} より強くする */
+.to .sender{display:block;width:94mm;margin:1.5mm 0 0 auto;line-height:1.7;text-align:left}  /* .to div{margin:0} より強くする */
 /* 発信者欄（所在地・担当者・電話）は左揃えで、ラベルの直後から値が続く形。右端に寄せた箱の中で左揃えにする */
 .sender .bl{text-align:left}
+/* 入力済みの欄は行内扱いにして、長い住所は箱の中で折り返す（箱の左端は動かない） */
+.sender .bl:not(:empty){display:inline;min-width:0}
 p{margin:0 0 1.6mm}
 p.note{font-size:9pt;color:var(--ink2);margin-top:1.5mm}
 table.f{width:100%;border-collapse:collapse;table-layout:fixed;margin:2.5mm 0 3mm}
@@ -193,7 +195,7 @@ def seg_html(seg, ed, lead=""):
             )
         return '<span class="grp">' + "".join(opts) + "</span>"
     if kind == "date":
-        return f'<span class="dt"><span class="bl y"{ce}></span>年<span class="bl"{ce}></span>月<span class="bl"{ce}></span>日</span>'
+        return f'<span class="dt"><span class="bl y"{ce}></span><span class="t"{ce}>年</span><span class="bl"{ce}></span><span class="t"{ce}>月</span><span class="bl"{ce}></span><span class="t"{ce}>日</span></span>'
     if kind == "blank":
         return f'<span class="bl" style="min-width:{seg[1]}mm"{ce}></span>'
     if kind == "br":
@@ -266,17 +268,17 @@ def addressee_html(to, ed, f=None):
             + "</div>"
         )
     if to in ("会社", "保証人"):
-        return f'<div class="to"><div class="t co-name"{ce}>{esc(CO)}</div><div><span class="t co-title"{ce}>代表取締役</span><span class="bl co-rep" style="min-width:36mm"{ce}></span>殿</div></div>'
+        return f'<div class="to"><div class="t co-name"{ce}>{esc(CO)}</div><div><span class="t co-title"{ce}>代表取締役</span><span class="bl co-rep" style="min-width:36mm"{ce}></span><span class="t"{ce}>殿</span></div></div>'
     if to == "本人":
         return (
-            f'<div class="to"><div><span class="bl" style="min-width:48mm"{ce}></span>殿</div>'
-            f'<div class="sender"><div class="t co-name"{ce}>{esc(CO)}</div><div>所在地：<span class="bl co-addr" style="min-width:60mm"{ce}></span></div>'
-            f'<div>担当者：<span class="bl co-dept" style="min-width:36mm"{ce}></span>　電話：<span class="bl co-tel" style="min-width:30mm"{ce}></span></div></div></div>'
+            f'<div class="to"><div><span class="bl" style="min-width:48mm"{ce}></span><span class="t"{ce}>殿</span></div>'
+            f'<div class="sender"><div class="t co-name"{ce}>{esc(CO)}</div><div><span class="t"{ce}>所在地：</span><span class="bl co-addr" style="min-width:60mm"{ce}></span></div>'
+            f'<div><span class="t"{ce}>担当者：</span><span class="bl co-dept" style="min-width:36mm"{ce}></span>　<span class="t"{ce}>電話：</span><span class="bl co-tel" style="min-width:30mm"{ce}></span></div></div></div>'
         )
     if to == "主治医":
-        return f'<div class="to"><div><span class="bl" style="min-width:44mm"{ce}></span>病院・医院</div><div><span class="bl" style="min-width:44mm"{ce}></span>先生　御机下</div></div>'
+        return f'<div class="to"><div><span class="bl" style="min-width:44mm"{ce}></span><span class="t"{ce}>病院・医院</span></div><div><span class="bl" style="min-width:44mm"{ce}></span><span class="t"{ce}>先生　御机下</span></div></div>'
     if to == "会社←主治医":
-        return f'<div class="to"><div class="t co-name"{ce}>{esc(CO)}</div><div>人事・労務担当者　殿</div></div>'
+        return f'<div class="to"><div class="t co-name"{ce}>{esc(CO)}</div><div><span class="t"{ce}>人事・労務担当者　殿</span></div></div>'
     if to == "社労士":
         return '<div class="to"><div>みなの社会保険労務士事務所　行</div></div>'
     return ""
@@ -339,7 +341,7 @@ def form_html(f, ed):
     ce = ' contenteditable="true"' if ed else ""
     b = [f'<h1 class="t"{ce}>{esc(f["title"])}</h1>']
     b.append(
-        f'<div class="date"><span class="dt"><span class="bl y"{ce}></span>年<span class="bl"{ce}></span>月<span class="bl"{ce}></span>日</span></div>'
+        f'<div class="date"><span class="dt"><span class="bl y"{ce}></span><span class="t"{ce}>年</span><span class="bl"{ce}></span><span class="t"{ce}>月</span><span class="bl"{ce}></span><span class="t"{ce}>日</span></span></div>'
     )
     b.append(addressee_html(f["to"], ed, f))
     for s in f["intro"]:
@@ -369,7 +371,7 @@ def form_html(f, ed):
             )
         elif t == "note":
             b.append(
-                f'<p class="note">※ <span class="t"{ce}>{esc(blk["text"])}</span></p>'
+                f'<p class="note"><span class="t"{ce}>※ </span><span class="t"{ce}>{esc(blk["text"])}</span></p>'
             )
     sig = signature_rows(f["to"], f)
     if sig:
