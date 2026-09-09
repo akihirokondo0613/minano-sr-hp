@@ -1038,6 +1038,11 @@
 
   /* ---- 初期化 ---- */
   document.querySelector('.so-bar').hidden = false;
+  // 完了メールの再注文リンク（spot.html?member=M-00001）から来たら会員番号を先に入れておく
+  try {
+    var mno = new URLSearchParams(location.search).get('member');
+    if (mno && /^[A-Za-z0-9-]{1,20}$/.test(mno)) document.getElementById('soMemberNo').value = mno;
+  } catch (e) {}
   // 品目は生成器がページ内（#spot-items）に埋め込む。fetch に頼ると file:// や一時的な失敗で空になるため
   function useItems(data){ state.items = (data && data.items) || []; renderTabs(); renderItems(); renderBar(); }
   var embedded = document.getElementById('spot-items');
