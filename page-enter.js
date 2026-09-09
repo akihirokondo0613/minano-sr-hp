@@ -346,6 +346,13 @@ function mnSplitLabel(el, text) {
     var p = (u && u.pathname) || '';
     return /(^|\/)shoshiki(\.html|\/)/i.test(p);
   }
+  // ★スポット注文（spot.html）も演出なし＝素のリンク遷移。
+  //   カート・ステップ・フォーム入力をJSの状態だけで持つページで、SPAで差し替えると
+  //   ステップ表示や入力中の値が失われる。shoshiki と同じ理由でSPA対象外にする。
+  function isSpotDest(u) {
+    var p = (u && u.pathname) || '';
+    return /(^|\/)spot\.html$/i.test(p);
+  }
   function safeLabel(s) { return (s == null ? '' : String(s)).replace(/\s+/g, ' ').trim(); }
   // 末尾 index.html を落として比較する（/ と /index.html を同一ページとみなす）。トップは / で配信され
   // ナビは index.html#… を指すため、素の pathname 比較では食い違い、同一ページ内アンカーで演出が出てしまう。
@@ -726,6 +733,7 @@ function mnSplitLabel(el, text) {
     if (samePage(url)) return false;   // 同一ページ（/ と /index.html、アンカー・hashのみ・再読込）は素通し
     if (isArticleDest(url)) return false;                  // ★記事(/blog/配下)行きは演出なし＝素のリンク遷移（一覧blog.htmlは演出あり）
     if (isFormDest(url)) return false;                     // ★社内書式（shoshiki.html・shoshiki/）行きも素のリンク遷移
+    if (isSpotDest(url)) return false;                      // ★スポット注文（spot.html）行きも素のリンク遷移
     return true;
   }
   function withQuery(url) {   // プレビュー・流入計測に必要な値だけを行き先に引き継ぐ
@@ -789,7 +797,7 @@ function mnSplitLabel(el, text) {
       var m = /location\.href\s*=\s*['"]([^'"]+)['"]/.exec(oc.getAttribute('onclick') || '');
       if (m) {
         var u; try { u = new URL(m[1], location.href); } catch (err) { u = null; }
-        if (u && u.origin === location.origin && !samePage(u) && !isArticleDest(u) && !isFormDest(u)) {
+        if (u && u.origin === location.origin && !samePage(u) && !isArticleDest(u) && !isFormDest(u) && !isSpotDest(u)) {
           if (/\/uploads\/contact\.html$/i.test(u.pathname)) {
             document.dispatchEvent(new CustomEvent('mn:contact-navigate', { detail: { href: u.href } }));
           }
@@ -820,6 +828,7 @@ function mnSplitLabel(el, text) {
     var url; try { url = new URL(location.href); } catch (e) { url = null; }
     if (url && isArticleDest(url)) { hardGo(location.href); return; }   // ★戻る/進むで記事(/blog/)へ来たら素で読み直す（演出なし）
     if (url && isFormDest(url)) { hardGo(location.href); return; }      // ★社内書式へ戻る/進むも素で読み直す
+    if (url && isSpotDest(url)) { hardGo(location.href); return; }      // ★スポット注文へ戻る/進むも素で読み直す
     // ★同一ページ内（pathname不変・hashだけ変化）はカーテン不要＝アンカーへスクロールのみ。
     //   理念/サービス/料金 等トップ内リンクは、プレビューホストが hash 遷移を popstate 化して
     //   ここへ届く。lastPath（直近表示ページ）と比べる（popstate時 location は既に遷移先なので samePage は使えない）。
@@ -846,7 +855,7 @@ function mnSplitLabel(el, text) {
   try { history.replaceState({ mn: 1, y: window.scrollY || 0 }, '', location.href); } catch (e) {}
 
   // デバッグ・検証用フック（v7：社内書式 shoshiki を演出対象外に。v6：ページCSSの html zoom 変更からカーテンを分離）
-  window.__mnSpa = { navigate: navigate, v: 7, isArticleDest: isArticleDest, isFormDest: isFormDest };
+  window.__mnSpa = { navigate: navigate, v: 8, isArticleDest: isArticleDest, isFormDest: isFormDest, isSpotDest: isSpotDest };
 })();
 
 /* ============================================================

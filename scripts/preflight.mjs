@@ -58,6 +58,10 @@ const tasks = [
     args: ['scripts/sync-service-prices.mjs', '--check'],
   },
   {
+    name: 'スポット注文品目の同期確認',
+    args: ['scripts/sync-spot-items.mjs', '--check'],
+  },
+  {
     // 窓口一覧の管轄を反転して表を作るので、窓口ページの生成より後ろに置く。
     name: '業務ページの富山の窓口の同期確認',
     args: ['scripts/sync-service-toyama.mjs', '--check'],
