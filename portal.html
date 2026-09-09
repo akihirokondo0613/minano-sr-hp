@@ -6,13 +6,13 @@
 <script defer src="page-enter.js?v=20260905-shoshiki1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>公式情報｜労務手続きの公的窓口リンク集｜みなの社会保険労務士事務所</title>
+<title>書式・窓口｜社内書式のひな形と公的窓口リンク集｜みなの社会保険労務士事務所</title>
 <meta name="description" content="年金事務所（日本年金機構）・ハローワーク・労働基準監督署・協会けんぽ・厚生労働省・e-Govなど、労務手続きでよく使う公的機関の公式サイトを分野別にまとめたリンク集です。">
 
 <link rel="canonical" href="https://minano-sr.com/portal.html">
 <meta property="og:url" content="https://minano-sr.com/portal.html">
 <meta property="og:type" content="website">
-<meta property="og:title" content="公式情報｜労務手続きの公的窓口リンク集｜みなの社会保険労務士事務所">
+<meta property="og:title" content="書式・窓口｜社内書式のひな形と公的窓口リンク集｜みなの社会保険労務士事務所">
 <meta property="og:description" content="年金事務所（日本年金機構）・ハローワーク・労働基準監督署・協会けんぽ・厚生労働省・e-Govなど、労務手続きでよく使う公的機関の公式サイトを分野別にまとめたリンク集です。">
 <meta property="og:site_name" content="みなの社会保険労務士事務所">
 <meta property="og:locale" content="ja_JP">
@@ -32,7 +32,7 @@
       "@type": "CollectionPage",
       "@id": "https://minano-sr.com/portal.html#webpage",
       "url": "https://minano-sr.com/portal.html",
-      "name": "公式情報｜労務手続きの公的窓口リンク集｜みなの社会保険労務士事務所",
+      "name": "書式・窓口｜社内書式のひな形と公的窓口リンク集｜みなの社会保険労務士事務所",
       "description": "年金事務所（日本年金機構）・ハローワーク・労働基準監督署・協会けんぽ・厚生労働省・e-Govなど、労務手続きでよく使う公的機関の公式サイトを分野別にまとめたリンク集です。",
       "isPartOf": {"@id": "https://minano-sr.com/#website"},
       "publisher": {"@id": "https://minano-sr.com/#office"},
@@ -43,7 +43,7 @@
       "@id": "https://minano-sr.com/portal.html#breadcrumb",
       "itemListElement": [
         {"@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://minano-sr.com/"},
-        {"@type": "ListItem", "position": 2, "name": "公式情報", "item": "https://minano-sr.com/portal.html"}
+        {"@type": "ListItem", "position": 2, "name": "書式・窓口", "item": "https://minano-sr.com/portal.html"}
       ]
     }
   ]
@@ -51,6 +51,17 @@
 </script>
 
 <style id="fs-portal">
+
+/* 入口：社内書式か公式窓口かを選ぶ2枚カード */
+.hub{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:1000px;margin:0 auto 28px}
+@media(max-width:760px){.hub{grid-template-columns:1fr;gap:10px;margin-bottom:22px}}
+.hub-card{display:flex;flex-direction:column;gap:6px;min-width:0;background:var(--shiro);border:1.5px solid var(--line);border-radius:16px;padding:18px 20px 16px;text-decoration:none;color:var(--iwa);transition:border-color .34s cubic-bezier(.22,.61,.36,1),transform .34s cubic-bezier(.22,.61,.36,1),box-shadow .34s cubic-bezier(.22,.61,.36,1)}
+.hub-card:hover{transform:translateY(-3px);border-color:var(--moegi-t);box-shadow:0 14px 30px -14px rgba(11,42,31,.18)}
+.hub-kicker{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--moegi-t)}
+.hub-card:nth-child(2) .hub-kicker{color:#3E6883}
+.hub-title{font-family:var(--disp);font-weight:800;font-size:19px;line-height:1.5;letter-spacing:.02em}
+.hub-desc{font-size:12.5px;line-height:1.8;color:var(--ink3);margin:0}
+.hub-go{margin-top:auto;padding-top:10px;font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--sugi)}
 /* 公式情報リンク集：分野ごとに色分けしたカードグリッド */
 .lk-sec{--ct:var(--moegi-t);--cl:var(--moegi-l)}
 #cat-nenkin{--ct:#3E6883;--cl:var(--sora-l)}
@@ -102,7 +113,7 @@
       <li><a href="about.html">事務所案内</a></li>
       <li><a href="blog.html">ブログ</a></li>
       <li><a href="infographic.html">社労士とは</a></li>
-      <li><a href="portal.html" class="active" aria-current="page">公式情報</a></li>
+      <li><a href="portal.html" class="active" aria-current="page">書式・窓口</a></li>
     </ul>
     <a href="uploads/contact.html" class="nav-cta">無料で相談する</a>
     <button class="nav-burger" onclick="toggleNav()" aria-label="メニュー">
@@ -118,18 +129,34 @@
   <a href="about.html" onclick="closeNav()">事務所案内</a>
   <a href="blog.html" onclick="closeNav()">ブログ</a>
   <a href="infographic.html" onclick="closeNav()">社労士とは</a>
-  <a href="portal.html" onclick="closeNav()" aria-current="page">公式情報</a>
+  <a href="portal.html" onclick="closeNav()" aria-current="page">書式・窓口</a>
   <a href="uploads/contact.html" class="mob-cta">→ 無料相談を申し込む</a>
 </div>
 
 <!-- PAGE HERO -->
 <header class="page-hero">
   <div class="page-hero-inner">
-    <nav class="breadcrumb"><a href="/">ホーム</a><span class="sep">›</span><span>公式情報</span></nav>
-    <div class="page-label">Official Links</div>
-    <h1 class="page-h">労務手続きで<wbr>よく<wbr>使う<br><strong>公式情報・窓口リンク集</strong></h1>
-    <p class="page-sub">年金事務所・<wbr>ハローワーク・<wbr>労働基準監督署・<wbr>協会けん<wbr>ぽなど、<wbr>日々の<wbr>手続きや<wbr>調べもので<wbr>よく<wbr>使う<wbr>公的機関の<wbr>公式サイトを<wbr>分野別に<wbr>まとめました。<wbr>ブックマーク代わりに<wbr>ご活用ください。</p>
+    <nav class="breadcrumb"><a href="/">ホーム</a><span class="sep">›</span><span>書式・窓口</span></nav>
+    <div class="page-label">Forms &amp; Official Links</div>
+    <h1 class="page-h">社内書式と、<wbr>公的窓口。<br><strong>探す手間を先に減らす。</strong></h1>
+    <p class="page-sub">社内書式の<wbr>ひな形と、<wbr>行政の<wbr>公式窓口。<wbr>どちらも<wbr>無料で、<wbr>登録なしで<wbr>使えます。</p>
   </div>
+
+  <!-- 入口：社内書式か公式窓口かを選ぶ -->
+  <section class="hub" id="hub" aria-label="社内書式か公式窓口かを選ぶ">
+    <a class="hub-card rv d1" href="shoshiki.html">
+      <span class="hub-kicker">FREE TOOL</span>
+      <span class="hub-title">社内書式のひな形</span>
+      <span class="hub-desc">入社誓約書・有給休暇申請書・休職届・退職届・労働者代表の選出など51本。ブラウザで記入して印刷できます。</span>
+      <span class="hub-go">書式一覧を開く →</span>
+    </a>
+    <a class="hub-card rv d2" href="#cat-quick">
+      <span class="hub-kicker">OFFICIAL LINKS</span>
+      <span class="hub-title">行政の公式窓口</span>
+      <span class="hub-desc">年金事務所・ハローワーク・労働基準監督署・協会けんぽ・e-Govなど、手続きと調べもので使う公式サイトを分野別に。</span>
+      <span class="hub-go">このページの下へ ↓</span>
+    </a>
+  </section>
 
   <div class="notice">
     <span class="notice-icon">!</span>
@@ -319,7 +346,7 @@
           <li><a href="shiryo.html">資料室</a></li>
           <li><a href="shoshiki.html">社内書式のひな形</a></li>
           <li><a href="partner.html">士業の方へ</a></li>
-          <li><a href="portal.html">公式情報</a></li>
+          <li><a href="portal.html">書式・窓口</a></li>
         </ul>
       </div>
       <div>
