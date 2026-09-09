@@ -175,6 +175,19 @@ try {
   current = '';
 }
 
+// spot.html 内の埋め込み区間（<!-- spot-items:start --> … <!-- spot-items:end -->）も同じ内容にする
+const pagePath = path.join(root, 'spot.html');
+const page = await readFile(pagePath, 'utf8');
+const embedRe = /<!-- spot-items:start -->[\s\S]*?<!-- spot-items:end -->/;
+const embed = `<!-- spot-items:start -->\n<script id="spot-items" type="application/json">\n${json.trim().replace(/<\//g, '<\\/')}\n</script>\n<!-- spot-items:end -->`;
+if (!embedRe.test(page)) { console.error('spot.html に spot-items の埋め込み区間がありません。'); process.exit(1); }
+const pageNext = page.replace(embedRe, embed);
+if (checkOnly && pageNext !== page) {
+  console.error('spot.html の埋め込み品目が pricing.html と同期していません。node scripts/sync-spot-items.mjs を実行してください。');
+  process.exit(1);
+}
+if (!checkOnly && pageNext !== page) { await writeFile(pagePath, pageNext, 'utf8'); console.log('spot.html の埋め込み品目を更新しました。'); }
+
 if (checkOnly) {
   if (current !== json) {
     console.error('data/spot-items.json が pricing.html と同期していません。node scripts/sync-spot-items.mjs を実行してください。');
