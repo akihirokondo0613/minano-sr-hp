@@ -385,14 +385,14 @@ def build_index():
         count=1,
         flags=re.S,
     )
-    # nav: 公式情報のactiveを外す（このページはナビ項目ではない）
+    # nav: 書式・窓口のactiveを外す（このページはナビ項目ではない）
     s = s.replace(
-        '<li><a href="portal.html" class="active" aria-current="page">公式情報</a></li>',
-        '<li><a href="portal.html">公式情報</a></li>',
+        '<li><a href="portal.html" class="active" aria-current="page">書式・窓口</a></li>',
+        '<li><a href="portal.html">書式・窓口</a></li>',
     )
     s = s.replace(
-        '<a href="portal.html" onclick="closeNav()" aria-current="page">公式情報</a>',
-        '<a href="portal.html" onclick="closeNav()">公式情報</a>',
+        '<a href="portal.html" onclick="closeNav()" aria-current="page">書式・窓口</a>',
+        '<a href="portal.html" onclick="closeNav()">書式・窓口</a>',
     )
     # hero
     s = re.sub(
