@@ -1,0 +1,237 @@
+{
+  "generatedFrom": "pricing.html#spot-fees",
+  "currency": "JPY",
+  "taxNote": "表示価格はすべて税抜です。実費（郵送費・交通費など）は実額のみで、上乗せはしません。",
+  "items": [
+    {
+      "code": "H01",
+      "name": "入社手続き（資格取得届）",
+      "category": "入社",
+      "unit": "名",
+      "base": 0,
+      "perUnit": 10000,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "H05",
+      "name": "会社設立時の新規適用手続き",
+      "category": "入社",
+      "unit": "名",
+      "base": 60000,
+      "perUnit": 2000,
+      "freeUnits": 5,
+      "note": "5名までは基本料に含みます。6名目から加算します。"
+    },
+    {
+      "code": "H06",
+      "name": "労使協定の作成・届出（36協定など）",
+      "category": "入社",
+      "unit": "事業所",
+      "base": 0,
+      "perUnit": 20000,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "H02",
+      "name": "退社手続き（資格喪失届）",
+      "category": "退社",
+      "unit": "名",
+      "base": 0,
+      "perUnit": 10000,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "H03",
+      "name": "離職票の作成",
+      "category": "退社",
+      "unit": "名",
+      "base": 0,
+      "perUnit": 10000,
+      "freeUnits": 0,
+      "note": "退社手続きと同時にご依頼の場合は「退社手続き＋離職票（同時）」をお選びください。"
+    },
+    {
+      "code": "H04",
+      "name": "退社手続き＋離職票（同時）",
+      "category": "退社",
+      "unit": "名",
+      "base": 0,
+      "perUnit": 15000,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "K01",
+      "name": "出産手当金の支給申請",
+      "category": "給付の申請",
+      "unit": "名",
+      "base": 0,
+      "perUnit": 15000,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "K02",
+      "name": "育児休業給付の申請（初回）",
+      "category": "給付の申請",
+      "unit": "名",
+      "base": 0,
+      "perUnit": 20000,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "K03",
+      "name": "育児休業給付の申請（2回目以降）",
+      "category": "給付の申請",
+      "unit": "回",
+      "base": 0,
+      "perUnit": 5000,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "K04",
+      "name": "高年齢雇用継続給付の申請（初回）",
+      "category": "給付の申請",
+      "unit": "名",
+      "base": 0,
+      "perUnit": 20000,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "K05",
+      "name": "高年齢雇用継続給付の申請（継続）",
+      "category": "給付の申請",
+      "unit": "回",
+      "base": 0,
+      "perUnit": 5000,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "K06",
+      "name": "介護休業給付の申請（初回）",
+      "category": "給付の申請",
+      "unit": "名",
+      "base": 0,
+      "perUnit": 20000,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "K07",
+      "name": "介護休業給付の申請（2回目以降）",
+      "category": "給付の申請",
+      "unit": "回",
+      "base": 0,
+      "perUnit": 5000,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "K08",
+      "name": "傷病手当金の支給申請（初回）",
+      "category": "給付の申請",
+      "unit": "名",
+      "base": 0,
+      "perUnit": 15000,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "K09",
+      "name": "労災保険給付の申請（初回一式）",
+      "category": "給付の申請",
+      "unit": "件",
+      "base": 0,
+      "perUnit": 30000,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "G01",
+      "name": "単発の給与・賞与計算",
+      "category": "年次",
+      "unit": "名",
+      "base": 20000,
+      "perUnit": 1500,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "G02",
+      "name": "賞与支払届",
+      "category": "年次",
+      "unit": "名",
+      "base": 20000,
+      "perUnit": 1500,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "G03",
+      "name": "年末調整の資料整理・税理士連携",
+      "category": "年次",
+      "unit": "名",
+      "base": 20000,
+      "perUnit": 1500,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "G04",
+      "name": "労働保険の年度更新",
+      "category": "年次",
+      "unit": "名",
+      "base": 25000,
+      "perUnit": 1000,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "G05",
+      "name": "算定基礎届の提出",
+      "category": "年次",
+      "unit": "名",
+      "base": 25000,
+      "perUnit": 1000,
+      "freeUnits": 0,
+      "note": ""
+    },
+    {
+      "code": "S01",
+      "name": "管理職研修・ハラスメント研修",
+      "category": "相談",
+      "unit": "コマ",
+      "base": 0,
+      "perUnit": 30000,
+      "freeUnits": 0,
+      "note": "1コマ60分の料金です。"
+    },
+    {
+      "code": "S02",
+      "name": "スポット労務相談（60分）",
+      "category": "相談",
+      "unit": "回",
+      "base": 0,
+      "perUnit": 10000,
+      "freeUnits": 0,
+      "note": "ご注文後、担当者が内容を確認のうえ受任します。初めてご相談の方は、まず無料相談フォームからお問い合わせください。"
+    },
+    {
+      "code": "S03",
+      "name": "労務トラブルの初動整理",
+      "category": "相談",
+      "unit": "件",
+      "base": 0,
+      "perUnit": 30000,
+      "freeUnits": 0,
+      "note": ""
+    }
+  ]
+}
