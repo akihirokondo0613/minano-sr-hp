@@ -1251,7 +1251,7 @@ article.post .note { font-size: 12.5px; color: var(--ink3); margin-top: -1em; ma
 .ig-flow-item h3 { font-family: var(--disp); font-size: 15.5px; font-weight: 800; line-height: 1.5; color: var(--iwa); }
 .ig-flow-item p { margin-top: 8px; font-size: 12.5px; line-height: 1.85; color: var(--ink3); }
 
-.ig-faq-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 38px; }
+.ig-faq-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 38px; align-items: start; } /* 開いた質問の高さを隣の閉じた質問に伝えない */
 .ig-faq { background: var(--shiro); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 0 20px; }
 .ig-faq summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 24px minmax(0, 1fr) 18px; gap: 10px; align-items: center; min-height: 68px; font-family: var(--disp); font-size: 14.5px; font-weight: 800; line-height: 1.55; color: var(--iwa); }
 .ig-faq summary::-webkit-details-marker { display: none; }
