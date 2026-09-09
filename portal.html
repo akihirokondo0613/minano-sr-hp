@@ -53,14 +53,14 @@
 <style id="fs-portal">
 
 /* 入口：社内書式か公式窓口かを選ぶ2枚カード */
-.hub{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:40px}
-@media(max-width:760px){.hub{grid-template-columns:1fr;margin-bottom:28px}}
-.hub-card{display:flex;flex-direction:column;gap:8px;min-width:0;background:var(--shiro);border:1.5px solid var(--line);border-radius:16px;padding:22px 24px 20px;text-decoration:none;color:var(--iwa);transition:border-color .34s cubic-bezier(.22,.61,.36,1),transform .34s cubic-bezier(.22,.61,.36,1),box-shadow .34s cubic-bezier(.22,.61,.36,1)}
+.hub{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:1000px;margin:0 auto 28px}
+@media(max-width:760px){.hub{grid-template-columns:1fr;gap:10px;margin-bottom:22px}}
+.hub-card{display:flex;flex-direction:column;gap:6px;min-width:0;background:var(--shiro);border:1.5px solid var(--line);border-radius:16px;padding:18px 20px 16px;text-decoration:none;color:var(--iwa);transition:border-color .34s cubic-bezier(.22,.61,.36,1),transform .34s cubic-bezier(.22,.61,.36,1),box-shadow .34s cubic-bezier(.22,.61,.36,1)}
 .hub-card:hover{transform:translateY(-3px);border-color:var(--moegi-t);box-shadow:0 14px 30px -14px rgba(11,42,31,.18)}
 .hub-kicker{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--moegi-t)}
 .hub-card:nth-child(2) .hub-kicker{color:#3E6883}
 .hub-title{font-family:var(--disp);font-weight:800;font-size:19px;line-height:1.5;letter-spacing:.02em}
-.hub-desc{font-size:13px;line-height:1.95;color:var(--ink3);margin:0}
+.hub-desc{font-size:12.5px;line-height:1.8;color:var(--ink3);margin:0}
 .hub-go{margin-top:auto;padding-top:10px;font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--sugi)}
 /* 公式情報リンク集：分野ごとに色分けしたカードグリッド */
 .lk-sec{--ct:var(--moegi-t);--cl:var(--moegi-l)}
@@ -139,19 +139,8 @@
     <nav class="breadcrumb"><a href="/">ホーム</a><span class="sep">›</span><span>書式・窓口</span></nav>
     <div class="page-label">Forms &amp; Official Links</div>
     <h1 class="page-h">社内書式と、<wbr>公的窓口。<br><strong>探す手間を先に減らす。</strong></h1>
-    <p class="page-sub">会社と<wbr>従業員の<wbr>間で<wbr>使う<wbr>社内書式の<wbr>ひな形と、<wbr>年金事務所・<wbr>ハローワーク・<wbr>労働基準監督署などの<wbr>公式サイトを<wbr>1か<wbr>所に<wbr>まとめました。<wbr>どちらも<wbr>無料で、<wbr>登録なしで<wbr>使えます。</p>
+    <p class="page-sub">社内書式の<wbr>ひな形と、<wbr>行政の<wbr>公式窓口。<wbr>どちらも<wbr>無料で、<wbr>登録なしで<wbr>使えます。</p>
   </div>
-
-  <div class="notice">
-    <span class="notice-icon">!</span>
-    <div>
-      <b>ご利用にあたって</b>リンク先はいずれも公的機関の公式サイトです（外部サイトが開きます）。「どの窓口に出せばよいか分からない」「様式の書き方に迷う」ときは、探し回る前に担当者へお気軽にご連絡ください。手続きそのものの代行も承ります。
-    </div>
-  </div>
-</header>
-
-<!-- CONTENT -->
-<main id="main" class="content">
 
   <!-- 入口：社内書式か公式窓口かを選ぶ -->
   <section class="hub" id="hub" aria-label="社内書式か公式窓口かを選ぶ">
@@ -168,6 +157,17 @@
       <span class="hub-go">このページの下へ ↓</span>
     </a>
   </section>
+
+  <div class="notice">
+    <span class="notice-icon">!</span>
+    <div>
+      <b>ご利用にあたって</b>リンク先はいずれも公的機関の公式サイトです（外部サイトが開きます）。「どの窓口に出せばよいか分からない」「様式の書き方に迷う」ときは、探し回る前に担当者へお気軽にご連絡ください。手続きそのものの代行も承ります。
+    </div>
+  </div>
+</header>
+
+<!-- CONTENT -->
+<main id="main" class="content">
 
   <!-- よくある手続きから探す -->
   <section class="cat rv lk-sec" id="cat-quick">
