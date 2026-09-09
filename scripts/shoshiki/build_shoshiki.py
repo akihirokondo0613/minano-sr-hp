@@ -394,6 +394,8 @@ def build_index():
         '<a href="portal.html" onclick="closeNav()" aria-current="page">書式・窓口</a>',
         '<a href="portal.html" onclick="closeNav()">書式・窓口</a>',
     )
+    # portal.html 先頭の入口カード（社内書式／公式窓口の2択）はこのページには不要。CSSも fs-portal ごと差し替わるので必ず外す
+    s = re.sub(r'\n  <!-- 入口：社内書式か公式窓口かを選ぶ -->\n  <section class="hub".*?</section>\n', '\n', s, count=1, flags=re.S)
     # hero
     s = re.sub(
         r'<nav class="breadcrumb">.*?</nav>',
