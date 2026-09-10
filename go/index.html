@@ -32,6 +32,8 @@ a{color:#123F30}
     document.getElementById('msg').innerHTML='リンクが正しくありません。メールのリンクをもう一度押すか、<a href="../spot.html">スポット注文ページ</a>からお進みください。';
     return;
   }
+  // 書類ページ（a=up）は HP 側の docs.html で表示する（速く、押した瞬間に反応する）。古いメールのリンクもここで振り分ける
+  if(a==='up'){var p=new URLSearchParams(q);var to='docs.html?id='+encodeURIComponent(p.get('id')||'')+'&t='+encodeURIComponent(p.get('t')||'');link.href=to;location.replace(to);return;}
   link.href=ENDPOINT+q;
   location.replace(ENDPOINT+q);
 })();
