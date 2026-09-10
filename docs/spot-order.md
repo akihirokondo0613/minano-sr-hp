@@ -52,3 +52,9 @@ GoatCounterへ「カート追加」「注文送信」「送信失敗」の3イ�
 
 ## メールのリンク入口 `go/index.html`
 受注システムが顧客へ送るメールのリンクは `https://minano-sr.com/go/?a=…&id=…&t=…` を入口にし、`go/index.html` がクエリごと `SPOT_ENDPOINT` へ転送する（GAS 側 `LINK_BASE_DEFAULT`／Script Property `LINK_BASE`）。`script.google.com` のURLを直書きしたメールが Gmail 宛で 5.7.1 拒否された（2026-09-10）ための対策。`SPOT_ENDPOINT` を差し替えたら `go/index.html` の `ENDPOINT` も同じ値にする。検索対象外（robots.txt で `/go/` を除外、noindex）。
+
+## 注文の確定は画面上で行う（2026-09-10 以降）
+GAS 側は既定で `AUTO_CONFIRM=1`。doPost が保留注文を積んだ直後に確定まで進め、JSON で `orderNo / items / subtotal / docDue / payDue / uploadUrl / statusUrl / underReview` を返す。spot.html の完了画面（`renderDone`）はこれをそのまま表示するので、確認メールが迷惑メール行きでも顧客は「書類を送る」「案件ページ」へ進める。Script Property `AUTO_CONFIRM=0` にすると旧方式（確認メールのリンクを押してから確定）に戻り、完了画面は「確認メールを送りました」の文面になる。
+
+## 品目カードの入力欄
+`scripts/sync-spot-items.mjs` の `FIELDS`（qtyLabel／dateLabel／person）が正本。GAS 側 Code.gs の 数量ラベル・DATE_ASK と同じ文言にしておく。dateLabel が空の品目（G03/G04/G05/S02/S03）は日付欄を出さない。person=false の品目（会社設立・労使協定・給与計算・年次・研修・相談）は氏名欄を出さない。

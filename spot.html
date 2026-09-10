@@ -131,6 +131,11 @@
 .so-done-ic{width:64px;height:64px;border-radius:50%;background:var(--moegi-l);color:var(--moegi-t);display:grid;place-items:center;margin:0 auto 18px}
 .so-done h2{font-family:var(--disp);font-size:22px;font-weight:800;color:var(--iwa);margin-bottom:10px}
 .so-done p{font-size:14px;color:var(--ink3);line-height:1.9;max-width:480px;margin:0 auto}
+.so-done-no{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--iwa);margin:0 auto 14px}
+.so-done-items{max-width:480px;margin:0 auto 16px;text-align:left;font-size:13px;color:var(--ink3);line-height:1.9;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:8px 0}
+.so-done-items div{display:flex;justify-content:space-between;gap:12px}
+.so-done-actions{display:flex;flex-direction:column;gap:10px;max-width:420px;margin:18px auto 0}
+.so-done-actions a{display:block;text-align:center}
 .so-done-note{margin-top:22px;text-align:left;background:var(--g25);border:1px solid var(--g100);border-radius:var(--r);padding:16px 20px;font-size:13px;color:var(--ink3);line-height:1.9}
 .so-empty{font-size:13.5px;color:var(--ink4);padding:18px 0}
 [hidden]{display:none!important}
@@ -337,14 +342,18 @@
     <div class="so-done-ic" aria-hidden="true">
       <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
-    <h2>確認メールを送りました</h2>
-    <p>届いた<wbr>メールの<wbr>中の<wbr>リンクを<wbr>押していただくと、<wbr>お申し込みが<wbr>成立します<wbr>（リンクの<wbr>有効期限は<wbr>7日間です）。<wbr>確認後、<wbr>請求書と<wbr>必要書類の<wbr>ご案内を<wbr>お送りします。</p>
+    <h2 id="soDoneTitle">ご注文を承りました</h2>
+    <p id="soDoneNo" class="so-done-no"></p>
+    <div id="soDoneItems" class="so-done-items"></div>
+    <p id="soDoneLead">請求書と<wbr>必要書類の<wbr>ご案内を<wbr>メールで<wbr>お送りしました。<wbr>メールが<wbr>届かなくても、<wbr>下の<wbr>ボタンから<wbr>そのまま<wbr>進めます。</p>
+    <div class="so-done-actions" id="soDoneActions">
+      <a class="btn-primary" id="soDoneUpload" href="#" hidden>書類を送る（約3分）</a>
+      <a class="btn-secondary" id="soDoneStatus" href="#" hidden>進み具合を見る（案件ページ）</a>
+    </div>
     <div class="so-done-note">
-      <p><b>メールが届かない場合</b></p>
-      <p style="margin-top:6px">1. 迷惑メール<wbr>フォルダを<wbr>ご確認ください。</p>
-      <p>2. contact<wbr>@<wbr>minano-sr.com を<wbr>受信できるよう<wbr>設定してください。</p>
-      <p>3. ご入力いただ<wbr>いた<wbr>メールアドレスに<wbr>誤りが<wbr>ないか<wbr>ご確認ください。</p>
-      <p style="margin-top:6px">それでも<wbr>届かない<wbr>場合<wbr>は <a href="tel:076-460-2562">076-460-2562</a>（<wbr>平日<wbr>9:00〜<wbr>18:00、<wbr>翌営業日までに<wbr>ご返答します）まで<wbr>お電話ください。</p>
+      <p><b>この<wbr>画面は<wbr>閉じても<wbr>大丈夫です</b></p>
+      <p style="margin-top:6px">同じリンクを<wbr>メールでも<wbr>お送りしています。<wbr>届かない<wbr>ときは<wbr>迷惑メールフォルダを<wbr>ご確認の<wbr>うえ、<wbr>contact<wbr>@<wbr>minano-sr.com を<wbr>受信できるよう<wbr>設定してください。</p>
+      <p style="margin-top:6px">ご不明な<wbr>点<wbr>は <a href="tel:076-460-2562">076-460-2562</a>（<wbr>平日<wbr>9:00〜<wbr>18:00）へ。<wbr>翌営業日までに<wbr>ご返答します。</p>
     </div>
   </section>
 
@@ -439,7 +448,10 @@
       "base": 0,
       "perUnit": 10000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "入社日",
+      "person": true
     },
     {
       "code": "H05",
@@ -449,7 +461,10 @@
       "base": 60000,
       "perUnit": 2000,
       "freeUnits": 5,
-      "note": "5名までは基本料に含みます。6名目から加算します。"
+      "note": "5名までは基本料に含みます。6名目から加算します。",
+      "qtyLabel": "加入する従業員の人数（5名まで基本料金に含む）",
+      "dateLabel": "適用事業所となった日",
+      "person": false
     },
     {
       "code": "H06",
@@ -459,7 +474,10 @@
       "base": 0,
       "perUnit": 20000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "事業所の数",
+      "dateLabel": "協定の起算日",
+      "person": false
     },
     {
       "code": "H02",
@@ -469,7 +487,10 @@
       "base": 0,
       "perUnit": 10000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "退職日",
+      "person": true
     },
     {
       "code": "H03",
@@ -479,7 +500,10 @@
       "base": 0,
       "perUnit": 10000,
       "freeUnits": 0,
-      "note": "退社手続きと同時にご依頼の場合は「退社手続き＋離職票（同時）」をお選びください。"
+      "note": "退社手続きと同時にご依頼の場合は「退社手続き＋離職票（同時）」をお選びください。",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "退職日",
+      "person": true
     },
     {
       "code": "H04",
@@ -489,7 +513,10 @@
       "base": 0,
       "perUnit": 15000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "退職日",
+      "person": true
     },
     {
       "code": "K01",
@@ -499,7 +526,10 @@
       "base": 0,
       "perUnit": 15000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "出産日（予定日）",
+      "person": true
     },
     {
       "code": "K02",
@@ -509,7 +539,10 @@
       "base": 0,
       "perUnit": 20000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "育児休業開始日",
+      "person": true
     },
     {
       "code": "K03",
@@ -519,7 +552,10 @@
       "base": 0,
       "perUnit": 5000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "申請する回数",
+      "dateLabel": "今回申請する期間の開始日",
+      "person": true
     },
     {
       "code": "K04",
@@ -529,7 +565,10 @@
       "base": 0,
       "perUnit": 20000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "60歳に達した日",
+      "person": true
     },
     {
       "code": "K05",
@@ -539,7 +578,10 @@
       "base": 0,
       "perUnit": 5000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "申請する回数",
+      "dateLabel": "今回申請する月の初日",
+      "person": true
     },
     {
       "code": "K06",
@@ -549,7 +591,10 @@
       "base": 0,
       "perUnit": 20000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "介護休業の開始日",
+      "person": true
     },
     {
       "code": "K07",
@@ -559,7 +604,10 @@
       "base": 0,
       "perUnit": 5000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "申請する回数",
+      "dateLabel": "今回の介護休業の開始日",
+      "person": true
     },
     {
       "code": "K08",
@@ -569,7 +617,10 @@
       "base": 0,
       "perUnit": 15000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "仕事を休み始めた日",
+      "person": true
     },
     {
       "code": "K09",
@@ -579,7 +630,10 @@
       "base": 0,
       "perUnit": 30000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "件数",
+      "dateLabel": "災害が起きた日",
+      "person": true
     },
     {
       "code": "G01",
@@ -589,7 +643,10 @@
       "base": 20000,
       "perUnit": 1500,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数（1回あたり）",
+      "dateLabel": "給与（賞与）の支給日",
+      "person": false
     },
     {
       "code": "G02",
@@ -599,7 +656,10 @@
       "base": 20000,
       "perUnit": 1500,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数（1回あたり）",
+      "dateLabel": "賞与の支払日",
+      "person": false
     },
     {
       "code": "G03",
@@ -609,7 +669,10 @@
       "base": 20000,
       "perUnit": 1500,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "従業員の人数",
+      "dateLabel": "",
+      "person": false
     },
     {
       "code": "G04",
@@ -619,7 +682,10 @@
       "base": 25000,
       "perUnit": 1000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数（1回あたり）",
+      "dateLabel": "",
+      "person": false
     },
     {
       "code": "G05",
@@ -629,7 +695,10 @@
       "base": 25000,
       "perUnit": 1000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数（1回あたり）",
+      "dateLabel": "",
+      "person": false
     },
     {
       "code": "S01",
@@ -639,7 +708,10 @@
       "base": 0,
       "perUnit": 30000,
       "freeUnits": 0,
-      "note": "1コマ60分の料金です。"
+      "note": "1コマ60分の料金です。",
+      "qtyLabel": "実施コマ数（1コマ60分）",
+      "dateLabel": "希望日",
+      "person": false
     },
     {
       "code": "S02",
@@ -649,7 +721,10 @@
       "base": 0,
       "perUnit": 10000,
       "freeUnits": 0,
-      "note": "ご注文後、担当者が内容を確認のうえ受任します。事前のお問い合わせは不要です。"
+      "note": "ご注文後、担当者が内容を確認のうえ受任します。事前のお問い合わせは不要です。",
+      "qtyLabel": "回数",
+      "dateLabel": "",
+      "person": false
     },
     {
       "code": "S03",
@@ -659,7 +734,10 @@
       "base": 0,
       "perUnit": 30000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "件数",
+      "dateLabel": "",
+      "person": false
     }
   ]
 }
@@ -775,7 +853,7 @@
         '</div>' +
         (item.note ? '<p class="so-card-note">' + item.note + '</p>' : '') +
         '<div class="so-qty-row">' +
-          '<span class="so-qty-label">数量（' + item.unit + '）</span>' +
+          '<span class="so-qty-label">' + (item.qtyLabel || ('数量（' + item.unit + '）')) + '</span>' +
           '<span class="so-qty-ctrl">' +
             '<button type="button" class="so-qty-btn" data-act="dec" aria-label="数量を減らす">－</button>' +
             '<input class="so-qty-input" type="number" inputmode="numeric" min="0" max="99" value="' + qty + '" aria-label="' + item.name + 'の数量">' +
@@ -784,9 +862,13 @@
           '<span class="so-card-sub">小計 ' + yen(lineTotal(item, qty)) + '</span>' +
         '</div>' +
         '<div class="so-card-detail">' +
-          '<div><label>発生日（任意）</label><input type="date" data-field="発生日" value="' + ((state.detail[item.code] && state.detail[item.code]['発生日']) || '') + '"></div>' +
-          '<div><label>対象者（任意）</label><input type="text" data-field="対象者" placeholder="例：山田太郎" value="' + ((state.detail[item.code] && state.detail[item.code]['対象者']) || '') + '"></div>' +
-          '<div><label>補足（任意）</label><input type="text" data-field="補足" value="' + ((state.detail[item.code] && state.detail[item.code]['補足']) || '') + '"></div>' +
+          (item.dateLabel
+            ? '<div><label>' + item.dateLabel + '（分かれば）</label><input type="date" data-field="発生日" value="' + ((state.detail[item.code] && state.detail[item.code]['発生日']) || '') + '"></div>'
+            : '') +
+          (item.person
+            ? '<div><label>' + (item.unit === '名' ? '対象の方の氏名（分かれば。複数は「ほか○名」）' : '対象の方の氏名（分かれば）') + '</label><input type="text" data-field="対象者" placeholder="例：山田 太郎" value="' + ((state.detail[item.code] && state.detail[item.code]['対象者']) || '') + '"></div>'
+            : '') +
+          '<div><label>ひとこと（任意）</label><input type="text" data-field="補足" placeholder="例：急ぎです" value="' + ((state.detail[item.code] && state.detail[item.code]['補足']) || '') + '"></div>' +
         '</div>';
 
       var input = card.querySelector('.so-qty-input');
@@ -998,6 +1080,7 @@
         submitBtn.textContent = 'この内容で注文する';
         if (data && data.ok) {
           sendSpotEvent('注文送信', state.activeCategory);
+          renderDone(data);
           goToStep('done');
         } else {
           sendSpotEvent('送信失敗', (data && data.error) || 'unknown');
@@ -1010,6 +1093,40 @@
         sendSpotEvent('送信失敗', 'network');
         showError(payload);
       });
+  }
+
+  /* 完了画面：サーバーが返した注文番号・品目・リンクをそのまま出す（メールに依存しない） */
+  function renderDone(data){
+    var esc = function(t){ return String(t == null ? '' : t).replace(/[&<>"]/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+    var noEl = document.getElementById('soDoneNo');
+    var itemsEl = document.getElementById('soDoneItems');
+    var lead = document.getElementById('soDoneLead');
+    var up = document.getElementById('soDoneUpload');
+    var st = document.getElementById('soDoneStatus');
+    noEl.textContent = data.orderNo ? 'ご注文番号 ' + data.orderNo : '';
+    itemsEl.innerHTML = '';
+    (data.items || []).forEach(function(it){
+      itemsEl.insertAdjacentHTML('beforeend', '<div><span>' + esc(it.name) + '　' + esc(it.qty) + esc(it.unit) + '</span><span>' + esc(yen(it.subtotal)) + '</span></div>');
+    });
+    if (data.items && data.items.length) {
+      itemsEl.insertAdjacentHTML('beforeend', '<div><b>合計（税抜）</b><b>' + esc(yen(data.subtotal || 0)) + '</b></div>');
+    }
+    if (data.underReview) {
+      lead.textContent = 'いただいた内容を確認のうえ、担当者からご連絡します。請求書は、受任が決まってからお送りします。';
+      up.hidden = true;
+    } else if (data.orderNo) {
+      lead.innerHTML = '請求書と必要書類のご案内をメールでお送りしました。メールが届かなくても、下のボタンからそのまま進めます。'
+        + (data.docDue ? '<br>書類の提出期限は <b>' + esc(data.docDue) + '</b> です。' : '')
+        + (data.payDue ? '<br>お支払いの期限は ' + esc(data.payDue) + ' です。' : '');
+      up.hidden = !data.uploadUrl;
+      if (data.uploadUrl) up.href = data.uploadUrl;
+    } else {
+      // 旧方式（メール確認）の応答
+      lead.textContent = '確認メールを送りました。届いたメールの中のリンクを押していただくと、お申し込みが成立します（有効期限は7日間）。';
+      up.hidden = true;
+    }
+    st.hidden = !data.statusUrl;
+    if (data.statusUrl) st.href = data.statusUrl;
   }
 
   function showError(payload){
