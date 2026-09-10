@@ -33,7 +33,8 @@ a{color:#123F30}
     return;
   }
   // 書類ページ（a=up）は HP 側の docs.html で表示する（速く、押した瞬間に反応する）。古いメールのリンクもここで振り分ける
-  if(a==='up'){var p=new URLSearchParams(q);var to='docs.html?id='+encodeURIComponent(p.get('id')||'')+'&t='+encodeURIComponent(p.get('t')||'');link.href=to;location.replace(to);return;}
+  // 顧客のページは HP 側の案件ページ1つ（case.html）。古いメールの st / up / ack もここで振り分ける
+  if(a==='st'||a==='up'||a==='ack'){var p=new URLSearchParams(q);var to='case.html?id='+encodeURIComponent(p.get('id')||'')+'&t='+encodeURIComponent(p.get('t')||'')+(a==='up'?'#docs':a==='ack'?'#ack':'');link.href=to;location.replace(to);return;}
   link.href=ENDPOINT+q;
   location.replace(ENDPOINT+q);
 })();
