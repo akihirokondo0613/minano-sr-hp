@@ -141,12 +141,25 @@ const FIELDS = {
   S03: { qtyLabel: '件数', dateLabel: '', person: false },
 };
 
+/**
+ * pricing.html の説明文（sf-desc）から、注文ページに出す1〜2文を作る。
+ * 顧問料の話・料金の加算だけの文は落とす（スポットのカードには意味がない）。
+ */
+const DESC_DROP = /顧問料|顧問契約|顧問先|スポット料金|加算します|合計\s*¥|1本あたり|報酬率|同額です/;
+function descFor(rows, name) {
+  const row = rows.get(name) || rows.get(`${name}（単発）`) || rows.get(name.replace('（単発）', ''));
+  const raw = row ? String(row.desc || '') : '';
+  const kept = raw.split('。').map((x) => x.trim()).filter((x) => x && !DESC_DROP.test(x));
+  return kept.length ? `${kept.join('。')}。` : '';
+}
+
 function buildItems(rows) {
   const items = [];
   const add = (code, name, category, unit, base, perUnit, freeUnits, note) => {
     const f = FIELDS[code];
     if (!f) throw new Error(`FIELDS に ${code} がありません`);
-    items.push({ code, name, category, unit, base, perUnit, freeUnits: freeUnits || 0, note: note || '',
+    items.push({ code, name, category, unit, base, perUnit, freeUnits: freeUnits || 0,
+      desc: descFor(rows, name), note: note || '',
       qtyLabel: f.qtyLabel, dateLabel: f.dateLabel, person: f.person });
   };
 
