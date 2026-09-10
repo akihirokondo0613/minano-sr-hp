@@ -67,3 +67,6 @@ GAS 側は既定で `AUTO_CONFIRM=1`。doPost が保留注文を積んだ直後�
 
 ## 書類ページ `go/docs.html`（2026-09-10）
 顧客の「送るもの・答えること」画面は HP 側の静的ページ。Apps Script の画面より速く開き、ボタンを押した瞬間に状態が変わる（記録が終わるまで「保存中」の印、失敗したら元に戻して行の下に理由）。データは `SPOT_ENDPOINT?a=updata&id=&t=`、操作は `POST {act: mark|answer|file|finish, …}`（本文は text/plain の JSON）。古いメールの `go/?a=up` リンクは go/index.html が docs.html へ振り分ける。原本が要る書類は「郵送します」で記録し、宛先を表示する。
+
+## 案件ページ `go/case.html`（2026-09-10・第1段）
+顧客が開くページは1つ。`?id=<注文番号>&t=<署名>` で受注システムの `?a=case` から全データを1回で取り、進み具合・次にすること・ご注文の内容・送るもの／答えること（#docs）・公文書・請求と支払・受領確認（#ack・POST act=ack）・次回の注文を描画する。go/docs.html は case.html#docs へ転送、go/index.html は a=st/up/ack を case.html へ振り分ける。担当者側は台帳のプルダウンのみ（受注システム v22）。
