@@ -21,6 +21,13 @@ h2.sec{font-size:17px;margin:28px 0 10px;padding-top:22px;border-top:1px solid v
 .meta .no{font-size:13px;opacity:.85;margin-top:2px}
 .stage{display:inline-block;background:#fff;color:var(--g);font-weight:700;border-radius:999px;padding:4px 14px;margin-top:10px;font-size:14px}
 .stage.alert{background:#FBEDE7;color:var(--ng)}
+.track{display:flex;gap:4px;margin-top:12px}
+.track div{flex:1 1 0;min-width:0;text-align:center}
+.track i{display:block;height:4px;border-radius:2px;background:rgba(255,255,255,.28)}
+.track div.on i{background:#fff}
+.track div.now i{background:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.35)}
+.track span{display:block;margin-top:5px;font-size:10.5px;line-height:1.35;color:rgba(255,255,255,.72);word-break:keep-all}
+.track div.now span{color:#fff;font-weight:700}
 .next{background:var(--paper);border:2px solid var(--g);border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:15.5px;font-weight:700;line-height:1.7}
 .next .m{display:block;font-size:13px;font-weight:400;color:var(--ink2);margin-top:4px}
 [hidden]{display:none!important}
@@ -214,6 +221,15 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     if(q.type==='text')h+='<textarea class="qv" name="'+esc(q.id)+'" style="min-height:70px">'+esc(q.value)+'</textarea>';
     return h+'</div>';
   }
+  // 受付から完了までの道のり。例外（確認中・書類に不足）は帯を出さず、上のバッジで伝える
+  var TRACK=['受付','書類待ち','作業中','公文書待ち','納品済み','完了'];
+  function trackHtml(){
+    var i=TRACK.indexOf(C.stage);
+    if(i<0)return '';
+    return '<div class="track" aria-label="進み具合">'+TRACK.map(function(n,k){
+      return '<div class="'+(k<i?'on':k===i?'now':'')+'"><i></i><span>'+esc(n)+'</span></div>';
+    }).join('')+'</div>';
+  }
   function docsHtml(){
     if(!D||!D.ok)return '';
     var h='<h2 class="sec" id="docs">お送りいただくもの・お答えいただくこと</h2>';
@@ -244,7 +260,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   }
   function render(){
     var h='';
-    h+='<div class="meta"><div class="co">'+esc(C.company)+'</div><div class="no">ご注文番号 '+esc(C.orderNo)+(C.orderDate?'　'+esc(C.orderDate)+' 注文':'')+'</div><div><span class="stage'+(C.alert?' alert':'')+'">'+esc(C.stage)+'</span></div></div>';
+    h+='<div class="meta"><div class="co">'+esc(C.company)+'</div><div class="no">ご注文番号 '+esc(C.orderNo)+(C.orderDate?'　'+esc(C.orderDate)+' 注文':'')+'</div><div><span class="stage'+(C.alert?' alert':'')+'">'+esc(C.stage)+'</span></div>'+trackHtml()+'</div>';
     h+='<div class="next">次にすること<span class="m">'+esc(C.next)+'</span>';
     if(C.canUpload)h+='<a class="btn" href="#docs">書類を送る・答える</a>';
     if(C.canAck)h+='<a class="btn" href="#ack">公文書を受け取りました（受領確認）</a>';
