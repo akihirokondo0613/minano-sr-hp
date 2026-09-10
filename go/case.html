@@ -143,7 +143,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
 </head>
 <body>
 <div class="wrap" id="app">
-  <div class="load" id="loading"><span class="sp"></span>ご注文の内容を読み込んでいます…</div>
+  <div class="load" id="loading"><span class="sp"></span><span id="loadno">ご注文の内容</span>を読み込んでいます…</div>
 </div>
 <div class="toast" id="toast"></div>
 <script>
@@ -168,6 +168,8 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     app.innerHTML='<div class="card"><h2>開けませんでした</h2><p class="rest">'+esc(msg)+'</p><p class="rest">お急ぎのときは <a href="tel:0764602562">076-460-2562</a>（平日9:00〜18:00）へ。書類はメールに添付いただいても受け取れます。</p></div>';
   }
   if(!ORDER||!/^[0-9a-f]{32}$/.test(TOKEN)){fail('リンクが不完全です。メールのリンクをもう一度お開きください。');return}
+  // 注文番号はURLに入っている。通信を待たずに出して、開いた時点で「合っている」と分かるようにする
+  (function(){var e=document.getElementById('loadno');if(e&&/^[A-Z0-9-]{3,20}$/i.test(ORDER))e.textContent='ご注文 '+ORDER+' '})();
 
   fetch(ENDPOINT+'?a=case&id='+encodeURIComponent(ORDER)+'&t='+encodeURIComponent(TOKEN),{redirect:'follow'})
     .then(function(r){return r.json()})
