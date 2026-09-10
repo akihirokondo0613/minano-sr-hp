@@ -154,15 +154,15 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   function stateClass(s){ if(s==='出した'||s==='入力済'||s==='前回分'||s==='郵送')return 'ok'; if(s==='該当なし')return 'na'; if(s==='後日提出')return 'later'; return 'todo'; }
   function stateText(x){ if(x.state==='前回分')return '前回分を使用'; if(x.state==='郵送')return '郵送予定'; return x.state+(x.date?' '+x.date:''); }
   function rowHtml(g,x){
-    var info=x.kind==='info', orig=!x.photo, prev=x.state==='前回分', fl=x.fields?x.fields.split('|'):[];
+    var info=x.kind==='info', orig=!x.photo, prev=x.state==='前回分', fl=x.fields?x.fields.split('|'):[], xl=/Excel|\.xlsx/.test(x.doc);
     var h='<div class="row'+(stateClass(x.state)!=='todo'?' done':'')+'" data-mid="'+esc(g.matterId)+'" data-doc="'+esc(x.doc)+'" data-kind="'+esc(x.kind)+'">';
-    h+='<div class="dn">'+esc(x.short)+(info?'<span class="ph in">入力でも可</span>':'<span class="ph sub">提出書類</span>')+(orig?'<span class="ph org">原本を郵送</span>':'<span class="ph">写真OK</span>')+'<button type="button" class="why" aria-label="説明を開く">？</button></div>';
+    h+='<div class="dn">'+esc(x.short)+(xl?'<span class="ph in">Excel</span>':info?'<span class="ph in">入力でも可</span>':'<span class="ph sub">提出書類</span>')+(xl?'':orig?'<span class="ph org">原本を郵送</span>':'<span class="ph">写真OK</span>')+'<button type="button" class="why" aria-label="説明を開く">？</button></div>';
     if(x.cond)h+='<div class="cond">条件　'+esc(x.cond)+'</div>';
     h+='<div class="det">'+linkify(x.detail)+(info?'<br>この資料は行政に出すものではなく、内容を確認するためのものです。お手元に無ければ「入力する」で項目を書いていただくか、同じことが分かる別の資料を送ってください。':'')+(orig?'<br>原本が必要な書類です。写真では代えられないので、下の宛先へ郵送してください。':'')+'</div>';
     if(prev)h+='<div class="prev">前回いただいた分を使います'+(x.date?'（'+esc(x.date)+'）':'')+'。変わっていれば送り直してください。</div>';
     h+='<div class="rb">';
     if(orig)h+='<button type="button" class="mini go post">郵送します</button>';
-    else h+='<button type="button" class="mini go pick">'+(prev?'変更あり（送り直す）':(info?'書類か代わりの資料を送る':'写真かPDFを送る'))+'</button>';
+    else h+='<button type="button" class="mini go pick">'+(xl?'記入したExcelを送る':prev?'変更あり（送り直す）':(info?'書類か代わりの資料を送る':'写真かPDFを送る'))+'</button>';
     if(info)h+='<button type="button" class="mini go inp">入力する</button>';
     h+='<button type="button" class="mini na">該当なし</button><button type="button" class="mini later">後日提出</button><input type="date" class="dt" hidden aria-label="提出できる日">';
     h+='<span class="stt '+stateClass(x.state)+'">'+esc(stateText(x))+'</span></div><div class="rerr" hidden></div>';
@@ -175,7 +175,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
       if(x.content)h+='<div class="cond">入力済み：'+esc(x.content)+'</div>';
       h+='</div>';
     }
-    h+='<input type="file" class="rf" multiple accept="image/*,application/pdf" capture="environment"></div>';
+    h+=(xl?'<input type="file" class="rf" accept=".xlsx,.xlsm,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">':'<input type="file" class="rf" multiple accept="image/*,application/pdf" capture="environment">')+'</div>';
     return h;
   }
   function groupsHtml(groups){var h='';groups.forEach(function(g){h+='<div class="grp">'+esc(g.name)+'</div>';g.list.forEach(function(x){h+=rowHtml(g,x)})});return h}
