@@ -351,7 +351,7 @@
     <div id="soDoneItems" class="so-done-items"></div>
     <p id="soDoneLead">請求書と<wbr>必要書類の<wbr>ご案内を<wbr>メールで<wbr>お送りしました。<wbr>メールが<wbr>届かなくても、<wbr>下の<wbr>ボタンから<wbr>そのまま<wbr>進めます。</p>
     <div class="so-done-actions" id="soDoneActions">
-      <a class="btn-primary" id="soDoneUpload" href="#" hidden>書類を送る（約3分）</a>
+      <a class="btn-primary" id="soDoneUpload" href="#" hidden>書類を送る</a>
       <a class="btn-secondary" id="soDoneStatus" href="#" hidden>進み具合を見る（案件ページ）</a>
     </div>
     <div class="so-done-note">
@@ -1124,6 +1124,11 @@
         + (data.payDue ? '<br>お支払いの期限は ' + esc(data.payDue) + ' です。' : '');
       up.hidden = !data.uploadUrl;
       if (data.uploadUrl) up.href = data.uploadUrl;
+      // 次にすることの分量を先に見せる。固定の「約3分」ではなく、この注文の実際の点数から出す
+      if (data.next) {
+        var n = data.next;
+        up.textContent = '書類を送る（' + n.docs + '点・答えること' + n.asks + '問・約' + n.minutes + '分）';
+      }
     } else {
       // 旧方式（メール確認）の応答
       lead.textContent = '確認メールを送りました。届いたメールの中のリンクを押していただくと、お申し込みが成立します（有効期限は7日間）。';
