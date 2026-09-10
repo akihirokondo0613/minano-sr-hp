@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>ページを開いています｜みなの社会保険労務士事務所</title>
+<style>
+body{font-family:"Hiragino Sans","Yu Gothic",Meiryo,sans-serif;margin:0;padding:14vh 24px;color:#1a1a1a;background:#fbfaf8}
+.box{max-width:520px;margin:0 auto;background:#fff;border:1px solid #e4e1dc;border-radius:8px;padding:28px}
+h1{font-size:17px;margin:0 0 12px}p{font-size:14px;line-height:1.9;color:#555;margin:0 0 12px}
+a{color:#123F30}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>ページを開いています</h1>
+  <p id="msg">数秒たっても<wbr>切り<wbr>替わらない<wbr>ときは、<wbr><a id="go" href="../spot.html">こちらを押してください</a>。</p>
+</div>
+<script>
+(function(){
+  // メールに載せた入口。クエリ（a=確認の種類, id=注文番号, t=署名）をそのまま受注システムへ渡す。
+  // script.google.com のURLをメールに直書きすると迷惑メール判定を受けやすいため、自社ドメインを経由させる。
+  var ENDPOINT='https://script.google.com/macros/s/AKfycbyMbrQKhAhE0B_gyDHL6yhowdB1ulDl2QYtc-5jYR40iPtRjVs6GjC_i6sMDzF-7hc/exec';
+  var q=location.search||'';
+  var a=(new URLSearchParams(q)).get('a')||'';
+  var ok=/^[a-z]{1,12}$/.test(a);
+  var link=document.getElementById('go');
+  if(!ok){
+    document.getElementById('msg').innerHTML='リンクが正しくありません。メールのリンクをもう一度押すか、<a href="../spot.html">スポット注文ページ</a>からお進みください。';
+    return;
+  }
+  link.href=ENDPOINT+q;
+  location.replace(ENDPOINT+q);
+})();
+</script>
+</body>
+</html>
