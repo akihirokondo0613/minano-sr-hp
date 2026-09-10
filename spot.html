@@ -131,6 +131,7 @@
 .so-done-ic{width:64px;height:64px;border-radius:50%;background:var(--moegi-l);color:var(--moegi-t);display:grid;place-items:center;margin:0 auto 18px}
 .so-done h2{font-family:var(--disp);font-size:22px;font-weight:800;color:var(--iwa);margin-bottom:10px}
 .so-done p{font-size:14px;color:var(--ink3);line-height:1.9;max-width:480px;margin:0 auto}
+.so-error-reason{margin-top:8px;padding:8px 12px;background:#fff;border-left:3px solid #b23a3a;font-weight:700}
 .so-done-no{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--iwa);margin:0 auto 14px}
 .so-done-items{max-width:480px;margin:0 auto 16px;text-align:left;font-size:13px;color:var(--ink3);line-height:1.9;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:8px 0}
 .so-done-items div{display:flex;justify-content:space-between;gap:12px}
@@ -331,6 +332,7 @@
 
     <div class="so-error" id="soError">
       <p><b>送信<wbr>できませんで<wbr>した。</b>お手数ですが、<wbr>下記の<wbr>いずれかの<wbr>方法で<wbr>ご連絡ください。</p>
+      <p id="soErrorReason" class="so-error-reason" hidden></p>
       <p style="margin-top:10px">メールで<wbr>ご注文：<wbr><a id="soMailFallback" href="#">contact@minano-sr.com 宛てに注文内容を送る</a></p>
       <p>お電話での<wbr>ご注文：<wbr><a href="tel:076-460-2562">076-460-2562</a>（<wbr>平日<wbr>9:00〜<wbr>18:00）</p>
       <p style="margin-top:10px"><button type="button" class="btn-secondary" id="soRetry">もう一度送信する</button></p>
@@ -1084,14 +1086,14 @@
           goToStep('done');
         } else {
           sendSpotEvent('送信失敗', (data && data.error) || 'unknown');
-          showError(payload);
+          showError(payload, data && data.message ? String(data.message) : '');
         }
       })
       .catch(function(){
         submitBtn.disabled = false;
         submitBtn.textContent = 'この内容で注文する';
         sendSpotEvent('送信失敗', 'network');
-        showError(payload);
+        showError(payload, '通信に失敗しました。電波の良い場所でもう一度お試しください。');
       });
   }
 
@@ -1129,7 +1131,12 @@
     if (data.statusUrl) st.href = data.statusUrl;
   }
 
-  function showError(payload){
+  function showError(payload, reason){
+    // サーバーが理由を返したときはそのまま見せる（例：同じメールアドレスの1日の上限）。
+    // 理由を隠すと「壊れている」と受け取られ、電話や再送信の手間になる
+    var r = document.getElementById('soErrorReason');
+    r.textContent = reason ? '理由：' + reason : '';
+    r.hidden = !reason;
     document.getElementById('soMailFallback').href = mailFallback(payload);
     document.getElementById('soError').classList.add('on');
     document.getElementById('soError').scrollIntoView({ block: 'center', behavior: 'smooth' });
