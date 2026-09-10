@@ -83,6 +83,7 @@ ul.dl li span{flex:1 1 auto;min-width:0;word-break:break-all}
 .mini{border:1.5px solid var(--line);background:var(--paper);color:var(--ink2);border-radius:6px;padding:8px 12px;font-size:13.5px;font-family:inherit;cursor:pointer;min-height:38px}
 .mini.go{border-color:var(--g);color:var(--g);font-weight:700}
 .mini:active{background:#F0F0EA}
+a.mini{display:inline-block;text-decoration:none;box-sizing:border-box;line-height:20px}
 .stt{margin-left:auto;font-size:12.5px;border-radius:4px;padding:3px 9px;border:1px solid var(--line);color:var(--ink3);white-space:nowrap}
 .stt.ok{background:#EAF3ED;border-color:#BFD9C8;color:var(--ok)}
 .stt.na{background:#F2F2EE}
@@ -188,12 +189,15 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   function stateText(x){ if(x.state==='前回分')return '前回分を使用'; if(x.state==='郵送')return '郵送予定'; return x.state+(x.date?' '+x.date:''); }
   function rowHtml(g,x){
     var info=x.kind==='info', orig=!x.photo, prev=x.state==='前回分', fl=x.fields?x.fields.split('|'):[], xl=/Excel|\.xlsx/.test(x.doc);
+    // 記入用 Excel の置き場。説明の中にしか無いと、顧客は「？」を開くまで辿り着けない
+    var xlUrl=(String(x.doc||'').match(/https:\/\/minano-sr\.com\/[^\s）)]+\.xlsx/)||[''])[0];
     var h='<div class="row'+(stateClass(x.state)!=='todo'?' done':'')+'" data-mid="'+esc(g.matterId)+'" data-doc="'+esc(x.doc)+'" data-kind="'+esc(x.kind)+'" data-sec="'+(x.sec||30)+'">';
     h+='<div class="dn">'+esc(x.short)+(xl?'<span class="ph in">Excel</span>':info?'<span class="ph in">入力でも可</span>':'<span class="ph sub">提出書類</span>')+(xl?'':orig?'<span class="ph org">原本を郵送</span>':'<span class="ph">写真OK</span>')+'<button type="button" class="why" aria-label="説明を開く">？</button></div>';
     if(x.cond)h+='<div class="cond">条件　'+esc(x.cond)+'</div>';
     h+='<div class="det">'+linkify(x.detail)+(info?'<br>この資料は行政に出すものではなく、内容を確認するためのものです。お手元に無ければ「入力する」で項目を書いていただくか、同じことが分かる別の資料を送ってください。':'')+(orig?'<br>原本が必要な書類です。写真では代えられないので、下の宛先へ郵送してください。':'')+'</div>';
     if(prev)h+='<div class="prev">前回いただいた分を使います'+(x.date?'（'+esc(x.date)+'）':'')+'。変わっていれば送り直してください。</div>';
     h+='<div class="rb">';
+    if(xl&&xlUrl)h+='<a class="mini go dl" href="'+esc(xlUrl)+'" download>Excelをダウンロード</a>';
     if(orig)h+='<button type="button" class="mini go post">郵送します</button>';
     else h+='<button type="button" class="mini go pick">'+(xl?'記入したExcelを送る':prev?'変更あり（送り直す）':(info?'書類か代わりの資料を送る':'写真かPDFを送る'))+'</button>';
     if(info)h+='<button type="button" class="mini go inp">入力する</button>';
