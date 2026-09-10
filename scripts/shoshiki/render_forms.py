@@ -373,6 +373,15 @@ def form_html(f, ed):
             b.append(
                 f'<p class="note"><span class="t"{ce}>※ </span><span class="t"{ce}>{esc(blk["text"])}</span></p>'
             )
+        elif t == "cut":
+            # 点線（切り取り線の目安）＋見出し。margin-top:auto で用紙の最下段に寄せる（.page は flex 列にする）。
+            # 共通CSSに足すと全書式のHTMLが書き換わるので、この書式だけの style を行内に持つ
+            b.append(
+                '<div class="cut" style="display:flex;align-items:center;gap:2.5mm;margin-top:auto;padding-top:3mm">'
+                f'<span class="t" style="font-weight:700;font-size:9.5pt;white-space:nowrap"{ce}>{esc(blk["title"])}</span>'
+                '<span style="flex:1;border-top:0.8pt dashed var(--rule)"></span>'
+                f'<span class="t" style="font-size:8pt;color:var(--ink2);white-space:nowrap"{ce}>切り取り線</span></div>'
+            )
     sig = signature_rows(f["to"], f)
     if sig:
         b.append(fields_html(sig, ed, wide))
@@ -381,6 +390,13 @@ def form_html(f, ed):
     b.append(
         ""  # 右下の社名（フッター）は廃止（2026-09-06・本人指示「場合によっては不自然」）
     )
+    if any(blk["type"] == "cut" for blk in f["blocks"]):
+        # cut ブロックを最下段へ寄せるため、この書式だけ .page を flex 列にする
+        return (
+            '<div class="page" style="display:flex;flex-direction:column">'
+            + "".join(b)
+            + "</div>"
+        )
     return '<div class="page">' + "".join(b) + "</div>"
 
 
@@ -760,6 +776,23 @@ def build_docx(f, path):
             tail.paragraph_format.space_after = Pt(2)
         elif t == "note":
             para(doc, "※ " + blk["text"], 9, after=3, ls=13)
+        elif t == "cut":
+            # 点線（切り取り線の目安）を段落の上罫線で引き、見出しを太字で置く
+            p = para(doc, blk["title"], 9.5, True, after=2, ls=14)
+            p.paragraph_format.space_before = Pt(12)
+            pPr = p._p.get_or_add_pPr()
+            bdr = OxmlElement("w:pBdr")
+            top = OxmlElement("w:top")
+            top.set(qn("w:val"), "dashed")
+            top.set(qn("w:sz"), "6")
+            top.set(qn("w:space"), "6")
+            top.set(qn("w:color"), "555555")
+            bdr.append(top)
+            sp = pPr.find(qn("w:spacing"))
+            if sp is not None:
+                sp.addprevious(bdr)  # スキーマの順序（pBdr は spacing より前）
+            else:
+                pPr.append(bdr)
     sig = signature_rows(to, f)
     if sig:
         table(doc, sig, wide)

@@ -132,6 +132,9 @@ def conv_blocks(blocks, no):
             res.append({"type": "box", "title": b[1], "height": b[2]})
         elif k == "note":
             res.append({"type": "note", "text": fix_text(b[1])})
+        elif k == "cut":
+            # 点線（切り取り線の目安）＋見出し。用紙の最下段に置く欄（個人番号など）の前に使う
+            res.append({"type": "cut", "title": b[1]})
     return res
 
 

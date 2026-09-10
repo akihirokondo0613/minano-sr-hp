@@ -8,7 +8,7 @@
 |---|---|
 | 書式の文面（正本） | `data/shoshiki/forms.json` |
 | 文面の元（記法版） | `scripts/shoshiki/hints.py`（`{(番号, ラベル): 記法}`）と `TEXT_FIX`（文の置換） |
-| 書式の骨組み | `scripts/shoshiki/forms_base.py`（D-01〜D-32・E）、`forms_extra.py`（D-33〜D-51） |
+| 書式の骨組み | `scripts/shoshiki/forms_base.py`（D-01〜D-32・E）、`forms_extra.py`（D-33〜D-52） |
 | forms.json を作る | `scripts/shoshiki/make_json.py` |
 | HTML（一覧・各書式・DLページ） | `scripts/shoshiki/build_shoshiki.py` → `shoshiki.html`、`shoshiki/D-xx.html`、`shoshiki/dl/word-7kq3x9/index.html` |
 | 書式の描画（HTML と Word） | `scripts/shoshiki/render_forms.py` |
@@ -43,7 +43,7 @@ node scripts/preflight.mjs
 
 ## 書式を増やす
 
-`forms_extra.py` の `EXTRA` に 1 件足す（`no`・`cat`・`title`・`to`・`intro`・`blocks`・`guide`。宛名を変えるなら `addr`、署名欄を変えるなら `sig`）。`build_shoshiki.py` の `SCENES` に番号を足すと「場面から探す」に出る。上の python3 の 3 コマンドと preflight を回す。
+`forms_extra.py` の `EXTRA` に 1 件足す（`no`・`cat`・`title`・`to`・`intro`・`blocks`・`guide`。宛名を変えるなら `addr`、署名欄を変えるなら `sig`）。`blocks` の種類は `fields`（表）・`checks`・`box`・`note`・`p` と、`("cut", 見出し)`（点線の切り取り線＋見出し。用紙の最下段に寄せる。D-52 の個人番号の欄で使用。署名欄を本文側に置くなら `sig=[]`）。`build_shoshiki.py` の `SCENES` に番号を足すと「場面から探す」に出る。上の python3 の 3 コマンドと preflight を回す。
 
 ## 会社情報の差し込み
 
