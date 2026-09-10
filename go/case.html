@@ -43,6 +43,9 @@ table.tbl{border-collapse:collapse;width:100%;font-size:14px}
 .row{border-bottom:1px solid #F0F0EA;padding:11px 0;transition:opacity .2s}
 .row:last-child{border-bottom:none}
 /* 済んだ行は1行に畳んで、残っている行を目立たせる。押し直せるように「選び直す」だけ出す */
+ul.dl{list-style:none;padding:0;margin:0}
+ul.dl li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F0F0EA;font-size:14px}
+ul.dl li span{flex:1 1 auto;min-width:0;word-break:break-all}
 .row.done{opacity:.68;display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:7px 0}
 .row.done .dn{flex:1 1 auto;min-width:0;font-size:13.5px;font-weight:400;line-height:1.5}
 .row.done .dn .ph,.row.done .dn .why{display:none}
@@ -252,7 +255,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     h+=docsHtml();
     h+='<h2 class="sec" id="deliv">お渡しした公文書</h2>';
     if(!C.delivered)h+='<p class="rest">まだお渡しできる公文書はありません。行政の処理が終わり次第、メールでお送りし、ここにも載せます。</p>';
-    else if(C.deliveredFiles.length){h+='<ul>'+C.deliveredFiles.map(function(n){return '<li>'+esc(n)+'</li>'}).join('')+'</ul><p class="small">同じものを納品のメールに添付してお送りしています。</p>'}
+    else if(C.deliveredFiles.length){h+='<ul class="dl">'+C.deliveredFiles.map(function(n){return '<li><span>'+esc(n)+'</span><button type="button" class="mini go getdoc" data-name="'+esc(n)+'">保存する</button></li>'}).join('')+'</ul><p class="small">同じものを納品のメールにも添付しています。このページからは何度でも取り出せます。</p>'}
     else h+='<p class="rest">納品のメールに添付してお送りしています。メールをご確認ください。</p>';
     h+='<div id="ack">';
     if(C.acked)h+='<div class="ackbox">受領のご確認をいただいています。ありがとうございました。</div>';
@@ -302,6 +305,19 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
       .then(function(res){if(res&&res.ok){setStt(row,(state==='郵送'?'郵送予定':state)+(res.date?' '+res.date:''),cls);recount();toast(state==='該当なし'?'「該当なし」で記録しました':state==='後日提出'?'後日提出で記録しました':state==='郵送'?'郵送予定で記録しました':'入力内容を記録しました')}else{setStt(row,before.txt,before.cls);rowErr(row,(res&&res.error)||'記録できませんでした。もう一度お試しください。')}})
       .catch(function(){setStt(row,before.txt,before.cls);rowErr(row,'通信に失敗しました。もう一度お試しください。')});
   }
+  function getDoc(btn){
+    var name=btn.dataset.name,orig=btn.textContent;
+    btn.disabled=true;btn.textContent='取り出しています…';
+    api({act:'getdoc',name:name})
+      .then(function(res){
+        btn.disabled=false;btn.textContent=orig;
+        if(!(res&&res.ok&&res.dataUrl)){toast((res&&res.error)||'取り出せませんでした。納品のメールをご確認ください。');return}
+        var a=document.createElement('a');a.href=res.dataUrl;a.download=res.name||name;
+        document.body.appendChild(a);a.click();a.remove();
+        toast('保存しました');
+      })
+      .catch(function(){btn.disabled=false;btn.textContent=orig;toast('通信に失敗しました。もう一度お試しください。')});
+  }
   function bulkNa(btn){
     var card=btn.closest('.card');
     var rows=[].slice.call(card.querySelectorAll('.row')).filter(function(r){return /todo/.test(r.querySelector('.stt').className)});
@@ -333,6 +349,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     document.addEventListener('click',function(e){
       var b=e.target.closest?e.target.closest('button'):null;if(!b)return;var row=b.closest('.row');
       if(b.id==='naall'){bulkNa(b);return}
+      if(b.classList.contains('getdoc')){getDoc(b);return}
       if(b.classList.contains('redo')&&row){row.classList.add('editing');return}
       if(b.classList.contains('why')&&row){row.classList.toggle('open');return}
       if(b.classList.contains('pick')&&row){row.querySelector('.rf').click();return}
