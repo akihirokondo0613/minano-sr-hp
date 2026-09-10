@@ -116,26 +116,26 @@ function setupFee(rows, name) {
  *   person    … 氏名欄を出すか（1名単位の手続き・給付だけ。人数が多い年次業務や相談は出さない）
  */
 const FIELDS = {
-  H01: { qtyLabel: '対象者の人数', dateLabel: '入社日', person: true },
-  H05: { qtyLabel: '加入する従業員の人数（5名まで基本料金に含む）', dateLabel: '適用事業所となった日', person: false },
+  H01: { qtyLabel: '対象者の人数', dateLabel: '入社日', person: true , deadline: '入社日から5日以内（雇用保険の資格取得は翌月10日まで）' },
+  H05: { qtyLabel: '加入する従業員の人数（5名まで基本料金に含む）', dateLabel: '適用事業所となった日', person: false , deadline: '適用事業所となった日から5日以内' },
   H06: { qtyLabel: '事業所の数', dateLabel: '協定の起算日', person: false },
-  H02: { qtyLabel: '対象者の人数', dateLabel: '退職日', person: true },
-  H03: { qtyLabel: '対象者の人数', dateLabel: '退職日', person: true },
-  H04: { qtyLabel: '対象者の人数', dateLabel: '退職日', person: true },
-  K01: { qtyLabel: '対象者の人数', dateLabel: '出産日（予定日）', person: true },
-  K02: { qtyLabel: '対象者の人数', dateLabel: '育児休業開始日', person: true },
+  H02: { qtyLabel: '対象者の人数', dateLabel: '退職日', person: true , deadline: '退職日の翌日から5日以内' },
+  H03: { qtyLabel: '対象者の人数', dateLabel: '退職日', person: true , deadline: '退職日の翌々日から10日以内' },
+  H04: { qtyLabel: '対象者の人数', dateLabel: '退職日', person: true , deadline: '退職日の翌日から5日以内（離職票は翌々日から10日以内）' },
+  K01: { qtyLabel: '対象者の人数', dateLabel: '出産日（予定日）', person: true , deadline: '2年で時効（産休の日ごと）' },
+  K02: { qtyLabel: '対象者の人数', dateLabel: '育児休業開始日', person: true , deadline: '育児休業を開始した月の初日から4か月を経過する日の属する月の末日まで' },
   K03: { qtyLabel: '申請する回数', dateLabel: '今回申請する期間の開始日', person: true },
-  K04: { qtyLabel: '対象者の人数', dateLabel: '60歳に達した日', person: true },
+  K04: { qtyLabel: '対象者の人数', dateLabel: '60歳に達した日', person: true , deadline: '支給対象月の初日から4か月以内' },
   K05: { qtyLabel: '申請する回数', dateLabel: '今回申請する月の初日', person: true },
   K06: { qtyLabel: '対象者の人数', dateLabel: '介護休業の開始日', person: true },
   K07: { qtyLabel: '申請する回数', dateLabel: '今回の介護休業の開始日', person: true },
-  K08: { qtyLabel: '対象者の人数', dateLabel: '仕事を休み始めた日', person: true },
-  K09: { qtyLabel: '件数', dateLabel: '災害が起きた日', person: true },
+  K08: { qtyLabel: '対象者の人数', dateLabel: '仕事を休み始めた日', person: true , deadline: '2年で時効（労務不能だった日ごと）' },
+  K09: { qtyLabel: '件数', dateLabel: '災害が起きた日', person: true , deadline: '療養・休業は2年で時効' },
   G01: { qtyLabel: '対象者の人数（1回あたり）', dateLabel: '給与（賞与）の支給日', person: false },
-  G02: { qtyLabel: '対象者の人数（1回あたり）', dateLabel: '賞与の支払日', person: false },
+  G02: { qtyLabel: '対象者の人数（1回あたり）', dateLabel: '賞与の支払日', person: false , deadline: '賞与を支払った日から5日以内' },
   G03: { qtyLabel: '従業員の人数', dateLabel: '', person: false },
-  G04: { qtyLabel: '対象者の人数（1回あたり）', dateLabel: '', person: false },
-  G05: { qtyLabel: '対象者の人数（1回あたり）', dateLabel: '', person: false },
+  G04: { qtyLabel: '対象者の人数（1回あたり）', dateLabel: '', person: false , deadline: '毎年7月10日まで' },
+  G05: { qtyLabel: '対象者の人数（1回あたり）', dateLabel: '', person: false , deadline: '毎年7月10日まで' },
   S01: { qtyLabel: '実施コマ数（1コマ60分）', dateLabel: '希望日', person: false },
   S02: { qtyLabel: '回数', dateLabel: '', person: false },
   S03: { qtyLabel: '件数', dateLabel: '', person: false },
@@ -159,7 +159,7 @@ function buildItems(rows) {
     const f = FIELDS[code];
     if (!f) throw new Error(`FIELDS に ${code} がありません`);
     items.push({ code, name, category, unit, base, perUnit, freeUnits: freeUnits || 0,
-      desc: descFor(rows, name), note: note || '',
+      desc: descFor(rows, name), note: note || '', deadline: f.deadline || '',
       qtyLabel: f.qtyLabel, dateLabel: f.dateLabel, person: f.person });
   };
 
