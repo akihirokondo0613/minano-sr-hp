@@ -47,8 +47,19 @@ function conditionKey(engine, width) {
 function isIgnoredConsoleError(message) {
   const location = message.location().url || '';
   const value = message.text();
-  return /minano-sr\.goatcounter\.com\/count/.test(location)
-    || /Failed to load resource: A TLS error/.test(value);
+  if (/minano-sr\.goatcounter\.com\/count/.test(location)) return true;
+  if (/Failed to load resource: A TLS error/.test(value)) return true;
+  // 自分の配信元から出たものだけを見る。requestfailed と response は前からこの原則で、
+  // console だけが外れていた。about.html の Google マップ埋め込みが自分のスクリプトの中で
+  // ReferenceError を出し、こちらでは直しようのない赤になった（2026-09-11）。
+  // 出所が分からないもの（location が空）は、判断できないので残す。
+  // 自分のページの未捕捉エラーは pageerror が別に拾っている
+  if (!location) return false;
+  try {
+    return new URL(location).origin !== new URL(base).origin;
+  } catch {
+    return false;
+  }
 }
 
 async function prepareLocalHttpPage(page) {
