@@ -61,3 +61,6 @@ GAS 側は既定で `AUTO_CONFIRM=1`。doPost が保留注文を積んだ直後�
 
 ## exec URL は `/a/macros/minano-sr.com/` 形式で書く
 `https://script.google.com/a/macros/minano-sr.com/s/<ID>/exec`。素の `/macros/s/<ID>/exec` は、複数の Google アカウントにログインしているブラウザで `/macros/u/1/s/…` に書き換えられ「ページが見つかりません（現在、ファイルを開くことができません）」になる（2026-09-10 に本人の環境で発生）。Google の案内（Workspace は `a/<ドメイン>/` を挟む）に従う。spot.html の SPOT_ENDPOINT と go/index.html の ENDPOINT の両方。
+
+## 2回目以降の注文（会社情報の事前入力）
+受任メール・案件ページの「次回のご注文」リンクは `spot.html?member=<会員番号>&k=<署名>`。ページは `SPOT_ENDPOINT?a=me&id=&t=` から会員情報（会社名・区分・住所・担当者・電話・流入経路）を取り、会社情報フォームに先に入れる。署名が無いと受注システムは返さない（会員番号だけでは他社の情報は引けない）。
