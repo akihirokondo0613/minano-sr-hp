@@ -11,7 +11,10 @@
       "base": 0,
       "perUnit": 10000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "入社日",
+      "person": true
     },
     {
       "code": "H05",
@@ -21,7 +24,10 @@
       "base": 60000,
       "perUnit": 2000,
       "freeUnits": 5,
-      "note": "5名までは基本料に含みます。6名目から加算します。"
+      "note": "5名までは基本料に含みます。6名目から加算します。",
+      "qtyLabel": "加入する従業員の人数（5名まで基本料金に含む）",
+      "dateLabel": "適用事業所となった日",
+      "person": false
     },
     {
       "code": "H06",
@@ -31,7 +37,10 @@
       "base": 0,
       "perUnit": 20000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "事業所の数",
+      "dateLabel": "協定の起算日",
+      "person": false
     },
     {
       "code": "H02",
@@ -41,7 +50,10 @@
       "base": 0,
       "perUnit": 10000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "退職日",
+      "person": true
     },
     {
       "code": "H03",
@@ -51,7 +63,10 @@
       "base": 0,
       "perUnit": 10000,
       "freeUnits": 0,
-      "note": "退社手続きと同時にご依頼の場合は「退社手続き＋離職票（同時）」をお選びください。"
+      "note": "退社手続きと同時にご依頼の場合は「退社手続き＋離職票（同時）」をお選びください。",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "退職日",
+      "person": true
     },
     {
       "code": "H04",
@@ -61,7 +76,10 @@
       "base": 0,
       "perUnit": 15000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "退職日",
+      "person": true
     },
     {
       "code": "K01",
@@ -71,7 +89,10 @@
       "base": 0,
       "perUnit": 15000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "出産日（予定日）",
+      "person": true
     },
     {
       "code": "K02",
@@ -81,7 +102,10 @@
       "base": 0,
       "perUnit": 20000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "育児休業開始日",
+      "person": true
     },
     {
       "code": "K03",
@@ -91,7 +115,10 @@
       "base": 0,
       "perUnit": 5000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "申請する回数",
+      "dateLabel": "今回申請する期間の開始日",
+      "person": true
     },
     {
       "code": "K04",
@@ -101,7 +128,10 @@
       "base": 0,
       "perUnit": 20000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "60歳に達した日",
+      "person": true
     },
     {
       "code": "K05",
@@ -111,7 +141,10 @@
       "base": 0,
       "perUnit": 5000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "申請する回数",
+      "dateLabel": "今回申請する月の初日",
+      "person": true
     },
     {
       "code": "K06",
@@ -121,7 +154,10 @@
       "base": 0,
       "perUnit": 20000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "介護休業の開始日",
+      "person": true
     },
     {
       "code": "K07",
@@ -131,7 +167,10 @@
       "base": 0,
       "perUnit": 5000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "申請する回数",
+      "dateLabel": "今回の介護休業の開始日",
+      "person": true
     },
     {
       "code": "K08",
@@ -141,7 +180,10 @@
       "base": 0,
       "perUnit": 15000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数",
+      "dateLabel": "仕事を休み始めた日",
+      "person": true
     },
     {
       "code": "K09",
@@ -151,7 +193,10 @@
       "base": 0,
       "perUnit": 30000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "件数",
+      "dateLabel": "災害が起きた日",
+      "person": true
     },
     {
       "code": "G01",
@@ -161,7 +206,10 @@
       "base": 20000,
       "perUnit": 1500,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数（1回あたり）",
+      "dateLabel": "給与（賞与）の支給日",
+      "person": false
     },
     {
       "code": "G02",
@@ -171,7 +219,10 @@
       "base": 20000,
       "perUnit": 1500,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数（1回あたり）",
+      "dateLabel": "賞与の支払日",
+      "person": false
     },
     {
       "code": "G03",
@@ -181,7 +232,10 @@
       "base": 20000,
       "perUnit": 1500,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "従業員の人数",
+      "dateLabel": "",
+      "person": false
     },
     {
       "code": "G04",
@@ -191,7 +245,10 @@
       "base": 25000,
       "perUnit": 1000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数（1回あたり）",
+      "dateLabel": "",
+      "person": false
     },
     {
       "code": "G05",
@@ -201,7 +258,10 @@
       "base": 25000,
       "perUnit": 1000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "対象者の人数（1回あたり）",
+      "dateLabel": "",
+      "person": false
     },
     {
       "code": "S01",
@@ -211,7 +271,10 @@
       "base": 0,
       "perUnit": 30000,
       "freeUnits": 0,
-      "note": "1コマ60分の料金です。"
+      "note": "1コマ60分の料金です。",
+      "qtyLabel": "実施コマ数（1コマ60分）",
+      "dateLabel": "希望日",
+      "person": false
     },
     {
       "code": "S02",
@@ -221,7 +284,10 @@
       "base": 0,
       "perUnit": 10000,
       "freeUnits": 0,
-      "note": "ご注文後、担当者が内容を確認のうえ受任します。事前のお問い合わせは不要です。"
+      "note": "ご注文後、担当者が内容を確認のうえ受任します。事前のお問い合わせは不要です。",
+      "qtyLabel": "回数",
+      "dateLabel": "",
+      "person": false
     },
     {
       "code": "S03",
@@ -231,7 +297,10 @@
       "base": 0,
       "perUnit": 30000,
       "freeUnits": 0,
-      "note": ""
+      "note": "",
+      "qtyLabel": "件数",
+      "dateLabel": "",
+      "person": false
     }
   ]
 }
