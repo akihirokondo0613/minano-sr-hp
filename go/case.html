@@ -24,6 +24,9 @@ h2.sec{font-size:17px;margin:28px 0 10px;padding-top:22px;border-top:1px solid v
 .next{background:var(--paper);border:2px solid var(--g);border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:15.5px;font-weight:700;line-height:1.7}
 .next .m{display:block;font-size:13px;font-weight:400;color:var(--ink2);margin-top:4px}
 [hidden]{display:none!important}
+.btn.ready{box-shadow:0 0 0 0 rgba(18,63,48,.45);animation:pulse 1.8s ease-out 3}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(18,63,48,.45)}70%{box-shadow:0 0 0 14px rgba(18,63,48,0)}100%{box-shadow:0 0 0 0 rgba(18,63,48,0)}}
+@media(prefers-reduced-motion:reduce){.btn.ready{animation:none}}
 .btn{display:block;width:100%;padding:15px;border:none;border-radius:8px;background:var(--g);color:#fff;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;text-align:center;text-decoration:none;margin-top:12px}
 .btn:active{background:var(--g2)}
 .btn[disabled]{background:#B9BEB8;cursor:default}
@@ -40,6 +43,9 @@ table.tbl{border-collapse:collapse;width:100%;font-size:14px}
 .row{border-bottom:1px solid #F0F0EA;padding:11px 0;transition:opacity .2s}
 .row:last-child{border-bottom:none}
 /* 済んだ行は1行に畳んで、残っている行を目立たせる。押し直せるように「選び直す」だけ出す */
+ul.dl{list-style:none;padding:0;margin:0}
+ul.dl li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F0F0EA;font-size:14px}
+ul.dl li span{flex:1 1 auto;min-width:0;word-break:break-all}
 .row.done{opacity:.68;display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:7px 0}
 .row.done .dn{flex:1 1 auto;min-width:0;font-size:13.5px;font-weight:400;line-height:1.5}
 .row.done .dn .ph,.row.done .dn .why{display:none}
@@ -172,7 +178,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   function stateText(x){ if(x.state==='前回分')return '前回分を使用'; if(x.state==='郵送')return '郵送予定'; return x.state+(x.date?' '+x.date:''); }
   function rowHtml(g,x){
     var info=x.kind==='info', orig=!x.photo, prev=x.state==='前回分', fl=x.fields?x.fields.split('|'):[], xl=/Excel|\.xlsx/.test(x.doc);
-    var h='<div class="row'+(stateClass(x.state)!=='todo'?' done':'')+'" data-mid="'+esc(g.matterId)+'" data-doc="'+esc(x.doc)+'" data-kind="'+esc(x.kind)+'">';
+    var h='<div class="row'+(stateClass(x.state)!=='todo'?' done':'')+'" data-mid="'+esc(g.matterId)+'" data-doc="'+esc(x.doc)+'" data-kind="'+esc(x.kind)+'" data-sec="'+(x.sec||30)+'">';
     h+='<div class="dn">'+esc(x.short)+(xl?'<span class="ph in">Excel</span>':info?'<span class="ph in">入力でも可</span>':'<span class="ph sub">提出書類</span>')+(xl?'':orig?'<span class="ph org">原本を郵送</span>':'<span class="ph">写真OK</span>')+'<button type="button" class="why" aria-label="説明を開く">？</button></div>';
     if(x.cond)h+='<div class="cond">条件　'+esc(x.cond)+'</div>';
     h+='<div class="det">'+linkify(x.detail)+(info?'<br>この資料は行政に出すものではなく、内容を確認するためのものです。お手元に無ければ「入力する」で項目を書いていただくか、同じことが分かる別の資料を送ってください。':'')+(orig?'<br>原本が必要な書類です。写真では代えられないので、下の宛先へ郵送してください。':'')+'</div>';
@@ -210,7 +216,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   function docsHtml(){
     if(!D||!D.ok)return '';
     var h='<h2 class="sec" id="docs">お送りいただくもの・お答えいただくこと</h2>';
-    h+='<div class="sum">送るもの <span id="cRest">'+D.rest+'</span>点 ／ 答えること <span id="cMiss">'+D.missing+'</span>問 ／ 目安 <span id="cMin">3</span>分<span class="m">書類はスマホの写真で構いません。新しく作っていただくものはありません。'+(D.due?'提出期限 '+esc(D.due)+'。':'')+'途中でやめて、あとから同じリンクで続けられます。</span></div>';
+    h+='<div class="sum"><span id="sumcnt">送るもの <span id="cRest">'+D.rest+'</span>点 ／ 答えること <span id="cMiss">'+D.missing+'</span>問 ／ 目安 <span id="cMin">3</span>分</span><b id="sumdone" hidden>すべて揃いました。下の「送信する」を押してください</b><span class="m">書類はスマホの写真で構いません。新しく作っていただくものはありません。'+(D.due?'提出期限 '+esc(D.due)+'。':'')+'途中でやめて、あとから同じリンクで続けられます。</span></div>';
     h+='<p class="sub">「提出書類」は行政に出すもので、写真かPDFを送ってください。「入力でも可」のものは、書類の代わりに項目を入力するか、同じことが分かる別の資料でも結構です。御社に無いものは「該当なし」を押してください。押したその場で記録されます。</p>';
     if(D.always.length)h+='<div class="card"><h2>送るもの</h2>'+groupsHtml(D.always)+'</div>';
     if(D.cond.length){
@@ -232,7 +238,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
         h+='</div>'})}
     if(D.fallback&&D.fallback.length){h+='<div class="card"><h2>そのほかにお答えいただきたいこと</h2><p class="rest">この項目だけは、下の「その他・補足」に書いてお答えください。</p>';D.fallback.forEach(function(f){h+='<div class="grp">'+esc(f.name)+'</div>';f.list.forEach(function(t){h+='<div class="qh" style="font-size:13.5px">・'+esc(t)+'</div>'})});h+='</div>'}
     h+='<div class="card"><h2>その他・補足</h2><p class="rest">書くことが無ければ空欄のままで構いません。</p><textarea id="ans" placeholder="お伝えしておきたいことがあれば、ここに書いてください。">'+esc(D.freeText)+'</textarea></div>';
-    h+='<button class="btn" type="button" id="fin">送信する</button><p class="small" style="text-align:center;margin-top:8px">送るものが残っていても押せます。残りはあとから同じリンクで送れます。</p>';
+    h+='<button class="btn" type="button" id="fin">送信する</button><p class="small" id="finnote" style="text-align:center;margin-top:8px">送るものが残っていても押せます。残りはあとから同じリンクで送れます。</p>';
     return h;
   }
   function render(){
@@ -249,7 +255,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     h+=docsHtml();
     h+='<h2 class="sec" id="deliv">お渡しした公文書</h2>';
     if(!C.delivered)h+='<p class="rest">まだお渡しできる公文書はありません。行政の処理が終わり次第、メールでお送りし、ここにも載せます。</p>';
-    else if(C.deliveredFiles.length){h+='<ul>'+C.deliveredFiles.map(function(n){return '<li>'+esc(n)+'</li>'}).join('')+'</ul><p class="small">同じものを納品のメールに添付してお送りしています。</p>'}
+    else if(C.deliveredFiles.length){h+='<ul class="dl">'+C.deliveredFiles.map(function(n){return '<li><span>'+esc(n)+'</span><button type="button" class="mini go getdoc" data-name="'+esc(n)+'">保存する</button></li>'}).join('')+'</ul><p class="small">同じものを納品のメールにも添付しています。このページからは何度でも取り出せます。</p>'}
     else h+='<p class="rest">納品のメールに添付してお送りしています。メールをご確認ください。</p>';
     h+='<div id="ack">';
     if(C.acked)h+='<div class="ackbox">受領のご確認をいただいています。ありがとうございました。</div>';
@@ -272,8 +278,8 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     [].slice.call(document.querySelectorAll('.row')).forEach(function(r){
       if(!/todo|busy/.test(r.querySelector('.stt').className))return;
       rest++;
-      // 必ず送るもの＝写真を撮って送る。条件付き＝まとめて押せるので1点あたりは軽い
-      sec+=r.closest('.condcard')?8:30;
+      // 1点あたりの手間は受注システムが返す（Excel の受領フォームは人数ぶん重い）
+      sec+=Number(r.dataset.sec||30);
     });
     var el=document.getElementById('cRest');if(el)el.textContent=rest;
     var miss=QS.filter(function(q){return q.dataset.req==='1'&&shown(q)&&!(AN[q.dataset.qid]||'')}).length;
@@ -281,6 +287,16 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     sec+=miss*15;
     var mn=document.getElementById('cMin');
     if(mn)mn.textContent=rest+miss===0?'0':String(Math.max(1,Math.round(sec/60)));
+    // 全部そろったら送信ボタンを目立たせる。押し忘れると担当者に届くのが翌朝になる
+    var allIn=rest===0&&miss===0;
+    var sc=document.getElementById('sumcnt'),sd=document.getElementById('sumdone');
+    if(sc&&sd){sc.hidden=allIn;sd.hidden=!allIn}
+    var fin=document.getElementById('fin'),note=document.getElementById('finnote');
+    if(fin&&note){
+      fin.classList.toggle('ready',allIn);
+      note.textContent=allIn?'すべて揃いました。押していただくと担当者に届きます。':'送るものが残っていても押せます。残りはあとから同じリンクで送れます。';
+      if(allIn&&!fin.dataset.told){fin.dataset.told='1';toast('すべて揃いました。下の「送信する」を押してください');}
+    }
   }
   function mark(row,state,date,content){
     var before={txt:row.querySelector('.stt').textContent,cls:row.querySelector('.stt').className.replace('stt ','')};
@@ -288,6 +304,19 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     api({act:'mark',matterId:row.dataset.mid,docName:row.dataset.doc,state:state,date:date||'',content:content||''})
       .then(function(res){if(res&&res.ok){setStt(row,(state==='郵送'?'郵送予定':state)+(res.date?' '+res.date:''),cls);recount();toast(state==='該当なし'?'「該当なし」で記録しました':state==='後日提出'?'後日提出で記録しました':state==='郵送'?'郵送予定で記録しました':'入力内容を記録しました')}else{setStt(row,before.txt,before.cls);rowErr(row,(res&&res.error)||'記録できませんでした。もう一度お試しください。')}})
       .catch(function(){setStt(row,before.txt,before.cls);rowErr(row,'通信に失敗しました。もう一度お試しください。')});
+  }
+  function getDoc(btn){
+    var name=btn.dataset.name,orig=btn.textContent;
+    btn.disabled=true;btn.textContent='取り出しています…';
+    api({act:'getdoc',name:name})
+      .then(function(res){
+        btn.disabled=false;btn.textContent=orig;
+        if(!(res&&res.ok&&res.dataUrl)){toast((res&&res.error)||'取り出せませんでした。納品のメールをご確認ください。');return}
+        var a=document.createElement('a');a.href=res.dataUrl;a.download=res.name||name;
+        document.body.appendChild(a);a.click();a.remove();
+        toast('保存しました');
+      })
+      .catch(function(){btn.disabled=false;btn.textContent=orig;toast('通信に失敗しました。もう一度お試しください。')});
   }
   function bulkNa(btn){
     var card=btn.closest('.card');
@@ -320,6 +349,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     document.addEventListener('click',function(e){
       var b=e.target.closest?e.target.closest('button'):null;if(!b)return;var row=b.closest('.row');
       if(b.id==='naall'){bulkNa(b);return}
+      if(b.classList.contains('getdoc')){getDoc(b);return}
       if(b.classList.contains('redo')&&row){row.classList.add('editing');return}
       if(b.classList.contains('why')&&row){row.classList.toggle('open');return}
       if(b.classList.contains('pick')&&row){row.querySelector('.rf').click();return}
