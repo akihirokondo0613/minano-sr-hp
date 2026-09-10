@@ -188,9 +188,12 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   function stateClass(s){ if(s==='出した'||s==='入力済'||s==='前回分'||s==='郵送')return 'ok'; if(s==='該当なし')return 'na'; if(s==='後日提出')return 'later'; return 'todo'; }
   function stateText(x){ if(x.state==='前回分')return '前回分を使用'; if(x.state==='郵送')return '郵送予定'; return x.state+(x.date?' '+x.date:''); }
   function rowHtml(g,x){
-    var info=x.kind==='info', orig=!x.photo, prev=x.state==='前回分', fl=x.fields?x.fields.split('|'):[], xl=/Excel|\.xlsx/.test(x.doc);
+    var info=x.kind==='info', orig=!x.photo, prev=x.state==='前回分', fl=x.fields?x.fields.split('|'):[];
     // 記入用 Excel の置き場。説明の中にしか無いと、顧客は「？」を開くまで辿り着けない
     var xlUrl=(String(x.doc||'').match(/https:\/\/minano-sr\.com\/[^\s）)]+\.xlsx/)||[''])[0];
+    // 受領フォームの行かどうかは、置き場があるかで決める。「Excel」という語で判定すると
+    // 説明文にその語が出てくるだけの行（対象者一覧など）まで xlsx 限定になる
+    var xl=!!xlUrl;
     var h='<div class="row'+(stateClass(x.state)!=='todo'?' done':'')+'" data-mid="'+esc(g.matterId)+'" data-doc="'+esc(x.doc)+'" data-kind="'+esc(x.kind)+'" data-sec="'+(x.sec||30)+'">';
     h+='<div class="dn">'+esc(x.short)+(xl?'<span class="ph in">Excel</span>':info?'<span class="ph in">入力でも可</span>':'<span class="ph sub">提出書類</span>')+(xl?'':orig?'<span class="ph org">原本を郵送</span>':'<span class="ph">写真OK</span>')+'<button type="button" class="why" aria-label="説明を開く">？</button></div>';
     if(x.cond)h+='<div class="cond">条件　'+esc(x.cond)+'</div>';
@@ -243,7 +246,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     if(!D||!D.ok)return '';
     // 2名以上の注文は Excel を書くのが主な仕事。「新しく作るものはありません」は嘘になる
     var hasXl=(D.always||[]).concat(D.cond||[]).some(function(g){
-      return (g.list||[]).some(function(x){ return /Excel|\.xlsx/.test(x.doc||''); });
+      return (g.list||[]).some(function(x){ return /https:\/\/minano-sr\.com\/[^\s）)]+\.xlsx/.test(x.doc||''); });
     });
     var h='<h2 class="sec" id="docs">お送りいただくもの・お答えいただくこと</h2>';
     h+='<div class="sum"><span id="sumcnt"><span class="nw">送るもの <span id="cRest">'+D.rest+'</span>点</span> ／ <span class="nw">答えること <span id="cMiss">'+D.missing+'</span>問</span> ／ <span class="nw">目安 <span id="cMin">3</span>分</span></span><b id="sumdone" hidden>すべて揃いました。下の「送信する」を押してください</b><span class="m">'+(hasXl?'Excel の受領フォームに、対象の方を全員分ご記入ください。ほかの書類はスマホの写真で構いません。':'書類はスマホの写真で構いません。新しく作っていただくものはありません。')+(D.due?'提出期限 '+esc(D.due)+'。':'')+'途中でやめて、あとから同じリンクで続けられます。</span></div>';
