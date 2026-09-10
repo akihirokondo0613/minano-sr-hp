@@ -49,3 +49,6 @@ GoatCounterへ「カート追加」「注文送信」「送信失敗」の3イ�
 ## 利用規約
 
 `spot.html` の確認画面では、利用規約を「準備中・注文確認メールに添付」として案内している。利用規約のページを公開したら、リンク先を差し替える。
+
+## メールのリンク入口 `go/index.html`
+受注システムが顧客へ送るメールのリンクは `https://minano-sr.com/go/?a=…&id=…&t=…` を入口にし、`go/index.html` がクエリごと `SPOT_ENDPOINT` へ転送する（GAS 側 `LINK_BASE_DEFAULT`／Script Property `LINK_BASE`）。`script.google.com` のURLを直書きしたメールが Gmail 宛で 5.7.1 拒否された（2026-09-10）ための対策。`SPOT_ENDPOINT` を差し替えたら `go/index.html` の `ENDPOINT` も同じ値にする。検索対象外（robots.txt で `/go/` を除外、noindex）。
