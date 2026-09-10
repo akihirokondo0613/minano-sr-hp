@@ -175,7 +175,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   function stateText(x){ if(x.state==='前回分')return '前回分を使用'; if(x.state==='郵送')return '郵送予定'; return x.state+(x.date?' '+x.date:''); }
   function rowHtml(g,x){
     var info=x.kind==='info', orig=!x.photo, prev=x.state==='前回分', fl=x.fields?x.fields.split('|'):[], xl=/Excel|\.xlsx/.test(x.doc);
-    var h='<div class="row'+(stateClass(x.state)!=='todo'?' done':'')+'" data-mid="'+esc(g.matterId)+'" data-doc="'+esc(x.doc)+'" data-kind="'+esc(x.kind)+'">';
+    var h='<div class="row'+(stateClass(x.state)!=='todo'?' done':'')+'" data-mid="'+esc(g.matterId)+'" data-doc="'+esc(x.doc)+'" data-kind="'+esc(x.kind)+'" data-sec="'+(x.sec||30)+'">';
     h+='<div class="dn">'+esc(x.short)+(xl?'<span class="ph in">Excel</span>':info?'<span class="ph in">入力でも可</span>':'<span class="ph sub">提出書類</span>')+(xl?'':orig?'<span class="ph org">原本を郵送</span>':'<span class="ph">写真OK</span>')+'<button type="button" class="why" aria-label="説明を開く">？</button></div>';
     if(x.cond)h+='<div class="cond">条件　'+esc(x.cond)+'</div>';
     h+='<div class="det">'+linkify(x.detail)+(info?'<br>この資料は行政に出すものではなく、内容を確認するためのものです。お手元に無ければ「入力する」で項目を書いていただくか、同じことが分かる別の資料を送ってください。':'')+(orig?'<br>原本が必要な書類です。写真では代えられないので、下の宛先へ郵送してください。':'')+'</div>';
@@ -275,8 +275,8 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     [].slice.call(document.querySelectorAll('.row')).forEach(function(r){
       if(!/todo|busy/.test(r.querySelector('.stt').className))return;
       rest++;
-      // 必ず送るもの＝写真を撮って送る。条件付き＝まとめて押せるので1点あたりは軽い
-      sec+=r.closest('.condcard')?8:30;
+      // 1点あたりの手間は受注システムが返す（Excel の受領フォームは人数ぶん重い）
+      sec+=Number(r.dataset.sec||30);
     });
     var el=document.getElementById('cRest');if(el)el.textContent=rest;
     var miss=QS.filter(function(q){return q.dataset.req==='1'&&shown(q)&&!(AN[q.dataset.qid]||'')}).length;
