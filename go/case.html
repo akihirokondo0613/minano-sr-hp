@@ -234,8 +234,12 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   }
   function docsHtml(){
     if(!D||!D.ok)return '';
+    // 2名以上の注文は Excel を書くのが主な仕事。「新しく作るものはありません」は嘘になる
+    var hasXl=(D.always||[]).concat(D.cond||[]).some(function(g){
+      return (g.list||[]).some(function(x){ return /Excel|\.xlsx/.test(x.doc||''); });
+    });
     var h='<h2 class="sec" id="docs">お送りいただくもの・お答えいただくこと</h2>';
-    h+='<div class="sum"><span id="sumcnt"><span class="nw">送るもの <span id="cRest">'+D.rest+'</span>点</span> ／ <span class="nw">答えること <span id="cMiss">'+D.missing+'</span>問</span> ／ <span class="nw">目安 <span id="cMin">3</span>分</span></span><b id="sumdone" hidden>すべて揃いました。下の「送信する」を押してください</b><span class="m">書類はスマホの写真で構いません。新しく作っていただくものはありません。'+(D.due?'提出期限 '+esc(D.due)+'。':'')+'途中でやめて、あとから同じリンクで続けられます。</span></div>';
+    h+='<div class="sum"><span id="sumcnt"><span class="nw">送るもの <span id="cRest">'+D.rest+'</span>点</span> ／ <span class="nw">答えること <span id="cMiss">'+D.missing+'</span>問</span> ／ <span class="nw">目安 <span id="cMin">3</span>分</span></span><b id="sumdone" hidden>すべて揃いました。下の「送信する」を押してください</b><span class="m">'+(hasXl?'Excel の受領フォームに、対象の方を全員分ご記入ください。ほかの書類はスマホの写真で構いません。':'書類はスマホの写真で構いません。新しく作っていただくものはありません。')+(D.due?'提出期限 '+esc(D.due)+'。':'')+'途中でやめて、あとから同じリンクで続けられます。</span></div>';
     h+='<p class="sub">「提出書類」は行政に出すもので、写真かPDFを送ってください。「入力でも可」のものは、書類の代わりに項目を入力するか、同じことが分かる別の資料でも結構です。御社に無いものは「該当なし」を押してください。押したその場で記録されます。</p>';
     if(D.always.length)h+='<div class="card"><h2>送るもの</h2>'+groupsHtml(D.always)+'</div>';
     if(D.cond.length){
