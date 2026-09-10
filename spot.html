@@ -131,6 +131,7 @@
 .so-done-ic{width:64px;height:64px;border-radius:50%;background:var(--moegi-l);color:var(--moegi-t);display:grid;place-items:center;margin:0 auto 18px}
 .so-done h2{font-family:var(--disp);font-size:22px;font-weight:800;color:var(--iwa);margin-bottom:10px}
 .so-done p{font-size:14px;color:var(--ink3);line-height:1.9;max-width:480px;margin:0 auto}
+.so-prefill{margin:0 0 14px;padding:12px 14px;background:var(--moegi-l);border-left:3px solid var(--moegi-t);border-radius:var(--r);font-size:13.5px;line-height:1.8;color:var(--ink2)}
 .so-error-reason{margin-top:8px;padding:8px 12px;background:#fff;border-left:3px solid #b23a3a;font-weight:700}
 .so-done-no{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--iwa);margin:0 auto 14px}
 .so-done-items{max-width:480px;margin:0 auto 16px;text-align:left;font-size:13px;color:var(--ink3);line-height:1.9;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:8px 0}
@@ -210,6 +211,7 @@
   <section class="so-step" data-step="company" hidden>
     <button type="button" class="so-back" data-back="items">← 品目の選択に戻る</button>
     <h2 class="so-h2">会社情報のご入力</h2>
+    <div class="so-prefill" id="soPrefill" hidden><b>前回のご注文の会社情報を入れました。</b>変わった点があれば直してください。前回いただいた就業規則などの資料は、変更がなければそのまま使います。</div>
     <p class="so-lead">ご注文内容の<wbr>確認・請求書の<wbr>送付先と<wbr>して<wbr>使用します。<wbr>個人情報保護方針に<wbr>もと<wbr>づき、<wbr>当事務所の<wbr>業務遂行に<wbr>必要な<wbr>範囲でのみ<wbr>利用します。</p>
     <form id="soCompanyForm" class="so-form so-form-2col" novalidate>
       <div class="so-field so-field-wide">
@@ -1163,10 +1165,29 @@
 
   /* ---- 初期化 ---- */
   document.querySelector('.so-bar').hidden = false;
-  // 完了メールの再注文リンク（spot.html?member=M-00001）から来たら会員番号を先に入れておく
+  // 再注文リンク（spot.html?member=M-00001&k=署名）から来たら、会員番号を入れたうえで
+  // 受注システムから会社情報を取り、入力欄に先に入れておく（2回目以降は品目を選ぶだけ）。
+  // k（署名）が無いと受注システムは会社情報を返さないので、会員番号だけでは他社の情報は引けない
   try {
-    var mno = new URLSearchParams(location.search).get('member');
-    if (mno && /^[A-Za-z0-9-]{1,20}$/.test(mno)) document.getElementById('soMemberNo').value = mno;
+    var qs = new URLSearchParams(location.search);
+    var mno = qs.get('member'), mk = qs.get('k');
+    if (mno && /^[A-Za-z0-9-]{1,20}$/.test(mno)) {
+      document.getElementById('soMemberNo').value = mno;
+      if (mk && /^[0-9a-f]{32}$/.test(mk) && SPOT_ENDPOINT.indexOf('PLACEHOLDER') !== 0) {
+        fetch(SPOT_ENDPOINT + '?a=me&id=' + encodeURIComponent(mno) + '&t=' + encodeURIComponent(mk), { redirect: 'follow' })
+          .then(function(res){ return res.json(); })
+          .then(function(me){
+            if (!me || !me.ok) return;
+            var form = document.getElementById('soCompanyForm');
+            ['会社名', '法人個人区分', '郵便番号', '住所', '代表者名', '担当者名', '担当者メール', '電話', '流入経路'].forEach(function(name){
+              var el = form.querySelector('[name="' + name + '"]');
+              if (el && me[name] && !el.value) el.value = me[name];
+            });
+            document.getElementById('soPrefill').hidden = false;
+          })
+          .catch(function(){});
+      }
+    }
   } catch (e) {}
   // 品目は生成器がページ内（#spot-items）に埋め込む。fetch に頼ると file:// や一時的な失敗で空になるため
   function useItems(data){ state.items = (data && data.items) || []; renderTabs(); renderItems(); renderBar(); }
