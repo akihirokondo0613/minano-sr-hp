@@ -6,6 +6,10 @@
 <script defer src="page-enter.js?v=20260910-spotorder1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <style>
+.spot-entry{background:var(--shiro);border:1.5px solid var(--moegi);border-radius:var(--r-lg);padding:20px 22px;margin:0 0 14px}
+.spot-entry-t{font-family:var(--disp);font-weight:800;font-size:16px;margin:0 0 6px;color:var(--iwa)}
+.spot-entry-d{font-size:13px;line-height:1.9;color:var(--ink3);margin:0 0 12px}
+.spot-entry-btn{display:inline-block;margin-top:14px;padding:12px 22px}
 .spot-fees .sf-note{color:var(--ink3)}
 .page-hero .breadcrumb span{color:var(--ink3)!important}
 .spot-fees summary{transition:background .2s,color .2s}
@@ -239,6 +243,11 @@
         <p class="sf-note">※ 個別の<wbr>事実調査や<wbr>制度設計などを<wbr>伴う<wbr>業務は、<wbr>公開固定料金の<wbr>対象外です。</p>
       </div>
     </details>
+    <div class="spot-entry rv" id="spot-entry">
+      <p class="spot-entry-t">1回だけの<wbr>手続き・相談は、<wbr>Webから<wbr>そのまま<wbr>注文できます。</p>
+      <p class="spot-entry-d">下の<wbr>料金表の<wbr>品目を<wbr>選んで<wbr>注文すると、<wbr>確認メール→請求書と<wbr>必要書類の<wbr>ご案内が<wbr>自動で<wbr>届きます。<wbr>後払い<wbr>（請求書発行日から<wbr>30日）・<wbr>全国対応・<wbr>ログイン不要。</p>
+      <a class="plan-btn plan-btn-main spot-entry-btn" href="spot.html">スポット依頼を注文する →</a>
+    </div>
     <details class="spot-fees rv" id="spot-fees">
       <summary>
         <span class="sf-t">ス<wbr>ポット<wbr>依頼の<wbr>料<wbr>金</span>
@@ -292,6 +301,7 @@
         <div class="sf-row"><span class="sf-name">実費</span><span class="sf-price">実額のみ</span><span class="sf-desc">郵送費・交通費など。上乗せはしません。</span></div>
         <div class="sf-bridge">スポットご利用後3ヶ月以内に顧問契約をいただいた場合、お支払いいただいたスポット料金（上限 ¥30,000）を初月の顧問料に充当します。</div>
         <p class="sf-note">※ 上記は<wbr>記載した<wbr>標準業務範囲の<wbr>固定料金<wbr>（税抜）です。</p>
+        <a class="plan-btn plan-btn-main spot-entry-btn" href="spot.html">この料金でスポット依頼を注文する →</a>
       </div>
     </details>
     <details class="spot-fees rv" id="simulator">
@@ -450,6 +460,7 @@
         <p class="footer-h">コンテンツ</p>
         <ul class="footer-ul">
           <li><a href="pricing.html">料金・顧問プラン</a></li>
+          <li><a href="spot.html">スポット注文（1回だけの依頼）</a></li>
           <li><a href="about.html">事務所案内</a></li>
           <li><a href="blog.html">コラム・ブログ</a></li>
           <li><a href="joseikin.html">令和8年度 助成金5選</a></li>
