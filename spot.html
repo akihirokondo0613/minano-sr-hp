@@ -867,7 +867,10 @@
         '</div>' +
         '<div class="so-card-detail">' +
           (item.dateLabel
-            ? '<div><label>' + item.dateLabel + '（分かれば）</label><input type="date" data-field="発生日" value="' + ((state.detail[item.code] && state.detail[item.code]['発生日']) || '') + '"></div>'
+            ? '<div><label>' + item.dateLabel +
+              // 2名以上でも日付の欄は1つ。いちばん早い方を入れてもらわないと法定期限が緩くなる
+              (item.person && qty >= 2 ? '（いちばん早い方。分かれば）' : '（分かれば）') +
+              '</label><input type="date" data-field="発生日" value="' + ((state.detail[item.code] && state.detail[item.code]['発生日']) || '') + '"></div>'
             : '') +
           (item.person
             ? '<div><label>' + (item.unit === '名' ? '対象の方の氏名（分かれば。複数は「ほか○名」）' : '対象の方の氏名（分かれば）') + '</label><input type="text" data-field="対象者" placeholder="例：山田 太郎" value="' + ((state.detail[item.code] && state.detail[item.code]['対象者']) || '') + '"></div>'
