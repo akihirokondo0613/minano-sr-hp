@@ -210,14 +210,14 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   function docsHtml(){
     if(!D||!D.ok)return '';
     var h='<h2 class="sec" id="docs">お送りいただくもの・お答えいただくこと</h2>';
-    h+='<div class="sum">送るもの <span id="cRest">'+D.rest+'</span>点 ／ 答えること <span id="cMiss">'+D.missing+'</span>問 ／ 目安3分<span class="m">書類はスマホの写真で構いません。新しく作っていただくものはありません。'+(D.due?'提出期限 '+esc(D.due)+'。':'')+'途中でやめて、あとから同じリンクで続けられます。</span></div>';
+    h+='<div class="sum">送るもの <span id="cRest">'+D.rest+'</span>点 ／ 答えること <span id="cMiss">'+D.missing+'</span>問 ／ 目安 <span id="cMin">3</span>分<span class="m">書類はスマホの写真で構いません。新しく作っていただくものはありません。'+(D.due?'提出期限 '+esc(D.due)+'。':'')+'途中でやめて、あとから同じリンクで続けられます。</span></div>';
     h+='<p class="sub">「提出書類」は行政に出すもので、写真かPDFを送ってください。「入力でも可」のものは、書類の代わりに項目を入力するか、同じことが分かる別の資料でも結構です。御社に無いものは「該当なし」を押してください。押したその場で記録されます。</p>';
     if(D.always.length)h+='<div class="card"><h2>送るもの</h2>'+groupsHtml(D.always)+'</div>';
     if(D.cond.length){
       // 条件付きの書類は手続きによっては10点を超える。1点ずつ押させると、それだけで手が止まる。
       // ほとんどの会社はほとんどの条件に当てはまらないので、まとめて片付けられるようにする。
       var ctodo=D.cond.reduce(function(a,g){return a+g.list.filter(function(x){return x.state==='未'}).length},0);
-      h+='<div class="card"><h2>該当する場合だけ</h2><p class="rest">当てはまるものだけお送りください。'+(ctodo>1?'当てはまらないものは、下のボタンでまとめて片付けられます。あとから個別に選び直せます。':'当てはまらないときは「該当なし」を押してください。それで完了です。')+'</p>';
+      h+='<div class="card condcard"><h2>該当する場合だけ</h2><p class="rest">当てはまるものだけお送りください。'+(ctodo>1?'当てはまらないものは、下のボタンでまとめて片付けられます。あとから個別に選び直せます。':'当てはまらないときは「該当なし」を押してください。それで完了です。')+'</p>';
       if(ctodo>1)h+='<button type="button" class="btn sub2" id="naall" style="margin:0 0 12px">'+ctodo+'点すべて「該当なし」にする</button>';
       h+=groupsHtml(D.cond)+'</div>';
     }
@@ -266,7 +266,22 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   /* ---------- 書類・回答の操作 ---------- */
   function setStt(row,txt,cls){var s=row.querySelector('.stt');s.textContent=txt;s.className='stt '+(cls||'');row.classList.toggle('done',cls==='ok'||cls==='na'||cls==='later');if(cls&&cls!=='busy')row.classList.remove('editing')}
   function rowErr(row,msg){var e=row.querySelector('.rerr');e.textContent=msg||'';e.hidden=!msg}
-  function recount(){var rest=0;[].slice.call(document.querySelectorAll('.row')).forEach(function(r){if(/todo|busy/.test(r.querySelector('.stt').className))rest++});var el=document.getElementById('cRest');if(el)el.textContent=rest;var miss=QS.filter(function(q){return q.dataset.req==='1'&&shown(q)&&!(AN[q.dataset.qid]||'')}).length;var em=document.getElementById('cMiss');if(em)em.textContent=miss}
+  function recount(){
+    // 残り点数と、残りから出した所要の目安。固定の「3分」だと点数の多い手続きで嘘になる
+    var rest=0,sec=0;
+    [].slice.call(document.querySelectorAll('.row')).forEach(function(r){
+      if(!/todo|busy/.test(r.querySelector('.stt').className))return;
+      rest++;
+      // 必ず送るもの＝写真を撮って送る。条件付き＝まとめて押せるので1点あたりは軽い
+      sec+=r.closest('.condcard')?8:30;
+    });
+    var el=document.getElementById('cRest');if(el)el.textContent=rest;
+    var miss=QS.filter(function(q){return q.dataset.req==='1'&&shown(q)&&!(AN[q.dataset.qid]||'')}).length;
+    var em=document.getElementById('cMiss');if(em)em.textContent=miss;
+    sec+=miss*15;
+    var mn=document.getElementById('cMin');
+    if(mn)mn.textContent=rest+miss===0?'0':String(Math.max(1,Math.round(sec/60)));
+  }
   function mark(row,state,date,content){
     var before={txt:row.querySelector('.stt').textContent,cls:row.querySelector('.stt').className.replace('stt ','')};
     var cls=stateClass(state);setStt(row,state+(date?' '+date:''),'busy');rowErr(row,'');
@@ -299,6 +314,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     QS=[].slice.call(document.querySelectorAll('.q'));
     QS.forEach(function(q){AN[q.dataset.qid]=val(q);[].slice.call(q.querySelectorAll('.qv')).forEach(function(el){el.addEventListener(el.tagName==='TEXTAREA'?'blur':'change',function(){put(q)})})});
     relayout();
+    recount();   // 開いた時点の残りから、点数と所要の目安を出す
     var ansEl=document.getElementById('ans');var K='mn-spot-'+ORDER;
     if(ansEl){try{var sv=JSON.parse(localStorage.getItem(K)||'{}');if(sv.__ans&&!ansEl.value)ansEl.value=sv.__ans}catch(e){}ansEl.addEventListener('input',function(){try{localStorage.setItem(K,JSON.stringify({__ans:this.value}))}catch(e){}})}
     document.addEventListener('click',function(e){
