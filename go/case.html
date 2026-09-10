@@ -82,6 +82,7 @@ ul.files li:last-child{border-bottom:none}
 .st.wait{color:var(--ink3)}.st.ok{color:var(--ok)}.st.ng{color:var(--ng)}
 .err{color:var(--ng);font-size:12.5px;display:block;margin-top:2px}
 .q{border-bottom:1px solid #F0F0EA;padding:13px 0}
+.optq{margin-top:6px}.optq summary{cursor:pointer;font-size:13.5px;color:var(--g);padding:10px 0;list-style:none;display:flex;align-items:center;gap:6px}.optq summary::-webkit-details-marker{display:none}.optq summary::before{content:'';width:7px;height:7px;border-right:1.5px solid var(--g);border-bottom:1.5px solid var(--g);transform:rotate(-45deg);transition:transform .15s}.optq[open] summary::before{transform:rotate(45deg)}
 .q:last-child{border-bottom:none}
 .q.hide{display:none}
 .q.bad{background:#FDF3EE;border-radius:8px;padding:13px 10px;border-bottom-color:#E8C6B5}
@@ -196,7 +197,13 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     if(D.cond.length)h+='<div class="card"><h2>該当する場合だけ</h2><p class="rest">当てはまらないときは「該当なし」を押してください。それで完了です。</p>'+groupsHtml(D.cond)+'</div>';
     h+='<div class="card"><h2>その他のファイルを送る</h2><div class="drop" id="drop"><p>上の一覧に無いものは、ここから送ってください。<br>1つ '+D.maxMB+'MB まで・何枚でも</p><button class="btn" type="button" id="pick" style="margin-top:0">写真・ファイルを選ぶ</button><input type="file" id="f" multiple accept="image/*,application/pdf,.pdf,.jpg,.jpeg,.png,.heic"></div><div class="bar" id="bar" style="display:none"><i></i></div><ul class="files" id="list"></ul></div>';
     h+='<div class="card mn"><h2>マイナンバーが載っている書類</h2><p class="rest">雇用保険の一部の届出では個人番号の記載が必要です。その書類はこちらから送ってください。分けて保管し、手続きが終わったら消します。</p><button class="btn sub2" type="button" id="pickmn">マイナンバーの書類を選ぶ</button><input type="file" id="fmn" multiple accept="image/*,application/pdf,.pdf,.jpg,.jpeg,.png,.heic"></div>';
-    if(D.qgroups.length){h+='<h2 class="sec" style="border:none;padding-top:6px">お答えいただくこと</h2><p class="sub">選ぶだけです。押したその場で記録されます。分からないものは飛ばして、あとから同じリンクで続けられます。</p>';D.qgroups.forEach(function(g){h+='<div class="card"><h2>'+esc(g.name)+'</h2>'+g.defs.map(function(q){return qHtml(g,q)}).join('')+'</div>'})}
+    if(D.qgroups.length){h+='<h2 class="sec" style="border:none;padding-top:6px">お答えいただくこと</h2><p class="sub">選ぶだけです。押したその場で記録されます。分からないものは飛ばして、あとから同じリンクで続けられます。</p>';
+      D.qgroups.forEach(function(g){
+        // 必須（と、答えによって出る追加の質問）は開いたまま。任意の質問は折りたたんで、答えの数を少なく見せる
+        var main=[],opt=[];g.defs.forEach(function(q){(q.required||q.sid||q.value)?main.push(q):opt.push(q)});
+        h+='<div class="card"><h2>'+esc(g.name)+'</h2>'+main.map(function(q){return qHtml(g,q)}).join('');
+        if(opt.length)h+='<details class="optq"><summary>あれば助かること（任意・'+opt.length+'問）</summary>'+opt.map(function(q){return qHtml(g,q)}).join('')+'</details>';
+        h+='</div>'})}
     if(D.fallback&&D.fallback.length){h+='<div class="card"><h2>そのほかにお答えいただきたいこと</h2><p class="rest">この項目だけは、下の「その他・補足」に書いてお答えください。</p>';D.fallback.forEach(function(f){h+='<div class="grp">'+esc(f.name)+'</div>';f.list.forEach(function(t){h+='<div class="qh" style="font-size:13.5px">・'+esc(t)+'</div>'})});h+='</div>'}
     h+='<div class="card"><h2>その他・補足</h2><p class="rest">書くことが無ければ空欄のままで構いません。</p><textarea id="ans" placeholder="お伝えしておきたいことがあれば、ここに書いてください。">'+esc(D.freeText)+'</textarea></div>';
     h+='<button class="btn" type="button" id="fin">送信する</button><p class="small" style="text-align:center;margin-top:8px">送るものが残っていても押せます。残りはあとから同じリンクで送れます。</p>';

@@ -19,24 +19,19 @@ a{color:#123F30}
 </div>
 <script>
 (function(){
-  // メールに載せた入口。クエリ（a=確認の種類, id=注文番号, t=署名）をそのまま受注システムへ渡す。
-  // script.google.com のURLをメールに直書きすると迷惑メール判定を受けやすいため、自社ドメインを経由させる。
-  // ENDPOINT は /a/macros/minano-sr.com/ 形式にする。素の /macros/s/ 形式は、複数の Google アカウントに
-  // ログインしたブラウザで /macros/u/1/s/ に書き換えられ「ページが見つかりません」になる（Google の公式案内どおり）。
-  var ENDPOINT='https://script.google.com/a/macros/minano-sr.com/s/AKfycbyMbrQKhAhE0B_gyDHL6yhowdB1ulDl2QYtc-5jYR40iPtRjVs6GjC_i6sMDzF-7hc/exec';
-  var q=location.search||'';
-  var a=(new URLSearchParams(q)).get('a')||'';
-  var ok=/^[a-z]{1,12}$/.test(a);
+  // メールに載せた入口。受注システム（Apps Script）は画面を持たないので、ここで HP 側のページへ振り分ける。
+  //   a=st / up / ack … 案件ページ（case.html）。up は「送るもの」の位置、ack は「受領確認」の位置
+  //   それ以外        … 旧いメールのリンク。案件ページに id と t があれば案件ページ、無ければスポット注文ページへ
+  var p=new URLSearchParams(location.search||'');
+  var a=p.get('a')||'',id=p.get('id')||'',t=p.get('t')||'';
   var link=document.getElementById('go');
-  if(!ok){
+  if(!/^[a-z]{1,12}$/.test(a)||!id||!t){
     document.getElementById('msg').innerHTML='リンクが正しくありません。メールのリンクをもう一度押すか、<a href="../spot.html">スポット注文ページ</a>からお進みください。';
     return;
   }
-  // 書類ページ（a=up）は HP 側の docs.html で表示する（速く、押した瞬間に反応する）。古いメールのリンクもここで振り分ける
-  // 顧客のページは HP 側の案件ページ1つ（case.html）。古いメールの st / up / ack もここで振り分ける
-  if(a==='st'||a==='up'||a==='ack'){var p=new URLSearchParams(q);var to='case.html?id='+encodeURIComponent(p.get('id')||'')+'&t='+encodeURIComponent(p.get('t')||'')+(a==='up'?'#docs':a==='ack'?'#ack':'');link.href=to;location.replace(to);return;}
-  link.href=ENDPOINT+q;
-  location.replace(ENDPOINT+q);
+  var to='case.html?id='+encodeURIComponent(id)+'&t='+encodeURIComponent(t)+(a==='up'?'#docs':a==='ack'?'#ack':'');
+  link.href=to;
+  location.replace(to);
 })();
 </script>
 </body>

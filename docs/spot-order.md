@@ -51,16 +51,16 @@ GoatCounterへ「カート追加」「注文送信」「送信失敗」の3イ�
 `spot.html` の確認画面では、利用規約を「準備中・注文確認メールに添付」として案内している。利用規約のページを公開したら、リンク先を差し替える。
 
 ## メールのリンク入口 `go/index.html`
-受注システムが顧客へ送るメールのリンクは `https://minano-sr.com/go/?a=…&id=…&t=…` を入口にし、`go/index.html` がクエリごと `SPOT_ENDPOINT` へ転送する（GAS 側 `LINK_BASE_DEFAULT`／Script Property `LINK_BASE`）。`script.google.com` のURLを直書きしたメールが Gmail 宛で 5.7.1 拒否された（2026-09-10）ための対策。`SPOT_ENDPOINT` を差し替えたら `go/index.html` の `ENDPOINT` も同じ値にする。検索対象外（robots.txt で `/go/` を除外、noindex）。
+受注システムが顧客へ送るメールのリンクは `https://minano-sr.com/go/?a=…&id=…&t=…` を入口にする（`script.google.com` のURLを直書きしたメールが Gmail 宛で 5.7.1 拒否された 2026-09-10 の対策）。受注システム v23 からは Apps Script が画面を持たないので、`go/index.html` は `a=st/up/ack` を含むすべてのリンクを `case.html?id=&t=`（up は `#docs`、ack は `#ack`）へ振り分ける。id か t が無ければスポット注文ページへ案内する。検索対象外（robots.txt で `/go/` を除外、noindex）。
 
 ## 注文の確定は画面上で行う（2026-09-10 以降）
-GAS 側は既定で `AUTO_CONFIRM=1`。doPost が保留注文を積んだ直後に確定まで進め、JSON で `orderNo / items / subtotal / docDue / payDue / uploadUrl / statusUrl / underReview` を返す。spot.html の完了画面（`renderDone`）はこれをそのまま表示するので、確認メールが迷惑メール行きでも顧客は「書類を送る」「案件ページ」へ進める。Script Property `AUTO_CONFIRM=0` にすると旧方式（確認メールのリンクを押してから確定）に戻り、完了画面は「確認メールを送りました」の文面になる。
+GAS の doPost は保留注文を積んだ直後に確定まで進め、JSON で `orderNo / items / subtotal / docDue / payDue / uploadUrl / statusUrl / underReview` を返す。spot.html の完了画面（`renderDone`）はこれをそのまま表示するので、確認メールが迷惑メール行きでも顧客は「書類を送る」「案件ページ」へ進める。確認メール方式（旧 `AUTO_CONFIRM=0`）は v23 で削除した。
 
 ## 品目カードの入力欄
 `scripts/sync-spot-items.mjs` の `FIELDS`（qtyLabel／dateLabel／person）が正本。GAS 側 Code.gs の 数量ラベル・DATE_ASK と同じ文言にしておく。dateLabel が空の品目（G03/G04/G05/S02/S03）は日付欄を出さない。person=false の品目（会社設立・労使協定・給与計算・年次・研修・相談）は氏名欄を出さない。
 
 ## exec URL は `/a/macros/minano-sr.com/` 形式で書く
-`https://script.google.com/a/macros/minano-sr.com/s/<ID>/exec`。素の `/macros/s/<ID>/exec` は、複数の Google アカウントにログインしているブラウザで `/macros/u/1/s/…` に書き換えられ「ページが見つかりません（現在、ファイルを開くことができません）」になる（2026-09-10 に本人の環境で発生）。Google の案内（Workspace は `a/<ドメイン>/` を挟む）に従う。spot.html の SPOT_ENDPOINT と go/index.html の ENDPOINT の両方。
+`https://script.google.com/a/macros/minano-sr.com/s/<ID>/exec`。素の `/macros/s/<ID>/exec` は、複数の Google アカウントにログインしているブラウザで `/macros/u/1/s/…` に書き換えられ「ページが見つかりません（現在、ファイルを開くことができません）」になる（2026-09-10 に本人の環境で発生）。Google の案内（Workspace は `a/<ドメイン>/` を挟む）に従う。spot.html の SPOT_ENDPOINT（go/index.html は v23 から exec を参照しない）。
 
 ## 2回目以降の注文（会社情報の事前入力）
 受任メール・案件ページの「次回のご注文」リンクは `spot.html?member=<会員番号>&k=<署名>`。ページは `SPOT_ENDPOINT?a=me&id=&t=` から会員情報（会社名・区分・住所・担当者・電話・流入経路）を取り、会社情報フォームに先に入れる。署名が無いと受注システムは返さない（会員番号だけでは他社の情報は引けない）。
@@ -70,3 +70,6 @@ GAS 側は既定で `AUTO_CONFIRM=1`。doPost が保留注文を積んだ直後�
 
 ## 案件ページ `go/case.html`（2026-09-10・第1段）
 顧客が開くページは1つ。`?id=<注文番号>&t=<署名>` で受注システムの `?a=case` から全データを1回で取り、進み具合・次にすること・ご注文の内容・送るもの／答えること（#docs）・公文書・請求と支払・受領確認（#ack・POST act=ack）・次回の注文を描画する。go/docs.html は case.html#docs へ転送、go/index.html は a=st/up/ack を case.html へ振り分ける。担当者側は台帳のプルダウンのみ（受注システム v22）。
+
+## 案件ページの質問の折りたたみ（2026-09-10）
+`go/case.html` の「お答えいただくこと」は、必須の質問・答えによって出る追加質問・すでに答えのある質問だけを開いて出し、任意の質問は「あれば助かること（任意・N問）」の折りたたみに入れる。答える数を少なく見せるためで、データ（`?a=updata` の `qgroups`）は変えていない。
