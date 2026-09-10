@@ -222,7 +222,10 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     if(q.help)h+='<div class="qh">'+esc(q.help)+'</div>';
     if(q.type==='choice'||q.type==='multi'){h+='<div class="ops">';var parts=(q.value||'').split('、');(q.options||[]).forEach(function(o){h+='<label class="op"><input type="'+(q.type==='choice'?'radio':'checkbox')+'" name="'+esc(q.id)+'" class="qv" value="'+esc(o)+'"'+(parts.indexOf(o)>=0?' checked':'')+'><span>'+esc(o)+'</span></label>'});h+='</div>'}
     if(q.type==='date')h+='<div class="num"><input type="date" class="qv" name="'+esc(q.id)+'" value="'+esc(q.value)+'"></div>';
-    if(q.type==='number')h+='<div class="num"><input type="number" class="qv" name="'+esc(q.id)+'" inputmode="numeric" step="1" value="'+esc(q.value)+'" style="width:9em"><span>'+esc(q.unit)+'</span></div>';
+    // 小数の要る設問（1週間の所定労働時間の 29.5 など）は step を渡す。
+    // step="1" のままだと入力できず、スマホでは小数点の出ないキーボードになる
+    if(q.type==='number'){var st=q.step||1;
+      h+='<div class="num"><input type="number" class="qv" name="'+esc(q.id)+'" inputmode="'+(st===1?'numeric':'decimal')+'" step="'+esc(String(st))+'" value="'+esc(q.value)+'" style="width:9em"><span>'+esc(q.unit)+'</span></div>';}
     if(q.type==='name')h+='<input type="text" class="qv" name="'+esc(q.id)+'" value="'+esc(q.value)+'" autocomplete="off" style="width:100%">';
     if(q.type==='text')h+='<textarea class="qv" name="'+esc(q.id)+'" style="min-height:70px">'+esc(q.value)+'</textarea>';
     return h+'</div>';
