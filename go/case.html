@@ -197,7 +197,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     h+='<div class="det">'+linkify(x.detail)+(info?'<br>この資料は行政に出すものではなく、内容を確認するためのものです。お手元に無ければ「入力する」で項目を書いていただくか、同じことが分かる別の資料を送ってください。':'')+(orig?'<br>原本が必要な書類です。写真では代えられないので、下の宛先へ郵送してください。':'')+'</div>';
     if(prev)h+='<div class="prev">前回いただいた分を使います'+(x.date?'（'+esc(x.date)+'）':'')+'。変わっていれば送り直してください。</div>';
     h+='<div class="rb">';
-    if(xl&&xlUrl)h+='<a class="mini go dl" href="'+esc(xlUrl)+'" download>Excelをダウンロード</a>';
+    if(xl&&xlUrl)h+='<a class="mini go dl" href="'+esc(xlUrl)+'" download>Excelをダウンロードする</a>';
     if(orig)h+='<button type="button" class="mini go post">郵送します</button>';
     else h+='<button type="button" class="mini go pick">'+(xl?'記入したExcelを送る':prev?'変更あり（送り直す）':(info?'書類か代わりの資料を送る':'写真かPDFを送る'))+'</button>';
     if(info)h+='<button type="button" class="mini go inp">入力する</button>';
