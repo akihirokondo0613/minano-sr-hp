@@ -14,6 +14,8 @@ const EXCLUDED_HTML = [
   /(^|\/)_wcheck\.html$/,
   // 社内書式の各ページ（noindex・sitemap非掲載）。一覧 shoshiki.html はルートなので通知対象のまま
   /^shoshiki\//,
+  // メールのリンク入口（noindex・robots.txt で除外）。検索エンジンに通知しない
+  /^go\//,
 ];
 
 function normalizePath(value) {
