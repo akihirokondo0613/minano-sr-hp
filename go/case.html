@@ -23,6 +23,7 @@ h2.sec{font-size:17px;margin:28px 0 10px;padding-top:22px;border-top:1px solid v
 .stage.alert{background:#FBEDE7;color:var(--ng)}
 .next{background:var(--paper);border:2px solid var(--g);border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:15.5px;font-weight:700;line-height:1.7}
 .next .m{display:block;font-size:13px;font-weight:400;color:var(--ink2);margin-top:4px}
+[hidden]{display:none!important}
 .btn{display:block;width:100%;padding:15px;border:none;border-radius:8px;background:var(--g);color:#fff;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;text-align:center;text-decoration:none;margin-top:12px}
 .btn:active{background:var(--g2)}
 .btn[disabled]{background:#B9BEB8;cursor:default}
@@ -38,7 +39,22 @@ table.tbl{border-collapse:collapse;width:100%;font-size:14px}
 .grp:first-of-type{margin-top:0}
 .row{border-bottom:1px solid #F0F0EA;padding:11px 0;transition:opacity .2s}
 .row:last-child{border-bottom:none}
-.row.done{opacity:.62}
+/* 済んだ行は1行に畳んで、残っている行を目立たせる。押し直せるように「選び直す」だけ出す */
+.row.done{opacity:.68;display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:7px 0}
+.row.done .dn{flex:1 1 auto;min-width:0;font-size:13.5px;font-weight:400;line-height:1.5}
+.row.done .dn .ph,.row.done .dn .why{display:none}
+.row.done .cond,.row.done .prev,.row.done .det{display:none}
+.row.done .rb{margin-top:0;flex:0 0 auto;gap:6px}
+.rb .redo{display:none}
+.row.done .rb .mini{display:none}
+.row.done .rb .redo{display:inline-block;padding:5px 9px;min-height:0;font-size:12.5px}
+.row.done.editing{opacity:1;display:block;padding:11px 0}
+.row.done.editing .dn{font-size:15px;font-weight:700}
+.row.done.editing .dn .ph,.row.done.editing .dn .why{display:inline}
+.row.done.editing .rb{margin-top:8px;gap:8px}
+.row.done.editing .rb .mini{display:inline-block;padding:8px 12px;min-height:38px;font-size:13.5px}
+.row.done.editing .rb .redo{display:none}
+.row.done.editing .cond,.row.done.editing .prev{display:block}
 .row .dn{font-size:15px;line-height:1.6;font-weight:700}
 .ph{font-size:11px;font-weight:400;color:var(--g);border:1px solid #BFD9C8;background:#EAF3ED;border-radius:4px;padding:1px 6px;margin-left:6px;white-space:nowrap}
 .ph.in{background:#FBF5E4;border-color:#E6D9A8;color:var(--warn)}
@@ -102,10 +118,11 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
 @media(max-width:480px){.q.pairL,.q.pairR{display:block;width:100%;margin-left:0}.q.pairL{padding-bottom:0}}
 .mn{border:1.5px solid #E6D9A8;background:#FDFBF0;border-radius:10px;padding:16px;margin-bottom:14px}
 .mn h2{color:#7A6414}
-.done{text-align:center;padding:30px 20px}
-.done .mk{font-size:44px;color:var(--ok);line-height:1}
-.done h2{font-size:19px;margin:14px 0 8px;color:var(--ink)}
-.done p{font-size:14px;color:var(--ink2);margin:0 0 12px}
+/* 送信完了の枠。書類の完了行（.row.done）に当たらないよう .card に限定する */
+.card.done{text-align:center;padding:30px 20px}
+.card.done .mk{font-size:44px;color:var(--ok);line-height:1}
+.card.done h2{font-size:19px;margin:14px 0 8px;color:var(--ink)}
+.card.done p{font-size:14px;color:var(--ink2);margin:0 0 12px}
 .foot{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:24px;line-height:1.9}
 .bar{height:4px;background:#E8E8E2;border-radius:2px;overflow:hidden;margin-top:12px}
 .bar i{display:block;height:100%;background:var(--g2);width:0;transition:width .25s}
@@ -164,7 +181,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     if(orig)h+='<button type="button" class="mini go post">郵送します</button>';
     else h+='<button type="button" class="mini go pick">'+(xl?'記入したExcelを送る':prev?'変更あり（送り直す）':(info?'書類か代わりの資料を送る':'写真かPDFを送る'))+'</button>';
     if(info)h+='<button type="button" class="mini go inp">入力する</button>';
-    h+='<button type="button" class="mini na">該当なし</button><button type="button" class="mini later">後日提出</button><input type="date" class="dt" hidden aria-label="提出できる日">';
+    h+='<button type="button" class="mini na">該当なし</button><button type="button" class="mini later">後日提出</button><button type="button" class="mini redo">選び直す</button><input type="date" class="dt" hidden aria-label="提出できる日">';
     h+='<span class="stt '+stateClass(x.state)+'">'+esc(stateText(x))+'</span></div><div class="rerr" hidden></div>';
     if(orig)h+='<div class="mailbox" hidden><b>郵送先</b><br>'+esc(C.address)+'<br>封筒に「'+esc(C.orderNo)+'」とお書きください。</div>';
     if(info){
@@ -196,7 +213,14 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     h+='<div class="sum">送るもの <span id="cRest">'+D.rest+'</span>点 ／ 答えること <span id="cMiss">'+D.missing+'</span>問 ／ 目安3分<span class="m">書類はスマホの写真で構いません。新しく作っていただくものはありません。'+(D.due?'提出期限 '+esc(D.due)+'。':'')+'途中でやめて、あとから同じリンクで続けられます。</span></div>';
     h+='<p class="sub">「提出書類」は行政に出すもので、写真かPDFを送ってください。「入力でも可」のものは、書類の代わりに項目を入力するか、同じことが分かる別の資料でも結構です。御社に無いものは「該当なし」を押してください。押したその場で記録されます。</p>';
     if(D.always.length)h+='<div class="card"><h2>送るもの</h2>'+groupsHtml(D.always)+'</div>';
-    if(D.cond.length)h+='<div class="card"><h2>該当する場合だけ</h2><p class="rest">当てはまらないときは「該当なし」を押してください。それで完了です。</p>'+groupsHtml(D.cond)+'</div>';
+    if(D.cond.length){
+      // 条件付きの書類は手続きによっては10点を超える。1点ずつ押させると、それだけで手が止まる。
+      // ほとんどの会社はほとんどの条件に当てはまらないので、まとめて片付けられるようにする。
+      var ctodo=D.cond.reduce(function(a,g){return a+g.list.filter(function(x){return x.state==='未'}).length},0);
+      h+='<div class="card"><h2>該当する場合だけ</h2><p class="rest">当てはまるものだけお送りください。'+(ctodo>1?'当てはまらないものは、下のボタンでまとめて片付けられます。あとから個別に選び直せます。':'当てはまらないときは「該当なし」を押してください。それで完了です。')+'</p>';
+      if(ctodo>1)h+='<button type="button" class="btn sub2" id="naall" style="margin:0 0 12px">'+ctodo+'点すべて「該当なし」にする</button>';
+      h+=groupsHtml(D.cond)+'</div>';
+    }
     h+='<div class="card"><h2>その他のファイルを送る</h2><div class="drop" id="drop"><p>上の一覧に無いものは、ここから送ってください。<br>1つ '+D.maxMB+'MB まで・何枚でも</p><button class="btn" type="button" id="pick" style="margin-top:0">写真・ファイルを選ぶ</button><input type="file" id="f" multiple accept="image/*,application/pdf,.pdf,.jpg,.jpeg,.png,.heic"></div><div class="bar" id="bar" style="display:none"><i></i></div><ul class="files" id="list"></ul></div>';
     h+='<div class="card mn"><h2>マイナンバーが載っている書類</h2><p class="rest">雇用保険の一部の届出では個人番号の記載が必要です。その書類はこちらから送ってください。分けて保管し、手続きが終わったら消します。</p><button class="btn sub2" type="button" id="pickmn">マイナンバーの書類を選ぶ</button><input type="file" id="fmn" multiple accept="image/*,application/pdf,.pdf,.jpg,.jpeg,.png,.heic"></div>';
     if(D.qgroups.length){h+='<h2 class="sec" style="border:none;padding-top:6px">お答えいただくこと</h2><p class="sub">選ぶだけです。押したその場で記録されます。分からないものは飛ばして、あとから同じリンクで続けられます。</p>';
@@ -240,7 +264,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   }
 
   /* ---------- 書類・回答の操作 ---------- */
-  function setStt(row,txt,cls){var s=row.querySelector('.stt');s.textContent=txt;s.className='stt '+(cls||'');row.classList.toggle('done',cls==='ok'||cls==='na'||cls==='later')}
+  function setStt(row,txt,cls){var s=row.querySelector('.stt');s.textContent=txt;s.className='stt '+(cls||'');row.classList.toggle('done',cls==='ok'||cls==='na'||cls==='later');if(cls&&cls!=='busy')row.classList.remove('editing')}
   function rowErr(row,msg){var e=row.querySelector('.rerr');e.textContent=msg||'';e.hidden=!msg}
   function recount(){var rest=0;[].slice.call(document.querySelectorAll('.row')).forEach(function(r){if(/todo|busy/.test(r.querySelector('.stt').className))rest++});var el=document.getElementById('cRest');if(el)el.textContent=rest;var miss=QS.filter(function(q){return q.dataset.req==='1'&&shown(q)&&!(AN[q.dataset.qid]||'')}).length;var em=document.getElementById('cMiss');if(em)em.textContent=miss}
   function mark(row,state,date,content){
@@ -249,6 +273,22 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     api({act:'mark',matterId:row.dataset.mid,docName:row.dataset.doc,state:state,date:date||'',content:content||''})
       .then(function(res){if(res&&res.ok){setStt(row,(state==='郵送'?'郵送予定':state)+(res.date?' '+res.date:''),cls);recount();toast(state==='該当なし'?'「該当なし」で記録しました':state==='後日提出'?'後日提出で記録しました':state==='郵送'?'郵送予定で記録しました':'入力内容を記録しました')}else{setStt(row,before.txt,before.cls);rowErr(row,(res&&res.error)||'記録できませんでした。もう一度お試しください。')}})
       .catch(function(){setStt(row,before.txt,before.cls);rowErr(row,'通信に失敗しました。もう一度お試しください。')});
+  }
+  function bulkNa(btn){
+    var card=btn.closest('.card');
+    var rows=[].slice.call(card.querySelectorAll('.row')).filter(function(r){return /todo/.test(r.querySelector('.stt').className)});
+    if(!rows.length){toast('まとめて記録するものはありません');btn.hidden=true;return}
+    var before=rows.map(function(r){var s=r.querySelector('.stt');return {r:r,txt:s.textContent,cls:s.className.replace('stt ','')}});
+    var orig=btn.textContent;
+    btn.disabled=true;btn.textContent='記録しています…';
+    rows.forEach(function(r){setStt(r,'該当なし','busy');rowErr(r,'')});
+    var undo=function(msg){before.forEach(function(b){setStt(b.r,b.txt,b.cls)});btn.disabled=false;btn.textContent=orig;toast(msg)};
+    api({act:'markall',state:'該当なし',docs:rows.map(function(r){return {matterId:r.dataset.mid,docName:r.dataset.doc}})})
+      .then(function(res){
+        if(res&&res.ok){rows.forEach(function(r){setStt(r,'該当なし','na')});recount();btn.hidden=true;toast(res.count+'点を「該当なし」で記録しました。当てはまるものがあれば選び直せます')}
+        else undo((res&&res.error)||'記録できませんでした。');
+      })
+      .catch(function(){undo('通信に失敗しました。もう一度お試しください。')});
   }
   function val(q){var t=q.dataset.type;if(t==='choice'){var r=q.querySelector('.qv:checked');return r?r.value:''}if(t==='multi'){return [].slice.call(q.querySelectorAll('.qv:checked')).map(function(e){return e.value}).join('、')}var el=q.querySelector('.qv');return el?String(el.value).trim():''}
   function shown(q){var sid=q.dataset.sid;if(!sid)return true;var v=AN[sid]||'';if(!v)return false;var want=(q.dataset.sin||'').split('|');for(var i=0;i<want.length;i++){if(want[i]&&v.indexOf(want[i])>=0)return true}return false}
@@ -263,6 +303,8 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     if(ansEl){try{var sv=JSON.parse(localStorage.getItem(K)||'{}');if(sv.__ans&&!ansEl.value)ansEl.value=sv.__ans}catch(e){}ansEl.addEventListener('input',function(){try{localStorage.setItem(K,JSON.stringify({__ans:this.value}))}catch(e){}})}
     document.addEventListener('click',function(e){
       var b=e.target.closest?e.target.closest('button'):null;if(!b)return;var row=b.closest('.row');
+      if(b.id==='naall'){bulkNa(b);return}
+      if(b.classList.contains('redo')&&row){row.classList.add('editing');return}
       if(b.classList.contains('why')&&row){row.classList.toggle('open');return}
       if(b.classList.contains('pick')&&row){row.querySelector('.rf').click();return}
       if(b.classList.contains('post')&&row){row.querySelector('.mailbox').hidden=false;mark(row,'郵送','','');return}
