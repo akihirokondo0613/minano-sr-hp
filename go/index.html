@@ -21,7 +21,9 @@ a{color:#123F30}
 (function(){
   // メールに載せた入口。クエリ（a=確認の種類, id=注文番号, t=署名）をそのまま受注システムへ渡す。
   // script.google.com のURLをメールに直書きすると迷惑メール判定を受けやすいため、自社ドメインを経由させる。
-  var ENDPOINT='https://script.google.com/macros/s/AKfycbyMbrQKhAhE0B_gyDHL6yhowdB1ulDl2QYtc-5jYR40iPtRjVs6GjC_i6sMDzF-7hc/exec';
+  // ENDPOINT は /a/macros/minano-sr.com/ 形式にする。素の /macros/s/ 形式は、複数の Google アカウントに
+  // ログインしたブラウザで /macros/u/1/s/ に書き換えられ「ページが見つかりません」になる（Google の公式案内どおり）。
+  var ENDPOINT='https://script.google.com/a/macros/minano-sr.com/s/AKfycbyMbrQKhAhE0B_gyDHL6yhowdB1ulDl2QYtc-5jYR40iPtRjVs6GjC_i6sMDzF-7hc/exec';
   var q=location.search||'';
   var a=(new URLSearchParams(q)).get('a')||'';
   var ok=/^[a-z]{1,12}$/.test(a);

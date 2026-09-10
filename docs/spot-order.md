@@ -58,3 +58,6 @@ GAS 側は既定で `AUTO_CONFIRM=1`。doPost が保留注文を積んだ直後�
 
 ## 品目カードの入力欄
 `scripts/sync-spot-items.mjs` の `FIELDS`（qtyLabel／dateLabel／person）が正本。GAS 側 Code.gs の 数量ラベル・DATE_ASK と同じ文言にしておく。dateLabel が空の品目（G03/G04/G05/S02/S03）は日付欄を出さない。person=false の品目（会社設立・労使協定・給与計算・年次・研修・相談）は氏名欄を出さない。
+
+## exec URL は `/a/macros/minano-sr.com/` 形式で書く
+`https://script.google.com/a/macros/minano-sr.com/s/<ID>/exec`。素の `/macros/s/<ID>/exec` は、複数の Google アカウントにログインしているブラウザで `/macros/u/1/s/…` に書き換えられ「ページが見つかりません（現在、ファイルを開くことができません）」になる（2026-09-10 に本人の環境で発生）。Google の案内（Workspace は `a/<ドメイン>/` を挟む）に従う。spot.html の SPOT_ENDPOINT と go/index.html の ENDPOINT の両方。
