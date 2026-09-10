@@ -43,6 +43,7 @@ table.tbl{border-collapse:collapse;width:100%;font-size:14px}
 .row{border-bottom:1px solid #F0F0EA;padding:11px 0;transition:opacity .2s}
 .row:last-child{border-bottom:none}
 /* 済んだ行は1行に畳んで、残っている行を目立たせる。押し直せるように「選び直す」だけ出す */
+.nw{white-space:nowrap}
 ul.dl{list-style:none;padding:0;margin:0}
 ul.dl li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F0F0EA;font-size:14px}
 ul.dl li span{flex:1 1 auto;min-width:0;word-break:break-all}
@@ -216,7 +217,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   function docsHtml(){
     if(!D||!D.ok)return '';
     var h='<h2 class="sec" id="docs">お送りいただくもの・お答えいただくこと</h2>';
-    h+='<div class="sum"><span id="sumcnt">送るもの <span id="cRest">'+D.rest+'</span>点 ／ 答えること <span id="cMiss">'+D.missing+'</span>問 ／ 目安 <span id="cMin">3</span>分</span><b id="sumdone" hidden>すべて揃いました。下の「送信する」を押してください</b><span class="m">書類はスマホの写真で構いません。新しく作っていただくものはありません。'+(D.due?'提出期限 '+esc(D.due)+'。':'')+'途中でやめて、あとから同じリンクで続けられます。</span></div>';
+    h+='<div class="sum"><span id="sumcnt"><span class="nw">送るもの <span id="cRest">'+D.rest+'</span>点</span> ／ <span class="nw">答えること <span id="cMiss">'+D.missing+'</span>問</span> ／ <span class="nw">目安 <span id="cMin">3</span>分</span></span><b id="sumdone" hidden>すべて揃いました。下の「送信する」を押してください</b><span class="m">書類はスマホの写真で構いません。新しく作っていただくものはありません。'+(D.due?'提出期限 '+esc(D.due)+'。':'')+'途中でやめて、あとから同じリンクで続けられます。</span></div>';
     h+='<p class="sub">「提出書類」は行政に出すもので、写真かPDFを送ってください。「入力でも可」のものは、書類の代わりに項目を入力するか、同じことが分かる別の資料でも結構です。御社に無いものは「該当なし」を押してください。押したその場で記録されます。</p>';
     if(D.always.length)h+='<div class="card"><h2>送るもの</h2>'+groupsHtml(D.always)+'</div>';
     if(D.cond.length){
