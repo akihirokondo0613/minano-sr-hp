@@ -1116,10 +1116,10 @@
       itemsEl.insertAdjacentHTML('beforeend', '<div><b>合計（税抜）</b><b>' + esc(yen(data.subtotal || 0)) + '</b></div>');
     }
     if (data.underReview) {
-      lead.textContent = 'いただいた内容を確認のうえ、担当者からご連絡します。請求書は、受任が決まってからお送りします。';
+      lead.textContent = 'いただいた内容を確認のうえ、担当者からご連絡します。請求書は、受任が決まってからお送りします。ご注文の内容と進み具合は、下の「進み具合を見る」からいつでも確認できます。';
       up.hidden = true;
     } else if (data.orderNo) {
-      lead.innerHTML = '請求書と必要書類のご案内をメールでお送りしました。メールが届かなくても、下のボタンからそのまま進めます。'
+      lead.innerHTML = '請求書と必要書類のご案内をメールでお送りしました。メールが届かなくても、下のボタンからそのまま進めます。ご注文の内容は「進み具合を見る」でいつでも確認できます。'
         + (data.docDue ? '<br>書類の提出期限は <b>' + esc(data.docDue) + '</b> です。' : '')
         + (data.payDue ? '<br>お支払いの期限は ' + esc(data.payDue) + ' です。' : '');
       up.hidden = !data.uploadUrl;
