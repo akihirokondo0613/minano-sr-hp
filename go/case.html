@@ -43,6 +43,7 @@ table.tbl{border-collapse:collapse;width:100%;font-size:14px}
 .row{border-bottom:1px solid #F0F0EA;padding:11px 0;transition:opacity .2s}
 .row:last-child{border-bottom:none}
 /* 済んだ行は1行に畳んで、残っている行を目立たせる。押し直せるように「選び直す」だけ出す */
+.nw{white-space:nowrap}
 ul.dl{list-style:none;padding:0;margin:0}
 ul.dl li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F0F0EA;font-size:14px}
 ul.dl li span{flex:1 1 auto;min-width:0;word-break:break-all}
@@ -216,7 +217,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   function docsHtml(){
     if(!D||!D.ok)return '';
     var h='<h2 class="sec" id="docs">お送りいただくもの・お答えいただくこと</h2>';
-    h+='<div class="sum"><span id="sumcnt">送るもの <span id="cRest">'+D.rest+'</span>点 ／ 答えること <span id="cMiss">'+D.missing+'</span>問 ／ 目安 <span id="cMin">3</span>分</span><b id="sumdone" hidden>すべて揃いました。下の「送信する」を押してください</b><span class="m">書類はスマホの写真で構いません。新しく作っていただくものはありません。'+(D.due?'提出期限 '+esc(D.due)+'。':'')+'途中でやめて、あとから同じリンクで続けられます。</span></div>';
+    h+='<div class="sum"><span id="sumcnt"><span class="nw">送るもの <span id="cRest">'+D.rest+'</span>点</span> ／ <span class="nw">答えること <span id="cMiss">'+D.missing+'</span>問</span> ／ <span class="nw">目安 <span id="cMin">3</span>分</span></span><b id="sumdone" hidden>すべて揃いました。下の「送信する」を押してください</b><span class="m">書類はスマホの写真で構いません。新しく作っていただくものはありません。'+(D.due?'提出期限 '+esc(D.due)+'。':'')+'途中でやめて、あとから同じリンクで続けられます。</span></div>';
     h+='<p class="sub">「提出書類」は行政に出すもので、写真かPDFを送ってください。「入力でも可」のものは、書類の代わりに項目を入力するか、同じことが分かる別の資料でも結構です。御社に無いものは「該当なし」を押してください。押したその場で記録されます。</p>';
     if(D.always.length)h+='<div class="card"><h2>送るもの</h2>'+groupsHtml(D.always)+'</div>';
     if(D.cond.length){
@@ -377,10 +378,53 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   function fileRow(name){var li=document.createElement('li');li.innerHTML='<span class="st wait">…</span><span class="nm"></span>';li.querySelector('.nm').textContent=name;document.getElementById('list').appendChild(li);return li}
   function prog(){var b=document.getElementById('bar');if(!b)return;if(!Q.length&&!busy){b.style.display='none';return}b.style.display='block';var tot=sent+Q.length+(busy?1:0);b.firstChild.style.width=Math.round(sent/Math.max(tot,1)*100)+'%'}
   function add(files,isMn,rw){Array.prototype.forEach.call(files,function(f){var li=fileRow(f.name+(isMn?'（マイナンバー）':''));if(f.size>D.maxMB*1024*1024){li.querySelector('.st').className='st ng';li.querySelector('.st').textContent='×';var e=document.createElement('span');e.className='err';e.textContent='大きすぎます（'+Math.round(f.size/1048576)+'MB）。写真を撮り直すか、分けて送ってください。';li.appendChild(e);return}if(rw)setStt(rw,'送信中…','busy');Q.push({file:f,li:li,mn:!!isMn,rw:rw||null})});next();prog()}
-  function next(){if(busy||!Q.length)return;busy=true;prog();var it=Q.shift();var r=new FileReader();
-    r.onerror=function(){ffail(it,'読み取れませんでした');busy=false;prog();next()};
-    r.onload=function(){api({act:'file',name:it.file.name,mimeType:it.file.type,dataUrl:r.result,mynumber:it.mn,matterId:it.rw?it.rw.dataset.mid:'',docName:it.rw?it.rw.dataset.doc:''}).then(function(res){if(res&&res.ok){it.li.querySelector('.st').className='st ok';it.li.querySelector('.st').textContent='✓';sent++;if(it.rw){setStt(it.rw,'出した','ok');rowErr(it.rw,'')}toast('送信しました：'+it.file.name);recount()}else{ffail(it,(res&&res.error)||'送れませんでした')}busy=false;prog();next()}).catch(function(){ffail(it,'通信に失敗しました。もう一度お試しください。');busy=false;prog();next()})};
-    r.readAsDataURL(it.file)}
+  // 写真は送る前に縮める。スマホの写真は1枚3〜8MBあり、そのまま送ると回線の細い場所で待たされる。
+  // 長辺2400pxなら、行政に出す書類の文字は読める。PDFと小さい画像はそのまま送る。
+  var SHRINK_OVER = 1.5 * 1024 * 1024, MAX_EDGE = 2400;
+  function shrink(file, done){
+    if(!/^image\//.test(file.type) || /heic|heif/i.test(file.type) || file.size <= SHRINK_OVER){done(null);return}
+    try{
+      var url=URL.createObjectURL(file), img=new Image();
+      img.onload=function(){
+        try{
+          var w=img.naturalWidth,h=img.naturalHeight,sc=Math.min(1,MAX_EDGE/Math.max(w,h));
+          if(sc>=1){URL.revokeObjectURL(url);done(null);return}
+          var c=document.createElement('canvas');c.width=Math.round(w*sc);c.height=Math.round(h*sc);
+          c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+          var out=c.toDataURL('image/jpeg',0.88);
+          URL.revokeObjectURL(url);
+          // 縮めて逆に大きくなったら元を使う
+          done(out.length*0.75 < file.size ? out : null);
+        }catch(e){URL.revokeObjectURL(url);done(null)}
+      };
+      img.onerror=function(){URL.revokeObjectURL(url);done(null)};
+      img.src=url;
+    }catch(e){done(null)}
+  }
+  function next(){
+    if(busy||!Q.length)return;
+    busy=true;prog();
+    var it=Q.shift();
+    var send=function(dataUrl){
+      api({act:'file',name:it.file.name,mimeType:it.file.type,dataUrl:dataUrl,mynumber:it.mn,matterId:it.rw?it.rw.dataset.mid:'',docName:it.rw?it.rw.dataset.doc:''})
+        .then(function(res){
+          if(res&&res.ok){
+            it.li.querySelector('.st').className='st ok';it.li.querySelector('.st').textContent='✓';sent++;
+            if(it.rw){setStt(it.rw,'出した','ok');rowErr(it.rw,'')}
+            toast('送信しました：'+it.file.name);recount();
+          }else ffail(it,(res&&res.error)||'送れませんでした');
+          busy=false;prog();next();
+        })
+        .catch(function(){ffail(it,'通信に失敗しました');busy=false;prog();next()});
+    };
+    shrink(it.file,function(small){
+      if(small){send(small);return}
+      var r=new FileReader();
+      r.onerror=function(){ffail(it,'読み取れませんでした');busy=false;prog();next()};
+      r.onload=function(){send(r.result)};
+      r.readAsDataURL(it.file);
+    });
+  }
   function ffail(it,msg){var s=it.li.querySelector('.st');s.className='st ng';s.textContent='×';var e=document.createElement('span');e.className='err';e.textContent=msg;it.li.appendChild(e);if(it.rw){setStt(it.rw,'未','todo');rowErr(it.rw,msg)}}
 
   /* ---------- 送信を完了する／受領確認 ---------- */
