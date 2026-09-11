@@ -46,6 +46,17 @@ table.tbl{border-collapse:collapse;width:100%;font-size:14px}
 .tbl.bill th{white-space:nowrap}.tbl.bill td.n{white-space:normal}
 .small{font-size:12.5px;color:var(--ink3)}
 .sum{background:var(--paper);border:2px solid var(--g);border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:17px;font-weight:700;line-height:1.7}
+/* 2名以上の注文：Excel 1本を送る3ステップ（先頭に置いて目立たせる） */
+.xlflow{border:2px solid var(--g);background:#F4FAF6}
+.xlflow h2{font-size:16px;margin:0 0 10px}
+.xlflow .steps{list-style:none;margin:0;padding:0}
+.xlflow .steps li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:6px 10px;align-items:center;padding:10px 0;border-top:1px dashed var(--line)}
+.xlflow .steps li:first-child{border-top:0}
+.xlflow .n{width:28px;height:28px;border-radius:50%;background:var(--g);color:#fff;font-weight:700;display:grid;place-items:center;font-size:14px}
+.xlflow .t{font-size:15px;font-weight:700;line-height:1.6;overflow-wrap:anywhere}
+.xlflow .xlbtn{grid-column:2;margin:0;width:auto;justify-self:start;padding:12px 18px;font-size:15px}
+.xlflow .xlok{grid-column:2;font-size:13.5px;color:var(--g);font-weight:700}
+.xlflow .small{margin:10px 0 0}
 .sum .m{display:block;font-size:13px;font-weight:400;color:var(--ink2);margin-top:4px}
 .grp{font-size:13px;font-weight:700;color:var(--ink2);margin:14px 0 6px}
 .grp:first-of-type{margin-top:0}
@@ -253,6 +264,21 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     });
     var h='<h2 class="sec" id="docs">お送りいただくもの・お答えいただくこと</h2>';
     h+='<div class="sum"><span id="sumcnt"><span class="nw">送るもの <span id="cRest">'+D.rest+'</span>点</span> ／ <span class="nw">答えること <span id="cMiss">'+D.missing+'</span>問</span> ／ <span class="nw">目安 <span id="cMin">3</span>分</span></span><b id="sumdone" hidden>すべて揃いました。下の「送信する」を押してください</b><span class="m">'+(hasXl?'Excel の受領フォームに、対象の方を全員分ご記入ください。ほかの書類はスマホの写真で構いません。':'書類はスマホの写真で構いません。新しく作っていただくものはありません。')+(D.due?'提出期限 '+esc(D.due)+'。':'')+'途中でやめて、あとから同じリンクで続けられます。</span></div>';
+    // 2名以上の注文は、Excel 1本を送ることが主な仕事。一覧の1行に埋もれると「何を出せばいいか」が伝わらないので、
+    // 先頭に3ステップの案内と大きなボタンを置く（2026-09-11 本人の指摘）
+    if(hasXl){
+      var xlRows=[];(D.always||[]).concat(D.cond||[]).forEach(function(g){(g.list||[]).forEach(function(x){var u=(String(x.doc||'').match(/https:\/\/minano-sr\.com\/[^\s）)]+\.xlsx/)||[''])[0];if(u)xlRows.push({g:g,x:x,url:u})})});
+      h+='<div class="card xlflow"><h2>この注文で必要なのは、Excel の受領フォーム'+(xlRows.length>1?xlRows.length+'本':'1本')+'です</h2>';
+      xlRows.forEach(function(r){
+        var done=stateClass(r.x.state)!=='todo';
+        h+='<div class="xlone" data-mid="'+esc(r.g.matterId)+'" data-doc="'+esc(r.x.doc)+'">'+(xlRows.length>1?'<div class="grp">'+esc(r.g.name)+'</div>':'')+'<ol class="steps">';
+        h+='<li><span class="n">1</span><span class="t">Excel をダウンロードする</span><a class="btn xlbtn" href="'+esc(r.url)+'" download>Excelをダウンロードする</a></li>';
+        h+='<li><span class="n">2</span><span class="t">対象の方 全員分をご記入ください。個人番号の欄までお願いします。</span></li>';
+        h+='<li><span class="n">3</span><span class="t">記入した Excel をこのページから送る</span>'+(done?'<span class="xlok">✓ 受け取りました（'+esc(stateText(r.x))+'）。直すときは下の一覧から送り直せます</span>':'<button type="button" class="btn xlbtn xlsend">記入したExcelを送る</button>')+'</li>';
+        h+='</ol></div>';
+      });
+      h+='<p class="small">ほかの書類（写真で構いません）は、この下の一覧にあります。</p></div>';
+    }
     h+='<p class="sub">「提出書類」は行政に出すもので、写真かPDFを送ってください。「入力でも可」のものは、書類の代わりに項目を入力するか、同じことが分かる別の資料でも結構です。御社に無いものは「該当なし」を押してください。押したその場で記録されます。</p>';
     if(D.always.length)h+='<div class="card"><h2>送るもの</h2>'+groupsHtml(D.always)+'</div>';
     if(D.cond.length){
@@ -413,6 +439,8 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
       if(b.classList.contains('redo')&&row){row.classList.add('editing');return}
       if(b.classList.contains('why')&&row){row.classList.toggle('open');return}
       if(b.classList.contains('pick')&&row){row.querySelector('.rf').click();return}
+      // 先頭の3ステップの「記入したExcelを送る」は、一覧の同じ書類の行の選択欄を開く
+      if(b.classList.contains('xlsend')){var xo=b.closest('.xlone');var xr=xo&&[].slice.call(document.querySelectorAll('.row')).filter(function(r){return r.dataset.mid===xo.dataset.mid&&r.dataset.doc===xo.dataset.doc})[0];if(xr){xr.querySelector('.rf').click()}return}
       if(b.classList.contains('post')&&row){row.querySelector('.mailbox').hidden=false;mark(row,'郵送','','');return}
       if(b.classList.contains('inp')&&row){var bx=row.querySelector('.inpbox');bx.hidden=!bx.hidden;if(!bx.hidden){var f0=bx.querySelector('.inf');if(f0)f0.focus()}return}
       if(b.classList.contains('inpclose')&&row){row.querySelector('.inpbox').hidden=true;return}
