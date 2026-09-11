@@ -962,8 +962,8 @@
         + 'お手数ですが 076-460-2562（平日9:00〜18:00）へお電話ください。';
       up.hidden = true;
     }
-    st.hidden = !data.statusUrl;
-    if (data.statusUrl) st.href = data.statusUrl;
+    // 案件ページへの導線は出さない（請求書のあとはメールで完結。2026-09-12 本人の決定）
+    st.hidden = true;
   }
 
   function showError(payload, reason){
