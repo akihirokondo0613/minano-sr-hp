@@ -138,11 +138,12 @@ function descFor(rows, name) {
 
 function buildItems(rows) {
   const items = [];
-  const add = (code, name, category, unit, base, perUnit, freeUnits, note) => {
+  // srcName: 料金表（pricing.html）の行の名前がカードの名前と違うときだけ渡す。説明文はその行から取る
+  const add = (code, name, category, unit, base, perUnit, freeUnits, note, srcName) => {
     const f = FIELDS[code];
     if (!f) throw new Error(`FIELDS に ${code} がありません`);
     items.push({ code, name, category, unit, base, perUnit, freeUnits: freeUnits || 0,
-      desc: descFor(rows, name), note: note || '', deadline: f.deadline || '',
+      desc: descFor(rows, srcName || name), note: note || '', deadline: f.deadline || '',
       qtyLabel: f.qtyLabel, dateLabel: f.dateLabel, person: f.person });
   };
 
@@ -154,8 +155,10 @@ function buildItems(rows) {
     'まだ社会保険・雇用保険に加入していない会社は「会社設立時の新規適用手続き」もお選びください。分からなければ、そのままご注文ください。こちらで確かめます。');
   const setup = setupFee(rows, '会社設立時の新規適用手続き');
   add('H05', '会社設立時の新規適用手続き', '入社', '名', setup.base, setup.perUnit, setup.freeUnits, '5名までは基本料に含みます。6名目から加算します。');
-  add('H06', '労使協定の作成・届出（36協定など）', '入社', '事業所', 0, simple(rows, '労使協定の作成・届出（36協定など）'), 0,
-    '事業所ごとに1件です。本社と支店で別に届け出ている会社は、その数をご指定ください。');  // 事業所ごとの単価（GAS の rateSeed_ と同じ）
+  // Web注文の品目名は36協定だけにする（2026-09-11 本人の決定）。料金と説明文は pricing.html の
+  // 「労使協定の作成・届出（36協定など）」の行から取る（単発の価格表のほうは絞らない）
+  add('H06', '36協定の作成・届出', '入社', '事業所', 0, simple(rows, '労使協定の作成・届出（36協定など）'), 0,
+    '事業所ごとに1件です。本社と支店で別に届け出ている会社は、その数をご指定ください。', '労使協定の作成・届出（36協定など）');  // 事業所ごとの単価（GAS の rateSeed_ と同じ）
 
   // 退社
   add('H02', '退社手続き（資格喪失届）', '退社', '名', 0, simple(rows, '退社手続き（資格喪失届）'), 0,
