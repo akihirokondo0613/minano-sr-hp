@@ -42,8 +42,11 @@ jobs:
       - name: 日本語フォントを準備
         # コンテナ内はrootなのでsudoは使わない。取得するのは1パッケージのみ。
         run: |
-          apt-get update
-          apt-get install --yes --no-install-recommends fonts-noto-cjk
+          # archive.ubuntu.com が遅い日（Hash Sum mismatch・数百秒の stall）に備え、GitHub の Azure ミラーに向けて
+          # 再試行つきで取る（2026-09-11 夜に5回タイムアウト）。ミラーが無い環境でも元の設定で続ける
+          sed -i 's|http://archive.ubuntu.com/ubuntu|http://azure.archive.ubuntu.com/ubuntu|g; s|http://security.ubuntu.com/ubuntu|http://azure.archive.ubuntu.com/ubuntu|g' /etc/apt/sources.list /etc/apt/sources.list.d/*.sources /etc/apt/sources.list.d/*.list 2>/dev/null || true
+          apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=30 update || (sleep 20 && apt-get -o Acquire::Retries=3 update)
+          apt-get -o Acquire::Retries=3 install --yes --no-install-recommends fonts-noto-cjk
           fc-cache -f
           fc-match 'Noto Sans CJK JP'
 
@@ -96,8 +99,11 @@ jobs:
       - name: 日本語フォントとpython3を準備
         # コンテナ内はrootなのでsudoは使わない。python3は http.server 用（イメージに入っていない場合がある）。
         run: |
-          apt-get update
-          apt-get install --yes --no-install-recommends fonts-noto-cjk python3
+          # archive.ubuntu.com が遅い日（Hash Sum mismatch・数百秒の stall）に備え、GitHub の Azure ミラーに向けて
+          # 再試行つきで取る（2026-09-11 夜に5回タイムアウト）。ミラーが無い環境でも元の設定で続ける
+          sed -i 's|http://archive.ubuntu.com/ubuntu|http://azure.archive.ubuntu.com/ubuntu|g; s|http://security.ubuntu.com/ubuntu|http://azure.archive.ubuntu.com/ubuntu|g' /etc/apt/sources.list /etc/apt/sources.list.d/*.sources /etc/apt/sources.list.d/*.list 2>/dev/null || true
+          apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=30 update || (sleep 20 && apt-get -o Acquire::Retries=3 update)
+          apt-get -o Acquire::Retries=3 install --yes --no-install-recommends fonts-noto-cjk python3
           fc-cache -f
           fc-match 'Noto Sans CJK JP'
           python3 --version
