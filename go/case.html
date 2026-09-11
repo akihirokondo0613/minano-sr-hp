@@ -59,6 +59,10 @@ table.tbl{border-collapse:collapse;width:100%;font-size:14px}
 .xlflow .xlbtn{grid-column:2;margin:0;width:auto;justify-self:start;padding:12px 18px;font-size:15px}
 .xlflow .xlok{grid-column:2;font-size:13.5px;color:var(--g);font-weight:700}
 .xlflow .small{margin:10px 0 0}
+.condcard .ops{display:flex;flex-direction:column;gap:6px;margin:6px 0 4px}
+.condcard .ops .op{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;cursor:pointer;font-size:15px}
+.condcard .ops .op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--g)}
+.condbox{margin-top:10px}
 .xlflow.alt{background:var(--paper);border-color:var(--line)}
 .xlflow.alt h2{font-size:15px}
 .xlflow.alt .n{background:var(--ink3)}
@@ -170,7 +174,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
 </head>
 <body>
 <div class="wrap" id="app">
-  <div class="load" id="loading"><span class="sp"></span><span id="loadno">ご注文の内容</span>を読み込んでいます…</div>
+  <div class="load" id="loading"><span class="sp"></span><span id="loadno">ご注文の内容</span>を読み込んでいます…<br><span class="small">10秒ほどかかることがあります。そのままお待ちください。</span></div>
 </div>
 <div class="toast" id="toast"></div>
 <script>
@@ -207,7 +211,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
 
   /* ---------- 描画 ---------- */
   function stateClass(s){ if(s==='出した'||s==='入力済'||s==='前回分'||s==='郵送')return 'ok'; if(s==='該当なし')return 'na'; if(s==='後日提出')return 'later'; return 'todo'; }
-  function stateText(x){ if(x.state==='前回分')return '前回分を使用'; if(x.state==='郵送')return '郵送予定'; return x.state+(x.date?' '+x.date:''); }
+  function stateText(x){ if(x.state==='前回分')return '前回分を使用'; if(x.state==='郵送')return '郵送予定'; if(x.state==='該当')return '未'; return x.state+(x.date?' '+x.date:''); }
   // ダウンロード時のファイル名（日本語）。一覧の短い名前から作る：「入社時 従業員情報 受領フォーム」→「入社時_従業員情報_受領フォーム.xlsx」
   function xlName(x){return String(x.short||'受領フォーム').replace(/\s+/g,'_')+'.xlsx'}
   function rowHtml(g,x){
@@ -305,12 +309,19 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     h+='<p class="sub">「提出書類」は行政に出すもので、写真かPDFを送ってください。「入力でも可」のものは、書類の代わりに項目を入力するか、同じことが分かる別の資料でも結構です。御社に無いものは「該当なし」を押してください。押したその場で記録されます。</p>';
     if(D.always.length)h+='<div class="card"><h2>送るもの</h2>'+groupsHtml(D.always)+'</div>';
     if(D.cond.length){
-      // 条件付きの書類は手続きによっては10点を超える。1点ずつ押させると、それだけで手が止まる。
-      // ほとんどの会社はほとんどの条件に当てはまらないので、まとめて片付けられるようにする。
-      var ctodo=D.cond.reduce(function(a,g){return a+g.list.filter(function(x){return x.state==='未'}).length},0);
-      h+='<div class="card condcard"><h2>該当する場合だけ</h2><p class="rest">当てはまるものだけお送りください。'+(ctodo>1?'当てはまらないものは、下のボタンでまとめて片付けられます。あとから個別に選び直せます。':'当てはまらないときは「該当なし」を押してください。それで完了です。')+'</p>';
-      if(ctodo>1)h+='<button type="button" class="btn sub2" id="naall" style="margin:0 0 12px">'+ctodo+'点すべて「該当なし」にする</button>';
-      h+=groupsHtml(D.cond)+'</div>';
+      // 条件付きの書類は、条件をチェックで聞き、当てはまるときだけ書類を案内する（2026-09-12 本人の指摘）。
+      // チェックを入れると、その条件の書類が「該当」になって残りに入る。入れないかぎり求めない
+      var conds=[],byCond={};
+      D.cond.forEach(function(g){g.list.forEach(function(x){var c=x.cond||'その他';if(!byCond[c]){byCond[c]={docs:[],on:false};conds.push(c)}byCond[c].docs.push({g:g,x:x});if(x.state==='該当'||x.state==='出した'||x.state==='後日提出'||x.state==='郵送'||x.state==='入力済')byCond[c].on=true})});
+      h+='<div class="card condcard"><h2>当てはまるものにチェックしてください</h2><p class="rest">チェックした項目の書類だけお送りいただきます。当てはまらなければ、そのままで結構です。</p><div class="ops">';
+      conds.forEach(function(c){h+='<label class="op"><input type="checkbox" class="condchk" data-cond="'+esc(c)+'"'+(byCond[c].on?' checked':'')+'> '+esc(c)+'</label>'});
+      h+='</div>';
+      conds.forEach(function(c){
+        h+='<div class="condbox" data-cond="'+esc(c)+'"'+(byCond[c].on?'':' hidden')+'><div class="grp">'+esc(c)+' の書類</div>';
+        byCond[c].docs.forEach(function(d){h+=rowHtml(d.g,d.x)});
+        h+='</div>';
+      });
+      h+='</div>';
     }
     h+='<div class="card"><h2>その他のファイルを送る</h2><div class="drop" id="drop"><p>上の一覧に無いものは、ここから送ってください。<br>1つ '+D.maxMB+'MB まで・何枚でも</p><button class="btn" type="button" id="pick" style="margin-top:0">写真・ファイルを選ぶ</button><input type="file" id="f" multiple accept="image/*,application/pdf,.pdf,.jpg,.jpeg,.png,.heic"></div><div class="bar" id="bar" style="display:none"><i></i></div><ul class="files" id="list"></ul></div>';
     // マイナンバーの書類の別枠は置かない。他の書類と同じく一覧か「その他」から送る（2026-09-11 本人の決定）
@@ -381,6 +392,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     var rest=0,sec=0;
     [].slice.call(document.querySelectorAll('.row')).forEach(function(r){
       if(r.classList.contains('xlalt'))return;   // 1名の任意の Excel は残りに数えない
+      var cb=r.closest('.condbox');if(cb&&cb.hidden)return;   // チェックしていない条件の書類は数えない
       if(!/todo|busy/.test(r.querySelector('.stt').className))return;
       rest++;
       // 1点あたりの手間は受注システムが返す（Excel の受領フォームは人数ぶん重い）
@@ -427,6 +439,22 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
       })
       .catch(function(){btn.disabled=false;btn.textContent=orig;toast('通信に失敗しました。もう一度お試しください。')});
   }
+  // 条件のチェック：入れたら、その条件の書類（未・該当なし）を「該当」にして表示。外したら「該当なし」にして隠す
+  function condToggle(cb){
+    var c=cb.dataset.cond,box=[].slice.call(document.querySelectorAll('.condbox')).filter(function(b){return b.dataset.cond===c})[0];
+    if(!box)return;
+    var rows=[].slice.call(box.querySelectorAll('.row')).filter(function(r){var st=r.querySelector('.stt').className;return /todo|na/.test(st)});
+    var state=cb.checked?'該当':'該当なし';
+    cb.disabled=true;
+    if(!rows.length){box.hidden=!cb.checked;cb.disabled=false;recount();return}
+    api({act:'markall',state:state,docs:rows.map(function(r){return {matterId:r.dataset.mid,docName:r.dataset.doc}})})
+      .then(function(res){
+        cb.disabled=false;
+        if(res&&res.ok){rows.forEach(function(r){setStt(r,cb.checked?'未':'該当なし',cb.checked?'todo':'na');r.classList.remove('done')});box.hidden=!cb.checked;toast(cb.checked?'書類を表示しました。下からお送りください':'「該当なし」で記録しました');recount()}
+        else{cb.checked=!cb.checked;toast((res&&res.error)||'記録できませんでした。もう一度お試しください。')}
+      })
+      .catch(function(){cb.disabled=false;cb.checked=!cb.checked;toast('通信に失敗しました。もう一度お試しください。')});
+  }
   function bulkNa(btn){
     var card=btn.closest('.card');
     var rows=[].slice.call(card.querySelectorAll('.row')).filter(function(r){return /todo/.test(r.querySelector('.stt').className)});
@@ -457,7 +485,6 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     if(ansEl){try{var sv=JSON.parse(localStorage.getItem(K)||'{}');if(sv.__ans&&!ansEl.value)ansEl.value=sv.__ans}catch(e){}ansEl.addEventListener('input',function(){try{localStorage.setItem(K,JSON.stringify({__ans:this.value}))}catch(e){}})}
     document.addEventListener('click',function(e){
       var b=e.target.closest?e.target.closest('button'):null;if(!b)return;var row=b.closest('.row');
-      if(b.id==='naall'){bulkNa(b);return}
       if(b.classList.contains('getdoc')){getDoc(b);return}
       if(b.classList.contains('redo')&&row){row.classList.add('editing');return}
       if(b.classList.contains('why')&&row){row.classList.toggle('open');return}
@@ -475,6 +502,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
       if(b.id==='ackbtn'){ack(b);return}
     });
     document.addEventListener('change',function(e){var t=e.target;if(!t.classList)return;var row=t.closest?t.closest('.row'):null;
+      if(t.classList.contains('condchk')){condToggle(t);return}
       if(row&&t.classList.contains('dt')&&t.value){mark(row,'後日提出',t.value,'');t.hidden=true;return}
       if(row&&t.classList.contains('rf')){add(t.files,false,row);t.value='';return}
       if(t.id==='f'){add(t.files,false,null);t.value='';return}

@@ -61,6 +61,10 @@
 .so-tab[aria-pressed="true"]{background:var(--sugi);border-color:var(--sugi);color:#fff}
 .so-note-card{display:flex;gap:12px;align-items:flex-start;background:var(--g25);border:1px solid var(--g100);border-radius:var(--r);padding:16px 18px;margin-bottom:22px;font-size:13.5px;color:var(--ink3);line-height:1.85}
 .so-note-card a{color:var(--moegi-t);font-weight:700;text-decoration:underline}
+.so-flow{list-style:none;margin:0 0 22px;padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;background:#fff;border:1px solid var(--line);border-radius:var(--r)}
+.so-flow li{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--ink2);line-height:1.6}
+.so-flow li b{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--moegi);color:#fff;font-size:12px;display:grid;place-items:center}
+.so-flow li:nth-child(3) span{font-weight:700;color:var(--ink)}
 .so-group-t{font-family:var(--disp);font-size:14px;font-weight:800;color:var(--ink4);letter-spacing:.06em;margin:26px 0 10px}
 .so-group-t:first-child{margin-top:0}
 .so-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(0,1fr));grid-template-columns:1fr;gap:12px}
@@ -214,6 +218,15 @@
   <div class="so-note-card">
     <p style="margin:0">就業規則の<wbr>作成・<wbr>改定、<wbr>労務システムの<wbr>導入支援、<wbr>助成金の<wbr>申請代行<wbr>（成功報酬）は<wbr>この<wbr>ページからの<wbr>注文には<wbr>対応していません。<wbr><a href="uploads/contact.html">お見積りフォーム</a>から<wbr>お問い合わせ<wbr>ください。</p>
   </div>
+
+  <!-- ご注文の流れ（注文のあとに書類を送っていただくことを先に伝える。2026-09-12 本人の指摘） -->
+  <ol class="so-flow" aria-label="ご注文の流れ">
+    <li><b>1</b><span>品目を選んで注文</span></li>
+    <li><b>2</b><span>受任の<wbr>ご案内と<wbr>請求書が<wbr>メールで<wbr>届く</span></li>
+    <li><b>3</b><span>案件ページで<wbr>書類を<wbr>送る・質問に<wbr>答える<wbr>（目安10分）</span></li>
+    <li><b>4</b><span>当事務所が申請</span></li>
+    <li><b>5</b><span>完了報告と<wbr>公文書を<wbr>お届け</span></li>
+  </ol>
 
   <!-- STEP: 品目選択 -->
   <section class="so-step" data-step="items">
@@ -930,7 +943,7 @@
       lead.textContent = 'いただいた内容を確認のうえ、担当者からご連絡します。請求書は、受任が決まってからお送りします。ご注文の内容と進み具合は、下の「進み具合を見る」からいつでも確認できます。';
       up.hidden = true;
     } else if (data.orderNo) {
-      lead.innerHTML = '請求書と必要書類のご案内をメールでお送りしました。メールが届かなくても、下のボタンからそのまま進めます。ご注文の内容は「進み具合を見る」でいつでも確認できます。'
+      lead.innerHTML = '<b>次に、下の「書類を送る」から必要書類をお送りください。</b>請求書と必要書類のご案内はメールでもお送りしました。メールが届かなくても、下のボタンからそのまま進めます。'
         + (data.docDue ? '<br>書類の提出期限は <b>' + esc(data.docDue) + '</b> です。' : '')
         + (data.payDue ? '<br>お支払いの期限は ' + esc(data.payDue) + ' です。' : '');
       up.hidden = !data.uploadUrl;
