@@ -344,6 +344,14 @@ async function runTaskPool(tasks, limit = 2) {
         timeoutMs: 2 * 60 * 1000,
       },
       {
+        // 6つの台本が console のエラーを数えるか捨てるかを決める共通部品。ブラウザーは使わない
+        name: 'コンソール配信元判定',
+        command: process.execPath,
+        args: ['scripts/test-console-origin.cjs'],
+        output: 'console-origin.log',
+        timeoutMs: 30 * 1000,
+      },
+      {
         name: 'アクセシビリティ監査CLI負例',
         command: process.execPath,
         args: ['scripts/test-a11y-audit.cjs'],

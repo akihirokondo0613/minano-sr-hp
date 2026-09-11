@@ -15,6 +15,7 @@
  */
 
 const { chromium, webkit } = require('playwright');
+const { isForeignConsoleError } = require('./lib/console-origin.cjs');
 
 const args = process.argv.slice(2);
 const base = (args.find((arg) => arg.startsWith('http')) || 'http://127.0.0.1:8811/')
