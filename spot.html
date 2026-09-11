@@ -110,6 +110,10 @@
 .so-field.so-field-wide{grid-column:1/-1}
 .so-field label{display:block;font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:6px}
 .so-field label em{font-style:normal;color:#B4432E;margin-left:4px;font-size:11px}
+/* 送信中：回るしるし＋「10秒ほど」。固まって見えて二度押しや離脱を招かないように */
+.so-spin{display:inline-block;width:18px;height:18px;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:so-spin .8s linear infinite;vertical-align:-4px;margin-right:10px}
+@keyframes so-spin{to{transform:rotate(360deg)}}
+.btn-primary.is-sending{opacity:.92;cursor:progress}
 .so-field .so-help{font-size:12.5px;color:var(--ink4);line-height:1.7;margin:-2px 0 8px;font-weight:400}
 .so-field input,.so-field select,.so-field textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:6px;font-size:16px;font-family:inherit;background:#fff;outline:none;transition:border-color .2s,box-shadow .2s}
 .so-field input:focus,.so-field select:focus,.so-field textarea:focus{border-color:var(--moegi);box-shadow:0 0 0 3px var(--g50,var(--g25))}
@@ -298,13 +302,6 @@
       <div class="so-field so-field-wide">
         <label for="soMemo">補足事項（任意）</label>
         <textarea id="soMemo" name="補足" rows="3"></textarea>
-      </div>
-      <div class="so-field so-field-wide">
-        <label>次の手続き期限のご案内</label>
-        <div class="so-radio-row" role="radiogroup" aria-label="案内メールの希望">
-          <label><input type="radio" name="案内同意" value="希望する" checked> 希望する</label>
-          <label><input type="radio" name="案内同意" value="希望しない"> 希望しない</label>
-        </div>
       </div>
       <div class="so-field so-hp" aria-hidden="true">
         <label for="soWebsite">website</label>
@@ -786,7 +783,6 @@
       ['給与支払', fd('給与支払')],
       ['みなのとの顧問契約', fd('顧問契約')],
       ['補足', fd('補足')],
-      ['案内メール', fd('案内同意')],
     ];
     rows.forEach(function(r){
       if (!r[1]) return;
@@ -824,7 +820,7 @@
       確認_不正: document.getElementById('soAgreeLegal').checked ? 'はい' : 'いいえ',
       確認_他社労士: document.getElementById('soAgreeExclusive').checked ? 'はい' : 'いいえ',
       確認_規約: document.getElementById('soAgreeTerms').checked ? 'はい' : 'いいえ',
-      案内同意: fd('案内同意') || '希望しない',
+      案内同意: '希望しない',   // 次の期限の案内メール・再注文リンクは出さない（2026-09-12 本人の決定。問いも外した）
       website: fd('website'),
       items: codes.map(function(code){
         var item = state.items.find(function(i){ return i.code === code; });
@@ -883,7 +879,8 @@
 
     var submitBtn = document.getElementById('soSubmit');
     submitBtn.disabled = true;
-    submitBtn.textContent = '送信しています…';
+    submitBtn.classList.add('is-sending');
+    submitBtn.innerHTML = '<span class="so-spin" aria-hidden="true"></span>送信しています…　10秒ほどお待ちください';
 
     fetch(SPOT_ENDPOINT, {
       method: 'POST',

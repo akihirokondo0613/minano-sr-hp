@@ -47,6 +47,8 @@ table.tbl{border-collapse:collapse;width:100%;font-size:14px}
 .small{font-size:12.5px;color:var(--ink3)}
 .sum{background:var(--paper);border:2px solid var(--g);border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:17px;font-weight:700;line-height:1.7}
 /* 2名以上の注文：Excel 1本を送る3ステップ（先頭に置いて目立たせる） */
+.spin{display:inline-block;width:16px;height:16px;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;vertical-align:-3px;margin-right:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
 .xlflow{border:2px solid var(--g);background:#F4FAF6}
 .xlflow h2{font-size:16px;margin:0 0 10px}
 .xlflow .steps{list-style:none;margin:0;padding:0}
@@ -348,8 +350,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     else if(C.canAck)h+='<div class="card"><h2>受領のご確認</h2><p class="rest">公文書の内容をご確認のうえ、押してください。押すと担当者に伝わります。</p><button class="btn" type="button" id="ackbtn" style="margin-top:0">公文書を受け取りました</button></div>';
     h+='</div>';
     h+='<h2 class="sec">請求と支払</h2><div class="card">'+billHtml()+'</div>';
-    if(C.reorderUrl)h+='<h2 class="sec">次回のご注文</h2><p class="rest">会社情報の入力は要りません。前回いただいた就業規則などの資料は、変更がなければそのまま使います。</p><a class="btn sub2" href="'+esc(C.reorderUrl)+'">次回のご注文はこちら</a>';
-    h+='<p class="foot">'+esc(C.office)+'<br>ご不明な点は '+esc(C.tel)+' / '+esc(C.mail)+'（平日9:00〜18:00）<br>このページは同じリンクから何度でも開けます。</p>';
+    h+='<p class="foot">'+esc(C.office)+'<br>ご質問はメールで承ります　<a href="mailto:'+esc(C.mail)+'">'+esc(C.mail)+'</a>（平日9:00〜18:00に返信します）<br>お電話 '+esc(C.tel)+'<br>このページは同じリンクから何度でも開けます。</p>';
     app.innerHTML=h;
     bind();
     if(location.hash){var tgt=document.querySelector(location.hash);if(tgt)setTimeout(function(){tgt.scrollIntoView({block:'start'})},50)}
@@ -449,7 +450,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
       if(b.classList.contains('inp')&&row){var bx=row.querySelector('.inpbox');bx.hidden=!bx.hidden;if(!bx.hidden){var f0=bx.querySelector('.inf');if(f0)f0.focus()}return}
       if(b.classList.contains('inpclose')&&row){row.querySelector('.inpbox').hidden=true;return}
       if(b.classList.contains('inpsave')&&row){var parts=[];[].slice.call(row.querySelectorAll('.inf')).forEach(function(el){var v=String(el.value).trim();if(v)parts.push((el.dataset.f&&el.dataset.f!=='内容'?el.dataset.f+'：':'')+v)});if(!parts.length){rowErr(row,'内容を入力してください。');return}row.querySelector('.inpbox').hidden=true;mark(row,'入力済','',parts.join('／'));return}
-      if(b.classList.contains('na')&&row){mark(row,'該当なし','','');return}
+      if(b.classList.contains('na')&&row){var dtn=row.querySelector('.dt');if(dtn){dtn.hidden=true;dtn.value=''}mark(row,'該当なし','','');return}
       if(b.classList.contains('later')&&row){var d=row.querySelector('.dt');d.hidden=false;d.focus();if(d.showPicker){try{d.showPicker()}catch(x){}}return}
       if(b.id==='pick'){document.getElementById('f').click();return}
       if(b.id==='fin'){finish();return}
@@ -523,7 +524,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     var bad=QS.filter(function(q){return q.dataset.req==='1'&&shown(q)&&!(AN[q.dataset.qid]||'')});
     QS.forEach(function(q){q.classList.remove('bad')});
     if(bad.length){bad.forEach(function(q){q.classList.add('bad')});bad[0].scrollIntoView({block:'center'});toast('あと'+bad.length+'問、答えていただく必要があります。赤くなっている質問をご覧ください。');return}
-    var btn=document.getElementById('fin');btn.disabled=true;btn.textContent='送信しています…';
+    var btn=document.getElementById('fin');btn.disabled=true;btn.innerHTML='<span class="spin" aria-hidden="true"></span>送信しています…　10秒ほどお待ちください';
     api({act:'finish',answers:(document.getElementById('ans')||{}).value||''}).then(function(res){
       if(!(res&&res.ok)){btn.disabled=false;btn.textContent='送信する';toast((res&&res.error)||'送信できませんでした。もう一度お試しください。');return}
       try{localStorage.removeItem('mn-spot-'+ORDER)}catch(e){}
