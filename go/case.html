@@ -59,10 +59,11 @@ table.tbl{border-collapse:collapse;width:100%;font-size:14px}
 .xlflow .xlbtn{grid-column:2;margin:0;width:auto;justify-self:start;padding:12px 18px;font-size:15px}
 .xlflow .xlok{grid-column:2;font-size:13.5px;color:var(--g);font-weight:700}
 .xlflow .small{margin:10px 0 0}
-.condcard .ops{display:flex;flex-direction:column;gap:6px;margin:6px 0 4px}
-.condcard .ops .op{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;cursor:pointer;font-size:15px}
-.condcard .ops .op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--g)}
-.condbox{margin-top:10px}
+.condgrp{margin-top:10px;border:1.5px solid var(--line);border-radius:8px;padding:10px 12px}
+.condop{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:15px;font-weight:700}
+.condop input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--g)}
+.condbox{margin-top:6px}
+#fin:disabled{opacity:.55;cursor:not-allowed}
 .xlflow.alt{background:var(--paper);border-color:var(--line)}
 .xlflow.alt h2{font-size:15px}
 .xlflow.alt .n{background:var(--ink3)}
@@ -309,17 +310,17 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     h+='<p class="sub">「提出書類」は行政に出すもので、写真かPDFを送ってください。「入力でも可」のものは、書類の代わりに項目を入力するか、同じことが分かる別の資料でも結構です。御社に無いものは「該当なし」を押してください。押したその場で記録されます。</p>';
     if(D.always.length)h+='<div class="card"><h2>送るもの</h2>'+groupsHtml(D.always)+'</div>';
     if(D.cond.length){
-      // 条件付きの書類は、条件をチェックで聞き、当てはまるときだけ書類を案内する（2026-09-12 本人の指摘）。
-      // チェックを入れると、その条件の書類が「該当」になって残りに入る。入れないかぎり求めない
+      // 条件付きの書類：条件ごとに「当てはまる方はいません（該当なし）」のチェックで確認する。
+      // チェックが無い（＝当てはまるかもしれない）条件は書類と送るボタンを出し、全部の条件が
+      // 「該当なし」か送付済みになるまで「送信する」は押せない（2026-09-12 本人の決定）
       var conds=[],byCond={};
-      D.cond.forEach(function(g){g.list.forEach(function(x){var c=x.cond||'その他';if(!byCond[c]){byCond[c]={docs:[],on:false};conds.push(c)}byCond[c].docs.push({g:g,x:x});if(x.state==='該当'||x.state==='出した'||x.state==='後日提出'||x.state==='郵送'||x.state==='入力済')byCond[c].on=true})});
-      h+='<div class="card condcard"><h2>当てはまるものにチェックしてください</h2><p class="rest">チェックした項目の書類だけお送りいただきます。当てはまらなければ、そのままで結構です。</p><div class="ops">';
-      conds.forEach(function(c){h+='<label class="op"><input type="checkbox" class="condchk" data-cond="'+esc(c)+'"'+(byCond[c].on?' checked':'')+'> '+esc(c)+'</label>'});
-      h+='</div>';
+      D.cond.forEach(function(g){g.list.forEach(function(x){var c=x.cond||'その他';if(!byCond[c]){byCond[c]={docs:[],na:true};conds.push(c)}byCond[c].docs.push({g:g,x:x});if(x.state!=='該当なし')byCond[c].na=false})});
+      h+='<div class="card condcard"><h2>次に当てはまるものはありませんか</h2><p class="rest">当てはまる方がいなければ、チェックを入れてください。チェックの無いものは書類をお送りいただきます。すべて確認が済むと送信できます。</p>';
       conds.forEach(function(c){
-        h+='<div class="condbox" data-cond="'+esc(c)+'"'+(byCond[c].on?'':' hidden')+'><div class="grp">'+esc(c)+' の書類</div>';
+        h+='<div class="condgrp" data-cond="'+esc(c)+'"><label class="op condop"><input type="checkbox" class="condchk" data-cond="'+esc(c)+'"'+(byCond[c].na?' checked':'')+'> 「'+esc(c)+'」に当てはまる方はいません（該当なし）</label>';
+        h+='<div class="condbox" data-cond="'+esc(c)+'"'+(byCond[c].na?' hidden':'')+'>';
         byCond[c].docs.forEach(function(d){h+=rowHtml(d.g,d.x)});
-        h+='</div>';
+        h+='</div></div>';
       });
       h+='</div>';
     }
@@ -389,11 +390,11 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   function rowErr(row,msg){var e=row.querySelector('.rerr');e.textContent=msg||'';e.hidden=!msg}
   function recount(){
     // 残り点数と、残りから出した所要の目安。固定の「3分」だと点数の多い手続きで嘘になる
-    var rest=0,sec=0;
+    var rest=0,sec=0,condLeft=0;
     [].slice.call(document.querySelectorAll('.row')).forEach(function(r){
       if(r.classList.contains('xlalt'))return;   // 1名の任意の Excel は残りに数えない
-      var cb=r.closest('.condbox');if(cb&&cb.hidden)return;   // チェックしていない条件の書類は数えない
       if(!/todo|busy/.test(r.querySelector('.stt').className))return;
+      if(r.closest('.condbox'))condLeft++;   // 「該当なし」の確認も送付もまだの条件付きの書類
       rest++;
       // 1点あたりの手間は受注システムが返す（Excel の受領フォームは人数ぶん重い）
       sec+=Number(r.dataset.sec||30);
@@ -411,7 +412,9 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     var fin=document.getElementById('fin'),note=document.getElementById('finnote');
     if(fin&&note){
       fin.classList.toggle('ready',allIn);
-      note.textContent=allIn?'すべて揃いました。押していただくと担当者に届きます。':'送るものが残っていても押せます。残りはあとから同じリンクで送れます。';
+      // 条件付きの書類は「該当なし」の確認か送付が済むまで送信できない（2026-09-12 本人の決定）
+      fin.disabled=condLeft>0;
+      note.textContent=allIn?'すべて揃いました。押していただくと担当者に届きます。':condLeft>0?'「当てはまるものはありませんか」の確認（あと'+condLeft+'点）が済むと送信できます。':'送るものが残っていても押せます。残りはあとから同じリンクで送れます。';
       // トーストはこのページの操作で残りが0になったときだけ。開いた時点で0なら出さない
       // （送信済みの相手が促されてもう一度押し、同じ受領メールが二重に届くのを防ぐ）
       if(allIn&&wasAllIn===false&&!fin.dataset.told){fin.dataset.told='1';toast('すべて揃いました。下の「送信する」を押してください');}
@@ -439,18 +442,18 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
       })
       .catch(function(){btn.disabled=false;btn.textContent=orig;toast('通信に失敗しました。もう一度お試しください。')});
   }
-  // 条件のチェック：入れたら、その条件の書類（未・該当なし）を「該当」にして表示。外したら「該当なし」にして隠す
+  // 「該当なし」のチェック：入れたら、その条件の書類（未）を「該当なし」にして隠す。外したら「未」に戻して書類を出す
   function condToggle(cb){
     var c=cb.dataset.cond,box=[].slice.call(document.querySelectorAll('.condbox')).filter(function(b){return b.dataset.cond===c})[0];
     if(!box)return;
     var rows=[].slice.call(box.querySelectorAll('.row')).filter(function(r){var st=r.querySelector('.stt').className;return /todo|na/.test(st)});
-    var state=cb.checked?'該当':'該当なし';
+    var state=cb.checked?'該当なし':'未';
     cb.disabled=true;
-    if(!rows.length){box.hidden=!cb.checked;cb.disabled=false;recount();return}
+    if(!rows.length){box.hidden=cb.checked;cb.disabled=false;recount();return}
     api({act:'markall',state:state,docs:rows.map(function(r){return {matterId:r.dataset.mid,docName:r.dataset.doc}})})
       .then(function(res){
         cb.disabled=false;
-        if(res&&res.ok){rows.forEach(function(r){setStt(r,cb.checked?'未':'該当なし',cb.checked?'todo':'na');r.classList.remove('done')});box.hidden=!cb.checked;toast(cb.checked?'書類を表示しました。下からお送りください':'「該当なし」で記録しました');recount()}
+        if(res&&res.ok){rows.forEach(function(r){setStt(r,cb.checked?'該当なし':'未',cb.checked?'na':'todo');if(!cb.checked)r.classList.remove('done')});box.hidden=cb.checked;toast(cb.checked?'「該当なし」で記録しました':'書類をお送りください');recount()}
         else{cb.checked=!cb.checked;toast((res&&res.error)||'記録できませんでした。もう一度お試しください。')}
       })
       .catch(function(){cb.disabled=false;cb.checked=!cb.checked;toast('通信に失敗しました。もう一度お試しください。')});
