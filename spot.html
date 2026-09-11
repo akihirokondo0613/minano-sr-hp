@@ -70,17 +70,22 @@
 .so-card-name{font-family:var(--disp);font-weight:700;font-size:15px;color:var(--iwa);line-height:1.6;min-width:0}
 .so-card-price{font-family:var(--mono);font-size:13px;color:var(--moegi-t);white-space:nowrap;font-weight:700}
 /* 幅の狭い携帯では値段を名前の下の1行にして折り返す（新規適用の長い値段がカードからはみ出すため。2026-09-11） */
-@media (max-width:480px){.so-card-price{white-space:normal;flex-basis:100%}}
+/* 携帯では、数量の名前を1行目、−／＋と小計を2行目に置く。どのカードでも＋が同じ位置に来て、数を増やしても並びが変わらない。
+   .so-qty-label の既定（flex:1 1 auto）が後ろにあるので、詳しさを1段上げて勝たせる */
+@media (max-width:480px){.so-card-price{white-space:normal;flex-basis:100%}.so-qty-row .so-qty-label{flex-basis:100%}}
+/* 幅340px以下は2行目に−／＋と小計が並ばない（6桁で小計が落ちる）。初めから3行目に置き、押しても並びを変えない */
+@media (max-width:340px){.so-qty-row .so-card-sub{flex-basis:100%}}
 .so-card-note{font-size:12.5px;color:var(--ink4);line-height:1.75;margin-top:6px}
 .so-card-due{color:var(--ink3);font-weight:600}
-.so-qty-row{display:flex;align-items:center;gap:10px;margin-top:12px}
-.so-qty-label{font-size:12.5px;color:var(--ink3);flex:1 1 auto;min-width:0}
+.so-qty-row{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.so-qty-label{font-size:12.5px;color:var(--ink3);flex:1 1 auto;min-width:min(100%,7em)}
+.so-nw{white-space:nowrap}
 .so-qty-ctrl{flex-shrink:0;display:flex;align-items:center;border:1.5px solid var(--line);border-radius:999px;overflow:hidden}
 .so-qty-btn{width:32px;height:32px;display:grid;place-items:center;background:var(--g25);border:0;font-size:17px;color:var(--ink2);cursor:pointer}
 .so-qty-btn:hover{background:var(--g100)}
 .so-qty-input{width:48px;height:32px;border:0;border-left:1px solid var(--line);border-right:1px solid var(--line);text-align:center;font-size:14px;font-family:inherit;-moz-appearance:textfield}
 .so-qty-input::-webkit-outer-spin-button,.so-qty-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-.so-card-sub{margin-left:auto;font-size:12.5px;color:var(--ink3);font-variant-numeric:tabular-nums}
+.so-card-sub{margin-left:auto;font-size:12.5px;color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap;min-width:8.5em;text-align:right}
 .so-card-detail{display:none;grid-template-columns:1fr;gap:8px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
 .so-card.is-active .so-card-detail{display:grid}
 .so-card-detail label{font-size:12px;color:var(--ink4);display:block;margin-bottom:4px}
@@ -645,6 +650,11 @@
         ? '基本 ' + yen(item.base) + '＋' + yen(item.perUnit) + ' / ' + item.unit + (item.freeUnits ? '（' + item.freeUnits + item.unit + 'まで基本料）' : '')
         : yen(item.perUnit) + ' / ' + item.unit;
 
+      // 括弧の補足は1つの塊にして、その前で折り返す（「む）」だけが次の行に落ちないように）
+      var qtyLabel = item.qtyLabel || ('数量（' + item.unit + '）');
+      var qi = qtyLabel.indexOf('（');
+      if (qi > 0) qtyLabel = qtyLabel.slice(0, qi) + '<span class="so-nw">' + qtyLabel.slice(qi) + '</span>';
+
       card.innerHTML =
         '<div class="so-card-top">' +
           '<span class="so-card-name">' + item.name + '</span>' +
@@ -656,7 +666,7 @@
         (item.deadline ? '<p class="so-card-note so-card-due">期限 ' + item.deadline + '</p>' : '') +
         (item.note ? '<p class="so-card-note">' + item.note + '</p>' : '') +
         '<div class="so-qty-row">' +
-          '<span class="so-qty-label">' + (item.qtyLabel || ('数量（' + item.unit + '）')) + '</span>' +
+          '<span class="so-qty-label">' + qtyLabel + '</span>' +
           '<span class="so-qty-ctrl">' +
             '<button type="button" class="so-qty-btn" data-act="dec" aria-label="数量を減らす">－</button>' +
             '<input class="so-qty-input" type="number" inputmode="numeric" min="0" max="99" value="' + qty + '" aria-label="' + item.name + 'の数量">' +
