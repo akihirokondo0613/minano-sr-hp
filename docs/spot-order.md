@@ -15,7 +15,7 @@
 
 品目の税抜価格を直すときは `pricing.html` の `#spot-fees` を直し、`node scripts/sync-spot-items.mjs` を実行する。`data/spot-items.json` を手で編集しない（`--check` が落ちる）。
 
-## カートに入れられる23品目
+## カートに入れられる6品目（入社・退社・新規適用・36協定。2026-09-11 に絞った）
 
 就業規則の作成・改定、労務システムの導入支援、助成金の申請代行（成功報酬）はカート対象外で、`spot.html` からは `uploads/contact.html`（お見積りフォーム）へ誘導する。対象23品目のコード対応は `scripts/sync-spot-items.mjs` の `buildItems()` を参照。
 
