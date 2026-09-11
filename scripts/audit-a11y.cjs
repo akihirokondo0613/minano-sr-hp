@@ -20,6 +20,7 @@
  */
 
 const { chromium, webkit } = require('playwright');
+const { isForeignConsoleError } = require('./lib/console-origin.cjs');
 const fs = require('node:fs');
 const path = require('node:path');
 const { probeA11y } = require('./lib/a11y-probe.cjs');
@@ -435,6 +436,7 @@ async function auditEngine(engine, browserType, targetPages) {
           const errors = [];
           page.on('console', (m) => {
             if (m.type() !== 'error') return;
+            if (isForeignConsoleError(m, base)) return;
             const message = m.text();
             if (/goatcounter/.test(m.location().url || '')) return; // 自動ブラウザの計測は400で拒否される
             if (/Failed to load resource: A TLS error/.test(message)) return; // WebKitの外部計測通信

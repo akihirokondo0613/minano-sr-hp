@@ -10,6 +10,7 @@
  */
 
 const fs = require('node:fs');
+const { isForeignConsoleError } = require('./lib/console-origin.cjs');
 const path = require('node:path');
 const { chromium, webkit } = require('playwright');
 const { probeLineBreaks } = require('./lib/line-break-probe.cjs');
@@ -71,6 +72,7 @@ const upgradeInsecureMeta =
   /<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">/gi;
 
 function ignoreConsoleError(message) {
+  if (isForeignConsoleError(message, base)) return true;
   const location = message.location().url || '';
   const text = message.text();
   return /minano-sr\.goatcounter\.com\/count/.test(location)
