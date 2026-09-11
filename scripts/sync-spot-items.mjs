@@ -113,7 +113,7 @@ function setupFee(rows, name) {
  * 品目ごとの入力欄（注文ページのカードに出す）。GAS 側 Code.gs の 数量ラベル／DATE_ASK と同じ文言にする。
  *   qtyLabel  … 数量欄の見出し
  *   dateLabel … 日付欄の見出し（空なら日付欄を出さない。後の「送るものリスト」画面で聞く品目）
- *   person    … 氏名欄を出すか（1名単位の手続き・給付だけ。人数が多い年次業務や相談は出さない）
+ *   person    … 氏名欄を出すか（1名単位の手続きだけ。会社単位の新規適用・36協定は出さない）
  */
 const FIELDS = {
   H01: { qtyLabel: '対象者の人数', dateLabel: '入社日', person: true , deadline: '入社日から5日以内（雇用保険の資格取得は翌月10日まで）' },
