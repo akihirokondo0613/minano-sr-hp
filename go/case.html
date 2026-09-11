@@ -178,7 +178,8 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   var wasAllIn=null;   // 直前の recount で全部そろっていたか。null は開いた直後（初回の recount 前）
 
   // 説明文の中の URL（当事務所の様式など）だけリンクにする。ほかは文字のまま
-  function linkify(t){return esc(t).replace(/https:\/\/minano-sr\.com\/[^\s）)]+/g,function(u){return '<a href="'+u+'" target="_blank" rel="noopener">'+u+'</a>'})}
+  // dl を渡すと .xlsx のリンクに download 属性を付け、説明文のリンクから保存しても日本語の名前になる
+  function linkify(t,dl){return esc(t).replace(/https:\/\/minano-sr\.com\/[^\s）)]+/g,function(u){return (dl&&/\.xlsx$/.test(u))?'<a href="'+u+'" download="'+esc(dl)+'">'+u+'</a>':'<a href="'+u+'" target="_blank" rel="noopener">'+u+'</a>'})}
   function esc(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
   function yen(n){return Number(n||0).toLocaleString('ja-JP')+' 円'}
   function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.className='toast on';clearTimeout(t._h);t._h=setTimeout(function(){t.className='toast'},2600)}
@@ -213,7 +214,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     var h='<div class="row'+(stateClass(x.state)!=='todo'?' done':'')+'" data-mid="'+esc(g.matterId)+'" data-doc="'+esc(x.doc)+'" data-kind="'+esc(x.kind)+'" data-sec="'+(x.sec||30)+'">';
     h+='<div class="dn">'+esc(x.short)+(xl?'<span class="ph in">Excel</span>':info?'<span class="ph in">入力でも可</span>':'<span class="ph sub">提出書類</span>')+(xl?'':orig?'<span class="ph org">原本を郵送</span>':'<span class="ph">写真OK</span>')+'<button type="button" class="why" aria-label="説明を開く">説明</button></div>';
     if(x.cond)h+='<div class="cond">条件　'+esc(x.cond)+'</div>';
-    h+='<div class="det">'+linkify(x.detail)+(info?'<br>この資料は行政に出すものではなく、内容を確認するためのものです。お手元に無ければ「入力する」で項目を書いていただくか、同じことが分かる別の資料を送ってください。':'')+(orig?'<br>原本が必要な書類です。写真では代えられないので、下の宛先へ郵送してください。':'')+'</div>';
+    h+='<div class="det">'+linkify(x.detail,xl?xlName(x):'')+(info?'<br>この資料は行政に出すものではなく、内容を確認するためのものです。お手元に無ければ「入力する」で項目を書いていただくか、同じことが分かる別の資料を送ってください。':'')+(orig?'<br>原本が必要な書類です。写真では代えられないので、下の宛先へ郵送してください。':'')+'</div>';
     if(prev)h+='<div class="prev">前回いただいた分を使います'+(x.date?'（'+esc(x.date)+'）':'')+'。変わっていれば送り直してください。</div>';
     h+='<div class="rb">';
     if(xl&&xlUrl)h+='<a class="mini go dl" href="'+esc(xlUrl)+'" download="'+esc(xlName(x))+'">Excelをダウンロードする</a>';
