@@ -42,6 +42,8 @@ table.tbl{border-collapse:collapse;width:100%;font-size:14px}
 .tbl td,.tbl th{border-bottom:1px solid #F0F0EA;padding:9px 4px;vertical-align:top;text-align:left}
 .tbl td.n,.tbl th.n{text-align:right;white-space:nowrap}
 .tbl th{font-weight:700;color:var(--ink2);font-size:13px}
+/* 請求の表：見出しは1行に保ち、入金日などの長い値は折り返す（幅320pxで見出しが縦に崩れないように） */
+.tbl.bill th{white-space:nowrap}.tbl.bill td.n{white-space:normal}
 .small{font-size:12.5px;color:var(--ink3)}
 .sum{background:var(--paper);border:2px solid var(--g);border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:17px;font-weight:700;line-height:1.7}
 .sum .m{display:block;font-size:13px;font-weight:400;color:var(--ink2);margin-top:4px}
@@ -83,6 +85,7 @@ ul.dl li span{flex:1 1 auto;min-width:0;word-break:break-all}
 .mini{border:1.5px solid var(--line);background:var(--paper);color:var(--ink2);border-radius:6px;padding:8px 12px;font-size:13.5px;font-family:inherit;cursor:pointer;min-height:38px}
 .mini.go{border-color:var(--g);color:var(--g);font-weight:700}
 .mini:active{background:#F0F0EA}
+a.mini{display:inline-block;text-decoration:none;box-sizing:border-box;line-height:20px}
 .stt{margin-left:auto;font-size:12.5px;border-radius:4px;padding:3px 9px;border:1px solid var(--line);color:var(--ink3);white-space:nowrap}
 .stt.ok{background:#EAF3ED;border-color:#BFD9C8;color:var(--ok)}
 .stt.na{background:#F2F2EE}
@@ -161,6 +164,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   var ORDER=(qs.get('id')||'').toUpperCase(), TOKEN=qs.get('t')||'';
   var app=document.getElementById('app');
   var C=null, D=null, AN={}, Q=[], busy=false, sent=0, QS=[];
+  var wasAllIn=null;   // 直前の recount で全部そろっていたか。null は開いた直後（初回の recount 前）
 
   // 説明文の中の URL（当事務所の様式など）だけリンクにする。ほかは文字のまま
   function linkify(t){return esc(t).replace(/https:\/\/minano-sr\.com\/[^\s）)]+/g,function(u){return '<a href="'+u+'" target="_blank" rel="noopener">'+u+'</a>'})}
@@ -187,13 +191,19 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   function stateClass(s){ if(s==='出した'||s==='入力済'||s==='前回分'||s==='郵送')return 'ok'; if(s==='該当なし')return 'na'; if(s==='後日提出')return 'later'; return 'todo'; }
   function stateText(x){ if(x.state==='前回分')return '前回分を使用'; if(x.state==='郵送')return '郵送予定'; return x.state+(x.date?' '+x.date:''); }
   function rowHtml(g,x){
-    var info=x.kind==='info', orig=!x.photo, prev=x.state==='前回分', fl=x.fields?x.fields.split('|'):[], xl=/Excel|\.xlsx/.test(x.doc);
+    var info=x.kind==='info', orig=!x.photo, prev=x.state==='前回分', fl=x.fields?x.fields.split('|'):[];
+    // 記入用 Excel の置き場。説明の中にしか無いと、顧客は「？」を開くまで辿り着けない
+    var xlUrl=(String(x.doc||'').match(/https:\/\/minano-sr\.com\/[^\s）)]+\.xlsx/)||[''])[0];
+    // 受領フォームの行かどうかは、置き場があるかで決める。「Excel」という語で判定すると
+    // 説明文にその語が出てくるだけの行（対象者一覧など）まで xlsx 限定になる
+    var xl=!!xlUrl;
     var h='<div class="row'+(stateClass(x.state)!=='todo'?' done':'')+'" data-mid="'+esc(g.matterId)+'" data-doc="'+esc(x.doc)+'" data-kind="'+esc(x.kind)+'" data-sec="'+(x.sec||30)+'">';
     h+='<div class="dn">'+esc(x.short)+(xl?'<span class="ph in">Excel</span>':info?'<span class="ph in">入力でも可</span>':'<span class="ph sub">提出書類</span>')+(xl?'':orig?'<span class="ph org">原本を郵送</span>':'<span class="ph">写真OK</span>')+'<button type="button" class="why" aria-label="説明を開く">？</button></div>';
     if(x.cond)h+='<div class="cond">条件　'+esc(x.cond)+'</div>';
     h+='<div class="det">'+linkify(x.detail)+(info?'<br>この資料は行政に出すものではなく、内容を確認するためのものです。お手元に無ければ「入力する」で項目を書いていただくか、同じことが分かる別の資料を送ってください。':'')+(orig?'<br>原本が必要な書類です。写真では代えられないので、下の宛先へ郵送してください。':'')+'</div>';
     if(prev)h+='<div class="prev">前回いただいた分を使います'+(x.date?'（'+esc(x.date)+'）':'')+'。変わっていれば送り直してください。</div>';
     h+='<div class="rb">';
+    if(xl&&xlUrl)h+='<a class="mini go dl" href="'+esc(xlUrl)+'" download>Excelをダウンロードする</a>';
     if(orig)h+='<button type="button" class="mini go post">郵送します</button>';
     else h+='<button type="button" class="mini go pick">'+(xl?'記入したExcelを送る':prev?'変更あり（送り直す）':(info?'書類か代わりの資料を送る':'写真かPDFを送る'))+'</button>';
     if(info)h+='<button type="button" class="mini go inp">入力する</button>';
@@ -218,7 +228,10 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     if(q.help)h+='<div class="qh">'+esc(q.help)+'</div>';
     if(q.type==='choice'||q.type==='multi'){h+='<div class="ops">';var parts=(q.value||'').split('、');(q.options||[]).forEach(function(o){h+='<label class="op"><input type="'+(q.type==='choice'?'radio':'checkbox')+'" name="'+esc(q.id)+'" class="qv" value="'+esc(o)+'"'+(parts.indexOf(o)>=0?' checked':'')+'><span>'+esc(o)+'</span></label>'});h+='</div>'}
     if(q.type==='date')h+='<div class="num"><input type="date" class="qv" name="'+esc(q.id)+'" value="'+esc(q.value)+'"></div>';
-    if(q.type==='number')h+='<div class="num"><input type="number" class="qv" name="'+esc(q.id)+'" inputmode="numeric" step="1" value="'+esc(q.value)+'" style="width:9em"><span>'+esc(q.unit)+'</span></div>';
+    // 小数の要る設問（1週間の所定労働時間の 29.5 など）は step を渡す。
+    // step="1" のままだと入力できず、スマホでは小数点の出ないキーボードになる
+    if(q.type==='number'){var st=q.step||1;
+      h+='<div class="num"><input type="number" class="qv" name="'+esc(q.id)+'" inputmode="'+(st===1?'numeric':'decimal')+'" step="'+esc(String(st))+'" value="'+esc(q.value)+'" style="width:9em"><span>'+esc(q.unit)+'</span></div>';}
     if(q.type==='name')h+='<input type="text" class="qv" name="'+esc(q.id)+'" value="'+esc(q.value)+'" autocomplete="off" style="width:100%">';
     if(q.type==='text')h+='<textarea class="qv" name="'+esc(q.id)+'" style="min-height:70px">'+esc(q.value)+'</textarea>';
     return h+'</div>';
@@ -234,8 +247,12 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   }
   function docsHtml(){
     if(!D||!D.ok)return '';
+    // 2名以上の注文は Excel を書くのが主な仕事。「新しく作るものはありません」は嘘になる
+    var hasXl=(D.always||[]).concat(D.cond||[]).some(function(g){
+      return (g.list||[]).some(function(x){ return /https:\/\/minano-sr\.com\/[^\s）)]+\.xlsx/.test(x.doc||''); });
+    });
     var h='<h2 class="sec" id="docs">お送りいただくもの・お答えいただくこと</h2>';
-    h+='<div class="sum"><span id="sumcnt"><span class="nw">送るもの <span id="cRest">'+D.rest+'</span>点</span> ／ <span class="nw">答えること <span id="cMiss">'+D.missing+'</span>問</span> ／ <span class="nw">目安 <span id="cMin">3</span>分</span></span><b id="sumdone" hidden>すべて揃いました。下の「送信する」を押してください</b><span class="m">書類はスマホの写真で構いません。新しく作っていただくものはありません。'+(D.due?'提出期限 '+esc(D.due)+'。':'')+'途中でやめて、あとから同じリンクで続けられます。</span></div>';
+    h+='<div class="sum"><span id="sumcnt"><span class="nw">送るもの <span id="cRest">'+D.rest+'</span>点</span> ／ <span class="nw">答えること <span id="cMiss">'+D.missing+'</span>問</span> ／ <span class="nw">目安 <span id="cMin">3</span>分</span></span><b id="sumdone" hidden>すべて揃いました。下の「送信する」を押してください</b><span class="m">'+(hasXl?'Excel の受領フォームに、対象の方を全員分ご記入ください。ほかの書類はスマホの写真で構いません。':'書類はスマホの写真で構いません。新しく作っていただくものはありません。')+(D.due?'提出期限 '+esc(D.due)+'。':'')+'途中でやめて、あとから同じリンクで続けられます。</span></div>';
     h+='<p class="sub">「提出書類」は行政に出すもので、写真かPDFを送ってください。「入力でも可」のものは、書類の代わりに項目を入力するか、同じことが分かる別の資料でも結構です。御社に無いものは「該当なし」を押してください。押したその場で記録されます。</p>';
     if(D.always.length)h+='<div class="card"><h2>送るもの</h2>'+groupsHtml(D.always)+'</div>';
     if(D.cond.length){
@@ -260,16 +277,36 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     h+='<button class="btn" type="button" id="fin">送信する</button><p class="small" id="finnote" style="text-align:center;margin-top:8px">送るものが残っていても押せます。残りはあとから同じリンクで送れます。</p>';
     return h;
   }
+  // 注文内容の金額欄。state がある応答はそれに従い、無い古い応答は review の真偽で「確認中」
+  function itemAmt(it){
+    var st='state' in it?it.state:(it.review?'review':'');
+    if(st==='review')return '<span class="small">確認中</span>';
+    if(st==='declined')return '<span class="small">お受けできません</span>';
+    if(st==='cancelled')return '<span class="small">取消</span>';
+    return esc(yen(it.subtotal));
+  }
+  // 請求書1通分の表とボタン。label があればボタンに「（1通目）」と添える
+  function billOne(amount,payDue,paid,url,label){
+    return '<table class="tbl bill"><tr><th>ご請求額</th><td class="n">'+esc(yen(amount))+'</td></tr><tr><th>支払期限</th><td class="n">'+esc(payDue||'—')+'</td></tr><tr><th>ご入金</th><td class="n">'+esc(paid?paid+' に確認しました':'まだ確認できていません')+'</td></tr></table>'+(url?'<a class="btn sub2" href="'+esc(url)+'" target="_blank" rel="noopener">請求書を開く'+(label?'（'+esc(label)+'）':'')+'</a>':'');
+  }
+  function billHtml(){
+    // billing が null ＝まだ請求していない／取り下げた。金額も入金も出さず、説明だけ出す
+    if(C.billing===null)return '<p class="rest" style="margin:0">'+esc(C.billingNote||'まだご請求はありません。')+'</p>';
+    var inv=Array.isArray(C.invoices)?C.invoices:[];
+    if(inv.length>=2)return inv.map(function(v,k){return '<div class="grp"'+(k?' style="margin-top:22px"':'')+'>'+esc(v.label||((k+1)+'通目'))+'</div>'+billOne(v.amount,v.payDue,v.paid,v.url,v.label||((k+1)+'通目'))}).join('');
+    return billOne(C.billing,C.payDue,C.paid,C.invoiceUrl,'');
+  }
   function render(){
     var h='';
     h+='<div class="meta"><div class="co">'+esc(C.company)+'</div><div class="no">ご注文番号 '+esc(C.orderNo)+(C.orderDate?'　'+esc(C.orderDate)+' 注文':'')+'</div><div><span class="stage'+(C.alert?' alert':'')+'">'+esc(C.stage)+'</span></div>'+trackHtml()+'</div>';
     h+='<div class="next">次にすること<span class="m">'+esc(C.next)+'</span>';
-    if(C.canUpload)h+='<a class="btn" href="#docs">書類を送る・答える</a>';
+    // nextUpload がある応答はそれに従う。無い古い応答は canUpload のまま
+    if('nextUpload' in C?C.nextUpload:C.canUpload)h+='<a class="btn" href="#docs">書類を送る・答える</a>';
     if(C.canAck)h+='<a class="btn" href="#ack">公文書を受け取りました（受領確認）</a>';
     h+='</div>';
     if(C.stages.length>1){h+='<div class="card"><table class="tbl">';C.stages.forEach(function(s){h+='<tr><td>'+esc(s.name)+'</td><td class="n">'+esc(s.stage)+'</td></tr>'});h+='</table></div>'}
     h+='<div class="card"><h2>ご注文の内容</h2><table class="tbl">';
-    C.items.forEach(function(it){h+='<tr><td>'+esc(it.name)+'　'+esc(it.qty)+esc(it.unit)+(it.target||it.date?'<br><span class="small">'+esc([it.target?'対象 '+it.target:'',it.date].filter(String).join('　'))+'</span>':'')+(it.legalDue?'<br><span class="small">法定期限 '+esc(it.legalDue)+'</span>':'')+'</td><td class="n">'+(it.review?'<span class="small">確認中</span>':esc(yen(it.subtotal)))+'</td></tr>'});
+    C.items.forEach(function(it){h+='<tr><td>'+esc(it.name)+'　'+esc(it.qty)+esc(it.unit)+(it.target||it.date?'<br><span class="small">'+esc([it.target?'対象 '+it.target:'',it.date].filter(String).join('　'))+'</span>':'')+(it.legalDue?'<br><span class="small">法定期限 '+esc(it.legalDue)+'</span>':'')+'</td><td class="n">'+itemAmt(it)+'</td></tr>'});
     h+='<tr><th>合計（税抜）</th><th class="n">'+esc(yen(C.subtotal))+'</th></tr></table></div>';
     h+=docsHtml();
     h+='<h2 class="sec" id="deliv">お渡しした公文書</h2>';
@@ -280,7 +317,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     if(C.acked)h+='<div class="ackbox">受領のご確認をいただいています。ありがとうございました。</div>';
     else if(C.canAck)h+='<div class="card"><h2>受領のご確認</h2><p class="rest">公文書の内容をご確認のうえ、押してください。押すと担当者に伝わります。</p><button class="btn" type="button" id="ackbtn" style="margin-top:0">公文書を受け取りました</button></div>';
     h+='</div>';
-    h+='<h2 class="sec">請求と支払</h2><div class="card"><table class="tbl"><tr><th>ご請求額</th><td class="n">'+esc(yen(C.billing))+'</td></tr><tr><th>支払期限</th><td class="n">'+esc(C.payDue||'—')+'</td></tr><tr><th>ご入金</th><td class="n">'+esc(C.paid?C.paid+' に確認しました':'まだ確認できていません')+'</td></tr></table>'+(C.invoiceUrl?'<a class="btn sub2" href="'+esc(C.invoiceUrl)+'" target="_blank" rel="noopener">請求書を開く</a>':'')+'</div>';
+    h+='<h2 class="sec">請求と支払</h2><div class="card">'+billHtml()+'</div>';
     if(C.reorderUrl)h+='<h2 class="sec">次回のご注文</h2><p class="rest">会社情報の入力は要りません。前回いただいた就業規則などの資料は、変更がなければそのまま使います。</p><a class="btn sub2" href="'+esc(C.reorderUrl)+'">次回のご注文はこちら</a>';
     h+='<p class="foot">'+esc(C.office)+'<br>ご不明な点は '+esc(C.tel)+' / '+esc(C.mail)+'（平日9:00〜18:00）<br>このページは同じリンクから何度でも開けます。</p>';
     app.innerHTML=h;
@@ -314,14 +351,18 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     if(fin&&note){
       fin.classList.toggle('ready',allIn);
       note.textContent=allIn?'すべて揃いました。押していただくと担当者に届きます。':'送るものが残っていても押せます。残りはあとから同じリンクで送れます。';
-      if(allIn&&!fin.dataset.told){fin.dataset.told='1';toast('すべて揃いました。下の「送信する」を押してください');}
+      // トーストはこのページの操作で残りが0になったときだけ。開いた時点で0なら出さない
+      // （送信済みの相手が促されてもう一度押し、同じ受領メールが二重に届くのを防ぐ）
+      if(allIn&&wasAllIn===false&&!fin.dataset.told){fin.dataset.told='1';toast('すべて揃いました。下の「送信する」を押してください');}
     }
+    wasAllIn=allIn;
   }
+  // 記録のトーストを先に出してから recount する。逆だと「すべて揃いました」が上書きされて見えない
   function mark(row,state,date,content){
     var before={txt:row.querySelector('.stt').textContent,cls:row.querySelector('.stt').className.replace('stt ','')};
     var cls=stateClass(state);setStt(row,state+(date?' '+date:''),'busy');rowErr(row,'');
     api({act:'mark',matterId:row.dataset.mid,docName:row.dataset.doc,state:state,date:date||'',content:content||''})
-      .then(function(res){if(res&&res.ok){setStt(row,(state==='郵送'?'郵送予定':state)+(res.date?' '+res.date:''),cls);recount();toast(state==='該当なし'?'「該当なし」で記録しました':state==='後日提出'?'後日提出で記録しました':state==='郵送'?'郵送予定で記録しました':'入力内容を記録しました')}else{setStt(row,before.txt,before.cls);rowErr(row,(res&&res.error)||'記録できませんでした。もう一度お試しください。')}})
+      .then(function(res){if(res&&res.ok){setStt(row,(state==='郵送'?'郵送予定':state)+(res.date?' '+res.date:''),cls);toast(state==='該当なし'?'「該当なし」で記録しました':state==='後日提出'?'後日提出で記録しました':state==='郵送'?'郵送予定で記録しました':'入力内容を記録しました');recount()}else{setStt(row,before.txt,before.cls);rowErr(row,(res&&res.error)||'記録できませんでした。もう一度お試しください。')}})
       .catch(function(){setStt(row,before.txt,before.cls);rowErr(row,'通信に失敗しました。もう一度お試しください。')});
   }
   function getDoc(btn){
@@ -348,7 +389,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     var undo=function(msg){before.forEach(function(b){setStt(b.r,b.txt,b.cls)});btn.disabled=false;btn.textContent=orig;toast(msg)};
     api({act:'markall',state:'該当なし',docs:rows.map(function(r){return {matterId:r.dataset.mid,docName:r.dataset.doc}})})
       .then(function(res){
-        if(res&&res.ok){rows.forEach(function(r){setStt(r,'該当なし','na')});recount();btn.hidden=true;toast(res.count+'点を「該当なし」で記録しました。当てはまるものがあれば選び直せます')}
+        if(res&&res.ok){rows.forEach(function(r){setStt(r,'該当なし','na')});btn.hidden=true;toast(res.count+'点を「該当なし」で記録しました。当てはまるものがあれば選び直せます');recount()}
         else undo((res&&res.error)||'記録できませんでした。');
       })
       .catch(function(){undo('通信に失敗しました。もう一度お試しください。')});

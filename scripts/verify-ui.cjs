@@ -1,4 +1,5 @@
 const { chromium } = require('playwright');
+const { isForeignConsoleError } = require('./lib/console-origin.cjs');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -83,6 +84,7 @@ const viewports = [
 function recordConsoleError(target) {
   return msg => {
     if (msg.type() !== 'error') return;
+    if (isForeignConsoleError(msg, base)) return;
     const url = msg.location().url || 'unknown';
     // GoatCounterは自動ブラウザの計測リクエストを400で拒否する。画面機能とは無関係。
     if (/minano-sr\.goatcounter\.com\/count/.test(url)) return;

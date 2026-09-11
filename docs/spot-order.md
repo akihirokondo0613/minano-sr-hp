@@ -1,6 +1,6 @@
 # スポット注文ページ（spot.html）の直し方
 
-顧問契約のない方が、入社・退社の手続きや給付の申請、給与計算、労務相談などを1回ごとの固定料金で注文するページ。品目カード→会社情報フォーム→確認画面→送信→完了画面の一続きで、送信先はGoogle Apps Script（未接続）を想定している。
+顧問契約のない方が、入社・退社の手続き、会社設立時の新規適用、36協定の作成・届出を1回ごとの固定料金で注文するページ。品目カード→会社情報フォーム→確認画面（入力内容の見直し）→「この内容で注文する」→完了画面の一続き。送信先は受注システム（Google Apps Script のウェブアプリ。`SPOT_ENDPOINT`）で、送った時点で注文が確定し、完了画面に注文番号と案件ページのリンクが出る。
 
 ## 何がどこにあるか
 
@@ -8,21 +8,23 @@
 |---|---|
 | カート品目の正本 | `pricing.html` の `#spot-fees`（`.sf-row`） |
 | カート品目データ（生成物） | `data/spot-items.json` |
-| 品目データを作る | `scripts/sync-spot-items.mjs`（`--check` で差分検出。preflightに組み込み済み） |
-| 注文ページ本体 | `spot.html`（品目データはページ読み込み時に `fetch('data/spot-items.json')` する） |
+| 品目データを作る | `scripts/sync-spot-items.mjs`（`data/spot-items.json` と spot.html の埋め込みを両方書く。`--check` で差分検出。preflightに組み込み済み） |
+| 注文ページ本体 | `spot.html`（品目データは生成器がページ内の `<script id="spot-items">` に埋め込んだものを読む。埋め込みが無い・壊れているときだけ `fetch('data/spot-items.json')` する） |
 | 事業者情報・取引条件のページ | `tokutei.html` |
 | SPA遷移からの除外 | `page-enter.js` の `isSpotDest`（shoshiki と同じ理由：カートの状態をJSで持つため） |
 
-品目の税抜価格を直すときは `pricing.html` の `#spot-fees` を直し、`node scripts/sync-spot-items.mjs` を実行する。`data/spot-items.json` を手で編集しない（`--check` が落ちる）。
+品目の税抜価格を直すときは `pricing.html` の `#spot-fees` を直し、`node scripts/sync-spot-items.mjs` を実行する。`data/spot-items.json` と spot.html の `<!-- spot-items:start -->`〜`<!-- spot-items:end -->` の区間を手で編集しない（`--check` が落ちる）。
 
-## カートに入れられる23品目
+## カートに入れられる6品目（入社・退社・新規適用・36協定。2026-09-11 に絞った）
 
-就業規則の作成・改定、労務システムの導入支援、助成金の申請代行（成功報酬）はカート対象外で、`spot.html` からは `uploads/contact.html`（お見積りフォーム）へ誘導する。対象23品目のコード対応は `scripts/sync-spot-items.mjs` の `buildItems()` を参照。
+H01 入社手続き（資格取得届）・H05 会社設立時の新規適用手続き・H06 36協定の作成・届出・H02 退社手続き（資格喪失届）・H03 離職票の作成・H04 退社手続き＋離職票（同時）。コードと品目名・料金表の行の対応は `scripts/sync-spot-items.mjs` の `buildItems()`、入力欄は同じファイルの `FIELDS` が正本。受注システム（Apps Script の `Code.gs`）の `SPOT_WEB_CODES` も同じ6コードにそろえる（そこに無いコードの注文は赤フラグ「受付対象外の品目」で止まる）。
+
+給付の申請・年次業務・給与計算・相談は `pricing.html` の料金表には残るが、Web注文には出さない。就業規則の作成・改定、労務システムの導入支援、助成金の申請代行（成功報酬）はカート対象外で、`spot.html` からは `uploads/contact.html`（お見積りフォーム）へ誘導する。
 
 ## SPOT_ENDPOINT（送信先）の差し替え手順
 
-1. Google Apps Script 側でスプレッドシート受信・確認メール送信・確認リンク発行を行うウェブアプリを用意し、`{ok:true}` または `{ok:false, error:"..."}` を返すようにする（POST・`Content-Type: text/plain;charset=utf-8` で受ける）。
-2. デプロイして実行URL（`https://script.google.com/macros/s/.../exec`）を取得する。
+1. 受注システム（Apps Script の `web_order.gs` の `doPost`）は、注文 JSON を受けるとその場で確定し、`{ok:true, orderNo, items, subtotal, docDue, payDue, uploadUrl, statusUrl, underReview, next}` を返す。受け付けられないときは `{ok:false, error:"..."}` を返す（`error:"rejected"` のときは `message` に理由が入り、注文ページの送信失敗の欄に「理由：」として出る）。POST・`Content-Type: text/plain;charset=utf-8` で受ける。
+2. デプロイして実行URL（`https://script.google.com/a/macros/minano-sr.com/s/.../exec`。下の「exec URL は `/a/macros/minano-sr.com/` 形式で書く」を参照）を取得する。
 3. `spot.html` 内の `<script>` 冒頭にある定数を差し替える。
 
    ```js
@@ -32,11 +34,11 @@
    ↓
 
    ```js
-   var SPOT_ENDPOINT = 'https://script.google.com/macros/s/xxxxx/exec';
+   var SPOT_ENDPOINT = 'https://script.google.com/a/macros/minano-sr.com/s/xxxxx/exec';
    ```
 
 4. `SPOT_ENDPOINT` が `PLACEHOLDER` のままだと、確認画面の「この内容で注文する」を押した時点で送信を試みず、常にメール・電話の代替導線を表示する（本番運用前の事故防止）。
-5. 差し替え後、実際にテスト注文を送って `{ok:true}` が返ることと、確認メールが届くことを確認してから公開する。
+5. 差し替え後、実際にテスト注文を送り、完了画面に注文番号・「書類を送る」・「進み具合を見る（案件ページ）」が出ること、そのリンクで案件ページ（`go/case.html`）が開くことを確かめてから公開する。赤フラグの無い注文では受任のご案内メール（請求書PDF付き）も同時に出るので、届くことも確かめる（完了画面はメールが届かなくても先へ進める作り）。
 
 ## 送信するJSON
 
@@ -48,16 +50,16 @@ GoatCounterへ「カート追加」「注文送信」「送信失敗」の3イ�
 
 ## 利用規約
 
-`spot.html` の確認画面では、利用規約を「準備中・注文確認メールに添付」として案内している。利用規約のページを公開したら、リンク先を差し替える。
+`spot.html` の確認画面では、利用規約を「準備中・注文確認メールに添付します」として案内している。ここでいう注文確認メールは、受任したときに受注システムが送る受任のご案内（請求書PDF付き。Script Properties の `TERMS_PDF_ID` があれば利用規約PDFを添付し、未設定なら添付せず `TERMS_URL` のURLだけ載せる）のことで、v23 で廃止した「リンクを押して注文を成立させる確認メール」とは別物。利用規約のページを公開したら、リンク先を差し替える。
 
 ## メールのリンク入口 `go/index.html`
 受注システムが顧客へ送るメールのリンクは `https://minano-sr.com/go/?a=…&id=…&t=…` を入口にする（`script.google.com` のURLを直書きしたメールが Gmail 宛で 5.7.1 拒否された 2026-09-10 の対策）。受注システム v23 からは Apps Script が画面を持たないので、`go/index.html` は `a=st/up/ack` を含むすべてのリンクを `case.html?id=&t=`（up は `#docs`、ack は `#ack`）へ振り分ける。id か t が無ければスポット注文ページへ案内する。検索対象外（robots.txt で `/go/` を除外、noindex）。
 
 ## 注文の確定は画面上で行う（2026-09-10 以降）
-GAS の doPost は保留注文を積んだ直後に確定まで進め、JSON で `orderNo / items / subtotal / docDue / payDue / uploadUrl / statusUrl / underReview` を返す。spot.html の完了画面（`renderDone`）はこれをそのまま表示するので、確認メールが迷惑メール行きでも顧客は「書類を送る」「案件ページ」へ進める。確認メール方式（旧 `AUTO_CONFIRM=0`）は v23 で削除した。
+GAS の doPost は保留注文を積んだ直後に確定まで進め、JSON で `orderNo / items / subtotal / docDue / payDue / uploadUrl / statusUrl / underReview / next` を返す。spot.html の完了画面（`renderDone`）はこれをそのまま表示するので、受任のご案内メールが迷惑メール行きでも顧客は「書類を送る」「案件ページ」へ進める。確認メール方式（旧 `AUTO_CONFIRM=0`）は v23 で削除した。
 
 ## 品目カードの入力欄
-`scripts/sync-spot-items.mjs` の `FIELDS`（qtyLabel／dateLabel／person）が正本。GAS 側 Code.gs の 数量ラベル・DATE_ASK と同じ文言にしておく。dateLabel が空の品目（G03/G04/G05/S02/S03）は日付欄を出さない。person=false の品目（会社設立・労使協定・給与計算・年次・研修・相談）は氏名欄を出さない。
+`scripts/sync-spot-items.mjs` の `FIELDS`（qtyLabel／dateLabel／person／deadline）が正本。GAS 側 Code.gs の 数量ラベル・DATE_ASK と同じ文言にしておく。dateLabel が空の品目は日付欄を出さないが、今の6品目はすべて日付欄がある（入社日・適用事業所となった日・協定の起算日・退職日）。person=false の品目（H05 会社設立時の新規適用・H06 36協定）は氏名欄を出さず、H01〜H04 は出す。
 
 ## exec URL は `/a/macros/minano-sr.com/` 形式で書く
 `https://script.google.com/a/macros/minano-sr.com/s/<ID>/exec`。素の `/macros/s/<ID>/exec` は、複数の Google アカウントにログインしているブラウザで `/macros/u/1/s/…` に書き換えられ「ページが見つかりません（現在、ファイルを開くことができません）」になる（2026-09-10 に本人の環境で発生）。Google の案内（Workspace は `a/<ドメイン>/` を挟む）に従う。spot.html の SPOT_ENDPOINT（go/index.html は v23 から exec を参照しない）。
@@ -70,6 +72,7 @@ GAS の doPost は保留注文を積んだ直後に確定まで進め、JSON で
 
 ## 案件ページ `go/case.html`（2026-09-10・第1段）
 顧客が開くページは1つ。`?id=<注文番号>&t=<署名>` で受注システムの `?a=case` から全データを1回で取り、進み具合・次にすること・ご注文の内容・送るもの／答えること（#docs）・公文書・請求と支払・受領確認（#ack・POST act=ack）・次回の注文を描画する。go/docs.html は case.html#docs へ転送、go/index.html は a=st/up/ack を case.html へ振り分ける。担当者側は台帳のプルダウンのみ（受注システム v22）。
+`a=case` の任意欄（無ければ従来表示）：`billing:null`＋`billingNote`＝未請求／取下げで金額・入金を出さない、`invoices`（2通以上）＝請求書ごとに行を分ける、`items[].state`（review／declined／cancelled）＝金額欄の表示、`nextUpload`＝「次にすること」の書類ボタン（無ければ canUpload）。「すべて揃いました」のトーストはページ上の操作で残り0になったときだけ出す。
 
 ## 案件ページの質問の折りたたみ（2026-09-10）
 `go/case.html` の「お答えいただくこと」は、必須の質問・答えによって出る追加質問・すでに答えのある質問だけを開いて出し、任意の質問は「あれば助かること（任意・N問）」の折りたたみに入れる。答える数を少なく見せるためで、データ（`?a=updata` の `qgroups`）は変えていない。
@@ -84,5 +87,7 @@ GAS の doPost は保留注文を積んだ直後に確定まで進め、JSON で
 | K01・K02 出産手当金・育休給付初回 | `go/xlsx/sanikukyu-juryo-form.xlsx` |
 | K08 傷病手当金 | `go/xlsx/shobyo-juryo-form.xlsx` |
 | K09 労災 | `go/xlsx/rosai-juryo-form.xlsx` |
+
+Web注文（2026-09-11 から6品目）で使うのは入社・退社の2本（H01〜H04）。給付用の3本（K01・K02／K08／K09）は受注システム（`Code.gs`）の対応表に残っているが、今の注文ページからは注文できない。
 
 正本は `11_🧩 事務所サービス/01_スポット業務/書式/受領フォーム/`（元は業務本体の `02_情報回収・受領フォーム`。事務所名と連絡先を差し込んだ顧客配布版）。差し替えたら ASCII 名でここへコピーする（日本語名の URL は自動リンクで切れる）。`/go/` は robots.txt で Disallow、sitemap・IndexNow の対象外。案件ページは書類名に `Excel` を含む行を「記入したExcelを送る」ボタン（.xlsx のみ受け付け）で描く。送られた Excel は受注システム側で個人番号フォルダに保存する（マイナンバー列を含みうるため）。

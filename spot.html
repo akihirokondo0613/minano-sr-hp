@@ -6,14 +6,14 @@
 <script defer src="page-enter.js?v=20260910-spotorder1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>スポット注文｜1回からの手続き・相談依頼｜みなの社会保険労務士事務所</title>
-<meta name="description" content="顧問契約なしで、入社・退社の手続き、給付の申請、給与計算、労務相談などを1回ごとに固定料金でご注文いただけます。品目を選んで数量を入れると合計金額が自動計算されます。">
+<title>スポット注文｜1回からの手続き依頼｜みなの社会保険労務士事務所</title>
+<meta name="description" content="顧問契約なしで、入社・退社の手続き、会社設立時の新規適用、36協定の作成・届出を1回ごとに固定料金でご注文いただけます。品目を選んで数量を入れると合計金額が自動計算されます。">
 
 <link rel="canonical" href="https://minano-sr.com/spot.html">
 <meta property="og:url" content="https://minano-sr.com/spot.html">
 <meta property="og:type" content="website">
-<meta property="og:title" content="スポット注文｜1回からの手続き・相談依頼｜みなの社会保険労務士事務所">
-<meta property="og:description" content="顧問契約なしで、入社・退社の手続き、給付の申請、給与計算、労務相談などを1回ごとに固定料金でご注文いただけます。">
+<meta property="og:title" content="スポット注文｜1回からの手続き依頼｜みなの社会保険労務士事務所">
+<meta property="og:description" content="顧問契約なしで、入社・退社の手続き、会社設立時の新規適用、36協定の作成・届出を1回ごとに固定料金でご注文いただけます。">
 <meta property="og:site_name" content="みなの社会保険労務士事務所">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://minano-sr.com/assets/og/minano-og.png">
@@ -33,8 +33,8 @@
       "@type": "WebPage",
       "@id": "https://minano-sr.com/spot.html#webpage",
       "url": "https://minano-sr.com/spot.html",
-      "name": "スポット注文｜1回からの手続き・相談依頼｜みなの社会保険労務士事務所",
-      "description": "顧問契約なしで、入社・退社の手続き、給付の申請、給与計算、労務相談などを1回ごとに固定料金でご注文いただけます。",
+      "name": "スポット注文｜1回からの手続き依頼｜みなの社会保険労務士事務所",
+      "description": "顧問契約なしで、入社・退社の手続き、会社設立時の新規適用、36協定の作成・届出を1回ごとに固定料金でご注文いただけます。",
       "isPartOf": {"@id": "https://minano-sr.com/#website"},
       "publisher": {"@id": "https://minano-sr.com/#office"},
       "inLanguage": "ja-JP"
@@ -69,15 +69,23 @@
 .so-card-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
 .so-card-name{font-family:var(--disp);font-weight:700;font-size:15px;color:var(--iwa);line-height:1.6;min-width:0}
 .so-card-price{font-family:var(--mono);font-size:13px;color:var(--moegi-t);white-space:nowrap;font-weight:700}
+/* 幅の狭い携帯では値段を名前の下の1行にして折り返す（新規適用の長い値段がカードからはみ出すため。2026-09-11） */
+/* 携帯では、数量の名前を1行目、−／＋と小計を2行目に置く。どのカードでも＋が同じ位置に来て、数を増やしても並びが変わらない。
+   .so-qty-label の既定（flex:1 1 auto）が後ろにあるので、詳しさを1段上げて勝たせる */
+@media (max-width:480px){.so-card-price{white-space:normal;flex-basis:100%}.so-qty-row .so-qty-label{flex-basis:100%}}
+/* 幅340px以下は2行目に−／＋と小計が並ばない（6桁で小計が落ちる）。初めから3行目に置き、押しても並びを変えない */
+@media (max-width:340px){.so-qty-row .so-card-sub{flex-basis:100%}}
 .so-card-note{font-size:12.5px;color:var(--ink4);line-height:1.75;margin-top:6px}
-.so-qty-row{display:flex;align-items:center;gap:10px;margin-top:12px}
-.so-qty-label{font-size:12.5px;color:var(--ink3);flex-shrink:0}
-.so-qty-ctrl{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:999px;overflow:hidden}
+.so-card-due{color:var(--ink3);font-weight:600}
+.so-qty-row{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.so-qty-label{font-size:12.5px;color:var(--ink3);flex:1 1 auto;min-width:min(100%,7em)}
+.so-nw{white-space:nowrap}
+.so-qty-ctrl{flex-shrink:0;display:flex;align-items:center;border:1.5px solid var(--line);border-radius:999px;overflow:hidden}
 .so-qty-btn{width:32px;height:32px;display:grid;place-items:center;background:var(--g25);border:0;font-size:17px;color:var(--ink2);cursor:pointer}
 .so-qty-btn:hover{background:var(--g100)}
 .so-qty-input{width:48px;height:32px;border:0;border-left:1px solid var(--line);border-right:1px solid var(--line);text-align:center;font-size:14px;font-family:inherit;-moz-appearance:textfield}
 .so-qty-input::-webkit-outer-spin-button,.so-qty-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-.so-card-sub{margin-left:auto;font-size:12.5px;color:var(--ink3);font-variant-numeric:tabular-nums}
+.so-card-sub{margin-left:auto;font-size:12.5px;color:var(--ink3);font-variant-numeric:tabular-nums;white-space:nowrap;min-width:8.5em;text-align:right}
 .so-card-detail{display:none;grid-template-columns:1fr;gap:8px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
 .so-card.is-active .so-card-detail{display:grid}
 .so-card-detail label{font-size:12px;color:var(--ink4);display:block;margin-bottom:4px}
@@ -189,8 +197,8 @@
   <div class="page-hero-inner">
     <nav class="breadcrumb"><a href="/">ホーム</a><span class="sep">›</span><span>スポット注文</span></nav>
     <div class="page-label">Spot Order</div>
-    <h1 class="page-h">1回だけの<wbr>手続き・相談を、<br><strong>その場で注文。</strong></h1>
-    <p class="so-hero-lead">顧問契約が<wbr>なくても、<wbr>入社・退社の<wbr>手続きや<wbr>給付の<wbr>申請、<wbr>給与計算、<wbr>労務相談を<wbr>1回ごとの<wbr>固定料金で<wbr>ご依頼いただけます。<wbr>品目を<wbr>選んで<wbr>数量を<wbr>入れると、<wbr>合計金額が<wbr>その場で<wbr>計算されます。<wbr>表示価格は<wbr>すべて<wbr>税抜です。</p>
+    <h1 class="page-h">1回だけの<wbr>手続きを、<br><strong>その場で注文。</strong></h1>
+    <p class="so-hero-lead">顧問契約が<wbr>なくても、<wbr>入社・退社の<wbr>手続き、<wbr>会社設立時の<wbr>新規適用、36協定の<wbr>作成・<wbr>届出を<wbr>1回ごとの<wbr>固定料金で<wbr>ご依頼いただけます。<wbr>品目を<wbr>選んで<wbr>数量を<wbr>入れると、<wbr>合計金額が<wbr>その場で<wbr>計算されます。<wbr>表示価格は<wbr>すべて<wbr>税抜です。</p>
   </div>
 </header>
 
@@ -452,7 +460,9 @@
       "base": 0,
       "perUnit": 10000,
       "freeUnits": 0,
-      "note": "",
+      "desc": "健康保険・厚生年金・雇用保険の取得手続きをセットで。扶養届も同時に対応します。",
+      "note": "まだ社会保険・雇用保険に加入していない会社は「会社設立時の新規適用手続き」もお選びください。分からなければ、そのままご注文ください。こちらで確かめます。",
+      "deadline": "入社日から5日以内（雇用保険の資格取得は翌月10日まで）",
       "qtyLabel": "対象者の人数",
       "dateLabel": "入社日",
       "person": true
@@ -465,20 +475,24 @@
       "base": 60000,
       "perUnit": 2000,
       "freeUnits": 5,
+      "desc": "労働保険・雇用保険・社会保険の新規加入3保険一式。",
       "note": "5名までは基本料に含みます。6名目から加算します。",
+      "deadline": "適用事業所となった日から5日以内",
       "qtyLabel": "加入する従業員の人数（5名まで基本料金に含む）",
       "dateLabel": "適用事業所となった日",
       "person": false
     },
     {
       "code": "H06",
-      "name": "労使協定の作成・届出（36協定など）",
+      "name": "36協定の作成・届出",
       "category": "入社",
       "unit": "事業所",
       "base": 0,
       "perUnit": 20000,
       "freeUnits": 0,
-      "note": "",
+      "desc": "協定書の作成から労働基準監督署への届出まで。",
+      "note": "事業所ごとに1件です。本社と支店で別に届け出ている会社は、その数をご指定ください。",
+      "deadline": "",
       "qtyLabel": "事業所の数",
       "dateLabel": "協定の起算日",
       "person": false
@@ -491,7 +505,9 @@
       "base": 0,
       "perUnit": 10000,
       "freeUnits": 0,
-      "note": "",
+      "desc": "健康保険・厚生年金・雇用保険の喪失手続きをセットで。",
+      "note": "離職票（雇用保険の給付を受けるための書類）が要る方は「退社手続き＋離職票（同時）」をお選びください。59歳以上の方は、本人の希望にかかわらず離職票が必要です。",
+      "deadline": "退職日の翌日から5日以内",
       "qtyLabel": "対象者の人数",
       "dateLabel": "退職日",
       "person": true
@@ -504,7 +520,9 @@
       "base": 0,
       "perUnit": 10000,
       "freeUnits": 0,
+      "desc": "離職証明書の作成・提出まで。",
       "note": "退社手続きと同時にご依頼の場合は「退社手続き＋離職票（同時）」をお選びください。",
+      "deadline": "退職日の翌々日から10日以内",
       "qtyLabel": "対象者の人数",
       "dateLabel": "退職日",
       "person": true
@@ -517,231 +535,12 @@
       "base": 0,
       "perUnit": 15000,
       "freeUnits": 0,
-      "note": "",
+      "desc": "",
+      "note": "離職票が要らない方は「退社手続き（資格喪失届）」だけで足ります。",
+      "deadline": "退職日の翌日から5日以内（離職票は翌々日から10日以内）",
       "qtyLabel": "対象者の人数",
       "dateLabel": "退職日",
       "person": true
-    },
-    {
-      "code": "K01",
-      "name": "出産手当金の支給申請",
-      "category": "給付の申請",
-      "unit": "名",
-      "base": 0,
-      "perUnit": 15000,
-      "freeUnits": 0,
-      "note": "",
-      "qtyLabel": "対象者の人数",
-      "dateLabel": "出産日（予定日）",
-      "person": true
-    },
-    {
-      "code": "K02",
-      "name": "育児休業給付の申請（初回）",
-      "category": "給付の申請",
-      "unit": "名",
-      "base": 0,
-      "perUnit": 20000,
-      "freeUnits": 0,
-      "note": "",
-      "qtyLabel": "対象者の人数",
-      "dateLabel": "育児休業開始日",
-      "person": true
-    },
-    {
-      "code": "K03",
-      "name": "育児休業給付の申請（2回目以降）",
-      "category": "給付の申請",
-      "unit": "回",
-      "base": 0,
-      "perUnit": 5000,
-      "freeUnits": 0,
-      "note": "",
-      "qtyLabel": "申請する回数",
-      "dateLabel": "今回申請する期間の開始日",
-      "person": true
-    },
-    {
-      "code": "K04",
-      "name": "高年齢雇用継続給付の申請（初回）",
-      "category": "給付の申請",
-      "unit": "名",
-      "base": 0,
-      "perUnit": 20000,
-      "freeUnits": 0,
-      "note": "",
-      "qtyLabel": "対象者の人数",
-      "dateLabel": "60歳に達した日",
-      "person": true
-    },
-    {
-      "code": "K05",
-      "name": "高年齢雇用継続給付の申請（継続）",
-      "category": "給付の申請",
-      "unit": "回",
-      "base": 0,
-      "perUnit": 5000,
-      "freeUnits": 0,
-      "note": "",
-      "qtyLabel": "申請する回数",
-      "dateLabel": "今回申請する月の初日",
-      "person": true
-    },
-    {
-      "code": "K06",
-      "name": "介護休業給付の申請（初回）",
-      "category": "給付の申請",
-      "unit": "名",
-      "base": 0,
-      "perUnit": 20000,
-      "freeUnits": 0,
-      "note": "",
-      "qtyLabel": "対象者の人数",
-      "dateLabel": "介護休業の開始日",
-      "person": true
-    },
-    {
-      "code": "K07",
-      "name": "介護休業給付の申請（2回目以降）",
-      "category": "給付の申請",
-      "unit": "回",
-      "base": 0,
-      "perUnit": 5000,
-      "freeUnits": 0,
-      "note": "",
-      "qtyLabel": "申請する回数",
-      "dateLabel": "今回の介護休業の開始日",
-      "person": true
-    },
-    {
-      "code": "K08",
-      "name": "傷病手当金の支給申請（初回）",
-      "category": "給付の申請",
-      "unit": "名",
-      "base": 0,
-      "perUnit": 15000,
-      "freeUnits": 0,
-      "note": "",
-      "qtyLabel": "対象者の人数",
-      "dateLabel": "仕事を休み始めた日",
-      "person": true
-    },
-    {
-      "code": "K09",
-      "name": "労災保険給付の申請（初回一式）",
-      "category": "給付の申請",
-      "unit": "件",
-      "base": 0,
-      "perUnit": 30000,
-      "freeUnits": 0,
-      "note": "",
-      "qtyLabel": "件数",
-      "dateLabel": "災害が起きた日",
-      "person": true
-    },
-    {
-      "code": "G01",
-      "name": "単発の給与・賞与計算",
-      "category": "年次",
-      "unit": "名",
-      "base": 20000,
-      "perUnit": 1500,
-      "freeUnits": 0,
-      "note": "",
-      "qtyLabel": "対象者の人数（1回あたり）",
-      "dateLabel": "給与（賞与）の支給日",
-      "person": false
-    },
-    {
-      "code": "G02",
-      "name": "賞与支払届",
-      "category": "年次",
-      "unit": "名",
-      "base": 20000,
-      "perUnit": 1500,
-      "freeUnits": 0,
-      "note": "",
-      "qtyLabel": "対象者の人数（1回あたり）",
-      "dateLabel": "賞与の支払日",
-      "person": false
-    },
-    {
-      "code": "G03",
-      "name": "年末調整の資料整理・税理士連携",
-      "category": "年次",
-      "unit": "名",
-      "base": 20000,
-      "perUnit": 1500,
-      "freeUnits": 0,
-      "note": "",
-      "qtyLabel": "従業員の人数",
-      "dateLabel": "",
-      "person": false
-    },
-    {
-      "code": "G04",
-      "name": "労働保険の年度更新",
-      "category": "年次",
-      "unit": "名",
-      "base": 25000,
-      "perUnit": 1000,
-      "freeUnits": 0,
-      "note": "",
-      "qtyLabel": "対象者の人数（1回あたり）",
-      "dateLabel": "",
-      "person": false
-    },
-    {
-      "code": "G05",
-      "name": "算定基礎届の提出",
-      "category": "年次",
-      "unit": "名",
-      "base": 25000,
-      "perUnit": 1000,
-      "freeUnits": 0,
-      "note": "",
-      "qtyLabel": "対象者の人数（1回あたり）",
-      "dateLabel": "",
-      "person": false
-    },
-    {
-      "code": "S01",
-      "name": "管理職研修・ハラスメント研修",
-      "category": "相談",
-      "unit": "コマ",
-      "base": 0,
-      "perUnit": 30000,
-      "freeUnits": 0,
-      "note": "1コマ60分の料金です。",
-      "qtyLabel": "実施コマ数（1コマ60分）",
-      "dateLabel": "希望日",
-      "person": false
-    },
-    {
-      "code": "S02",
-      "name": "スポット労務相談（60分）",
-      "category": "相談",
-      "unit": "回",
-      "base": 0,
-      "perUnit": 10000,
-      "freeUnits": 0,
-      "note": "ご注文後、担当者が内容を確認のうえ受任します。事前のお問い合わせは不要です。",
-      "qtyLabel": "回数",
-      "dateLabel": "",
-      "person": false
-    },
-    {
-      "code": "S03",
-      "name": "労務トラブルの初動整理",
-      "category": "相談",
-      "unit": "件",
-      "base": 0,
-      "perUnit": 30000,
-      "freeUnits": 0,
-      "note": "",
-      "qtyLabel": "件数",
-      "dateLabel": "",
-      "person": false
     }
   ]
 }
@@ -771,7 +570,8 @@
 (function(){
   'use strict';
   var SPOT_ENDPOINT = 'https://script.google.com/a/macros/minano-sr.com/s/AKfycbyMbrQKhAhE0B_gyDHL6yhowdB1ulDl2QYtc-5jYR40iPtRjVs6GjC_i6sMDzF-7hc/exec';
-  var CATEGORIES = ['入社','退社','給付の申請','年次','相談'];
+  // 品目の区分と一致させる（空の区分もタブとして描くため）。ハーネスが両方向で突き合わせる
+  var CATEGORIES = ['入社','退社'];
   var MAX_ITEMS = 20;
 
   var state = { items: [], cart: {}, detail: {}, activeCategory: CATEGORIES[0] };
@@ -850,14 +650,23 @@
         ? '基本 ' + yen(item.base) + '＋' + yen(item.perUnit) + ' / ' + item.unit + (item.freeUnits ? '（' + item.freeUnits + item.unit + 'まで基本料）' : '')
         : yen(item.perUnit) + ' / ' + item.unit;
 
+      // 括弧の補足は1つの塊にして、その前で折り返す（「む）」だけが次の行に落ちないように）
+      var qtyLabel = item.qtyLabel || ('数量（' + item.unit + '）');
+      var qi = qtyLabel.indexOf('（');
+      if (qi > 0) qtyLabel = qtyLabel.slice(0, qi) + '<span class="so-nw">' + qtyLabel.slice(qi) + '</span>';
+
       card.innerHTML =
         '<div class="so-card-top">' +
           '<span class="so-card-name">' + item.name + '</span>' +
           '<span class="so-card-price">' + priceLabel + '</span>' +
         '</div>' +
+        // desc＝この品目が何をするか（料金ページが正本）。note＝どれを選べばよいかの案内
+        (item.desc ? '<p class="so-card-note">' + item.desc + '</p>' : '') +
+        // 法定の期限は選ぶ場所で伝える。5日以内の手続きは、知らないと間に合わない
+        (item.deadline ? '<p class="so-card-note so-card-due">期限 ' + item.deadline + '</p>' : '') +
         (item.note ? '<p class="so-card-note">' + item.note + '</p>' : '') +
         '<div class="so-qty-row">' +
-          '<span class="so-qty-label">' + (item.qtyLabel || ('数量（' + item.unit + '）')) + '</span>' +
+          '<span class="so-qty-label">' + qtyLabel + '</span>' +
           '<span class="so-qty-ctrl">' +
             '<button type="button" class="so-qty-btn" data-act="dec" aria-label="数量を減らす">－</button>' +
             '<input class="so-qty-input" type="number" inputmode="numeric" min="0" max="99" value="' + qty + '" aria-label="' + item.name + 'の数量">' +
@@ -867,7 +676,10 @@
         '</div>' +
         '<div class="so-card-detail">' +
           (item.dateLabel
-            ? '<div><label>' + item.dateLabel + '（分かれば）</label><input type="date" data-field="発生日" value="' + ((state.detail[item.code] && state.detail[item.code]['発生日']) || '') + '"></div>'
+            ? '<div><label>' + item.dateLabel +
+              // 2名以上でも日付の欄は1つ。いちばん早い方を入れてもらわないと法定期限が緩くなる
+              (item.person && qty >= 2 ? '（いちばん早い方。分かれば）' : '（分かれば）') +
+              '</label><input type="date" data-field="発生日" value="' + ((state.detail[item.code] && state.detail[item.code]['発生日']) || '') + '"></div>'
             : '') +
           (item.person
             ? '<div><label>' + (item.unit === '名' ? '対象の方の氏名（分かれば。複数は「ほか○名」）' : '対象の方の氏名（分かれば）') + '</label><input type="text" data-field="対象者" placeholder="例：山田 太郎" value="' + ((state.detail[item.code] && state.detail[item.code]['対象者']) || '') + '"></div>'
@@ -1130,8 +942,12 @@
         up.textContent = '書類を送る（' + n.docs + '点・答えること' + n.asks + '問・約' + n.minutes + '分）';
       }
     } else {
-      // 旧方式（メール確認）の応答
-      lead.textContent = '確認メールを送りました。届いたメールの中のリンクを押していただくと、お申し込みが成立します（有効期限は7日間）。';
+      // 注文番号が返らなかったとき（ハニーポットに引っかかった送信など）。
+      // 以前はここで「確認メールを送りました。リンクを押すと成立します」と出していたが、
+      // その確認メールの仕組みは v23 で消えている。万一ふつうのお客様がここに来ると、
+      // 来ないメールを7日間待つことになるので、気づける言い方にする。
+      lead.textContent = '注文の送信を受け付けました。数分たっても「受任のご案内」のメールが届かないときは、'
+        + 'お手数ですが 076-460-2562（平日9:00〜18:00）へお電話ください。';
       up.hidden = true;
     }
     st.hidden = !data.statusUrl;

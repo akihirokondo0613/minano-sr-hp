@@ -8,7 +8,7 @@
  *   node scripts/sync-spot-items.mjs --check   差分があれば失敗（公開前チェック用）
  *
  * なぜ要るのか:
- *   spot.html でカートに入れられる23品目の価格を手で書くと、pricing.html の
+ *   spot.html でカートに入れられる品目の価格を手で書くと、pricing.html の
  *   料金改定と必ずずれる。正本は pricing.html の1つに保ち、ここで数値を
  *   抽出して data/spot-items.json を作る。spot.html は実行時にこのJSONを
  *   fetch して読む（価格をHTMLに埋め込まない）。
@@ -113,81 +113,59 @@ function setupFee(rows, name) {
  * 品目ごとの入力欄（注文ページのカードに出す）。GAS 側 Code.gs の 数量ラベル／DATE_ASK と同じ文言にする。
  *   qtyLabel  … 数量欄の見出し
  *   dateLabel … 日付欄の見出し（空なら日付欄を出さない。後の「送るものリスト」画面で聞く品目）
- *   person    … 氏名欄を出すか（1名単位の手続き・給付だけ。人数が多い年次業務や相談は出さない）
+ *   person    … 氏名欄を出すか（1名単位の手続きだけ。会社単位の新規適用・36協定は出さない）
  */
 const FIELDS = {
-  H01: { qtyLabel: '対象者の人数', dateLabel: '入社日', person: true },
-  H05: { qtyLabel: '加入する従業員の人数（5名まで基本料金に含む）', dateLabel: '適用事業所となった日', person: false },
+  H01: { qtyLabel: '対象者の人数', dateLabel: '入社日', person: true , deadline: '入社日から5日以内（雇用保険の資格取得は翌月10日まで）' },
+  H05: { qtyLabel: '加入する従業員の人数（5名まで基本料金に含む）', dateLabel: '適用事業所となった日', person: false , deadline: '適用事業所となった日から5日以内' },
   H06: { qtyLabel: '事業所の数', dateLabel: '協定の起算日', person: false },
-  H02: { qtyLabel: '対象者の人数', dateLabel: '退職日', person: true },
-  H03: { qtyLabel: '対象者の人数', dateLabel: '退職日', person: true },
-  H04: { qtyLabel: '対象者の人数', dateLabel: '退職日', person: true },
-  K01: { qtyLabel: '対象者の人数', dateLabel: '出産日（予定日）', person: true },
-  K02: { qtyLabel: '対象者の人数', dateLabel: '育児休業開始日', person: true },
-  K03: { qtyLabel: '申請する回数', dateLabel: '今回申請する期間の開始日', person: true },
-  K04: { qtyLabel: '対象者の人数', dateLabel: '60歳に達した日', person: true },
-  K05: { qtyLabel: '申請する回数', dateLabel: '今回申請する月の初日', person: true },
-  K06: { qtyLabel: '対象者の人数', dateLabel: '介護休業の開始日', person: true },
-  K07: { qtyLabel: '申請する回数', dateLabel: '今回の介護休業の開始日', person: true },
-  K08: { qtyLabel: '対象者の人数', dateLabel: '仕事を休み始めた日', person: true },
-  K09: { qtyLabel: '件数', dateLabel: '災害が起きた日', person: true },
-  G01: { qtyLabel: '対象者の人数（1回あたり）', dateLabel: '給与（賞与）の支給日', person: false },
-  G02: { qtyLabel: '対象者の人数（1回あたり）', dateLabel: '賞与の支払日', person: false },
-  G03: { qtyLabel: '従業員の人数', dateLabel: '', person: false },
-  G04: { qtyLabel: '対象者の人数（1回あたり）', dateLabel: '', person: false },
-  G05: { qtyLabel: '対象者の人数（1回あたり）', dateLabel: '', person: false },
-  S01: { qtyLabel: '実施コマ数（1コマ60分）', dateLabel: '希望日', person: false },
-  S02: { qtyLabel: '回数', dateLabel: '', person: false },
-  S03: { qtyLabel: '件数', dateLabel: '', person: false },
+  H02: { qtyLabel: '対象者の人数', dateLabel: '退職日', person: true , deadline: '退職日の翌日から5日以内' },
+  H03: { qtyLabel: '対象者の人数', dateLabel: '退職日', person: true , deadline: '退職日の翌々日から10日以内' },
+  H04: { qtyLabel: '対象者の人数', dateLabel: '退職日', person: true , deadline: '退職日の翌日から5日以内（離職票は翌々日から10日以内）' },
 };
+
+/**
+ * pricing.html の説明文（sf-desc）から、注文ページに出す1〜2文を作る。
+ * 顧問料の話・料金の加算だけの文は落とす（スポットのカードには意味がない）。
+ */
+const DESC_DROP = /顧問料|顧問契約|顧問先|スポット料金|加算します|合計\s*¥|1本あたり|報酬率|同額です/;
+function descFor(rows, name) {
+  const row = rows.get(name) || rows.get(`${name}（単発）`) || rows.get(name.replace('（単発）', ''));
+  const raw = row ? String(row.desc || '') : '';
+  const kept = raw.split('。').map((x) => x.trim()).filter((x) => x && !DESC_DROP.test(x));
+  return kept.length ? `${kept.join('。')}。` : '';
+}
 
 function buildItems(rows) {
   const items = [];
-  const add = (code, name, category, unit, base, perUnit, freeUnits, note) => {
+  // srcName: 料金表（pricing.html）の行の名前がカードの名前と違うときだけ渡す。説明文はその行から取る
+  const add = (code, name, category, unit, base, perUnit, freeUnits, note, srcName) => {
     const f = FIELDS[code];
     if (!f) throw new Error(`FIELDS に ${code} がありません`);
-    items.push({ code, name, category, unit, base, perUnit, freeUnits: freeUnits || 0, note: note || '',
+    items.push({ code, name, category, unit, base, perUnit, freeUnits: freeUnits || 0,
+      desc: descFor(rows, srcName || name), note: note || '', deadline: f.deadline || '',
       qtyLabel: f.qtyLabel, dateLabel: f.dateLabel, person: f.person });
   };
 
+  // スポットの受付は 入社・退社・新規適用・36協定 に絞っている（2026-09-11 本人の決定）。
+  // 給付の申請・年次・相談は pricing.html の料金表には残るが、Web注文には出さない。
+  // Apps Script 側の SPOT_WEB_CODES と一致させること（ハーネスが突き合わせる）
   // 入社
-  add('H01', '入社手続き（資格取得届）', '入社', '名', 0, simple(rows, '入社手続き（資格取得届）'), 0);
+  add('H01', '入社手続き（資格取得届）', '入社', '名', 0, simple(rows, '入社手続き（資格取得届）'), 0,
+    'まだ社会保険・雇用保険に加入していない会社は「会社設立時の新規適用手続き」もお選びください。分からなければ、そのままご注文ください。こちらで確かめます。');
   const setup = setupFee(rows, '会社設立時の新規適用手続き');
   add('H05', '会社設立時の新規適用手続き', '入社', '名', setup.base, setup.perUnit, setup.freeUnits, '5名までは基本料に含みます。6名目から加算します。');
-  add('H06', '労使協定の作成・届出（36協定など）', '入社', '事業所', 0, simple(rows, '労使協定の作成・届出（36協定など）'), 0);  // 事業所ごとの単価（GAS の rateSeed_ と同じ）
+  // Web注文の品目名は36協定だけにする（2026-09-11 本人の決定）。料金と説明文は pricing.html の
+  // 「労使協定の作成・届出（36協定など）」の行から取る（単発の価格表のほうは絞らない）
+  add('H06', '36協定の作成・届出', '入社', '事業所', 0, simple(rows, '労使協定の作成・届出（36協定など）'), 0,
+    '事業所ごとに1件です。本社と支店で別に届け出ている会社は、その数をご指定ください。', '労使協定の作成・届出（36協定など）');  // 事業所ごとの単価（GAS の rateSeed_ と同じ）
 
   // 退社
-  add('H02', '退社手続き（資格喪失届）', '退社', '名', 0, simple(rows, '退社手続き（資格喪失届）'), 0);
+  add('H02', '退社手続き（資格喪失届）', '退社', '名', 0, simple(rows, '退社手続き（資格喪失届）'), 0,
+    '離職票（雇用保険の給付を受けるための書類）が要る方は「退社手続き＋離職票（同時）」をお選びください。59歳以上の方は、本人の希望にかかわらず離職票が必要です。');
   add('H03', '離職票の作成', '退社', '名', 0, simple(rows, '離職票の作成'), 0, '退社手続きと同時にご依頼の場合は「退社手続き＋離職票（同時）」をお選びください。');
-  add('H04', '退社手続き＋離職票（同時）', '退社', '名', 0, comboOf(rows, '離職票の作成'), 0);
-
-  // 給付の申請
-  add('K01', '出産手当金の支給申請', '給付の申請', '名', 0, simple(rows, '出産手当金の支給申請'), 0);
-  add('K02', '育児休業給付の申請（初回）', '給付の申請', '名', 0, initialOf(rows, '育児休業給付の申請'), 0);
-  add('K03', '育児休業給付の申請（2回目以降）', '給付の申請', '回', 0, continuationOf(rows, '育児休業給付の申請'), 0);
-  add('K04', '高年齢雇用継続給付の申請（初回）', '給付の申請', '名', 0, initialOf(rows, '高年齢雇用継続給付の申請'), 0);
-  add('K05', '高年齢雇用継続給付の申請（継続）', '給付の申請', '回', 0, continuationOf(rows, '高年齢雇用継続給付の申請'), 0);
-  add('K06', '介護休業給付の申請（初回）', '給付の申請', '名', 0, initialOf(rows, '介護休業給付の申請'), 0);
-  add('K07', '介護休業給付の申請（2回目以降）', '給付の申請', '回', 0, continuationOf(rows, '介護休業給付の申請'), 0);
-  add('K08', '傷病手当金の支給申請（初回）', '給付の申請', '名', 0, simple(rows, '傷病手当金の支給申請（初回）'), 0);
-  add('K09', '労災保険給付の申請（初回一式）', '給付の申請', '件', 0, simple(rows, '労災保険給付の申請（初回一式）'), 0);
-
-  // 年次・給与
-  const g01 = baseAndPer(rows, '単発の給与・賞与計算');
-  add('G01', '単発の給与・賞与計算', '年次', '名', g01.base, g01.perUnit, 0);
-  const g02 = baseAndPer(rows, '賞与支払届');
-  add('G02', '賞与支払届', '年次', '名', g02.base, g02.perUnit, 0);
-  const g03 = baseAndPer(rows, '年末調整の資料整理・税理士連携');
-  add('G03', '年末調整の資料整理・税理士連携', '年次', '名', g03.base, g03.perUnit, 0);
-  const g04 = baseAndPer(rows, '労働保険の年度更新（単発）');
-  add('G04', '労働保険の年度更新', '年次', '名', g04.base, g04.perUnit, 0);
-  const g05 = baseAndPer(rows, '算定基礎届の提出（単発）');
-  add('G05', '算定基礎届の提出', '年次', '名', g05.base, g05.perUnit, 0);
-
-  // 相談・研修
-  add('S01', '管理職研修・ハラスメント研修', '相談', 'コマ', 0, simple(rows, '管理職研修・ハラスメント研修'), 0, '1コマ60分の料金です。');
-  add('S02', 'スポット労務相談（60分）', '相談', '回', 0, simple(rows, 'スポット労務相談（60分）'), 0, 'ご注文後、担当者が内容を確認のうえ受任します。事前のお問い合わせは不要です。');
-  add('S03', '労務トラブルの初動整理', '相談', '件', 0, simple(rows, '労務トラブルの初動整理'), 0);
+  add('H04', '退社手続き＋離職票（同時）', '退社', '名', 0, comboOf(rows, '離職票の作成'), 0,
+    '離職票が要らない方は「退社手続き（資格喪失届）」だけで足ります。');
 
   return items;
 }

@@ -9,6 +9,7 @@
  */
 
 const { chromium, webkit } = require('playwright');
+const { isForeignConsoleError } = require('./lib/console-origin.cjs');
 
 const args = process.argv.slice(2);
 const base = (args.find((arg) => arg.startsWith('http')) || 'http://127.0.0.1:8811/')
@@ -458,7 +459,7 @@ async function auditFixtures(engine, browserType) {
       const page = await browser.newPage({ viewport: { width: FIXTURE_WIDTH, height: 900 } });
       const errors = [];
       page.on('console', (message) => {
-        if (message.type() === 'error') errors.push(`console: ${message.text()}`);
+        if (message.type() === 'error' && !isForeignConsoleError(message, base)) errors.push(`console: ${message.text()}`);
       });
       page.on('pageerror', (error) => errors.push(`pageerror: ${error.message}`));
       try {
@@ -516,7 +517,7 @@ async function auditEngine(engine, browserType) {
   const page = await browser.newPage({ viewport: { width: WIDTHS[0], height: 900 } });
   let activeErrors = null;
   page.on('console', (message) => {
-    if (activeErrors && message.type() === 'error') {
+    if (activeErrors && message.type() === 'error' && !isForeignConsoleError(message, base)) {
       activeErrors.push(`console: ${message.text()}`);
     }
   });

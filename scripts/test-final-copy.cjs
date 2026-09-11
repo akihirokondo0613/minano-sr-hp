@@ -8,6 +8,7 @@
  */
 
 const { execFileSync } = require('node:child_process');
+const { isForeignConsoleError } = require('./lib/console-origin.cjs');
 const { chromium, webkit } = require('playwright');
 
 const args = process.argv.slice(2);
@@ -38,6 +39,7 @@ function commitSha() {
 function recordConsoleError(target) {
   return (message) => {
     if (message.type() !== 'error') return;
+    if (isForeignConsoleError(message, base)) return;
     const url = message.location().url || '';
     const text = message.text();
     if (/minano-sr\.goatcounter\.com\/count/.test(url)) return;

@@ -15,6 +15,7 @@
  */
 
 const { chromium, webkit } = require('playwright');
+const { isForeignConsoleError } = require('./lib/console-origin.cjs');
 
 const args = process.argv.slice(2);
 const base = (args.find((arg) => arg.startsWith('http')) || 'http://127.0.0.1:8811/')
@@ -47,8 +48,10 @@ function conditionKey(engine, width) {
 function isIgnoredConsoleError(message) {
   const location = message.location().url || '';
   const value = message.text();
-  return /minano-sr\.goatcounter\.com\/count/.test(location)
-    || /Failed to load resource: A TLS error/.test(value);
+  if (/minano-sr\.goatcounter\.com\/count/.test(location)) return true;
+  if (/Failed to load resource: A TLS error/.test(value)) return true;
+  // 自分の配信元以外は見ない（scripts/lib/console-origin.cjs。ほかの台本と同じ判定）
+  return isForeignConsoleError(message, base);
 }
 
 async function prepareLocalHttpPage(page) {
