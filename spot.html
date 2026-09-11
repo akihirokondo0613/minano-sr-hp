@@ -109,6 +109,7 @@
 .so-field.so-field-wide{grid-column:1/-1}
 .so-field label{display:block;font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:6px}
 .so-field label em{font-style:normal;color:#B4432E;margin-left:4px;font-size:11px}
+.so-field .so-help{font-size:12.5px;color:var(--ink4);line-height:1.7;margin:-2px 0 8px;font-weight:400}
 .so-field input,.so-field select,.so-field textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:6px;font-size:16px;font-family:inherit;background:#fff;outline:none;transition:border-color .2s,box-shadow .2s}
 .so-field input:focus,.so-field select:focus,.so-field textarea:focus{border-color:var(--moegi);box-shadow:0 0 0 3px var(--g50,var(--g25))}
 .so-radio-row{display:flex;gap:16px;flex-wrap:wrap;padding-top:6px}
@@ -286,8 +287,9 @@
         </div>
       </div>
       <div class="so-field so-field-wide">
-        <label>他の社会保険労務士事務所と顧問契約はありますか<em>必須</em></label>
-        <div class="so-radio-row" role="radiogroup" aria-label="他の社労士との顧問契約の有無">
+        <label>みなの社会保険労務士事務所と顧問契約はありますか<em>必須</em></label>
+        <p class="so-help">顧問先の<wbr>方は、<wbr>入退社や36協定な<wbr>どが<wbr>顧問料に<wbr>含まれる<wbr>ため、<wbr>スポットの<wbr>請求書は<wbr>出さずに<wbr>担当者から<wbr>ご連絡します。</p>
+        <div class="so-radio-row" role="radiogroup" aria-label="みなの社労士事務所との顧問契約の有無">
           <label><input type="radio" name="顧問契約" value="ある" required> ある</label>
           <label><input type="radio" name="顧問契約" value="ない"> ない</label>
         </div>
@@ -331,10 +333,10 @@
 
     <div class="so-agree">
       <label><input type="checkbox" id="soAgreeLegal" required> ご依頼内容は、法令に反する内容・事実と異なる内容ではありません。</label>
-      <label><input type="checkbox" id="soAgreeExclusive" required> 本件について、他の社会保険労務士事務所と重ねて依頼していません。</label>
-      <label><input type="checkbox" id="soAgreeTerms" required> <a href="tokutei.html" target="_blank" rel="noopener">取引条件・事業者情報</a>および利用規約（準備中・注文確認メールに添付します）に同意します。</label>
+      <label><input type="checkbox" id="soAgreeExclusive" required> 本件の手続きを、ほかの社会保険労務士事務所に依頼していません（顧問契約で任せている場合を含みます）。</label>
+      <label><input type="checkbox" id="soAgreeTerms" required> <a href="tokutei.html" target="_blank" rel="noopener">取引条件・事業者情報</a>を確認し、同意します。</label>
     </div>
-    <p class="so-terms-note">ご注文後、<wbr>担当者が<wbr>内容を<wbr>確認の<wbr>うえ受任します。<wbr>事前の<wbr>お問い合わせは<wbr>不要です。</p>
+    <p class="so-terms-note">送信すると、<wbr>受任の<wbr>ご案内と<wbr>請求書を<wbr>メールで<wbr>お送りします。<wbr>確認が<wbr>必要な<wbr>ご注文は、<wbr>担当者から<wbr>ご連絡します。<wbr>事前の<wbr>お問い合わせは<wbr>不要です。</p>
 
     <div class="so-submit-row">
       <button type="button" class="btn-primary" id="soSubmit">この内容で注文する</button>
@@ -782,7 +784,7 @@
       ['きっかけ', fd('流入経路')],
       ['紹介元', fd('紹介元')],
       ['給与支払', fd('給与支払')],
-      ['他事務所との顧問契約', fd('顧問契約')],
+      ['みなのとの顧問契約', fd('顧問契約')],
       ['補足', fd('補足')],
       ['案内メール', fd('案内同意')],
     ];
