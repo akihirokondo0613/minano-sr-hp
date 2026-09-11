@@ -78,6 +78,7 @@
 .so-card-note{font-size:12.5px;color:var(--ink4);line-height:1.75;margin-top:6px}
 .so-card-due{color:var(--ink3);font-weight:600}
 .so-qty-row{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.so-card-note{font-size:12.5px;color:var(--ink3);line-height:1.7;margin:4px 0 0}
 .so-qty-label{font-size:12.5px;color:var(--ink3);flex:1 1 auto;min-width:min(100%,7em)}
 .so-nw{white-space:nowrap}
 .so-qty-ctrl{flex-shrink:0;display:flex;align-items:center;border:1.5px solid var(--line);border-radius:999px;overflow:hidden}
@@ -677,12 +678,13 @@
           '<span class="so-card-sub">小計 ' + yen(lineTotal(item, qty)) + '</span>' +
         '</div>' +
         '<div class="so-card-detail">' +
-          (item.dateLabel
-            ? '<div><label>' + item.dateLabel +
-              // 2名以上でも日付の欄は1つ。いちばん早い方を入れてもらわないと法定期限が緩くなる
-              (item.person && qty >= 2 ? '（いちばん早い方。分かれば）' : '（分かれば）') +
+          // 2名以上は各自の日付が違うので、ここでは聞かない（受領フォームの Excel で1人ずつ伺う。2026-09-11 本人の決定）
+          (item.dateLabel && !(item.person && qty >= 2)
+            ? '<div><label>' + item.dateLabel + '（分かれば）' +
               '</label><input type="date" data-field="発生日" value="' + ((state.detail[item.code] && state.detail[item.code]['発生日']) || '') + '"></div>'
-            : '') +
+            : (item.dateLabel && item.person && qty >= 2
+              ? '<p class="so-card-note">各自の' + item.dateLabel + 'は、ご注文後にお送りいただく Excel の受領フォームで伺います。</p>'
+              : '')) +
           (item.person
             ? '<div><label>' + (item.unit === '名' ? '対象の方の氏名（分かれば。複数は「ほか○名」）' : '対象の方の氏名（分かれば）') + '</label><input type="text" data-field="対象者" placeholder="例：山田 太郎" value="' + ((state.detail[item.code] && state.detail[item.code]['対象者']) || '') + '"></div>'
             : '') +
@@ -833,7 +835,7 @@
           業務コード: code,
           業務名: item.name,
           数量: state.cart[code],
-          発生日: d['発生日'] || '',
+          発生日: (item.person && state.cart[code] >= 2) ? '' : (d['発生日'] || ''),   // 2名以上は Excel で聞く
           対象者: d['対象者'] || '',
           補足: d['補足'] || '',
         };
