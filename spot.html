@@ -685,10 +685,8 @@
             : (item.dateLabel && item.person && qty >= 2
               ? '<p class="so-card-note">各自の' + item.dateLabel + 'は、ご注文後にお送りいただく Excel の受領フォームで伺います。</p>'
               : '')) +
-          (item.person
-            ? '<div><label>' + (item.unit === '名' ? '対象の方の氏名（分かれば。複数は「ほか○名」）' : '対象の方の氏名（分かれば）') + '</label><input type="text" data-field="対象者" placeholder="例：山田 太郎" value="' + ((state.detail[item.code] && state.detail[item.code]['対象者']) || '') + '"></div>'
-            : '') +
-          '<div><label>ひとこと（任意）</label><input type="text" data-field="補足" placeholder="例：急ぎです" value="' + ((state.detail[item.code] && state.detail[item.code]['補足']) || '') + '"></div>' +
+          // 対象の方の氏名は注文では聞かない（1名は案件ページの記入シート、2名以上は Excel で正確に集める。2026-09-11 本人の決定）
+          '<div><label>ひとこと（任意）</label><input type="text" data-field="補足" placeholder="例：雇用保険のみ加入します（社会保険は加入しません）" value="' + ((state.detail[item.code] && state.detail[item.code]['補足']) || '') + '"></div>' +
         '</div>';
 
       var input = card.querySelector('.so-qty-input');
@@ -836,7 +834,7 @@
           業務名: item.name,
           数量: state.cart[code],
           発生日: (item.person && state.cart[code] >= 2) ? '' : (d['発生日'] || ''),   // 2名以上は Excel で聞く
-          対象者: d['対象者'] || '',
+          対象者: '',   // 注文では聞かない（案件ページ・Excel で集める）
           補足: d['補足'] || '',
         };
       }),
