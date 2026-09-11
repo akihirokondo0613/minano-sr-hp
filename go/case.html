@@ -87,7 +87,7 @@ ul.dl li span{flex:1 1 auto;min-width:0;word-break:break-all}
 .ph.in{background:#FBF5E4;border-color:#E6D9A8;color:var(--warn)}
 .ph.sub{background:#F2F2EE;border-color:#DDDDD5;color:var(--ink2)}
 .ph.org{background:#FBEDE7;border-color:#E8C6B5;color:var(--ng)}
-.why{background:none;border:none;color:var(--ink3);font-size:13px;cursor:pointer;font-family:inherit;padding:0 4px;margin-left:2px}
+.why{background:none;border:1px solid var(--line);border-radius:4px;color:var(--ink3);font-size:11.5px;cursor:pointer;font-family:inherit;padding:1px 6px;margin-left:4px}
 .cond{font-size:12.5px;color:var(--ink3)}
 .det{display:none;font-size:13px;color:var(--ink2);background:#F7F7F3;border-radius:8px;padding:10px 12px;margin-top:7px;line-height:1.75}
 .row.open .det{display:block}
@@ -201,6 +201,8 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
   /* ---------- 描画 ---------- */
   function stateClass(s){ if(s==='出した'||s==='入力済'||s==='前回分'||s==='郵送')return 'ok'; if(s==='該当なし')return 'na'; if(s==='後日提出')return 'later'; return 'todo'; }
   function stateText(x){ if(x.state==='前回分')return '前回分を使用'; if(x.state==='郵送')return '郵送予定'; return x.state+(x.date?' '+x.date:''); }
+  // ダウンロード時のファイル名（日本語）。一覧の短い名前から作る：「入社時 従業員情報 受領フォーム」→「入社時_従業員情報_受領フォーム.xlsx」
+  function xlName(x){return String(x.short||'受領フォーム').replace(/\s+/g,'_')+'.xlsx'}
   function rowHtml(g,x){
     var info=x.kind==='info', orig=!x.photo, prev=x.state==='前回分', fl=x.fields?x.fields.split('|'):[];
     // 記入用 Excel の置き場。説明の中にしか無いと、顧客は「？」を開くまで辿り着けない
@@ -209,12 +211,12 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
     // 説明文にその語が出てくるだけの行（対象者一覧など）まで xlsx 限定になる
     var xl=!!xlUrl;
     var h='<div class="row'+(stateClass(x.state)!=='todo'?' done':'')+'" data-mid="'+esc(g.matterId)+'" data-doc="'+esc(x.doc)+'" data-kind="'+esc(x.kind)+'" data-sec="'+(x.sec||30)+'">';
-    h+='<div class="dn">'+esc(x.short)+(xl?'<span class="ph in">Excel</span>':info?'<span class="ph in">入力でも可</span>':'<span class="ph sub">提出書類</span>')+(xl?'':orig?'<span class="ph org">原本を郵送</span>':'<span class="ph">写真OK</span>')+'<button type="button" class="why" aria-label="説明を開く">？</button></div>';
+    h+='<div class="dn">'+esc(x.short)+(xl?'<span class="ph in">Excel</span>':info?'<span class="ph in">入力でも可</span>':'<span class="ph sub">提出書類</span>')+(xl?'':orig?'<span class="ph org">原本を郵送</span>':'<span class="ph">写真OK</span>')+'<button type="button" class="why" aria-label="説明を開く">説明</button></div>';
     if(x.cond)h+='<div class="cond">条件　'+esc(x.cond)+'</div>';
     h+='<div class="det">'+linkify(x.detail)+(info?'<br>この資料は行政に出すものではなく、内容を確認するためのものです。お手元に無ければ「入力する」で項目を書いていただくか、同じことが分かる別の資料を送ってください。':'')+(orig?'<br>原本が必要な書類です。写真では代えられないので、下の宛先へ郵送してください。':'')+'</div>';
     if(prev)h+='<div class="prev">前回いただいた分を使います'+(x.date?'（'+esc(x.date)+'）':'')+'。変わっていれば送り直してください。</div>';
     h+='<div class="rb">';
-    if(xl&&xlUrl)h+='<a class="mini go dl" href="'+esc(xlUrl)+'" download>Excelをダウンロードする</a>';
+    if(xl&&xlUrl)h+='<a class="mini go dl" href="'+esc(xlUrl)+'" download="'+esc(xlName(x))+'">Excelをダウンロードする</a>';
     if(orig)h+='<button type="button" class="mini go post">郵送します</button>';
     else h+='<button type="button" class="mini go pick">'+(xl?'記入したExcelを送る':prev?'変更あり（送り直す）':(info?'書類か代わりの資料を送る':'写真かPDFを送る'))+'</button>';
     if(info)h+='<button type="button" class="mini go inp">入力する</button>';
@@ -272,8 +274,9 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
       xlRows.forEach(function(r){
         var done=stateClass(r.x.state)!=='todo';
         h+='<div class="xlone" data-mid="'+esc(r.g.matterId)+'" data-doc="'+esc(r.x.doc)+'">'+(xlRows.length>1?'<div class="grp">'+esc(r.g.name)+'</div>':'')+'<ol class="steps">';
-        h+='<li><span class="n">1</span><span class="t">Excel をダウンロードする</span><a class="btn xlbtn" href="'+esc(r.url)+'" download>Excelをダウンロードする</a></li>';
-        h+='<li><span class="n">2</span><span class="t">対象の方 全員分をご記入ください。個人番号の欄までお願いします。</span></li>';
+        // 保存されるファイル名は日本語に（URL は ASCII のまま。自動リンクで日本語の手前で切れる環境があるため）
+        h+='<li><span class="n">1</span><span class="t">Excel をダウンロードする</span><a class="btn xlbtn" href="'+esc(r.url)+'" download="'+esc(xlName(r.x))+'">Excelをダウンロードする</a></li>';
+        h+='<li><span class="n">2</span><span class="t">対象の方 全員分をご記入ください。</span></li>';
         h+='<li><span class="n">3</span><span class="t">記入した Excel をこのページから送る</span>'+(done?'<span class="xlok">✓ 受け取りました（'+esc(stateText(r.x))+'）。直すときは下の一覧から送り直せます</span>':'<button type="button" class="btn xlbtn xlsend">記入したExcelを送る</button>')+'</li>';
         h+='</ol></div>';
       });
@@ -290,7 +293,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
       h+=groupsHtml(D.cond)+'</div>';
     }
     h+='<div class="card"><h2>その他のファイルを送る</h2><div class="drop" id="drop"><p>上の一覧に無いものは、ここから送ってください。<br>1つ '+D.maxMB+'MB まで・何枚でも</p><button class="btn" type="button" id="pick" style="margin-top:0">写真・ファイルを選ぶ</button><input type="file" id="f" multiple accept="image/*,application/pdf,.pdf,.jpg,.jpeg,.png,.heic"></div><div class="bar" id="bar" style="display:none"><i></i></div><ul class="files" id="list"></ul></div>';
-    h+='<div class="card mn"><h2>マイナンバーが載っている書類</h2><p class="rest">雇用保険の一部の届出では個人番号の記載が必要です。その書類はこちらから送ってください。分けて保管し、手続きが終わったら消します。</p><button class="btn sub2" type="button" id="pickmn">マイナンバーの書類を選ぶ</button><input type="file" id="fmn" multiple accept="image/*,application/pdf,.pdf,.jpg,.jpeg,.png,.heic"></div>';
+    // マイナンバーの書類の別枠は置かない。他の書類と同じく一覧か「その他」から送る（2026-09-11 本人の決定）
     if(D.qgroups.length){h+='<h2 class="sec" style="border:none;padding-top:6px">お答えいただくこと</h2><p class="sub">選ぶだけです。押したその場で記録されます。分からないものは飛ばして、あとから同じリンクで続けられます。</p>';
       D.qgroups.forEach(function(g){
         // 必須（と、答えによって出る追加の質問）は開いたまま。任意の質問は折りたたんで、答えの数を少なく見せる
@@ -448,7 +451,6 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
       if(b.classList.contains('na')&&row){mark(row,'該当なし','','');return}
       if(b.classList.contains('later')&&row){var d=row.querySelector('.dt');d.hidden=false;d.focus();if(d.showPicker){try{d.showPicker()}catch(x){}}return}
       if(b.id==='pick'){document.getElementById('f').click();return}
-      if(b.id==='pickmn'){document.getElementById('fmn').click();return}
       if(b.id==='fin'){finish();return}
       if(b.id==='ackbtn'){ack(b);return}
     });
@@ -456,7 +458,7 @@ label.op input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--
       if(row&&t.classList.contains('dt')&&t.value){mark(row,'後日提出',t.value,'');t.hidden=true;return}
       if(row&&t.classList.contains('rf')){add(t.files,false,row);t.value='';return}
       if(t.id==='f'){add(t.files,false,null);t.value='';return}
-      if(t.id==='fmn'){add(t.files,true,null);t.value='';return}});
+      });
     var dp=document.getElementById('drop');
     if(dp){['dragenter','dragover'].forEach(function(v){dp.addEventListener(v,function(e){e.preventDefault();dp.classList.add('hot')})});['dragleave','drop'].forEach(function(v){dp.addEventListener(v,function(e){e.preventDefault();dp.classList.remove('hot')})});dp.addEventListener('drop',function(e){if(e.dataTransfer&&e.dataTransfer.files)add(e.dataTransfer.files,false,null)})}
   }
