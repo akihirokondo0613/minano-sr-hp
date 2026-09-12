@@ -24,43 +24,44 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3E%E3%81%BF%3C/text%3E%3C/svg%3E">
 <style id="lp-kyujinhyo-style">
 /* ------------------------------------------------------------------
-   広告用ランディングページ。共通CSS（skin-v2.css / wave-skin.css /
-   service.css）を読まず、このページだけで完結させる。値は skin-v2.css の
-   トークンから転記した（色を変えるときは skin-v2.css 側を正とする）。
+   広告用ランディングページ。
+   構成とデザインは、実際に広告を当てている startup-payroll.html の型を
+   そのまま持ってきている（連番ラベル＋節見出し＋リード／ヒーローは左コピー＋
+   右パネルの2カラム／3つの根拠を罫線で区切る帯／料金はカード／最終節は
+   コピーとフォームの2カラム）。共通CSSは読まず、値だけ skin-v2.css から転記する。
+   狭い画面では中央揃え、1000px以上で startup-payroll と同じ左揃え2カラムにする。
    ------------------------------------------------------------------ */
 :root{
-  --bg:#F9FAF7;           /* 雪白（地） */
-  --card:#FFFFFF;
-  --ink:#1E2721;          /* 岩（本文墨） */
+  --yuki:#F9FAF7;
+  --shiro:#FFFFFF;
+  --iwa:#1E2721;
   --ink2:#37423B;
   --ink3:#5D6962;
-  --ink4:#68736C;         /* 注釈。淡い地でも4.5:1を満たす濃さ */
-  --sugi:#123F30;         /* 深杉（主色） */
-  --sugi7:#1C5842;        /* hover */
+  --ink4:#68736C;
+  --sugi:#123F30;
+  --sugi7:#1C5842;
   --sugi9:#0B2A1F;
-  --moegi:#2E9E63;        /* 萌木（装飾専用） */
-  --moegi-t:#1E7A4B;      /* 萌木・文字用（白地で4.5:1以上） */
-  --moegi-l:#E3F2E9;      /* 淡緑 */
+  --moegi:#2E9E63;
+  --moegi-t:#1E7A4B;
+  --moegi-l:#E3F2E9;
   --line:#E0E4DE;
   --line2:#ECEFEA;
-  --asahi:#E5A63C;        /* 朝日。帯と下線だけに使い、文字色にしない */
+  --asahi:#E5A63C;
   --r:12px;
   --r-lg:16px;
   --sh:0 1px 2px rgba(11,42,31,.05), 0 6px 18px -10px rgba(11,42,31,.10);
-  --sh-lg:0 2px 6px rgba(11,42,31,.06), 0 24px 50px -26px rgba(11,42,31,.34);
+  --sh-lg:0 18px 48px rgba(35,43,39,.08);
   --disp:"Zen Maru Gothic","BIZ UDPGothic","Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",YuGothic,Meiryo,sans-serif;
   --body:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",YuGothic,Meiryo,sans-serif;
   --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%;font-size:16px;min-width:320px;scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.85;line-break:strict;overflow-x:clip;padding-bottom:96px}
+body{background:var(--yuki);color:var(--ink2);font-family:var(--body);font-size:15px;line-height:1.9;line-break:strict;overflow-x:clip;padding-bottom:96px}
 img,svg{max-width:100%}
 [hidden]{display:none!important}
 
-/* 日本語の折り返し。auto-phrase が効かないブラウザ（Safari等）では
-   scripts/sync-phrase-breaks.mjs が置いた <wbr> と keep-all で位置を決める。 */
-h1,h2,h3,h4{line-height:1.5;text-wrap:balance;word-break:auto-phrase;font-family:var(--disp)}
+h1,h2,h3,h4{line-height:1.5;text-wrap:balance;word-break:auto-phrase;font-family:var(--disp);color:var(--iwa)}
 p,li,dd,dt,figcaption,summary{text-wrap:pretty;word-break:auto-phrase;overflow-wrap:break-word}
 p a,li a,dd a{word-break:normal}
 @supports not (word-break: auto-phrase){
@@ -75,79 +76,89 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
 }
-
-.wrap{width:min(100% - 32px,1080px);margin-inline:auto}
+.w{width:min(100% - 32px,1180px);margin-inline:auto}
 :where(a):focus-visible,:where(button):focus-visible,:where(input,select,textarea):focus-visible{outline:3px solid var(--moegi-t);outline-offset:2px}
 
 /* ---------- ヘッダー ---------- */
-.hd{background:var(--card);border-bottom:1px solid var(--line)}
-.hd-in{width:min(100% - 32px,1080px);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;padding:8px 0}
+.hd{background:var(--shiro);border-bottom:1px solid var(--line)}
+.hd-in{width:min(100% - 32px,1180px);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;padding:8px 0}
 .logo{display:flex;align-items:center;gap:10px}
 .logo-mark{width:38px;height:38px;flex:0 0 38px;background:var(--sugi);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(18,63,48,.16)}
 .logo-mark span{font-family:var(--disp);font-size:19px;font-weight:700;color:#fff;line-height:1}
-.logo-name{font-family:var(--disp);font-size:14px;font-weight:700;color:var(--ink);line-height:1.35}
+.logo-name{font-family:var(--disp);font-size:14px;font-weight:700;color:var(--iwa);line-height:1.35}
 .logo-sub{display:block;font-size:10px;letter-spacing:.08em;color:var(--ink4);font-weight:400}
-.hd-tel{display:flex;align-items:center;gap:6px;min-height:44px;padding:0 10px;border:1px solid var(--line);border-radius:999px;background:var(--bg);font-family:var(--mono);font-size:14px;font-weight:700;color:var(--sugi);text-decoration:none}
+.hd-tel{display:flex;align-items:center;gap:6px;min-height:44px;padding:0 10px;border:1px solid var(--line);border-radius:999px;background:var(--yuki);font-family:var(--mono);font-size:14px;font-weight:700;color:var(--sugi);text-decoration:none}
 .hd-tel svg{width:16px;height:16px;flex:0 0 16px}
 @media (max-width:359px){.logo-name{font-size:12.5px}.hd-tel{font-size:12.5px;padding:0 8px}}
 
-/* ---------- 共通の節 ---------- */
-.sec{padding:clamp(34px,6vw,64px) 0}
-.sec-alt{background:var(--card);border-block:1px solid var(--line2)}
-.sec-h{font-size:clamp(21px,3.4vw,30px);font-weight:800;color:var(--sugi);letter-spacing:.01em;margin-bottom:20px;text-align:center}
-.sec-h::after{content:"";display:block;width:48px;height:4px;border-radius:2px;background:var(--asahi);margin:14px auto 0}
-.lead{color:var(--ink2);margin-bottom:18px;text-align:center}
-.note{font-size:12.5px;line-height:1.8;color:var(--ink4);margin-top:14px}
-.mid{max-width:860px;margin-inline:auto}
+/* ---------- 共通（startup-payroll の型） ---------- */
+.sec{padding-block:clamp(48px,6vw,96px)}
+.sec-white{background:var(--shiro);border-block:1px solid var(--line2)}
+.sec-head{max-width:820px;margin:0 auto clamp(26px,3.4vw,46px);text-align:center}
+.sec-label{color:var(--moegi-t);font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.14em}
+.sec-title{margin-top:9px;font-size:clamp(23px,3.1vw,40px);font-weight:900;line-height:1.5}
+.sec-title mark{background:linear-gradient(color-mix(in srgb,var(--moegi) 34%,transparent),color-mix(in srgb,var(--moegi) 34%,transparent)) no-repeat left 88%/100% 26%;color:inherit}
+.sec-lead{margin-top:14px;color:var(--ink2);font-size:clamp(14px,1.3vw,16px);line-height:1.9}
+.note{margin-top:16px;color:var(--ink4);font-size:12px;line-height:1.8}
 
-/* ---------- 主ボタン ---------- */
-.cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:62px;padding:12px 20px;border:0;border-radius:var(--r);background:var(--sugi);color:#fff;font-family:var(--disp);font-size:clamp(16px,2.2vw,19px);font-weight:800;letter-spacing:.02em;text-align:center;text-decoration:none;box-shadow:0 10px 24px -12px rgba(11,42,31,.6);transition:background .3s,transform .3s}
-.cta:hover{background:var(--sugi7);transform:translateY(-1px)}
-.cta-wrap{max-width:420px;margin-inline:auto}
-.cta-note{font-size:13px;color:var(--ink3);margin-top:10px;text-align:center}
+/* ---------- ボタン ---------- */
+.primary{display:inline-flex;align-items:center;justify-content:center;min-height:58px;padding:14px 30px;border:0;border-radius:var(--r);background:var(--sugi);color:#fff;font-family:var(--disp);font-size:clamp(16px,1.5vw,18px);font-weight:800;letter-spacing:.025em;text-decoration:none;box-shadow:0 6px 18px rgba(18,63,48,.2);transition:background .25s,transform .25s,box-shadow .25s;cursor:pointer}
+.primary:hover{background:var(--sugi7);box-shadow:0 10px 24px rgba(18,63,48,.26);transform:translateY(-2px)}
+.secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 2px;color:var(--sugi);font-size:13.5px;font-weight:700;text-decoration:none;border-bottom:2px solid var(--moegi)}
 
 /* ---------- ファーストビュー ---------- */
-.hero{padding:clamp(26px,4vw,52px) 0 clamp(30px,5vw,60px);background:linear-gradient(180deg,var(--moegi-l) 0%,var(--bg) 88%)}
-.hero-in{display:grid;gap:clamp(24px,3vw,44px)}
-.eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--moegi-t);background:var(--card);border:1px solid var(--moegi);border-radius:999px;padding:5px 13px;line-height:1.6;margin-bottom:14px}
-.hero h1{font-size:clamp(25px,3.6vw,40px);font-weight:900;color:var(--sugi);letter-spacing:.01em;margin-bottom:14px;text-wrap:balance}
-.hero h1 mark{background:linear-gradient(transparent 62%,#F2E0AE 62%);color:inherit;padding:0 2px}
-.hero-sub{color:var(--ink2);font-size:clamp(15px,1.5vw,17px);margin-bottom:20px}
-.chips{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
-.chips li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 14px 7px 30px;font-size:13px;font-weight:700;line-height:1.6;color:var(--ink2);position:relative}
-.chips li::before{content:"";position:absolute;left:12px;top:50%;width:10px;height:6px;margin-top:-4px;border-left:2px solid var(--moegi-t);border-bottom:2px solid var(--moegi-t);transform:rotate(-45deg)}
-.hero-tel{margin-top:14px;font-size:14px;color:var(--ink2)}
+.hero{padding:clamp(30px,4vw,58px) 0 clamp(40px,6vw,84px);background:linear-gradient(180deg,var(--moegi-l) 0%,var(--yuki) 78%)}
+.hero-grid{display:grid;gap:clamp(28px,4vw,60px);align-items:center}
+.hero-copy{min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center}
+.kicker{color:var(--moegi-t);font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.14em}
+.hero h1{margin-top:10px;font-size:clamp(26px,3.3vw,42px);font-weight:900;line-height:1.4;letter-spacing:.01em}
+.hero h1 strong{color:var(--iwa);background:linear-gradient(color-mix(in srgb,var(--moegi) 36%,transparent),color-mix(in srgb,var(--moegi) 36%,transparent)) no-repeat left 90%/100% 23%}
+.hero-intro{margin-top:16px;color:var(--ink2);font-size:clamp(14.5px,1.35vw,16.5px);line-height:1.9}
+.hero-price{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;gap:6px 14px;margin-top:16px;color:var(--iwa);font-family:var(--disp);font-size:clamp(18px,1.9vw,26px);font-weight:900;line-height:1.5}
+.hero-price small{color:var(--ink3);font-family:var(--body);font-size:12px;font-weight:700}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:22px;width:100%}
+.hero-actions .primary{flex:1 1 300px;max-width:420px}
+.hero-note{margin-top:11px;color:var(--ink3);font-size:11.5px;line-height:1.75}
+.hero-proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;max-width:690px;margin-top:24px;list-style:none;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.hero-proof li{padding:13px 10px;border-right:1px solid var(--line)}
+.hero-proof li:last-child{border-right:0}
+.hero-proof strong{display:block;color:var(--iwa);font-family:var(--disp);font-size:11.5px;font-weight:800;line-height:1.6}
+.hero-proof small{display:block;margin-top:4px;color:var(--ink3);font-size:10.5px;line-height:1.55}
+.hero-sign{margin-top:16px;color:var(--ink3);font-size:11.5px;line-height:1.7}
+.hero-tel{margin-top:12px;font-size:13.5px;color:var(--ink2)}
 .hero-tel a{color:var(--sugi);font-weight:700;text-decoration:none;border-bottom:2px solid var(--moegi)}
 
-/* ---------- セルフチェック ---------- */
-.sc{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh-lg);padding:clamp(18px,2.2vw,26px)}
-.sc-h{font-size:clamp(17px,1.9vw,21px);font-weight:800;color:var(--sugi);margin-bottom:4px}
-.sc-lead{font-size:13px;color:var(--ink3);margin-bottom:16px}
-.sc-q{border-top:1px solid var(--line2);padding:14px 0 0;margin-top:14px}
-.sc-q:first-of-type{border-top:0;padding-top:0;margin-top:0}
-.sc-q-t{font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:10px}
+/* ---------- 右パネル：セルフチェック ---------- */
+.panel{position:relative;min-width:0;width:100%;max-width:620px;margin-inline:auto;padding:clamp(20px,2.6vw,34px);background:var(--shiro);border:1px solid color-mix(in srgb,var(--moegi) 28%,var(--line));border-top:4px solid var(--moegi);border-radius:var(--r);box-shadow:var(--sh-lg);overflow:clip}
+.panel::after{content:"";position:absolute;right:-46px;bottom:-62px;width:190px;height:190px;border:1px solid color-mix(in srgb,var(--moegi) 24%,transparent);border-radius:50%;box-shadow:0 0 0 18px color-mix(in srgb,var(--moegi-l) 48%,transparent),0 0 0 36px color-mix(in srgb,var(--moegi-l) 28%,transparent);pointer-events:none}
+.panel>*{position:relative;z-index:1}
+.panel-kicker{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:800;letter-spacing:.12em}
+.panel-h{margin-top:9px;font-size:clamp(19px,2vw,26px);font-weight:900;line-height:1.5}
+.panel-lead{margin-top:8px;color:var(--ink3);font-size:12.5px;line-height:1.8}
+.sc-q{border-top:1px solid var(--line2);padding-top:14px;margin-top:14px}
+.sc-q-t{font-size:14px;font-weight:700;color:var(--iwa);margin-bottom:10px;line-height:1.7}
 .sc-btns{display:flex;flex-wrap:wrap;gap:8px}
-.sc-btns button{flex:1 1 96px;min-width:0;min-height:48px;padding:6px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);font-family:var(--body);font-size:14px;font-weight:700;color:var(--ink2);cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.sc-btns button{flex:1 1 96px;min-width:0;min-height:48px;padding:6px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--yuki);font-family:var(--body);font-size:13.5px;font-weight:700;color:var(--ink2);cursor:pointer;transition:background .2s,border-color .2s,color .2s}
 .sc-btns button:hover{border-color:var(--moegi)}
 .sc-btns button[aria-pressed="true"]{background:var(--sugi);border-color:var(--sugi);color:#fff}
-.sc-r{border-radius:var(--r);padding:16px;margin-top:18px;font-size:14.5px;line-height:1.85;background:var(--moegi-l);border:1px solid var(--moegi)}
+.sc-r{border-radius:var(--r);padding:15px;margin-top:18px;font-size:14px;line-height:1.85;background:var(--moegi-l);border:1px solid var(--moegi);color:var(--ink2)}
 .sc-r b{color:var(--sugi)}
-.sc .cta{margin-top:18px}
-.sc .note{margin-top:12px}
+.panel .primary{width:100%;margin-top:18px}
+.panel .note{margin-top:12px}
 
 /* ---------- 改定のご提案（記入例） ---------- */
-.rep{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh);overflow:hidden;max-width:920px;margin-inline:auto}
+.rep{background:var(--shiro);border:1px solid var(--line);border-top:4px solid var(--iwa);border-radius:var(--r);box-shadow:var(--sh-lg);overflow:hidden;max-width:980px;margin-inline:auto;text-align:left}
 .rep-band{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#FBF3DE;border-bottom:1px solid var(--line);padding:10px 16px}
 .rep-badge{display:inline-block;background:var(--sugi);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;border-radius:6px;padding:3px 9px}
 .rep-co{font-size:12.5px;font-weight:700;color:var(--ink2);line-height:1.6}
-.rep-b{padding:18px 16px}
-.rep-h{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--moegi-t);margin:18px 0 8px}
+.rep-b{padding:20px 18px}
+.rep-h{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.14em;color:var(--moegi-t);margin:20px 0 8px}
 .rep-b>.rep-h:first-child,.rep-col>.rep-h:first-child{margin-top:0}
-.rep-p{font-size:14px;line-height:1.85;color:var(--ink2)}
-.rep-list{list-style:none;display:grid;gap:10px;margin-bottom:4px}
-.rep-list li{border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:12px 14px}
+.rep-p{font-size:14px;line-height:1.9;color:var(--ink2)}
+.rep-list{list-style:none;display:grid;gap:10px}
+.rep-list li{border:1px solid var(--line);border-radius:10px;background:var(--yuki);padding:12px 14px}
 .rep-i-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;font-size:14.5px;margin-bottom:4px}
-.rep-i-h b{color:var(--ink)}
+.rep-i-h b{color:var(--iwa)}
 .tag{flex:0 0 auto;font-size:11.5px;font-weight:700;border-radius:6px;padding:2px 8px;line-height:1.6}
 .tag-ng{background:#FBF3DE;color:#6B4E12}
 .tag-fix{background:var(--moegi-l);color:var(--moegi-t)}
@@ -158,41 +169,55 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 .rep-nums b{flex:0 0 auto;font-family:var(--mono);font-size:15px;color:var(--sugi)}
 
 /* ---------- 料金 ---------- */
-.price-list{list-style:none;display:grid;gap:12px;max-width:920px;margin-inline:auto}
-.price-list li{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
-.pl-h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 12px;margin-bottom:4px}
-.pl-h b{font-size:16px;font-weight:800;color:var(--sugi)}
-.pl-y{flex:0 0 auto;font-family:var(--mono);font-size:16px;font-weight:700;color:var(--ink)}
-.pl-d{font-size:13.5px;line-height:1.8;color:var(--ink2)}
-.price-add{max-width:920px;margin:14px auto 0;font-size:13.5px;line-height:1.85;color:var(--ink2);background:var(--card);border:1px solid var(--line);border-left:4px solid var(--moegi);border-radius:var(--r);padding:12px 16px}
-.anshin{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:14px auto 0;max-width:920px}
-.anshin li{flex:1 1 200px;background:var(--moegi-l);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:700;color:var(--sugi);line-height:1.7;text-align:center}
-.price-note{max-width:920px;margin-inline:auto}
+.price-band{background:var(--yuki);border-block:1px solid var(--line)}
+.price-list{list-style:none;display:grid;gap:14px;max-width:980px;margin-inline:auto;text-align:left}
+.price-list li{min-width:0;padding:clamp(18px,2.2vw,26px);background:var(--shiro);border:1px solid var(--line);border-top:4px solid var(--iwa);border-radius:var(--r);box-shadow:0 18px 48px rgba(35,43,39,.06)}
+.price-list li.is-free{border-top-color:var(--moegi);background:color-mix(in srgb,var(--moegi-l) 34%,var(--shiro))}
+.pl-k{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:800;letter-spacing:.12em}
+.price-list li.is-free .pl-k{color:var(--iwa)}
+.pl-n{margin-top:8px;font-size:20px;font-weight:900;line-height:1.5}
+.pl-y{margin-top:8px;color:var(--iwa);font-family:var(--disp);font-size:26px;font-weight:900;line-height:1.4}
+.pl-y small{color:var(--ink3);font-family:var(--body);font-size:12px;font-weight:700;margin-left:4px}
+.pl-d{margin-top:10px;color:var(--ink2);font-size:13px;line-height:1.85}
+.price-add{max-width:980px;margin:18px auto 0;padding:14px 18px;background:var(--shiro);border:1px solid var(--line);border-left:4px solid var(--moegi);border-radius:var(--r);font-size:13.5px;line-height:1.85;color:var(--ink2);text-align:left}
+.anshin{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:16px auto 0;max-width:980px}
+.anshin li{flex:1 1 210px;background:var(--moegi-l);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:700;color:var(--sugi);line-height:1.7;text-align:center}
+.price-note{max-width:980px;margin-inline:auto;text-align:left}
+.price-cta{margin-top:26px}
 
-/* ---------- フォーム ---------- */
-.form-sec{background:var(--sugi);color:#fff}
-.form-sec .sec-h{color:#fff}
-.form-sec .lead{color:#E7EFE9}
-.form-card{background:var(--card);border-radius:var(--r-lg);padding:clamp(20px,2.4vw,30px);color:var(--ink);max-width:760px;margin-inline:auto}
+/* ---------- 申込み ---------- */
+.form-sec{background:var(--sugi9);color:#E7EFE9}
+.form-grid{display:grid;gap:clamp(26px,4vw,56px);align-items:start}
+.form-copy{text-align:center}
+.form-copy .sec-label{color:#8FD3AC}
+.form-copy .sec-title{color:#fff}
+.form-copy .sec-lead{color:#CFDDD5}
+.form-check{list-style:none;display:grid;gap:10px;margin-top:22px;text-align:left}
+.form-check li{position:relative;padding-left:28px;font-size:13.5px;line-height:1.8;color:#DCE7E0}
+.form-check li::before{content:"";position:absolute;left:2px;top:.55em;width:12px;height:7px;border-left:2.5px solid #6FC896;border-bottom:2.5px solid #6FC896;transform:rotate(-45deg)}
+.form-tel{margin-top:18px;font-size:13.5px;color:#CFDDD5}
+.form-tel a{color:#B9E7CC;font-weight:700}
+.form-card{background:var(--shiro);border-radius:var(--r-lg);padding:clamp(20px,2.4vw,32px);color:var(--iwa);box-shadow:var(--sh-lg);text-align:left}
 .fld{margin-bottom:14px}
-.fld label,.fld legend{display:block;font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.fld label,.fld legend{display:block;font-size:13.5px;font-weight:700;color:var(--iwa);margin-bottom:6px}
 .req{display:inline-block;background:var(--moegi-l);color:var(--moegi-t);font-size:11px;font-weight:700;border-radius:5px;padding:1px 6px;margin-left:6px}
-.opt{display:inline-block;background:var(--bg);color:var(--ink4);font-size:11px;font-weight:700;border:1px solid var(--line);border-radius:5px;padding:1px 6px;margin-left:6px}
+.opt{display:inline-block;background:var(--yuki);color:var(--ink4);font-size:11px;font-weight:700;border:1px solid var(--line);border-radius:5px;padding:1px 6px;margin-left:6px}
 .hint{font-size:12px;font-weight:400;color:var(--ink4);margin-left:2px}
-.fld input[type="text"],.fld input[type="email"],.fld input[type="tel"]{width:100%;min-height:50px;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);font-family:var(--body);font-size:16px;color:var(--ink)}
+.fld input[type="text"],.fld input[type="email"],.fld input[type="tel"]{width:100%;min-height:50px;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--yuki);font-family:var(--body);font-size:16px;color:var(--iwa)}
 .fld input:focus{border-color:var(--moegi-t);background:#fff}
 .fld fieldset{border:0}
 .radios{display:flex;gap:10px;flex-wrap:wrap}
-.radios label{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 16px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);font-weight:700;font-size:14.5px;margin-bottom:0;cursor:pointer}
+.radios label{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 16px;border:1.5px solid var(--line);border-radius:10px;background:var(--yuki);font-weight:700;font-size:14.5px;margin-bottom:0;cursor:pointer}
 .radios input{width:20px;height:20px;accent-color:var(--sugi)}
+.form-card .primary{width:100%;margin-top:4px}
 .form-note{font-size:12.5px;line-height:1.8;color:var(--ink3);margin-top:12px}
-.form-msg{border-radius:var(--r);padding:16px;font-size:14.5px;line-height:1.85}
+.form-msg{border-radius:var(--r);padding:16px;font-size:14.5px;line-height:1.85;margin-bottom:16px}
 .form-ok{background:var(--moegi-l);border:1px solid var(--moegi);color:var(--sugi)}
-.form-ng{background:#FBF3DE;border:1px solid var(--asahi);color:var(--ink)}
+.form-ng{background:#FBF3DE;border:1px solid var(--asahi);color:var(--iwa)}
 .form-ng a{color:var(--sugi);font-weight:700}
 
 /* ---------- フッター ---------- */
-.ft{background:var(--sugi9);color:#D7E2DA;padding:26px 0 30px;font-size:12.5px;line-height:1.9}
+.ft{background:var(--iwa);color:#D7E2DA;padding:26px 0 30px;font-size:12.5px;line-height:1.9}
 .ft b{color:#fff;font-weight:700}
 .ft address{font-style:normal}
 .ft a{color:#B9E7CC;display:inline-block;min-height:24px;padding-block:2px}
@@ -207,23 +232,24 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 /* ---------- 画面が広いとき ---------- */
 @media (min-width:640px){
   body{font-size:16px}
-  .chips li{font-size:13.5px}
+  .rep-b{padding:26px 26px}
 }
 @media (min-width:880px){
   .price-list{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .price-list li{display:flex;flex-direction:column}
-  .pl-h{display:block}
-  .pl-y{display:block;margin-top:6px;font-size:19px;color:var(--sugi)}
-  .rep-b{padding:26px 30px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:0 36px;align-items:start}
+  .rep-b{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:0 34px;align-items:start;padding:30px 32px}
   .rep-col{min-width:0}
-  .form-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 20px}
-  .form-grid .full{grid-column:1 / -1}
 }
+/* 1000px以上だけ startup-payroll と同じ左揃えの2カラムにする。
+   これより狭いときは中央揃え（本人の指示：幅が狭いときは中央揃え） */
 @media (min-width:1000px){
-  .hero-in{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);align-items:center}
-  .hero-copy{padding-right:8px}
-  .cta-wrap{margin-inline:0}
-  .cta-note,.hero-tel{text-align:left}
+  .hero-grid{grid-template-columns:minmax(0,1fr) minmax(360px,.9fr)}
+  .hero-copy{align-items:flex-start;text-align:left}
+  .hero-price,.hero-actions{justify-content:flex-start}
+  .hero-actions .primary{flex:0 0 auto}
+  .sec-head{margin-inline:0;text-align:left}
+  .form-grid{grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr)}
+  .form-copy{text-align:left}
+  .form-copy .sec-head{margin-bottom:0}
 }
 </style>
 </head>
@@ -244,26 +270,32 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 
 <main>
 
-<!-- 1. ファーストビュー ＋ セルフチェック -->
-<section class="hero">
-  <div class="wrap hero-in">
+<!-- ファーストビュー -->
+<header class="hero">
+  <div class="w hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow">富山の<wbr>社会保険労務士<wbr>｜ハローワーク<wbr>求人票の<wbr>専門サービス</p>
-      <h1>その<wbr>求人票、<wbr><mark>令和6年4月の<wbr>改正</mark>に<wbr>合っていますか。</h1>
-      <p class="hero-sub">記載が<wbr>足りない<wbr>求人票は、<wbr>訂正を<wbr>求められたり、<wbr>応募者に<wbr>条件が<wbr>伝わら<wbr>なかったりします。<wbr>社労士が<wbr>今の<wbr>求人票を<wbr>無料で<wbr>見て、<wbr>採用に<wbr>最適な<wbr>改定の<wbr>提案を<wbr>いたします。</p>
-      <ul class="chips">
-        <li>無料点検＋改定のご提案</li>
-        <li>代行は<wbr>1職種 38<wbr>,000円<wbr>（税抜）</li>
-        <li>受理されなければ<wbr>全額返金</li>
+      <p class="kicker">富山の<wbr>社会保険労務士<wbr>｜ハローワーク<wbr>求人票</p>
+      <h1>その<wbr>求人票、<wbr><strong>令和6年4月の改正</strong>に<wbr>合っていますか。</h1>
+      <p class="hero-intro">記載が<wbr>足りない<wbr>求人票は、<wbr>訂正を<wbr>求められたり、<wbr>応募者に<wbr>条件が<wbr>伝わら<wbr>なかったりします。<wbr>社労士が<wbr>今の<wbr>求人票を<wbr>無料で<wbr>見て、<wbr>採用に<wbr>最適な<wbr>改定の<wbr>提案を<wbr>いたします。</p>
+      <p class="hero-price">無料点検 0円<small>まる<wbr>ごと<wbr>代行は<wbr>1職種38,000円<wbr>（税抜）<wbr>／追加職種は<wbr>12,000円</small></p>
+      <div class="hero-actions">
+        <a class="primary" href="#form" data-cta="main">無料で改定案をもらう</a>
+        <a class="secondary" href="#price">料金を見る →</a>
+      </div>
+      <p class="hero-note">求人番号を<wbr>教えていただくだけで<wbr>始められます。<wbr>資料の<wbr>準備は<wbr>不要です。<wbr>この<wbr>時点で<wbr>契約は<wbr>確定しません。</p>
+      <ul class="hero-proof">
+        <li><strong>受理されなければ<br>全額返金</strong><small>ハ<wbr>ローワークの<wbr>受理まで<br>見ます</small></li>
+        <li><strong>後払い<br>（納品後30日）</strong><small>先に<wbr>お金は<br>いただきません</small></li>
+        <li><strong>社会保険労務士が<br>担当しま<wbr>す</strong><small>富山県社会保険<br>労務士会 所属</small></li>
       </ul>
-      <div class="cta-wrap"><a class="cta" href="#form" data-cta="main">無料で改定案をもらう</a></div>
-      <p class="cta-note">求人番号を<wbr>教えていただくだけで<wbr>始められます。<wbr>資料の<wbr>準備は<wbr>不要です。</p>
+      <p class="hero-sign">応募数・採用の<wbr>成否は<wbr>保証しません。<wbr>応募者への<wbr>連絡・面接は<wbr>会社が<wbr>行います。</p>
       <p class="hero-tel">電<wbr>話 <a href="tel:0764602562" data-gc="phone">076-460-2562</a>（<wbr>平日<wbr>9:00〜<wbr>18:00）</p>
     </div>
 
-    <div class="sc" id="selfcheck">
-      <p class="sc-h">その<wbr>求人票、<wbr>いつ・誰が<wbr>作った<wbr>ものですか</p>
-      <p class="sc-lead">3つ選ぶだけ。<wbr>今の<wbr>求人票が<wbr>古くなっていないか、<wbr>目安が<wbr>分かります。</p>
+    <aside class="panel" id="selfcheck" aria-labelledby="panel-h">
+      <p class="panel-kicker">30秒のセルフチェック</p>
+      <h2 class="panel-h" id="panel-h">その<wbr>求人票、<wbr>いつ・誰が<wbr>作った<wbr>ものですか</h2>
+      <p class="panel-lead">3つ選ぶだけ。<wbr>今の<wbr>求人票が<wbr>古くなっていないか、<wbr>目安が<wbr>分かります。</p>
       <div class="sc-q">
         <p class="sc-q-t">Q1　いまハ<wbr>ローワークに<wbr>出している<wbr>求人票を<wbr>作ったのは</p>
         <div class="sc-btns" role="group" aria-label="Q1の回答">
@@ -290,17 +322,20 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
       </div>
       <div class="sc-r" id="sc-no" role="status" hidden><b>見直したほうがよい求人票です。</b>令和6年4月に、求人票へ書く項目が増えました。今の求人票を見て、採用に最適な改定の提案をいたします。</div>
       <div class="sc-r" id="sc-yes" role="status" hidden><b>おおむね新しい求人票です。</b>それでも応募が来ないなら、原因は書き方か賃金の相場かもしれません。無料で見て、改定の提案をいたします。</div>
-      <a class="cta" href="#form">無料で改定案をもらう</a>
+      <a class="primary" href="#form" data-cta="main">無料で改定案をもらう</a>
       <p class="note">この<wbr>確認は<wbr>職業安定法施行規則第<wbr>4条の<wbr>2第3項に<wbr>基づく<wbr>もので、<wbr>結果は<wbr>目安です。</p>
-    </div>
+    </aside>
   </div>
-</section>
+</header>
 
-<!-- 2. 改定のご提案（記入例） -->
-<section class="sec">
-  <div class="wrap">
-    <h2 class="sec-h">今の<wbr>求人票を、<wbr>こう<wbr>直します</h2>
-    <p class="lead mid">無料で<wbr>お出しする<wbr>ご提案の<wbr>例です。<wbr>どこを<wbr>どう<wbr>直すか、<wbr>賃金が<wbr>相場の<wbr>どこに<wbr>あるかまで<wbr>お伝えします。</p>
+<!-- 01 / 無料点検の中身 -->
+<section class="sec sec-white" id="teian">
+  <div class="w">
+    <div class="sec-head">
+      <p class="sec-label">01 / 無料点検で<wbr>お返しする<wbr>もの</p>
+      <h2 class="sec-title">今の<wbr>求人票を、<wbr><mark>こう<wbr>直します</mark>。</h2>
+      <p class="sec-lead">どこを<wbr>どう<wbr>直すか、<wbr>賃金が<wbr>相場の<wbr>どこに<wbr>あるかまで<wbr>お伝えします。<wbr>下は、<wbr>実際に<wbr>お出しする<wbr>ご提案の<wbr>例です。</p>
+    </div>
     <div class="rep">
       <div class="rep-band">
         <span class="rep-badge">記入例</span>
@@ -310,7 +345,6 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
         <div class="rep-col">
           <p class="rep-h">総評</p>
           <p class="rep-p">法令上の<wbr>必須項目9つの<wbr>うち、<wbr>記載なしが<wbr>2つ、<wbr>直した<wbr>ほうが<wbr>よい<wbr>書き方が<wbr>2つ。<wbr>いずれも<wbr>1〜2行の<wbr>追記で<wbr>済みます。</p>
-
           <p class="rep-h">直す箇所<wbr>（9項目の<wbr>うち3つを<wbr>抜粋）</p>
           <ul class="rep-list">
             <li>
@@ -334,32 +368,41 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
             <li><span>富山の<wbr>同職種の<wbr>求人平均<wbr>（<wbr>例）</span><b>約<wbr>198,000円</b></li>
             <li><span>最低賃金との差</span><b>13円</b></li>
           </ul>
-
           <p class="rep-h">書き方</p>
           <p class="rep-p">仕事の<wbr>内容の<wbr>冒頭40字に、<wbr>応募者が<wbr>知りたい<wbr>条件<wbr>（日勤のみ・<wbr>入浴介助なし）を<wbr>置く</p>
         </div>
       </div>
     </div>
-    <p class="note mid">費用は<wbr>かかりません。<wbr>ご提案を<wbr>もとに<wbr>ご自身で<wbr>直していただいて<wbr>構いません。</p>
+    <p class="note" style="max-width:980px;margin-inline:auto">費用は<wbr>かかりません。<wbr>ご提案を<wbr>もとに<wbr>ご自身で<wbr>直していただいて<wbr>構いません。</p>
   </div>
 </section>
 
-<!-- 3. 料金 -->
-<section class="sec sec-alt">
-  <div class="wrap">
-    <h2 class="sec-h">料金</h2>
+<!-- 02 / 料金 -->
+<section class="sec price-band" id="price">
+  <div class="w">
+    <div class="sec-head">
+      <p class="sec-label">02 / 料金</p>
+      <h2 class="sec-title">点検は<wbr>0円、<wbr><mark>代行は<wbr>1職種<wbr>38,000円</mark>。</h2>
+      <p class="sec-lead">かかる<wbr>費用は<wbr>先に<wbr>固定で<wbr>お伝えします。<wbr>追加の<wbr>作業が<wbr>出た<wbr>ときも、<wbr>ご相談なしに<wbr>増やしません。</p>
+    </div>
     <ul class="price-list">
-      <li>
-        <p class="pl-h"><b>無料点検</b><span class="pl-y">0円</span></p>
-        <p class="pl-d">今の<wbr>求人票を<wbr>見て、<wbr>採用に<wbr>最適な<wbr>改定案を<wbr>ご提案<wbr>（月5件まで）</p>
+      <li class="is-free">
+        <p class="pl-k">まずはここから</p>
+        <p class="pl-n">無料点検</p>
+        <p class="pl-y">0円</p>
+        <p class="pl-d">今の<wbr>求人票を<wbr>見て、<wbr>採用に<wbr>最適な<wbr>改定案を<wbr>ご提案します<wbr>（月5件まで）。</p>
       </li>
       <li>
-        <p class="pl-h"><b>求人票まる<wbr>ごと<wbr>代行</b><span class="pl-y">38,<wbr>000円／1職種</span></p>
+        <p class="pl-k">依頼する場合</p>
+        <p class="pl-n">求人票まるごと代行</p>
+        <p class="pl-y">38<wbr>,000円<small>／1職種・<wbr>税抜</small></p>
         <p class="pl-d">法令点検＋原稿作成＋<wbr>事務代理で<wbr>ハローワークに<wbr>申込み＋修正1回＋<wbr>公開1か<wbr>月後の<wbr>見直し1回</p>
       </li>
       <li>
-        <p class="pl-h"><b>追加職種</b><span class="pl-y">+<wbr>12,000円／職種</span></p>
-        <p class="pl-d">同じ会社の2職種目以降</p>
+        <p class="pl-k">2職種目以降</p>
+        <p class="pl-n">追加職種</p>
+        <p class="pl-y">+<wbr>12<wbr>,000円<small>／職種・<wbr>税抜</small></p>
+        <p class="pl-d">同じ<wbr>会社で<wbr>複数の<wbr>職種を<wbr>出す<wbr>場合</p>
       </li>
     </ul>
     <p class="price-add">助成金<wbr>（トラ<wbr>イアル雇用など）を<wbr>使う<wbr>予定が<wbr>あれば、<wbr>その<wbr>条件に<wbr>合う<wbr>求人票にします。<wbr>求人票だけなら<wbr>20,000円、<wbr>助成金の<wbr>申請も<wbr>ご依頼いただく<wbr>場合は<wbr>0円です。</p>
@@ -369,15 +412,27 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
       <li>修正1回・1か<wbr>月後の<wbr>見直し1回込み</li>
     </ul>
     <p class="note price-note">表示は<wbr>税抜。<wbr>応募数・採用の<wbr>成否は<wbr>保証しません。<wbr>応募者への<wbr>連絡・面接は<wbr>会社が<wbr>行います。<wbr>助成金は<wbr>要件に<wbr>合う<wbr>場合に<wbr>会社が<wbr>申請する<wbr>もので、<wbr>受給を<wbr>保証する<wbr>ものではありません。</p>
-    <div class="cta-wrap" style="margin-top:24px"><a class="cta" href="#form" data-cta="main">無料で改定案をもらう</a></div>
+    <div class="price-cta"><a class="primary" href="#form" data-cta="main">無料で改定案をもらう</a></div>
   </div>
 </section>
 
-<!-- 4. 申込みフォーム -->
+<!-- 03 / 申込み -->
 <section class="sec form-sec" id="form">
-  <div class="wrap">
-    <h2 class="sec-h">無料で改定案をもらう</h2>
-    <p class="lead">1〜2営業日で<wbr>ご連絡します。<wbr>月5件までの<wbr>ため、<wbr>上限に<wbr>達した月は<wbr>翌月の<wbr>ご案内に<wbr>なります。</p>
+  <div class="w form-grid">
+    <div class="form-copy">
+      <div class="sec-head">
+        <p class="sec-label">03 / 申込み</p>
+        <h2 class="sec-title">求人番号だけで、<wbr>始められます。</h2>
+        <p class="sec-lead">1〜2営業日で<wbr>ご連絡します。<wbr>月5件までの<wbr>ため、<wbr>上限に<wbr>達した月は<wbr>翌月の<wbr>ご案内に<wbr>なります。</p>
+      </div>
+      <ul class="form-check">
+        <li>法令上の<wbr>必須9項目が<wbr>書けているか</li>
+        <li>賃金が<wbr>富山の<wbr>同職種の<wbr>相場の<wbr>どこに<wbr>あるか</li>
+        <li>応募者に<wbr>伝わる<wbr>書き方に<wbr>なっているか</li>
+      </ul>
+      <p class="form-tel">お急ぎの<wbr>方<wbr>は 電<wbr>話 <a href="tel:0764602562" data-gc="phone">076-460-2562</a>（<wbr>平日<wbr>9:00〜<wbr>18:00）</p>
+    </div>
+
     <div class="form-card">
       <div class="form-msg form-ok" id="formOk" role="status" hidden>
         <b>送信しました。</b>1〜2営業日でご連絡します。
@@ -391,56 +446,46 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
         <input type="hidden" name="_captcha" value="false">
         <input type="hidden" name="from" value="ads-kyujin">
         <input type="hidden" name="page" value="lp-kyujinhyo">
-        <div class="form-grid">
-          <div class="fld">
-            <label for="f-co">会社名<span class="req">必須</span></label>
-            <input type="text" id="f-co" name="会社名" required autocomplete="organization">
-          </div>
-          <div class="fld">
-            <label for="f-name">ご担当者名<span class="req">必須</span></label>
-            <input type="text" id="f-name" name="ご担当者名" required autocomplete="name">
-          </div>
-          <div class="fld">
-            <label for="f-mail">メールアドレス<span class="req">必須</span></label>
-            <input type="email" id="f-mail" name="メールアドレス" required autocomplete="email" inputmode="email">
-          </div>
-          <div class="fld">
-            <label for="f-tel">電話番号<span class="opt">任意</span></label>
-            <input type="tel" id="f-tel" name="電話番号" autocomplete="tel" inputmode="tel">
-          </div>
-          <div class="fld full">
-            <label for="f-no">求人番号または求人票のURL<span class="hint">（任意。分かる範囲で）</span></label>
-            <input type="text" id="f-no" name="求人番号または求人票のURL">
-          </div>
-          <div class="fld full">
-            <fieldset>
-              <legend>ご希望の連絡方法<span class="opt">任意</span></legend>
-              <div class="radios">
-                <label><input type="radio" name="ご希望の連絡方法" value="メール">メール</label>
-                <label><input type="radio" name="ご希望の連絡方法" value="電話">電話</label>
-              </div>
-            </fieldset>
-          </div>
+        <div class="fld">
+          <label for="f-co">会社名<span class="req">必須</span></label>
+          <input type="text" id="f-co" name="会社名" required autocomplete="organization">
         </div>
-        <button type="submit" class="cta" id="lpSubmit">無料で申し込む</button>
+        <div class="fld">
+          <label for="f-name">ご担当者名<span class="req">必須</span></label>
+          <input type="text" id="f-name" name="ご担当者名" required autocomplete="name">
+        </div>
+        <div class="fld">
+          <label for="f-mail">メールアドレス<span class="req">必須</span></label>
+          <input type="email" id="f-mail" name="メールアドレス" required autocomplete="email" inputmode="email">
+        </div>
+        <div class="fld">
+          <label for="f-tel">電話番号<span class="opt">任意</span></label>
+          <input type="tel" id="f-tel" name="電話番号" autocomplete="tel" inputmode="tel">
+        </div>
+        <div class="fld">
+          <label for="f-no">求人番号または求人票のURL<span class="hint">（任意。分かる範囲で）</span></label>
+          <input type="text" id="f-no" name="求人番号または求人票のURL">
+        </div>
+        <div class="fld">
+          <fieldset>
+            <legend>ご希望の連絡方法<span class="opt">任意</span></legend>
+            <div class="radios">
+              <label><input type="radio" name="ご希望の連絡方法" value="メール">メール</label>
+              <label><input type="radio" name="ご希望の連絡方法" value="電話">電話</label>
+            </div>
+          </fieldset>
+        </div>
+        <button type="submit" class="primary" id="lpSubmit">無料で申し込む</button>
       </form>
       <p class="form-note">送信後、<wbr>当事務所から<wbr>確認の<wbr>ご連絡を<wbr>します。<wbr>営業電話は<wbr>しません。</p>
     </div>
   </div>
 </section>
 
-<!-- 5. 最終 -->
-<section class="sec">
-  <div class="wrap">
-    <div class="cta-wrap" style="margin-inline:auto"><a class="cta" href="#form" data-cta="main">無料で改定案をもらう</a></div>
-    <p class="cta-note">求人番号を<wbr>教えていただくだけで<wbr>始められます。<wbr>資料の<wbr>準備は<wbr>不要です。</p>
-  </div>
-</section>
-
 </main>
 
 <footer class="ft">
-  <div class="wrap">
+  <div class="w">
     <address>
       <b>みなの社会保険労務士事務所</b>　社会保険労務士 近藤 昭宏<br>
       〒931-8333 富山県富山市蓮町1丁目7-4 SCOP TOYAMA<br>
