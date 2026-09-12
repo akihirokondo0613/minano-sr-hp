@@ -5,13 +5,13 @@
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ハローワーク求人票の無料点検｜富山の社会保険労務士 みなの</title>
-<meta name="description" content="令和6年4月の改正で、ハローワーク求人票に書く項目が増えました。富山の社労士が今の求人票1枚を無料で点検し、直す箇所をA4・1枚でお返しします。まるごと代行は1職種38,000円（税抜）、受理されなければ全額返金です。">
+<meta name="description" content="令和6年4月の改正で、ハローワーク求人票に書く項目が増えました。富山の社労士が今の求人票を無料で見て、採用に最適な改定の提案をいたします。まるごと代行は1職種38,000円（税抜）、受理されなければ全額返金です。">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://minano-sr.com/uploads/lp-kyujinhyo.html">
 <meta property="og:url" content="https://minano-sr.com/uploads/lp-kyujinhyo.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="ハローワーク求人票の無料点検｜富山の社会保険労務士 みなの">
-<meta property="og:description" content="令和6年4月の改正で、ハローワーク求人票に書く項目が増えました。富山の社労士が今の求人票1枚を無料で点検し、直す箇所をA4・1枚でお返しします。">
+<meta property="og:description" content="令和6年4月の改正で、ハローワーク求人票に書く項目が増えました。富山の社労士が今の求人票を無料で見て、採用に最適な改定の提案をいたします。">
 <meta property="og:site_name" content="みなの社会保険労務士事務所">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://minano-sr.com/assets/og/minano-og.png">
@@ -37,6 +37,7 @@
   --ink4:#68736C;         /* 注釈。淡い地でも4.5:1を満たす濃さ */
   --sugi:#123F30;         /* 深杉（主色） */
   --sugi7:#1C5842;        /* hover */
+  --sugi9:#0B2A1F;
   --moegi:#2E9E63;        /* 萌木（装飾専用） */
   --moegi-t:#1E7A4B;      /* 萌木・文字用（白地で4.5:1以上） */
   --moegi-l:#E3F2E9;      /* 淡緑 */
@@ -46,6 +47,7 @@
   --r:12px;
   --r-lg:16px;
   --sh:0 1px 2px rgba(11,42,31,.05), 0 6px 18px -10px rgba(11,42,31,.10);
+  --sh-lg:0 2px 6px rgba(11,42,31,.06), 0 24px 50px -26px rgba(11,42,31,.34);
   --disp:"Zen Maru Gothic","BIZ UDPGothic","Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",YuGothic,Meiryo,sans-serif;
   --body:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",YuGothic,Meiryo,sans-serif;
   --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
@@ -54,7 +56,6 @@
 html{-webkit-text-size-adjust:100%;font-size:16px;min-width:320px;scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.85;line-break:strict;overflow-x:clip;padding-bottom:96px}
 img,svg{max-width:100%}
-table{max-width:100%}
 [hidden]{display:none!important}
 
 /* 日本語の折り返し。auto-phrase が効かないブラウザ（Safari等）では
@@ -68,20 +69,19 @@ p a,li a,dd a{word-break:normal}
     word-break:keep-all;overflow-wrap:break-word;
   }
 }
-td,th{text-wrap:pretty}
-h1,h2,h3,h4,p,li,dt,dd,td,th{hanging-punctuation:allow-end}
+h1,h2,h3,h4,p,li,dt,dd{hanging-punctuation:allow-end}
 a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
 }
 
-.wrap{width:min(100% - 32px,720px);margin-inline:auto}
-:where(a):focus-visible,:where(button):focus-visible,:where(input,select,textarea):focus-visible,[tabindex]:focus-visible{outline:3px solid var(--moegi-t);outline-offset:2px}
+.wrap{width:min(100% - 32px,1080px);margin-inline:auto}
+:where(a):focus-visible,:where(button):focus-visible,:where(input,select,textarea):focus-visible{outline:3px solid var(--moegi-t);outline-offset:2px}
 
 /* ---------- ヘッダー ---------- */
 .hd{background:var(--card);border-bottom:1px solid var(--line)}
-.hd-in{width:min(100% - 32px,720px);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;padding:8px 0}
+.hd-in{width:min(100% - 32px,1080px);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;padding:8px 0}
 .logo{display:flex;align-items:center;gap:10px}
 .logo-mark{width:38px;height:38px;flex:0 0 38px;background:var(--sugi);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(18,63,48,.16)}
 .logo-mark span{font-family:var(--disp);font-size:19px;font-weight:700;color:#fff;line-height:1}
@@ -92,49 +92,57 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 @media (max-width:359px){.logo-name{font-size:12.5px}.hd-tel{font-size:12.5px;padding:0 8px}}
 
 /* ---------- 共通の節 ---------- */
-.sec{padding:clamp(34px,7vw,52px) 0}
+.sec{padding:clamp(34px,6vw,64px) 0}
 .sec-alt{background:var(--card);border-block:1px solid var(--line2)}
-.sec-h{font-size:clamp(20px,4.6vw,26px);font-weight:800;color:var(--sugi);letter-spacing:.01em;margin-bottom:18px}
-.sec-h::after{content:"";display:block;width:44px;height:4px;border-radius:2px;background:var(--asahi);margin-top:12px}
-.lead{color:var(--ink2);margin-bottom:16px}
+.sec-h{font-size:clamp(21px,3.4vw,30px);font-weight:800;color:var(--sugi);letter-spacing:.01em;margin-bottom:20px;text-align:center}
+.sec-h::after{content:"";display:block;width:48px;height:4px;border-radius:2px;background:var(--asahi);margin:14px auto 0}
+.lead{color:var(--ink2);margin-bottom:18px;text-align:center}
 .note{font-size:12.5px;line-height:1.8;color:var(--ink4);margin-top:14px}
+.mid{max-width:860px;margin-inline:auto}
 
 /* ---------- 主ボタン ---------- */
-.cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:60px;padding:12px 18px;border:0;border-radius:var(--r);background:var(--sugi);color:#fff;font-family:var(--disp);font-size:17px;font-weight:800;letter-spacing:.02em;text-align:center;text-decoration:none;box-shadow:0 8px 20px -10px rgba(11,42,31,.5);transition:background .3s,transform .3s}
+.cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:62px;padding:12px 20px;border:0;border-radius:var(--r);background:var(--sugi);color:#fff;font-family:var(--disp);font-size:clamp(16px,2.2vw,19px);font-weight:800;letter-spacing:.02em;text-align:center;text-decoration:none;box-shadow:0 10px 24px -12px rgba(11,42,31,.6);transition:background .3s,transform .3s}
 .cta:hover{background:var(--sugi7);transform:translateY(-1px)}
-.cta svg{width:18px;height:18px;flex:0 0 18px}
-.cta-note{font-size:13px;color:var(--ink3);margin-top:10px}
+.cta-wrap{max-width:420px;margin-inline:auto}
+.cta-note{font-size:13px;color:var(--ink3);margin-top:10px;text-align:center}
 
 /* ---------- ファーストビュー ---------- */
-.hero{padding:clamp(26px,6vw,44px) 0 clamp(30px,7vw,48px);background:linear-gradient(180deg,var(--moegi-l) 0%,var(--bg) 78%)}
-.eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--moegi-t);background:var(--card);border:1px solid var(--moegi);border-radius:999px;padding:5px 12px;line-height:1.6;margin-bottom:14px}
-.hero h1{font-size:clamp(24px,6.4vw,36px);font-weight:900;color:var(--sugi);letter-spacing:.01em;margin-bottom:14px}
+.hero{padding:clamp(26px,4vw,52px) 0 clamp(30px,5vw,60px);background:linear-gradient(180deg,var(--moegi-l) 0%,var(--bg) 88%)}
+.hero-in{display:grid;gap:clamp(24px,3vw,44px)}
+.eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--moegi-t);background:var(--card);border:1px solid var(--moegi);border-radius:999px;padding:5px 13px;line-height:1.6;margin-bottom:14px}
+.hero h1{font-size:clamp(25px,3.6vw,40px);font-weight:900;color:var(--sugi);letter-spacing:.01em;margin-bottom:14px;text-wrap:balance}
 .hero h1 mark{background:linear-gradient(transparent 62%,#F2E0AE 62%);color:inherit;padding:0 2px}
-.hero-sub{color:var(--ink2);margin-bottom:18px}
-.chips{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
-.chips li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 13px 7px 28px;font-size:12.5px;font-weight:700;line-height:1.6;color:var(--ink2);position:relative}
-.chips li::before{content:"";position:absolute;left:11px;top:50%;width:10px;height:6px;margin-top:-4px;border-left:2px solid var(--moegi-t);border-bottom:2px solid var(--moegi-t);transform:rotate(-45deg)}
+.hero-sub{color:var(--ink2);font-size:clamp(15px,1.5vw,17px);margin-bottom:20px}
+.chips{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.chips li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 14px 7px 30px;font-size:13px;font-weight:700;line-height:1.6;color:var(--ink2);position:relative}
+.chips li::before{content:"";position:absolute;left:12px;top:50%;width:10px;height:6px;margin-top:-4px;border-left:2px solid var(--moegi-t);border-bottom:2px solid var(--moegi-t);transform:rotate(-45deg)}
 .hero-tel{margin-top:14px;font-size:14px;color:var(--ink2)}
 .hero-tel a{color:var(--sugi);font-weight:700;text-decoration:none;border-bottom:2px solid var(--moegi)}
 
 /* ---------- セルフチェック ---------- */
-.sc-q{border:1px solid var(--line);border-radius:var(--r);background:var(--card);padding:16px;margin-bottom:12px}
-.sc-q-t{font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:12px}
-.sc-btns{display:flex;gap:10px}
-.sc-btns button{flex:1 1 0;min-width:0;min-height:48px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);font-family:var(--body);font-size:15px;font-weight:700;color:var(--ink2);cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.sc{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh-lg);padding:clamp(18px,2.2vw,26px)}
+.sc-h{font-size:clamp(17px,1.9vw,21px);font-weight:800;color:var(--sugi);margin-bottom:4px}
+.sc-lead{font-size:13px;color:var(--ink3);margin-bottom:16px}
+.sc-q{border-top:1px solid var(--line2);padding:14px 0 0;margin-top:14px}
+.sc-q:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.sc-q-t{font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:10px}
+.sc-btns{display:flex;flex-wrap:wrap;gap:8px}
+.sc-btns button{flex:1 1 96px;min-width:0;min-height:48px;padding:6px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);font-family:var(--body);font-size:14px;font-weight:700;color:var(--ink2);cursor:pointer;transition:background .2s,border-color .2s,color .2s}
 .sc-btns button:hover{border-color:var(--moegi)}
 .sc-btns button[aria-pressed="true"]{background:var(--sugi);border-color:var(--sugi);color:#fff}
-.sc-r{border-radius:var(--r);padding:16px;margin:16px 0 14px;font-size:14.5px;line-height:1.85;background:var(--moegi-l);border:1px solid var(--moegi)}
+.sc-r{border-radius:var(--r);padding:16px;margin-top:18px;font-size:14.5px;line-height:1.85;background:var(--moegi-l);border:1px solid var(--moegi)}
 .sc-r b{color:var(--sugi)}
+.sc .cta{margin-top:18px}
+.sc .note{margin-top:12px}
 
-/* ---------- 点検レポートの再現 ---------- */
-.rep{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh);overflow:hidden}
+/* ---------- 改定のご提案（記入例） ---------- */
+.rep{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh);overflow:hidden;max-width:920px;margin-inline:auto}
 .rep-band{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#FBF3DE;border-bottom:1px solid var(--line);padding:10px 16px}
 .rep-badge{display:inline-block;background:var(--sugi);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;border-radius:6px;padding:3px 9px}
 .rep-co{font-size:12.5px;font-weight:700;color:var(--ink2);line-height:1.6}
 .rep-b{padding:18px 16px}
 .rep-h{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--moegi-t);margin:18px 0 8px}
-.rep-b>.rep-h:first-child{margin-top:0}
+.rep-b>.rep-h:first-child,.rep-col>.rep-h:first-child{margin-top:0}
 .rep-p{font-size:14px;line-height:1.85;color:var(--ink2)}
 .rep-list{list-style:none;display:grid;gap:10px;margin-bottom:4px}
 .rep-list li{border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:12px 14px}
@@ -149,30 +157,28 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 .rep-nums li>span{min-width:0}
 .rep-nums b{flex:0 0 auto;font-family:var(--mono);font-size:15px;color:var(--sugi)}
 
-/* ---------- 料金カード ---------- */
-.price-list{list-style:none;display:grid;gap:12px}
-.price-list li{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+/* ---------- 料金 ---------- */
+.price-list{list-style:none;display:grid;gap:12px;max-width:920px;margin-inline:auto}
+.price-list li{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
 .pl-h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 12px;margin-bottom:4px}
-.pl-h b{font-size:15.5px;font-weight:800;color:var(--sugi)}
+.pl-h b{font-size:16px;font-weight:800;color:var(--sugi)}
 .pl-y{flex:0 0 auto;font-family:var(--mono);font-size:16px;font-weight:700;color:var(--ink)}
 .pl-d{font-size:13.5px;line-height:1.8;color:var(--ink2)}
-
-/* ---------- 料金 ---------- */
-.price-add{margin-top:14px;font-size:13.5px;line-height:1.85;color:var(--ink2);background:var(--card);border:1px solid var(--line);border-left:4px solid var(--moegi);border-radius:var(--r);padding:12px 14px}
-.anshin{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.anshin li{flex:1 1 190px;background:var(--moegi-l);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:700;color:var(--sugi);line-height:1.7;text-align:center}
+.price-add{max-width:920px;margin:14px auto 0;font-size:13.5px;line-height:1.85;color:var(--ink2);background:var(--card);border:1px solid var(--line);border-left:4px solid var(--moegi);border-radius:var(--r);padding:12px 16px}
+.anshin{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:14px auto 0;max-width:920px}
+.anshin li{flex:1 1 200px;background:var(--moegi-l);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:700;color:var(--sugi);line-height:1.7;text-align:center}
+.price-note{max-width:920px;margin-inline:auto}
 
 /* ---------- フォーム ---------- */
 .form-sec{background:var(--sugi);color:#fff}
 .form-sec .sec-h{color:#fff}
-.form-sec .sec-h::after{background:var(--asahi)}
 .form-sec .lead{color:#E7EFE9}
-.form-card{background:var(--card);border-radius:var(--r-lg);padding:20px 18px;color:var(--ink)}
+.form-card{background:var(--card);border-radius:var(--r-lg);padding:clamp(20px,2.4vw,30px);color:var(--ink);max-width:760px;margin-inline:auto}
 .fld{margin-bottom:14px}
 .fld label,.fld legend{display:block;font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:6px}
 .req{display:inline-block;background:var(--moegi-l);color:var(--moegi-t);font-size:11px;font-weight:700;border-radius:5px;padding:1px 6px;margin-left:6px}
-.hint{font-size:12px;font-weight:400;color:var(--ink4);margin-left:2px}
 .opt{display:inline-block;background:var(--bg);color:var(--ink4);font-size:11px;font-weight:700;border:1px solid var(--line);border-radius:5px;padding:1px 6px;margin-left:6px}
+.hint{font-size:12px;font-weight:400;color:var(--ink4);margin-left:2px}
 .fld input[type="text"],.fld input[type="email"],.fld input[type="tel"]{width:100%;min-height:50px;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);font-family:var(--body);font-size:16px;color:var(--ink)}
 .fld input:focus{border-color:var(--moegi-t);background:#fff}
 .fld fieldset{border:0}
@@ -186,7 +192,7 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 .form-ng a{color:var(--sugi);font-weight:700}
 
 /* ---------- フッター ---------- */
-.ft{background:#0B2A1F;color:#D7E2DA;padding:26px 0 30px;font-size:12.5px;line-height:1.9}
+.ft{background:var(--sugi9);color:#D7E2DA;padding:26px 0 30px;font-size:12.5px;line-height:1.9}
 .ft b{color:#fff;font-weight:700}
 .ft address{font-style:normal}
 .ft a{color:#B9E7CC;display:inline-block;min-height:24px;padding-block:2px}
@@ -196,20 +202,28 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 /* ---------- スマホの追従ボタン ---------- */
 .stick{position:fixed;left:0;right:0;bottom:0;z-index:60;display:block;padding:8px 16px calc(8px + env(safe-area-inset-bottom));background:rgba(249,250,247,.97);border-top:1px solid var(--line);box-shadow:0 -6px 18px -12px rgba(11,42,31,.5)}
 .stick a{display:flex;align-items:center;justify-content:center;height:56px;border-radius:var(--r);background:var(--sugi);color:#fff;font-family:var(--disp);font-size:17px;font-weight:800;letter-spacing:.02em;text-decoration:none}
-/* スマホだけ。タブレット以上では出さない（固定バーが本文の操作要素へ重なるため） */
 @media (min-width:640px){.stick{display:none}body{padding-bottom:0}}
 
-/* ---------- PC ---------- */
-@media (min-width:721px){
+/* ---------- 画面が広いとき ---------- */
+@media (min-width:640px){
   body{font-size:16px}
   .chips li{font-size:13.5px}
-  .cta{width:auto;min-width:360px;margin-inline:auto}
-  .cta-note,.hero-tel{text-align:center}
-  .hero{text-align:center}
-  .chips{justify-content:center}
-  .sec-h::after{margin-inline:auto}
-  .sec-h{text-align:center}
-  .lead{text-align:center}
+}
+@media (min-width:880px){
+  .price-list{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .price-list li{display:flex;flex-direction:column}
+  .pl-h{display:block}
+  .pl-y{display:block;margin-top:6px;font-size:19px;color:var(--sugi)}
+  .rep-b{padding:26px 30px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:0 36px;align-items:start}
+  .rep-col{min-width:0}
+  .form-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 20px}
+  .form-grid .full{grid-column:1 / -1}
+}
+@media (min-width:1000px){
+  .hero-in{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);align-items:center}
+  .hero-copy{padding-right:8px}
+  .cta-wrap{margin-inline:0}
+  .cta-note,.hero-tel{text-align:left}
 }
 </style>
 </head>
@@ -230,109 +244,114 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 
 <main>
 
-<!-- 1. ファーストビュー -->
+<!-- 1. ファーストビュー ＋ セルフチェック -->
 <section class="hero">
-  <div class="wrap">
-    <p class="eyebrow">富山の<wbr>社会保険労務士<wbr>｜ハローワーク<wbr>求人票の<wbr>専門サービス</p>
-    <h1>その<wbr>求人票、<wbr><mark>令和6年4月の<wbr>改正</mark>に<wbr>合っていますか。</h1>
-    <p class="hero-sub">記載が<wbr>足りない<wbr>求人票は、<wbr>訂正を<wbr>求められたり、<wbr>応募者に<wbr>条件が<wbr>伝わら<wbr>なかったりします。<wbr>社労士が<wbr>今の<wbr>求人票1枚を<wbr>無料で<wbr>点検し、<wbr>直す箇所を<wbr>A4・1枚で<wbr>お返しします。</p>
-    <ul class="chips">
-      <li>点検は<wbr>無料・<wbr>A4レポート付き</li>
-      <li>代行は<wbr>1職種 38<wbr>,000円<wbr>（税抜）</li>
-      <li>受理されなければ<wbr>全額返金</li>
-    </ul>
-    <a class="cta" href="#form" data-cta="main">無料で点検してもらう</a>
-    <p class="cta-note">求人番号を<wbr>教えていただくだけで<wbr>始められます。<wbr>資料の<wbr>準備は<wbr>不要です。</p>
-    <p class="hero-tel">電<wbr>話 <a href="tel:0764602562" data-gc="phone">076-460-2562</a>（<wbr>平日<wbr>9:00〜<wbr>18:00）</p>
-  </div>
-</section>
+  <div class="wrap hero-in">
+    <div class="hero-copy">
+      <p class="eyebrow">富山の<wbr>社会保険労務士<wbr>｜ハローワーク<wbr>求人票の<wbr>専門サービス</p>
+      <h1>その<wbr>求人票、<wbr><mark>令和6年4月の<wbr>改正</mark>に<wbr>合っていますか。</h1>
+      <p class="hero-sub">記載が<wbr>足りない<wbr>求人票は、<wbr>訂正を<wbr>求められたり、<wbr>応募者に<wbr>条件が<wbr>伝わら<wbr>なかったりします。<wbr>社労士が<wbr>今の<wbr>求人票を<wbr>無料で<wbr>見て、<wbr>採用に<wbr>最適な<wbr>改定の<wbr>提案を<wbr>いたします。</p>
+      <ul class="chips">
+        <li>無料点検＋改定のご提案</li>
+        <li>代行は<wbr>1職種 38<wbr>,000円<wbr>（税抜）</li>
+        <li>受理されなければ<wbr>全額返金</li>
+      </ul>
+      <div class="cta-wrap"><a class="cta" href="#form" data-cta="main">無料で改定案をもらう</a></div>
+      <p class="cta-note">求人番号を<wbr>教えていただくだけで<wbr>始められます。<wbr>資料の<wbr>準備は<wbr>不要です。</p>
+      <p class="hero-tel">電<wbr>話 <a href="tel:0764602562" data-gc="phone">076-460-2562</a>（<wbr>平日<wbr>9:00〜<wbr>18:00）</p>
+    </div>
 
-<!-- 2. 30秒セルフチェック -->
-<section class="sec sec-alt">
-  <div class="wrap">
-    <h2 class="sec-h">あなたの<wbr>求人票、<wbr>3つだけ<wbr>確認してください</h2>
-    <div id="selfcheck">
+    <div class="sc" id="selfcheck">
+      <p class="sc-h">その<wbr>求人票、<wbr>いつ・誰が<wbr>作った<wbr>ものですか</p>
+      <p class="sc-lead">3つ選ぶだけ。<wbr>今の<wbr>求人票が<wbr>古くなっていないか、<wbr>目安が<wbr>分かります。</p>
       <div class="sc-q">
-        <p class="sc-q-t">Q1 「従事すべき<wbr>業務の<wbr>変更の<wbr>範囲」と<wbr>「就業場所の<wbr>変更の<wbr>範囲」を<wbr>書いていますか</p>
+        <p class="sc-q-t">Q1　いまハ<wbr>ローワークに<wbr>出している<wbr>求人票を<wbr>作ったのは</p>
         <div class="sc-btns" role="group" aria-label="Q1の回答">
-          <button type="button" data-q="1" data-a="yes" aria-pressed="false">はい</button>
-          <button type="button" data-q="1" data-a="no" aria-pressed="false">いいえ</button>
+          <button type="button" data-q="1" data-a="self" aria-pressed="false">自分</button>
+          <button type="button" data-q="1" data-a="other" aria-pressed="false">前任者・他の人</button>
+          <button type="button" data-q="1" data-a="unknown" aria-pressed="false">覚えていない</button>
         </div>
       </div>
       <div class="sc-q">
-        <p class="sc-q-t">Q2 固定残業代が<wbr>ある<wbr>場合、<wbr>「何時間分・いくら・<wbr>超えた分は<wbr>別に<wbr>支払う」まで<wbr>書いていますか</p>
+        <p class="sc-q-t">Q2　中身を<wbr>最後に<wbr>見直したのは</p>
         <div class="sc-btns" role="group" aria-label="Q2の回答">
-          <button type="button" data-q="2" data-a="yes" aria-pressed="false">はい</button>
-          <button type="button" data-q="2" data-a="no" aria-pressed="false">いいえ</button>
+          <button type="button" data-q="2" data-a="recent" aria-pressed="false">1年以内</button>
+          <button type="button" data-q="2" data-a="old" aria-pressed="false">1年より前</button>
+          <button type="button" data-q="2" data-a="unknown" aria-pressed="false">わからない</button>
         </div>
       </div>
       <div class="sc-q">
-        <p class="sc-q-t">Q3 求人票の<wbr>条件<wbr>と、労働条件通知書・<wbr>就業規則の<wbr>条件は<wbr>一致していますか</p>
+        <p class="sc-q-t">Q3　令和6年4月の<wbr>改正に<wbr>合わせて<wbr>直しましたか</p>
         <div class="sc-btns" role="group" aria-label="Q3の回答">
-          <button type="button" data-q="3" data-a="yes" aria-pressed="false">はい</button>
-          <button type="button" data-q="3" data-a="no" aria-pressed="false">いいえ</button>
+          <button type="button" data-q="3" data-a="done" aria-pressed="false">直した</button>
+          <button type="button" data-q="3" data-a="not" aria-pressed="false">直していない</button>
+          <button type="button" data-q="3" data-a="unknown" aria-pressed="false">わからない</button>
         </div>
       </div>
-      <div class="sc-r" id="sc-no" role="status" hidden><b>直したほうがよい箇所があります。</b>無料点検で、どこをどう直すかまでお伝えします。</div>
-      <div class="sc-r" id="sc-yes" role="status" hidden><b>法令面はおおむね整っています。</b>応募が来ない原因は書き方か相場かもしれません。無料点検で確認できます。</div>
-      <a class="cta" href="#form">無料で点検してもらう</a>
+      <div class="sc-r" id="sc-no" role="status" hidden><b>見直したほうがよい求人票です。</b>令和6年4月に、求人票へ書く項目が増えました。今の求人票を見て、採用に最適な改定の提案をいたします。</div>
+      <div class="sc-r" id="sc-yes" role="status" hidden><b>おおむね新しい求人票です。</b>それでも応募が来ないなら、原因は書き方か賃金の相場かもしれません。無料で見て、改定の提案をいたします。</div>
+      <a class="cta" href="#form">無料で改定案をもらう</a>
       <p class="note">この<wbr>確認は<wbr>職業安定法施行規則第<wbr>4条の<wbr>2第3項に<wbr>基づく<wbr>もので、<wbr>結果は<wbr>目安です。</p>
     </div>
   </div>
 </section>
 
-<!-- 3. 点検レポートの再現 -->
+<!-- 2. 改定のご提案（記入例） -->
 <section class="sec">
   <div class="wrap">
-    <h2 class="sec-h">無料点検で、<wbr>A4・1枚の<wbr>レポートを<wbr>お返しします</h2>
+    <h2 class="sec-h">今の<wbr>求人票を、<wbr>こう<wbr>直します</h2>
+    <p class="lead mid">無料で<wbr>お出しする<wbr>ご提案の<wbr>例です。<wbr>どこを<wbr>どう<wbr>直すか、<wbr>賃金が<wbr>相場の<wbr>どこに<wbr>あるかまで<wbr>お伝えします。</p>
     <div class="rep">
       <div class="rep-band">
         <span class="rep-badge">記入例</span>
         <span class="rep-co">例：株式会社○○（介護職員・正社員）</span>
       </div>
       <div class="rep-b">
-        <p class="rep-h">総評</p>
-        <p class="rep-p">法令上の<wbr>必須項目9つの<wbr>うち、<wbr>記載なしが<wbr>2つ、<wbr>直した<wbr>ほうが<wbr>よい<wbr>書き方が<wbr>2つ。<wbr>いずれも<wbr>1〜2行の<wbr>追記で<wbr>済みます。</p>
+        <div class="rep-col">
+          <p class="rep-h">総評</p>
+          <p class="rep-p">法令上の<wbr>必須項目9つの<wbr>うち、<wbr>記載なしが<wbr>2つ、<wbr>直した<wbr>ほうが<wbr>よい<wbr>書き方が<wbr>2つ。<wbr>いずれも<wbr>1〜2行の<wbr>追記で<wbr>済みます。</p>
 
-        <p class="rep-h">直す箇所<wbr>（9項目の<wbr>うち3つを<wbr>抜粋）</p>
-        <ul class="rep-list">
-          <li>
-            <p class="rep-i-h"><b>業務の<wbr>変更の<wbr>範囲</b><span class="tag tag-ng">記載なし</span></p>
-            <p class="rep-i-d">『会社の<wbr>定める<wbr>業務<wbr>（介護業務全般）』な<wbr>ど<wbr>実態に<wbr>合う<wbr>範囲を<wbr>1行追加</p>
-          </li>
-          <li>
-            <p class="rep-i-h"><b>固定残業代</b><span class="tag tag-fix">要修正</span></p>
-            <p class="rep-i-d">『10時間分・<wbr>超過分は<wbr>別途支給』の<wbr>形に</p>
-          </li>
-          <li>
-            <p class="rep-i-h"><b>就業場所の<wbr>変更の<wbr>範囲</b><span class="tag tag-ng">記載なし</span></p>
-            <p class="rep-i-d">転勤が<wbr>なければ<wbr>『変更なし』と<wbr>書く</p>
-          </li>
-        </ul>
+          <p class="rep-h">直す箇所<wbr>（9項目の<wbr>うち3つを<wbr>抜粋）</p>
+          <ul class="rep-list">
+            <li>
+              <p class="rep-i-h"><b>業務の<wbr>変更の<wbr>範囲</b><span class="tag tag-ng">記載なし</span></p>
+              <p class="rep-i-d">『会社の<wbr>定める<wbr>業務<wbr>（介護業務全般）』な<wbr>ど<wbr>実態に<wbr>合う<wbr>範囲を<wbr>1行追加</p>
+            </li>
+            <li>
+              <p class="rep-i-h"><b>固定残業代</b><span class="tag tag-fix">要修正</span></p>
+              <p class="rep-i-d">『10時間分・<wbr>超過分は<wbr>別途支給』の<wbr>形に</p>
+            </li>
+            <li>
+              <p class="rep-i-h"><b>就業場所の<wbr>変更の<wbr>範囲</b><span class="tag tag-ng">記載なし</span></p>
+              <p class="rep-i-d">転勤が<wbr>なければ<wbr>『変更なし』と<wbr>書く</p>
+            </li>
+          </ul>
+        </div>
+        <div class="rep-col">
+          <p class="rep-h">賃金の位置</p>
+          <ul class="rep-nums">
+            <li><span>求人票の<wbr>下限</span><b>186,000円</b></li>
+            <li><span>富山の<wbr>同職種の<wbr>求人平均<wbr>（<wbr>例）</span><b>約<wbr>198,000円</b></li>
+            <li><span>最低賃金との差</span><b>13円</b></li>
+          </ul>
 
-        <p class="rep-h">賃金の位置</p>
-        <ul class="rep-nums">
-          <li><span>求人票の<wbr>下限</span><b>186,000円</b></li>
-          <li><span>富山の<wbr>同職種の<wbr>求人平均<wbr>（<wbr>例）</span><b>約<wbr>198,000円</b></li>
-          <li><span>最低賃金との差</span><b>13円</b></li>
-        </ul>
-
-        <p class="rep-h">書き方</p>
-        <p class="rep-p">仕事の<wbr>内容の<wbr>冒頭40字に、<wbr>応募者が<wbr>知りたい<wbr>条件<wbr>（日勤のみ・<wbr>入浴介助なし）を<wbr>置く</p>
+          <p class="rep-h">書き方</p>
+          <p class="rep-p">仕事の<wbr>内容の<wbr>冒頭40字に、<wbr>応募者が<wbr>知りたい<wbr>条件<wbr>（日勤のみ・<wbr>入浴介助なし）を<wbr>置く</p>
+        </div>
       </div>
     </div>
-    <p class="note">費用は<wbr>かかりません。<wbr>レポートを<wbr>もとに<wbr>ご自身で<wbr>直していただいて<wbr>構いません。</p>
+    <p class="note mid">費用は<wbr>かかりません。<wbr>ご提案を<wbr>もとに<wbr>ご自身で<wbr>直していただいて<wbr>構いません。</p>
   </div>
 </section>
 
-<!-- 4. 料金 -->
+<!-- 3. 料金 -->
 <section class="sec sec-alt">
   <div class="wrap">
-    <h2 class="sec-h" id="price-h">料金</h2>
+    <h2 class="sec-h">料金</h2>
     <ul class="price-list">
       <li>
         <p class="pl-h"><b>無料点検</b><span class="pl-y">0円</span></p>
-        <p class="pl-d">既存の<wbr>求人票1枚を<wbr>A4・1枚で<wbr>点検<wbr>（月5件まで）</p>
+        <p class="pl-d">今の<wbr>求人票を<wbr>見て、<wbr>採用に<wbr>最適な<wbr>改定案を<wbr>ご提案<wbr>（月5件まで）</p>
       </li>
       <li>
         <p class="pl-h"><b>求人票まる<wbr>ごと<wbr>代行</b><span class="pl-y">38,<wbr>000円／1職種</span></p>
@@ -349,15 +368,15 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
       <li>受理されなければ<wbr>全額返金</li>
       <li>修正1回・1か<wbr>月後の<wbr>見直し1回込み</li>
     </ul>
-    <p class="note">表示は<wbr>税抜。<wbr>応募数・採用の<wbr>成否は<wbr>保証しません。<wbr>応募者への<wbr>連絡・面接は<wbr>会社が<wbr>行います。<wbr>助成金は<wbr>要件に<wbr>合う<wbr>場合に<wbr>会社が<wbr>申請する<wbr>もので、<wbr>受給を<wbr>保証する<wbr>ものではありません。</p>
-    <div style="margin-top:22px"><a class="cta" href="#form" data-cta="main">無料で点検してもらう</a></div>
+    <p class="note price-note">表示は<wbr>税抜。<wbr>応募数・採用の<wbr>成否は<wbr>保証しません。<wbr>応募者への<wbr>連絡・面接は<wbr>会社が<wbr>行います。<wbr>助成金は<wbr>要件に<wbr>合う<wbr>場合に<wbr>会社が<wbr>申請する<wbr>もので、<wbr>受給を<wbr>保証する<wbr>ものではありません。</p>
+    <div class="cta-wrap" style="margin-top:24px"><a class="cta" href="#form" data-cta="main">無料で改定案をもらう</a></div>
   </div>
 </section>
 
-<!-- 5. 申込みフォーム -->
+<!-- 4. 申込みフォーム -->
 <section class="sec form-sec" id="form">
   <div class="wrap">
-    <h2 class="sec-h">無料点検を申し込む</h2>
+    <h2 class="sec-h">無料で改定案をもらう</h2>
     <p class="lead">1〜2営業日で<wbr>ご連絡します。<wbr>月5件までの<wbr>ため、<wbr>上限に<wbr>達した月は<wbr>翌月の<wbr>ご案内に<wbr>なります。</p>
     <div class="form-card">
       <div class="form-msg form-ok" id="formOk" role="status" hidden>
@@ -372,46 +391,48 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
         <input type="hidden" name="_captcha" value="false">
         <input type="hidden" name="from" value="ads-kyujin">
         <input type="hidden" name="page" value="lp-kyujinhyo">
-        <div class="fld">
-          <label for="f-co">会社名<span class="req">必須</span></label>
-          <input type="text" id="f-co" name="会社名" required autocomplete="organization">
+        <div class="form-grid">
+          <div class="fld">
+            <label for="f-co">会社名<span class="req">必須</span></label>
+            <input type="text" id="f-co" name="会社名" required autocomplete="organization">
+          </div>
+          <div class="fld">
+            <label for="f-name">ご担当者名<span class="req">必須</span></label>
+            <input type="text" id="f-name" name="ご担当者名" required autocomplete="name">
+          </div>
+          <div class="fld">
+            <label for="f-mail">メールアドレス<span class="req">必須</span></label>
+            <input type="email" id="f-mail" name="メールアドレス" required autocomplete="email" inputmode="email">
+          </div>
+          <div class="fld">
+            <label for="f-tel">電話番号<span class="opt">任意</span></label>
+            <input type="tel" id="f-tel" name="電話番号" autocomplete="tel" inputmode="tel">
+          </div>
+          <div class="fld full">
+            <label for="f-no">求人番号または求人票のURL<span class="hint">（任意。分かる範囲で）</span></label>
+            <input type="text" id="f-no" name="求人番号または求人票のURL">
+          </div>
+          <div class="fld full">
+            <fieldset>
+              <legend>ご希望の連絡方法<span class="opt">任意</span></legend>
+              <div class="radios">
+                <label><input type="radio" name="ご希望の連絡方法" value="メール">メール</label>
+                <label><input type="radio" name="ご希望の連絡方法" value="電話">電話</label>
+              </div>
+            </fieldset>
+          </div>
         </div>
-        <div class="fld">
-          <label for="f-name">ご担当者名<span class="req">必須</span></label>
-          <input type="text" id="f-name" name="ご担当者名" required autocomplete="name">
-        </div>
-        <div class="fld">
-          <label for="f-mail">メールアドレス<span class="req">必須</span></label>
-          <input type="email" id="f-mail" name="メールアドレス" required autocomplete="email" inputmode="email">
-        </div>
-        <div class="fld">
-          <label for="f-tel">電話番号<span class="opt">任意</span></label>
-          <input type="tel" id="f-tel" name="電話番号" autocomplete="tel" inputmode="tel">
-        </div>
-        <div class="fld">
-          <label for="f-no">求人番号または求人票のURL<span class="hint">（任意。分かる範囲で）</span></label>
-          <input type="text" id="f-no" name="求人番号または求人票のURL">
-        </div>
-        <div class="fld">
-          <fieldset>
-            <legend>ご希望の連絡方法<span class="opt">任意</span></legend>
-            <div class="radios">
-              <label><input type="radio" name="ご希望の連絡方法" value="メール">メール</label>
-              <label><input type="radio" name="ご希望の連絡方法" value="電話">電話</label>
-            </div>
-          </fieldset>
-        </div>
-        <button type="submit" class="cta" id="lpSubmit">無料点検を申し込む</button>
+        <button type="submit" class="cta" id="lpSubmit">無料で申し込む</button>
       </form>
       <p class="form-note">送信後、<wbr>当事務所から<wbr>確認の<wbr>ご連絡を<wbr>します。<wbr>営業電話は<wbr>しません。</p>
     </div>
   </div>
 </section>
 
-<!-- 6. 最終 -->
+<!-- 5. 最終 -->
 <section class="sec">
   <div class="wrap">
-    <a class="cta" href="#form" data-cta="main">無料で点検してもらう</a>
+    <div class="cta-wrap" style="margin-inline:auto"><a class="cta" href="#form" data-cta="main">無料で改定案をもらう</a></div>
     <p class="cta-note">求人番号を<wbr>教えていただくだけで<wbr>始められます。<wbr>資料の<wbr>準備は<wbr>不要です。</p>
   </div>
 </section>
@@ -432,7 +453,7 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 </footer>
 
 <div class="stick" id="stick">
-  <a href="#form">無料で点検してもらう</a>
+  <a href="#form">無料で改定案をもらう</a>
 </div>
 
 <script>
@@ -452,7 +473,9 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
     if (a) gc('phone-click:lp-kyujinhyo');
   }, true);
 
-  /* ---- 30秒セルフチェック ---- */
+  /* ---- セルフチェック ----
+     いつ・誰が作ったかを聞く。1年以内に見直し、かつ令和6年4月の改正に対応済みのときだけ
+     「おおむね新しい」を出し、それ以外（分からないを含む）は見直しを勧める。 */
   var answers = {};
   var scNo = document.getElementById('sc-no');
   var scYes = document.getElementById('sc-yes');
@@ -465,11 +488,10 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
       scBtns.forEach(function (other) {
         if (other.dataset.q === q) other.setAttribute('aria-pressed', String(other === btn));
       });
-      var keys = Object.keys(answers);
-      if (keys.length < 3) { scNo.hidden = true; scYes.hidden = true; return; }
-      var hasNo = keys.some(function (k) { return answers[k] === 'no'; });
-      scNo.hidden = !hasNo;
-      scYes.hidden = hasNo;
+      if (Object.keys(answers).length < 3) { scNo.hidden = true; scYes.hidden = true; return; }
+      var fresh = answers['2'] === 'recent' && answers['3'] === 'done';
+      scYes.hidden = !fresh;
+      scNo.hidden = fresh;
       if (!scDone) { scDone = true; gc('selfcheck-done:lp-kyujinhyo'); }
     });
   });
@@ -524,7 +546,7 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
           okBox.scrollIntoView({ block: 'center' });
         })
         .catch(function () {
-          if (btn) { btn.disabled = false; btn.textContent = btn.dataset.orig || '無料点検を申し込む'; }
+          if (btn) { btn.disabled = false; btn.textContent = btn.dataset.orig || '無料で申し込む'; }
           ngBox.hidden = false;
           ngBox.scrollIntoView({ block: 'center' });
         });
