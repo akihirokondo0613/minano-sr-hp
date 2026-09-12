@@ -155,14 +155,25 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 .rep-h{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.14em;color:var(--moegi-t);margin:20px 0 8px}
 .rep-b>.rep-h:first-child,.rep-col>.rep-h:first-child{margin-top:0}
 .rep-p{font-size:14px;line-height:1.9;color:var(--ink2)}
-.rep-list{list-style:none;display:grid;gap:10px}
-.rep-list li{border:1px solid var(--line);border-radius:10px;background:var(--yuki);padding:12px 14px}
-.rep-i-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;font-size:14.5px;margin-bottom:4px}
-.rep-i-h b{color:var(--iwa)}
-.tag{flex:0 0 auto;font-size:11.5px;font-weight:700;border-radius:6px;padding:2px 8px;line-height:1.6}
-.tag-ng{background:#FBF3DE;color:#6B4E12}
-.tag-fix{background:var(--moegi-l);color:var(--moegi-t)}
-.rep-i-d{font-size:13.5px;line-height:1.8;color:var(--ink2)}
+.rep-small{margin-top:10px;font-size:12.5px;color:var(--ink3)}
+/* 求人票そのものの Before / After */
+.ba{display:grid;gap:10px}
+.ba-card{min-width:0;background:var(--shiro);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.ba-card.is-after{border-color:color-mix(in srgb,var(--moegi) 55%,var(--line));box-shadow:0 14px 34px rgba(35,43,39,.08)}
+.ba-head{padding:9px 14px;font-size:12px;font-weight:800;letter-spacing:.04em}
+.ba-card.is-before .ba-head{background:var(--line2);color:var(--ink3)}
+.ba-card.is-after .ba-head{background:var(--sugi);color:#fff}
+.ba-rows{list-style:none}
+.ba-rows li{padding:11px 14px;border-top:1px solid var(--line2)}
+.ba-rows li:first-child{border-top:0}
+.ba-k{font-size:11px;font-weight:700;color:var(--ink4);letter-spacing:.04em;line-height:1.6}
+.ba-v{margin-top:3px;font-size:13.5px;line-height:1.85;color:var(--ink2)}
+.ba-v.is-none{color:var(--ink4)}
+.ba-card.is-before .ba-v.is-none::before{content:"×　";color:#B0453A;font-weight:700}
+.ba-card.is-after .ba-v mark{background:linear-gradient(transparent 58%,color-mix(in srgb,var(--moegi) 32%,transparent) 58%);color:inherit}
+.ba-arrow{display:flex;align-items:center;justify-content:center;min-height:34px;color:var(--moegi-t);font-size:20px;font-weight:800;line-height:1}
+.ba-arrow::before{content:"↓"}
+.rep-sub{display:grid;gap:22px;margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
 .rep-nums{list-style:none;display:grid;gap:8px}
 .rep-nums li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:6px;font-size:13.5px;color:var(--ink2)}
 .rep-nums li>span{min-width:0}
@@ -236,7 +247,11 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 }
 @media (min-width:880px){
   .price-list{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .rep-b{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:0 34px;align-items:start;padding:30px 32px}
+  .rep-b{padding:30px 32px}
+  .ba{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:start;gap:0 14px}
+  .ba-arrow{min-height:0;margin-top:60px}
+  .ba-arrow::before{content:"→"}
+  .rep-sub{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:0 34px;align-items:start}
   .rep-col{min-width:0}
 }
 /* 1000px以上だけ startup-payroll と同じ左揃えの2カラムにする。
@@ -328,48 +343,93 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
   </div>
 </header>
 
-<!-- 01 / 無料点検の中身 -->
+<!-- 01 / 求人票がどう変わるか -->
 <section class="sec sec-white" id="teian">
   <div class="w">
     <div class="sec-head">
       <p class="sec-label">01 / 無料点検で<wbr>お返しする<wbr>もの</p>
-      <h2 class="sec-title">今の<wbr>求人票を、<wbr><mark>こう<wbr>直します</mark>。</h2>
-      <p class="sec-lead">どこを<wbr>どう<wbr>直すか、<wbr>賃金が<wbr>相場の<wbr>どこに<wbr>あるかまで<wbr>お伝えします。<wbr>下は、<wbr>実際に<wbr>お出しする<wbr>ご提案の<wbr>例です。</p>
+      <h2 class="sec-title">その<wbr>求人票が、<wbr><mark>こう<wbr>変わります</mark>。</h2>
+      <p class="sec-lead">直す箇所を<wbr>指摘するだけでなく、<wbr><b>求人票に<wbr>載る<wbr>文面<wbr>そのもの</b>を<wbr>お出しします。<wbr>下は、<wbr>実際に<wbr>お返しする<wbr>ご提案の<wbr>例です。</p>
     </div>
+
     <div class="rep">
       <div class="rep-band">
         <span class="rep-badge">記入例</span>
         <span class="rep-co">例：株式会社○○（介護職員・正社員）</span>
       </div>
       <div class="rep-b">
-        <div class="rep-col">
-          <p class="rep-h">総評</p>
-          <p class="rep-p">法令上の<wbr>必須項目9つの<wbr>うち、<wbr>記載なしが<wbr>2つ、<wbr>直した<wbr>ほうが<wbr>よい<wbr>書き方が<wbr>2つ。<wbr>いずれも<wbr>1〜2行の<wbr>追記で<wbr>済みます。</p>
-          <p class="rep-h">直す箇所<wbr>（9項目の<wbr>うち3つを<wbr>抜粋）</p>
-          <ul class="rep-list">
-            <li>
-              <p class="rep-i-h"><b>業務の<wbr>変更の<wbr>範囲</b><span class="tag tag-ng">記載なし</span></p>
-              <p class="rep-i-d">『会社の<wbr>定める<wbr>業務<wbr>（介護業務全般）』な<wbr>ど<wbr>実態に<wbr>合う<wbr>範囲を<wbr>1行追加</p>
-            </li>
-            <li>
-              <p class="rep-i-h"><b>固定残業代</b><span class="tag tag-fix">要修正</span></p>
-              <p class="rep-i-d">『10時間分・<wbr>超過分は<wbr>別途支給』の<wbr>形に</p>
-            </li>
-            <li>
-              <p class="rep-i-h"><b>就業場所の<wbr>変更の<wbr>範囲</b><span class="tag tag-ng">記載なし</span></p>
-              <p class="rep-i-d">転勤が<wbr>なければ<wbr>『変更なし』と<wbr>書く</p>
-            </li>
-          </ul>
+        <div class="ba">
+          <article class="ba-card is-before">
+            <p class="ba-head">いまの求人票</p>
+            <ul class="ba-rows">
+              <li>
+                <p class="ba-k">職種</p>
+                <p class="ba-v">介護職員</p>
+              </li>
+              <li>
+                <p class="ba-k">仕事の内容</p>
+                <p class="ba-v">介護業務全般。<wbr>利用者様の<wbr>身体介護、<wbr>生活援助などを<wbr>お願いします。<wbr>未経験者歓迎、<wbr>アットホームな<wbr>職場です。</p>
+              </li>
+              <li>
+                <p class="ba-k">賃金</p>
+                <p class="ba-v">月給 186<wbr>,000円〜<wbr>240,000円<br>※時間外手当含む</p>
+              </li>
+              <li>
+                <p class="ba-k">従事すべき<wbr>業務の<wbr>変更の<wbr>範囲</p>
+                <p class="ba-v is-none">記載なし</p>
+              </li>
+              <li>
+                <p class="ba-k">就業場所の変更の範囲</p>
+                <p class="ba-v is-none">記載なし</p>
+              </li>
+            </ul>
+          </article>
+
+          <div class="ba-arrow" aria-hidden="true"></div>
+
+          <article class="ba-card is-after">
+            <p class="ba-head">ご提案する求人票</p>
+            <ul class="ba-rows">
+              <li>
+                <p class="ba-k">職種</p>
+                <p class="ba-v">介護職員<wbr><mark>（日勤のみ・<wbr>入浴介助なし）</mark></p>
+              </li>
+              <li>
+                <p class="ba-k">仕事の内容</p>
+                <p class="ba-v"><mark>日勤のみ、<wbr>入浴介助と<wbr>送迎は<wbr>ありません。</mark>利用者<wbr>20名の<wbr>施設で、<wbr>食事・排せつの<wbr>介助と<wbr>記録が<wbr>中心です。<wbr>未経験の<wbr>方は<wbr>3か<wbr>月間、<wbr>先輩と<wbr>2人で<wbr>担当します。</p>
+              </li>
+              <li>
+                <p class="ba-k">賃金</p>
+                <p class="ba-v">月給 186<wbr>,000円〜<wbr>240,000円<br><mark>う<wbr>ち固定残業代 12<wbr>,000円<wbr>（10時間分）<wbr>／超過分は<wbr>別途支給</mark></p>
+              </li>
+              <li>
+                <p class="ba-k">従事すべき<wbr>業務の<wbr>変更の<wbr>範囲</p>
+                <p class="ba-v"><mark>会社の<wbr>定める<wbr>業務<wbr>（介護業務全般）</mark></p>
+              </li>
+              <li>
+                <p class="ba-k">就業場所の変更の範囲</p>
+                <p class="ba-v"><mark>変更なし<wbr>（転勤は<wbr>ありません）</mark></p>
+              </li>
+            </ul>
+          </article>
         </div>
-        <div class="rep-col">
-          <p class="rep-h">賃金の位置</p>
-          <ul class="rep-nums">
-            <li><span>求人票の<wbr>下限</span><b>186,000円</b></li>
-            <li><span>富山の<wbr>同職種の<wbr>求人平均<wbr>（<wbr>例）</span><b>約<wbr>198,000円</b></li>
-            <li><span>最低賃金との差</span><b>13円</b></li>
-          </ul>
-          <p class="rep-h">書き方</p>
-          <p class="rep-p">仕事の<wbr>内容の<wbr>冒頭40字に、<wbr>応募者が<wbr>知りたい<wbr>条件<wbr>（日勤のみ・<wbr>入浴介助なし）を<wbr>置く</p>
+
+        <div class="rep-sub">
+          <div class="rep-col">
+            <p class="rep-h">総評</p>
+            <p class="rep-p">法令上の<wbr>必須項目9つの<wbr>うち、<wbr>記載なしが<wbr>2つ、<wbr>直した<wbr>ほうが<wbr>よい<wbr>書き方が<wbr>2つ。<wbr>いずれも<wbr>1〜2行の<wbr>追記で<wbr>済みます。</p>
+            <p class="rep-h">なぜ書き方を変えるか</p>
+            <p class="rep-p">仕事の<wbr>内容の<wbr>冒頭40字は、<wbr>応募者が<wbr>一覧で<wbr>最初に<wbr>読む部分です。<wbr>ここに<wbr>「日勤のみ・<wbr>入浴介助な<wbr>し」のような、<wbr>応募者が<wbr>知りたい<wbr>条件を<wbr>置きます。</p>
+          </div>
+          <div class="rep-col">
+            <p class="rep-h">賃金の位置</p>
+            <ul class="rep-nums">
+              <li><span>求人票の<wbr>下限</span><b>186,000円</b></li>
+              <li><span>富山の<wbr>同職種の<wbr>求人平均<wbr>（<wbr>例）</span><b>約<wbr>198,000円</b></li>
+              <li><span>最低賃金との差</span><b>13円</b></li>
+            </ul>
+            <p class="rep-p rep-small">賃金を<wbr>上げるか<wbr>どうかは<wbr>会社の<wbr>ご判断です。<wbr>上げない<wbr>場合に、<wbr>条件以外で<wbr>選ばれる<wbr>書き方も<wbr>あわせて<wbr>ご提案します。</p>
+          </div>
         </div>
       </div>
     </div>
