@@ -98,7 +98,6 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 .sec-h::after{content:"";display:block;width:44px;height:4px;border-radius:2px;background:var(--asahi);margin-top:12px}
 .lead{color:var(--ink2);margin-bottom:16px}
 .note{font-size:12.5px;line-height:1.8;color:var(--ink4);margin-top:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh);padding:20px 18px}
 
 /* ---------- 主ボタン ---------- */
 .cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:60px;padding:12px 18px;border:0;border-radius:var(--r);background:var(--sugi);color:#fff;font-family:var(--disp);font-size:17px;font-weight:800;letter-spacing:.02em;text-align:center;text-decoration:none;box-shadow:0 8px 20px -10px rgba(11,42,31,.5);transition:background .3s,transform .3s}
@@ -158,53 +157,10 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 .pl-y{flex:0 0 auto;font-family:var(--mono);font-size:16px;font-weight:700;color:var(--ink)}
 .pl-d{font-size:13.5px;line-height:1.8;color:var(--ink2)}
 
-/* ---------- 箇条書き（改正3項目・当事務所がやること） ---------- */
-.sub{margin-top:28px}
-.sub-h{font-size:16.5px;font-weight:800;color:var(--sugi);margin-bottom:12px;padding-left:12px;border-left:4px solid var(--moegi)}
-.note.mb{margin-bottom:20px}
-.mark-list{list-style:none;display:grid;gap:10px}
-.mark-list li{position:relative;padding-left:28px;font-size:14.5px;line-height:1.8;color:var(--ink2)}
-.mark-list li b{color:var(--ink)}
-.mark-list li::before{content:"";position:absolute;left:2px;top:.55em;width:12px;height:7px;border-left:2.5px solid var(--moegi-t);border-bottom:2.5px solid var(--moegi-t);transform:rotate(-45deg)}
-.warn{margin-top:14px;font-size:12.5px;line-height:1.8;color:var(--ink3);background:var(--bg);border-radius:8px;padding:10px 12px}
-.price-add{margin-top:14px;font-size:13.5px;line-height:1.85;color:var(--ink2);background:var(--card);border:1px solid var(--line);border-left:4px solid var(--moegi);border-radius:var(--r);padding:12px 14px}
-
 /* ---------- 料金 ---------- */
+.price-add{margin-top:14px;font-size:13.5px;line-height:1.85;color:var(--ink2);background:var(--card);border:1px solid var(--line);border-left:4px solid var(--moegi);border-radius:var(--r);padding:12px 14px}
 .anshin{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .anshin li{flex:1 1 190px;background:var(--moegi-l);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:700;color:var(--sugi);line-height:1.7;text-align:center}
-
-/* ---------- 進め方 ---------- */
-.steps{list-style:none;display:grid;gap:12px;counter-reset:st}
-.steps li{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 16px 16px 56px}
-.steps li::before{counter-increment:st;content:counter(st);position:absolute;left:14px;top:16px;width:30px;height:30px;border-radius:50%;background:var(--sugi);color:#fff;font-family:var(--mono);font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center}
-.steps h3{font-size:16px;font-weight:800;color:var(--sugi);margin-bottom:10px}
-.steps h3{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;justify-content:space-between}
-.days{flex:0 0 auto;font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--moegi-t);background:var(--moegi-l);border-radius:999px;padding:2px 10px;line-height:1.7}
-.step-y,.step-m{font-size:13.5px;line-height:1.8;color:var(--ink2)}
-
-/* ---------- 担当者 ---------- */
-.pro{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
-.pro-mark{width:60px;height:60px;flex:0 0 60px;border-radius:16px;background:var(--sugi);color:#fff;font-family:var(--disp);font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center}
-.pro-n{font-size:16px;font-weight:800;color:var(--ink)}
-.pro-q{font-size:14.5px;color:var(--ink2);border-left:3px solid var(--moegi);padding-left:12px;margin-bottom:16px}
-.basis-d{border:1px solid var(--line);border-radius:var(--r);background:var(--bg);overflow:hidden}
-.basis-d summary{cursor:pointer;list-style:none;padding:12px 16px;font-size:14px;font-weight:700;color:var(--sugi);position:relative;padding-right:40px}
-.basis-d summary::-webkit-details-marker{display:none}
-.basis-d summary::after{content:"";position:absolute;right:18px;top:19px;width:9px;height:9px;border-right:2px solid var(--moegi-t);border-bottom:2px solid var(--moegi-t);transform:rotate(45deg);transition:transform .25s}
-.basis-d[open] summary::after{transform:rotate(-135deg)}
-.basis{list-style:none;display:grid;gap:10px;padding:0 16px 16px}
-.basis li{position:relative;padding-left:22px;font-size:13.5px;line-height:1.8;color:var(--ink2)}
-.basis li::before{content:"";position:absolute;left:2px;top:.75em;width:8px;height:8px;border-radius:50%;background:var(--moegi)}
-
-/* ---------- FAQ ---------- */
-.faq{display:grid;gap:10px}
-.faq details{border:1px solid var(--line);border-radius:var(--r);background:var(--card);overflow:hidden}
-.faq summary{position:relative;cursor:pointer;list-style:none;padding:14px 44px 14px 46px;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.7}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::before{content:"Q";position:absolute;left:14px;top:14px;width:24px;height:24px;border-radius:7px;background:var(--sugi);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
-.faq summary::after{content:"";position:absolute;right:18px;top:22px;width:9px;height:9px;border-right:2px solid var(--moegi-t);border-bottom:2px solid var(--moegi-t);transform:rotate(45deg);transition:transform .25s}
-.faq details[open] summary::after{transform:rotate(-135deg)}
-.faq details p{padding:0 18px 16px 46px;font-size:14px;line-height:1.85;color:var(--ink2)}
 
 /* ---------- フォーム ---------- */
 .form-sec{background:var(--sugi);color:#fff}
@@ -234,7 +190,8 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 .ft b{color:#fff;font-weight:700}
 .ft address{font-style:normal}
 .ft a{color:#B9E7CC;display:inline-block;min-height:24px;padding-block:2px}
-.ft-links{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.16)}
+.ft-note{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.16);font-size:11.5px;line-height:1.85;color:#BFCEC4}
+.ft-links{margin-top:10px}
 
 /* ---------- スマホの追従ボタン ---------- */
 .stick{position:fixed;left:0;right:0;bottom:0;z-index:60;display:block;padding:8px 16px calc(8px + env(safe-area-inset-bottom));background:rgba(249,250,247,.97);border-top:1px solid var(--line);box-shadow:0 -6px 18px -12px rgba(11,42,31,.5)}
@@ -320,18 +277,6 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
       <div class="sc-r" id="sc-yes" role="status" hidden><b>法令面はおおむね整っています。</b>応募が来ない原因は書き方か相場かもしれません。無料点検で確認できます。</div>
       <a class="cta" href="#form">無料で点検してもらう</a>
       <p class="note">この<wbr>確認は<wbr>職業安定法施行規則第<wbr>4条の<wbr>2第3項に<wbr>基づく<wbr>もので、<wbr>結果は<wbr>目安です。</p>
-      <div class="sub">
-        <h3 class="sub-h">令和6年4月から、<wbr>書く<wbr>項目が<wbr>増えました</h3>
-        <div class="card">
-          <ul class="mark-list">
-            <li><b>業務内容の<wbr>変更の<wbr>範囲</b>　将来任せる<wbr>可能性の<wbr>ある<wbr>業務の<wbr>範囲まで<wbr>書きます</li>
-            <li><b>就業場所の<wbr>変更の<wbr>範囲</b>　転勤でありうる<wbr>勤務地の<wbr>範囲まで<wbr>書きます<wbr>（転勤が<wbr>なければ、<wbr>その<wbr>旨）</li>
-            <li><b>有期契約の<wbr>更新上限</b>　更新の<wbr>上限と、<wbr>その<wbr>通算期間または<wbr>回数を<wbr>書きます</li>
-          </ul>
-          <p class="warn">書いてい<wbr>ないと：訂正を<wbr>求められる<wbr>ことがあります<wbr>（職業安定法5条の<wbr>6）</p>
-        </div>
-        <p class="note">これに<wbr>加えて、固定残業代の<wbr>内訳、<wbr>試用期間中の<wbr>条件、<wbr>社会保険の<wbr>適用など、<wbr>もともと<wbr>必要な<wbr>項目が<wbr>9つあります。<wbr>点検では<wbr>その<wbr>全部を<wbr>見ます。</p>
-      </div>
     </div>
   </div>
 </section>
@@ -380,19 +325,10 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
   </div>
 </section>
 
-<!-- 5. できることと料金 -->
+<!-- 4. 料金 -->
 <section class="sec sec-alt">
   <div class="wrap">
-    <h2 class="sec-h" id="price-h">当事務所が<wbr>やることと、<wbr>料金</h2>
-    <div class="card">
-      <ul class="mark-list">
-        <li>法令9項目の点検</li>
-        <li>就<wbr>業<wbr>規<wbr>則・労働条件通知書と<wbr>の<wbr>照合</li>
-        <li>求人票の原稿の作成</li>
-        <li>ハローワークへの<wbr>申込みの<wbr>代理<wbr>（社労士の<wbr>事務代理）</li>
-        <li>助成金の<wbr>要件に<wbr>合わせた<wbr>設計</li>
-      </ul>
-    </div>
+    <h2 class="sec-h" id="price-h">料金</h2>
     <ul class="price-list">
       <li>
         <p class="pl-h"><b>無料点検</b><span class="pl-y">0円</span></p>
@@ -413,98 +349,12 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
       <li>受理されなければ<wbr>全額返金</li>
       <li>修正1回・1か<wbr>月後の<wbr>見直し1回込み</li>
     </ul>
-    <p class="note">ハローワークの<wbr>窓口は<wbr>相談に<wbr>応じますが、<wbr>会社の<wbr>代わりに<wbr>求人を<wbr>出す<wbr>ことは<wbr>できません。<wbr>求人広告の<wbr>代理店は<wbr>原稿を<wbr>作れますが<wbr>（公開されている<wbr>一般的な<wbr>水準で<wbr>原稿1件1〜<wbr>2万円程度）、<wbr>就業規則との<wbr>照合や<wbr>ハローワークへの<wbr>申込みの<wbr>代理は<wbr>行いません。<wbr>特定の<wbr>社名を<wbr>指す<wbr>ものではありません。</p>
     <p class="note">表示は<wbr>税抜。<wbr>応募数・採用の<wbr>成否は<wbr>保証しません。<wbr>応募者への<wbr>連絡・面接は<wbr>会社が<wbr>行います。<wbr>助成金は<wbr>要件に<wbr>合う<wbr>場合に<wbr>会社が<wbr>申請する<wbr>もので、<wbr>受給を<wbr>保証する<wbr>ものではありません。</p>
     <div style="margin-top:22px"><a class="cta" href="#form" data-cta="main">無料で点検してもらう</a></div>
   </div>
 </section>
 
-<!-- 6. 進め方 -->
-<section class="sec">
-  <div class="wrap">
-    <h2 class="sec-h">進め方</h2>
-    <ol class="steps">
-      <li>
-        <h3>無料点検<span class="days">2営業日</span></h3>
-        <p class="step-y">あなた：求人番号か<wbr>求人票を<wbr>送る</p>
-        <p class="step-m">当事務所：A4・<wbr>1枚の<wbr>レポート</p>
-      </li>
-      <li>
-        <h3>ヒアリング<span class="days">1日</span></h3>
-        <p class="step-y">あなた：仕事の<wbr>実態と<wbr>採りたい<wbr>人を<wbr>話す<wbr>（60分・<wbr>オンライン可）</p>
-        <p class="step-m">当事務所：就業規則・<wbr>賃金規程と<wbr>条件を<wbr>そろえる</p>
-      </li>
-      <li>
-        <h3>原稿作成と<wbr>法令点検<span class="days">5営業日</span></h3>
-        <p class="step-y">あなた：原稿を<wbr>確認<wbr>（修正1回）</p>
-        <p class="step-m">当事務所：全項目の<wbr>原稿と<wbr>法令点検</p>
-      </li>
-      <li>
-        <h3>事務代理で<wbr>申込み<span class="days">2営業日</span></h3>
-        <p class="step-y">あな<wbr>た：<wbr>求人者マイページの<wbr>追加アカウントを<wbr>発行</p>
-        <p class="step-m">当事務所：社労士と<wbr>して<wbr>申込み、<wbr>ハローワークの<wbr>照会に<wbr>対応</p>
-      </li>
-      <li>
-        <h3>受理・公開<span class="days">公開後1か月</span></h3>
-        <p class="step-y">あなた：応募者に対応</p>
-        <p class="step-m">当事務所：受理の<wbr>報告、<wbr>1か<wbr>月後に<wbr>見直し1回</p>
-      </li>
-    </ol>
-  </div>
-</section>
-
-<!-- 7. 担当する社労士 -->
-<section class="sec sec-alt">
-  <div class="wrap">
-    <h2 class="sec-h">担当する社労士</h2>
-    <div class="card">
-      <div class="pro">
-        <div class="pro-mark" aria-hidden="true">み</div>
-        <p class="pro-n">近藤 昭宏<br><span style="font-size:13px;font-weight:400;color:#5D6962">社会保険労務士・<wbr>富山<wbr>県社会保険労務士会</span></p>
-      </div>
-      <p class="pro-q">求人票は、<wbr>会社が<wbr>最初に<wbr>出す<wbr>「労働条件の<wbr>約束」です。<wbr>あとで<wbr>揉めない<wbr>書き方と、<wbr>応募が<wbr>来る<wbr>書き方は<wbr>両立します。</p>
-      <details class="basis-d">
-        <summary>社労士が<wbr>この<wbr>仕事を<wbr>できる<wbr>根拠</summary>
-        <ul class="basis">
-        <li>ハローワークへの<wbr>求人申込みの<wbr>作成と<wbr>代理は、<wbr>社会保険労務士法<wbr>（2条1項1号・<wbr>1号の<wbr>2・<wbr>1号の<wbr>3）に<wbr>定める<wbr>社労士の<wbr>業務です</li>
-        <li>求人者マイページの<wbr>利用規約<wbr>（4条1項ただし<wbr>書）は、<wbr>社労士が<wbr>契約に<wbr>基づき事務代理で<wbr>利用する<wbr>ことを<wbr>認めています</li>
-        <li>応募者の<wbr>受付・選考・<wbr>応募者への<wbr>連絡は<wbr>会社が<wbr>行います。<wbr>当事務所は<wbr>職業紹介・委託募集に<wbr>あたる<wbr>行為を<wbr>しません</li>
-        </ul>
-      </details>
-    </div>
-  </div>
-</section>
-
-<!-- 8. よくある質問 -->
-<section class="sec">
-  <div class="wrap">
-    <h2 class="sec-h">よくある質問</h2>
-    <div class="faq">
-      <details>
-        <summary>点検だけで、<wbr>代行を<wbr>頼まなくても<wbr>いいですか</summary>
-        <p>はい。<wbr>点検レポートを<wbr>もとに<wbr>ご自身で<wbr>直していただいて<wbr>構いません。<wbr>営業の<wbr>電話もしません</p>
-      </details>
-      <details>
-        <summary>なぜ無料なのですか</summary>
-        <p>点検は、<wbr>当事務所の<wbr>仕事の<wbr>進め方を<wbr>知っていただく<wbr>ための<wbr>ものです。<wbr>代行や<wbr>顧問を<wbr>ご検討いただく<wbr>入口と<wbr>して<wbr>無料に<wbr>しています</p>
-      </details>
-      <details>
-        <summary>求人者マイページを<wbr>開設していません</summary>
-        <p>開設の<wbr>手順を<wbr>ご案内します。<wbr>紙の<wbr>求人申込書での<wbr>提出代行も<wbr>可能です</p>
-      </details>
-      <details>
-        <summary>助成金は<wbr>確実に<wbr>もらえますか</summary>
-        <p>いいえ。<wbr>要件に<wbr>合う<wbr>求人の<wbr>設計は<wbr>行いますが、<wbr>受給を<wbr>保証する<wbr>ものではありません</p>
-      </details>
-      <details>
-        <summary>富山県外でも頼めますか</summary>
-        <p>富山県内の<wbr>会社を<wbr>中心に、<wbr>オンラインで<wbr>対応します</p>
-      </details>
-    </div>
-  </div>
-</section>
-
-<!-- 9. 申込みフォーム -->
+<!-- 5. 申込みフォーム -->
 <section class="sec form-sec" id="form">
   <div class="wrap">
     <h2 class="sec-h">無料点検を申し込む</h2>
@@ -558,7 +408,7 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
   </div>
 </section>
 
-<!-- 10. 最終 -->
+<!-- 6. 最終 -->
 <section class="sec">
   <div class="wrap">
     <a class="cta" href="#form" data-cta="main">無料で点検してもらう</a>
@@ -576,6 +426,7 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
       TEL <a href="tel:0764602562" data-gc="phone">076-460-2562</a>（平日9:00〜18:00）　<a href="mailto:contact@minano-sr.com">contact@minano-sr.com</a><br>
       適格請求書発行事業者登録番号 T2810856672476
     </address>
+    <p class="ft-note">ハローワークへの<wbr>求人申込みの<wbr>作成と<wbr>代理は、<wbr>社会保険労務士法<wbr>（2条1項1号・<wbr>1号の<wbr>2・<wbr>1号の<wbr>3）に<wbr>定める<wbr>社労士の<wbr>業務です。<wbr>応募者の<wbr>受付・選考・<wbr>応募者への<wbr>連絡は<wbr>会社が<wbr>行います。</p>
     <p class="ft-links"><a href="https://minano-sr.com/privacy-policy.html" target="_blank" rel="noopener">プライバシーポリシー</a></p>
   </div>
 </footer>
