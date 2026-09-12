@@ -56,7 +56,6 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15p
 img,svg{max-width:100%}
 table{max-width:100%}
 [hidden]{display:none!important}
-.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 
 /* 日本語の折り返し。auto-phrase が効かないブラウザ（Safari等）では
    scripts/sync-phrase-breaks.mjs が置いた <wbr> と keep-all で位置を決める。 */
@@ -138,38 +137,37 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 .rep-h{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--moegi-t);margin:18px 0 8px}
 .rep-b>.rep-h:first-child{margin-top:0}
 .rep-p{font-size:14px;line-height:1.85;color:var(--ink2)}
+.rep-list{list-style:none;display:grid;gap:10px;margin-bottom:4px}
+.rep-list li{border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:12px 14px}
+.rep-i-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;font-size:14.5px;margin-bottom:4px}
+.rep-i-h b{color:var(--ink)}
+.tag{flex:0 0 auto;font-size:11.5px;font-weight:700;border-radius:6px;padding:2px 8px;line-height:1.6}
+.tag-ng{background:#FBF3DE;color:#6B4E12}
+.tag-fix{background:var(--moegi-l);color:var(--moegi-t)}
+.rep-i-d{font-size:13.5px;line-height:1.8;color:var(--ink2)}
 .rep-nums{list-style:none;display:grid;gap:8px}
 .rep-nums li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:6px;font-size:13.5px;color:var(--ink2)}
 .rep-nums li>span{min-width:0}
 .rep-nums b{flex:0 0 auto;font-family:var(--mono);font-size:15px;color:var(--sugi)}
 
-/* ---------- 表 ---------- */
-.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
-.tbl table{border-collapse:collapse;width:max-content;min-width:100%;max-width:none;font-size:13.5px}
-/* width:100% だと器の幅まで潰れて列が縦書きのようになる。max-content で本来の幅を持たせ、
-   長文のセルだけ上限を決めて折り返す（器の中だけが横スクロールする） */
-.tbl td{max-width:20em}
-/* PC（器720px）では横スクロールせずに収める。狭い画面では器の中だけがスクロールする */
-.tbl-cmp td{max-width:7em}
-.tbl-price td{max-width:14em}
-.tbl-price td:last-child{max-width:10em}
-.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top;line-height:1.7}
-.tbl thead th{white-space:nowrap;background:var(--sugi);color:#fff;font-weight:700;font-size:12.5px;border-bottom:0}
-.tbl tbody th{white-space:nowrap;font-weight:700;color:var(--ink);background:var(--bg)}
-.tbl tbody tr:last-child th,.tbl tbody tr:last-child td{border-bottom:0}
-.tbl td.c{text-align:center;font-weight:700}
-.tbl .ok{color:var(--moegi-t)}
-.tbl .ng{color:var(--ink4)}
-.tbl-scroll{font-size:12px;color:var(--ink4);margin-top:8px}
-/* 器が720pxまで広がると3つとも収まるので、案内は出さない */
-@media (min-width:760px){.tbl-scroll{display:none}}
+/* ---------- 料金カード ---------- */
+.price-list{list-style:none;display:grid;gap:12px}
+.price-list li{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.pl-h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 12px;margin-bottom:4px}
+.pl-h b{font-size:15.5px;font-weight:800;color:var(--sugi)}
+.pl-y{flex:0 0 auto;font-family:var(--mono);font-size:16px;font-weight:700;color:var(--ink)}
+.pl-d{font-size:13.5px;line-height:1.8;color:var(--ink2)}
 
-/* ---------- 改正カード ---------- */
-.new-cards{list-style:none;display:grid;gap:12px}
-.new-cards li{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--moegi);border-radius:var(--r);padding:16px}
-.new-t{font-size:15.5px;font-weight:800;color:var(--sugi);margin-bottom:6px}
-.new-d{font-size:14px;color:var(--ink2)}
-.new-w{margin-top:10px;font-size:12.5px;line-height:1.75;color:var(--ink3);background:var(--bg);border-radius:8px;padding:8px 10px}
+/* ---------- 箇条書き（改正3項目・当事務所がやること） ---------- */
+.sub{margin-top:28px}
+.sub-h{font-size:16.5px;font-weight:800;color:var(--sugi);margin-bottom:12px;padding-left:12px;border-left:4px solid var(--moegi)}
+.note.mb{margin-bottom:20px}
+.mark-list{list-style:none;display:grid;gap:10px}
+.mark-list li{position:relative;padding-left:28px;font-size:14.5px;line-height:1.8;color:var(--ink2)}
+.mark-list li b{color:var(--ink)}
+.mark-list li::before{content:"";position:absolute;left:2px;top:.55em;width:12px;height:7px;border-left:2.5px solid var(--moegi-t);border-bottom:2.5px solid var(--moegi-t);transform:rotate(-45deg)}
+.warn{margin-top:14px;font-size:12.5px;line-height:1.8;color:var(--ink3);background:var(--bg);border-radius:8px;padding:10px 12px}
+.price-add{margin-top:14px;font-size:13.5px;line-height:1.85;color:var(--ink2);background:var(--card);border:1px solid var(--line);border-left:4px solid var(--moegi);border-radius:var(--r);padding:12px 14px}
 
 /* ---------- 料金 ---------- */
 .anshin{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
@@ -180,22 +178,21 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 .steps li{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 16px 16px 56px}
 .steps li::before{counter-increment:st;content:counter(st);position:absolute;left:14px;top:16px;width:30px;height:30px;border-radius:50%;background:var(--sugi);color:#fff;font-family:var(--mono);font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .steps h3{font-size:16px;font-weight:800;color:var(--sugi);margin-bottom:10px}
-.step-d{display:grid;gap:2px 14px;font-size:13.5px}
-.step-d dt{font-weight:700;color:var(--ink4);font-size:11.5px;letter-spacing:.04em}
-.step-d dd{color:var(--ink2);line-height:1.75;margin-bottom:8px}
-.step-d dd:last-child{margin-bottom:0}
-@media (min-width:480px){
-  .step-d{grid-template-columns:auto minmax(0,1fr)}
-  .step-d dt{white-space:nowrap;padding-top:3px}
-  .step-d dd{margin-bottom:0}
-}
+.steps h3{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;justify-content:space-between}
+.days{flex:0 0 auto;font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--moegi-t);background:var(--moegi-l);border-radius:999px;padding:2px 10px;line-height:1.7}
+.step-y,.step-m{font-size:13.5px;line-height:1.8;color:var(--ink2)}
 
 /* ---------- 担当者 ---------- */
 .pro{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
 .pro-mark{width:60px;height:60px;flex:0 0 60px;border-radius:16px;background:var(--sugi);color:#fff;font-family:var(--disp);font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center}
 .pro-n{font-size:16px;font-weight:800;color:var(--ink)}
 .pro-q{font-size:14.5px;color:var(--ink2);border-left:3px solid var(--moegi);padding-left:12px;margin-bottom:16px}
-.basis{list-style:none;display:grid;gap:10px}
+.basis-d{border:1px solid var(--line);border-radius:var(--r);background:var(--bg);overflow:hidden}
+.basis-d summary{cursor:pointer;list-style:none;padding:12px 16px;font-size:14px;font-weight:700;color:var(--sugi);position:relative;padding-right:40px}
+.basis-d summary::-webkit-details-marker{display:none}
+.basis-d summary::after{content:"";position:absolute;right:18px;top:19px;width:9px;height:9px;border-right:2px solid var(--moegi-t);border-bottom:2px solid var(--moegi-t);transform:rotate(45deg);transition:transform .25s}
+.basis-d[open] summary::after{transform:rotate(-135deg)}
+.basis{list-style:none;display:grid;gap:10px;padding:0 16px 16px}
 .basis li{position:relative;padding-left:22px;font-size:13.5px;line-height:1.8;color:var(--ink2)}
 .basis li::before{content:"";position:absolute;left:2px;top:.75em;width:8px;height:8px;border-radius:50%;background:var(--moegi)}
 
@@ -323,6 +320,18 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
       <div class="sc-r" id="sc-yes" role="status" hidden><b>法令面はおおむね整っています。</b>応募が来ない原因は書き方か相場かもしれません。無料点検で確認できます。</div>
       <a class="cta" href="#form">無料で点検してもらう</a>
       <p class="note">この<wbr>確認は<wbr>職業安定法施行規則第<wbr>4条の<wbr>2第3項に<wbr>基づく<wbr>もので、<wbr>結果は<wbr>目安です。</p>
+      <div class="sub">
+        <h3 class="sub-h">令和6年4月から、<wbr>書く<wbr>項目が<wbr>増えました</h3>
+        <div class="card">
+          <ul class="mark-list">
+            <li><b>業務内容の<wbr>変更の<wbr>範囲</b>　将来任せる<wbr>可能性の<wbr>ある<wbr>業務の<wbr>範囲まで<wbr>書きます</li>
+            <li><b>就業場所の<wbr>変更の<wbr>範囲</b>　転勤でありうる<wbr>勤務地の<wbr>範囲まで<wbr>書きます<wbr>（転勤が<wbr>なければ、<wbr>その<wbr>旨）</li>
+            <li><b>有期契約の<wbr>更新上限</b>　更新の<wbr>上限と、<wbr>その<wbr>通算期間または<wbr>回数を<wbr>書きます</li>
+          </ul>
+          <p class="warn">書いてい<wbr>ないと：訂正を<wbr>求められる<wbr>ことがあります<wbr>（職業安定法5条の<wbr>6）</p>
+        </div>
+        <p class="note">これに<wbr>加えて、固定残業代の<wbr>内訳、<wbr>試用期間中の<wbr>条件、<wbr>社会保険の<wbr>適用など、<wbr>もともと<wbr>必要な<wbr>項目が<wbr>9つあります。<wbr>点検では<wbr>その<wbr>全部を<wbr>見ます。</p>
+      </div>
     </div>
   </div>
 </section>
@@ -340,18 +349,21 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
         <p class="rep-h">総評</p>
         <p class="rep-p">法令上の<wbr>必須項目9つの<wbr>うち、<wbr>記載なしが<wbr>2つ、<wbr>直した<wbr>ほうが<wbr>よい<wbr>書き方が<wbr>2つ。<wbr>いずれも<wbr>1〜2行の<wbr>追記で<wbr>済みます。</p>
 
-        <p class="rep-h" id="rep-hantei">判定</p>
-        <div class="tbl" role="region" aria-labelledby="rep-hantei" tabindex="0">
-          <table>
-            <thead><tr><th scope="col">項目</th><th scope="col">判定</th><th scope="col">直し方</th></tr></thead>
-            <tbody>
-              <tr><th scope="row">業務の変更の範囲</th><td>記載なし</td><td>『会社の定める業務（介護業務全般）』など実態に合う範囲を1行追加</td></tr>
-              <tr><th scope="row">固定残業代</th><td>要修正</td><td>『10時間分・超過分は別途支給』の形に</td></tr>
-              <tr><th scope="row">就業場所の変更の範囲</th><td>記載なし</td><td>転勤がなければ『変更なし』と書く</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="tbl-scroll">→ 表は<wbr>横に<wbr>スクロールできます<wbr>（9項目の<wbr>うち3行だけ抜粋）。</p>
+        <p class="rep-h">直す箇所<wbr>（9項目の<wbr>うち3つを<wbr>抜粋）</p>
+        <ul class="rep-list">
+          <li>
+            <p class="rep-i-h"><b>業務の<wbr>変更の<wbr>範囲</b><span class="tag tag-ng">記載なし</span></p>
+            <p class="rep-i-d">『会社の<wbr>定める<wbr>業務<wbr>（介護業務全般）』な<wbr>ど<wbr>実態に<wbr>合う<wbr>範囲を<wbr>1行追加</p>
+          </li>
+          <li>
+            <p class="rep-i-h"><b>固定残業代</b><span class="tag tag-fix">要修正</span></p>
+            <p class="rep-i-d">『10時間分・<wbr>超過分は<wbr>別途支給』の<wbr>形に</p>
+          </li>
+          <li>
+            <p class="rep-i-h"><b>就業場所の<wbr>変更の<wbr>範囲</b><span class="tag tag-ng">記載なし</span></p>
+            <p class="rep-i-d">転勤が<wbr>なければ<wbr>『変更なし』と<wbr>書く</p>
+          </li>
+        </ul>
 
         <p class="rep-h">賃金の位置</p>
         <ul class="rep-nums">
@@ -368,137 +380,80 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
   </div>
 </section>
 
-<!-- 4. 改正で増えた項目 -->
+<!-- 5. できることと料金 -->
 <section class="sec sec-alt">
   <div class="wrap">
-    <h2 class="sec-h">令和6年4月から、<wbr>求人票に<wbr>書く<wbr>項目が<wbr>増えました</h2>
-    <ul class="new-cards">
+    <h2 class="sec-h" id="price-h">当事務所が<wbr>やることと、<wbr>料金</h2>
+    <div class="card">
+      <ul class="mark-list">
+        <li>法令9項目の点検</li>
+        <li>就<wbr>業<wbr>規<wbr>則・労働条件通知書と<wbr>の<wbr>照合</li>
+        <li>求人票の原稿の作成</li>
+        <li>ハローワークへの<wbr>申込みの<wbr>代理<wbr>（社労士の<wbr>事務代理）</li>
+        <li>助成金の<wbr>要件に<wbr>合わせた<wbr>設計</li>
+      </ul>
+    </div>
+    <ul class="price-list">
       <li>
-        <p class="new-t">業務内容の変更の範囲</p>
-        <p class="new-d">採用直後の<wbr>仕事だけでなく、<wbr>将来任せる<wbr>可能性の<wbr>ある<wbr>業務の<wbr>範囲まで<wbr>書きます。</p>
-        <p class="new-w">書いてい<wbr>ないと：訂正を<wbr>求められる<wbr>ことがあります<wbr>（職業安定法5条の<wbr>6）</p>
+        <p class="pl-h"><b>無料点検</b><span class="pl-y">0円</span></p>
+        <p class="pl-d">既存の<wbr>求人票1枚を<wbr>A4・1枚で<wbr>点検<wbr>（月5件まで）</p>
       </li>
       <li>
-        <p class="new-t">就業場所の変更の範囲</p>
-        <p class="new-d">配置換えや<wbr>転勤でありうる<wbr>勤務地の<wbr>範囲まで<wbr>書きます。<wbr>転勤が<wbr>なければ、<wbr>その<wbr>旨を<wbr>書きます。</p>
-        <p class="new-w">書いてい<wbr>ないと：訂正を<wbr>求められる<wbr>ことがあります<wbr>（職業安定法5条の<wbr>6）</p>
+        <p class="pl-h"><b>求人票まる<wbr>ごと<wbr>代行</b><span class="pl-y">38,<wbr>000円／1職種</span></p>
+        <p class="pl-d">法令点検＋原稿作成＋<wbr>事務代理で<wbr>ハローワークに<wbr>申込み＋修正1回＋<wbr>公開1か<wbr>月後の<wbr>見直し1回</p>
       </li>
       <li>
-        <p class="new-t">有期契約の<wbr>更新上限<wbr>（通算期間・回数）</p>
-        <p class="new-d">有期の<wbr>契約なら、<wbr>更新の<wbr>上限を<wbr>定めているか<wbr>どうかと、<wbr>その<wbr>通算期間または<wbr>回数を<wbr>書きます。</p>
-        <p class="new-w">書いてい<wbr>ないと：訂正を<wbr>求められる<wbr>ことがあります<wbr>（職業安定法5条の<wbr>6）</p>
+        <p class="pl-h"><b>追加職種</b><span class="pl-y">+<wbr>12,000円／職種</span></p>
+        <p class="pl-d">同じ会社の2職種目以降</p>
       </li>
     </ul>
-    <p class="note">これに<wbr>加えて、固定残業代の<wbr>内訳、<wbr>試用期間中の<wbr>条件、<wbr>社会保険の<wbr>適用など、<wbr>もともと<wbr>必要な<wbr>項目が<wbr>9つあります。<wbr>点検では<wbr>その<wbr>全部を<wbr>見ます。</p>
-  </div>
-</section>
-
-<!-- 5. 比較表 -->
-<section class="sec">
-  <div class="wrap">
-    <h2 class="sec-h" id="cmp-h">どこに<wbr>頼むかで、<wbr>できることが<wbr>違います</h2>
-    <div class="tbl tbl-cmp" role="region" aria-labelledby="cmp-h" tabindex="0">
-      <table>
-        <thead>
-          <tr>
-            <th scope="col"><span class="visually-hidden">項目</span></th>
-            <th scope="col">自分で直す</th>
-            <th scope="col">ハローワーク窓口</th>
-            <th scope="col">求人広告の代理店</th>
-            <th scope="col">当事務所</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><th scope="row">法令9項目の点検</th><td class="c ng">△</td><td class="c">○（相談）</td><td class="c ng">×</td><td class="c ok">○</td></tr>
-          <tr><th scope="row">就業規則・通知書との照合</th><td class="c ng">×</td><td class="c ng">×</td><td class="c ng">×</td><td class="c ok">○</td></tr>
-          <tr><th scope="row">原稿の作成</th><td class="c">○</td><td class="c ng">×</td><td class="c">○</td><td class="c ok">○</td></tr>
-          <tr><th scope="row">ハローワークへの申込みの代理</th><td class="c ng">—</td><td class="c ng">×</td><td class="c ng">×</td><td class="c ok">○（社労士の事務代理）</td></tr>
-          <tr><th scope="row">助成金の要件に合わせた設計</th><td class="c ng">×</td><td class="c ng">△</td><td class="c ng">×</td><td class="c ok">○</td></tr>
-          <tr><th scope="row">費用</th><td class="c">0円</td><td class="c">0円</td><td class="c">原稿1件 1〜2万円程度</td><td class="c ok">点検0円／代行38,000円</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="tbl-scroll">→ 表は<wbr>横に<wbr>スクロールできます。</p>
-    <p class="note">代理店の<wbr>費用は<wbr>公開されている<wbr>一般的な<wbr>水準で、<wbr>特定の<wbr>社名を<wbr>指す<wbr>ものではありません。<wbr>窓口は<wbr>会社の<wbr>代わりに<wbr>求人を<wbr>出す<wbr>ことは<wbr>できません。</p>
-  </div>
-</section>
-
-<!-- 6. 料金 -->
-<section class="sec sec-alt">
-  <div class="wrap">
-    <h2 class="sec-h" id="price-h">料金</h2>
-    <div class="tbl tbl-price" role="region" aria-labelledby="price-h" tabindex="0">
-      <table>
-        <thead><tr><th scope="col">サービス</th><th scope="col">内容</th><th scope="col">料金</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">無料点検</th><td>既存の求人票1枚をA4・1枚で点検（月5件まで）</td><td>0円</td></tr>
-          <tr><th scope="row">求人票まるごと代行</th><td>法令点検＋原稿作成＋事務代理でハローワークに申込み＋修正1回＋公開1か月後の見直し1回</td><td>38,000円／1職種</td></tr>
-          <tr><th scope="row">追加職種</th><td>同じ会社の2職種目以降</td><td>+12,000円／職種</td></tr>
-          <tr><th scope="row">助成金の要件に合わせた求人設計</th><td>トライアル雇用・特定求職者雇用開発・キャリアアップの要件に合わせる</td><td>20,000円（申請代行を当事務所に依頼する場合は0円）</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="tbl-scroll">→ 表は<wbr>横に<wbr>スクロールできます。</p>
+    <p class="price-add">助成金<wbr>（トラ<wbr>イアル雇用など）を<wbr>使う<wbr>予定が<wbr>あれば、<wbr>その<wbr>条件に<wbr>合う<wbr>求人票にします。<wbr>求人票だけなら<wbr>20,000円、<wbr>助成金の<wbr>申請も<wbr>ご依頼いただく<wbr>場合は<wbr>0円です。</p>
     <ul class="anshin">
       <li>後払い（納品後30日）</li>
       <li>受理されなければ<wbr>全額返金</li>
       <li>修正1回・1か<wbr>月後の<wbr>見直し1回込み</li>
     </ul>
+    <p class="note">ハローワークの<wbr>窓口は<wbr>相談に<wbr>応じますが、<wbr>会社の<wbr>代わりに<wbr>求人を<wbr>出す<wbr>ことは<wbr>できません。<wbr>求人広告の<wbr>代理店は<wbr>原稿を<wbr>作れますが<wbr>（公開されている<wbr>一般的な<wbr>水準で<wbr>原稿1件1〜<wbr>2万円程度）、<wbr>就業規則との<wbr>照合や<wbr>ハローワークへの<wbr>申込みの<wbr>代理は<wbr>行いません。<wbr>特定の<wbr>社名を<wbr>指す<wbr>ものではありません。</p>
     <p class="note">表示は<wbr>税抜。<wbr>応募数・採用の<wbr>成否は<wbr>保証しません。<wbr>応募者への<wbr>連絡・面接は<wbr>会社が<wbr>行います。<wbr>助成金は<wbr>要件に<wbr>合う<wbr>場合に<wbr>会社が<wbr>申請する<wbr>もので、<wbr>受給を<wbr>保証する<wbr>ものではありません。</p>
     <div style="margin-top:22px"><a class="cta" href="#form" data-cta="main">無料で点検してもらう</a></div>
   </div>
 </section>
 
-<!-- 7. 進め方 -->
+<!-- 6. 進め方 -->
 <section class="sec">
   <div class="wrap">
     <h2 class="sec-h">進め方</h2>
     <ol class="steps">
       <li>
-        <h3>無料点検</h3>
-        <dl class="step-d">
-          <dt>あなたがすること</dt><dd>求人番号か求人票を送る</dd>
-          <dt>当事務所がすること</dt><dd>A4・1枚のレポート</dd>
-          <dt>かかる日数</dt><dd>2営業日</dd>
-        </dl>
+        <h3>無料点検<span class="days">2営業日</span></h3>
+        <p class="step-y">あなた：求人番号か<wbr>求人票を<wbr>送る</p>
+        <p class="step-m">当事務所：A4・<wbr>1枚の<wbr>レポート</p>
       </li>
       <li>
-        <h3>ヒアリング</h3>
-        <dl class="step-d">
-          <dt>あなたがすること</dt><dd>仕事の<wbr>実態と<wbr>採りたい<wbr>人を<wbr>話す<wbr>（60分・<wbr>オンライン可）</dd>
-          <dt>当事務所がすること</dt><dd>就業規則・賃金規程と<wbr>条件を<wbr>そろえる</dd>
-          <dt>かかる日数</dt><dd>1日</dd>
-        </dl>
+        <h3>ヒアリング<span class="days">1日</span></h3>
+        <p class="step-y">あなた：仕事の<wbr>実態と<wbr>採りたい<wbr>人を<wbr>話す<wbr>（60分・<wbr>オンライン可）</p>
+        <p class="step-m">当事務所：就業規則・<wbr>賃金規程と<wbr>条件を<wbr>そろえる</p>
       </li>
       <li>
-        <h3>原稿作成と法令点検</h3>
-        <dl class="step-d">
-          <dt>あなたがすること</dt><dd>原稿を確認（修正1回）</dd>
-          <dt>当事務所がすること</dt><dd>全項目の原稿と法令点検</dd>
-          <dt>かかる日数</dt><dd>5営業日</dd>
-        </dl>
+        <h3>原稿作成と<wbr>法令点検<span class="days">5営業日</span></h3>
+        <p class="step-y">あなた：原稿を<wbr>確認<wbr>（修正1回）</p>
+        <p class="step-m">当事務所：全項目の<wbr>原稿と<wbr>法令点検</p>
       </li>
       <li>
-        <h3>事務代理で申込み</h3>
-        <dl class="step-d">
-          <dt>あなたがすること</dt><dd>求人者マイページの<wbr>追加アカウントを<wbr>発行</dd>
-          <dt>当事務所がすること</dt><dd>社労士と<wbr>して<wbr>申込み、<wbr>ハローワークの<wbr>照会に<wbr>対応</dd>
-          <dt>かかる日数</dt><dd>2営業日</dd>
-        </dl>
+        <h3>事務代理で<wbr>申込み<span class="days">2営業日</span></h3>
+        <p class="step-y">あな<wbr>た：<wbr>求人者マイページの<wbr>追加アカウントを<wbr>発行</p>
+        <p class="step-m">当事務所：社労士と<wbr>して<wbr>申込み、<wbr>ハローワークの<wbr>照会に<wbr>対応</p>
       </li>
       <li>
-        <h3>受理・公開</h3>
-        <dl class="step-d">
-          <dt>あなたがすること</dt><dd>応募者に対応</dd>
-          <dt>当事務所がすること</dt><dd>受理の<wbr>報告、<wbr>1か<wbr>月後に<wbr>見直し1回</dd>
-          <dt>かかる日数</dt><dd>公開後1か月</dd>
-        </dl>
+        <h3>受理・公開<span class="days">公開後1か月</span></h3>
+        <p class="step-y">あなた：応募者に対応</p>
+        <p class="step-m">当事務所：受理の<wbr>報告、<wbr>1か<wbr>月後に<wbr>見直し1回</p>
       </li>
     </ol>
   </div>
 </section>
 
-<!-- 8. 担当する社労士 -->
+<!-- 7. 担当する社労士 -->
 <section class="sec sec-alt">
   <div class="wrap">
     <h2 class="sec-h">担当する社労士</h2>
@@ -508,16 +463,19 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
         <p class="pro-n">近藤 昭宏<br><span style="font-size:13px;font-weight:400;color:#5D6962">社会保険労務士・<wbr>富山<wbr>県社会保険労務士会</span></p>
       </div>
       <p class="pro-q">求人票は、<wbr>会社が<wbr>最初に<wbr>出す<wbr>「労働条件の<wbr>約束」です。<wbr>あとで<wbr>揉めない<wbr>書き方と、<wbr>応募が<wbr>来る<wbr>書き方は<wbr>両立します。</p>
-      <ul class="basis">
+      <details class="basis-d">
+        <summary>社労士が<wbr>この<wbr>仕事を<wbr>できる<wbr>根拠</summary>
+        <ul class="basis">
         <li>ハローワークへの<wbr>求人申込みの<wbr>作成と<wbr>代理は、<wbr>社会保険労務士法<wbr>（2条1項1号・<wbr>1号の<wbr>2・<wbr>1号の<wbr>3）に<wbr>定める<wbr>社労士の<wbr>業務です</li>
         <li>求人者マイページの<wbr>利用規約<wbr>（4条1項ただし<wbr>書）は、<wbr>社労士が<wbr>契約に<wbr>基づき事務代理で<wbr>利用する<wbr>ことを<wbr>認めています</li>
         <li>応募者の<wbr>受付・選考・<wbr>応募者への<wbr>連絡は<wbr>会社が<wbr>行います。<wbr>当事務所は<wbr>職業紹介・委託募集に<wbr>あたる<wbr>行為を<wbr>しません</li>
-      </ul>
+        </ul>
+      </details>
     </div>
   </div>
 </section>
 
-<!-- 9. よくある質問 -->
+<!-- 8. よくある質問 -->
 <section class="sec">
   <div class="wrap">
     <h2 class="sec-h">よくある質問</h2>
@@ -546,7 +504,7 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
   </div>
 </section>
 
-<!-- 10. 申込みフォーム -->
+<!-- 9. 申込みフォーム -->
 <section class="sec form-sec" id="form">
   <div class="wrap">
     <h2 class="sec-h">無料点検を申し込む</h2>
@@ -600,7 +558,7 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
   </div>
 </section>
 
-<!-- 11. 最終 -->
+<!-- 10. 最終 -->
 <section class="sec">
   <div class="wrap">
     <a class="cta" href="#form" data-cta="main">無料で点検してもらう</a>
