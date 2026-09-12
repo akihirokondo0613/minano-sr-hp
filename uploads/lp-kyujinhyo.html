@@ -207,6 +207,8 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 .form-check{list-style:none;display:grid;gap:10px;margin-top:22px;text-align:left}
 .form-check li{position:relative;padding-left:28px;font-size:13.5px;line-height:1.8;color:#DCE7E0}
 .form-check li::before{content:"";position:absolute;left:2px;top:.55em;width:12px;height:7px;border-left:2.5px solid #6FC896;border-bottom:2.5px solid #6FC896;transform:rotate(-45deg)}
+.form-docs{margin-top:18px;padding:12px 14px;background:rgba(255,255,255,.07);border-left:3px solid #6FC896;border-radius:8px;font-size:13px;line-height:1.85;color:#DCE7E0;text-align:left}
+.form-docs b{color:#fff}
 .form-tel{margin-top:18px;font-size:13.5px;color:#CFDDD5}
 .form-tel a{color:#B9E7CC;font-weight:700}
 .form-card{background:var(--shiro);border-radius:var(--r-lg);padding:clamp(20px,2.4vw,32px);color:var(--iwa);box-shadow:var(--sh-lg);text-align:left}
@@ -370,17 +372,27 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
               <li>
                 <p class="ba-k">仕事の内容</p>
                 <p class="ba-v">介護業務全般。<wbr>利用者様の<wbr>身体介護、<wbr>生活援助などを<wbr>お願いします。<wbr>未経験者歓迎、<wbr>アットホームな<wbr>職場です。</p>
+                <p class="ba-v is-none">変更範囲の記載なし</p>
               </li>
               <li>
-                <p class="ba-k">賃金</p>
-                <p class="ba-v">月給 186<wbr>,000円〜<wbr>240,000円<br>※時間外手当含む</p>
+                <p class="ba-k">就業場所／転勤の可能性</p>
+                <p class="ba-v">○○県△△市□□<wbr>3番地　／　1．<wbr>あり</p>
+                <p class="ba-v is-none">転勤範囲の記載なし</p>
               </li>
               <li>
-                <p class="ba-k">従事すべき<wbr>業務の<wbr>変更の<wbr>範囲</p>
+                <p class="ba-k">基本給（a）</p>
+                <p class="ba-v">186,000円〜<wbr>240,000円<br>※時間外手当含む</p>
+              </li>
+              <li>
+                <p class="ba-k">固定残業代（c）</p>
                 <p class="ba-v is-none">記載なし</p>
               </li>
               <li>
-                <p class="ba-k">就業場所の変更の範囲</p>
+                <p class="ba-k">a＋b＋c</p>
+                <p class="ba-v">186,000円〜<wbr>240,000円</p>
+              </li>
+              <li>
+                <p class="ba-k">固定残業代に<wbr>関する<wbr>特記事項</p>
                 <p class="ba-v is-none">記載なし</p>
               </li>
             </ul>
@@ -398,18 +410,28 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
               <li>
                 <p class="ba-k">仕事の内容</p>
                 <p class="ba-v"><mark>日勤のみ、<wbr>入浴介助と<wbr>送迎は<wbr>ありません。</mark>利用者<wbr>20名の<wbr>施設で、<wbr>食事・排せつの<wbr>介助と<wbr>記録が<wbr>中心です。<wbr>未経験の<wbr>方は<wbr>3か<wbr>月間、<wbr>先輩と<wbr>2人で<wbr>担当します。</p>
+                <p class="ba-v"><mark>変更範囲：会社の<wbr>定める<wbr>業務<wbr>（介護業務全般）</mark></p>
               </li>
               <li>
-                <p class="ba-k">賃金</p>
-                <p class="ba-v"><mark>月給 199<wbr>,500円〜<wbr>257,400円</mark><br>基本給 186<wbr>,000円〜<wbr>240,000円<br><mark>固定残業手当 13<wbr>,500円〜<wbr>17,400円<wbr>（<wbr>時間外10時間分）。<wbr>10時間を<wbr>超えた分は<wbr>別途支給します。</mark><br>1か月の<wbr>平均所定労働<wbr>時間 173<wbr>時間</p>
+                <p class="ba-k">就業場所／転勤の可能性</p>
+                <p class="ba-v">○○県△△市□□<wbr>3番地　／　1．<wbr>あり</p>
+                <p class="ba-v"><mark>転勤範囲：富山県内の<wbr>当社事業所<wbr>（○○・△△）</mark></p>
               </li>
               <li>
-                <p class="ba-k">従事すべき<wbr>業務の<wbr>変更の<wbr>範囲</p>
-                <p class="ba-v"><mark>会社の<wbr>定める<wbr>業務<wbr>（介護業務全般）</mark></p>
+                <p class="ba-k">基本給（a）</p>
+                <p class="ba-v">186,000円〜<wbr>240,000円</p>
               </li>
               <li>
-                <p class="ba-k">就業場所の変更の範囲</p>
-                <p class="ba-v"><mark>変更なし<wbr>（転勤は<wbr>ありません）</mark></p>
+                <p class="ba-k">固定残業代（c）</p>
+                <p class="ba-v"><mark>13,500円〜<wbr>17,400円<wbr>（時間外10時間分）</mark></p>
+              </li>
+              <li>
+                <p class="ba-k">a＋b＋c</p>
+                <p class="ba-v"><mark>199,500円〜<wbr>257,400円</mark></p>
+              </li>
+              <li>
+                <p class="ba-k">固定残業代に<wbr>関する<wbr>特記事項</p>
+                <p class="ba-v"><mark>時間外労働の<wbr>有無に<wbr>かかわらず<wbr>固定的に<wbr>支給します。<wbr>10時間を<wbr>超えた<wbr>時間外労働分は<wbr>法定どおり追加で<wbr>支給します。</mark>（1か<wbr>月の<wbr>平均所定労働時間<wbr>173時間で<wbr>計算）</p>
               </li>
             </ul>
           </article>
@@ -419,9 +441,11 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
         <div class="rep-sub">
           <div class="rep-col">
             <p class="rep-h">総評</p>
-            <p class="rep-p">法令上の<wbr>必須項目9つの<wbr>うち、<wbr>記載なしが<wbr>2つ、<wbr>直した<wbr>ほうが<wbr>よい<wbr>書き方が<wbr>2つ。<wbr>いずれも<wbr>1〜2行の<wbr>追記で<wbr>済みます。</p>
+            <p class="rep-p">法令上の<wbr>必須項目9つの<wbr>うち、<wbr>記載なしが<wbr>4つ、<wbr>直した<wbr>ほうが<wbr>よい<wbr>書き方が<wbr>2つ。<wbr>いずれも<wbr>1〜2行の<wbr>追記で<wbr>済みます。</p>
             <p class="rep-h">なぜ書き方を変えるか</p>
             <p class="rep-p">仕事の<wbr>内容の<wbr>冒頭40字は、<wbr>応募者が<wbr>一覧で<wbr>最初に<wbr>読む部分です。<wbr>ここに<wbr>「日勤のみ・<wbr>入浴介助な<wbr>し」のような、<wbr>応募者が<wbr>知りたい<wbr>条件を<wbr>置きます。</p>
+            <p class="rep-h">どこに書くか</p>
+            <p class="rep-p">業務の<wbr>変更の<wbr>範囲は<wbr>「仕事の<wbr>内容」<wbr>欄に<wbr>「変更範囲：」と<wbr>して、<wbr>就業場所の<wbr>変更の<wbr>範囲は<wbr>「転勤の<wbr>可能性」欄と<wbr>転勤範囲と<wbr>して<wbr>書き<wbr>ます。固定残業代は<wbr>基本給から<wbr>抜き出して<wbr>（c）<wbr>欄に<wbr>記入し、<wbr>「固定残業代に<wbr>関する<wbr>特記事項」欄に、<wbr>固定的に<wbr>支給する<wbr>こと・超過分を<wbr>法定ど<wbr>おり追加支給する<wbr>ことを<wbr>明記します。</p>
           </div>
           <div class="rep-col">
             <p class="rep-h">賃金の位置</p>
@@ -458,7 +482,7 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
         <p class="pl-k">依頼する場合</p>
         <p class="pl-n">求人票まるごと代行</p>
         <p class="pl-y">38<wbr>,000円<small>／1職種・<wbr>税抜</small></p>
-        <p class="pl-d">法令点検＋原稿作成＋<wbr>事務代理で<wbr>ハローワークに<wbr>申込み＋修正1回＋<wbr>公開1か<wbr>月後の<wbr>見直し1回</p>
+        <p class="pl-d">法令点検＋原稿作成＋<wbr>事務代理で<wbr>ハローワークに<wbr>申込み＋修正1回＋<wbr>公開1か<wbr>月後の<wbr>見直し1回。<wbr>就業規則・<wbr>賃金<wbr>規<wbr>程・労働条件通知書を<wbr>お預かりし、<wbr>求人票の<wbr>条件と<wbr>食い<wbr>違っていないか<wbr>照合します。</p>
       </li>
       <li>
         <p class="pl-k">2職種目以降</p>
@@ -492,6 +516,7 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
         <li>賃金が<wbr>富山の<wbr>同職種の<wbr>相場の<wbr>どこに<wbr>あるか</li>
         <li>応募者に<wbr>伝わる<wbr>書き方に<wbr>なっているか</li>
       </ul>
+      <p class="form-docs">無料点検は<wbr><b>求人番号だけ</b>で<wbr>結構です。<wbr>まる<wbr>ごと<wbr>代行を<wbr>ご依頼いただく<wbr>場合は、<wbr><b>就業規則・<wbr>賃金<wbr>規<wbr>程・労働条件通知書</b>を<wbr>お預かりし、<wbr>求人票の<wbr>条件と<wbr>一致しているかを<wbr>照合します。<wbr>手元に<wbr>ない<wbr>場合は、<wbr>その<wbr>状態から<wbr>ご相談ください。</p>
       <p class="form-tel">お急ぎの<wbr>方<wbr>は 電<wbr>話 <a href="tel:0764602562" data-gc="phone">076-460-2562</a>（<wbr>平日<wbr>9:00〜<wbr>18:00）</p>
     </div>
 
