@@ -27,9 +27,10 @@
 
 ## 主なページ
 
-- [サービス一覧](https://minano-sr.com/services.html): 6つの業務（助成金・就業規則・社会保険手続き・給与計算・労務相談・DX支援）の概要
+- [サービス一覧](https://minano-sr.com/services.html): 7つの業務（助成金・就業規則・社会保険手続き・給与計算・労務相談・DX支援・ハローワーク求人票の代行）の概要
 - [料金・顧問プラン](https://minano-sr.com/pricing.html): 顧問料、スポット料金、助成金の成功報酬。すべて固定額で掲載
 - [助成金の申請サポート](https://minano-sr.com/joseikin.html): 令和8年度に使える主な助成金と、順序を外すと対象外になる注意点
+- [ハローワーク求人票の作成・申込み代行](https://minano-sr.com/uploads/service-kyujinhyo-daiko.html): 求人票の法令点検・原稿作成から、求人者マイページの事務代理での申込みまで。1職種38,000円、無料点検つき
 - [資料室](https://minano-sr.com/shiryo.html): 助成金・補助金の資料をPDFで公開（登録不要）
 - [士業・パートナーの方へ](https://minano-sr.com/partner.html): 税理士の先生方へ。業務範囲の線引きと、ご紹介いただいた場合の条件
 - [支援の進め方](https://minano-sr.com/support.html): 創業期・拡大期・組織強化期ごとの課題と、初回相談から契約までの流れ

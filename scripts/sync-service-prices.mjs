@@ -226,6 +226,7 @@ function kyuyoExtra({ rows, plans }) {
 /** ページごとの構成。行は pricing.html の行名で指す（実額はここに書かない）。 */
 function buildPages({ rows, plans }) {
   const spot = (name) => feeRow(findRow(rows, 'spot', name));
+  const kyujinRow = (name, desc) => feeRow({ ...findRow(rows, 'spot', name), desc });
   const spotRate = rateOf(findRow(rows, 'spot', '助成金の申請代行').price);
   const retainerRate = rateOf(findRow(rows, 'retainer', '助成金の申請代行').price);
 
@@ -322,6 +323,38 @@ function buildPages({ rows, plans }) {
           + '別に定めています（会社の実態をすでに把握しているぶん、ヒアリングと現状調査の工数が減るため）。'
           + '顧問プラン（スタート・スタンダード）には就業規則の年次点検と改定のご提案が含まれます。'
           + '常時10人以上の事業場は、作成・変更のたびに労働基準監督署への届出が必要です。',
+      }),
+    },
+    {
+      file: 'uploads/service-kyujinhyo-daiko.html',
+      html: section({
+        heading: '料金（税抜・固定額）',
+        sub: '無料点検から始められます。申込みまで含めた固定額で、追加請求はありません。',
+        alt: true,
+        body: [
+          [
+            '        <div class="svc-fee-row">',
+            '          <span class="svc-fee-name">既存の求人票の無料点検</span>',
+            '          <span class="svc-fee-price">¥0 / 1枚</span>',
+            '          <span class="svc-fee-desc">いまの求人票1枚を、法令の不備・地域相場とのずれ・書き方の3点でA4・1枚に整理してお返しします。月5件まで。</span>',
+            '        </div>',
+          ].join('\n'),
+          // 価格は pricing.html の正本から取り、説明だけこのページ向けに書く（料金ページの説明は専用ページへの案内文のため）
+          kyujinRow('ハローワーク求人票の作成・申込み代行',
+            '法令点検、原稿作成、求人者マイページの事務代理での申込み、修正1回、公開1か月後の見直し1回まで含みます。同一会社の追加職種は1職種 ¥12,000 です。'),
+          kyujinRow('助成金の要件に合わせた求人設計',
+            'トライアル雇用・特定求職者雇用開発・キャリアアップの各助成金の要件に合わせて、求人票と雇用条件を組み立てます。助成金の申請代行を当事務所にご依頼いただく場合は ¥0 です。受給を保証するものではありません。'),
+          [
+            '        <div class="svc-fee-row">',
+            '          <span class="svc-fee-name">顧問先の場合</span>',
+            '          <span class="svc-fee-price">年2職種まで顧問料に含む</span>',
+            '          <span class="svc-fee-desc">3職種目からはスポット料金の50％です。</span>',
+            '        </div>',
+          ].join('\n'),
+        ].join('\n'),
+        note: '表示は税抜です。お支払いは納品後30日以内の後払い（請求書）です。'
+          + 'ハローワークに受理されなければ全額返金します。応募数や採用の成否はお約束できません。'
+          + '窓口への同行と、民間求人媒体への出稿は含みません（別途ご相談ください）。',
       }),
     },
     {
