@@ -16,7 +16,7 @@
  *   補助対象」という制度そのものが、依頼のハードルを下げる。
  *
  * 正本の分け方:
- *   - 地域別最低賃金のいまの額・答申額 … data/service-toyama.json の numbers（給与計算ページと共通）
+ *   - 地域別最低賃金のいまの額・改定後の額 … data/service-toyama.json の numbers（給与計算ページと共通）
  *   - 時系列・産業別・チェック手順   … data/toyama-saitei-chingin.json
  *   - 補助金の制度内容               … data/toyama-chinage-oen.json
  *   - 窓口の住所・電話               … data/toyama-madoguchi.json（id で引く。ここには書かない）
@@ -203,7 +203,7 @@ function buildSaiteiMain(ctx) {
       </nav>
       <span class="sec-kicker">富山の数字</span>
       <h1>富山県の最低賃金。<br>いまの額と、次の額。</h1>
-      <p class="lead">富山県の最低賃金はいま時間額1,062円で、令和8年度は1,119円への引上げが答申されています。ただし答申はまだ発効していません。どちらの額をいつから守るのかを、社会保険労務士が${fmtDate(checkedAt)}時点の一次資料で整理しました。</p>
+      <p class="lead">富山県の最低賃金は、令和8年10月1日から時間額1,119円になります。9月30日までの下限は1,062円です。どちらの額をいつから守るのかを、社会保険労務士が${fmtDate(checkedAt)}時点の一次資料で整理しました。</p>
     </div>
   </header>
 
@@ -438,7 +438,7 @@ for (const group of madoguchi.groups) {
   for (const office of group.offices) byId.set(office.id, office);
 }
 
-// 地域別のいまの額・答申額は給与計算ページの numbers が正本。ラベルで引き、消えたら止める。
+// 地域別のいまの額・改定後の額は給与計算ページの numbers が正本。ラベルで引き、消えたら止める。
 const kyuyo = JSON.parse(serviceToyamaRaw).pages.find((p) => p.file.endsWith('service-kyuyo-keisan.html'));
 if (!kyuyo?.numbers) throw new Error('data/service-toyama.json に給与計算ページの numbers がありません');
 const numberByLabel = (label) => {
@@ -454,13 +454,13 @@ const PAGES = [
   {
     out: 'uploads/toyama-saitei-chingin.html',
     title: '富山県の最低賃金 いまの額と次の額｜みなの社会保険労務士事務所',
-    desc: '富山県の最低賃金は時間額1,062円（令和7年10月12日発効）。令和8年度は1,119円への引上げが答申され、10月1日発効の見込みですが、まだ発効していません。'
+    desc: '富山県の最低賃金は令和8年10月1日から時間額1,119円です（＋57円）。9月30日までの下限は1,062円。'
       + '産業別最低賃金との関係、月給者の確認手順、賃上げに使える制度まで社会保険労務士が整理しました。',
     crumbs: [{ name: '支援の進め方', item: 'https://minano-sr.com/support.html' }, { name: '富山県の最低賃金' }],
     style: SAITEI_STYLE,
     marker: 'stc-tl',
     build: (url) => buildSaiteiMain({
-      numbers: [numberByLabel('富山県最低賃金（地域別）'), numberByLabel('令和8年度の改定（答申額）')],
+      numbers: [numberByLabel('富山県最低賃金（地域別）'), numberByLabel('令和8年度の改定（令和8年10月1日発効）')],
       tl: saitei.timeline,
       sangyo: saitei.sangyobetsu,
       check: saitei.check,
