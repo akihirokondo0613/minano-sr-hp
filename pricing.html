@@ -10,6 +10,18 @@
 .spot-entry-t{font-family:var(--disp);font-weight:800;font-size:16px;margin:0 0 6px;color:var(--iwa)}
 .spot-entry-d{font-size:13px;line-height:1.9;color:var(--ink3);margin:0 0 12px}
 .spot-entry-btn{display:inline-block;margin-top:14px;padding:12px 22px}
+.home-once{margin:0 0 clamp(22px,3vw,30px);padding:clamp(18px,2.4vw,26px) clamp(18px,2.6vw,28px);background:var(--shiro);border:1.5px solid var(--moegi);border-radius:var(--r-lg)}
+.home-once-h{font-family:var(--disp);font-size:clamp(17px,1.9vw,21px);font-weight:800;color:var(--iwa);margin:0}
+.home-once-h strong{color:var(--sugi)}
+.home-once-sub{font-size:13px;line-height:1.9;color:var(--ink3);margin:6px 0 0}
+.home-once-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px 14px;margin:16px 0 0;padding:0;list-style:none}
+.home-once-grid li{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--yuki)}
+.home-once-name{display:block;font-size:13.5px;font-weight:700;color:var(--iwa)}
+.home-once-price{display:block;margin-top:3px;font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--sugi)}
+.home-once-days{display:block;margin-top:3px;font-size:11.5px;line-height:1.6;color:var(--ink3)}
+.home-once-actions{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:16px}
+.home-once-actions .spot-entry-btn{margin-top:0}
+.home-once-note{font-size:11.5px;color:var(--ink3);margin:10px 0 0;line-height:1.7}
 .spot-fees .sf-note{color:var(--ink3)}
 .page-hero .breadcrumb span{color:var(--ink3)!important}
 .spot-fees summary{transition:background .2s,color .2s}
@@ -132,10 +144,22 @@
         <p class="sec-sub">成長段階や<wbr>課題に<wbr>合わせて、<wbr>必要な<wbr>範囲だけ<wbr>ご依頼いただけます。<wbr>途中での<wbr>見直しも<wbr>可能です。</p>
       </div>
     </div>
-    <div class="spot-entry rv" id="spot-entry">
-      <p class="spot-entry-t">入社・退社の<wbr>手続き、<wbr>会社設立時の<wbr>新規適用、36協定な<wbr>どの<wbr>単発の<wbr>ご依頼は、<wbr>メールか<wbr>お電話で<wbr>承ります。</p>
-      <p class="spot-entry-d">ご連絡を<wbr>いただいたら、<wbr>必要な<wbr>書類とお見積りを<wbr>メールで<wbr>ご案内します。<wbr>料金は<wbr>下の<wbr>表の<wbr>とおりです。</p>
-      <a class="plan-btn plan-btn-main spot-entry-btn" href="uploads/contact.html">単発のご依頼を相談する →</a>
+    <div class="home-once rv" id="spot-entry">
+      <p class="home-once-h">顧問契約が<wbr>なくても、<wbr><strong>1回だけ<wbr>頼めます。</strong></p>
+      <p class="home-once-sub">目の前の<wbr>1件だけを、<wbr>固定料金で<wbr>お受けします。<wbr>メールか<wbr>お電話で<wbr>ご連絡いただいたら、<wbr>必要な<wbr>書類とお見積りを<wbr>メールで<wbr>ご案内します。<wbr>料金は<wbr>すべて<wbr>税抜です。</p>
+      <ul class="home-once-grid">
+        <li><span class="home-once-name">入社・退社の<wbr>手続<wbr>き</span><span class="home-once-price"><span class="nw">初回限定</span> <span class="nw">¥5,000</span> / 1<wbr>名</span><span class="home-once-days"><span class="nw">2回目以降は</span> <span class="nw">¥10,000</span> / 1<wbr>名。<wbr>書類が<wbr>そろった<wbr>翌営業日から<wbr>3営業日以内に<wbr>申請</span></li>
+        <li><span class="home-once-name">会社設立時の<wbr>新規適<wbr>用</span><span class="home-once-price"><span class="nw">¥60,000</span> / 事<wbr>業所<wbr>（<wbr>5名まで）</span><span class="home-once-days">労働保険・<wbr>雇用保険・社会保険の<wbr>3保険一式</span></li>
+        <li><span class="home-once-name">36協定の<wbr>作成・<wbr>届<wbr>出</span><span class="home-once-price"><span class="nw">¥20,000</span> / 事<wbr>業所</span><span class="home-once-days">協定書<wbr>の<wbr>作成から<wbr>労働基準監督署への<wbr>届出まで</span></li>
+        <li><span class="home-once-name">就業規則の<wbr>作成・<wbr>改<wbr>定</span><span class="home-once-price"><span class="nw">¥90,000〜</span> / 事<wbr>業所</span><span class="home-once-days">全面<wbr>改<wbr>定 <span class="nw">¥90,000</span>、<wbr>新規<wbr>作<wbr>成 <span class="nw">¥180,000</span>。<wbr>届出まで<wbr>含みます</span></li>
+        <li><span class="home-once-name">助成金の<wbr>申請代<wbr>行</span><span class="home-once-price">成功報酬 受給額<wbr>の<wbr>20％</span><span class="home-once-days">着手金0円。<wbr>受給できなければ<wbr>報酬は<wbr>いただきません</span></li>
+        <li><span class="home-once-name">労務相談<wbr>（<wbr>60<wbr>分<wbr>）</span><span class="home-once-price"><span class="nw">初回無料</span></span><span class="home-once-days"><span class="nw">2回目以降は</span> <span class="nw">¥10,000</span> / 回。<wbr>解雇・問題社員・<wbr>ハラスメント対応など</span></li>
+      </ul>
+      <div class="home-once-actions">
+        <a class="plan-btn plan-btn-main spot-entry-btn" href="uploads/contact.html?from=once">単発のご依頼を相談する →</a>
+        <a href="#spot-fees" class="link-more">そのほかの単発の料金は下の表へ ↓</a>
+      </div>
+      <p class="home-once-note">単発の<wbr>給与計算<wbr>（<wbr>基<wbr>本 <span class="nw">¥20,000</span>＋<wbr>1名 <span class="nw">¥1,500</span>）<wbr>や<wbr>給付の<wbr>申請も<wbr>承ります。<wbr>ご利用後3か<wbr>月以内に<wbr>顧問契約を<wbr>いただいた<wbr>場合、<wbr>スポット料金<wbr>（<wbr>上<wbr>限 <span class="nw">¥30,000</span>）<wbr>を<wbr>初月の<wbr>顧問料に<wbr>充当します。</p>
     </div>
     <details class="spot-fees rv" id="spot-fees" open>
       <summary>
