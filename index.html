@@ -429,6 +429,21 @@ main > section:not(.hero) {
   .hero-h1 { font-size: min(5.4vw, 30px); text-wrap: initial; }
 }
 </style>
+<style id="home-once-style">
+/* 「1回だけのご依頼」。顧問プランの手前に置く。困っている会社は顧問を探していないので、
+   目の前の1件を頼めることを先に見せる（2026-09-14） */
+.home-once{margin:0 0 clamp(22px,3vw,30px);padding:clamp(18px,2.4vw,26px) clamp(18px,2.6vw,28px);background:var(--shiro);border:1.5px solid var(--moegi);border-radius:var(--r-lg)}
+.home-once-h{font-family:var(--disp);font-size:clamp(17px,1.9vw,21px);font-weight:800;color:var(--iwa);margin:0}
+.home-once-h strong{color:var(--sugi)}
+.home-once-sub{font-size:13px;line-height:1.9;color:var(--ink3);margin:6px 0 0}
+.home-once-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px 14px;margin:16px 0 0;padding:0;list-style:none}
+.home-once-grid li{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--yuki)}
+.home-once-name{display:block;font-size:13.5px;font-weight:700;color:var(--iwa)}
+.home-once-price{display:block;margin-top:3px;font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--sugi)}
+.home-once-days{display:block;margin-top:3px;font-size:11.5px;line-height:1.6;color:var(--ink3)}
+.home-once-actions{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:16px}
+.home-once-note{font-size:11.5px;color:var(--ink3);margin:10px 0 0;line-height:1.7}
+</style>
 <link rel="stylesheet" href="skin-v2.css?v=20260910-faqalign1" media="print" data-async-style onload="this.media='all';this.onload=null">
 <noscript><link rel="stylesheet" href="skin-v2.css?v=20260910-faqalign1"></noscript>
 <style id="home-hero-legibility">
@@ -1013,6 +1028,23 @@ main > section:not(.hero) {
     <div class="sec-head rv">
       <div class="sec-head-idx"><span class="idx-num">04</span><span class="idx-lat">PRICING</span><span class="idx-jp">料金</span></div>
       <div class="sec-head-body"><h2 class="sec-h">業務範囲と<wbr>料金が<wbr>わかる、<wbr><strong>3つの選び方。</strong></h2><p class="sec-sub">手続き中心、<wbr>給与計算込み、<wbr>31名以上・<wbr>個別設計。<wbr>主な<wbr>業務範囲と<wbr>料金を<wbr>掲載しています。</p></div>
+    </div>
+    <div class="home-once rv" id="once">
+      <p class="home-once-h">顧問契約が<wbr>なくても、<wbr><strong>1回だけ<wbr>頼めます。</strong></p>
+      <p class="home-once-sub">目の前の<wbr>1件だけを、<wbr>固定料金で<wbr>お受けします。<wbr>料金は<wbr>すべて<wbr>税抜です。</p>
+      <ul class="home-once-grid">
+        <li><span class="home-once-name">入社・退社の<wbr>手続き</span><span class="home-once-price">¥10<wbr>,<wbr>000 / 1<wbr>名〜</span><span class="home-once-days">書類が<wbr>そろった<wbr>翌営業日から<wbr>3営業日以内に<wbr>申請</span></li>
+        <li><span class="home-once-name">会社設立時の<wbr>新規適用</span><span class="home-once-price">¥60<wbr>,000 / 事業所<wbr>（<wbr>5名まで）</span><span class="home-once-days">労働保険・<wbr>雇用保険・社会保険の<wbr>3保険一式</span></li>
+        <li><span class="home-once-name">36協定の<wbr>作成・<wbr>届出</span><span class="home-once-price">¥20<wbr>,<wbr>000 / 事<wbr>業所</span><span class="home-once-days">協定書<wbr>の<wbr>作成から<wbr>労働基準監督署への<wbr>届出まで</span></li>
+        <li><span class="home-once-name">就業規則の<wbr>作成・<wbr>改定</span><span class="home-once-price">¥90<wbr>,<wbr>000〜 / 事<wbr>業所</span><span class="home-once-days">全面<wbr>改定 ¥90<wbr>,000、<wbr>新規作成 ¥180<wbr>,000。<wbr>届出まで<wbr>含みます</span></li>
+        <li><span class="home-once-name">助成金の<wbr>申請代<wbr>行</span><span class="home-once-price">成功報酬 受給額<wbr>の<wbr>20％</span><span class="home-once-days">着手金0円。<wbr>受給できなければ<wbr>報酬は<wbr>いただきません</span></li>
+        <li><span class="home-once-name">労務相談<wbr>（<wbr>60<wbr>分）</span><span class="home-once-price">¥10<wbr>,<wbr>000 / 回</span><span class="home-once-days">解雇・<wbr>問題社員・<wbr>ハラスメント<wbr>対応など。<wbr>初回は<wbr>無料</span></li>
+      </ul>
+      <div class="home-once-actions">
+        <a href="spot.html" class="link-more">入社・退社・新規適用・36協定をWebで注文する →</a>
+        <a href="uploads/contact.html?from=once" class="link-more">そのほかを相談する →</a>
+      </div>
+      <p class="home-once-note">単発の<wbr>給与計算<wbr>（<wbr>基本 ¥20<wbr>,<wbr>000<wbr>＋<wbr>1名 ¥1,500）<wbr>や<wbr>給付の<wbr>申請も<wbr>承ります。<wbr>ご利用後3か<wbr>月以内に<wbr>顧問契約を<wbr>いただいた<wbr>場合、<wbr>スポット料金<wbr>（<wbr>上限 ¥30<wbr>,000）を<wbr>初月の<wbr>顧問料に<wbr>充当します。</p>
     </div>
     <div class="home-plan-grid">
       <article class="home-plan-card">
