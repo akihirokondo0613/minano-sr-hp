@@ -5,13 +5,13 @@
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ハローワーク求人票の無料点検｜富山の社会保険労務士 みなの</title>
-<meta name="description" content="令和6年4月の改正で、ハローワーク求人票に書く項目が増えました。富山の社労士が今の求人票を無料で見て、採用に最適な改定の提案をいたします。まるごと代行は1職種38,000円（税抜）、受理されなければ全額返金です。">
+<meta name="description" content="求人を出しているのに応募が来ない。その原因が、求人票の書き方にあることがあります。富山の社労士が今の求人票を無料で見て、採用に最適な改定の提案をいたします。まるごと代行は1職種38,000円（税抜）、受理されなければ全額返金です。">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://minano-sr.com/uploads/lp-kyujinhyo.html">
 <meta property="og:url" content="https://minano-sr.com/uploads/lp-kyujinhyo.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="ハローワーク求人票の無料点検｜富山の社会保険労務士 みなの">
-<meta property="og:description" content="令和6年4月の改正で、ハローワーク求人票に書く項目が増えました。富山の社労士が今の求人票を無料で見て、採用に最適な改定の提案をいたします。">
+<meta property="og:description" content="求人を出しているのに応募が来ない。その原因が、求人票の書き方にあることがあります。富山の社労士が今の求人票を無料で見て、採用に最適な改定の提案をいたします。">
 <meta property="og:site_name" content="みなの社会保険労務士事務所">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://minano-sr.com/assets/og/minano-og.png">
@@ -127,6 +127,8 @@ main .hero-actions .primary{flex:1 1 300px;max-width:420px}
 main .hero-note{margin-top:11px;color:var(--ink3);font-size:11.5px;line-height:1.75}
 main .hero-proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;max-width:690px;margin-top:24px;list-style:none;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 main .hero-proof li{padding:13px 10px;border-right:1px solid var(--line)}
+/* 320〜390pxで「受理されなけれ／ば」「社会保険労務士／が」と助詞1文字だけの行になるため詰める */
+@media (max-width:429px){main .hero-proof li{padding-inline:4px}}
 main .hero-proof li:last-child{border-right:0}
 main .hero-proof strong{display:block;color:var(--iwa);font-family:var(--disp);font-size:11.5px;font-weight:800;line-height:1.6}
 main .hero-proof small{display:block;margin-top:4px;color:var(--ink3);font-size:10.5px;line-height:1.55}
@@ -328,8 +330,8 @@ main .ft-links{margin-top:10px}
   <div class="w hero-grid">
     <div class="hero-copy">
       <p class="kicker">富山の<wbr>社会保険労務士<wbr>｜ハローワーク<wbr>求人票</p>
-      <h1>その<wbr>求人票、<wbr><strong>令和6年4月の改正</strong>に<wbr>合っていますか。</h1>
-      <p class="hero-intro">記載が<wbr>足りない<wbr>求人票は、<wbr>訂正を<wbr>求められたり、<wbr>応募者に<wbr>条件が<wbr>伝わら<wbr>なかったりします。<wbr>社労士が<wbr>今の<wbr>求人票を<wbr>無料で<wbr>見て、<wbr>採用に<wbr>最適な<wbr>改定の<wbr>提案を<wbr>いたします。</p>
+      <h1>求人を<wbr>出しているのに、<wbr><strong>応募が来ない</strong>。</h1>
+      <p class="hero-intro">応募が<wbr>少ない。<wbr>来ても<wbr>ほしい<wbr>人と<wbr>合わない。<wbr>その<wbr>原因が、<wbr>求人票の<wbr>書き方に<wbr>あることがあります。<wbr>社労士が<wbr>今の<wbr>求人票を<wbr>無料で<wbr>見て、<wbr>採用に<wbr>最適な<wbr>改定の<wbr>提案を<wbr>いたします。</p>
       <p class="hero-price">無料点検 0円<small>まる<wbr>ごと<wbr>代行は<wbr>1職種38,000円<wbr>（税抜）<wbr>／追加職種は<wbr>12,000円</small></p>
       <div class="hero-actions">
         <a class="primary" href="#form" data-cta="main">無料で改定案をもらう</a>
@@ -619,7 +621,7 @@ main .ft-links{margin-top:10px}
         <address class="footer-contact">
           <span class="footer-contact-row footer-contact-address">〒931-8333 富山県富山市蓮町1丁目7-4　SCOP TOYAMA</span>
           <span class="footer-contact-row"><a href="tel:076-460-2562">TEL: 076-460-2562</a><span class="footer-contact-hours">平日 9:00–18:00</span></span>
-          <span class="footer-contact-row">適格請求書<wbr>発行事業者<wbr>登録番号: T2810856672476</span>
+          <span class="footer-contact-row">適格請求書発行事業者登録番号: T2810856672476</span>
         </address>
       </div>
       <div>
@@ -715,10 +717,20 @@ main .ft-links{margin-top:10px}
   /* ---- スマホの追従ボタン（#form が画面内にあるときは隠す） ---- */
   var stick = document.getElementById('stick');
   var formSec = document.getElementById('form');
-  if (stick && formSec && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) { stick.hidden = entry.isIntersecting; });
-    }, { threshold: 0 }).observe(formSec);
+  var heroCta = document.querySelector('.hero-actions');
+  if (stick && (formSec || heroCta) && 'IntersectionObserver' in window) {
+    // 見えている対象ごとに状態を持ち、ORで判定する。entries.forEach で stick.hidden へ
+    // 単純代入すると、初期発火で「最後に処理した対象」が勝ってしまい observe の順序で挙動が変わる。
+    var visible = { hero: false, form: false };
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.target === formSec) visible.form = entry.isIntersecting;
+        else visible.hero = entry.isIntersecting;
+      });
+      stick.hidden = visible.hero || visible.form;
+    }, { threshold: 0 });
+    if (formSec) io.observe(formSec);
+    if (heroCta) io.observe(heroCta);
   }
 
   /* ---- 申込みフォーム ----
