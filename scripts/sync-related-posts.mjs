@@ -114,6 +114,7 @@ const SERVICE_MAP = [
   { file: 'uploads/service-kyuyo-keisan.html', cats: ['hoken', 'keiei'], label: '給与計算に関する記事' },
   { file: 'uploads/service-romu-sodan.html', cats: ['trouble', 'kaisei'], label: '労務相談に関する記事' },
   { file: 'uploads/service-dx.html', cats: ['system', 'keiei'], label: '労務DXに関する記事' },
+  { file: 'uploads/service-kyujinhyo-daiko.html', cats: ['keiei', 'joseikin'], label: '採用・求人に関する記事' },
 ];
 
 function pickByCats(cats) {

@@ -9,6 +9,7 @@ const errors = [];
 const expectedServicePages = new Set([
   'uploads/service-dx.html',
   'uploads/service-joseikin.html',
+  'uploads/service-kyujinhyo-daiko.html',
   'uploads/service-kyuyo-keisan.html',
   'uploads/service-romu-sodan.html',
   'uploads/service-shakai-hoken.html',
