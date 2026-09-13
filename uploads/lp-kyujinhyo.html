@@ -45,6 +45,8 @@
   --moegi-t:#1E7A4B;
   --moegi-l:#E3F2E9;
   --line:#E0E4DE;
+  --line-ui:#849089;    /* 操作部品の境界。白地3.32:1・雪白地3.17:1でSC1.4.11の3:1を満たす */
+  --moegi-b:#43C17E;    /* 萌木・明（濃地の上の文字・フォーカスリング用）skin-v2.css より */
   --line2:#ECEFEA;
   --asahi:#E5A63C;
   --r:12px;
@@ -78,16 +80,19 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 }
 .w{width:min(100% - 32px,1180px);margin-inline:auto}
 :where(a):focus-visible,:where(button):focus-visible,:where(input,select,textarea):focus-visible{outline:3px solid var(--moegi-t);outline-offset:2px}
+/* 濃地の上だけ明るい萌木にする。.form-sec に当てると白い .form-card の中まで及び、
+   送信ボタンと入力欄のリングが 5.33:1 → 2.29:1 に落ちるので .form-copy に限定する */
+.form-copy :focus-visible,.ft :focus-visible{outline-color:var(--moegi-b)}
 
 /* ---------- ヘッダー ---------- */
 .hd{background:var(--shiro);border-bottom:1px solid var(--line)}
 .hd-in{width:min(100% - 32px,1180px);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;padding:8px 0}
-.logo{display:flex;align-items:center;gap:10px}
+.logo{display:flex;align-items:center;gap:10px;min-width:0}
 .logo-mark{width:38px;height:38px;flex:0 0 38px;background:var(--sugi);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(18,63,48,.16)}
 .logo-mark span{font-family:var(--disp);font-size:19px;font-weight:700;color:#fff;line-height:1}
-.logo-name{font-family:var(--disp);font-size:14px;font-weight:700;color:var(--iwa);line-height:1.35}
+.logo-name{font-family:var(--disp);font-size:14px;font-weight:700;color:var(--iwa);line-height:1.35;word-break:keep-all;overflow-wrap:break-word}
 .logo-sub{display:block;font-size:10px;letter-spacing:.08em;color:var(--ink4);font-weight:400}
-.hd-tel{display:flex;align-items:center;gap:6px;min-height:44px;padding:0 10px;border:1px solid var(--line);border-radius:999px;background:var(--yuki);font-family:var(--mono);font-size:14px;font-weight:700;color:var(--sugi);text-decoration:none}
+.hd-tel{display:flex;align-items:center;gap:6px;flex:0 0 auto;white-space:nowrap;min-height:44px;padding:0 10px;border:1px solid var(--line);border-radius:999px;background:var(--yuki);font-family:var(--mono);font-size:14px;font-weight:700;color:var(--sugi);text-decoration:none}
 .hd-tel svg{width:16px;height:16px;flex:0 0 16px}
 @media (max-width:359px){.logo-name{font-size:12.5px}.hd-tel{font-size:12.5px;padding:0 8px}}
 
@@ -138,7 +143,7 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 .sc-q{border-top:1px solid var(--line2);padding-top:14px;margin-top:14px}
 .sc-q-t{font-size:14px;font-weight:700;color:var(--iwa);margin-bottom:10px;line-height:1.7}
 .sc-btns{display:flex;flex-wrap:wrap;gap:8px}
-.sc-btns button{flex:1 1 96px;min-width:0;min-height:48px;padding:6px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--yuki);font-family:var(--body);font-size:13.5px;font-weight:700;color:var(--ink2);cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.sc-btns button{flex:1 1 96px;min-width:0;min-height:48px;padding:6px 10px;border:1.5px solid var(--line-ui);border-radius:10px;background:var(--yuki);font-family:var(--body);font-size:13.5px;font-weight:700;color:var(--ink2);cursor:pointer;transition:background .2s,border-color .2s,color .2s}
 .sc-btns button:hover{border-color:var(--moegi)}
 .sc-btns button[aria-pressed="true"]{background:var(--sugi);border-color:var(--sugi);color:#fff}
 .sc-r{border-radius:var(--r);padding:15px;margin-top:18px;font-size:14px;line-height:1.85;background:var(--moegi-l);border:1px solid var(--moegi);color:var(--ink2)}
@@ -195,6 +200,7 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 .anshin{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:16px auto 0;max-width:980px}
 .anshin li{flex:1 1 210px;background:var(--moegi-l);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:700;color:var(--sugi);line-height:1.7;text-align:center}
 .price-note{max-width:980px;margin-inline:auto;text-align:left}
+.note-mid{max-width:980px;margin-inline:auto}
 .price-cta{margin-top:26px}
 
 /* ---------- 申込み ---------- */
@@ -217,11 +223,11 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 .req{display:inline-block;background:var(--moegi-l);color:var(--moegi-t);font-size:11px;font-weight:700;border-radius:5px;padding:1px 6px;margin-left:6px}
 .opt{display:inline-block;background:var(--yuki);color:var(--ink4);font-size:11px;font-weight:700;border:1px solid var(--line);border-radius:5px;padding:1px 6px;margin-left:6px}
 .hint{font-size:12px;font-weight:400;color:var(--ink4);margin-left:2px}
-.fld input[type="text"],.fld input[type="email"],.fld input[type="tel"]{width:100%;min-height:50px;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--yuki);font-family:var(--body);font-size:16px;color:var(--iwa)}
+.fld input[type="text"],.fld input[type="email"],.fld input[type="tel"]{width:100%;min-height:50px;padding:12px 14px;border:1.5px solid var(--line-ui);border-radius:10px;background:var(--yuki);font-family:var(--body);font-size:16px;color:var(--iwa)}
 .fld input:focus{border-color:var(--moegi-t);background:#fff}
 .fld fieldset{border:0}
 .radios{display:flex;gap:10px;flex-wrap:wrap}
-.radios label{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 16px;border:1.5px solid var(--line);border-radius:10px;background:var(--yuki);font-weight:700;font-size:14.5px;margin-bottom:0;cursor:pointer}
+.radios label{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 16px;border:1.5px solid var(--line-ui);border-radius:10px;background:var(--yuki);font-weight:700;font-size:14.5px;margin-bottom:0;cursor:pointer}
 .radios input{width:20px;height:20px;accent-color:var(--sugi)}
 .form-card .primary{width:100%;margin-top:4px}
 .form-note{font-size:12.5px;line-height:1.8;color:var(--ink3);margin-top:12px}
@@ -260,6 +266,12 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 /* 1000px以上だけ startup-payroll と同じ左揃えの2カラムにする。
    これより狭いときは中央揃え（本人の指示：幅が狭いときは中央揃え） */
 @media (min-width:1000px){
+  /* 節見出し（.sec-head）が左端に寄るので、中身も同じ左端にそろえる。
+     980pxで中央寄せのままだと見出しだけ100px左に飛び出して見える */
+  .rep,.price-list{max-width:none;margin-inline:0}
+  .anshin{max-width:none;margin-left:0;margin-right:0}
+  .price-add{max-width:860px;margin-left:0;margin-right:0}
+  .price-note,.note-mid{max-width:860px;margin-inline:0}
   .hero-grid{grid-template-columns:minmax(0,1fr) minmax(360px,.9fr)}
   .hero-copy{align-items:flex-start;text-align:left}
   .hero-price,.hero-actions{justify-content:flex-start}
@@ -277,7 +289,7 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
   <div class="hd-in">
     <div class="logo">
       <div class="logo-mark"><span>み</span></div>
-      <div class="logo-name">みなの社会保険労務士事務所<small class="logo-sub">富山県富山市</small></div>
+      <div class="logo-name">みなの<wbr>社会保険労務士事務所<small class="logo-sub">富山県富山市</small></div>
     </div>
     <a class="hd-tel" href="tel:0764602562" data-gc="phone">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -459,7 +471,7 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
         </div>
       </div>
     </div>
-    <p class="note" style="max-width:980px;margin-inline:auto">費用は<wbr>かかりません。<wbr>ご提案を<wbr>もとに<wbr>ご自身で<wbr>直していただいて<wbr>構いません。</p>
+    <p class="note note-mid">費用は<wbr>かかりません。<wbr>ご提案を<wbr>もとに<wbr>ご自身で<wbr>直していただいて<wbr>構いません。</p>
   </div>
 </section>
 
