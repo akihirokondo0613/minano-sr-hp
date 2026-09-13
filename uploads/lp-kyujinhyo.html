@@ -22,6 +22,7 @@
 <meta name="twitter:image" content="https://minano-sr.com/assets/og/minano-og.png">
 <meta name="theme-color" content="#123F30">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3E%E3%81%BF%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../skin-v2.css?v=20260910-faqalign1">
 <style id="lp-kyujinhyo-style">
 /* ------------------------------------------------------------------
    広告用ランディングページ。
@@ -57,192 +58,192 @@
   --body:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",YuGothic,Meiryo,sans-serif;
   --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+main *,main *::before,main *::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%;font-size:16px;min-width:320px;scroll-behavior:smooth}
 body{background:var(--yuki);color:var(--ink2);font-family:var(--body);font-size:15px;line-height:1.9;line-break:strict;overflow-x:clip;padding-bottom:96px}
-img,svg{max-width:100%}
-[hidden]{display:none!important}
+main img,main svg{max-width:100%}
+main [hidden]{display:none!important}
 
-h1,h2,h3,h4{line-height:1.5;text-wrap:balance;word-break:auto-phrase;font-family:var(--disp);color:var(--iwa)}
-p,li,dd,dt,figcaption,summary{text-wrap:pretty;word-break:auto-phrase;overflow-wrap:break-word}
-p a,li a,dd a{word-break:normal}
+main h1,main h2,main h3,main h4{line-height:1.5;text-wrap:balance;word-break:auto-phrase;font-family:var(--disp);color:var(--iwa)}
+main p,main li,main dd,main dt,main figcaption,main summary{text-wrap:pretty;word-break:auto-phrase;overflow-wrap:break-word}
+main p a,main li a,main dd a{word-break:normal}
 @supports not (word-break: auto-phrase){
   h1:has(wbr),h2:has(wbr),h3:has(wbr),h4:has(wbr),
-  p:has(wbr),li:has(wbr),dd:has(wbr),dt:has(wbr),summary:has(wbr){
+  main p:has(wbr),main li:has(wbr),main dd:has(wbr),main dt:has(wbr),main summary:has(wbr){
     word-break:keep-all;overflow-wrap:break-word;
   }
 }
-h1,h2,h3,h4,p,li,dt,dd{hanging-punctuation:allow-end}
-a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
+main h1,main h2,main h3,main h4,main p,main li,main dt,main dd{hanging-punctuation:allow-end}
+main a[href^="mailto:"],main a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
-  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+  main *,main *::before,main *::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
 }
-.w{width:min(100% - 32px,1180px);margin-inline:auto}
-:where(a):focus-visible,:where(button):focus-visible,:where(input,select,textarea):focus-visible{outline:3px solid var(--moegi-t);outline-offset:2px}
+main .w{width:min(100% - 32px,1180px);margin-inline:auto}
+main :where(a):focus-visible,main :where(button):focus-visible,main :where(input,main select,main textarea):focus-visible{outline:3px solid var(--moegi-t);outline-offset:2px}
 /* 濃地の上だけ明るい萌木にする。.form-sec に当てると白い .form-card の中まで及び、
    送信ボタンと入力欄のリングが 5.33:1 → 2.29:1 に落ちるので .form-copy に限定する */
-.form-copy :focus-visible,.ft :focus-visible{outline-color:var(--moegi-b)}
+main .form-copy :focus-visible,main .ft :focus-visible{outline-color:var(--moegi-b)}
 
 /* ---------- ヘッダー ---------- */
-.hd{background:var(--shiro);border-bottom:1px solid var(--line)}
-.hd-in{width:min(100% - 32px,1180px);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;padding:8px 0}
-.logo{display:flex;align-items:center;gap:10px;min-width:0}
-.logo-mark{width:38px;height:38px;flex:0 0 38px;background:var(--sugi);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(18,63,48,.16)}
-.logo-mark span{font-family:var(--disp);font-size:19px;font-weight:700;color:#fff;line-height:1}
-.logo-name{font-family:var(--disp);font-size:14px;font-weight:700;color:var(--iwa);line-height:1.35;word-break:keep-all;overflow-wrap:break-word}
-.logo-sub{display:block;font-size:10px;letter-spacing:.08em;color:var(--ink4);font-weight:400}
-.hd-tel{display:flex;align-items:center;gap:6px;flex:0 0 auto;white-space:nowrap;min-height:44px;padding:0 10px;border:1px solid var(--line);border-radius:999px;background:var(--yuki);font-family:var(--mono);font-size:14px;font-weight:700;color:var(--sugi);text-decoration:none}
-.hd-tel svg{width:16px;height:16px;flex:0 0 16px}
+main .hd{background:var(--shiro);border-bottom:1px solid var(--line)}
+main .hd-in{width:min(100% - 32px,1180px);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;padding:8px 0}
+main .logo{display:flex;align-items:center;gap:10px;min-width:0}
+main .logo-mark{width:38px;height:38px;flex:0 0 38px;background:var(--sugi);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(18,63,48,.16)}
+main .logo-mark span{font-family:var(--disp);font-size:19px;font-weight:700;color:#fff;line-height:1}
+main .logo-name{font-family:var(--disp);font-size:14px;font-weight:700;color:var(--iwa);line-height:1.35;word-break:keep-all;overflow-wrap:break-word}
+main .logo-sub{display:block;font-size:10px;letter-spacing:.08em;color:var(--ink4);font-weight:400}
+main .hd-tel{display:flex;align-items:center;gap:6px;flex:0 0 auto;white-space:nowrap;min-height:44px;padding:0 10px;border:1px solid var(--line);border-radius:999px;background:var(--yuki);font-family:var(--mono);font-size:14px;font-weight:700;color:var(--sugi);text-decoration:none}
+main .hd-tel svg{width:16px;height:16px;flex:0 0 16px}
 @media (max-width:359px){.logo-name{font-size:12.5px}.hd-tel{font-size:12.5px;padding:0 8px}}
 
 /* ---------- 共通（startup-payroll の型） ---------- */
-.sec{padding-block:clamp(48px,6vw,96px)}
-.sec-white{background:var(--shiro);border-block:1px solid var(--line2)}
-.sec-head{max-width:820px;margin:0 auto clamp(26px,3.4vw,46px);text-align:center}
-.sec-label{color:var(--moegi-t);font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.14em}
-.sec-title{margin-top:9px;font-size:clamp(23px,3.1vw,40px);font-weight:900;line-height:1.5}
-.sec-title mark{background:linear-gradient(color-mix(in srgb,var(--moegi) 34%,transparent),color-mix(in srgb,var(--moegi) 34%,transparent)) no-repeat left 88%/100% 26%;color:inherit}
-.sec-lead{margin-top:14px;color:var(--ink2);font-size:clamp(14px,1.3vw,16px);line-height:1.9}
-.note{margin-top:16px;color:var(--ink4);font-size:12px;line-height:1.8}
+main .sec{padding-block:clamp(48px,6vw,96px)}
+main .sec-white{background:var(--shiro);border-block:1px solid var(--line2)}
+main .sec-head{display:block;max-width:820px;margin:0 auto clamp(26px,3.4vw,46px);text-align:center}
+main .sec-label{color:var(--moegi-t);font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.14em}
+main .sec-title{margin-top:9px;font-size:clamp(23px,3.1vw,40px);font-weight:900;line-height:1.5}
+main .sec-title mark{background:linear-gradient(color-mix(in srgb,var(--moegi) 34%,transparent),color-mix(in srgb,var(--moegi) 34%,transparent)) no-repeat left 88%/100% 26%;color:inherit}
+main .sec-lead{margin-top:14px;color:var(--ink2);font-size:clamp(14px,1.3vw,16px);line-height:1.9}
+main .note{margin-top:16px;color:var(--ink4);font-size:12px;line-height:1.8}
 
 /* ---------- ボタン ---------- */
-.primary{display:inline-flex;align-items:center;justify-content:center;min-height:58px;padding:14px 30px;border:0;border-radius:var(--r);background:var(--sugi);color:#fff;font-family:var(--disp);font-size:clamp(16px,1.5vw,18px);font-weight:800;letter-spacing:.025em;text-decoration:none;box-shadow:0 6px 18px rgba(18,63,48,.2);transition:background .25s,transform .25s,box-shadow .25s;cursor:pointer}
-.primary:hover{background:var(--sugi7);box-shadow:0 10px 24px rgba(18,63,48,.26);transform:translateY(-2px)}
-.secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 2px;color:var(--sugi);font-size:13.5px;font-weight:700;text-decoration:none;border-bottom:2px solid var(--moegi)}
+main .primary{display:inline-flex;align-items:center;justify-content:center;min-height:58px;padding:14px 30px;border:0;border-radius:var(--r);background:var(--sugi);color:#fff;font-family:var(--disp);font-size:clamp(16px,1.5vw,18px);font-weight:800;letter-spacing:.025em;text-decoration:none;box-shadow:0 6px 18px rgba(18,63,48,.2);transition:background .25s,transform .25s,box-shadow .25s;cursor:pointer}
+main .primary:hover{background:var(--sugi7);box-shadow:0 10px 24px rgba(18,63,48,.26);transform:translateY(-2px)}
+main .secondary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 2px;color:var(--sugi);font-size:13.5px;font-weight:700;text-decoration:none;border-bottom:2px solid var(--moegi)}
 
 /* ---------- ファーストビュー ---------- */
-.hero{padding:clamp(30px,4vw,58px) 0 clamp(40px,6vw,84px);background:linear-gradient(180deg,var(--moegi-l) 0%,var(--yuki) 78%)}
-.hero-grid{display:grid;gap:clamp(28px,4vw,60px);align-items:center}
-.hero-copy{min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center}
-.kicker{color:var(--moegi-t);font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.14em}
-.hero h1{margin-top:10px;font-size:clamp(26px,3.3vw,42px);font-weight:900;line-height:1.4;letter-spacing:.01em}
-.hero h1 strong{color:var(--iwa);background:linear-gradient(color-mix(in srgb,var(--moegi) 36%,transparent),color-mix(in srgb,var(--moegi) 36%,transparent)) no-repeat left 90%/100% 23%}
-.hero-intro{margin-top:16px;color:var(--ink2);font-size:clamp(14.5px,1.35vw,16.5px);line-height:1.9}
-.hero-price{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;gap:6px 14px;margin-top:16px;color:var(--iwa);font-family:var(--disp);font-size:clamp(18px,1.9vw,26px);font-weight:900;line-height:1.5}
-.hero-price small{color:var(--ink3);font-family:var(--body);font-size:12px;font-weight:700}
-.hero-actions{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:22px;width:100%}
-.hero-actions .primary{flex:1 1 300px;max-width:420px}
-.hero-note{margin-top:11px;color:var(--ink3);font-size:11.5px;line-height:1.75}
-.hero-proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;max-width:690px;margin-top:24px;list-style:none;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.hero-proof li{padding:13px 10px;border-right:1px solid var(--line)}
-.hero-proof li:last-child{border-right:0}
-.hero-proof strong{display:block;color:var(--iwa);font-family:var(--disp);font-size:11.5px;font-weight:800;line-height:1.6}
-.hero-proof small{display:block;margin-top:4px;color:var(--ink3);font-size:10.5px;line-height:1.55}
-.hero-sign{margin-top:16px;color:var(--ink3);font-size:11.5px;line-height:1.7}
-.hero-tel{margin-top:12px;font-size:13.5px;color:var(--ink2)}
-.hero-tel a{color:var(--sugi);font-weight:700;text-decoration:none;border-bottom:2px solid var(--moegi)}
+main .hero{padding:clamp(112px,15vh,160px) 0 clamp(40px,6vw,84px);background:linear-gradient(180deg,var(--moegi-l) 0%,var(--yuki) 78%)}
+main .hero-grid{display:grid;gap:clamp(28px,4vw,60px);align-items:center}
+main .hero-copy{min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center}
+main .kicker{color:var(--moegi-t);font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.14em}
+main .hero h1{margin-top:10px;font-size:clamp(26px,3.3vw,42px);font-weight:900;line-height:1.4;letter-spacing:.01em}
+main .hero h1 strong{color:var(--iwa);background:linear-gradient(color-mix(in srgb,var(--moegi) 36%,transparent),color-mix(in srgb,var(--moegi) 36%,transparent)) no-repeat left 90%/100% 23%}
+main .hero-intro{margin-top:16px;color:var(--ink2);font-size:clamp(14.5px,1.35vw,16.5px);line-height:1.9}
+main .hero-price{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;gap:6px 14px;margin-top:16px;color:var(--iwa);font-family:var(--disp);font-size:clamp(18px,1.9vw,26px);font-weight:900;line-height:1.5}
+main .hero-price small{color:var(--ink3);font-family:var(--body);font-size:12px;font-weight:700}
+main .hero-actions{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:22px;width:100%}
+main .hero-actions .primary{flex:1 1 300px;max-width:420px}
+main .hero-note{margin-top:11px;color:var(--ink3);font-size:11.5px;line-height:1.75}
+main .hero-proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;max-width:690px;margin-top:24px;list-style:none;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+main .hero-proof li{padding:13px 10px;border-right:1px solid var(--line)}
+main .hero-proof li:last-child{border-right:0}
+main .hero-proof strong{display:block;color:var(--iwa);font-family:var(--disp);font-size:11.5px;font-weight:800;line-height:1.6}
+main .hero-proof small{display:block;margin-top:4px;color:var(--ink3);font-size:10.5px;line-height:1.55}
+main .hero-sign{margin-top:16px;color:var(--ink3);font-size:11.5px;line-height:1.7}
+main .hero-tel{margin-top:12px;font-size:13.5px;color:var(--ink2)}
+main .hero-tel a{color:var(--sugi);font-weight:700;text-decoration:none;border-bottom:2px solid var(--moegi)}
 
 /* ---------- 右パネル：セルフチェック ---------- */
-.panel{position:relative;min-width:0;width:100%;max-width:620px;margin-inline:auto;padding:clamp(20px,2.6vw,34px);background:var(--shiro);border:1px solid color-mix(in srgb,var(--moegi) 28%,var(--line));border-top:4px solid var(--moegi);border-radius:var(--r);box-shadow:var(--sh-lg);overflow:clip}
-.panel::after{content:"";position:absolute;right:-46px;bottom:-62px;width:190px;height:190px;border:1px solid color-mix(in srgb,var(--moegi) 24%,transparent);border-radius:50%;box-shadow:0 0 0 18px color-mix(in srgb,var(--moegi-l) 48%,transparent),0 0 0 36px color-mix(in srgb,var(--moegi-l) 28%,transparent);pointer-events:none}
-.panel>*{position:relative;z-index:1}
-.panel-kicker{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:800;letter-spacing:.12em}
-.panel-h{margin-top:9px;font-size:clamp(19px,2vw,26px);font-weight:900;line-height:1.5}
-.panel-lead{margin-top:8px;color:var(--ink3);font-size:12.5px;line-height:1.8}
-.sc-q{border-top:1px solid var(--line2);padding-top:14px;margin-top:14px}
-.sc-q-t{font-size:14px;font-weight:700;color:var(--iwa);margin-bottom:10px;line-height:1.7}
-.sc-btns{display:flex;flex-wrap:wrap;gap:8px}
-.sc-btns button{flex:1 1 96px;min-width:0;min-height:48px;padding:6px 10px;border:1.5px solid var(--line-ui);border-radius:10px;background:var(--yuki);font-family:var(--body);font-size:13.5px;font-weight:700;color:var(--ink2);cursor:pointer;transition:background .2s,border-color .2s,color .2s}
-.sc-btns button:hover{border-color:var(--moegi)}
-.sc-btns button[aria-pressed="true"]{background:var(--sugi);border-color:var(--sugi);color:#fff}
-.sc-r{border-radius:var(--r);padding:15px;margin-top:18px;font-size:14px;line-height:1.85;background:var(--moegi-l);border:1px solid var(--moegi);color:var(--ink2)}
-.sc-r b{color:var(--sugi)}
-.panel .primary{width:100%;margin-top:18px}
-.panel .note{margin-top:12px}
+main .panel{position:relative;min-width:0;width:100%;max-width:620px;margin-inline:auto;padding:clamp(20px,2.6vw,34px);background:var(--shiro);border:1px solid color-mix(in srgb,var(--moegi) 28%,var(--line));border-top:4px solid var(--moegi);border-radius:var(--r);box-shadow:var(--sh-lg);overflow:clip}
+main .panel::after{content:"";position:absolute;right:-46px;bottom:-62px;width:190px;height:190px;border:1px solid color-mix(in srgb,var(--moegi) 24%,transparent);border-radius:50%;box-shadow:0 0 0 18px color-mix(in srgb,var(--moegi-l) 48%,transparent),0 0 0 36px color-mix(in srgb,var(--moegi-l) 28%,transparent);pointer-events:none}
+main .panel>*{position:relative;z-index:1}
+main .panel-kicker{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:800;letter-spacing:.12em}
+main .panel-h{margin-top:9px;font-size:clamp(19px,2vw,26px);font-weight:900;line-height:1.5}
+main .panel-lead{margin-top:8px;color:var(--ink3);font-size:12.5px;line-height:1.8}
+main .sc-q{border-top:1px solid var(--line2);padding-top:14px;margin-top:14px}
+main .sc-q-t{font-size:14px;font-weight:700;color:var(--iwa);margin-bottom:10px;line-height:1.7}
+main .sc-btns{display:flex;flex-wrap:wrap;gap:8px}
+main .sc-btns button{flex:1 1 96px;min-width:0;min-height:48px;padding:6px 10px;border:1.5px solid var(--line-ui);border-radius:10px;background:var(--yuki);font-family:var(--body);font-size:13.5px;font-weight:700;color:var(--ink2);cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+main .sc-btns button:hover{border-color:var(--moegi)}
+main .sc-btns button[aria-pressed="true"]{background:var(--sugi);border-color:var(--sugi);color:#fff}
+main .sc-r{border-radius:var(--r);padding:15px;margin-top:18px;font-size:14px;line-height:1.85;background:var(--moegi-l);border:1px solid var(--moegi);color:var(--ink2)}
+main .sc-r b{color:var(--sugi)}
+main .panel .primary{width:100%;margin-top:18px}
+main .panel .note{margin-top:12px}
 
 /* ---------- 改定のご提案（記入例） ---------- */
-.rep{background:var(--shiro);border:1px solid var(--line);border-top:4px solid var(--iwa);border-radius:var(--r);box-shadow:var(--sh-lg);overflow:hidden;max-width:980px;margin-inline:auto;text-align:left}
-.rep-band{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#FBF3DE;border-bottom:1px solid var(--line);padding:10px 16px}
-.rep-badge{display:inline-block;background:var(--sugi);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;border-radius:6px;padding:3px 9px}
-.rep-co{font-size:12.5px;font-weight:700;color:var(--ink2);line-height:1.6}
-.rep-b{padding:20px 18px}
-.rep-h{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.14em;color:var(--moegi-t);margin:20px 0 8px}
-.rep-b>.rep-h:first-child,.rep-col>.rep-h:first-child{margin-top:0}
-.rep-p{font-size:14px;line-height:1.9;color:var(--ink2)}
-.rep-small{margin-top:10px;font-size:12.5px;color:var(--ink3)}
+main .rep{background:var(--shiro);border:1px solid var(--line);border-top:4px solid var(--iwa);border-radius:var(--r);box-shadow:var(--sh-lg);overflow:hidden;max-width:980px;margin-inline:auto;text-align:left}
+main .rep-band{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#FBF3DE;border-bottom:1px solid var(--line);padding:10px 16px}
+main .rep-badge{display:inline-block;background:var(--sugi);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;border-radius:6px;padding:3px 9px}
+main .rep-co{font-size:12.5px;font-weight:700;color:var(--ink2);line-height:1.6}
+main .rep-b{padding:20px 18px}
+main .rep-h{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.14em;color:var(--moegi-t);margin:20px 0 8px}
+main .rep-b>.rep-h:first-child,main .rep-col>.rep-h:first-child{margin-top:0}
+main .rep-p{font-size:14px;line-height:1.9;color:var(--ink2)}
+main .rep-small{margin-top:10px;font-size:12.5px;color:var(--ink3)}
 /* 求人票そのものの Before / After */
-.ba{display:grid;gap:10px}
-.ba-card{min-width:0;background:var(--shiro);border:1px solid var(--line);border-radius:10px;overflow:hidden}
-.ba-card.is-after{border-color:color-mix(in srgb,var(--moegi) 55%,var(--line));box-shadow:0 14px 34px rgba(35,43,39,.08)}
-.ba-head{padding:9px 14px;font-size:12px;font-weight:800;letter-spacing:.04em}
-.ba-card.is-before .ba-head{background:var(--line2);color:var(--ink3)}
-.ba-card.is-after .ba-head{background:var(--sugi);color:#fff}
-.ba-rows{list-style:none}
-.ba-rows li{padding:11px 14px;border-top:1px solid var(--line2)}
-.ba-rows li:first-child{border-top:0}
-.ba-k{font-size:11px;font-weight:700;color:var(--ink4);letter-spacing:.04em;line-height:1.6}
-.ba-v{margin-top:3px;font-size:13.5px;line-height:1.85;color:var(--ink2)}
-.ba-v.is-none{color:var(--ink4)}
-.ba-card.is-before .ba-v.is-none::before{content:"×　";color:#B0453A;font-weight:700}
-.ba-card.is-after .ba-v mark{background:linear-gradient(transparent 58%,color-mix(in srgb,var(--moegi) 32%,transparent) 58%);color:inherit}
-.ba-arrow{display:flex;align-items:center;justify-content:center;min-height:34px;color:var(--moegi-t);font-size:20px;font-weight:800;line-height:1}
-.ba-arrow::before{content:"↓"}
-.ba-note{margin-top:14px;padding:12px 14px;background:var(--yuki);border-left:4px solid var(--moegi);border-radius:8px;font-size:13px;line-height:1.85;color:var(--ink2)}
-.rep-sub{display:grid;gap:22px;margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
-.rep-nums{list-style:none;display:grid;gap:8px}
-.rep-nums li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:6px;font-size:13.5px;color:var(--ink2)}
-.rep-nums li>span{min-width:0}
-.rep-nums b{flex:0 0 auto;font-family:var(--mono);font-size:15px;color:var(--sugi)}
+main .ba{display:grid;gap:10px}
+main .ba-card{min-width:0;background:var(--shiro);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+main .ba-card.is-after{border-color:color-mix(in srgb,var(--moegi) 55%,var(--line));box-shadow:0 14px 34px rgba(35,43,39,.08)}
+main .ba-head{padding:9px 14px;font-size:12px;font-weight:800;letter-spacing:.04em}
+main .ba-card.is-before .ba-head{background:var(--line2);color:var(--ink3)}
+main .ba-card.is-after .ba-head{background:var(--sugi);color:#fff}
+main .ba-rows{list-style:none}
+main .ba-rows li{padding:11px 14px;border-top:1px solid var(--line2)}
+main .ba-rows li:first-child{border-top:0}
+main .ba-k{font-size:11px;font-weight:700;color:var(--ink4);letter-spacing:.04em;line-height:1.6}
+main .ba-v{margin-top:3px;font-size:13.5px;line-height:1.85;color:var(--ink2)}
+main .ba-v.is-none{color:var(--ink4)}
+main .ba-card.is-before .ba-v.is-none::before{content:"×　";color:#B0453A;font-weight:700}
+main .ba-card.is-after .ba-v mark{background:linear-gradient(transparent 58%,color-mix(in srgb,var(--moegi) 32%,transparent) 58%);color:inherit}
+main .ba-arrow{display:flex;align-items:center;justify-content:center;min-height:34px;color:var(--moegi-t);font-size:20px;font-weight:800;line-height:1}
+main .ba-arrow::before{content:"↓"}
+main .ba-note{margin-top:14px;padding:12px 14px;background:var(--yuki);border-left:4px solid var(--moegi);border-radius:8px;font-size:13px;line-height:1.85;color:var(--ink2)}
+main .rep-sub{display:grid;gap:22px;margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
+main .rep-nums{list-style:none;display:grid;gap:8px}
+main .rep-nums li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:6px;font-size:13.5px;color:var(--ink2)}
+main .rep-nums li>span{min-width:0}
+main .rep-nums b{flex:0 0 auto;font-family:var(--mono);font-size:15px;color:var(--sugi)}
 
 /* ---------- 料金 ---------- */
-.price-band{background:var(--yuki);border-block:1px solid var(--line)}
-.price-list{list-style:none;display:grid;gap:14px;max-width:980px;margin-inline:auto;text-align:left}
-.price-list li{min-width:0;padding:clamp(18px,2.2vw,26px);background:var(--shiro);border:1px solid var(--line);border-top:4px solid var(--iwa);border-radius:var(--r);box-shadow:0 18px 48px rgba(35,43,39,.06)}
-.price-list li.is-free{border-top-color:var(--moegi);background:color-mix(in srgb,var(--moegi-l) 34%,var(--shiro))}
-.pl-k{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:800;letter-spacing:.12em}
-.price-list li.is-free .pl-k{color:var(--iwa)}
-.pl-n{margin-top:8px;font-size:20px;font-weight:900;line-height:1.5}
-.pl-y{margin-top:8px;color:var(--iwa);font-family:var(--disp);font-size:26px;font-weight:900;line-height:1.4}
-.pl-y small{color:var(--ink3);font-family:var(--body);font-size:12px;font-weight:700;margin-left:4px}
-.pl-d{margin-top:10px;color:var(--ink2);font-size:13px;line-height:1.85}
-.price-add{max-width:980px;margin:18px auto 0;padding:14px 18px;background:var(--shiro);border:1px solid var(--line);border-left:4px solid var(--moegi);border-radius:var(--r);font-size:13.5px;line-height:1.85;color:var(--ink2);text-align:left}
-.anshin{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:16px auto 0;max-width:980px}
-.anshin li{flex:1 1 210px;background:var(--moegi-l);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:700;color:var(--sugi);line-height:1.7;text-align:center}
-.price-note{max-width:980px;margin-inline:auto;text-align:left}
-.note-mid{max-width:980px;margin-inline:auto}
-.price-cta{margin-top:26px}
+main .price-band{background:var(--yuki);border-block:1px solid var(--line)}
+main .price-list{list-style:none;display:grid;gap:14px;max-width:980px;margin-inline:auto;text-align:left}
+main .price-list li{min-width:0;padding:clamp(18px,2.2vw,26px);background:var(--shiro);border:1px solid var(--line);border-top:4px solid var(--iwa);border-radius:var(--r);box-shadow:0 18px 48px rgba(35,43,39,.06)}
+main .price-list li.is-free{border-top-color:var(--moegi);background:color-mix(in srgb,var(--moegi-l) 34%,var(--shiro))}
+main .pl-k{color:var(--moegi-t);font-family:var(--mono);font-size:10px;font-weight:800;letter-spacing:.12em}
+main .price-list li.is-free .pl-k{color:var(--iwa)}
+main .pl-n{margin-top:8px;font-size:20px;font-weight:900;line-height:1.5}
+main .pl-y{margin-top:8px;color:var(--iwa);font-family:var(--disp);font-size:26px;font-weight:900;line-height:1.4}
+main .pl-y small{color:var(--ink3);font-family:var(--body);font-size:12px;font-weight:700;margin-left:4px}
+main .pl-d{margin-top:10px;color:var(--ink2);font-size:13px;line-height:1.85}
+main .price-add{max-width:980px;margin:18px auto 0;padding:14px 18px;background:var(--shiro);border:1px solid var(--line);border-left:4px solid var(--moegi);border-radius:var(--r);font-size:13.5px;line-height:1.85;color:var(--ink2);text-align:left}
+main .anshin{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:16px auto 0;max-width:980px}
+main .anshin li{flex:1 1 210px;background:var(--moegi-l);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:700;color:var(--sugi);line-height:1.7;text-align:center}
+main .price-note{max-width:980px;margin-inline:auto;text-align:left}
+main .note-mid{max-width:980px;margin-inline:auto}
+main .price-cta{margin-top:26px}
 
 /* ---------- 申込み ---------- */
-.form-sec{background:var(--sugi9);color:#E7EFE9}
-.form-grid{display:grid;gap:clamp(26px,4vw,56px);align-items:start}
-.form-copy{text-align:center}
-.form-copy .sec-label{color:#8FD3AC}
-.form-copy .sec-title{color:#fff}
-.form-copy .sec-lead{color:#CFDDD5}
-.form-check{list-style:none;display:grid;gap:10px;margin-top:22px;text-align:left}
-.form-check li{position:relative;padding-left:28px;font-size:13.5px;line-height:1.8;color:#DCE7E0}
-.form-check li::before{content:"";position:absolute;left:2px;top:.55em;width:12px;height:7px;border-left:2.5px solid #6FC896;border-bottom:2.5px solid #6FC896;transform:rotate(-45deg)}
-.form-docs{margin-top:18px;padding:12px 14px;background:rgba(255,255,255,.07);border-left:3px solid #6FC896;border-radius:8px;font-size:13px;line-height:1.85;color:#DCE7E0;text-align:left}
-.form-docs b{color:#fff}
-.form-tel{margin-top:18px;font-size:13.5px;color:#CFDDD5}
-.form-tel a{color:#B9E7CC;font-weight:700}
-.form-card{background:var(--shiro);border-radius:var(--r-lg);padding:clamp(20px,2.4vw,32px);color:var(--iwa);box-shadow:var(--sh-lg);text-align:left}
-.fld{margin-bottom:14px}
-.fld label,.fld legend{display:block;font-size:13.5px;font-weight:700;color:var(--iwa);margin-bottom:6px}
-.req{display:inline-block;background:var(--moegi-l);color:var(--moegi-t);font-size:11px;font-weight:700;border-radius:5px;padding:1px 6px;margin-left:6px}
-.opt{display:inline-block;background:var(--yuki);color:var(--ink4);font-size:11px;font-weight:700;border:1px solid var(--line);border-radius:5px;padding:1px 6px;margin-left:6px}
-.hint{font-size:12px;font-weight:400;color:var(--ink4);margin-left:2px}
-.fld input[type="text"],.fld input[type="email"],.fld input[type="tel"]{width:100%;min-height:50px;padding:12px 14px;border:1.5px solid var(--line-ui);border-radius:10px;background:var(--yuki);font-family:var(--body);font-size:16px;color:var(--iwa)}
-.fld input:focus{border-color:var(--moegi-t);background:#fff}
-.fld fieldset{border:0}
-.radios{display:flex;gap:10px;flex-wrap:wrap}
-.radios label{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 16px;border:1.5px solid var(--line-ui);border-radius:10px;background:var(--yuki);font-weight:700;font-size:14.5px;margin-bottom:0;cursor:pointer}
-.radios input{width:20px;height:20px;accent-color:var(--sugi)}
-.form-card .primary{width:100%;margin-top:4px}
-.form-note{font-size:12.5px;line-height:1.8;color:var(--ink3);margin-top:12px}
-.form-msg{border-radius:var(--r);padding:16px;font-size:14.5px;line-height:1.85;margin-bottom:16px}
-.form-ok{background:var(--moegi-l);border:1px solid var(--moegi);color:var(--sugi)}
-.form-ng{background:#FBF3DE;border:1px solid var(--asahi);color:var(--iwa)}
-.form-ng a{color:var(--sugi);font-weight:700}
+main .form-sec{background:var(--sugi9);color:#E7EFE9}
+main .form-grid{display:grid;gap:clamp(26px,4vw,56px);align-items:start}
+main .form-copy{text-align:center}
+main .form-copy .sec-label{color:#8FD3AC}
+main .form-copy .sec-title{color:#fff}
+main .form-copy .sec-lead{color:#CFDDD5}
+main .form-check{list-style:none;display:grid;gap:10px;margin-top:22px;text-align:left}
+main .form-check li{position:relative;padding-left:28px;font-size:13.5px;line-height:1.8;color:#DCE7E0}
+main .form-check li::before{content:"";position:absolute;left:2px;top:.55em;width:12px;height:7px;border-left:2.5px solid #6FC896;border-bottom:2.5px solid #6FC896;transform:rotate(-45deg)}
+main .form-docs{margin-top:18px;padding:12px 14px;background:rgba(255,255,255,.07);border-left:3px solid #6FC896;border-radius:8px;font-size:13px;line-height:1.85;color:#DCE7E0;text-align:left}
+main .form-docs b{color:#fff}
+main .form-tel{margin-top:18px;font-size:13.5px;color:#CFDDD5}
+main .form-tel a{color:#B9E7CC;font-weight:700}
+main .form-card{background:var(--shiro);border-radius:var(--r-lg);padding:clamp(20px,2.4vw,32px);color:var(--iwa);box-shadow:var(--sh-lg);text-align:left}
+main .fld{margin-bottom:14px}
+main .fld label,main .fld legend{display:block;font-size:13.5px;font-weight:700;color:var(--iwa);margin-bottom:6px}
+main .req{display:inline-block;background:var(--moegi-l);color:var(--moegi-t);font-size:11px;font-weight:700;border-radius:5px;padding:1px 6px;margin-left:6px}
+main .opt{display:inline-block;background:var(--yuki);color:var(--ink4);font-size:11px;font-weight:700;border:1px solid var(--line);border-radius:5px;padding:1px 6px;margin-left:6px}
+main .hint{font-size:12px;font-weight:400;color:var(--ink4);margin-left:2px}
+main .fld input[type="text"],main .fld input[type="email"],main .fld input[type="tel"]{width:100%;min-height:50px;padding:12px 14px;border:1.5px solid var(--line-ui);border-radius:10px;background:var(--yuki);font-family:var(--body);font-size:16px;color:var(--iwa)}
+main .fld input:focus{border-color:var(--moegi-t);background:#fff}
+main .fld fieldset{border:0}
+main .radios{display:flex;gap:10px;flex-wrap:wrap}
+main .radios label{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 16px;border:1.5px solid var(--line-ui);border-radius:10px;background:var(--yuki);font-weight:700;font-size:14.5px;margin-bottom:0;cursor:pointer}
+main .radios input{width:20px;height:20px;accent-color:var(--sugi)}
+main .form-card .primary{width:100%;margin-top:4px}
+main .form-note{font-size:12.5px;line-height:1.8;color:var(--ink3);margin-top:12px}
+main .form-msg{border-radius:var(--r);padding:16px;font-size:14.5px;line-height:1.85;margin-bottom:16px}
+main .form-ok{background:var(--moegi-l);border:1px solid var(--moegi);color:var(--sugi)}
+main .form-ng{background:#FBF3DE;border:1px solid var(--asahi);color:var(--iwa)}
+main .form-ng a{color:var(--sugi);font-weight:700}
 
 /* ---------- フッター ---------- */
-.ft{background:var(--iwa);color:#D7E2DA;padding:26px 0 30px;font-size:12.5px;line-height:1.9}
-.ft b{color:#fff;font-weight:700}
-.ft address{font-style:normal}
-.ft a{color:#B9E7CC;display:inline-block;min-height:24px;padding-block:2px}
-.ft-note{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.16);font-size:11.5px;line-height:1.85;color:#BFCEC4}
-.ft-links{margin-top:10px}
+main .ft{background:var(--iwa);color:#D7E2DA;padding:26px 0 30px;font-size:12.5px;line-height:1.9}
+main .ft b{color:#fff;font-weight:700}
+main .ft address{font-style:normal}
+main .ft a{color:#B9E7CC;display:inline-block;min-height:24px;padding-block:2px}
+main .ft-note{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.16);font-size:11.5px;line-height:1.85;color:#BFCEC4}
+main .ft-links{margin-top:10px}
 
 /* ---------- スマホの追従ボタン ---------- */
 .stick{position:fixed;left:0;right:0;bottom:0;z-index:60;display:block;padding:8px 16px calc(8px + env(safe-area-inset-bottom));background:rgba(249,250,247,.97);border-top:1px solid var(--line);box-shadow:0 -6px 18px -12px rgba(11,42,31,.5)}
@@ -252,51 +253,73 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 /* ---------- 画面が広いとき ---------- */
 @media (min-width:640px){
   body{font-size:16px}
-  .rep-b{padding:26px 26px}
+  main .rep-b{padding:26px 26px}
 }
 @media (min-width:880px){
-  .price-list{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .rep-b{padding:30px 32px}
-  .ba{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:start;gap:0 14px}
-  .ba-arrow{min-height:0;margin-top:60px}
-  .ba-arrow::before{content:"→"}
-  .rep-sub{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:0 34px;align-items:start}
-  .rep-col{min-width:0}
+  main .price-list{grid-template-columns:repeat(3,minmax(0,1fr))}
+  main .rep-b{padding:30px 32px}
+  main .ba{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:start;gap:0 14px}
+  main .ba-arrow{min-height:0;margin-top:60px}
+  main .ba-arrow::before{content:"→"}
+  main .rep-sub{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:0 34px;align-items:start}
+  main .rep-col{min-width:0}
 }
 /* 1000px以上だけ startup-payroll と同じ左揃えの2カラムにする。
    これより狭いときは中央揃え（本人の指示：幅が狭いときは中央揃え） */
 @media (min-width:1000px){
   /* 節見出し（.sec-head）が左端に寄るので、中身も同じ左端にそろえる。
      980pxで中央寄せのままだと見出しだけ100px左に飛び出して見える */
-  .rep,.price-list{max-width:none;margin-inline:0}
-  .anshin{max-width:none;margin-left:0;margin-right:0}
-  .price-add{max-width:860px;margin-left:0;margin-right:0}
-  .price-note,.note-mid{max-width:860px;margin-inline:0}
-  .hero-grid{grid-template-columns:minmax(0,1fr) minmax(360px,.9fr)}
-  .hero-copy{align-items:flex-start;text-align:left}
-  .hero-price,.hero-actions{justify-content:flex-start}
-  .hero-actions .primary{flex:0 0 auto}
-  .sec-head{margin-inline:0;text-align:left}
-  .form-grid{grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr)}
-  .form-copy{text-align:left}
-  .form-copy .sec-head{margin-bottom:0}
+  main .rep,main .price-list{max-width:none;margin-inline:0}
+  main .anshin{max-width:none;margin-left:0;margin-right:0}
+  main .price-add{max-width:860px;margin-left:0;margin-right:0}
+  main .price-note,main .note-mid{max-width:860px;margin-inline:0}
+  main .hero-grid{grid-template-columns:minmax(0,1fr) minmax(360px,.9fr)}
+  main .hero-copy{align-items:flex-start;text-align:left}
+  main .hero-price,main .hero-actions{justify-content:flex-start}
+  main .hero-actions .primary{flex:0 0 auto}
+  main .sec-head{margin-inline:0;text-align:left}
+  main .form-grid{grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr)}
+  main .form-copy{text-align:left}
+  main .form-copy .sec-head{margin-bottom:0}
 }
 </style>
 </head>
 <body>
 
-<header class="hd">
-  <div class="hd-in">
-    <div class="logo">
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="../" class="logo">
       <div class="logo-mark"><span>み</span></div>
-      <div class="logo-name">みなの<wbr>社会保険労務士事務所<small class="logo-sub">富山県富山市</small></div>
-    </div>
-    <a class="hd-tel" href="tel:0764602562" data-gc="phone">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-      076-460-2562
+      <div class="logo-text"><b>みなの社会保険労務士事務所</b><small>複雑な労務を、シンプルに。</small></div>
     </a>
+    <ul class="nav-links">
+      <li><a href="../services.html">サービス</a></li>
+      <li><a href="../joseikin.html">助成金</a></li>
+      <li><a href="../pricing.html">料金</a></li>
+      <li><a href="../support.html">支援の進め方</a></li>
+      <li><a href="../about.html">事務所案内</a></li>
+      <li><a href="../blog.html">ブログ</a></li>
+      <li><a href="../infographic.html">社労士とは</a></li>
+      <li><a href="../portal.html">書式・窓口</a></li>
+    </ul>
+    <a href="contact.html" class="nav-cta">無料で相談する</a>
+    <button class="nav-burger" onclick="toggleNav()" aria-label="メニュー">
+      <svg width="20" height="14" viewBox="0 0 20 14" fill="currentColor"><rect width="20" height="2" rx="1"/><rect y="6" width="20" height="2" rx="1"/><rect y="12" width="20" height="2" rx="1"/></svg>
+    </button>
   </div>
-</header>
+</nav>
+<div class="mob-nav" id="mobNav">
+  <a href="../services.html" onclick="closeNav()">サービス</a>
+  <a href="../joseikin.html" onclick="closeNav()">助成金</a>
+  <a href="../pricing.html" onclick="closeNav()">料金</a>
+  <a href="../support.html" onclick="closeNav()">支援の進め方</a>
+  <a href="../about.html" onclick="closeNav()">事務所案内</a>
+  <a href="../blog.html" onclick="closeNav()">ブログ</a>
+  <a href="../infographic.html" onclick="closeNav()">社労士とは</a>
+  <a href="../portal.html" onclick="closeNav()">書式・窓口</a>
+  <a href="../uploads/contact.html" class="mob-cta">→ 無料相談を申し込む</a>
+</div>
+
 
 <main>
 
@@ -583,16 +606,65 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 
 </main>
 
-<footer class="ft">
-  <div class="w">
-    <address>
-      <b>みなの社会保険労務士事務所</b>　社会保険労務士 近藤 昭宏<br>
-      〒931-8333 富山県富山市蓮町1丁目7-4 SCOP TOYAMA<br>
-      TEL <a href="tel:0764602562" data-gc="phone">076-460-2562</a>（平日9:00〜18:00）　<a href="mailto:contact@minano-sr.com">contact@minano-sr.com</a><br>
-      適格請求書発行事業者登録番号 T2810856672476
-    </address>
-    <p class="ft-note">ハローワークへの<wbr>求人申込みの<wbr>作成と<wbr>代理は、<wbr>社会保険労務士法<wbr>（2条1項1号・<wbr>1号の<wbr>2・<wbr>1号の<wbr>3）に<wbr>定める<wbr>社労士の<wbr>業務です。<wbr>応募者の<wbr>受付・選考・<wbr>応募者への<wbr>連絡は<wbr>会社が<wbr>行います。</p>
-    <p class="ft-links"><a href="https://minano-sr.com/privacy-policy.html" target="_blank" rel="noopener">プライバシーポリシー</a></p>
+<div class="lp-legal-note" style="max-width:1080px;margin:0 auto;padding:24px 20px 0;font-size:13px;line-height:1.9;color:#5D6962">ハローワークへの求人申込みの作成と代理は、社会保険労務士法（2条1項1号・1号の2・1号の3）に定める社労士の業務です。応募者の受付・選考・応募者への連絡は会社が行います。</div>
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <div class="logo-mark"><span>み</span></div>
+          <div class="logo-text"><b>みなの社会保険労務士事務所</b><small>複雑な労務を、シンプルに。</small></div>
+        </div>
+        <p class="footer-desc">来所・<wbr>訪問・オンラインに<wbr>対応。<wbr>全国から<wbr>ご相談いただけます。<wbr>助成金活用・<wbr>手続き代行・<wbr>DX支援で<wbr>中小企業の<wbr>労務を<wbr>シンプルに<wbr>整えます。</p>
+        <address class="footer-contact">
+          <span class="footer-contact-row footer-contact-address">〒931-8333 富山県富山市蓮町1丁目7-4　SCOP TOYAMA</span>
+          <span class="footer-contact-row"><a href="tel:076-460-2562">TEL: 076-460-2562</a><span class="footer-contact-hours">平日 9:00–18:00</span></span>
+          <span class="footer-contact-row">適格請求書<wbr>発行事業者<wbr>登録番号: T2810856672476</span>
+        </address>
+      </div>
+      <div>
+        <p class="footer-h">サービス</p>
+        <ul class="footer-ul">
+          <li><a href="../services.html">サービス一覧</a></li>
+          <li><a href="service-joseikin.html">助成金申請</a></li>
+          <li><a href="service-shugyo-kisoku.html">就業規則作成</a></li>
+          <li><a href="service-shakai-hoken.html">社会保険手続き</a></li>
+          <li><a href="service-kyuyo-keisan.html">給与計算</a></li>
+          <li><a href="service-romu-sodan.html">労務相談</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-h">コンテンツ</p>
+        <ul class="footer-ul">
+          <li><a href="../pricing.html">料金・顧問プラン</a></li>
+          <li><a href="../about.html">事務所案内</a></li>
+          <li><a href="../blog.html">コラム・ブログ</a></li>
+          <li><a href="../joseikin.html">令和8年度 助成金5選</a></li>
+          <li><a href="../infographic.html">社労士とは？</a></li>
+          <li><a href="case-seizogyo.html">支援例：製造業</a></li>
+          <li><a href="case-inshoku.html">支援例：飲食業</a></li>
+          <li><a href="case-kaigo.html">支援例：介護業</a></li>
+          <li><a href="case-kensetsu.html">支援例：建設業</a></li>
+          <li><a href="case-shika.html">支援例：歯科・クリニック</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-h">お問い合わせ</p>
+        <ul class="footer-ul">
+          <li><a href="contact.html">無料相談フォーム</a></li>
+          <li><a href="tel:076-460-2562">電話: 076-460-2562</a></li>
+          <li><a href="mailto:contact@minano-sr.com">contact@minano-sr.com</a></li>
+          <li><a href="../portal.html">書式・窓口</a></li>
+          <li><a href="../privacy-policy.html">プライバシーポリシー</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 みなの<wbr>社会保険労務士事務所<wbr>. All rights reserved.</p>
+      <div class="footer-badges">
+        <span class="footer-badge">富山県社会保険労務士会</span>
+      </div>
+    </div>
   </div>
 </footer>
 
@@ -699,6 +771,10 @@ a[href^="mailto:"],a[href^="tel:"]{word-break:keep-all;overflow-wrap:anywhere}
 })();
 </script>
 <script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/uploads/lp-kyujinhyo.html"}' async src="//gc.zgo.at/count.js"></script>
+<script defer src="../page-enter.js?v=20260913-adlp1"></script>
+<script defer src="../link-keep.js?v=20260814-entryparam1"></script>
+<script defer src="../header-motion.js?v=20260809-nav1"></script>
+<script defer src="../terms.js?v=20260812-terms1"></script>
 <script defer src="../ads.js?v=20260901-ads2"></script>
 </body>
 </html>
