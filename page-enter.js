@@ -353,6 +353,14 @@ function mnSplitLabel(el, text) {
     var p = (u && u.pathname) || '';
     return /(^|\/)spot\.html$/i.test(p);
   }
+  // ★広告の着地ページ（uploads/lp-*.html）も演出なし＝素のリンク遷移。
+  //   共通CSS/JSを読まず、ヘッダー・フッターも持たない独立したページなので、
+  //   SPAで差し替えるとトップ側の link-keep.js が残り、LPのフォーム送信が
+  //   contact-success:direct（無料相談の成功）としても数えられて計測が二重になる。
+  function isAdLpDest(u) {
+    var p = (u && u.pathname) || '';
+    return /(^|\/)lp-[\w-]+\.html$/i.test(p);
+  }
   function safeLabel(s) { return (s == null ? '' : String(s)).replace(/\s+/g, ' ').trim(); }
   // 末尾 index.html を落として比較する（/ と /index.html を同一ページとみなす）。トップは / で配信され
   // ナビは index.html#… を指すため、素の pathname 比較では食い違い、同一ページ内アンカーで演出が出てしまう。
@@ -734,6 +742,7 @@ function mnSplitLabel(el, text) {
     if (isArticleDest(url)) return false;                  // ★記事(/blog/配下)行きは演出なし＝素のリンク遷移（一覧blog.htmlは演出あり）
     if (isFormDest(url)) return false;                     // ★社内書式（shoshiki.html・shoshiki/）行きも素のリンク遷移
     if (isSpotDest(url)) return false;                      // ★スポット注文（spot.html）行きも素のリンク遷移
+    if (isAdLpDest(url)) return false;                      // ★広告の着地ページ（lp-*.html）行きも素のリンク遷移
     return true;
   }
   function withQuery(url) {   // プレビュー・流入計測に必要な値だけを行き先に引き継ぐ
@@ -797,7 +806,7 @@ function mnSplitLabel(el, text) {
       var m = /location\.href\s*=\s*['"]([^'"]+)['"]/.exec(oc.getAttribute('onclick') || '');
       if (m) {
         var u; try { u = new URL(m[1], location.href); } catch (err) { u = null; }
-        if (u && u.origin === location.origin && !samePage(u) && !isArticleDest(u) && !isFormDest(u) && !isSpotDest(u)) {
+        if (u && u.origin === location.origin && !samePage(u) && !isArticleDest(u) && !isFormDest(u) && !isSpotDest(u) && !isAdLpDest(u)) {
           if (/\/uploads\/contact\.html$/i.test(u.pathname)) {
             document.dispatchEvent(new CustomEvent('mn:contact-navigate', { detail: { href: u.href } }));
           }
@@ -829,6 +838,7 @@ function mnSplitLabel(el, text) {
     if (url && isArticleDest(url)) { hardGo(location.href); return; }   // ★戻る/進むで記事(/blog/)へ来たら素で読み直す（演出なし）
     if (url && isFormDest(url)) { hardGo(location.href); return; }      // ★社内書式へ戻る/進むも素で読み直す
     if (url && isSpotDest(url)) { hardGo(location.href); return; }      // ★スポット注文へ戻る/進むも素で読み直す
+    if (url && isAdLpDest(url)) { hardGo(location.href); return; }      // ★広告の着地ページへ戻る/進むも素で読み直す
     // ★同一ページ内（pathname不変・hashだけ変化）はカーテン不要＝アンカーへスクロールのみ。
     //   理念/サービス/料金 等トップ内リンクは、プレビューホストが hash 遷移を popstate 化して
     //   ここへ届く。lastPath（直近表示ページ）と比べる（popstate時 location は既に遷移先なので samePage は使えない）。

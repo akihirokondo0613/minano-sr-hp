@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="msvalidate.01" content="77FD18A4932A50E35E3C40CFA2EA7804">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="page-enter.js?v=20260910-spotorder1"></script>
+<script defer src="page-enter.js?v=20260913-adlp1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>みなの社会保険労務士事務所｜富山の社労士</title>
@@ -472,30 +472,33 @@ main > section:not(.hero) {
 <style id="home-spot-card">
 /* ヒーローのスポット業務カード。写真の上に置くので、白い面と枠で本文から独立させる。
    中身は期間限定。差し替え時期は index.html 側のコメントに書く。 */
-.hero-spot{display:flex;align-items:center;gap:clamp(12px,1.6vw,20px);inline-size:fit-content;max-inline-size:min(100%,560px);margin-top:clamp(18px,2.4vw,26px);padding:13px clamp(16px,1.8vw,20px);background:rgba(255,255,255,.94);border:1px solid color-mix(in srgb,var(--sugi) 20%,var(--line));border-radius:var(--r-lg);box-shadow:0 6px 20px rgba(18,63,48,.09);transition:border-color .3s,transform .3s var(--ease),box-shadow .35s var(--ease)}
+/* 2枚を同じ大きさで並べる。1枚のときより1回り小さくして、2枚でも視界に収まるようにする */
+.hero-spots{display:grid;gap:10px;margin-top:clamp(18px,2.4vw,26px);inline-size:fit-content;max-inline-size:100%}
+@media (min-width:701px){ .hero-spots{grid-template-columns:repeat(2,minmax(0,296px))} }
+.hero-spot{display:flex;flex-wrap:wrap;align-items:center;gap:5px 12px;inline-size:100%;max-inline-size:min(100%,560px);padding:11px clamp(13px,1.5vw,16px);background:rgba(255,255,255,.94);border:1px solid color-mix(in srgb,var(--sugi) 20%,var(--line));border-radius:var(--r-lg);box-shadow:0 6px 20px rgba(18,63,48,.09);transition:border-color .3s,transform .3s var(--ease),box-shadow .35s var(--ease)}
 .hero-spot:hover{border-color:var(--moegi);transform:translateY(-2px);box-shadow:0 12px 28px rgba(18,63,48,.14)}
 .hero-spot:focus-visible{outline:2px solid var(--sugi);outline-offset:3px}
-.hero-spot-badge{display:inline-flex;align-items:center;gap:8px;flex-shrink:0;align-self:flex-start;margin-block-start:2px;font-size:11.5px;font-weight:700;letter-spacing:.04em;color:var(--sugi);background:var(--moegi-l);padding:5px 12px;border-radius:999px;white-space:nowrap}
-.hero-spot-body{display:flex;flex-direction:column;gap:3px;min-inline-size:0}
-.hero-spot-title{font-family:var(--disp);font-size:clamp(14.5px,1.5vw,16.5px);font-weight:800;line-height:1.5;color:var(--iwa)}
-.hero-spot-note{font-size:12px;line-height:1.75;color:var(--ink3)}
-.hero-spot-arr{flex-shrink:0;align-self:center;color:var(--ink4);transition:color .3s,transform .3s var(--ease)}
+.hero-spot-badge{display:inline-flex;align-items:center;gap:7px;flex-shrink:0;order:1;align-self:center;margin-block-start:0;font-size:10.5px;font-weight:700;letter-spacing:.04em;color:var(--sugi);background:var(--moegi-l);padding:4px 10px;border-radius:999px;white-space:nowrap}
+.hero-spot-body{display:flex;flex-direction:column;gap:3px;min-inline-size:0;order:3;flex-basis:100%}
+.hero-spot-title{font-family:var(--disp);font-size:clamp(13.5px,1.25vw,15px);font-weight:800;line-height:1.5;color:var(--iwa)}
+.hero-spot-note{font-size:11.5px;line-height:1.7;color:var(--ink3)}
+.hero-spot-arr{flex-shrink:0;order:2;margin-inline-start:auto;align-self:center;color:var(--ink4);transition:color .3s,transform .3s var(--ease)}
 .hero-spot:hover .hero-spot-arr{color:var(--sugi);transform:translateX(4px)}
 @media (max-width:700px){
-  .hero-spot{flex-wrap:wrap;gap:6px 12px;max-inline-size:100%;padding:9px 13px;margin-top:14px}
-  .hero-spot-badge{font-size:11px;padding:4px 10px}
-  .hero-spot-badge{order:1;margin-block-start:0}
-  .hero-spot-arr{order:2;margin-inline-start:auto;align-self:center}
-  .hero-spot-body{order:3;flex-basis:100%}
-  .hero-spot-title{font-size:13.5px}
-  .hero-spot-note{font-size:11.5px;line-height:1.62}
+  .hero-spots{margin-top:14px;inline-size:100%}
+  .hero-spot{max-inline-size:100%;padding:9px 13px}
+  .hero-spot-badge{font-size:10px;padding:4px 9px}
+  .hero-spot-title{font-size:13px}
+  .hero-spot-note{font-size:11px;line-height:1.62}
 }
 @media(max-width:640px){
-  /* スマホは縦積みの中央揃え。カード全体がリンクなので矢印は省く */
-  .hero-spot{flex-direction:column;flex-wrap:nowrap;align-items:center;gap:8px;inline-size:100%;text-align:center;padding:16px 16px 18px}
-  .hero-spot-badge{align-self:center;margin-block-start:0}
-  .hero-spot-body{align-items:center}
-  .hero-spot-arr{display:none}
+  /* カードが2枚になったので、1枚のときの「縦積み・中央揃え」はやめ、700px以下と同じ
+     横並び（1行目にバッジと矢印、2行目に本文）にそろえる。1枚あたり約40px縦が縮む。
+     skin-v2.css の @media(max-width:640px) が .hero-spot を中央寄せにするため、
+     ここは .hero-spots を前置した詳細度で打ち消す（読み込み順に依存させない）。 */
+  .hero-spots .hero-spot{inline-size:100%;text-align:left;padding:10px 13px 11px}
+  .hero-spots .hero-spot-badge{margin-inline:0}
+  .hero-spots .hero-spot-body{align-items:flex-start}
 }
 @media (prefers-reduced-motion:reduce){.hero-spot{transition:none}}
 </style>
@@ -857,15 +860,27 @@ main > section:not(.hero) {
         <a href="infographic.html" class="hero-sub-link">社労士とは？ →</a>
       </div>
       <!-- スポット業務カード：時期が来たら中身を差し替えるか、このブロックごと消す。
-           次の見直し 2026-10-01（令和8年度の業務改善助成金の締切見込み 9/30 の翌日）。 -->
-      <a class="hero-spot" href="blog/gyomu-kaizen-toyama-2026.html">
-        <span class="hero-spot-badge"><i class="live-dot-w" aria-hidden="true"></i>スポット受付中</span>
-        <span class="hero-spot-body">
-          <span class="hero-spot-title"><span class="nw">令和8年度</span> <span class="nw">業務改善助成金</span></span>
-          <span class="hero-spot-note"><span class="nw">富山県の最低賃金は</span><wbr><span class="nw">10月1日に1,119円へ改定見込み。</span><wbr><span class="nw">締切は9月30日見込みです。</span></span>
-        </span>
-        <span class="hero-spot-arr" aria-hidden="true">→</span>
-      </a>
+           次の見直し 2026-10-01（令和8年度の業務改善助成金の締切見込み 9/30 の翌日）。
+           求人票の無料点検は広告の着地ページ（uploads/lp-kyujinhyo.html）への入口。
+           2枚を同じ大きさで並べる。3枚目を足すときは幅と本文の長さを実測してから。 -->
+      <div class="hero-spots">
+        <a class="hero-spot" href="blog/gyomu-kaizen-toyama-2026.html">
+          <span class="hero-spot-badge"><i class="live-dot-w" aria-hidden="true"></i>スポット受付中</span>
+          <span class="hero-spot-body">
+            <span class="hero-spot-title"><span class="nw">令和8年度</span> <span class="nw">業務改善助成金</span></span>
+            <span class="hero-spot-note"><span class="nw">富山県の最低賃金は</span><wbr><span class="nw">10月1日に1,119円へ改定見込み。</span><wbr><span class="nw">締切は9月30日見込みです。</span></span>
+          </span>
+          <span class="hero-spot-arr" aria-hidden="true">→</span>
+        </a>
+        <a class="hero-spot" href="uploads/lp-kyujinhyo.html">
+          <span class="hero-spot-badge"><i class="live-dot-w" aria-hidden="true"></i>無料点検 受付中</span>
+          <span class="hero-spot-body">
+            <span class="hero-spot-title"><span class="nw">ハローワーク</span><wbr><span class="nw">求人票の無料点検</span></span>
+            <span class="hero-spot-note"><span class="nw">令和6年4月の改正に</span><wbr><span class="nw">合っているかを見て、</span><wbr><span class="nw">改定案をお出しします。</span></span>
+          </span>
+          <span class="hero-spot-arr" aria-hidden="true">→</span>
+        </a>
+      </div>
       <div class="hero-trust">
         <span class="trust-item trust-live"><i class="live-dot-w" aria-hidden="true"></i>ご相談 受付中</span>
         <span class="trust-item">無料相談・オンライン可</span>
