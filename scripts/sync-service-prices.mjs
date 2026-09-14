@@ -273,7 +273,7 @@ function buildPages({ rows, plans }) {
       file: 'uploads/service-romu-sodan.html',
       html: section({
         heading: 'ご相談の料金（税抜）',
-        sub: '1回だけのご相談から。初回相談は無料です。',
+        sub: '単発のご相談から。初回相談は無料です。',
         alt: true,
         body: [
           spot('スポット労務相談（60分）'),
