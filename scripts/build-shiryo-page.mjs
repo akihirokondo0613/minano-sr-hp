@@ -74,6 +74,8 @@ function buildHead() {
     `<meta name="description" content="${esc(DESC)}">`,
     '',
     `<link rel="canonical" href="${url}">`,
+    '<link rel="icon" href="favicon.ico" sizes="any">',
+    '<link rel="apple-touch-icon" href="apple-touch-icon.png">',
     `<meta property="og:url" content="${url}">`,
     '<meta property="og:type" content="website">',
     `<meta property="og:title" content="${esc(TITLE)}">`,
