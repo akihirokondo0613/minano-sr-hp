@@ -15,8 +15,8 @@ RewriteRule ^go(/.*)?$ https://minano-sr.com/pricing.html [R=301,L,NE]
 
 # 2026-08 に取り下げた開業準備の5記事。404 のままだと Google が何度も取りに来るので、
 # 「意図して消した」を意味する 410 を返す（代わりのページが無いのでリダイレクトはしない）。
-RewriteRule ^blog/dns-mail-authentication\.html$ - [G,L]
-RewriteRule ^blog/google-business-profile-kaisetsu\.html$ - [G,L]
-RewriteRule ^blog/google-workspace-dokujidomain-mail\.html$ - [G,L]
-RewriteRule ^blog/kaigyo-domain-shutoku\.html$ - [G,L]
-RewriteRule ^blog/website-search-console-kokai\.html$ - [G,L]
+RewriteRule ^blog/dns-mail-authentication\.html$ - [R=410,L]
+RewriteRule ^blog/google-business-profile-kaisetsu\.html$ - [R=410,L]
+RewriteRule ^blog/google-workspace-dokujidomain-mail\.html$ - [R=410,L]
+RewriteRule ^blog/kaigyo-domain-shutoku\.html$ - [R=410,L]
+RewriteRule ^blog/website-search-console-kokai\.html$ - [R=410,L]
