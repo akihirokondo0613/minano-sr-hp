@@ -55,6 +55,14 @@ article.post .post-reader-item strong {
   line-height: 1.7;
 }
 
+/* 本文の強調：太字＋萌木のマーカー下線（見出しの strong と同じ意匠）。段落・箇条書きの直下だけに効かせ、図解部品の b には及ぼさない */
+article.post :is(p, li) > :is(strong, b) {
+  font-weight: 700;
+  color: var(--iwa);
+  background: linear-gradient(color-mix(in srgb, var(--moegi) 40%, transparent), color-mix(in srgb, var(--moegi) 40%, transparent)) no-repeat left 86% / 100% 32%;
+  padding: 0 1px;
+}
+
 article.post .post-viz {
   margin: 18px 0 30px;
   padding: clamp(16px, 3vw, 24px);
