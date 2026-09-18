@@ -59,8 +59,11 @@ article.post .post-reader-item strong {
 article.post :is(p, li) > :is(strong, b) {
   font-weight: 700;
   color: var(--iwa);
-  background: linear-gradient(color-mix(in srgb, var(--moegi) 40%, transparent), color-mix(in srgb, var(--moegi) 40%, transparent)) no-repeat left 86% / 100% 32%;
-  padding: 0 1px;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--moegi) 55%, transparent);
+  text-decoration-thickness: .18em;
+  text-underline-offset: .14em;
+  text-decoration-skip-ink: none;
 }
 
 article.post .post-viz {
