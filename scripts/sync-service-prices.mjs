@@ -128,7 +128,7 @@ function planRow(plan) {
   ].filter(Boolean).join('\n');
 }
 
-function section({ heading, sub, body, note, alt, extra }) {
+function section({ heading, sub, body, note, alt, extra, cta2 }) {
   return [
     `<section class="sec${alt ? ' sec-alt' : ''}" id="fee">`,
     '  <div class="w">',
@@ -144,7 +144,8 @@ function section({ heading, sub, body, note, alt, extra }) {
     '      </div>',
     extra || '',
     `      <p class="svc-fee-note">${note}</p>`,
-    '      <p class="svc-fee-cta"><a class="btn-secondary" href="../pricing.html">料金の全体を見る →</a></p>',
+    // cta2: 料金の直後に置く2つ目の導線（例: 見積り依頼）。ページごとに省略できる。
+    `      <p class="svc-fee-cta"><a class="btn-secondary" href="../pricing.html">料金の全体を見る →</a>${cta2 ? ` <a class="btn-primary" href="${esc(cta2.href)}">${esc(cta2.label)}</a>` : ''}</p>`,
     '    </div>',
     '  </div>',
     '</section>',
@@ -193,11 +194,12 @@ function kyuyoExtra({ rows, plans }) {
     '        <div class="kyu-cmp-i">',
     '          <p class="kyu-cmp-t">この料金に含まれるもの</p>',
     '          <ul>',
-    '            <li>毎月の給与計算・賞与計算</li>',
-    '            <li>入退社の社会保険・雇用保険手続き（顧問に含む）</li>',
-    '            <li>随時改定・算定基礎届の判定と提出</li>',
-    '            <li>労務相談、就業規則の改定提案</li>',
-    '            <li>法改正や富山県の最低賃金・協会けんぽ料率の反映</li>',
+    '            <li>毎月の給与計算・賞与計算（賃金台帳の作成を含む）</li>',
+    '            <li>入退社の社会保険・雇用保険手続き、離職票</li>',
+    '            <li>月額変更届・算定基礎届・賞与支払届・労働保険の年度更新</li>',
+    '            <li>労務相談（個別対応）、就業規則の年1回点検と改定提案</li>',
+    '            <li>法改正、富山県の最低賃金・協会けんぽ料率の反映</li>',
+    '            <li>労働者名簿の作成・更新（出勤簿は様式の提供と年1回の点検）</li>',
     '          </ul>',
     '        </div>',
     '        <div class="kyu-cmp-i">',
@@ -205,7 +207,7 @@ function kyuyoExtra({ rows, plans }) {
     '          <ul>',
     '            <li>経理代行・給与計算BPOの単価は、計算作業だけの値段です</li>',
     '            <li>労働社会保険の書類作成・提出代行を業として行えるのは社会保険労務士です（社会保険労務士法）</li>',
-    '            <li>年末調整の税額計算は税理士業務のため、当事務所は提携税理士へ連携します</li>',
+    '            <li>年末調整の税額計算は税理士業務のため、当事務所は提携税理士へ連携します（上の分担表）</li>',
     '          </ul>',
     '        </div>',
     '      </div>',
@@ -237,7 +239,7 @@ function buildPages({ rows, plans }) {
       file: 'uploads/service-shakai-hoken.html',
       html: section({
         heading: '手続き代行の料金（税抜）',
-        sub: '顧問契約がなくても、1件から固定額でご依頼いただけます。オンラインで全国に対応します。',
+        sub: '顧問契約がなくても、1件から固定額でご依頼いただけます。顧問先（<a href="../pricing.html">スタート顧問プラン</a> 月額35,000円・従業員5名まで）は入退社・月額変更・年度更新・算定基礎届・賞与支払届・主な給付申請が顧問料に含まれ、それ以外は下記スポット料金の50％です。住民税の異動届など税務書類は当事務所では作成しません。オンラインで全国に対応します。',
         alt: false,
         body: [
           spot('入社手続き（資格取得届）'),
@@ -256,7 +258,7 @@ function buildPages({ rows, plans }) {
       file: 'uploads/service-kyuyo-keisan.html',
       html: section({
         heading: '給与計算の料金（税抜）',
-        sub: '毎月の給与計算は顧問とセットの月額で、単発のご依頼は回ごとの固定額でお受けします。',
+        sub: '毎月の給与計算は顧問契約とセットの月額（スタンダードプラン）、顧問契約のない方は1回ごとの固定額でお受けします。表示はすべて税抜です。',
         alt: false,
         body: [
           planRow(plans.standard),
@@ -265,8 +267,8 @@ function buildPages({ rows, plans }) {
           spot('年末調整の資料整理・税理士連携'),
         ].join('\n'),
         extra: kyuyoExtra({ rows, plans }),
-        note: '表示は税抜です。スタンダードプランは顧問（相談・手続き）と給与計算をあわせた月額です。'
-          + '年末調整の税額計算そのものは税理士法上の税理士業務のため、提携税理士へ連携します。',
+        note: '表示は税抜です。スタンダードプランは顧問（相談・手続き）と給与計算をあわせた月額です。',
+        cta2: { href: 'contact.html?from=kyuyo-price', label: '従業員数を伝えて見積りをもらう →' },
       }),
     },
     {

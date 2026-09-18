@@ -236,6 +236,37 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
 .svct-dl dd{margin:0;text-wrap:pretty;word-break:auto-phrase}
 .svct-note{margin-top:18px;font-size:13.5px;color:var(--ink3);line-height:1.9;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
 .svct-cta{margin-top:20px}
+
+/* ---------- 業務ページの本文ブロック・手順・FAQ（2026-09 SEO改修で追加） ---------- */
+/* ヒーローH1直下の副題。H1をクエリ語に寄せ、元のコピーをここに残す。 */
+.page-hero .svc-hero-sub{font-size:clamp(17px,2vw,21px);font-weight:700;color:var(--g700);line-height:1.6;margin:-6px 0 18px;letter-spacing:.01em;text-wrap:pretty;word-break:auto-phrase}
+/* 見出し＋段落＋箇条書き＋小見出しの素の本文。表（.svct-tablewrap）と併用する。 */
+.svc-prose{max-width:780px;margin:0 auto}
+.svc-prose>p{font-size:15.5px;color:var(--ink2);line-height:2;letter-spacing:.02em;margin:0 0 16px;text-wrap:pretty;word-break:auto-phrase}
+.svc-prose>h3{font-size:17px;font-weight:700;color:var(--ink);margin:30px 0 10px;letter-spacing:.01em;line-height:1.6}
+.svc-prose>ul{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:8px}
+.svc-prose>ul>li{position:relative;padding-left:18px;font-size:14.5px;color:var(--ink2);line-height:1.85;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
+.svc-prose>ul>li::before{content:'';position:absolute;left:0;top:.75em;width:6px;height:6px;border-radius:50%;background:var(--g400)}
+.svc-prose .svct-tablewrap{margin-top:14px;margin-bottom:22px}
+.svc-prose .svct-table td{word-break:normal}
+.svc-prose .btn-row{display:flex;gap:14px;flex-wrap:wrap;margin:22px 0}
+/* 番号付きの手順 */
+.svc-steps{list-style:none;counter-reset:svcstep;margin:0 0 18px;padding:0;display:flex;flex-direction:column;gap:14px}
+.svc-steps>li{counter-increment:svcstep;position:relative;padding:18px 22px 18px 64px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:14.5px;color:var(--ink2);line-height:1.9;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
+.svc-steps>li::before{content:counter(svcstep);position:absolute;left:20px;top:18px;width:28px;height:28px;border-radius:8px;background:var(--g600);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:var(--serif)}
+.svc-steps>li>strong{display:block;color:var(--ink);font-size:15.5px;margin-bottom:4px}
+.svc-steps>li>p{margin:0}
+.svc-steps>li>p+p{margin-top:6px}
+.svc-steps>li>p>b{color:var(--ink)}
+/* よくある質問（dt=質問・dd=回答） */
+.svc-faq{max-width:780px;margin:0 auto}
+.svc-faq>dt{font-size:15.5px;font-weight:700;color:var(--ink);line-height:1.7;margin:22px 0 6px;padding-left:1.8em;position:relative;text-wrap:pretty;word-break:auto-phrase}
+.svc-faq>dt::before{content:'Q';position:absolute;left:0;top:.05em;color:var(--g600);font-family:var(--serif);font-weight:700}
+.svc-faq>dd{margin:0;padding:0 0 18px 1.8em;border-bottom:1px solid var(--line2);font-size:14.5px;color:var(--ink2);line-height:1.95;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase;position:relative}
+.svc-faq>dd::before{content:'A';position:absolute;left:0;top:0;color:var(--g400);font-family:var(--serif);font-weight:700}
+.svc-faq>dd:last-child{border-bottom:none}
+.svc-faq a,.svc-prose a{color:var(--g700);font-weight:700;text-decoration:underline;text-underline-offset:4px;word-break:normal}
+@media(max-width:560px){.svc-steps>li{padding:16px 16px 16px 54px}.svc-steps>li::before{left:14px;top:16px}}
 /* ---------- 給与計算の範囲対比と人数別単価（sync-service-prices.mjs が生成） ---------- */
 .kyu-cmp{margin-top:clamp(20px,3vw,28px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
 .kyu-cmp-i{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff}
@@ -438,6 +469,8 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
 .subsidy-card-h{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:20px 28px;background:var(--g25);border-bottom:1px solid var(--line)}
 .subsidy-name{font-size:16.5px;font-weight:700;color:var(--g800);font-family:var(--serif);letter-spacing:.01em;line-height:1.45}
 .subsidy-amount{display:inline-flex;align-items:baseline;gap:5px;font-size:12.5px;color:var(--ink3);white-space:nowrap}
+/* 上限の書き方が「30万〜600万円（引上げ額と人数で決まる）」のように長くなった額は、狭幅で折り返す */
+.subsidy-amount.is-long{white-space:normal;display:inline;line-height:1.7;text-wrap:pretty}
 .subsidy-amount b{font-size:18px;font-weight:700;color:var(--g600);font-family:var(--serif)}
 .subsidy-card-body{padding:22px 28px}
 .subsidy-desc{font-size:14px;color:var(--ink2);line-height:1.9;margin-bottom:16px;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
@@ -445,6 +478,9 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
 .subsidy-req{list-style:none;display:flex;flex-direction:column;gap:8px}
 .subsidy-req li{position:relative;padding-left:18px;font-size:13.5px;color:var(--ink2);line-height:1.75;letter-spacing:.02em;text-wrap:pretty}
 .subsidy-req li::before{content:'';position:absolute;left:0;top:.62em;width:11px;height:11px;border:1.5px solid var(--g500);border-radius:50%}
+/* カード内の関連リンク（要件の下に置く締切・詳細ページへの導線） */
+.subsidy-desc a{color:var(--g700);font-weight:700;text-decoration:underline;text-underline-offset:4px;word-break:normal}
+.subsidy-req+.subsidy-desc{margin:14px 0 0}
 
 /* ⑤ 組み合わせ表 */
 .combo-table{width:100%;border-collapse:collapse;max-width:880px;margin:24px auto 0}

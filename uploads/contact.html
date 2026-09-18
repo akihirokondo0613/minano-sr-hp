@@ -1203,7 +1203,7 @@ function handleSubmit(event) {
 var urlParams = new URLSearchParams(window.location.search);
 var fromPlan = urlParams.get('from');
 if (fromPlan) {
-  const fromBase = fromPlan.replace(/-(price|process|final)$/, '');
+  const fromBase = fromPlan.replace(/-(price|process|final|flow|list|spot)$/, '');
   const entry = {
     start:    ["スタート顧問プランについて詳しく知りたいです。", "顧問契約について"],
     standard: ["スタンダードプランについて詳しく知りたいです。", "顧問契約について"],

@@ -108,17 +108,25 @@ for (const article of articles) {
 // 辿れず、サービスページからのリンクは0本で、クロール上の重要度が低いままだった。
 // 文脈の合うカテゴリの記事を各サービスページから3本ずつ張り、経路と重要度を上げる。
 const SERVICE_MAP = [
-  { file: 'uploads/service-shakai-hoken.html', cats: ['hoken', 'kaisei'], label: '社会保険の手続きに関する記事' },
+  // slugs: 検索意図に合わせて記事を固定するページ。指定した順に並べ、足りない分はカテゴリで補う。
+  { file: 'uploads/service-shakai-hoken.html', cats: ['hoken', 'kaisei'], label: '労務手続きに関する記事', slugs: ['nyusha-tetsuzuki-checklist', 'nendo-koshin-santei', 'shaho-tekiyo-kakudai-2026'] },
   { file: 'uploads/service-shugyo-kisoku.html', cats: ['shugyo', 'trouble'], label: '就業規則に関する記事' },
   { file: 'uploads/service-joseikin.html', cats: ['joseikin'], label: '助成金に関する記事' },
-  { file: 'uploads/service-kyuyo-keisan.html', cats: ['hoken', 'keiei'], label: '給与計算に関する記事' },
+  { file: 'uploads/service-kyuyo-keisan.html', cats: ['hoken', 'keiei'], label: '給与計算に関する記事', slugs: ['saitei-chingin-kyuyo-keisan-2026', 'kyuyo-itaku-junbi', 'kodomo-kosodate-shienkin-2026'] },
   { file: 'uploads/service-romu-sodan.html', cats: ['trouble', 'kaisei'], label: '労務相談に関する記事' },
-  { file: 'uploads/service-dx.html', cats: ['system', 'keiei'], label: '労務DXに関する記事' },
+  { file: 'uploads/service-dx.html', cats: ['system', 'keiei'], label: '労務DXに関する記事', slugs: ['kintai-dx-donyu-junbi', '36kyotei-jogen-kanri', 'kyuyo-itaku-junbi'] },
 ];
 
-function pickByCats(cats) {
+function pickByCats(cats, slugs = []) {
   const picked = [];
   const seen = new Set();
+  for (const slug of slugs) {
+    const article = articles.find((a) => a.slug === slug);
+    if (!article) throw new Error(`blog/articles.json に slug=${slug} の記事がありません`);
+    if (seen.has(slug)) continue;
+    seen.add(slug);
+    picked.push(article);
+  }
   for (const pool of [...cats.map((cat) => byNewest.filter((a) => a.cat === cat)), byNewest]) {
     for (const article of pool) {
       if (picked.length >= RELATED_COUNT) break;
@@ -131,7 +139,7 @@ function pickByCats(cats) {
 }
 
 function renderServiceSection(entry) {
-  const cards = pickByCats(entry.cats)
+  const cards = pickByCats(entry.cats, entry.slugs)
     .map((article) =>
       [
         `      <a href="../blog/${article.slug}.html" class="rp-card">`,
