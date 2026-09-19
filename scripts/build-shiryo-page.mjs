@@ -43,6 +43,12 @@ const DESC = '富山の中小企業向けに、助成金・補助金の資料を
   + '富山県賃上げ応援補助金、業務改善助成金など、社会保険労務士がまとめた資料を'
   + '登録不要でダウンロードいただけます。制度の根拠と確認日を明記しています。';
 
+// 型ページの構造化データ（WebPage・BreadcrumbList）は support.html 固有なので写さない。
+// 自ページの data-schema 付き JSON-LD は buildSchema() で別途出力する。
+function stripLdJson(html) {
+  return html.replace(/<script type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>\n*/g, '');
+}
+
 /** 型ページから、差し替えたい区間の前後を取り出す */
 function splitDonor(source) {
   const cut = (open, close) => {
@@ -62,7 +68,7 @@ function splitDonor(source) {
   const [, headEnd] = cut('<meta name="twitter:image"', '>');
   return {
     top: source.slice(0, headStart),
-    middle: source.slice(cssStart, mainStart),
+    middle: stripLdJson(source.slice(cssStart, mainStart)),
     tail: source.slice(mainEnd),
     headEnd,
   };

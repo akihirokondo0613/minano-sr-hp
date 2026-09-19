@@ -44,6 +44,12 @@ const DESC = '富山の社会保険労務士事務所みなのから、税理士
   + '顧問先で使える雇用関係助成金のご提案、ご紹介いただいた場合の成功報酬15％、'
   + 'お引き受けする範囲とお引き受けしない範囲、年末調整の資料連携についてご案内します。';
 
+// 型ページの構造化データ（WebPage・BreadcrumbList）は support.html 固有なので写さない。
+// 自ページの data-schema 付き JSON-LD は buildSchema() で別途出力する。
+function stripLdJson(html) {
+  return html.replace(/<script type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>\n*/g, '');
+}
+
 function splitDonor(source) {
   const cut = (open, close) => {
     const start = source.indexOf(open);
@@ -60,7 +66,7 @@ function splitDonor(source) {
   }
   return {
     top: source.slice(0, headStart),
-    middle: source.slice(cssStart, mainOpen),
+    middle: stripLdJson(source.slice(cssStart, mainOpen)),
     tail: source.slice(mainClose + '</main>'.length),
   };
 }
