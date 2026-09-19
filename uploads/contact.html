@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="../page-enter.js?v=20260913-adlp1"></script>
+<script defer src="../page-enter.js?v=20260919-funnel1"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>無料相談・お問い合わせ｜みなの社会保険労務士事務所</title>
 <meta name="description" content="富山県富山市に所在する、みなの社会保険労務士事務所の無料相談・お問い合わせページ。来所・訪問・オンラインに対応し、全国からご相談いただけます。">
@@ -1148,8 +1148,8 @@ function showError(data) {
   document.getElementById('contactForm').style.display = 'none';
   var box = document.getElementById('formSuccess');
   box.innerHTML =
-    '<h3 style="font-size:24px; font-weight:700; color:var(--ink); margin-bottom:10px;">送信できませんでした</h3>' +
-    '<p style="font-size:16px; color:var(--ink2); line-height:1.7; margin-bottom:24px;">通信の状態により、うまく送信できなかったようです。<br><b>入力いただいた内容は残っています。</b>下のボタンから戻って、もう一度お試しください。<br>お急ぎの場合はお電話（<b>076-460-2562</b>）でも承ります。</p>' +
+    '<h3 style="font-size:24px; font-weight:700; color:var(--ink); margin-bottom:10px;">送信結果を確認できませんでした</h3>' +
+    '<p style="font-size:16px; color:var(--ink2); line-height:1.7; margin-bottom:24px;">通信の状態により、送信結果を確認できませんでした。<br><b>入力いただいた内容は残っています。</b>届いている可能性もあるため、再送する前に電話またはメールでご確認ください。<br>お電話（<b>076-460-2562</b>）でも承ります。</p>' +
     '<div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">' +
     '<button type="button" class="form-submit" style="width:auto;padding:12px 28px;" onclick="restoreForm()">入力内容を保ったまま戻る</button>' +
     '<a class="form-submit" style="width:auto;padding:12px 28px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;" href="' + buildMailtoFallback(data) + '">メールで送る</a>' +
@@ -1183,10 +1183,10 @@ function handleSubmit(event) {
     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
     body: JSON.stringify(payload)
   })
-    .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json().catch(function () { return {}; }); })
+    .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
     .then(function (j) {
-      // FormSubmitは失敗時もHTTP 200で success:"false" を返すため、ここで判定する
-      if (j && String(j.success) === 'false') throw new Error(j.message || 'formsubmit rejected');
+      // HTTP 200だけでは成功としない。明示的な成功応答が必要。
+      if (!j || (j.success !== true && j.success !== 'true')) throw new Error('formsubmit success not confirmed');
       document.dispatchEvent(new CustomEvent('mn:contact-success'));
       showSuccess();
     })
@@ -1258,7 +1258,7 @@ if (fromPlan) {
   }
 }
 </script>
-<script defer src="../link-keep.js?v=20260814-entryparam1"></script>
+<script defer src="../link-keep.js?v=20260919-funnel1"></script>
 <script defer src="../header-motion.js?v=20260809-nav1"></script>
 <script defer src="../terms.js?v=20260812-terms1"></script>
 <script id="pf-hover">(function(){var d={};function pf(u){if(d[u])return;d[u]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u;document.head.appendChild(l);}function h(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var hr=a.getAttribute("href");if(!hr||hr[0]==="#"||/^(mailto:|tel:|https?:)/.test(hr))return;if(a.target==="_blank")return;pf(a.href);}document.addEventListener("mouseover",h,{passive:true});document.addEventListener("touchstart",h,{passive:true});})();</script>
