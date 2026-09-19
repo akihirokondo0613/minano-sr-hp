@@ -55,8 +55,11 @@ function splitDonor(source) {
 
 function buildHead(guide, meta) {
   const url = `https://minano-sr.com/uploads/joseikin-${guide.slug}.html`;
-  const title = `${guide.name}とは｜${meta.fiscalYear}の要件・金額・順序｜みなの社会保険労務士事務所`;
-  const desc = `${guide.name}を図解で解説。${guide.short}。${meta.fiscalYear}の金額の目安、申請の順序、先に動くと対象外になる境目、期限を社会保険労務士がまとめました。`;
+  // title / description は JSON の個別指定があればそちら（検索意図を「申請代行」に寄せた制度だけ上書きする）。
+  const title = guide.title
+    || `${guide.name}とは｜${meta.fiscalYear}の要件・金額・順序｜みなの社会保険労務士事務所`;
+  const desc = guide.description
+    || `${guide.name}を図解で解説。${guide.short}。${meta.fiscalYear}の金額の目安、申請の順序、先に動くと対象外になる境目、期限を社会保険労務士がまとめました。`;
   return [
     `<title>${esc(title)}</title>`,
     `<meta name="description" content="${esc(desc)}">`,
@@ -124,7 +127,7 @@ function buildMain(guide, meta, guides) {
       </nav>
       <span class="page-kicker">制度の解説</span>
       <h1>${esc(guide.name)}</h1>
-      <p class="lead">${esc(guide.lead)}</p>
+      <p class="lead">${esc(guide.lead)}${guide.leadLink ? `<a href="${esc(guide.leadLink.href)}">${esc(guide.leadLink.text)}</a>${esc(guide.leadLink.after ?? '')}` : ''}</p>
       <div class="page-hero-cta">
         <a href="contact.html?from=joseikin-${esc(guide.slug)}" class="btn-primary">対象になるか無料で相談する →</a>
         <a href="../joseikin.html#check" class="btn-secondary">ほかの制度も見る</a>
@@ -221,7 +224,7 @@ function buildMain(guide, meta, guides) {
     <div class="final-cta-inner">
       <h2>使えるかどうか、一緒に確かめませんか。</h2>
       <p>対象になるかの確認までは費用がかかりません。着手金は0円で、報酬は受給できたときだけです。取り組みを始める前のご相談がいちばん動きやすいです。</p>
-      <a href="contact.html?from=joseikin-${esc(guide.slug)}-final" class="btn-white">無料で相談する →</a>
+      <a href="contact.html?from=joseikin-${esc(guide.slug)}-final" class="btn-white">${esc(guide.ctaFinal || '無料で相談する →')}</a>
     </div>
   </section>
 </main>`;
