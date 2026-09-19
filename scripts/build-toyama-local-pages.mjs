@@ -163,7 +163,7 @@ const SAITEI_STYLE = `<style id="saitei-chingin">
 </style>`;
 
 function buildSaiteiMain(ctx) {
-  const { numbers, tl, sangyo, check, sources, checkedAt } = ctx;
+  const { numbers, tl, sangyo, check, sources, checkedAt, suii } = ctx;
   const numCards = numbers.map((row) => [
     '        <div class="svct-num">',
     `          <p class="svct-num-l">${esc(row.label)}</p>`,
@@ -202,8 +202,8 @@ function buildSaiteiMain(ctx) {
         <span aria-current="page">富山県の最低賃金</span>
       </nav>
       <span class="sec-kicker">富山の数字</span>
-      <h1>富山県の最低賃金。<br>いまの額と、次の額。</h1>
-      <p class="lead">富山県の最低賃金は、令和8年10月1日から時間額1,119円になります。9月30日までの下限は1,062円です。どちらの額をいつから守るのかを、社会保険労務士が${fmtDate(checkedAt)}時点の一次資料で整理しました。</p>
+      <h1>富山県の最低賃金。<br>令和8年10月1日から1,119円。</h1>
+      <p class="lead">富山県の最低賃金は、令和8年10月1日から時間額1,119円（＋57円）です。9月30日までの下限は1,062円。特定（産業別）最低賃金3件は令和8年度も改正がなく、いずれも地域別の額を下回るため、実務では1,119円で見ます。過去の推移と問い合わせ先をまとめ、給与計算の直し方は<a href="../blog/saitei-chingin-kyuyo-keisan-2026.html">1,119円で給与計算のどこを直すか</a>に分けました。</p>
     </div>
   </header>
 
@@ -211,8 +211,8 @@ function buildSaiteiMain(ctx) {
     <div class="w">
       <div class="sec-head rv">
         <div class="sec-head-body">
-          <h2 class="sec-h">いまの額と、次の額</h2>
-          <p class="sec-sub">この2つは別のものです。支払いの下限としていま守るのは、発効済みの額のほうです。</p>
+          <h2 class="sec-h">令和8年度の額と、9月30日までの額</h2>
+          <p class="sec-sub">この2つは別のものです。支払いの下限は、その日に発効している額のほうで見ます。</p>
         </div>
       </div>
       <div class="svct-nums rv d1">
@@ -225,8 +225,8 @@ ${numCards}
     <div class="w">
       <div class="sec-head rv">
         <div class="sec-head-body">
-          <h2 class="sec-h">改定はどこまで進んでいるか</h2>
-          <p class="sec-sub">答申から発効までは、決まった手順を踏みます。${esc(checkedAt)}時点の進み具合です。</p>
+          <h2 class="sec-h">答申から発効までの経過</h2>
+          <p class="sec-sub">答申から発効までは、決まった手順を踏みます。令和8年度の経過です。</p>
         </div>
       </div>
       <ul class="stc-tl rv d1">
@@ -235,11 +235,34 @@ ${tlItems}
     </div>
   </section>
 
-  <section class="sec" id="sangyobetsu">
+  <section class="sec" id="suii">
     <div class="w">
       <div class="sec-head rv">
         <div class="sec-head-body">
-          <h2 class="sec-h">産業別の最低賃金は、いまは使わない</h2>
+          <h2 class="sec-h">富山県の最低賃金の推移</h2>
+          <p class="sec-sub">${esc(suii.note)}</p>
+        </div>
+      </div>
+      <div class="stc-tablewrap rv d1">
+        <table class="stc-table">
+          <caption class="sr-only">富山県の地域別最低賃金の推移</caption>
+          <thead>
+            <tr><th scope="col">年度</th><th scope="col">時間額</th><th scope="col">引上げ額</th><th scope="col">発効日</th></tr>
+          </thead>
+          <tbody>
+${suii.rows.map((r) => `          <tr><td>${esc(r.year)}</td><td class="stc-amt">${esc(r.amount)}</td><td>${esc(r.up)}</td><td>${esc(r.effective)}</td></tr>`).join('\n')}
+          </tbody>
+        </table>
+      </div>
+      <p class="svct-num-s rv d2">出典 <a href="${esc(suii.source)}" target="_blank" rel="noopener">${esc(hostOf(suii.source))}</a>（富山労働局 最低賃金の推移）</p>
+    </div>
+  </section>
+
+  <section class="sec sec-alt" id="sangyobetsu">
+    <div class="w">
+      <div class="sec-head rv">
+        <div class="sec-head-body">
+          <h2 class="sec-h">特定（産業別）最低賃金は、3件とも地域別を下回る</h2>
           <p class="sec-sub">${esc(sangyo.note)}</p>
         </div>
       </div>
@@ -257,12 +280,12 @@ ${sangyoRows}
     </div>
   </section>
 
-  <section class="sec sec-alt" id="check">
+  <section class="sec" id="check">
     <div class="w">
       <div class="sec-head rv">
         <div class="sec-head-body">
-          <h2 class="sec-h">自社の給与の確かめ方</h2>
-          <p class="sec-sub">最低賃金は時給者だけの話ではありません。月給者も時間額に直して比べます。</p>
+          <h2 class="sec-h">月給者も時間額に直して比べる</h2>
+          <p class="sec-sub">最低賃金は時給者だけの話ではありません。対象者の洗い出しから締め日をまたぐ計算までの手順は、<a href="../blog/saitei-chingin-kyuyo-keisan-2026.html">1,119円で給与計算のどこを直すか</a>にまとめています。</p>
         </div>
       </div>
       <div class="stc-check rv d1">
@@ -272,7 +295,7 @@ ${checkItems}
     </div>
   </section>
 
-  <section class="sec" id="madoguchi">
+  <section class="sec sec-alt" id="madoguchi">
     <div class="w">
       <div class="sec-head rv">
         <div class="sec-head-body">
@@ -288,7 +311,14 @@ ${ctx.offices}
     </div>
   </section>
 
-${CTA}
+  <section class="final-cta">
+    <div class="w">
+      <span class="sec-kicker" style="color:rgba(255,255,255,.7)">Free Consultation</span>
+      <h2>10月分の給与から、時間額の確認を代行します。</h2>
+      <p>月給者の時間額換算と、締め日をまたぐ10月分の計算は、賃金台帳と所定労働時間表があれば当事務所で確認できます。最低賃金の確認だけなら、初回60分の労務相談（無料）の範囲でお答えします。</p>
+      <a href="contact.html?from=saitei-chingin-final" class="btn-white">最低賃金の確認と給与計算について相談する →</a>
+    </div>
+  </section>
 </main>`;
 }
 
@@ -398,6 +428,7 @@ ${seidoRows}
 ${flowItems}
       </ol>
       <p class="svct-note rv d2">${esc(data.caveat)}</p>
+      <p class="svct-note rv d2">${data.related.map((r) => `<a href="${esc(r.href)}">${esc(r.text)}</a>`).join('／')}</p>
     </div>
   </section>
 
@@ -414,7 +445,7 @@ ${ctx.offices}
       </div>
       <p class="svct-cta rv d2"><a class="btn-secondary" href="toyama-madoguchi.html">富山の窓口一覧をすべて見る →</a></p>
       <p class="svct-num-s rv d2">出典 <a href="${esc(data.source)}" target="_blank" rel="noopener">${esc(hostOf(data.source))}</a>（富山県公式）・確認日 ${fmtDate(checkedAt)}</p>
-      <p class="svct-note rv d2">当事務所の<a href="service-joseikin.html">助成金の申請代行</a>（着手金0円・完全成功報酬）への報酬も、この補助金の対象経費に当たります。交付には県の審査があるため、依頼の前に対象かどうかもあわせてご確認いただけます。</p>
+      <p class="svct-note rv d2">当事務所の<a href="service-joseikin.html">助成金の申請代行</a>（着手金0円・成功報酬）への報酬も、この補助金の対象経費に当たります。交付には県の審査があるため、依頼の前に対象かどうかもあわせてご確認いただけます。</p>
     </div>
   </section>
 
@@ -453,14 +484,19 @@ const chinage = JSON.parse(chinageRaw);
 const PAGES = [
   {
     out: 'uploads/toyama-saitei-chingin.html',
-    title: '富山県の最低賃金 いまの額と次の額｜みなの社会保険労務士事務所',
-    desc: '富山県の最低賃金は令和8年10月1日から時間額1,119円です（＋57円）。9月30日までの下限は1,062円。'
-      + '産業別最低賃金との関係、月給者の確認手順、賃上げに使える制度まで社会保険労務士が整理しました。',
+    title: '富山県の最低賃金 1,119円（令和8年10月1日〜）と推移｜みなの社会保険労務士事務所',
+    desc: '富山県の最低賃金は令和8年10月1日から時間額1,119円（＋57円）。9月30日までは1,062円。'
+      + '過去の推移、特定（産業別）最低賃金3件との関係、富山労働局の問い合わせ先を社会保険労務士がまとめました。給与計算の直し方は別記事へ。',
     crumbs: [{ name: '支援の進め方', item: 'https://minano-sr.com/support.html' }, { name: '富山県の最低賃金' }],
     style: SAITEI_STYLE,
     marker: 'stc-tl',
     build: (url) => buildSaiteiMain({
-      numbers: [numberByLabel('富山県最低賃金（地域別）'), numberByLabel('令和8年度の改定（令和8年10月1日発効）')],
+      // 額と出典は給与計算ページと共通の正本。注記だけは「○月○日時点」を含まない文にこのページで差し替える。
+      numbers: [
+        { ...numberByLabel('富山県最低賃金（地域別）'), label: '令和8年9月30日までの額', note: saitei.numbersNote.ima },
+        { ...numberByLabel('令和8年度の改定（令和8年10月1日発効）'), note: saitei.numbersNote.tsugi },
+      ],
+      suii: saitei.suii,
       tl: saitei.timeline,
       sangyo: saitei.sangyobetsu,
       check: saitei.check,

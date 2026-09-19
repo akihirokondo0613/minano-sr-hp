@@ -329,7 +329,7 @@ function buildPages({ rows, plans }) {
     {
       file: 'uploads/service-joseikin.html',
       html: section({
-        heading: '料金 ── 着手金0円・完全成功報酬（税抜）',
+        heading: '料金 ── 着手金0円・成功報酬（税抜）',
         sub: '報酬が発生するのは、受給が決まったときだけです。受給に至らなかった場合、報酬はいただきません。',
         alt: true,
         body: [

@@ -14,6 +14,13 @@
 .home-once{margin:0 0 clamp(22px,3vw,30px);padding:clamp(18px,2.4vw,26px) clamp(18px,2.6vw,28px);background:var(--shiro);border:1.5px solid var(--moegi);border-radius:var(--r-lg)}
 .home-once-h{font-family:var(--disp);font-size:clamp(17px,1.9vw,21px);font-weight:800;color:var(--iwa);margin:0}
 .home-once-h strong{color:var(--sugi)}
+/* 見出しをh2にしたぶんのUA余白を打ち消す（summary内のh2・料金の含む/含まないの見出し） */
+.spot-fees h2.sf-t,h2.price-incl-h,h2.sf-group-t{margin:0;text-wrap:balance}
+h2.sf-group-t{margin:34px 0 10px}
+.price-faq{margin:0;display:grid;gap:14px}
+.price-faq dt{font-family:var(--disp);font-size:15px;font-weight:800;color:var(--iwa)}
+.price-faq dd{margin:4px 0 0;font-size:14px;line-height:1.9;color:var(--ink2)}
+.plan-features a,.price-faq a,.sf-note a{color:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--moegi)}
 .home-once-sub{font-size:13px;line-height:1.9;color:var(--ink3);margin:6px 0 0}
 .home-once-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px 14px;margin:16px 0 0;padding:0;list-style:none}
 .home-once-grid li{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--yuki)}
@@ -34,7 +41,7 @@
 .ks-chip:has(input:focus-visible) span{outline:2px solid var(--moegi);outline-offset:3px}
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>社労士の顧問料はどう決まるか 月35,000円〜｜富山の社労士みなの</title>
+<title>社労士の顧問料と料金表 月35,000円〜｜含む業務と別料金の線引き｜富山</title>
 <meta name="description" content="社労士の顧問料は従業員数と含む業務で決まります。富山の社会保険労務士事務所みなのは、スタート顧問 月35,000円から、給与計算まで含むスタンダード 月55,000円からを固定額で公開。顧問料に含む業務と別料金の線引き、スポット料金、助成金の成功報酬まで載せています。">
 
 <link rel="canonical" href="https://minano-sr.com/pricing.html">
@@ -43,7 +50,7 @@
 <!-- OGP / Twitter Card -->
 <meta property="og:url" content="https://minano-sr.com/pricing.html">
 <meta property="og:type" content="website">
-<meta property="og:title" content="社労士の顧問料・料金プラン 月35,000円〜｜富山のみなの">
+<meta property="og:title" content="社労士の顧問料と料金表 月35,000円〜｜含む業務と別料金の線引き｜富山">
 <meta property="og:description" content="社労士の顧問料は従業員数と含む業務で決まります。富山の社会保険労務士事務所みなのは、スタート顧問 月35,000円から、給与計算まで含むスタンダード 月55,000円からを固定額で公開。顧問料に含む業務と別料金の線引き、スポット料金、助成金の成功報酬まで載せています。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:site_name" content="みなの社会保険労務士事務所">
@@ -61,7 +68,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="skin-v2.css?v=20260910-faqalign1">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"社労士の顧問料・料金プラン 月35,000円〜｜富山のみなの","description":"社労士の顧問料は従業員数と含む業務で決まります。富山の社会保険労務士事務所みなのは、スタート顧問 月35,000円から、給与計算まで含むスタンダード 月55,000円からを固定額で公開。顧問料に含む業務と別料金の線引き、スポット料金、助成金の成功報酬まで載せています。","url":"https://minano-sr.com/pricing.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://minano-sr.com/"},{"@type":"ListItem","position":2,"name":"料金・顧問プラン","item":"https://minano-sr.com/pricing.html"}]}]}
+{"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"社労士の顧問料と料金表 月35,000円〜｜含む業務と別料金の線引き｜富山","description":"社労士の顧問料は従業員数と含む業務で決まります。富山の社会保険労務士事務所みなのは、スタート顧問 月35,000円から、給与計算まで含むスタンダード 月55,000円からを固定額で公開。顧問料に含む業務と別料金の線引き、スポット料金、助成金の成功報酬まで載せています。","url":"https://minano-sr.com/pricing.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://minano-sr.com/"},{"@type":"ListItem","position":2,"name":"料金・顧問プラン","item":"https://minano-sr.com/pricing.html"}]}]}
 </script>
 
 
@@ -133,8 +140,8 @@
     <div class="page-hero-inner">
       <nav class="breadcrumb" aria-label="パンくずリスト"><a href="/">ホーム</a><span class="sep">›</span><span>料金・顧問プラン</span></nav>
       <span class="page-kicker">Pricing</span>
-      <h1>料金・顧問プラン</h1>
-      <p class="lead">顧問料に<wbr>含まれる<wbr>業務、<wbr>顧問先の<wbr>追加料金、<wbr>スポット料金を<wbr>固定額で<wbr>まとめています。</p>
+      <h1>社労士の<wbr>顧問料と<wbr>料金表。<br>含む業務も、<wbr>別料金も、<wbr>固定額で。</h1>
+      <p class="lead">顧問料は<wbr>従業員数と、<wbr>給与計算を<wbr>含むか<wbr>どうかで<wbr>決まります。<wbr>スタート<wbr>顧問 月<wbr>¥35,000<wbr>（5名まで）、<wbr>給与計算を<wbr>含む<wbr>スタンダード 月<wbr>¥55,000<wbr>（10名まで）。<wbr>顧問料に<wbr>含む業務、<wbr>顧問先の<wbr>別料金、<wbr>1件ずつ<wbr>頼める<wbr>スポット料金を、<wbr>すべて<wbr>税抜の<wbr>固定額で<wbr>載せています。</p>
     </div>
   </header>
 
@@ -143,12 +150,12 @@
     <div class="sec-head rv">
       <div class="sec-head-idx"><span class="idx-lat">PRICING</span><span class="idx-jp">料金プラン</span></div>
       <div class="sec-head-body">
-        <h2 class="sec-h">わかりやすい、<wbr><strong class="nw">シンプルな料金体系</strong></h2>
+        <h2 class="sec-h">料金の<strong class="nw">決まり方</strong></h2>
         <p class="sec-sub">成長段階や<wbr>課題に<wbr>合わせて、<wbr>必要な<wbr>範囲だけ<wbr>ご依頼いただけます。<wbr>途中での<wbr>見直しも<wbr>可能です。</p>
       </div>
     </div>
     <div class="home-once rv" id="spot-entry">
-      <p class="home-once-h">顧問契約が<wbr>なくても、<wbr><strong>お受けします。</strong></p>
+      <h2 class="home-once-h">顧問契約が<wbr>なくても、<wbr><strong>1件ずつ頼めます（スポット料金）</strong></h2>
       <p class="home-once-sub">目の前の<wbr>1件だけを、<wbr>固定料金で<wbr>お受けします。<wbr>メールか<wbr>お電話で<wbr>ご連絡いただいたら、<wbr>必要な<wbr>書類とお見積りを<wbr>メールで<wbr>ご案内します。<wbr>料金は<wbr>すべて<wbr>税抜です。</p>
       <ul class="home-once-grid">
         <li><span class="home-once-name">入社・退社の<wbr>手続<wbr>き</span><span class="home-once-price"><span class="nw">初回限定</span> <span class="nw">¥5,000</span> / 1<wbr>名</span><span class="home-once-days"><span class="nw">2回目以降は</span> <span class="nw">¥10,000</span> / 1<wbr>名。<wbr>書類が<wbr>そろった<wbr>翌営業日から<wbr>3営業日以内に<wbr>申請</span></li>
@@ -166,7 +173,7 @@
     </div>
     <details class="spot-fees rv" id="spot-fees" open>
       <summary>
-        <span class="sf-t">ス<wbr>ポット<wbr>依頼の<wbr>料<wbr>金</span>
+        <h2 class="sf-t">スポット依頼の料金表</h2>
         <span class="sf-sub">顧<wbr>問<wbr>契約<wbr>の<wbr>ない<wbr>方が、<wbr>手続きや<wbr>相談を<wbr>1回ずつ依頼する<wbr>場合の<wbr>固定料金で<wbr>す。</span>
         <span class="sf-arr" aria-hidden="true">▾</span>
       </summary>
@@ -219,10 +226,11 @@
         <div class="sf-row"><span class="sf-name">実費</span><span class="sf-price">実額のみ</span><span class="sf-desc">郵送費・交通費など。上乗せはしません。</span></div>
         <div class="sf-bridge">スポットご利用後3ヶ月以内に顧問契約をいただいた場合、お支払いいただいたスポット料金（上限 ¥30,000）を初月の顧問料に充当します。</div>
         <p class="sf-note">※ 上記は<wbr>記載した<wbr>標準業務範囲の<wbr>固定料金<wbr>（税抜）です。</p>
+        <p class="sf-note">手続きごとの<wbr>期限は<wbr><a href="uploads/service-shakai-hoken.html#ichiran">手続きごとの期限一覧</a>に<wbr>まとめています。</p>
         <a class="plan-btn plan-btn-main spot-entry-btn" href="uploads/contact.html">単発のご依頼を相談する →</a>
       </div>
     </details>
-    <p class="sf-group-t" style="margin:34px 0 10px">顧問契約（月額）</p>
+    <h2 class="sf-group-t" style="margin:34px 0 10px">顧問契約の<wbr>月額プラン<wbr>（スタート・<wbr>スタンダード・<wbr>カスタム）</h2>
     <div class="startup-card rv" style="margin:0 0 26px">
       <span class="startup-badge">STARTUP</span>
       <div class="startup-body">
@@ -241,7 +249,7 @@
         <div class="plan-div"></div>
         <p class="plan-section">含まれる内容</p>
         <ul class="plan-features">
-          <li>社会保険・雇用保険の<wbr>入退社手続き<br><span class="plan-feature-sub">離職票を<wbr>含む</span></li>
+          <li><a href="uploads/service-shakai-hoken.html">社会保険・雇用保険の入退社手続き</a><br><span class="plan-feature-sub">離職票を<wbr>含む</span></li>
           <li>労使協定の<wbr>作成・<wbr>届出<br><span class="plan-feature-sub">36協定など</span></li>
           <li>月額変更・扶養・<wbr>氏名変更等の<wbr>定例届出</li>
           <li>年度更新・算定基礎届・賞与支払届<br><span class="plan-feature-sub">年次・賞与時の<wbr>届出も<wbr>顧問料内<wbr>（賃金データは<wbr>貴社から<wbr>ご提出）</span></li>
@@ -249,9 +257,9 @@
           <li>育児休業給付・<wbr>介護休業給付・<wbr>高年齢雇用継続給付</li>
           <li>労災発生時の<wbr>初動相談・必要書類の<wbr>案内・必要な<wbr>場合の<wbr>労働者死傷病報告</li>
           <li>労働者名簿の<wbr>作成・<wbr>更新<br><span class="plan-feature-sub">賃金台帳・出勤簿は<wbr>様式の<wbr>提供と<wbr>年1回の<wbr>点検<wbr>（作成・<wbr>記録は<wbr>貴社）</span></li>
-          <li>就業規則の<wbr>点検・報告<wbr>（年1回）</li>
+          <li><a href="uploads/service-shugyo-kisoku.html">就業規則の点検・報告</a>（<wbr>年<wbr>1回）</li>
           <li>手続きに関するご相談</li>
-          <li>助成金情報の<wbr>案内・<wbr>申請に<wbr>備えた<wbr>労務情報の<wbr>整理<br><span class="plan-feature-sub">申請代行は<wbr>別料金</span></li>
+          <li>助成金情報の<wbr>案内・<wbr>申請に<wbr>備えた<wbr>労務情報の<wbr>整理<br><span class="plan-feature-sub"><a href="uploads/service-joseikin.html">申請代行</a>は<wbr>別料金</span></li>
           <li>法改正情報の配信</li>
         </ul>
         <a href="uploads/contact.html?from=start" class="plan-btn">このプランで相談する</a>
@@ -270,8 +278,8 @@
         <p class="plan-section plan-section-plus">＋ こちらが加わります</p>
         <ul class="plan-features plan-features-new">
           <li>就業規則の<wbr>改定提案<br><span class="plan-feature-sub">年1回の<wbr>点検に<wbr>加え、<wbr>条文案の<wbr>作成まで</span></li>
-          <li>労務相談<wbr>（個別対応）<br><span class="plan-feature-sub">解雇・問題社員・<wbr>ハラスメント対応など</span></li>
-          <li>給与計算・賞与計算<wbr>（月次）<br><span class="plan-feature-sub">賃金台帳の<wbr>作成を<wbr>含む</span></li>
+          <li><a href="uploads/service-romu-sodan.html">労務相談</a>（個別対応）<br><span class="plan-feature-sub">解雇・問題社員・<wbr>ハラスメント対応など</span></li>
+          <li><a href="uploads/service-kyuyo-keisan.html">給与計算・賞与計算</a>（<wbr>月次）<br><span class="plan-feature-sub">賃金台帳の<wbr>作成を<wbr>含む</span></li>
         </ul>
         <p style="font-size:12px;color:var(--ink3);margin-top:10px;line-height:1.7">※ 年末調整は<wbr>別料金<wbr>（下記オプション）。</p>
         <a href="uploads/contact.html?from=standard" class="plan-btn plan-btn-main">このプランで相談する</a>
@@ -301,13 +309,13 @@
         <image-slot id="price-incl-photo" src="assets/illustrations/18_payroll_calculation.webp" crop-scale="1.061789" crop-x="0.217238" crop-y="-1.837216" placeholder="書類・手続きのイメージ写真（推奨 4:3）"></image-slot>
       </div>
       <div>
-      <p class="price-incl-h">年度更新・算定基礎届・賞与支払届ま<wbr>で、<wbr><strong>顧問料に<wbr>含まれます。</strong></p>
-      <p class="price-incl-sub">入退社などの<wbr>定例手続きに<wbr>加え、<wbr>出産手当金、<wbr>育児休業給付、<wbr>介護休業給付、<wbr>高年齢雇用継続給付も<wbr>顧問料内で<wbr>す。傷病手当金と労災保険給<wbr>付<wbr>は<wbr>初回申請のみ<wbr>別料金で、<wbr>同一傷病・同一事故の<wbr>定型的な<wbr>継続申請は<wbr>顧問料に<wbr>含まれます。<wbr>年末調整は、<wbr>必要な<wbr>資料の<wbr>整理と<wbr>提携税理士への<wbr>連携を<wbr>別料金で<wbr>承ります。</p>
+      <h2 class="price-incl-h">顧問料に<wbr>含まれる<wbr>業務と、<wbr><strong>含まれない業務</strong></h2>
+      <p class="price-incl-sub">入退社などの<wbr>定例手続きに<wbr>加え、<wbr>出産手当金、<wbr>育児休業給付、<wbr>介護休業給付、<wbr>高年齢雇用継続給付も<wbr>顧問料内で<wbr>す。傷病手当金と労災保険給<wbr>付<wbr>は<wbr>初回申請のみ<wbr>別料金で、<wbr>同一傷病・同一事故の<wbr>定型的な<wbr>継続申請は<wbr>顧問料に<wbr>含まれます。<wbr>年末調整は、<wbr>必要な<wbr>資料の<wbr>整理と<wbr>提携税理士への<wbr>連携を<wbr>別料金で<wbr>承ります。<wbr>契約後の<wbr>月次の<wbr>流れは<wbr><a href="support.html">支援の進め方（契約後の月次の流れ）</a>を<wbr>ご覧ください。</p>
       </div>
     </div>
     <details class="spot-fees rv" id="retainer-extra-fees">
       <summary>
-        <span class="sf-t">顧<wbr>問契約者<wbr>向<wbr>け<wbr>の<wbr>別料<wbr>金</span>
+        <h2 class="sf-t">顧問契約者向けの別料金</h2>
         <span class="sf-sub">初<wbr>回<wbr>確認<wbr>の<wbr>負担が<wbr>大きい<wbr>申請と、<wbr>個別の<wbr>税理士連携などを<wbr>固定額で<wbr>掲載して<wbr>い<wbr>ま<wbr>す。</span>
         <span class="sf-arr" aria-hidden="true">▾</span>
       </summary>
@@ -342,7 +350,7 @@
     </details>
     <details class="spot-fees rv" id="simulator">
       <summary>
-        <span class="sf-t">顧<wbr>問<wbr>料 か<wbr>ん<wbr>たん<wbr>計<wbr>算</span>
+        <h2 class="sf-t">顧問料 かんたん計算</h2>
         <span class="sf-sub">従<wbr>業員数<wbr>と<wbr>ご希望を<wbr>選ぶと、<wbr>月額・年間の<wbr>顧問料の<wbr>目安が<wbr>わかり<wbr>ま<wbr>す。</span>
         <span class="sf-arr" aria-hidden="true">▾</span>
       </summary>
@@ -429,6 +437,27 @@
         </script>
       </div>
     </details>
+    <details class="spot-fees rv" id="price-faq" open>
+      <summary>
+        <h2 class="sf-t">料金に<wbr>ついて<wbr>よく<wbr>ある<wbr>質問</h2>
+        <span class="sf-sub">顧問料に含むもの・含まないもの、人数が増えたとき、創業期、スポットからの切り替え。</span>
+        <span class="sf-arr" aria-hidden="true">▾</span>
+      </summary>
+      <div class="sf-body">
+        <dl class="price-faq">
+          <dt>顧問料には<wbr>何が<wbr>含まれますか。</dt>
+          <dd>入退社の<wbr>社会保険・<wbr>雇用保険手続<wbr>き、36協定な<wbr>ど<wbr>の労使協定、年度更新・算定基礎届・賞与支払届、<wbr>出産手当金・<wbr>育児休業給付などの<wbr>給付申請、<wbr>就業規則の<wbr>年1回の<wbr>点検、<wbr>手続きに<wbr>関する<wbr>ご相談です。<wbr>スタンダードプランは<wbr>給与計算・賞与計算と<wbr>個別の<wbr>労務相談が<wbr>加わります。</dd>
+          <dt>顧問料に<wbr>含まれない<wbr>ものは。</dt>
+          <dd>傷病手当金と労災保険給<wbr>付<wbr>の<wbr>初回申請、<wbr>年末調整の<wbr>資料整理と<wbr>税理士連携、<wbr><a href="uploads/service-shugyo-kisoku.html">就業規則の作成・改定の作業</a>、<wbr>労務システムの<wbr>導入支援、<wbr><a href="uploads/service-joseikin.html">助成金の申請代行（成功報酬15％）</a>で<wbr>す。<wbr>それぞれ固定額を<wbr>「顧問契約者向けの<wbr>別料金」に<wbr>載せています。</dd>
+          <dt>従業員が<wbr>増えたら<wbr>顧問料は<wbr>どうなりますか。</dt>
+          <dd>スタート顧問は<wbr>6人目から<wbr>1名¥2,000<wbr>/月、<wbr>スタンダードは<wbr>11人目から<wbr>1名¥2,500<wbr>/月を<wbr>加算します。<wbr>30名までは<wbr>公開料金で<wbr>計算でき、<wbr>31名以上は<wbr>個別に<wbr>お見積りします。</dd>
+          <dt>創業したばかりでも<wbr>顧問契約できますか。</dt>
+          <dd>できます。<wbr>契約開始日に<wbr>法人設立日または<wbr>開業日から<wbr>3年未満なら、<wbr>創業3周年まで<wbr>（最低12か<wbr>月）<wbr>各プラン−<wbr>¥10,000<wbr>/月です。</dd>
+          <dt>まず<wbr>1件だけ<wbr>頼んで、<wbr>あとから<wbr>顧問契約に<wbr>できますか。</dt>
+          <dd>できます。<wbr>スポット利用後3か<wbr>月以内に<wbr>顧問契約を<wbr>いただいた<wbr>場合、<wbr>お支払いいただいた<wbr>スポット料金<wbr>（<wbr>上限<wbr><span class="nw">¥30,000</span>）を<wbr>初月の<wbr>顧問料に<wbr>充当します。</dd>
+        </dl>
+      </div>
+    </details>
     <p class="plan-note" style="font-size:13px;margin-top:20px">※料金は<wbr>すべて<wbr>税抜です。<wbr>掲載外の<wbr>業務と<wbr>実費は<wbr>含まれません。<wbr>初回の<wbr>ご相談は<wbr>無料です。</p>
   </div>
 </section>
@@ -444,9 +473,9 @@
     <h2 class="final-h">
       まずは<wbr>現状を<wbr>聞かせてください。<br class="sp-br"><strong>無料でご相談いただけます。</strong>
     </h2>
-    <p class="final-p"><span class="nw">助成金、手続きの効率化、トラブル予防——</span><wbr><span class="nw">どこから手をつければいいか、</span><wbr><span class="nw">一緒に考えます。</span></p>
+    <p class="final-p"><span class="nw">「うちの人数だといくらか」</span><wbr><span class="nw">「いまの事務所からの切り替え」の</span><wbr><span class="nw">質問だけでも構いません。</span><wbr><span class="nw">見積りは翌営業日までにメールで返します。</span></p>
     <div class="final-btns">
-      <a href="uploads/contact.html" class="btn-white">フォームから相談する</a>
+      <a href="uploads/contact.html" class="btn-white">顧問契約の内容と料金について相談する →</a>
       <a href="tel:076-460-2562" class="btn-ghost">076-460-2562</a>
     </div>
     <p class="final-note">平日 9<wbr>:<wbr>00–<wbr>18<wbr>:00　/　土日祝の<wbr>フォーム送信は<wbr>翌営業日に<wbr>ご返信</p>
