@@ -110,7 +110,7 @@ for (const article of articles) {
 const SERVICE_MAP = [
   // slugs: 検索意図に合わせて記事を固定するページ。指定した順に並べ、足りない分はカテゴリで補う。
   { file: 'uploads/service-shakai-hoken.html', cats: ['hoken', 'kaisei'], label: '労務手続きに関する記事', slugs: ['nyusha-tetsuzuki-checklist', 'nendo-koshin-santei', 'shaho-tekiyo-kakudai-2026'] },
-  { file: 'uploads/service-shugyo-kisoku.html', cats: ['shugyo', 'trouble'], label: '就業規則に関する記事' },
+  { file: 'uploads/service-shugyo-kisoku.html', cats: ['shugyo', 'trouble'], label: '就業規則に関する記事', slugs: ['shugyo-kisoku-template-risk', 'fukugyo-kengyo-kisoku', 'nenkyu-5days-kanribo'] },
   { file: 'uploads/service-joseikin.html', cats: ['joseikin'], label: '助成金に関する記事' },
   { file: 'uploads/service-kyuyo-keisan.html', cats: ['hoken', 'keiei'], label: '給与計算に関する記事', slugs: ['saitei-chingin-kyuyo-keisan-2026', 'kyuyo-itaku-junbi', 'kodomo-kosodate-shienkin-2026'] },
   { file: 'uploads/service-romu-sodan.html', cats: ['trouble', 'kaisei'], label: '労務相談に関する記事' },

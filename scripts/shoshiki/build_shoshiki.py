@@ -443,8 +443,9 @@ def build_index():
     )
     # bottom cta
     s = re.sub(
-        r'<div class="bcc-text">.*?</div>\s*<a href="uploads/contact.html" class="bcc-btn">',
-        '<div class="bcc-text">\n      <h3>書式の使い方や、就業規則との整合はご相談ください</h3>\n      <p>解雇・懲戒・労使協定など、書式だけでは判断できない場面は、状況を伺ってから進め方をお伝えします。</p>\n    </div>\n    <a href="uploads/contact.html" class="bcc-btn">',
+        # portal.html 側の最終CTAは ?from=portal-final 付き・文言も窓口向けなので、ボタンごと書式向けに戻す
+        r'<div class="bcc-text">.*?</div>\s*<a href="uploads/contact.html[^"]*" class="bcc-btn">[^<]*</a>',
+        '<div class="bcc-text">\n      <h3>書式の使い方や、就業規則との整合はご相談ください</h3>\n      <p>解雇・懲戒・労使協定など、書式だけでは判断できない場面は、状況を伺ってから進め方をお伝えします。</p>\n    </div>\n    <a href="uploads/contact.html" class="bcc-btn">お問い合わせフォームへ →</a>',
         s,
         count=1,
         flags=re.S,

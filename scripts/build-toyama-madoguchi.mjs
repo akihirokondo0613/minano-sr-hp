@@ -65,10 +65,10 @@ function splitDonor(source) {
   };
 }
 
-const TITLE = '富山の労務手続き 窓口一覧｜どこに何を出すか｜みなの社会保険労務士事務所';
+const TITLE = '富山の労働基準監督署・年金事務所・ハローワーク 窓口一覧｜どこに何を出すか｜みなの社会保険労務士事務所';
 const DESC = '富山県の労働基準監督署・年金事務所・ハローワーク・労働局・県の窓口を一覧に。'
   + '就業規則の届出、社会保険の資格取得、離職票、助成金の申請先まで、手続きごとにどこへ出すかを'
-  + '社会保険労務士が整理しました。所在地・電話・管轄を公式サイトで確認しています。';
+  + '社会保険労務士が整理しました。所在地・電話・管轄を公式サイトで確認しています。手続きの一覧と期限は別ページに。';
 
 function buildHead() {
   return [
@@ -100,7 +100,7 @@ function buildBreadcrumbSchema() {
   "itemListElement": [
     { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://minano-sr.com/" },
     { "@type": "ListItem", "position": 2, "name": "支援の進め方", "item": "https://minano-sr.com/support.html" },
-    { "@type": "ListItem", "position": 3, "name": "富山の労務手続き 窓口一覧", "item": "${url}" }
+    { "@type": "ListItem", "position": 3, "name": "富山の窓口一覧（労働基準監督署・年金事務所・ハローワーク）", "item": "${url}" }
   ]
 }
 </script>`;
@@ -108,6 +108,7 @@ function buildBreadcrumbSchema() {
 
 /** ページ固有のCSS。共通CSSを触らずに済ませる（資産版のバンプが要らない）。 */
 const STYLE = `<style id="madoguchi">
+.page-hero .lead a{color:var(--g700);font-weight:700;text-decoration:underline;text-underline-offset:4px;word-break:normal}
 .mdg-quick{width:100%;border-collapse:collapse;border-top:1px solid var(--line);margin-top:8px}
 .mdg-quick th,.mdg-quick td{text-align:left;vertical-align:top;padding:14px 4px;border-bottom:1px solid var(--line);line-height:1.8;letter-spacing:.02em}
 .mdg-quick th{width:56%;font-size:15.5px;font-weight:700;color:var(--ink);padding-right:20px;text-wrap:pretty;word-break:auto-phrase}
@@ -183,13 +184,13 @@ ${g.offices.map(officeBlock).join('\n')}
       <nav class="breadcrumb" aria-label="現在の位置">
         <a href="../">ホーム</a><span aria-hidden="true">›</span>
         <a href="../support.html">支援の進め方</a><span aria-hidden="true">›</span>
-        <span aria-current="page">富山の労務手続き 窓口一覧</span>
+        <span aria-current="page">富山の窓口一覧</span>
       </nav>
       <span class="sec-kicker">富山の窓口</span>
-      <h1>どこに何を出すか。<br>富山の労務手続き 窓口一覧</h1>
+      <h1>どこに何を出すか。<br>富山の労働基準監督署・年金事務所・ハローワーク 窓口一覧</h1>
       <p class="lead">就業規則は労働基準監督署、社会保険は年金事務所、離職票はハローワーク。
         助成金は制度によって申請先が分かれます。富山県内の窓口を、手続きごとにまとめました。
-        所在地・電話・管轄は公式サイトで確認しています。</p>
+        所在地・電話・管轄は公式サイトで確認しています。「どの手続きをいつまでに出すか」は<a href="service-shakai-hoken.html#ichiran">労務手続きの一覧と期限</a>のページにまとめています。</p>
     </div>
   </header>
 
