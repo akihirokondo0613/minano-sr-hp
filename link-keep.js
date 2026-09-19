@@ -76,6 +76,7 @@
     document.removeEventListener('submit', old.onFormSubmit, true);
     document.removeEventListener('mn:contact-success', old.onContactSuccess);
     document.removeEventListener('mn:contact-navigate', old.onSpaContactNavigation);
+    document.removeEventListener('mn:service-navigate', old.onSpaServiceNavigation);
     if (old.timer) clearInterval(old.timer);
   }
 
@@ -147,6 +148,7 @@
   }
 
   function currentContactSource() {
+    if (document.getElementById('lpForm')) return 'ads-kyujin';
     var urlSource = new URL(location.href).searchParams.get('from');
     if (urlSource) return safePart(urlSource);
     try {
@@ -182,7 +184,22 @@
     } catch (_) {
       return;
     }
+    trackServiceNavigation(url);
     trackContactNavigation(url);
+  }
+
+  // 記事からサービスへの移動だけを計測。URLクエリ・入力値は送らない。
+  function trackServiceNavigation(url) {
+    if (!/^\/blog\/[a-z0-9-]+\.html$/.test(location.pathname)) return;
+    if (!url || url.origin !== location.origin || !/^\/uploads\/service-[a-z0-9-]+\.html$/.test(url.pathname)) return;
+    var service = safePart(url.pathname.split('/').pop());
+    countEvent('article-service-click:' + currentPage() + ':' + service, '記事からサービスへの移動');
+  }
+
+  function onSpaServiceNavigation(event) {
+    var href = event && event.detail && event.detail.href;
+    if (!href) return;
+    try { trackServiceNavigation(new URL(href, location.href)); } catch (_) {}
   }
 
   function trackContactNavigation(url) {
@@ -202,7 +219,7 @@
   }
 
   function contactForm(target) {
-    return target && target.closest ? target.closest('#contactForm') : null;
+    return target && target.closest ? target.closest('#contactForm, #lpForm') : null;
   }
 
   function onFormStart(event) {
@@ -216,7 +233,7 @@
   }
 
   function onFormSubmit(event) {
-    if (!event.target || event.target.id !== 'contactForm') return;
+    if (!event.target || !/^(contactForm|lpForm)$/.test(event.target.id)) return;
     countEvent(
       'contact-submit-attempt:' + currentContactSource(),
       '無料相談フォーム送信操作'
@@ -242,6 +259,7 @@
   document.addEventListener('submit', onFormSubmit, true);
   document.addEventListener('mn:contact-success', onContactSuccess);
   document.addEventListener('mn:contact-navigate', onSpaContactNavigation);
+  document.addEventListener('mn:service-navigate', onSpaServiceNavigation);
 
   state = {
     onClick: onClick,
@@ -249,6 +267,7 @@
     onFormSubmit: onFormSubmit,
     onContactSuccess: onContactSuccess,
     onSpaContactNavigation: onSpaContactNavigation,
+    onSpaServiceNavigation: onSpaServiceNavigation,
     timer: timer,
     dispose: function () {
       document.removeEventListener('click', onClick, true);
@@ -256,6 +275,7 @@
       document.removeEventListener('submit', onFormSubmit, true);
       document.removeEventListener('mn:contact-success', onContactSuccess);
       document.removeEventListener('mn:contact-navigate', onSpaContactNavigation);
+      document.removeEventListener('mn:service-navigate', onSpaServiceNavigation);
       stopTimer();
       queue.length = 0;
     }

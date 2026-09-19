@@ -787,6 +787,9 @@ function mnSplitLabel(el, text) {
     if (eligible(a)) {
       try {
         var contactUrl = new URL(a.href, location.href);
+        if (/^\/uploads\/service-[a-z0-9-]+\.html$/.test(contactUrl.pathname)) {
+          document.dispatchEvent(new CustomEvent('mn:service-navigate', { detail: { href: contactUrl.href } }));
+        }
         if (/\/uploads\/contact\.html$/i.test(contactUrl.pathname)) {
           document.dispatchEvent(new CustomEvent('mn:contact-navigate', { detail: { href: contactUrl.href } }));
         }
@@ -835,10 +838,6 @@ function mnSplitLabel(el, text) {
   window.addEventListener('popstate', function (ev) {
     if (busy) { hardGo(location.href); return; }        // 遷移中の戻るは素直に読み直す
     var url; try { url = new URL(location.href); } catch (e) { url = null; }
-    if (url && isArticleDest(url)) { hardGo(location.href); return; }   // ★戻る/進むで記事(/blog/)へ来たら素で読み直す（演出なし）
-    if (url && isFormDest(url)) { hardGo(location.href); return; }      // ★社内書式へ戻る/進むも素で読み直す
-    if (url && isSpotDest(url)) { hardGo(location.href); return; }      // ★スポット注文へ戻る/進むも素で読み直す
-    if (url && isAdLpDest(url)) { hardGo(location.href); return; }      // ★広告の着地ページへ戻る/進むも素で読み直す
     // ★同一ページ内（pathname不変・hashだけ変化）はカーテン不要＝アンカーへスクロールのみ。
     //   理念/サービス/料金 等トップ内リンクは、プレビューホストが hash 遷移を popstate 化して
     //   ここへ届く。lastPath（直近表示ページ）と比べる（popstate時 location は既に遷移先なので samePage は使えない）。
@@ -852,6 +851,10 @@ function mnSplitLabel(el, text) {
       }
       return;
     }
+    if (url && isArticleDest(url)) { hardGo(location.href); return; }   // ★戻る/進むで記事(/blog/)へ来たら素で読み直す（演出なし）
+    if (url && isFormDest(url)) { hardGo(location.href); return; }      // ★社内書式へ戻る/進むも素で読み直す
+    if (url && isSpotDest(url)) { hardGo(location.href); return; }      // ★スポット注文へ戻る/進むも素で読み直す
+    if (url && isAdLpDest(url)) { hardGo(location.href); return; }      // ★広告の着地ページへ戻る/進むも素で読み直す
     var p = location.pathname;
     lastPath = p;
     var known = labelCache[p];

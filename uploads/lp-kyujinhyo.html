@@ -565,7 +565,7 @@ main .ft-links{margin-top:10px}
         <b>送信しました。</b>1〜2営業日でご連絡します。
       </div>
       <div class="form-msg form-ng" id="formNg" role="alert" hidden>
-        送信できませんでした。お電話または <a href="mailto:contact@minano-sr.com">contact@minano-sr.com</a> へ
+        送信結果を確認できませんでした。届いている可能性があるため、再送前にお電話または <a href="mailto:contact@minano-sr.com">contact@minano-sr.com</a> でご確認ください。
       </div>
       <form id="lpForm" action="https://formsubmit.co/contact@minano-sr.com" method="post">
         <input type="hidden" name="_subject" value="【無料点検】求人票">
@@ -688,11 +688,7 @@ main .ft-links{margin-top:10px}
     }
   }
 
-  /* ---- 電話タップ ---- */
-  document.addEventListener('click', function (e) {
-    var a = e.target && e.target.closest && e.target.closest('a[href^="tel:"]');
-    if (a) gc('phone-click:lp-kyujinhyo');
-  }, true);
+  // 電話タップは共通link-keep.jsで1回だけ計測する。
 
   /* ---- セルフチェック ----
      いつ・誰が作ったかを聞く。1年以内に見直し、かつ令和6年4月の改正に対応済みのときだけ
@@ -755,6 +751,12 @@ main .ft-links{margin-top:10px}
       new FormData(form).forEach(function (value, key) {
         if (String(value).trim() !== '') payload[key] = value;
       });
+      // 受信記録の流入識別。任意クエリやフォーム入力は解析イベントへ送らない。
+      var attribution = new URLSearchParams(location.search);
+      var adKeys = { utm_source: '広告_参照元', utm_medium: '広告_媒体', utm_campaign: '広告_キャンペーン', utm_content: '広告_クリエイティブ', utm_term: '広告_キーワード', gclid: '広告クリックID' };
+      Object.keys(adKeys).forEach(function (key) {
+        if (attribution.has(key)) payload['［自動］' + adKeys[key]] = attribution.get(key);
+      });
       if (payload['メールアドレス']) payload._replyto = payload['メールアドレス'];
       if (btn) { btn.disabled = true; btn.dataset.orig = btn.textContent; btn.textContent = '送信中…'; }
       ngBox.hidden = true;
@@ -766,14 +768,14 @@ main .ft-links{margin-top:10px}
       })
         .then(function (r) {
           if (!r.ok) throw new Error('http ' + r.status);
-          return r.json().catch(function () { return {}; });
+          return r.json();
         })
         .then(function (j) {
-          if (j && String(j.success) === 'false') throw new Error(j.message || 'formsubmit rejected');
+          if (!j || (j.success !== true && j.success !== 'true')) throw new Error('formsubmit success not confirmed');
           form.hidden = true;
           okBox.hidden = false;
           document.dispatchEvent(new CustomEvent('mn:contact-success'));
-          gc('contact-success:ads-kyujin');
+          // 成功のGoatCounter計測は共通link-keep.jsが1回だけ担当する。
           okBox.scrollIntoView({ block: 'center' });
         })
         .catch(function () {
@@ -786,8 +788,8 @@ main .ft-links{margin-top:10px}
 })();
 </script>
 <script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/uploads/lp-kyujinhyo.html"}' async src="//gc.zgo.at/count.js"></script>
-<script defer src="../page-enter.js?v=20260913-adlp1"></script>
-<script defer src="../link-keep.js?v=20260814-entryparam1"></script>
+<script defer src="../page-enter.js?v=20260919-funnel1"></script>
+<script defer src="../link-keep.js?v=20260919-funnel1"></script>
 <script defer src="../header-motion.js?v=20260809-nav1"></script>
 <script defer src="../terms.js?v=20260812-terms1"></script>
 <script defer src="../ads.js?v=20260901-ads2"></script>
