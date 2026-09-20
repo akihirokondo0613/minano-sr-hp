@@ -450,10 +450,14 @@ main > section:not(.hero) {
 <link rel="stylesheet" href="skin-v2.css?v=20260921-softfooter1" media="print" data-async-style onload="this.media='all';this.onload=null">
 <noscript><link rel="stylesheet" href="skin-v2.css?v=20260921-softfooter1"></noscript>
 <style id="home-hero-legibility">
+/* 写真全体を白くせず、文字の位置を中心に明るさを残す。 */
+.hero-veil{background:linear-gradient(100deg,rgba(249,250,247,.60) 0%,rgba(249,250,247,.48) 35%,rgba(249,250,247,.18) 65%,rgba(249,250,247,0) 88%);mask-image:linear-gradient(#000 0%,#000 43%,rgba(0,0,0,.65) 60%,transparent 82%)}
+.hero-h1 strong{color:var(--sugi-9)}
+.hero-sub{font-weight:500}
+@media(min-width:701px){.hero-sub-link{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.94)}}
 @media(max-width:700px){
-  /* 本文が写真の建物・木立に重なる帯（ヒーロー高の45〜75%）まで白を残す。
-     下端は従来どおり抜いて、水面と船を見せる。 */
-  .hero-veil{background:linear-gradient(to bottom,rgba(249,250,247,.64) 0%,rgba(249,250,247,.62) 60%,rgba(249,250,247,.54) 76%,rgba(249,250,247,.18) 88%,rgba(249,250,247,.03) 95%,rgba(249,250,247,0) 100%)}
+  /* 文字が重なる上側は明るく保ち、下側の建物・水面は写真本来の色を見せる。 */
+  .hero-veil{background:linear-gradient(to bottom,rgba(249,250,247,.56) 0%,rgba(249,250,247,.50) 38%,rgba(249,250,247,.34) 56%,rgba(249,250,247,0) 78%);mask-image:none}
   /* 写真の上では下線だけだと読めず、白マーカーだと角ばった箱が貼りついて見える。
      すぐ下の .trust-item と同じ白い丸チップに寄せて、副ボタンとして成立させる。 */
   .hero-sub-link{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 18px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.94);color:var(--sugi);font-size:13.5px;font-weight:400;letter-spacing:.05em;text-shadow:none}
