@@ -97,12 +97,16 @@ function buildBreadcrumbSchema(guide) {
 }
 
 function buildMain(guide, meta, guides) {
+  // 短い制度名の語幹だけを保護する。制度名全体をnowrapにして狭幅を壊さない。
+  const prose = (value) => esc(value).replace(/キャリアアップ|トライアル|\d+か月/g, (word) => `<span class="nw">${word}</span><wbr>`);
+  const ruleParagraphs = guide.wall.rule.match(/[^。]+。?/g)
+    .map((sentence) => `<p>${prose(sentence)}</p>`).join('\n          ');
   const others = guides.filter((item) => item.slug !== guide.slug);
   const step = (item, index) => `
         <li class="jgd-step">
           <span class="jgd-step-n">${index + 1}</span>
-          <span class="jgd-step-b">${esc(item.label)}</span>
-          <span class="jgd-step-t">${esc(item.note)}</span>
+          <h3 class="jgd-step-b">${prose(item.label)}</h3>
+          <p class="jgd-step-t">${prose(item.note)}</p>
         </li>`;
   const amount = (item) => `
         <div class="jgd-amount">
@@ -117,7 +121,7 @@ function buildMain(guide, meta, guides) {
       : '',
   ].filter(Boolean).join('\n          ');
 
-  return `<main id="main">
+  return `<main id="main" class="jgd-guide">
   <header class="page-hero">
     <div class="page-hero-inner">
       <nav class="breadcrumb">
@@ -140,12 +144,15 @@ function buildMain(guide, meta, guides) {
       <div class="sec-head-c">
         <span class="sec-kicker">いちばん大事な境目</span>
         <h2 class="sec-h">先に動くと、あとから戻せません。</h2>
-        <p class="sec-sub">${esc(guide.wall.rule)}<br>下の図の「境目」より前に動いてしまうと、ほかの要件をすべて満たしていても支給されません。</p>
+        <div class="jgd-rule">
+          ${ruleParagraphs}
+          <p>下の図の「境目」より前に動いてしまうと、ほかの要件をすべて満たしていても支給されません。</p>
+        </div>
       </div>
       <div class="jgd-wall rv">
         <div class="jgd-wall-side is-ok">
           <span class="jgd-wall-tag">先にやること</span>
-          <p>${esc(guide.wall.before)}</p>
+          <p>${prose(guide.wall.before)}</p>
         </div>
         <div class="jgd-wall-bar" aria-hidden="true"><span>境目</span></div>
         <div class="jgd-wall-side is-ng">
@@ -197,7 +204,7 @@ function buildMain(guide, meta, guides) {
           </ul>
         </div>
       </div>
-      ${guide.toyama ? `<p class="jgd-toyama"><b>富山の場合</b>${esc(guide.toyama)}${guide.toyamaOffice ? `<a class="jgd-toyama-l" href="toyama-madoguchi.html#mdg-${esc(guide.toyamaOffice)}">この窓口の所在地・電話を見る →</a>` : ''}</p>` : ''}
+      ${guide.toyama ? `<p class="jgd-toyama"><b>富山の場合</b>${prose(guide.toyama)}${guide.toyamaOffice ? `<a class="jgd-toyama-l" href="toyama-madoguchi.html#mdg-${esc(guide.toyamaOffice)}">この窓口の所在地・電話を見る →</a>` : ''}</p>` : ''}
     </div>
   </section>
 
@@ -232,6 +239,11 @@ function buildMain(guide, meta, guides) {
 
 const STYLE = `<style id="joseikin-guide">
 /* 制度解説ページ専用。順序の境目（壁）と手順を、図形でなく文字と色で示す。 */
+.jgd-guide .nw{white-space:nowrap}
+.jgd-guide .sec-head-c .sec-sub,.jgd-rule{max-width:52rem;margin-inline:auto;text-align:left}
+.jgd-rule{margin-top:24px;font-size:clamp(15px,1.6vw,16.5px);line-height:2;color:var(--ink2)}
+.jgd-rule p{margin:0}
+.jgd-rule p+p{margin-top:.65em}
 .jgd-wall{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:clamp(12px,2vw,22px);align-items:stretch}
 .jgd-wall-side{border-radius:var(--r);padding:clamp(18px,2.4vw,26px);border:1px solid var(--line,#E0E4DE)}
 .jgd-wall-side.is-ok{background:#EDF6F0;border-color:#BFE0CD}
@@ -242,12 +254,12 @@ const STYLE = `<style id="joseikin-guide">
 .jgd-wall-side p{margin:0;font-size:14.5px;font-weight:700;line-height:1.85;color:#1E2721;word-break:auto-phrase}
 .jgd-wall-bar{position:relative;inline-size:6px;border-radius:3px;background:repeating-linear-gradient(180deg,#B03A2E 0 9px,transparent 9px 17px)}
 .jgd-wall-bar span{position:absolute;inset-block-start:50%;inset-inline-start:50%;transform:translate(-50%,-50%);white-space:nowrap;font-size:11.5px;font-weight:800;letter-spacing:.1em;color:#B03A2E;background:#fff;padding:5px 12px;border-radius:999px;border:1.5px solid #E6C7B6;box-shadow:0 2px 8px rgba(30,39,33,.08)}
-.jgd-wall-note{margin:clamp(16px,2.2vw,22px) 0 0;font-size:13.5px;line-height:2;color:#4A554D;max-width:46em;text-wrap:pretty}
+.jgd-wall-note{margin:clamp(16px,2.2vw,22px) 0 0;font-size:13.5px;line-height:2;color:#4A554D;max-width:65em;text-wrap:pretty}
 .jgd-steps{list-style:none;margin:0;padding:0;counter-reset:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:12px}
 .jgd-step{display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid var(--line,#E0E4DE);border-radius:var(--r);padding:clamp(16px,2.2vw,20px)}
 .jgd-step-n{display:grid;place-items:center;inline-size:26px;block-size:26px;border-radius:50%;background:#123F30;color:#fff;font-size:12.5px;font-weight:700}
-.jgd-step-b{font-size:14px;font-weight:800;color:#1E2721;line-height:1.6;word-break:auto-phrase}
-.jgd-step-t{font-size:12.5px;color:#4A554D;line-height:1.9;text-wrap:pretty}
+.jgd-step-b{margin:0;font-size:14px;font-weight:800;color:#1E2721;line-height:1.6;word-break:auto-phrase}
+.jgd-step-t{margin:0;font-size:12.5px;color:#4A554D;line-height:1.9;text-wrap:pretty}
 .jgd-amounts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px}
 .jgd-amount{display:flex;flex-direction:column;gap:8px;background:#EDF6F0;border:1px solid #BFE0CD;border-radius:var(--r);padding:clamp(18px,2.4vw,24px)}
 .jgd-amount-n{font-size:12.5px;font-weight:700;color:#1C5842;line-height:1.6}
@@ -324,7 +336,7 @@ async function main() {
       + buildMain(guide, meta, guides)
       + donor.tail.replaceAll('/uploads/service-romu-sodan.html', `/${rel}`)).html;
 
-    for (const must of ['service.css?v=', 'wave-skin.css?v=', 'id="brand-v2"', '<main id="main">', 'jgd-wall']) {
+    for (const must of ['service.css?v=', 'wave-skin.css?v=', 'id="brand-v2"', '<main id="main" class="jgd-guide">', 'jgd-wall']) {
       if (!generated.includes(must)) throw new Error(`${rel}: 生成物に ${must} がありません`);
     }
     if (generated.includes('data-schema="service"')) {
