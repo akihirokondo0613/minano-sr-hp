@@ -68,6 +68,11 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
 </script>
 <style id="joseikin-guide">
 /* 制度解説ページ専用。順序の境目（壁）と手順を、図形でなく文字と色で示す。 */
+.jgd-guide .nw{white-space:nowrap}
+.jgd-guide .sec-head-c .sec-sub,.jgd-rule{max-width:52rem;margin-inline:auto;text-align:left}
+.jgd-rule{margin-top:24px;font-size:clamp(15px,1.6vw,16.5px);line-height:2;color:var(--ink2)}
+.jgd-rule p{margin:0}
+.jgd-rule p+p{margin-top:.65em}
 .jgd-wall{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:clamp(12px,2vw,22px);align-items:stretch}
 .jgd-wall-side{border-radius:var(--r);padding:clamp(18px,2.4vw,26px);border:1px solid var(--line,#E0E4DE)}
 .jgd-wall-side.is-ok{background:#EDF6F0;border-color:#BFE0CD}
@@ -78,12 +83,12 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
 .jgd-wall-side p{margin:0;font-size:14.5px;font-weight:700;line-height:1.85;color:#1E2721;word-break:auto-phrase}
 .jgd-wall-bar{position:relative;inline-size:6px;border-radius:3px;background:repeating-linear-gradient(180deg,#B03A2E 0 9px,transparent 9px 17px)}
 .jgd-wall-bar span{position:absolute;inset-block-start:50%;inset-inline-start:50%;transform:translate(-50%,-50%);white-space:nowrap;font-size:11.5px;font-weight:800;letter-spacing:.1em;color:#B03A2E;background:#fff;padding:5px 12px;border-radius:999px;border:1.5px solid #E6C7B6;box-shadow:0 2px 8px rgba(30,39,33,.08)}
-.jgd-wall-note{margin:clamp(16px,2.2vw,22px) 0 0;font-size:13.5px;line-height:2;color:#4A554D;max-width:46em;text-wrap:pretty}
+.jgd-wall-note{margin:clamp(16px,2.2vw,22px) 0 0;font-size:13.5px;line-height:2;color:#4A554D;max-width:65em;text-wrap:pretty}
 .jgd-steps{list-style:none;margin:0;padding:0;counter-reset:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:12px}
 .jgd-step{display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid var(--line,#E0E4DE);border-radius:var(--r);padding:clamp(16px,2.2vw,20px)}
 .jgd-step-n{display:grid;place-items:center;inline-size:26px;block-size:26px;border-radius:50%;background:#123F30;color:#fff;font-size:12.5px;font-weight:700}
-.jgd-step-b{font-size:14px;font-weight:800;color:#1E2721;line-height:1.6;word-break:auto-phrase}
-.jgd-step-t{font-size:12.5px;color:#4A554D;line-height:1.9;text-wrap:pretty}
+.jgd-step-b{margin:0;font-size:14px;font-weight:800;color:#1E2721;line-height:1.6;word-break:auto-phrase}
+.jgd-step-t{margin:0;font-size:12.5px;color:#4A554D;line-height:1.9;text-wrap:pretty}
 .jgd-amounts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px}
 .jgd-amount{display:flex;flex-direction:column;gap:8px;background:#EDF6F0;border:1px solid #BFE0CD;border-radius:var(--r);padding:clamp(18px,2.4vw,24px)}
 .jgd-amount-n{font-size:12.5px;font-weight:700;color:#1C5842;line-height:1.6}
@@ -151,7 +156,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
   <a href="../portal.html" onclick="closeNav()">書式・窓口</a>
   <a href="../uploads/contact.html" class="mob-cta">→ 無料相談を申し込む</a>
 </div>
-<main id="main">
+<main id="main" class="jgd-guide">
   <header class="page-hero">
     <div class="page-hero-inner">
       <nav class="breadcrumb">
@@ -174,12 +179,16 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
       <div class="sec-head-c">
         <span class="sec-kicker">いちばん大事な境目</span>
         <h2 class="sec-h">先に<wbr>動くと、<wbr>あとから<wbr>戻せません。</h2>
-        <p class="sec-sub">計画書が<wbr>コース実施日の<wbr>前日までに<wbr>労働局へ<wbr>届いている<wbr>こと。<wbr>実施日が<wbr>計画期間内に<wbr>ある<wbr>こと。<br>下の<wbr>図の<wbr>「境目」より<wbr>前に<wbr>動いてしまうと、<wbr>ほかの<wbr>要件を<wbr>すべて<wbr>満たしていても<wbr>支給されません。</p>
+        <div class="jgd-rule">
+          <p>計画書が<wbr>コース実施日の<wbr>前日までに<wbr>労働局へ<wbr>届いている<wbr>こと。</p>
+          <p>実施日が<wbr>計画期間内に<wbr>ある<wbr>こと。</p>
+          <p>下の<wbr>図の<wbr>「境目」より<wbr>前に<wbr>動いてしまうと、<wbr>ほかの<wbr>要件を<wbr>すべて<wbr>満たしていても<wbr>支給されません。</p>
+        </div>
       </div>
       <div class="jgd-wall rv">
         <div class="jgd-wall-side is-ok">
           <span class="jgd-wall-tag">先にやること</span>
-          <p>キャリ<wbr>アアップ計画書を<wbr>労働局へ<wbr>提出</p>
+          <p><span class="nw">キャリアアップ</span><wbr>計画書<wbr>を<wbr>労働局へ<wbr>提出</p>
         </div>
         <div class="jgd-wall-bar" aria-hidden="true"><span>境目</span></div>
         <div class="jgd-wall-side is-ng">
@@ -200,28 +209,28 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
       <ol class="jgd-steps rv">
         <li class="jgd-step">
           <span class="jgd-step-n">1</span>
-          <span class="jgd-step-b">計<wbr>画書<wbr>を<wbr>提<wbr>出</span>
-          <span class="jgd-step-t">コー<wbr>ス実施日の<wbr>前日まで。<wbr>実務では<wbr>1か<wbr>月前<wbr>に。</span>
+          <h3 class="jgd-step-b">計画書を提出</h3>
+          <p class="jgd-step-t">コース実施日の<wbr>前日まで。<wbr>実務では<wbr><span class="nw">1か月</span><wbr>前に。</p>
         </li>
         <li class="jgd-step">
           <span class="jgd-step-n">2</span>
-          <span class="jgd-step-b">就<wbr>業<wbr>規則<wbr>を<wbr>整<wbr>え<wbr>る</span>
-          <span class="jgd-step-t">転<wbr>換<wbr>の<wbr>規定を<wbr>施行・<wbr>周知<wbr>す<wbr>る。</span>
+          <h3 class="jgd-step-b">就業規則を整える</h3>
+          <p class="jgd-step-t">転換の<wbr>規定を<wbr>施行・周知する。</p>
         </li>
         <li class="jgd-step">
           <span class="jgd-step-n">3</span>
-          <span class="jgd-step-b">転<wbr>換・<wbr>改定を<wbr>実<wbr>施</span>
-          <span class="jgd-step-t">計<wbr>画<wbr>期間<wbr>内<wbr>に<wbr>行<wbr>う。</span>
+          <h3 class="jgd-step-b">転換・改定を実施</h3>
+          <p class="jgd-step-t">計画期間内に行う。</p>
         </li>
         <li class="jgd-step">
           <span class="jgd-step-n">4</span>
-          <span class="jgd-step-b">6<wbr>か<wbr>月の<wbr>実<wbr>績</span>
-          <span class="jgd-step-t">転<wbr>換後<wbr>の<wbr>賃金を<wbr>6か<wbr>月分支払<wbr>う。</span>
+          <h3 class="jgd-step-b"><span class="nw">6か月</span><wbr>の実績</h3>
+          <p class="jgd-step-t">転換後の<wbr>賃金を<wbr><span class="nw">6か月</span><wbr>分支払う。</p>
         </li>
         <li class="jgd-step">
           <span class="jgd-step-n">5</span>
-          <span class="jgd-step-b">支<wbr>給<wbr>申<wbr>請</span>
-          <span class="jgd-step-t">6<wbr>か<wbr>月分の<wbr>賃金を<wbr>支給した日の<wbr>翌日から<wbr>2か<wbr>月<wbr>以<wbr>内。</span>
+          <h3 class="jgd-step-b">支給申請</h3>
+          <p class="jgd-step-t"><span class="nw">6か月</span><wbr>分の<wbr>賃金を<wbr>支給した日の<wbr>翌日から<wbr><span class="nw">2か月</span><wbr>以内。</p>
         </li>
       </ol>
     </div>
@@ -276,7 +285,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
           </ul>
         </div>
       </div>
-      <p class="jgd-toyama"><b>富山の<wbr>場合</b>申請・相談の<wbr>窓口は<wbr>富山労働局 助成金<wbr>センターの<wbr>5階<wbr>（<wbr>076-432-9172・<wbr>MIPSビル）です。<wbr>県の<wbr>上乗せと<wbr>して<wbr>富山県<wbr>キャリアアップ奨励金<wbr>（1人<wbr>あたり10万円・国の<wbr>助成額の<wbr>2分の<wbr>1が<wbr>上限）が<wbr>あり、<wbr>申請期限は<wbr>正社員化・処遇改善の<wbr>実施日の<wbr>翌日から<wbr>2か<wbr>月以内と、<wbr>国より<wbr>短く<wbr>設定されています。<wbr>国・県とも、<wbr>取組みの<wbr>前日までに<wbr>キャリ<wbr>アアップ計画書が<wbr>富山労働局長に<wbr>受理されている<wbr>ことが<wbr>前提です。<wbr><a class="jgd-toyama-l" href="toyama-madoguchi.html#mdg-kyoku-joseikin">この窓口の所在地・電話を見る →</a></p>
+      <p class="jgd-toyama"><b>富山の<wbr>場合</b>申請・相談の<wbr>窓口は<wbr>富山労働局 助成金<wbr>センターの<wbr>5階<wbr>（<wbr>076-432-9172・<wbr>MIPSビル）です。<wbr>県の<wbr>上乗せと<wbr>して<wbr>富山県<wbr><span class="nw">キャリアアップ</span><wbr>奨励金<wbr>（1人<wbr>あたり10万円・国の<wbr>助成額の<wbr>2分の<wbr>1が<wbr>上限）が<wbr>あり、<wbr>申請期限は<wbr>正社員化・処遇改善の<wbr>実施日の<wbr>翌日から<wbr><span class="nw">2か月</span><wbr>以内と、<wbr>国より<wbr>短く<wbr>設定されています。<wbr>国・県とも、<wbr>取組みの<wbr>前日までに<wbr><span class="nw">キャリアアップ</span><wbr>計画書<wbr>が<wbr>富山労働局長に<wbr>受理されている<wbr>ことが<wbr>前提です。<wbr><a class="jgd-toyama-l" href="toyama-madoguchi.html#mdg-kyoku-joseikin">この窓口の所在地・電話を見る →</a></p>
     </div>
   </section>
 

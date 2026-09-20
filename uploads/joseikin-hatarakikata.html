@@ -68,6 +68,11 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
 </script>
 <style id="joseikin-guide">
 /* 制度解説ページ専用。順序の境目（壁）と手順を、図形でなく文字と色で示す。 */
+.jgd-guide .nw{white-space:nowrap}
+.jgd-guide .sec-head-c .sec-sub,.jgd-rule{max-width:52rem;margin-inline:auto;text-align:left}
+.jgd-rule{margin-top:24px;font-size:clamp(15px,1.6vw,16.5px);line-height:2;color:var(--ink2)}
+.jgd-rule p{margin:0}
+.jgd-rule p+p{margin-top:.65em}
 .jgd-wall{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:clamp(12px,2vw,22px);align-items:stretch}
 .jgd-wall-side{border-radius:var(--r);padding:clamp(18px,2.4vw,26px);border:1px solid var(--line,#E0E4DE)}
 .jgd-wall-side.is-ok{background:#EDF6F0;border-color:#BFE0CD}
@@ -78,12 +83,12 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
 .jgd-wall-side p{margin:0;font-size:14.5px;font-weight:700;line-height:1.85;color:#1E2721;word-break:auto-phrase}
 .jgd-wall-bar{position:relative;inline-size:6px;border-radius:3px;background:repeating-linear-gradient(180deg,#B03A2E 0 9px,transparent 9px 17px)}
 .jgd-wall-bar span{position:absolute;inset-block-start:50%;inset-inline-start:50%;transform:translate(-50%,-50%);white-space:nowrap;font-size:11.5px;font-weight:800;letter-spacing:.1em;color:#B03A2E;background:#fff;padding:5px 12px;border-radius:999px;border:1.5px solid #E6C7B6;box-shadow:0 2px 8px rgba(30,39,33,.08)}
-.jgd-wall-note{margin:clamp(16px,2.2vw,22px) 0 0;font-size:13.5px;line-height:2;color:#4A554D;max-width:46em;text-wrap:pretty}
+.jgd-wall-note{margin:clamp(16px,2.2vw,22px) 0 0;font-size:13.5px;line-height:2;color:#4A554D;max-width:65em;text-wrap:pretty}
 .jgd-steps{list-style:none;margin:0;padding:0;counter-reset:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:12px}
 .jgd-step{display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid var(--line,#E0E4DE);border-radius:var(--r);padding:clamp(16px,2.2vw,20px)}
 .jgd-step-n{display:grid;place-items:center;inline-size:26px;block-size:26px;border-radius:50%;background:#123F30;color:#fff;font-size:12.5px;font-weight:700}
-.jgd-step-b{font-size:14px;font-weight:800;color:#1E2721;line-height:1.6;word-break:auto-phrase}
-.jgd-step-t{font-size:12.5px;color:#4A554D;line-height:1.9;text-wrap:pretty}
+.jgd-step-b{margin:0;font-size:14px;font-weight:800;color:#1E2721;line-height:1.6;word-break:auto-phrase}
+.jgd-step-t{margin:0;font-size:12.5px;color:#4A554D;line-height:1.9;text-wrap:pretty}
 .jgd-amounts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px}
 .jgd-amount{display:flex;flex-direction:column;gap:8px;background:#EDF6F0;border:1px solid #BFE0CD;border-radius:var(--r);padding:clamp(18px,2.4vw,24px)}
 .jgd-amount-n{font-size:12.5px;font-weight:700;color:#1C5842;line-height:1.6}
@@ -151,7 +156,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
   <a href="../portal.html" onclick="closeNav()">書式・窓口</a>
   <a href="../uploads/contact.html" class="mob-cta">→ 無料相談を申し込む</a>
 </div>
-<main id="main">
+<main id="main" class="jgd-guide">
   <header class="page-hero">
     <div class="page-hero-inner">
       <nav class="breadcrumb">
@@ -174,7 +179,11 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
       <div class="sec-head-c">
         <span class="sec-kicker">いちばん大事な境目</span>
         <h2 class="sec-h">先に<wbr>動くと、<wbr>あとから<wbr>戻せません。</h2>
-        <p class="sec-sub">交付決定より<wbr>前に<wbr>契約や<wbr>発注を<wbr>すると、<wbr>その分は<wbr>改善事業に<wbr>含められません。<wbr>見積りの<wbr>取得だけは<wbr>交付申請前でも<wbr>構いません。<br>下の<wbr>図の<wbr>「境目」より<wbr>前に<wbr>動いてしまうと、<wbr>ほかの<wbr>要件を<wbr>すべて<wbr>満たしていても<wbr>支給されません。</p>
+        <div class="jgd-rule">
+          <p>交付決定より<wbr>前に<wbr>契約や<wbr>発注を<wbr>すると、<wbr>その分は<wbr>改善事業に<wbr>含められません。</p>
+          <p>見積りの<wbr>取得だけは<wbr>交付申請前でも<wbr>構いません。</p>
+          <p>下の<wbr>図の<wbr>「境目」より<wbr>前に<wbr>動いてしまうと、<wbr>ほかの<wbr>要件を<wbr>すべて<wbr>満たしていても<wbr>支給されません。</p>
+        </div>
       </div>
       <div class="jgd-wall rv">
         <div class="jgd-wall-side is-ok">
@@ -200,28 +209,28 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
       <ol class="jgd-steps rv">
         <li class="jgd-step">
           <span class="jgd-step-n">1</span>
-          <span class="jgd-step-b">現<wbr>状<wbr>を<wbr>整<wbr>え<wbr>る</span>
-          <span class="jgd-step-t">36協定の<wbr>届出、年次有給休暇の<wbr>管理簿。<wbr>交付申請より<wbr>前<wbr>に。</span>
+          <h3 class="jgd-step-b">現状を整える</h3>
+          <p class="jgd-step-t">36協定の<wbr>届出、年次有給休暇の<wbr>管理簿。<wbr>交付申請より<wbr>前に。</p>
         </li>
         <li class="jgd-step">
           <span class="jgd-step-n">2</span>
-          <span class="jgd-step-b">交<wbr>付<wbr>申<wbr>請</span>
-          <span class="jgd-step-t">令<wbr>和<wbr>8年11月30日<wbr>17時まで。<wbr>予算超過で<wbr>前倒しに<wbr>なることが<wbr>あり<wbr>ま<wbr>す。</span>
+          <h3 class="jgd-step-b">交付申請</h3>
+          <p class="jgd-step-t">令和8年11月30日<wbr>17時まで。<wbr>予算超過で<wbr>前倒しに<wbr>なることがあります。</p>
         </li>
         <li class="jgd-step">
           <span class="jgd-step-n">3</span>
-          <span class="jgd-step-b">交<wbr>付<wbr>決<wbr>定</span>
-          <span class="jgd-step-t">こ<wbr>こまで<wbr>発注・<wbr>契約を<wbr>し<wbr>な<wbr>い。</span>
+          <h3 class="jgd-step-b">交付決定</h3>
+          <p class="jgd-step-t">ここまで<wbr>発注・<wbr>契約を<wbr>しない。</p>
         </li>
         <li class="jgd-step">
           <span class="jgd-step-n">4</span>
-          <span class="jgd-step-b">取<wbr>組<wbr>みの<wbr>実<wbr>施</span>
-          <span class="jgd-step-t">令<wbr>和<wbr>9年<wbr>1月<wbr>31<wbr>日<wbr>ま<wbr>で。</span>
+          <h3 class="jgd-step-b">取組みの実施</h3>
+          <p class="jgd-step-t">令和<wbr>9年1月31日まで。</p>
         </li>
         <li class="jgd-step">
           <span class="jgd-step-n">5</span>
-          <span class="jgd-step-b">支<wbr>給<wbr>申<wbr>請</span>
-          <span class="jgd-step-t">事<wbr>業<wbr>実施<wbr>の<wbr>終期から<wbr>30<wbr>日<wbr>以<wbr>内。</span>
+          <h3 class="jgd-step-b">支給申請</h3>
+          <p class="jgd-step-t">事業実施の<wbr>終期から<wbr>30日以内。</p>
         </li>
       </ol>
     </div>
