@@ -827,10 +827,12 @@ function recordConsoleError(target) {
   });
   await simulatorPage.locator('input[name="pref_contact"][value="電話"]').check();
   await simulatorPage.waitForFunction(() => !document.getElementById('contactTimeField')?.hidden);
-  await simulatorPage.locator('input[name="pref_day"][value="土曜日"]').check();
+  const phoneRequired = await simulatorPage.locator('#tel').evaluate(el => el.required);
+  await simulatorPage.locator('input[name="pref_day"][value="火曜日"]').check();
   await simulatorPage.locator('input[name="pref_time"][value="15:00〜18:00"]').check();
   await simulatorPage.locator('input[name="pref_contact"][value="メール"]').check();
   const contactPreferenceState = await simulatorPage.evaluate(() => ({
+    telOptionalForEmail: !document.getElementById('tel')?.required,
     timeHiddenForEmail: !!document.getElementById('contactTimeField')?.hidden,
     timeSelectionCleared: !document.querySelector('input[name="pref_time"]:checked'),
     daySelectionCleared: !document.querySelector('input[name="pref_day"]:checked'),
@@ -849,6 +851,7 @@ function recordConsoleError(target) {
     contactInitial.finalNoteBeforePrivacy &&
     contactInitial.timeInitiallyHidden &&
     contactInitial.contactMethodVisible &&
+    phoneRequired && contactPreferenceState.telOptionalForEmail &&
     contactPreferenceState.timeHiddenForEmail &&
     contactPreferenceState.timeSelectionCleared &&
     contactPreferenceState.daySelectionCleared;
@@ -899,11 +902,13 @@ function recordConsoleError(target) {
   await simulatorPage.locator('#brRomuKanshin input[type="checkbox"]').first().check();
   await simulatorPage.locator('input[name="br_komon_haikei"]').first().check();
   await simulatorPage.locator('input[name="pref_contact"][value="電話"]').check();
-  await simulatorPage.locator('input[name="pref_day"][value="日曜日"]').check();
+  await simulatorPage.locator('input[name="pref_day"][value="金曜日"]').check();
   await simulatorPage.locator('input[name="pref_time"][value="15:00〜18:00"]').check();
   await simulatorPage.locator('#privacy').check();
   await simulatorPage.locator('#contactForm .form-submit').click();
   await simulatorPage.locator('#formSuccess').waitFor({ state: 'visible' });
+  const draftCleared = await simulatorPage.evaluate(() => !sessionStorage.getItem('mn:contact-draft:' + location.pathname + location.search));
+  if (!draftCleared) failures.push('問い合わせフォーム: 送信成功後に入力の一時保存が残っています');
   const expectedContactPayloadKeys = [
     'お名前',
     '会社名',
@@ -938,7 +943,7 @@ function recordConsoleError(target) {
   const contactPayloadOk =
     missingContactPayloadKeys.length === 0 &&
     submittedContactPayload?.['希望の連絡方法'] === '電話' &&
-    submittedContactPayload?.['電話してよい曜日'] === '日曜日' &&
+    submittedContactPayload?.['電話してよい曜日'] === '金曜日' &&
     submittedContactPayload?.['つながりやすい時間帯'] === '15:00〜18:00' &&
     submittedContactPayload?.['顧問社労士の有無'] === 'いない' &&
     submittedContactPayload?.['入退社などの手続きの処理方法'] === '自社で電子申請' &&
