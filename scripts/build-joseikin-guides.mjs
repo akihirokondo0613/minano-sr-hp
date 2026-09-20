@@ -98,7 +98,7 @@ function buildBreadcrumbSchema(guide) {
 
 function buildMain(guide, meta, guides) {
   // 短い制度名の語幹だけを保護する。制度名全体をnowrapにして狭幅を壊さない。
-  const prose = (value) => esc(value).replace(/キャリアアップ|トライアル|\d+か月/g, (word) => `<span class="nw">${word}</span><wbr>`);
+  const prose = (value) => esc(value).replace(/（トライアルのみ）|キャリアアップ|トライアル|\d+か月/g, (word) => `<span class="nw">${word}</span><wbr>`);
   const ruleParagraphs = guide.wall.rule.match(/[^。]+。?/g)
     .map((sentence) => `<p>${prose(sentence)}</p>`).join('\n          ');
   const others = guides.filter((item) => item.slug !== guide.slug);
