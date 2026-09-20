@@ -69,9 +69,11 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
 <style id="joseikin-guide">
 /* 制度解説ページ専用。順序の境目（壁）と手順を、図形でなく文字と色で示す。 */
 .jgd-guide .nw{white-space:nowrap}
-.jgd-guide .sec-head-c .sec-sub,.jgd-rule{max-width:52rem;margin-inline:auto;text-align:left}
+.jgd-guide .sec-head-c .sec-sub,.jgd-rule{max-width:52rem;margin-inline:auto;text-align:center}
 .jgd-rule{margin-top:24px;font-size:clamp(15px,1.6vw,16.5px);line-height:2;color:var(--ink2)}
 .jgd-rule p{margin:0}
+.jgd-key{font-weight:700;color:var(--ink);text-decoration:underline;text-decoration-color:#b8d9ca;text-decoration-thickness:3px;text-underline-offset:4px;text-decoration-skip-ink:auto}
+.jgd-warning{font-weight:700;color:var(--ink)}
 .jgd-rule p+p{margin-top:.65em}
 .jgd-wall{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:clamp(12px,2vw,22px);align-items:stretch}
 .jgd-wall-side{border-radius:var(--r);padding:clamp(18px,2.4vw,26px);border:1px solid var(--line,#E0E4DE)}
@@ -180,8 +182,8 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
         <span class="sec-kicker">いちばん大事な境目</span>
         <h2 class="sec-h">先に<wbr>動くと、<wbr>あとから<wbr>戻せません。</h2>
         <div class="jgd-rule">
-          <p>育児系は、<wbr>休業開始日<wbr>（産前産後から<wbr>続くなら<wbr>産前産後休業の<wbr>開始日）の<wbr>前日までに<wbr>準備が<wbr>揃っている<wbr>こと。</p>
-          <p>下の<wbr>図の<wbr>「境目」より<wbr>前に<wbr>動いてしまうと、<wbr>ほかの<wbr>要件を<wbr>すべて<wbr>満たしていても<wbr>支給されません。</p>
+          <p>育児系は、<wbr>休業開始日<wbr>（産前産後から<wbr>続くなら<wbr>産前産後休業の<wbr>開始日）の<wbr><strong class="jgd-key">前日までに<wbr>準備が<wbr>揃っている<wbr>こと</strong>。</p>
+          <p>下の<wbr>図の<wbr>「境目」より<wbr>前に<wbr>動いてしまうと、<wbr>ほかの<wbr>要件を<wbr>すべて<wbr>満たしていても<wbr><strong class="jgd-warning">支給されません。</strong></p>
         </div>
       </div>
       <div class="jgd-wall rv">

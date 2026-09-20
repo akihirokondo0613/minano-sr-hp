@@ -99,8 +99,23 @@ function buildBreadcrumbSchema(guide) {
 function buildMain(guide, meta, guides) {
   // 短い制度名の語幹だけを保護する。制度名全体をnowrapにして狭幅を壊さない。
   const prose = (value) => esc(value).replace(/（トライアルのみ）|キャリアアップ|トライアル|\d+か月/g, (word) => `<span class="nw">${word}</span><wbr>`);
+  // 本文は変えず、各制度の判断に重要な条件だけを強調する。
+  const emphasis = {
+    'career-up': 'コース実施日の前日まで',
+    'ryoritsu': '前日までに準備が揃っていること',
+    'jinzai-kaihatsu': '訓練開始日の6か月前から1か月前まで',
+    'jinzai-kakuho': '費用を一部でも払っていないこと',
+    'koyou-kaihatsu': '紹介より前に選考を始めていないこと',
+    '65sai-cho': '古い定年年齢が残っていないこと',
+    'hatarakikata': '交付決定より前に契約や発注をすると',
+    'koyou-chosei': '休業等を開始する日の前日まで',
+  }[guide.slug];
+  if (!emphasis || !guide.wall.rule.includes(emphasis)) throw new Error('強調対象の条件を確認してください: ' + guide.slug);
+  const ruleProse = (sentence) => sentence.includes(emphasis)
+    ? sentence.split(emphasis).map(prose).join('<strong class="jgd-key">' + prose(emphasis) + '</strong>')
+    : prose(sentence);
   const ruleParagraphs = guide.wall.rule.match(/[^。]+。?/g)
-    .map((sentence) => `<p>${prose(sentence)}</p>`).join('\n          ');
+    .map((sentence) => `<p>${ruleProse(sentence)}</p>`).join('\n          ');
   const others = guides.filter((item) => item.slug !== guide.slug);
   const step = (item, index) => `
         <li class="jgd-step">
@@ -146,7 +161,7 @@ function buildMain(guide, meta, guides) {
         <h2 class="sec-h">先に動くと、あとから戻せません。</h2>
         <div class="jgd-rule">
           ${ruleParagraphs}
-          <p>下の図の「境目」より前に動いてしまうと、ほかの要件をすべて満たしていても支給されません。</p>
+          <p>下の図の「境目」より前に動いてしまうと、ほかの要件をすべて満たしていても<strong class="jgd-warning">支給されません。</strong></p>
         </div>
       </div>
       <div class="jgd-wall rv">
@@ -240,9 +255,11 @@ function buildMain(guide, meta, guides) {
 const STYLE = `<style id="joseikin-guide">
 /* 制度解説ページ専用。順序の境目（壁）と手順を、図形でなく文字と色で示す。 */
 .jgd-guide .nw{white-space:nowrap}
-.jgd-guide .sec-head-c .sec-sub,.jgd-rule{max-width:52rem;margin-inline:auto;text-align:left}
+.jgd-guide .sec-head-c .sec-sub,.jgd-rule{max-width:52rem;margin-inline:auto;text-align:center}
 .jgd-rule{margin-top:24px;font-size:clamp(15px,1.6vw,16.5px);line-height:2;color:var(--ink2)}
 .jgd-rule p{margin:0}
+.jgd-key{font-weight:700;color:var(--ink);text-decoration:underline;text-decoration-color:#b8d9ca;text-decoration-thickness:3px;text-underline-offset:4px;text-decoration-skip-ink:auto}
+.jgd-warning{font-weight:700;color:var(--ink)}
 .jgd-rule p+p{margin-top:.65em}
 .jgd-wall{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:clamp(12px,2vw,22px);align-items:stretch}
 .jgd-wall-side{border-radius:var(--r);padding:clamp(18px,2.4vw,26px);border:1px solid var(--line,#E0E4DE)}
