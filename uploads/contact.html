@@ -296,7 +296,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
   #formSuccess .su-t1,#formSuccess .su-t2,#formSuccess .su-t3{opacity:1;transform:none}
 }
 </style>
-<link rel="stylesheet" href="../wave-skin.css?v=20260824-termbadge1">
+<link rel="stylesheet" href="../wave-skin.css?v=20260921-softfooter1">
 <style id="live-chip-css">
 .live-chip{display:inline-flex;align-items:center;gap:9px;background:var(--g700);color:#fff;font-size:12.5px;font-weight:700;border-radius:999px;padding:7px 16px;letter-spacing:.05em;margin-bottom:18px;font-family:"Zen Maru Gothic",sans-serif;box-shadow:0 4px 10px -4px rgba(0,110,60,.4)}
 .live-chip i{position:relative;width:8px;height:8px;border-radius:50%;background:#fff;flex-shrink:0}
@@ -380,7 +380,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
     <div class="form-grid">
       <div class="form-wrap">
         <h2 style="font-size:20px; font-weight:700; color:var(--ink); margin-bottom:8px;">無料相談フォーム</h2>
-        <p style="font-size:14px; color:var(--ink3); margin-bottom:32px;">必須は<wbr><b style="color:var(--g700)">3項目だけ</b>。<wbr>残りは<wbr>任意で<wbr>構いません。<wbr>担当者より<wbr>ご連絡します。</p>
+        <p style="font-size:14px; color:var(--ink3); margin-bottom:32px;">基本の<wbr>必須は<wbr><b style="color:var(--g700)">3項目</b>です。<wbr>電話での<wbr>ご連絡を<wbr>希望する<wbr>場合は、<wbr>電話番号も<wbr>入力してください。<wbr>担当者より<wbr>ご連絡します。</p>
         
         <div id="formSuccess" style="display:none; text-align:center; padding:46px 20px 42px; position:relative; overflow:hidden;">
             <div id="confetti" aria-hidden="true" style="position:absolute; inset:0; pointer-events:none; overflow:hidden;"></div>
@@ -413,8 +413,9 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
                 <input type="email" id="email" class="form-input" placeholder="info@company.co.jp" required>
               </div>
               <div class="form-group">
-                <label class="form-label" for="tel">電話番号 <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
-                <input type="tel" id="tel" class="form-input" placeholder="090-1234-5678">
+                <label class="form-label" for="tel">電話番号 <small id="telRequirement" style="color:var(--ink4);font-weight:400">（任意）</small></label>
+                <input type="tel" id="tel" class="form-input" placeholder="090-1234-5678" aria-describedby="telHelp" autocomplete="tel">
+                <small id="telHelp" class="form-help">電話でのご連絡を希望する場合は入力してください。</small>
               </div>
             </div>
             <div class="form-group">
@@ -686,10 +687,12 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
                 <fieldset class="choice-fieldset">
                   <legend class="form-label">電話してよい曜日</legend>
                   <div class="checkbox-group" id="prefDay">
-                    <label class="checkbox-label"><input type="radio" name="pref_day" value="平日"> 平日</label>
-                    <label class="checkbox-label"><input type="radio" name="pref_day" value="土曜日"> 土曜日</label>
-                    <label class="checkbox-label"><input type="radio" name="pref_day" value="日曜日"> 日曜日</label>
-                    <label class="checkbox-label"><input type="radio" name="pref_day" value="どの曜日でもよい"> どの曜日でもよい</label>
+                    <label class="checkbox-label"><input type="radio" name="pref_day" value="月曜日"> 月曜日</label>
+                    <label class="checkbox-label"><input type="radio" name="pref_day" value="火曜日"> 火曜日</label>
+                    <label class="checkbox-label"><input type="radio" name="pref_day" value="水曜日"> 水曜日</label>
+                    <label class="checkbox-label"><input type="radio" name="pref_day" value="木曜日"> 木曜日</label>
+                    <label class="checkbox-label"><input type="radio" name="pref_day" value="金曜日"> 金曜日</label>
+                    <label class="checkbox-label"><input type="radio" name="pref_day" value="平日ならいつでもよい"> 平日ならいつでもよい</label>
                   </div>
                 </fieldset>
                 <fieldset class="choice-fieldset">
@@ -700,7 +703,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
                     <label class="checkbox-label"><input type="radio" name="pref_time" value="15:00〜18:00"> 15:00〜18:00</label>
                     <label class="checkbox-label"><input type="radio" name="pref_time" value="時間帯はいつでもよい"> いつでもよい</label>
                   </div>
-                  <small class="form-help" id="prefTimeHelp">選択いただいた曜日・時間帯を目安にご連絡します。</small>
+                  <small class="form-help" id="prefTimeHelp">平日9:00〜18:00の範囲で、選択いただいた曜日・時間帯を目安にご連絡します。</small>
                 </fieldset>
               </div>
             </div>
@@ -942,6 +945,10 @@ function updateContactTimeVisibility() {
   var field = document.getElementById('contactTimeField');
   var method = getRadioVal('pref_contact');
   var show = method === '電話' || method === 'どれでもよい';
+  var tel = document.getElementById('tel');
+  var requirement = document.getElementById('telRequirement');
+  if (tel) tel.required = method === '電話';
+  if (requirement) requirement.textContent = method === '電話' ? '（必須）' : '（任意）';
   if (!field) return;
   field.hidden = !show;
   if (!show) {
@@ -1079,9 +1086,12 @@ function collectMeta() {
   return meta;
 }
 
+// エラー表示で書き換えた後でも、成功時は元の完了画面に戻す。
+var contactSuccessMarkup = document.getElementById('formSuccess').innerHTML;
 function showSuccess() {
   document.getElementById('contactForm').style.display = 'none';
   var box = document.getElementById('formSuccess');
+  box.innerHTML = contactSuccessMarkup;
   box.style.display = 'block';
   window.scrollTo(0, 0);
   requestAnimationFrame(function () { box.classList.add('go'); });
@@ -1188,6 +1198,7 @@ function handleSubmit(event) {
       // HTTP 200だけでは成功としない。明示的な成功応答が必要。
       if (!j || (j.success !== true && j.success !== 'true')) throw new Error('formsubmit success not confirmed');
       document.dispatchEvent(new CustomEvent('mn:contact-success'));
+      clearContactDraft();
       showSuccess();
     })
     .catch(function () {
@@ -1257,6 +1268,41 @@ if (fromPlan) {
     if(typeof updateBranches === 'function') updateBranches();
   }
 }
+// 同じタブの戻る操作に備える。30分以内・同じ相談入口だけ復元し、送信成功時に消す。
+var contactDraftKey = 'mn:contact-draft:' + location.pathname + location.search;
+function clearContactDraft() {
+  try { sessionStorage.removeItem(contactDraftKey); } catch (e) {}
+}
+function saveContactDraft() {
+  var form = document.getElementById('contactForm');
+  if (!form || form.style.display === 'none') return;
+  var values = Array.prototype.map.call(form.querySelectorAll('input,textarea,select'), function (el) {
+    return { id: el.id, name: el.name, type: el.type, value: el.value, checked: el.checked };
+  });
+  try { sessionStorage.setItem(contactDraftKey, JSON.stringify({ savedAt: Date.now(), values: values })); } catch (e) {}
+}
+var draftForm = document.getElementById('contactForm');
+try {
+  var savedDraft = JSON.parse(sessionStorage.getItem(contactDraftKey) || 'null');
+  if (savedDraft && Date.now() - savedDraft.savedAt < 30 * 60 * 1000 && Array.isArray(savedDraft.values)) {
+    var draftInputs = Array.prototype.slice.call(draftForm.querySelectorAll('input,textarea,select'));
+    savedDraft.values.forEach(function (item) {
+      var el = draftInputs.find(function (input) {
+        return item.id ? input.id === item.id : input.name === item.name && input.type === item.type && input.value === item.value;
+      });
+      if (!el) return;
+      if (el.type === 'checkbox' || el.type === 'radio') el.checked = !!item.checked;
+      else el.value = item.value;
+    });
+    updateBranches();
+    updateContactTimeVisibility();
+  } else clearContactDraft();
+} catch (e) { clearContactDraft(); }
+if (draftForm) {
+  draftForm.addEventListener('input', saveContactDraft);
+  draftForm.addEventListener('change', saveContactDraft);
+}
+
 </script>
 <script defer src="../link-keep.js?v=20260919-funnel1"></script>
 <script defer src="../header-motion.js?v=20260809-nav1"></script>
