@@ -1086,9 +1086,12 @@ function collectMeta() {
   return meta;
 }
 
+// エラー表示で書き換えた後でも、成功時は元の完了画面に戻す。
+var contactSuccessMarkup = document.getElementById('formSuccess').innerHTML;
 function showSuccess() {
   document.getElementById('contactForm').style.display = 'none';
   var box = document.getElementById('formSuccess');
+  box.innerHTML = contactSuccessMarkup;
   box.style.display = 'block';
   window.scrollTo(0, 0);
   requestAnimationFrame(function () { box.classList.add('go'); });

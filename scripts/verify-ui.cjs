@@ -859,13 +859,15 @@ function recordConsoleError(target) {
     failures.push(`問い合わせフォーム: 導線・任意項目・連絡希望の表示が不正 ${JSON.stringify({ contactInitial, contactPreferenceState })}`);
   }
   let submittedContactPayload = null;
+  let mockContactAttempts = 0;
   await simulatorPage.route('https://formsubmit.co/**', async route => {
     try {
       submittedContactPayload = JSON.parse(route.request().postData() || '{}');
     } catch {
       submittedContactPayload = {};
     }
-    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true }) });
+    mockContactAttempts++;
+    await route.fulfill({ status: mockContactAttempts === 1 ? 500 : 200, contentType: 'application/json', body: JSON.stringify({ success: mockContactAttempts > 1 }) });
   });
   await simulatorPage.locator('#name').fill('検証 太郎');
   await simulatorPage.locator('#company').fill('検証株式会社');
@@ -906,7 +908,12 @@ function recordConsoleError(target) {
   await simulatorPage.locator('input[name="pref_time"][value="15:00〜18:00"]').check();
   await simulatorPage.locator('#privacy').check();
   await simulatorPage.locator('#contactForm .form-submit').click();
+  await simulatorPage.getByRole('button', { name: '入力内容を保ったまま戻る' }).click();
+  await simulatorPage.locator('#contactForm .form-submit').click();
   await simulatorPage.locator('#formSuccess').waitFor({ state: 'visible' });
+  if (mockContactAttempts !== 2 || /送信結果を確認できません/.test(await simulatorPage.locator('#formSuccess').innerText())) {
+    failures.push('問い合わせフォーム: 失敗後の再送成功が完了画面へ切り替わりません');
+  }
   const draftCleared = await simulatorPage.evaluate(() => !sessionStorage.getItem('mn:contact-draft:' + location.pathname + location.search));
   if (!draftCleared) failures.push('問い合わせフォーム: 送信成功後に入力の一時保存が残っています');
   const expectedContactPayloadKeys = [
