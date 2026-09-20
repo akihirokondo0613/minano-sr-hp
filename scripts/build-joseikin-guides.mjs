@@ -228,7 +228,11 @@ function buildMain(guide, meta, guides) {
       <div class="sec-head-c">
         <span class="sec-kicker">出典と、ほかの制度</span>
         <h2 class="sec-h">公式ページ</h2>
-        <p class="sec-sub">このページは${esc(meta.fiscalYear)}の公式資料をもとに、社会保険労務士がかみくだいてまとめたものです（最終更新 ${esc(meta.updated)}）。要件と金額は年度により変わります。</p>
+        <div class="sec-sub jgd-source-note">
+          <p>このページは${esc(meta.fiscalYear)}の公式資料をもとに、社会保険労務士がかみくだいてまとめたものです。</p>
+          <p><span class="nw">（最終更新 ${esc(meta.updated)}）</span><wbr></p>
+          <p>要件と金額は年度により変わります。</p>
+        </div>
       </div>
       <p class="jgd-official">
           ${officialLinks}
@@ -257,7 +261,8 @@ const STYLE = `<style id="joseikin-guide">
 .jgd-guide .nw{white-space:nowrap}
 .jgd-guide .sec-head-c .sec-sub,.jgd-rule{max-width:52rem;margin-inline:auto;text-align:center}
 .jgd-rule{margin-top:24px;font-size:clamp(15px,1.6vw,16.5px);line-height:2;color:var(--ink2)}
-.jgd-rule p{margin:0}
+.jgd-rule p,.jgd-source-note p{margin:0}
+.jgd-source-note p+p{margin-top:.45em}
 .jgd-key{font-weight:700;color:var(--ink);text-decoration:underline;text-decoration-color:#b8d9ca;text-decoration-thickness:3px;text-underline-offset:4px;text-decoration-skip-ink:auto}
 .jgd-warning{font-weight:700;color:var(--ink)}
 .jgd-rule p+p{margin-top:.65em}
