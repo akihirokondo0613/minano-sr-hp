@@ -999,6 +999,24 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 @media(max-width:700px){#top .hero-overlay{padding:94px 20px 14px}#top .hero-h1{font-size:clamp(23px,5.5vw,32px)}#top .hero-scene{height:80vw;min-height:260px;max-height:none}.hero-town{height:48vw;bottom:24vw}.actor-builder,.actor-delivery,.actor-florist,.actor-mechanic{display:none}.actor-cafe{--person-left:0%;--tablet-height:49vw;--tablet-bottom:19vw}.actor-wave{--person-left:61%;--tablet-height:60vw;--tablet-bottom:17vw}.actor-garden{--person-left:0%;--tablet-height:35vw}.actor-seated{--person-left:26%;--tablet-height:38vw}.actor-kneel{--person-left:52%;--tablet-height:35vw}.actor-baker{left:auto;right:0;--tablet-height:40vw;--tablet-bottom:0}}
 @media(prefers-reduced-motion:reduce){.actor-face{transition:none}}
 
+
+/* 業務名を主役にし、地域名は説明文へ統合する。 */
+#top .hero-overlay{width:min(88%,1200px);padding-top:108px}
+#top .hero-h1{font-size:clamp(27px,2.7vw,39px);line-height:1.45}
+#top .hero-services{display:inline;font-size:clamp(40px,4vw,58px);font-weight:800;letter-spacing:-.025em}
+#top .why-label.hero-label{display:inline;background:none;border:0;border-radius:0;padding:0;margin:0;font:inherit;color:inherit;letter-spacing:inherit;box-shadow:none}
+#top .hero-sub{max-width:930px;margin-top:14px}
+#top .actor-wave{--person-height:40svh;right:6%;--person-bottom:13svh}
+@media(min-width:1101px) and (max-height:800px){#top .hero-overlay{padding-top:96px}#top .hero-services{font-size:44px}#top .hero-h1{font-size:30px}#top .hero-sub{font-size:12px;max-width:840px}}
+@media(max-width:1100px){#top .hero-overlay{width:100%;padding:100px 24px 12px}#top .hero-services{font-size:clamp(36px,4vw,44px)}#top .actor-wave{--tablet-height:34vw;--tablet-bottom:12vw;right:6%}}
+@media(max-width:700px){#top .hero-overlay{padding:94px 20px 10px}#top .hero-services{font-size:clamp(27px,7.2vw,42px);line-height:1.5}#top .hero-h1{font-size:clamp(21px,5.3vw,29px);line-height:1.5}#top .hero-sub{margin-top:16px;font-size:13px}#top .hero-scene{height:86vw;min-height:280px}.hero-town{height:110vw;bottom:0}.hero-town img{object-position:50% 50%}#top .actor-wave{--tablet-height:42vw;--tablet-bottom:27vw;right:10%}}
+/* 下線は文字行の実寸に合わせて描画。ペン先と線の終点を一致させる。 */
+.pen-heading{position:relative;isolation:isolate}
+.pen-heading.pen-ready strong{background:none!important;box-shadow:none!important}
+.pen-layer{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:-1}
+.pen-tip{opacity:0}
+@media(prefers-reduced-motion:reduce){.pen-tip{display:none}}
+
 </style>
 <link rel="preload" as="image" type="image/avif" href="assets/illustrations/hero-toyama-sm.avif" media="(max-width:700px)">
 </head>
@@ -1061,9 +1079,8 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
       <div class="hero-actor actor-mechanic" style="--person-ratio:426/930"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-crowd-mechanic-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-crowd-mechanic.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-crowd-mechanic-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-crowd-mechanic.webp" width="426" height="930" alt="" decoding="async" loading="lazy"></picture></div>
     </div>
     <div class="hero-overlay">
-      <div class="why-label hero-label">富山の社会保険労務士事務所</div>
-      <h1 class="hero-h1"><span class="nw">手続きも、</span><wbr><span class="nw">給与計算も、</span><wbr><span class="nw">助成金も。</span><br><strong><span class="nw">会社の労務を、</span><wbr><span class="nw">まるごと任せられる。</span></strong></h1>
-      <p class="hero-sub"><span class="nw">中小企業の経営者に向けて、</span><wbr><span class="nw">労務顧問・手続き・給与計算・</span><wbr><span class="nw">助成金・DXまで</span><wbr><span class="nw">実務に沿ってサポート。</span><br><span class="nw">初めてのご相談でも、</span><wbr><span class="nw">むずかしい言葉を使わずに整理します。</span></p>
+      <h1 class="hero-h1"><span class="nw hero-services">手続きも、</span><wbr><span class="nw hero-services">給与計算も、</span><wbr><span class="nw hero-services">助成金も。</span><br><strong><span class="nw">会社の労務を、</span><wbr><span class="nw">まるごと任せられる。</span></strong></h1>
+      <p class="hero-sub"><span class="nw why-label hero-label">富山の社会保険労務士事務所。</span><wbr><span class="nw">中小企業の経営者に向けて、</span><wbr><span class="nw">労務顧問・手続き・給与計算・</span><wbr><span class="nw">助成金・DXまで</span><wbr><span class="nw">実務に沿ってサポート。</span><br><span class="nw">初めてのご相談でも、</span><wbr><span class="nw">むずかしい言葉を使わずに整理します。</span></p>
       <div class="hero-btns">
         <a href="uploads/contact.html" class="btn-primary">無料で相談する</a>
         <a href="infographic.html" class="hero-sub-link">社労士とは？ →</a>
@@ -1704,11 +1721,32 @@ var ro=new IntersectionObserver(function(entries){
 },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.rv,.rvl').forEach(function(el){ro.observe(el)});
 
-// Marker draw（マーカーをペンで引くように描画）
-var mko=new IntersectionObserver(function(entries){
-  entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('mk-on');mko.unobserve(e.target)}});
-},{threshold:.9,rootMargin:'0px 0px -18% 0px'});
-document.querySelectorAll('.sec-h strong,.why-h strong,.tools-h strong').forEach(function(el){mko.observe(el)});
+// 見出しの各行を、実際のペン先と同じ速さで一度だけ引く。
+(function(){
+ if(window.__mnPenCleanup)window.__mnPenCleanup();
+ var ns='http://www.w3.org/2000/svg',reduce=matchMedia('(prefers-reduced-motion: reduce)'),items=[],frames=new Set(),resizeTimer;
+ function svg(tag,attrs){var e=document.createElementNS(ns,tag);Object.keys(attrs).forEach(function(k){e.setAttribute(k,attrs[k]);});return e;}
+ function build(item){
+  if(!item.heading.isConnected)return;
+  if(item.layer)item.layer.remove();
+  var h=item.heading.getBoundingClientRect(),range=document.createRange();range.selectNodeContents(item.strong);
+  var lines=[];Array.from(range.getClientRects()).filter(function(r){return r.width>1&&r.height>1;}).forEach(function(r){var row=lines.find(function(x){return Math.abs(x.top-r.top)<4;});if(row){row.left=Math.min(row.left,r.left);row.right=Math.max(row.right,r.right);row.bottom=Math.max(row.bottom,r.bottom);}else lines.push({left:r.left,right:r.right,top:r.top,bottom:r.bottom});});
+  var layer=svg('svg',{'class':'pen-layer','aria-hidden':'true'});item.paths=[];
+  lines.sort(function(a,b){return a.top-b.top;}).forEach(function(r){var x=Math.max(1,r.left-h.left),y=r.bottom-h.top-5,w=Math.min(h.width-2,r.right-h.left)-x;var path=svg('path',{d:'M '+x+' '+y+' L '+(x+w)+' '+y,fill:'none',stroke:'#9dccb0','stroke-width':Math.max(6,(r.bottom-r.top)*.2),'stroke-linecap':'round',opacity:'.65'});path.style.strokeDasharray=w;path.style.strokeDashoffset=item.done||reduce.matches?0:w;layer.appendChild(path);item.paths.push({el:path,x:x,y:y,w:w});});
+  var pen=svg('g',{'class':'pen-tip'});pen.appendChild(svg('path',{d:'M 0 0 L -5 -12 L -5 -40 Q 0 -45 5 -40 L 5 -12 Z',fill:'#174c39',stroke:'#fff','stroke-width':'1.5'}));pen.appendChild(svg('path',{d:'M -5 -13 L 5 -13 L 0 0 Z',fill:'#f5cf64'}));pen.appendChild(svg('path',{d:'M -5 -31 L 5 -31',stroke:'#f5cf64','stroke-width':'4'}));layer.appendChild(pen);item.pen=pen;item.layer=layer;item.heading.appendChild(layer);item.heading.classList.add('pen-ready');
+ }
+ function draw(item){if(item.done)return;item.done=true;if(reduce.matches){build(item);return;}var began=null,total=item.paths.length*850;
+  function tick(t){if(!item.heading.isConnected)return;if(began===null)began=t;var elapsed=t-began,index=Math.min(item.paths.length-1,Math.floor(elapsed/850)),part=Math.min(1,(elapsed-index*850)/850);item.paths.forEach(function(p,i){p.el.style.strokeDashoffset=i<index?0:i===index?p.w*(1-part):p.w;});var p=item.paths[index];if(p){item.pen.style.opacity=elapsed<total?'1':'0';item.pen.setAttribute('transform','translate('+(p.x+p.w*part)+' '+p.y+') rotate(28)');}if(elapsed<total){var id=requestAnimationFrame(function(t){frames.delete(id);tick(t);});frames.add(id);}}
+  var id=requestAnimationFrame(function(t){frames.delete(id);tick(t);});frames.add(id);
+ }
+ var observer=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var item=items.find(function(x){return x.strong===e.target;});if(item){build(item);draw(item);}observer.unobserve(e.target);}});},{threshold:.8,rootMargin:'0px 0px -12% 0px'});
+ document.querySelectorAll('.sec-h strong,.why-h strong,.tools-h strong').forEach(function(strong){var heading=strong.closest('h2,h3');if(!heading)return;heading.classList.add('pen-heading');var item={strong:strong,heading:heading,done:false};items.push(item);build(item);observer.observe(strong);});
+ function resize(){clearTimeout(resizeTimer);resizeTimer=setTimeout(function(){items.forEach(build);},150);}
+ function preference(){frames.forEach(cancelAnimationFrame);frames.clear();items.forEach(function(item){if(reduce.matches)item.done=true;build(item);});}
+ window.addEventListener('resize',resize,{passive:true});reduce.addEventListener('change',preference);
+ window.__mnPenCleanup=function(){observer.disconnect();frames.forEach(cancelAnimationFrame);clearTimeout(resizeTimer);window.removeEventListener('resize',resize);reduce.removeEventListener('change',preference);};
+})();
+
 
 // Counter
 var co=new IntersectionObserver(function(entries){
