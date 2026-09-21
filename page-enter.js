@@ -2,10 +2,10 @@
    page-enter.js v2 — 自前SPA遷移エンジン ＋ 緑カーテン（2026-07 全面書き換え）
 
    【仕組み】サイト内リンクのクリックを横取りし、
-     ① 淡緑の案内で覆う(.16s) → ② fetchで次ページHTML取得（並行）
+     ① 淡緑の案内で覆う(.30s) → ② fetchで次ページHTML取得（並行）
      → ③ <head>のスタイル・<body>を差し替え、history.pushState
      → ④ 準備（フォント＋トップのみヒーロー画像）を待つ
-     → ⑤ 小さな線(.15s、準備と並行) → 待機を加えずめくる(.22s)
+     → ⑤ 小さな線(.25s)と文字を読む時間(.65s)を準備と並行して確保 → めくる(.40s)
    ドキュメントが生き続けるので読み込みの凍結が画面に出ず、
    ページ間の配色・移動先表示を揃える（旧：入場/退場の二重実装・
    sessionStorage引き継ぎ・prerender注入・壁時計位相同期は全廃）。
@@ -126,6 +126,8 @@ function mnSplitLabel(el, text) {
 
   /* ---- カーテン（単一・使い回し。<html>直下に置くので body 差し替えの影響を受けない） ---- */
   var veil = null, veilStyle = null;
+  // 覆う・文字を読む・開くのリズムを全ページでそろえる（単位: ms）。
+  var VEIL_COVER_MS = 300, VEIL_MARK_MS = 250, VEIL_HOLD_MS = 650, VEIL_LIFT_MS = 400;
   // ルート⇄uploads 間ではページCSSが html の zoom を 1⇄.9（超ワイドでは1.15）へ切り替える。
   // カーテンは <html> 直下に残り続けるため、その倍率を受けたままだと表示途中で文字まで拡縮する。
   // カーテン側に逆倍率を与え、ページCSSの交換中も画面上の大きさを一定に保つ。
@@ -148,9 +150,9 @@ function mnSplitLabel(el, text) {
       '#pg-veil .pv-kicker{font-size:12px;font-weight:600;letter-spacing:.08em}' +
       '#pg-veil .pv-in{position:relative;max-width:28em;font-size:clamp(18px,3vw,24px);font-weight:700;line-height:1.65;text-wrap:balance;overflow-wrap:break-word}' +
       '#pg-veil .pv-in::after{content:"";display:block;width:40px;height:2px;margin:18px auto 0;background:#598269;transform:scaleX(0);transform-origin:center}' +
-      'html.pv-on #pg-veil{transform:translateY(0);transition:transform .16s cubic-bezier(.22,1,.36,1)}' +
-      'html.pv-mark #pg-veil .pv-in::after{transform:scaleX(1);transition:transform .15s ease}' +
-      'html.pv-lift #pg-veil{transform:translateY(-101%);transition:transform .22s cubic-bezier(.22,1,.36,1)}';
+      'html.pv-on #pg-veil{transform:translateY(0);transition:transform ' + VEIL_COVER_MS + 'ms cubic-bezier(.22,1,.36,1)}' +
+      'html.pv-mark #pg-veil .pv-in::after{transform:scaleX(1);transition:transform ' + VEIL_MARK_MS + 'ms ease}' +
+      'html.pv-lift #pg-veil{transform:translateY(-101%);transition:transform ' + VEIL_LIFT_MS + 'ms cubic-bezier(.22,1,.36,1)}';
     document.head.appendChild(veilStyle);
     veil = document.createElement('div');
     veil.id = 'pg-veil';
@@ -172,7 +174,7 @@ function mnSplitLabel(el, text) {
     coverDone = new Promise(function (resolve) {
       requestAnimationFrame(function () {  // 1フレームのちに覆う＝初回でも確実に走らせる
         de.classList.add('pv-on');                 // 文字の立ち上げ（opacity）
-        animVeil('-101%', '0', 160).then(resolve, resolve);   // 降りきった時点で解決
+        animVeil('-101%', '0', VEIL_COVER_MS).then(resolve, resolve);   // 降りきった時点で解決
       });
     });
   }
@@ -475,7 +477,7 @@ function mnSplitLabel(el, text) {
     return Promise.all(ps);
   }
 
-  /* ---- 遷移本体：準備が整ったら短く開く ---- */
+  /* ---- 遷移本体：文字を読む時間とページの準備がそろってから開く ---- */
   var busy = false;
   function hardGo(url) { try { location.href = url; } catch (e) {} }
   function navigate(url, opts) {
@@ -486,7 +488,7 @@ function mnSplitLabel(el, text) {
     function doLift() {
       if (lifted) return Promise.resolve(); lifted = true;
       de.classList.add('pv-lift');                    // 文字の退場（opacity）
-      return animVeil('0', '-101%', 220).then(function () { hideVeil(); busy = false; });
+      return animVeil('0', '-101%', VEIL_LIFT_MS).then(function () { hideVeil(); busy = false; });
     }
     var watchdog = setTimeout(function () {
       if (swapped) { doLift(); }   // 新DOMは差し替え済み → カーテンだけめくって続行（再読込しない）
@@ -562,7 +564,7 @@ function mnSplitLabel(el, text) {
     // 「線が出ている間は必ず文字が出ている」ことを hasVeilText でゲートして保証する。
     var markP = coverDone.then(function () {
       if (hasVeilText()) de.classList.add('pv-mark');   // 文字がある時だけ線を引く
-      return wait(150); // 小さな線の表示は読み込み準備と並行し、読ませるための待機を置かない
+      return wait(VEIL_HOLD_MS); // 覆いきってから文字を読める時間を確保。取得が遅い場合にこの時間を後から足さない
     });
 
     // 覆いきりは実測（coverDone）で待つ。降りきる前に swap すると新ページが一瞬見える（cap1.5sは非表示tab対策）
@@ -606,7 +608,7 @@ function mnSplitLabel(el, text) {
         });
       });
 
-    // 線の短い表示(markP)と移動先の準備(readyP)がそろい次第めくる。
+    // 文字を読む時間(markP)と移動先の準備(readyP)がそろい次第めくる。
     // この順序で「文字→線→（保持）→めくり」が毎回同じになり、線が途中で切れない。
     Promise.all([markP, readyP])
       // ★めくり直前のペイント沈静化（カクツキ対策）：無料相談(uploads/contact.html)だけは root→uploads で
@@ -763,7 +765,7 @@ function mnSplitLabel(el, text) {
   try { history.replaceState({ mn: 1, y: window.scrollY || 0 }, '', location.href); } catch (e) {}
 
   // デバッグ・検証用フック（v7：社内書式 shoshiki を演出対象外に。v6：ページCSSの html zoom 変更からカーテンを分離）
-  window.__mnSpa = { navigate: navigate, v: 9, isArticleDest: isArticleDest, isFormDest: isFormDest, isSpotDest: isSpotDest };
+  window.__mnSpa = { navigate: navigate, v: 10, isArticleDest: isArticleDest, isFormDest: isFormDest, isSpotDest: isSpotDest };
 })();
 
 /* ============================================================
