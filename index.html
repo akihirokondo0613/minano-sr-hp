@@ -33,7 +33,8 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preload" as="image" type="image/avif" href="assets/illustrations/hero-consult-720.avif" imagesrcset="assets/illustrations/hero-consult-720.avif 720w, assets/illustrations/hero-consult-1200.avif 1200w, assets/illustrations/hero-consult-1600.avif 1600w" imagesizes="(min-width:1000px) 45vw, (min-width:701px) 520px, 90vw" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" media="(max-width:700px)" href="assets/illustrations/hero-town-mobile-720.avif" imagesrcset="assets/illustrations/hero-town-mobile-720.avif 720w, assets/illustrations/hero-town-mobile-1200.avif 1200w" imagesizes="(max-width:480px) calc(100vw - 40px), 440px" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" media="(min-width:701px)" href="assets/illustrations/hero-town-1200.avif" imagesrcset="assets/illustrations/hero-town-1200.avif 1200w, assets/illustrations/hero-town-2000.avif 2000w" imagesizes="(min-width:1440px) 1324px, 92vw" fetchpriority="high">
 <style id="critical-home">
 /* ============================================================
    skin-v2.css — みなの社労士HP 共通デザインCSS「稜線（りょうせん）」
@@ -904,26 +905,25 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 </style>
 
 <style id="home-illustration-hero">
-/* 最初から読める文章と、別レイヤーで動く相談風景。画像待ちで操作を隠さない。 */
+/* 大きな文字と働く街のイラスト。文章・ボタンは演出を待たず表示する。 */
 #top.hero{background:#fff;min-height:0;height:auto;overflow:clip}
-#top .hero-stage{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:24px 12px;align-items:center;max-width:1360px;width:100%;margin:auto;padding:clamp(116px,12vw,156px) clamp(24px,4.5vw,64px) 36px;background:#fff!important;--hero-progress:0}
-#top .hero-overlay{grid-column:1;grid-row:1;padding:0;min-width:0;max-width:none;z-index:2;align-items:flex-start}
-#top .hero-h1{width:100%;min-width:0;max-width:100%;font-size:clamp(29px,2.75vw,40px);line-height:1.6;letter-spacing:.01em}
+#top .hero-stage{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;max-width:1440px;width:100%;margin:auto;padding:122px clamp(20px,4vw,58px) 32px;background:#fff!important;position:relative;--hero-progress:0}
+#top .hero-overlay{grid-column:1;grid-row:1;padding:0;min-width:0;max-width:none;z-index:2;align-items:center;text-align:center}
+#top .why-label.hero-label{background:#f8e78a;color:var(--sugi-9);border:0;font-size:12px;margin-bottom:22px}
+#top .hero-h1{width:100%;min-width:0;max-width:1120px;font-size:clamp(30px,3.4vw,46px);line-height:1.55;letter-spacing:.01em}
 #top .hero-h1 .nw{display:inline-block}
-#top .hero-h1 strong{color:var(--sugi-9)}
-#top .hero-sub{font-size:14px;font-weight:500;line-height:2.05;max-width:100%;margin-top:22px}
-#top .hero-btns{gap:16px;margin-top:28px;flex-wrap:wrap;justify-content:flex-start}
-#top .hero-btns .btn-primary{flex:initial;width:auto;font-size:15px;padding:17px 30px}
+#top .hero-h1 strong{color:var(--sugi);background:none!important;box-shadow:none}
+#top .hero-sub{font-size:14px;font-weight:500;line-height:1.9;max-width:760px;margin-top:18px}
+#top .hero-btns{gap:24px;margin-top:23px;flex-wrap:wrap;justify-content:center}
+#top .hero-btns .btn-primary{flex:initial;width:auto;font-size:15px;padding:16px 32px}
 #top .hero-sub-link{display:inline-flex;align-items:center;min-height:44px;padding:0 2px;border:0;border-bottom:1px solid var(--moegi);border-radius:0;background:none;font-size:13px}
-#top .hero-scene{grid-column:2;grid-row:1;position:relative;min-width:0;isolation:isolate;padding-top:40px;align-self:center}
-#top .hero-media{display:block;position:relative;width:100%;aspect-ratio:4/3}
+#top .hero-scene{grid-column:1;grid-row:2;position:relative;min-width:0;width:100%;isolation:isolate;align-self:center}
+#top .hero-media{display:block;position:relative;width:100%;aspect-ratio:3/1;transform:translateY(calc(var(--hero-progress)*-10px))}
 #top .hero-media img{display:block;width:100%;height:100%;object-fit:contain}
-.hero-schedule,.hero-papers{position:absolute;width:17%;height:auto;z-index:1;pointer-events:none;transform-origin:center}
-.hero-schedule{right:12%;top:0;transform:translateY(calc(var(--hero-progress)*20px)) rotate(calc(-7deg + var(--hero-progress)*7deg))}
-.hero-papers{left:13%;top:4%;transform:translateY(calc(var(--hero-progress)*30px)) rotate(calc(9deg - var(--hero-progress)*9deg))}
-.hero-paper-back{transform-origin:center;transform:rotate(calc(-10deg + var(--hero-progress)*10deg))}
-.hero-check{stroke-dasharray:34;stroke-dashoffset:calc(17 - var(--hero-progress)*17)}
-#top .hero-updates{grid-column:1 / -1;grid-row:2;border-top:1px solid var(--line);padding-top:22px;margin-top:14px;min-width:0}
+.hero-bloom,.hero-bird{position:absolute;height:auto;pointer-events:none;z-index:1}
+.hero-bloom{left:3%;top:164px;width:65px;transform:rotate(calc(-12deg + var(--hero-progress)*55deg))}
+.hero-bird{right:3%;top:258px;width:75px;transform:translateY(calc(var(--hero-progress)*-24px)) rotate(calc(var(--hero-progress)*-8deg))}
+#top .hero-updates{grid-column:1;grid-row:3;border-top:1px solid var(--line);padding-top:22px;margin-top:0;min-width:0}
 #top .hero-spots{grid-template-columns:repeat(2,minmax(0,1fr));width:100%;max-width:100%;margin-top:0;gap:28px}
 #top .hero-spot{box-shadow:none;border:0;border-radius:0;padding:0 0 8px;background:none;max-inline-size:none;text-align:left;transform:none}
 #top .hero-spot+ .hero-spot{border-left:1px solid var(--line);padding-left:28px}
@@ -931,33 +931,21 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 #top .hero-trust{margin-top:14px;gap:20px}
 #top .trust-item{padding:0;border:0;background:none;font-size:11.5px}
 #top .hero-spot-note{font-size:11.5px}
-@media(max-width:999px){
- #top .hero-stage{grid-template-columns:minmax(0,1fr);padding-top:112px;gap:18px}
- #top .hero-overlay{align-items:center;text-align:center}
- #top .hero-h1{font-size:clamp(28px,4vw,38px)}
- #top .hero-btns{justify-content:center}
- #top .hero-scene{grid-column:1;grid-row:2;width:min(100%,520px);justify-self:center;padding-top:26px}
- #top .hero-updates{grid-row:3;margin-top:0}
-}
+@media(max-width:1100px){.hero-bloom,.hero-bird{display:none}}
 @media(max-width:700px){
- #top .hero-stage{padding:96px 20px 24px;gap:20px}
+ #top .hero-stage{padding:94px 20px 24px;gap:18px}
  #top .why-label.hero-label{font-size:11px;margin-bottom:17px;padding:7px 13px}
  #top .hero-h1{font-size:clamp(23px,5.5vw,32px);line-height:1.55}
- #top .hero-sub{font-size:13px;line-height:1.95;margin-top:16px}
+ #top .hero-sub{font-size:13px;line-height:1.9;margin-top:16px}
  #top .hero-btns{margin-top:20px;gap:10px 20px}
  #top .hero-btns .btn-primary{padding:15px 28px;font-size:14px}
- #top .hero-scene{width:min(90%,380px);padding-top:22px}
+ #top .hero-scene{width:min(100%,440px);justify-self:center}
+ #top .hero-media{aspect-ratio:4/3;transform:none}
  #top .hero-spots{grid-template-columns:minmax(0,1fr);gap:16px}
  #top .hero-spot+ .hero-spot{border-left:0;border-top:1px solid var(--line);padding:16px 0 0}
  #top .hero-trust{display:none}
- .hero-schedule,.hero-papers{transform:none}
- .hero-paper-back{transform:none}
- .hero-check{stroke-dashoffset:0}
 }
-@media(prefers-reduced-motion:reduce){
- .hero-schedule,.hero-papers,.hero-paper-back{transform:none}
- .hero-check{stroke-dashoffset:0}
-}
+@media(prefers-reduced-motion:reduce){#top .hero-media,.hero-bloom,.hero-bird{transform:none}}
 </style>
 </head>
 <body data-nav="B">
@@ -1005,14 +993,16 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 <main id="main">
 <section class="hero" id="top">
   <div class="hero-stage">
+    <svg class="hero-bloom" aria-hidden="true" viewBox="0 0 100 100"><path d="M50 30C18-8 0 25 29 48C-10 66 25 107 47 73C65 114 105 78 72 53C116 34 81-7 56 29Z" fill="#ed7859"/><circle cx="51" cy="51" r="15" fill="#f8db5a"/></svg>
+    <svg class="hero-bird" aria-hidden="true" viewBox="0 0 120 90"><path d="M12 48C40 56 45 43 51 34C34 21 33 12 34 6C56 10 71 26 76 38C90 28 97 32 101 36L115 38L103 44C96 68 79 76 58 66L27 81L34 60Z" fill="#57b5cb"/><circle cx="97" cy="37" r="2" fill="#123f30"/></svg>
     <div class="hero-scene" aria-hidden="true">
-      <svg class="hero-schedule" viewBox="0 0 100 105" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="12" y="15" width="76" height="76" rx="7" fill="#fff" stroke="#123f30" stroke-width="3"/><path d="M12 35H88V22Q88 15 81 15H19Q12 15 12 22Z" fill="#b6ccb8"/><path d="M12 35H88M32 8V23M68 8V23" stroke="#123f30" stroke-width="3" stroke-linecap="round"/><path d="M28 51H36M47 51H55M66 51H74M28 67H36M47 67H55" stroke="#b6ccb8" stroke-width="4" stroke-linecap="round"/><path class="hero-check" d="M62 69L68 75L80 60" stroke="#2e9e63" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <svg class="hero-papers" viewBox="0 0 105 110" fill="none" xmlns="http://www.w3.org/2000/svg"><rect class="hero-paper-back" x="17" y="13" width="60" height="78" rx="4" fill="#f8c950" stroke="#123f30" stroke-width="3"/><rect x="28" y="20" width="60" height="78" rx="4" fill="#fff" stroke="#123f30" stroke-width="3"/><path d="M41 40H73M41 53H73M41 66H63M41 79H56" stroke="#9fbda5" stroke-width="4" stroke-linecap="round"/></svg>
-    <picture class="hero-media">
-      <source type="image/avif" srcset="assets/illustrations/hero-consult-720.avif 720w, assets/illustrations/hero-consult-1200.avif 1200w, assets/illustrations/hero-consult-1600.avif 1600w" sizes="(min-width:1000px) 45vw, (min-width:701px) 520px, 90vw">
-      <source type="image/webp" srcset="assets/illustrations/hero-consult-720.webp 720w, assets/illustrations/hero-consult-1200.webp 1200w, assets/illustrations/hero-consult-1600.webp 1600w" sizes="(min-width:1000px) 45vw, (min-width:701px) 520px, 90vw">
-      <img src="assets/illustrations/hero-consult-1200.webp" width="1600" height="1200" alt="" fetchpriority="high" decoding="sync">
-    </picture>
+      <picture class="hero-media">
+        <source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-town-mobile-720.avif 720w, assets/illustrations/hero-town-mobile-1200.avif 1200w" sizes="(max-width:480px) calc(100vw - 40px), 440px">
+        <source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-town-mobile-720.webp 720w, assets/illustrations/hero-town-mobile-1200.webp 1200w" sizes="(max-width:480px) calc(100vw - 40px), 440px">
+        <source type="image/avif" srcset="assets/illustrations/hero-town-1200.avif 1200w, assets/illustrations/hero-town-2000.avif 2000w" sizes="(min-width:1440px) 1324px, 92vw">
+        <source type="image/webp" srcset="assets/illustrations/hero-town-1200.webp 1200w, assets/illustrations/hero-town-2000.webp 2000w" sizes="(min-width:1440px) 1324px, 92vw">
+        <img src="assets/illustrations/hero-town-1200.webp" width="2160" height="720" alt="" fetchpriority="high" decoding="async">
+      </picture>
     </div>
     <div class="hero-overlay">
       <div class="why-label hero-label">富山の社会保険労務士事務所</div>
