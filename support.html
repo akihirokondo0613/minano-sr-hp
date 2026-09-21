@@ -285,6 +285,15 @@
 
 <!-- PRICING -->
 
+<style id="consultation-flow-alignment">
+/* 番号・アイコンと見出しを別段にし、説明の開始位置を揃える。 */
+#consultation-flow .proc-item{grid-template-columns:minmax(0,1fr) 24px;grid-template-rows:32px minmax(3.3em,auto) 1fr;align-items:start;row-gap:16px}
+#consultation-flow .proc-dot{grid-column:1;grid-row:1;justify-self:start}
+#consultation-flow .proc-ic{grid-column:2;grid-row:1;align-self:center}
+#consultation-flow .proc-title{grid-column:1/-1;grid-row:2;line-height:1.65;min-height:3.3em}
+#consultation-flow .proc-desc{grid-column:1/-1;grid-row:3;margin-top:0}
+@media(max-width:560px){#consultation-flow .proc-item{grid-template-rows:32px auto auto}#consultation-flow .proc-title{min-height:0}}
+</style>
 <section class="proc-sec sec-sm" id="consultation-flow">
   <div class="w">
     <div class="sec-head has-photo rv">
