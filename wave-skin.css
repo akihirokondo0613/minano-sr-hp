@@ -26,8 +26,8 @@ body{min-width:320px}
   pointer-events:none;z-index:3;
 }
 
-/* 相談エリアの上端は、フッターへ穏やかにつなぐ浅い曲線にする。 */
-.final-cta::before,.cta-sec::before{clip-path:none;border-radius:0 0 50% 50% / 0 0 100% 100%}
+/* 相談エリアへは白い飾りを挟まず、背景色で区切る。 */
+.final-cta::before,.cta-sec::before{content:none}
 
 /* ページヒーロー（淡緑）の下端：稜線ギザギザで次セクションへつなぐ（上記の上下反転） */
 .page-hero{position:relative;border-bottom:none!important}
