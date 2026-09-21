@@ -505,7 +505,7 @@ main > section:not(.hero) {
 }
 /* 低い画面・拡大表示・動きを減らす設定では追従せず、すべて普通に読める。 */
 @media(min-width:1100px) and (min-height:760px) and (prefers-reduced-motion:no-preference){
-  #services .sec-head{position:sticky;top:calc(var(--nav-h) + 32px)}
+  #services .sec-head,#faq .faq-aside{position:sticky;top:calc(var(--nav-h) + 32px)}
 }
 @media(max-width:700px){
   #services,#faq,#about{border-radius:24px 24px 0 0}
