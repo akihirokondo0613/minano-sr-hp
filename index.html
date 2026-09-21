@@ -636,6 +636,28 @@ main > section:not(.hero) {
  #about .home-office-photo img{border-top-right-radius:28px}
 }
 </style>
+<style id="home-wayfinding">
+/* 目的地への近道と詳細リンクを、罫線と丸い矢印で揃える。 */
+.home-compact-section .idx-num{font-size:clamp(24px,2.4vw,34px)}
+/* ページ内移動中は省略描画を解除し、Safariでも着地点を安定させる。 */
+main:has(> .home-compact-section:target)>section{content-visibility:visible;contain-intrinsic-size:none}
+.home-shortcuts{background:var(--shiro);padding:24px 0 0}
+.home-shortcuts .w{display:grid;grid-template-columns:auto minmax(0,1fr);gap:32px;align-items:center}
+.home-shortcuts-label{font-size:12px;font-weight:700;color:var(--ink3)}
+.home-shortcuts-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.home-shortcuts a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;font-weight:700;color:var(--sugi);text-decoration:none}
+.home-shortcuts a span{font-size:18px;transition:transform .25s var(--ease)}
+.home-shortcuts a:hover span{transform:translateY(3px)}
+.home-shortcuts a:hover{border-color:var(--sugi)}
+a.home-detail-link{display:inline-flex;align-items:center;justify-content:space-between;gap:24px;min-height:56px;max-width:100%;padding:8px 0;margin-top:8px;border-bottom:0;font-family:var(--disp);font-size:14px;line-height:1.7;letter-spacing:.03em;text-decoration:none;opacity:1}
+a.home-detail-link .detail-arrow{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;border:1px solid var(--sugi);border-radius:50%;background:var(--sugi);color:var(--shiro);transition:transform .25s var(--ease),background .25s var(--ease)}
+a.home-detail-link:hover{opacity:1}
+a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(--sugi-7)}
+#about a.home-detail-link .detail-arrow{border-color:var(--line2);background:transparent;color:var(--shiro)}
+.home-shortcuts a:focus-visible,a.home-detail-link:focus-visible{outline:2px solid var(--moegi);outline-offset:5px;border-radius:3px}
+@media(max-width:700px){.home-shortcuts .w{grid-template-columns:minmax(0,1fr);gap:10px}.home-shortcuts-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}.home-shortcuts a{font-size:13px}.home-compact-section a.home-detail-link{text-align:left;gap:18px}}
+@media(prefers-reduced-motion:reduce){.home-shortcuts a span,a.home-detail-link .detail-arrow{transition:none}.home-shortcuts a:hover span,a.home-detail-link:hover .detail-arrow{transform:none}}
+</style>
 <style id="home-tool-cards">
 /* 07 TOOLS ― 社内書式（無料ツール）と行政の公式窓口の2枚カード。06 TOPICS の記事カード（tp-card）と同じ言葉づかい：
    上に色の帯（分野名の文字）、下に題・説明・リンク。帯はトップの深杉系で統一。記事の分野別配色とは役割を分ける。 */
@@ -1056,6 +1078,15 @@ main > section:not(.hero) {
      WHY ― 存在理由・信念
 ════════════════════════════════ -->
 
+<nav class="home-shortcuts" aria-label="このページのご案内">
+  <div class="w"><p class="home-shortcuts-label">目的から探す</p><div class="home-shortcuts-links">
+    <a href="#services">サービスを見る<span aria-hidden="true">↓</span></a>
+    <a href="#pricing">料金を確認する<span aria-hidden="true">↓</span></a>
+    <a href="#faq">よくある質問<span aria-hidden="true">↓</span></a>
+    <a href="#about">事務所を知る<span aria-hidden="true">↓</span></a>
+  </div></div>
+</nav>
+
 <!-- 01 理念 -->
 <section class="sec sec-white home-compact-section" id="why">
   <div class="w">
@@ -1087,7 +1118,7 @@ main > section:not(.hero) {
         <p class="bc-desc">法改正や<wbr>組織の<wbr>変化にも<wbr>対応しやすい、<wbr>現場で<wbr>続けられる<wbr>形を<wbr>目指します。</p>
       </article>
     </div>
-    <div class="home-why-more rv d3"><a href="services.html#approach" class="link-more">私たちの支援姿勢を見る →</a></div>
+    <div class="home-why-more rv d3"><a href="services.html#approach" class="link-more home-detail-link"><span>私たちの支援姿勢を見る</span><span class="detail-arrow" aria-hidden="true">→</span></a></div>
   </div>
 </section>
 
@@ -1136,7 +1167,7 @@ main > section:not(.hero) {
         <span class="svc-arr" aria-hidden="true">→</span>
       </a>
     </div>
-    <div class="home-section-more rv"><a href="services.html" class="link-more">サービスを詳しく見る →</a></div>
+    <div class="home-section-more rv"><a href="services.html" class="link-more home-detail-link"><span>サービスを詳しく見る</span><span class="detail-arrow" aria-hidden="true">→</span></a></div>
   </div>
 </section>
 
@@ -1152,7 +1183,7 @@ main > section:not(.hero) {
       <article class="home-phase-card rv d1"><div class="home-phase-media"><image-slot id="home-stage-growth" src="assets/illustrations/stage-growth.webp" fit="contain" placeholder="拡大期のイラスト"></image-slot></div><div class="home-phase-body"><p class="home-phase-label">PHASE 02</p><h3 class="home-phase-title">仕組みを整える</h3><p class="home-phase-scale">従業員10〜50名程度</p><p class="home-phase-desc">規程、<wbr>勤怠、<wbr>育児・介護対応を<wbr>見直し、<wbr>運用の<wbr>ずれを<wbr>減らします。</p></div></article>
       <article class="home-phase-card rv d2"><div class="home-phase-media"><image-slot id="home-stage-org" src="assets/illustrations/stage-organization.webp" fit="contain" placeholder="組織強化期のイラスト"></image-slot></div><div class="home-phase-body"><p class="home-phase-label">PHASE 03</p><h3 class="home-phase-title">仕組みを強くする</h3><p class="home-phase-scale">従業員50名以上</p><p class="home-phase-desc">評価、<wbr>賃金、<wbr>管理職育成まで、<wbr>組織運営を<wbr>支える<wbr>制度へ<wbr>広げます。</p></div></article>
     </div>
-    <div class="home-section-more rv"><a href="support.html" class="link-more">支援の進め方・業種別事例を見る →</a></div>
+    <div class="home-section-more rv"><a href="support.html" class="link-more home-detail-link"><span>支援の進め方・業種別事例を見る</span><span class="detail-arrow" aria-hidden="true">→</span></a></div>
   </div>
 </section>
 
@@ -1207,7 +1238,7 @@ main > section:not(.hero) {
       </article>
     </div>
     <p class="home-plan-note">表示価格は<wbr>税抜で<wbr>す。年度更新・算定基礎届・賞与支払届は<wbr>顧問料に<wbr>含<wbr>まれ<wbr>ます。傷病手当金・<wbr>労災の<wbr>初回申請、<wbr>年末調整用<wbr>データ整備・<wbr>税理士連携、<wbr>助成金申請は<wbr>別料金です。<wbr>固定額は<wbr>料金ページで<wbr>確認できます。</p>
-    <div class="home-section-more rv"><a href="pricing.html" class="link-more">料金・顧問プランを詳しく見る →</a></div>
+    <div class="home-section-more rv"><a href="pricing.html" class="link-more home-detail-link"><span>料金・顧問プランを詳しく見る</span><span class="detail-arrow" aria-hidden="true">→</span></a></div>
   </div>
 </section>
 
@@ -1382,7 +1413,7 @@ main > section:not(.hero) {
       </div>
     </div>
     <div class="news-more rv d2">
-      <a href="blog.html" class="link-more">コラムの一覧を見る →</a>
+      <a href="blog.html" class="link-more home-detail-link"><span>コラムの一覧を見る</span><span class="detail-arrow" aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
@@ -1433,7 +1464,7 @@ main > section:not(.hero) {
     </div>
     <div class="home-about-card">
       <figure class="home-office-photo rv"><img src="assets/photos/about-scop-building.webp" width="960" height="720" loading="lazy" decoding="async" alt="みなの社会保険労務士事務所が入るSCOP TOYAMAの外観"><figcaption>SCOP TOYAMA 外<wbr>観</figcaption></figure>
-      <div class="home-about-copy rv d1"><h3 class="rep-h">複雑な<wbr>ルールを、<wbr><strong>運用しやすい形に。</strong></h3><p style="max-inline-size:none">むずかしい<wbr>言葉を<wbr>そのまま<wbr>使わず、<wbr>明日からの<wbr>現場で<wbr>使える<wbr>形に<wbr>してお渡しします。<wbr>地域に<wbr>根ざした<wbr>相談相手と<wbr>して、<wbr>会社の<wbr>状況を<wbr>一緒に<wbr>整理します。</p><div class="home-about-meta"><span>代表　近藤 昭宏</span><span>富山県富山市蓮町1丁目7-4　SCOP TOYAMA</span><span>平日 9:00–18:00</span></div><div><a href="about.html" class="link-more">代表・事務所情報を見る →</a></div></div>
+      <div class="home-about-copy rv d1"><h3 class="rep-h">複雑な<wbr>ルールを、<wbr><strong>運用しやすい形に。</strong></h3><p style="max-inline-size:none">むずかしい<wbr>言葉を<wbr>そのまま<wbr>使わず、<wbr>明日からの<wbr>現場で<wbr>使える<wbr>形に<wbr>してお渡しします。<wbr>地域に<wbr>根ざした<wbr>相談相手と<wbr>して、<wbr>会社の<wbr>状況を<wbr>一緒に<wbr>整理します。</p><div class="home-about-meta"><span>代表　近藤 昭宏</span><span>富山県富山市蓮町1丁目7-4　SCOP TOYAMA</span><span>平日 9:00–18:00</span></div><div><a href="about.html" class="link-more home-detail-link"><span>代表・事務所情報を見る</span><span class="detail-arrow" aria-hidden="true">→</span></a></div></div>
     </div>
   </div>
 </section>
