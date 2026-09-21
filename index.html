@@ -1055,12 +1055,13 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 #services .svc-row{display:grid;grid-template-columns:84px minmax(0,1fr) 24px;gap:20px;padding:28px 0;text-align:left;align-items:center}
 #services .svc-num{display:none}
 #services .svc-ill{width:84px}
-#services .svc-row>span:nth-of-type(3){min-height:0;display:block}
-#services .svc-info-name{transform:none;transition:none;display:block;width:auto;max-width:100%;font-size:clamp(17px,1.5vw,21px);line-height:1.6}
+#services .svc-row>span:nth-of-type(3){min-height:108px;display:grid;align-content:center;position:relative;text-align:center}
+#services .svc-info-name{transform:translateY(22px);transition:transform .35s var(--ease);display:block;width:auto;max-width:100%;font-size:clamp(18px,1.7vw,24px);font-weight:800;line-height:1.6}
+#services .svc-row:hover .svc-info-name,#services .svc-row:focus-within .svc-info-name{transform:translateY(0)}
 #services .svc-info-desc{opacity:0;transform:translateY(5px);display:block;max-height:none;overflow:visible;padding:0;margin-top:8px;font-size:14px;line-height:1.85;transition:opacity .25s ease,transform .3s var(--ease)}
 #services .svc-row:hover .svc-info-desc,#services .svc-row:focus-visible .svc-info-desc,#services .svc-row:focus-within .svc-info-desc{opacity:1;transform:none;max-height:none;padding:0}
-@media(hover:none){#services .svc-info-desc{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){#services .svc-info-desc{transition:none}}
+@media(hover:none){#services .svc-info-desc{opacity:1;transform:none}#services .svc-info-name{transform:none}}
+@media(prefers-reduced-motion:reduce){#services .svc-info-desc,#services .svc-info-name{transition:none}}
 #services .svc-arr{display:block}
 #services .home-section-more{text-align:right;margin-top:28px}
 #faq .faq-layout{display:block;max-width:1000px;margin-inline:auto}
@@ -1081,9 +1082,14 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
  #faq .faq-a-in{padding:0 0 24px 28px}
 }
 /* 短い意味のまとまりを保ち、狭い画面では三つの業務を同じ大きさで並べる。 */
+@media(min-width:541px) and (max-width:1100px){
+ #top .hero-h1 .hero-services{font-size:clamp(40px,5.8vw,64px)}
+ #top .hero-h1{font-size:clamp(28px,3.8vw,42px)}
+}
 @media(max-width:540px){
- #top .hero-h1 .hero-services{display:block;font-size:clamp(29px,7.5vw,40px);line-height:1.3}
- #top .hero-h1>br,#top .hero-h1>wbr{display:none}
+ #top .hero-h1 .hero-services{display:inline-block;font-size:clamp(29px,7.5vw,40px);line-height:1.4}
+ #top .hero-h1 .hero-services:last-of-type{display:block}
+ #top .hero-h1>br{display:none}
  #top .hero-h1>strong{display:block;margin-top:14px;font-size:clamp(21px,5.5vw,28px);line-height:1.5}
  #top .hero-overlay{padding-top:90px}
  #top .hero-sub{margin-top:18px}
@@ -1149,7 +1155,7 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
       <div class="hero-actor actor-mechanic" style="--person-ratio:426/930"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-crowd-mechanic-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-crowd-mechanic.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-crowd-mechanic-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-crowd-mechanic.webp" width="426" height="930" alt="" decoding="async" loading="lazy"></picture></div>
     </div>
     <div class="hero-overlay">
-      <h1 class="hero-h1"><span class="nw hero-services">手続きも、</span><wbr><span class="nw hero-services">給与計算も、</span><wbr><span class="nw hero-services">助成金も。</span><br><strong><span class="nw">会社の労務を、</span><wbr><span class="nw">まるごと任せられる。</span></strong></h1>
+      <h1 class="hero-h1"><span class="nw hero-services">手続き、</span><wbr><span class="nw hero-services">給与計算、</span><wbr><span class="nw hero-services">助成金も。</span><br><strong><span class="nw">会社の労務を、</span><wbr><span class="nw">まるごと任せられる。</span></strong></h1>
       <p class="hero-sub"><span class="nw why-label hero-label">富山の社会保険労務士事務所。</span><wbr><span class="nw">中小企業の経営者に向けて、</span><wbr><span class="nw">労務顧問・手続き・給与計算・</span><wbr><span class="nw">助成金・DXまで</span><wbr><span class="nw">実務に沿ってサポート。</span><br><span class="nw">初めてのご相談でも、</span><wbr><span class="nw">むずかしい言葉を使わずに</span><wbr><span class="nw">整理します。</span></p>
       <div class="hero-btns">
         <a href="uploads/contact.html" class="btn-primary">無料で相談する</a>
@@ -1803,7 +1809,7 @@ document.querySelectorAll('.rv,.rvl').forEach(function(el){ro.observe(el)});
   var lines=[];Array.from(range.getClientRects()).filter(function(r){return r.width>1&&r.height>1;}).forEach(function(r){var row=lines.find(function(x){return Math.abs(x.top-r.top)<4;});if(row){row.left=Math.min(row.left,r.left);row.right=Math.max(row.right,r.right);row.bottom=Math.max(row.bottom,r.bottom);}else lines.push({left:r.left,right:r.right,top:r.top,bottom:r.bottom});});
   var layer=svg('svg',{'class':'pen-layer','aria-hidden':'true'});item.paths=[];
   lines.sort(function(a,b){return a.top-b.top;}).forEach(function(r){var x=Math.max(1,r.left-h.left),y=r.bottom-h.top-5,w=Math.min(h.width-2,r.right-h.left)-x;var path=svg('path',{d:'M '+x+' '+y+' Q '+(x+w*.48)+' '+(y+3)+' '+(x+w)+' '+(y-1),fill:'none',stroke:'#57ba7f','stroke-width':Math.max(9,(r.bottom-r.top)*.26),'stroke-linecap':'round',opacity:'.45'});w=path.getTotalLength();path.style.strokeDasharray=w;path.style.strokeDashoffset=item.done||reduce.matches?0:w;layer.appendChild(path);item.paths.push({el:path,x:x,y:y,w:w});});
-  var pen=svg('g',{'class':'pen-tip'});pen.appendChild(svg('path',{d:'M -7 -9 L -7 -32 Q -7 -36 -3 -36 L 3 -36 Q 7 -36 7 -32 L 7 -9 Z',fill:'#35a663',stroke:'#17633d','stroke-width':'1.2'}));pen.appendChild(svg('path',{d:'M -4 -30 L -4 -15',stroke:'#9ee2aa','stroke-width':'2.5','stroke-linecap':'round'}));pen.appendChild(svg('path',{d:'M -7 -10 L 7 -10 L 5 -5 L -5 -5 Z',fill:'#18583b'}));pen.appendChild(svg('path',{d:'M -5 -5 L 5 -5 L 4 1 L -4 -1 Z',fill:'#55c378',stroke:'#25874b','stroke-width':'.8'}));layer.appendChild(pen);item.pen=pen;item.layer=layer;item.heading.appendChild(layer);item.heading.classList.add('pen-ready');
+  var pen=svg('g',{'class':'pen-tip'});pen.appendChild(svg('path',{d:'M -7 -9 L -7 -32 Q -7 -36 -3 -36 L 3 -36 Q 7 -36 7 -32 L 7 -9 Z',fill:'#428660',stroke:'#315f47','stroke-width':'1.2'}));pen.appendChild(svg('path',{d:'M -7 -10 L 7 -10 L 5 -5 L -5 -5 Z',fill:'#18583b'}));pen.appendChild(svg('path',{d:'M -5 -5 L 5 -5 L 4 1 L -4 -1 Z',fill:'#55946c',stroke:'#315f47','stroke-width':'.8'}));layer.appendChild(pen);item.pen=pen;item.layer=layer;item.heading.appendChild(layer);item.heading.classList.add('pen-ready');
  }
  function draw(item){if(item.done)return;item.done=true;if(reduce.matches){build(item);return;}var began=null,duration=1100,total=item.paths.length*duration;
   function tick(t){if(!item.heading.isConnected)return;if(began===null)began=t;var elapsed=t-began,index=Math.min(item.paths.length-1,Math.floor(elapsed/duration)),phase=Math.min(1,(elapsed-index*duration)/duration),linear=Math.min(1,phase/.86),part=linear*linear*(3-2*linear);item.paths.forEach(function(p,i){p.el.style.strokeDashoffset=i<index?0:i===index?p.w*(1-part):p.w;});var p=item.paths[index];if(p){var point=p.el.getPointAtLength(p.w*part),fade=Math.min(1,phase/.12)*Math.max(0,Math.min(1,(1-phase)/.14));item.pen.style.opacity=elapsed<total?String(fade):'0';item.pen.setAttribute('transform','translate('+point.x+' '+(point.y-Math.max(0,phase-.86)*35)+') rotate('+(24+Math.sin(part*Math.PI)*5)+')');}if(elapsed<total){var id=requestAnimationFrame(function(t){frames.delete(id);tick(t);});frames.add(id);}}
