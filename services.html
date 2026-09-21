@@ -48,6 +48,17 @@
 </script>
 
 <style id="svc-hub-links">
+/* 依頼内容から、既存のサービス・料金・相談へ進む案内 */
+.request-guide{padding-block:clamp(30px,5vw,64px);background:var(--yuki)}
+.request-guide h2{font-size:clamp(23px,3vw,32px);color:var(--sugi);line-height:1.6;margin:0 0 12px}
+.request-guide-intro{color:var(--ink3);line-height:1.9;margin-bottom:22px}
+.request-route{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:16px 32px;border-top:1px solid var(--line);padding:24px 0}
+.request-route h3{font-size:19px;line-height:1.8;margin:0;color:var(--sugi)}
+.request-route p{margin:0 0 12px;line-height:1.9;color:var(--ink2)}
+.request-route-links{display:flex;flex-wrap:wrap;gap:8px 20px}
+.request-route-links a{display:inline-block;max-width:100%;padding-block:8px;color:var(--sugi);font-weight:700;text-decoration:underline;text-underline-offset:5px}
+@media(max-width:640px){.request-route{grid-template-columns:minmax(0,1fr);gap:8px}}
+
 /* 公式ロゴは色と縦横比を保ち、一覧内の大きさと余白だけを調整する。 */
 #tools .tools-logos{grid-template-columns:repeat(3,minmax(0,1fr))}
 #tools .tools-logo{min-width:0;min-height:88px;padding:22px 20px}
@@ -134,6 +145,8 @@
       <p class="lead">求人票の<wbr>見直し・提出は、<wbr><a href="uploads/lp-kyujinhyo.html">ハローワーク求人票の<wbr>無料点検・作成代行</a>を<wbr>ご覧ください。</p>
     </div>
   </header>
+
+<section class="request-guide" id="request-guide" aria-labelledby="request-guide-title"><div class="w"><h2 id="request-guide-title">いま、<wbr>任せたい<wbr>ことから。</h2><p class="request-guide-intro">内容と<wbr>料金を<wbr>確認してから、<wbr>相談へ<wbr>進めます。<wbr>顧問契約が<wbr>なくても<wbr>ご依頼いただけます。</p><div class="request-route"><h3>入社・退社の<wbr>手続きを<wbr>頼みたい</h3><div><p>1件だけの<wbr>依頼から、<wbr>毎月の<wbr>手続きを<wbr>任せる<wbr>顧問契約まで。<wbr>依頼する<wbr>人数や<wbr>手続きに<wbr>合わせて<wbr>選べます。</p><div class="request-route-links"><a href="uploads/service-shakai-hoken.html">支援内容を見る</a><a href="pricing.html#spot-entry">料金を確認する</a><a href="uploads/contact.html?from=shaho&entry=services-request-guide">この内容で相談する →</a></div></div></div><div class="request-route"><h3>給与計算を任せたい</h3><div><p>給与計算だけの<wbr>単発依頼と、<wbr>給与・<wbr>手続きを<wbr>まとめる<wbr>顧問プランが<wbr>あります。<wbr>人数と<wbr>任せたい<wbr>範囲を<wbr>お聞かせ<wbr>ください。</p><div class="request-route-links"><a href="uploads/service-kyuyo-keisan.html">支援内容を見る</a><a href="pricing.html#plan-standard">料金を確認する</a><a href="uploads/contact.html?from=kyuyo&entry=services-request-guide">この内容で相談する →</a></div></div></div><div class="request-route"><h3>何から<wbr>整えるか<wbr>相談したい</h3><div><p>就業規則、<wbr>労務相談、<wbr>助成金、<wbr>システムの<wbr>見直し。<wbr>サービス名が<wbr>決まっていなくても、<wbr>会社の<wbr>状況から<wbr>整理します。</p><div class="request-route-links"><a href="support.html#consultation-flow">支援内容を見る</a><a href="pricing.html#pricing">料金を確認する</a><a href="uploads/contact.html?from=request-guide&entry=services-request-guide">この内容で相談する →</a></div></div></div></div></section>
 
 <section class="sec sec-white" id="approach">
   <div class="w">

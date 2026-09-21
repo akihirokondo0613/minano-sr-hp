@@ -63,6 +63,25 @@
   .rep-offer-link { justify-self: start; }
 }
 
+/* 事務所の強み：囲みを増やさず、見出しと本文を罫線で整理する */
+.office-strength-heading > span { display: block; }
+.office-strengths { border-top: 1px solid var(--line); }
+.office-strength { display: grid; grid-template-columns: 36px minmax(0, .8fr) minmax(0, 1.5fr); gap: 18px 28px; padding-block: clamp(26px, 3.6vw, 40px); border-bottom: 1px solid var(--line); }
+.office-strength-num { color: var(--moegi-t); font-family: var(--mono); font-size: 15px; font-weight: 700; padding-top: 5px; }
+.office-strength h3 { margin: 0; color: var(--sugi); font-family: var(--disp); font-size: clamp(20px, 2vw, 25px); font-weight: 800; line-height: 1.7; }
+.office-strength-body { min-width: 0; }
+.office-strength-body p { margin: 0; font-size: 15px; line-height: 2; color: var(--ink2); }
+.office-strength-body p + p { margin-top: 12px; }
+.office-strength-body strong { color: var(--sugi); font-weight: 700; }
+.office-strength-body .office-strength-note { font-size: 13px; color: var(--ink3); }
+.office-strength-links { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 26px; }
+.office-strength-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--sugi); font-weight: 700; border-bottom: 1px solid var(--moegi); }
+@media (max-width: 760px) {
+  .office-strength { grid-template-columns: 28px minmax(0, 1fr); gap: 10px 12px; }
+  .office-strength-body { grid-column: 2; }
+  .office-strength-body p { font-size: 14.5px; line-height: 1.95; }
+}
+
 /* 業務の全体像（about.html 固有） */
 .flow-sec { background: var(--shiro); border-top: 1px solid var(--line); }
 .flow-head { max-width: 780px; margin-bottom: clamp(26px, 3.6vw, 40px); }
@@ -190,36 +209,53 @@
   <div class="w">
     <div class="section-aside rv">
       <div>
-        <div class="section-label"><span class="badge">PROMISE</span>私たちのお約束</div>
-        <h2 class="sec-h">ご依頼の<wbr>前に、<wbr><strong class="nw">お約束できることを。</strong></h2>
-        <p class="sec-sub" style="margin-top:14px">実績の<wbr>数字を<wbr>並べるより、<wbr>まず<wbr>私たちの<wbr>仕事への<wbr>姿勢を<wbr>お伝えします。</p>
+        <div class="section-label"><span class="badge">STRENGTHS</span>みなのの強み</div>
+        <h2 class="sec-h office-strength-heading"><span>手続きの<wbr>費用を<wbr>抑え、</span><span><strong>会社の<wbr>これからに<wbr>時間を。</strong></span></h2>
+        <p class="sec-sub" style="margin-top:14px">日々の<wbr>手続きは、<wbr>仕組み化で<wbr>効率よく。<br>会社ごとの<wbr>相談や<wbr>助成金の<wbr>検討には、<wbr>人の<wbr>時間を。<br>費用と<wbr>支援の<wbr>中身、<wbr>その<wbr>両方を<wbr>大切に<wbr>しています。</p>
       </div>
       <div class="aside-img ph-frame" style="aspect-ratio:16/12">
         <image-slot id="voice-aside" src="assets/photos/voice-aside.webp" crop-scale="1" crop-x="0" crop-y="0" placeholder="面談シーン／握手写真など　16:12" style="display:block;width:100%;height:100%"></image-slot>
       </div>
     </div>
-    <div class="voice-grid">
-      <div class="voice-card rv d1">
-        <h3 class="promise-t">経営者の目線で考えます</h3>
-        <p class="voice-text" style="margin-bottom:0">手続きの<wbr>代行にと<wbr>どまり<wbr>ません。
-会社の<wbr>状況や<wbr>ご意向を<wbr>うかが<wbr>いながら、<wbr>経営判断に<wbr>役立つ形で<wbr>ご提案します。</p>
-      </div>
-      <div class="voice-card rv d2">
-        <h3 class="promise-t">わかりやすい<wbr>言葉で<wbr>説明します</h3>
-        <p class="voice-text" style="margin-bottom:0">専門用語を<wbr>そのまま<wbr>使<wbr>いません。
-選択肢と<wbr>それぞれの<wbr>利点・<wbr>注意点を<wbr>添えて、<wbr>経営判断に<wbr>使える<wbr>形で<wbr>お伝えします。</p>
-      </div>
-      <div class="voice-card rv d3">
-        <h3 class="promise-t">できない<wbr>ことは、<wbr>お伝えします</h3>
-        <p class="voice-text" style="margin-bottom:0">助成金の<wbr>受給を<wbr>断定したり、<wbr>根拠の<wbr>ない<wbr>見込みを<wbr>お話ししたりする<wbr>ことは<wbr>あり<wbr>ません。
-誠実さを<wbr>優先にします。</p>
-      </div>
-      <div class="voice-card promise-wide rv">
-        <div>
-          <h3 class="promise-t">追加料金で、<wbr>驚かせません</h3>
-          <p class="voice-text" style="margin-bottom:0">入退社や<wbr>扶養・給付申請などの<wbr>定例手続きに<wbr>加<wbr>え、年度更新・算定基礎届・賞与支払届も<wbr>顧問料に<wbr>含めています。<wbr>別料金と<wbr>なる<wbr>業務は<wbr>契約前に<wbr>明示します。<wbr><a href="pricing.html" style="color:var(--g600);font-weight:700;text-decoration:none">料金体系を<wbr>見る →</a></p>
+    <div class="office-strengths">
+      <div class="office-strength rv">
+        <span class="office-strength-num" aria-hidden="true">01</span>
+        <h3>費用を<wbr>抑えられるのには、<wbr>理由が<wbr>あります。</h3>
+        <div class="office-strength-body">
+          <p>情報の<wbr>整理や<wbr>書類の<wbr>準備など、<wbr>繰り返し発生する<wbr>作業を<wbr>システム化。<wbr><strong>通常の<wbr>手続きに<wbr>かかる<wbr>準備時間を<wbr>短くし、<wbr>費用を<wbr>抑える</strong>ことにつな<wbr>げています。</p>
+          <p>そこで<wbr>生まれた<wbr>時間を、<wbr>会社ごとに<wbr>考える<wbr>必要が<wbr>ある<wbr>労務相談や<wbr>助成金の<wbr>提案に<wbr>充てます。<wbr>効率化と、<wbr>個別の<wbr>事情に<wbr>向き合う<wbr>支援を<wbr>両立させるのが、<wbr>みなのの<wbr>方針です。</p>
         </div>
       </div>
+      <div class="office-strength rv">
+        <span class="office-strength-num" aria-hidden="true">02</span>
+        <h3>手続きから<wbr>改善提案まで、<wbr>ひとつの<wbr>窓口で。</h3>
+        <div class="office-strength-body">
+          <p>社会保険・労働保険の<wbr>手続き、<wbr>給与計算、<wbr>就業規則、<wbr>労務相談、<wbr>助成金、<wbr>労務システムの<wbr>導入まで。<wbr><strong>それぞれを<wbr>切り離さず、<wbr>会社の<wbr>状況を<wbr>踏まえて<wbr>組み合わせます。</strong></p>
+          <p>たとえば<wbr>採用を<wbr>予定している<wbr>会社なら、<wbr>入社手続きだけで<wbr>なく、<wbr>雇用条件や<wbr>勤怠・給与の<wbr>運用、<wbr>活用を<wbr>検討できる<wbr>助成金まで<wbr>見渡します。<wbr>必要な<wbr>支援と<wbr>進める<wbr>順番を、<wbr>一緒に<wbr>整理します。</p>
+          <p class="office-strength-note">顧問料に<wbr>含む範囲は<wbr>プランに<wbr>より<wbr>異なります。<wbr>助成金の<wbr>申請代行や<wbr>システム導入など、<wbr>別料金の<wbr>業務は<wbr>事前に<wbr>ご案内します。</p>
+        </div>
+      </div>
+      <div class="office-strength rv">
+        <span class="office-strength-num" aria-hidden="true">03</span>
+        <h3>会社の<wbr>予定から、<wbr>助成金を<wbr>ご提案。</h3>
+        <div class="office-strength-body">
+          <p>採用、<wbr>研修、<wbr>賃上げなど、<wbr>これから<wbr>取り組みたい<wbr>ことを<wbr>うかが<wbr>い、<wbr><strong>会社の<wbr>計画に<wbr>合う<wbr>助成金が<wbr>ないか<wbr>検討します。</strong>制度名を<wbr>お伝えするだけで<wbr>なく、<wbr>準備する<wbr>情報や<wbr>進め方も<wbr>整理します。</p>
+          <p>通常業務で<wbr>整えた<wbr>労務情報を、<wbr>こうした<wbr>提案にも<wbr>活用します。<wbr>採用や<wbr>研修などの<wbr>予定が<wbr>決まった<wbr>段階で、<wbr>早めに<wbr>お聞かせ<wbr>ください。</p>
+          <p class="office-strength-note">制度ごとの<wbr>要件を<wbr>確認して<wbr>ご案内します。<wbr>受給を<wbr>保証する<wbr>ものではなく、<wbr>申請代行は<wbr>別料金です。</p>
+        </div>
+      </div>
+      <div class="office-strength rv">
+        <span class="office-strength-num" aria-hidden="true">04</span>
+        <h3>わかる<wbr>説明と、<wbr>見通しの<wbr>立つ料金を。</h3>
+        <div class="office-strength-body">
+          <p>専門用語だけで<wbr>説明せず、<wbr>選択肢と<wbr>それぞれの<wbr>利点・<wbr>注意点を<wbr>お伝えします。<wbr><strong>会社側で<wbr>行う<wbr>こと、<wbr>当事務所が<wbr>行う<wbr>こと、<wbr>次に<wbr>進める<wbr>こと</strong>を<wbr>明確に<wbr>します。</p>
+          <p>入退社や<wbr>扶養・給付申請などの<wbr>定例手続きに<wbr>加<wbr>え、年度更新・算定基礎届・賞与支払届も<wbr>顧問料に<wbr>含めています。<wbr>別料金と<wbr>なる<wbr>業務は<wbr>契約前に<wbr>明示し、<wbr>できる<wbr>こと・できない<wbr>ことも<wbr>率直に<wbr>お伝えします。</p>
+        </div>
+      </div>
+    </div>
+    <div class="office-strength-links">
+      <a href="pricing.html">料金・プランを<wbr>確認する →</a>
+      <a href="uploads/contact.html?from=about-strengths">会社の<wbr>状況を<wbr>相談する →</a>
     </div>
   </div>
 </section>
@@ -622,6 +658,6 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
   body.addEventListener('pointerup',endDrag); body.addEventListener('pointercancel',endDrag);
 })();
 </script>
-<script data-goatcounter=="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/about.html"}' async src="//gc.zgo.at/count.js"></script>
+<script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/about.html"}' async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
