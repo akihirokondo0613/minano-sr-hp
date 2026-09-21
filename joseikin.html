@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="page-enter.js?v=20260919-funnel1"></script>
+<script defer src="page-enter.js?v=20260921-friendly1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 
 <link rel="stylesheet" href="skin-v2.css?v=20260921-softfooter1">
@@ -318,6 +318,62 @@
 @media(prefers-reduced-motion:reduce){
   .jk-now-card,.jk-q-item,.jk-hit-links a,.jk-qa details{transition:none}
 }
+
+/* 助成金の案内：淡緑の面と罫線で読み進める場所を示す */
+.page-hero{background:#EDF5F0;border-radius:0 0 40px 40px}
+.jk-hero-inner{grid-template-columns:minmax(0,1fr) minmax(260px,.65fr);gap:clamp(24px,4vw,56px)}
+.jk-hero-ill{border:0;border-radius:32px 72px 32px 72px;background:#fff}
+.jk-hero-txt .lead{font-size:15px;line-height:1.95;margin:12px 0 0}
+.jk-hero-txt .lead strong{color:var(--sugi)}
+.jk-chips{gap:8px 18px}
+.jk-chip{border:0;padding:4px 0;background:transparent;border-radius:0}
+.jk-wrap{max-width:1080px}
+.jk-sec-head .n{font-size:15px;color:var(--sugi);letter-spacing:.06em}
+.jk-sec-head h2{font-size:clamp(22px,2.8vw,30px)}
+.jk-section-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin:0 0 40px}
+.jk-section-nav a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;border-bottom:1px solid var(--line);color:var(--sugi);font-size:14px;font-weight:700;white-space:nowrap}
+.jk-section-nav a span{flex-shrink:0;transition:transform .2s ease}
+.jk-section-nav a:hover span{transform:translateY(3px)}
+.jk-section-nav a:focus-visible,.jk-now-card:focus-visible,.jk-guides a:focus-visible{outline:2px solid var(--sugi);outline-offset:4px}
+.jk-now{display:block;border-top:1px solid var(--line)}
+.jk-now-card{display:grid;grid-template-columns:minmax(180px,.75fr) minmax(0,1.5fr);column-gap:32px;row-gap:8px;padding:24px 0;background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;box-shadow:none;transform:none}
+.jk-now-card:hover{background:#F1F6F2;box-shadow:none;transform:none;border-color:var(--line)}
+.jk-now-card .jk-now-tag{grid-column:1;justify-self:start}
+.jk-now-card h3{grid-column:1;grid-row:2;font-size:18px}
+.jk-now-card p{grid-column:2;grid-row:1/span 2;font-size:14px}
+.jk-now-card .arr{grid-column:2;margin-top:6px}
+.jk-check{background:#EDF5F0;color:var(--ink2);border-radius:28px;padding:clamp(22px,4vw,40px)}
+.jk-check h2,.jk-check .jk-sec-head .n,.jk-check-lead b,.jk-q legend{color:var(--sugi)}
+.jk-check-lead{color:var(--ink2);font-size:14px}
+.jk-q legend{font-size:13px;letter-spacing:.02em}
+.jk-q-item{background:#fff;border-color:#B8CEC1;border-radius:12px}
+.jk-q-item span{color:var(--ink2);font-size:14px}
+.jk-q-item input{accent-color:var(--sugi)}
+.jk-q-item:hover{background:#F8FBF9;border-color:var(--sugi)}
+.jk-q-item:has(input:checked){background:#DCEDE2;border-color:var(--sugi)}
+.jk-q-item:has(input:focus-visible){outline-color:var(--sugi)}
+.jk-result{border-top:2px solid #B8CEC1;border-radius:0;background:transparent;padding:24px 0 0}
+.jk-hit{background:#fff}
+.jk-steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.jk-steps li{border:0;border-top:1px solid #B8CEC1;border-radius:0;padding:18px 0;background:transparent}
+.jk-steps li::before{background:#DCEDE2;color:var(--sugi);width:36px;height:36px;font-size:15px}
+.jg,.jg:nth-of-type(even){border:0;border-top:1px solid #B8CEC1;border-radius:0;background:transparent;padding:clamp(28px,4vw,44px) 0}
+.jg-head{border-bottom:0;gap:20px}
+.jg-num{font-size:32px;color:var(--sugi);-webkit-text-stroke:0}
+.jg-block.jg-fit,.jg:nth-of-type(even) .jg-block.jg-fit{background:transparent;border:0;padding:0}
+.jg-ill{border-radius:24px;overflow:hidden}
+.jk-guides{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px}
+.jk-guides a{border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;padding:20px 0;box-shadow:none;transform:none}
+.jk-guides a:hover{background:#F1F6F2;transform:none;box-shadow:none}
+.jk-guide-n{font-size:15px}
+.jk-qa summary>span{min-width:0;flex:1;overflow-wrap:break-word}
+.jk-qa{gap:0;border-top:1px solid var(--line)}
+.jk-qa details{border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent}
+.jk-qa details[open]{background:#F1F6F2}
+@media(max-width:900px){.jk-hero-inner{grid-template-columns:minmax(0,1fr) 220px}.jk-hero-txt h1{font-size:clamp(26px,3.7vw,36px)}}
+@media(max-width:760px){.jk-hero-inner{grid-template-columns:minmax(0,1fr)}.jk-hero-ill{width:min(64vw,280px)}.jk-section-nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}.jk-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.page-hero{border-radius:0 0 24px 24px}.jk-hero-txt .lead{font-size:14px}.jk-now-card{grid-template-columns:minmax(0,1fr);gap:10px}.jk-now-card p,.jk-now-card .arr,.jk-now-card h3,.jk-now-card .jk-now-tag{grid-column:1;grid-row:auto}.jk-guides{grid-template-columns:minmax(0,1fr)}.jk-steps{grid-template-columns:minmax(0,1fr);gap:0}.jk-steps li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:4px 14px}.jk-steps li::before{grid-column:1;grid-row:1/span 2}.jk-steps b,.jk-steps span{grid-column:2}.jk-section-nav a{font-size:13px}.jg-fit{grid-template-columns:minmax(0,1fr)}.jg-fit .jg-ill{grid-column:1;grid-row:auto;width:min(100%,260px);margin:12px auto}.jg-fit ul{grid-column:1}}
+@media(prefers-reduced-motion:reduce){.jk-section-nav a span{transition:none}.jk-section-nav a:hover span{transform:none}}
 </style>
 <body>
 <a class="skip-link" href="#main">本文へスキップ</a>
@@ -364,8 +420,10 @@
         <span>助成金</span>
       </nav>
       <span class="page-kicker">助成金の申請サポート</span>
-      <h1>使える<wbr>助成金が<wbr>あるか、<br><span class="nw">まず一緒に</span><span class="nw">確かめませんか。</span></h1>
-      <p class="lead">助成金は、<wbr>要件を<wbr>満たして<wbr>手順<wbr>どおりに<wbr>進めれば、<wbr><strong>原則と<wbr>して<wbr>返済の<wbr>いらない<wbr>資金</strong>に<wbr>なります。<wbr>ただし種類が<wbr>多く、<wbr>しかも<wbr>「取り組む前に<wbr>出す書類」が<wbr>要件に<wbr>なっている<wbr>ものが<wbr>ほとんどです。<wbr>動いた<wbr>あとでは<wbr>間に<wbr>合いません。<wbr>対象に<wbr>なるかの<wbr>確認から、<wbr>計画の<wbr>届出・実行・<wbr>支給申請・受給後の<wbr>報告まで<wbr>一続きで<wbr>お引き<wbr>受けします。</p>
+      <h1>使える<wbr>助成金が<wbr>あるか、<br><span class="nw">まず一緒に</span><wbr><span class="nw">確かめませんか。</span></h1>
+      <p class="lead">助成金は、<wbr>要件を<wbr>満たして<wbr>手順<wbr>どおりに<wbr>進めれば、<wbr><strong>原則と<wbr>して<wbr>返済の<wbr>いらない<wbr>資金</strong>に<wbr>なります。</p>
+      <p class="lead">ただし種類が<wbr>多く、<wbr>しかも<wbr>「取り組む前に<wbr>出す書類」が<wbr>要件に<wbr>なっている<wbr>ものが<wbr>ほとんどです。<wbr>動いた<wbr>あとでは<wbr>間に<wbr>合いません。</p>
+      <p class="lead">対象に<wbr>なるかの<wbr>確認から、<wbr>計画の<wbr>届出・実行・<wbr>支給申請・受給後の<wbr>報告まで<wbr>一続きで<wbr>お引き<wbr>受けします。</p>
       <div class="jk-hero-cta">
         <a href="uploads/contact.html" class="btn-primary">無料で相談する</a>
         <a href="#check" class="jk-hero-sub">対象になりそうか見る<span aria-hidden="true">↓</span></a>
@@ -382,6 +440,12 @@
   </header>
 
   <div class="jk-wrap">
+    <nav class="jk-section-nav" aria-label="助成金ページのご案内">
+      <a href="#check">対象を確認する<span aria-hidden="true">↓</span></a>
+      <a href="#fee">費用を見る<span aria-hidden="true">↓</span></a>
+      <a href="#flow">進め方を見る<span aria-hidden="true">↓</span></a>
+      <a href="#guides">制度から探す<span aria-hidden="true">↓</span></a>
+    </nav>
 
     <!-- ═══ 01 いま提案できるもの ═══
          時期もののため、締切が過ぎたら中身を差し替えるかカードごと消す。
@@ -917,27 +981,27 @@
       <div class="jk-sec-head"><span class="n">07</span><h2>ご相談の<wbr>前に、<wbr>よく<wbr>いただく<wbr>質問</h2></div>
       <div class="jk-qa">
         <details>
-          <summary>顧問契約を<wbr>結ば<wbr>ないと<wbr>頼めませんか。</summary>
+          <summary><span>顧問契約を<wbr>結ば<wbr>ないと<wbr>頼めませんか。</span></summary>
           <div class="a">いいえ。助成金の申請だけをスポットでお引き受けします。顧問契約をおすすめすることはありますが、お断りいただいて構いません。報酬率が変わるだけで、対応の中身は同じです。</div>
         </details>
         <details>
-          <summary>受給できなかったら、<wbr>費用は<wbr>どうなりますか。</summary>
+          <summary><span>受給できなかったら、<wbr>費用は<wbr>どうなりますか。</span></summary>
           <div class="a">報酬はいただきません。着手金も0円です。郵送費などの実費が発生した場合のみ、上乗せなしの実額でご請求します。なお、助成金には審査があり、要件を満たしていても支給されない場合があります。受給をお約束するものではありません。</div>
         </details>
         <details>
-          <summary>従業員が<wbr>数名の<wbr>会社でも<wbr>対象に<wbr>なりますか。</summary>
+          <summary><span>従業員が<wbr>数名の<wbr>会社でも<wbr>対象に<wbr>なりますか。</span></summary>
           <div class="a">従業員1名からご相談いただけます。ここで扱う5つの制度は、いずれも中小企業向けの区分が中心です。むしろ、人数が少ない会社ほど1人あたりの助成額が経営に効きます。</div>
         </details>
         <details>
-          <summary>いまから<wbr>でも間に<wbr>合いますか。</summary>
+          <summary><span>いまから<wbr>でも間に<wbr>合いますか。</span></summary>
           <div class="a">制度によります。募集期間があるものは締切と実施順序の確認が必要です。令和8年度の業務改善助成金は、富山県では9月30日必着の申請と同日までの賃上げが必要です。設備の導入・支払は交付決定後に行い、事業完了期限は原則として令和9年1月31日です。申請前に、賃上げ日と設備の発注・導入予定を確認しましょう。まず現状をお聞かせください。</div>
         </details>
         <details>
-          <summary>自社で<wbr>申請しても<wbr>よい<wbr>ものですか。</summary>
+          <summary><span>自社で<wbr>申請しても<wbr>よい<wbr>ものですか。</span></summary>
           <div class="a">もちろん可能です。制度がひとつだけで、就業規則と賃金台帳が整っていれば、ご自身で進めるほうが早い場合もあります。専門家に任せる価値が出るのは、複数の制度を組み合わせるとき、就業規則の改定が必要なとき、そして「いつ何をするか」の順序を間違えたくないときです。相談の結果、自社で進めたほうがよいと判断すればそうお伝えします。</div>
         </details>
         <details>
-          <summary>まだ<wbr>何も<wbr>決まってい<wbr>ないのですが、<wbr>話だけでも<wbr>いいですか。</summary>
+          <summary><span>まだ<wbr>何も<wbr>決まってい<wbr>ないのですが、<wbr>話だけでも<wbr>いいですか。</span></summary>
           <div class="a">歓迎します。「人を増やそうか迷っている」「時給を上げたいが原資が心配」という段階でのご相談がいちばん動きやすいです。取り組みを始める前でないと使えない制度が多いためです。</div>
         </details>
       </div>
