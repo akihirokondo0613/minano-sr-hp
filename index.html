@@ -453,15 +453,19 @@ main > section:not(.hero) {
 /* 章ごとに色面と配置を変え、短いトップのまま読み進めるリズムをつくる。 */
 .home-compact-section .idx-num{color:var(--sugi);-webkit-text-stroke:0;font-size:clamp(32px,4vw,52px);font-weight:600}
 #services{background:var(--g50);border-radius:40px 40px 0 0}
-#services .svc-row{background:var(--shiro);border-radius:16px;border:1px solid var(--line)}
+#services .svc-row{background:transparent;border-radius:0;border:0;border-bottom:1px solid var(--line);box-shadow:none}
+#services .svc-row:hover,#services .svc-row:focus-within{background:rgba(255,255,255,.45);box-shadow:none;transform:none}
 #cases{background:var(--yuki);border-bottom:1px solid var(--line)}
-#cases .home-phase-card{border-top:4px solid var(--sugi);box-shadow:var(--sh-xs)}
+#cases .home-phase-card{background:transparent;border:0;border-radius:0;box-shadow:none}
 #cases .home-phase-label{color:var(--sugi)}
 #pricing{background:var(--shiro)}
 #faq{background:var(--sora-l);border-radius:40px 40px 0 0}
 #faq .faq-layout>*{min-width:0}
-#faq .faq-btn{padding:18px 0}
-#faq .faq-wrap{background:var(--shiro);border-radius:20px;padding:4px 24px}
+#faq .faq-btn{padding:22px 0}
+#faq .faq-wrap{background:transparent;border-radius:0;padding:0;gap:0;border-top:1px solid var(--sora)}
+#faq .faq-item,#faq .faq-item.open{background:transparent;border:0;border-bottom:1px solid var(--sora);border-radius:0}
+#faq .faq-a-in{padding:0 0 22px 28px}
+#faq .faq-item.open .faq-a{max-height:none}
 #news{background:var(--yuki)}
 #tools{background:var(--shiro)}
 #about{background:var(--sugi);border-radius:40px 40px 0 0}
@@ -472,6 +476,9 @@ main > section:not(.hero) {
 #about .home-about-card{border-top:1px solid rgba(255,255,255,.25);padding-top:28px}
 #about .home-about-meta{padding-top:16px;border-top:1px solid rgba(255,255,255,.25)}
 #about a:focus-visible{outline-color:var(--shiro)}
+#about .sec-h strong{display:inline-block;max-width:100%}
+/* 直前の章の背景色を引き継ぎ、白い切れ目をつくらない。 */
+#about+.final-sec::before{background:var(--sugi)}
 /* 動きは既存の一度きりの表示に限定。読み始めるまでの待ち時間を短くする。 */
 .home-compact-section .rv,.home-compact-section .rvl{transition-duration:.55s}
 @media(min-width:1100px){
@@ -496,8 +503,8 @@ main > section:not(.hero) {
 }
 @media(max-width:700px){
   #services,#faq,#about{border-radius:24px 24px 0 0}
-  #faq .faq-wrap{padding:0 14px}
-  #services .svc-row{border-radius:12px}
+  #faq .faq-wrap{padding:0}
+  #services .svc-row{border-radius:0}
   #about .home-about-card{padding-top:22px}
 }
 @media(prefers-reduced-motion:reduce){
