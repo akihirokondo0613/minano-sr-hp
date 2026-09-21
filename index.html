@@ -494,17 +494,14 @@ main > section:not(.hero) {
   #services .svc-row{grid-template-columns:32px 80px minmax(0,1fr) 24px;padding:16px;gap:14px}
   #services .svc-row>span:nth-of-type(3){min-height:88px}
   #services .svc-ill{width:80px}
-  #services .svc-info-name{font-size:19px}
+  #services .svc-info-name{transform:none;transition:none;display:block;width:auto;max-width:100%;font-size:19px}
   #services .home-section-more{grid-column:2;text-align:left}
   #about .about-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:start}
   #about .sec-head{grid-template-columns:minmax(0,1fr);gap:24px;margin:0}
   #about .sec-head-idx{flex-direction:row;align-items:baseline;gap:14px}
   #about .home-about-card{border-top:0;border-left:1px solid rgba(255,255,255,.25);padding:24px 0 24px 48px}
 }
-/* 低い画面・拡大表示・動きを減らす設定では追従せず、すべて普通に読める。 */
-@media(min-width:1100px) and (min-height:760px) and (prefers-reduced-motion:no-preference){
-  #services .sec-head,#faq .faq-aside{position:sticky;top:calc(var(--nav-h) + 32px)}
-}
+
 @media(max-width:700px){
   #services,#faq,#about{border-radius:24px 24px 0 0}
   #faq .faq-wrap{padding:0}
@@ -1048,6 +1045,48 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 @media(prefers-reduced-motion:reduce){.pen-tip{display:none}}
 
 </style>
+<style id="home-warm-layout">
+/* 見出しを先に読み、サービスと質問を自然にたどる通常レイアウト。 */
+#services>.w{display:block}
+#services .sec-head{position:static;display:grid;grid-template-columns:160px minmax(0,1fr);gap:32px;margin-bottom:48px}
+#services .sec-head-idx{align-items:flex-start;flex-direction:column;gap:8px}
+#services .sec-h,#faq .sec-h{font-size:clamp(28px,3.3vw,48px);line-height:1.5}
+#services .home-service-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px;border-top:1px solid var(--line)}
+#services .svc-row{display:grid;grid-template-columns:84px minmax(0,1fr) 24px;gap:20px;padding:28px 0;text-align:left;align-items:center}
+#services .svc-num{display:none}
+#services .svc-ill{width:84px}
+#services .svc-row>span:nth-of-type(3){min-height:0;display:block}
+#services .svc-info-name{font-size:clamp(17px,1.5vw,21px);line-height:1.6}
+#services .svc-info-desc{opacity:1;transform:none;display:block;max-height:none;overflow:visible;padding:0;margin-top:8px;font-size:14px;line-height:1.85;transition:none}
+#services .svc-row:hover .svc-info-desc,#services .svc-row:focus-within .svc-info-desc{max-height:none;padding:0}
+#services .svc-arr{display:block}
+#services .home-section-more{text-align:right;margin-top:28px}
+#faq .faq-layout{display:block;max-width:1000px;margin-inline:auto}
+#faq .faq-aside{position:static;text-align:center;margin-bottom:40px}
+#faq .faq-aside .sec-head-idx{justify-content:center}
+#faq .faq-aside .sec-sub{max-width:38em;margin-inline:auto}
+#faq .faq-btn{padding:26px 8px;gap:20px}
+#faq .faq-a-in{padding:0 44px 26px;max-width:54em;line-height:1.9}
+@media(max-width:760px){
+ #services .sec-head{grid-template-columns:1fr;gap:20px;margin-bottom:30px}
+ #services .sec-head-idx{flex-direction:row;align-items:baseline;gap:12px}
+ #services .home-service-list{grid-template-columns:1fr}
+ #services .svc-row{grid-template-columns:72px minmax(0,1fr) 18px;gap:14px;padding:24px 0}
+ #services .svc-ill{width:72px}
+ #services .svc-info-desc{font-size:13px}
+ #services .home-section-more{text-align:center}
+ #faq .faq-btn{padding:22px 0;gap:12px}
+ #faq .faq-a-in{padding:0 0 24px 28px}
+}
+/* 短い意味のまとまりを保ち、狭い画面では三つの業務を同じ大きさで並べる。 */
+@media(max-width:540px){
+ #top .hero-h1 .hero-services{display:block;font-size:clamp(29px,7.5vw,40px);line-height:1.3}
+ #top .hero-h1>br,#top .hero-h1>wbr{display:none}
+ #top .hero-h1>strong{display:block;margin-top:14px;font-size:clamp(21px,5.5vw,28px);line-height:1.5}
+ #top .hero-overlay{padding-top:90px}
+ #top .hero-sub{margin-top:18px}
+}
+</style>
 </head>
 <body data-nav="B">
 <a class="skip-link" href="#main">本文へスキップ</a>
@@ -1228,7 +1267,7 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
   <div class="w">
     <div class="sec-head rv">
       <div class="sec-head-idx"><span class="idx-num">02</span><span class="idx-lat">SERVICES</span><span class="idx-jp">サービス</span></div>
-      <div class="sec-head-body"><h2 class="sec-h">必要な<wbr>支援を、<wbr><strong>一つの<wbr>窓口で。</strong></h2><p class="sec-sub">手続き・給与計算・<wbr>助成金・<wbr>規程整備・労務相談・<wbr>DXを、<wbr>会社の<wbr>状況に<wbr>合わせて<wbr>組み合わせます。</p></div>
+      <div class="sec-head-body"><h2 class="sec-h"><span class="nw">必要な支援を、</span><wbr><strong><span class="nw">一つの窓口で。</span></strong></h2><p class="sec-sub">手続き・給与計算・<wbr>助成金・<wbr>規程整備・労務相談・<wbr>DXを、<wbr>会社の<wbr>状況に<wbr>合わせて<wbr>組み合わせます。</p></div>
     </div>
     <div class="svc-list home-service-list">
       <a href="uploads/service-joseikin.html" class="svc-row rv">
@@ -1349,7 +1388,7 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
     <div class="faq-layout">
       <aside class="faq-aside rv">
         <div class="sec-head-idx"><span class="idx-num">05</span><span class="idx-lat">FAQ</span><span class="idx-jp">よくある質問</span></div>
-        <h2 class="sec-h">ご相談の、<strong>その前に。</strong></h2>
+        <h2 class="sec-h"><span class="nw">ご相談の、</span><wbr><strong><span class="nw">その前に。</span></strong></h2>
         <p class="sec-sub">よく<wbr>いただく<wbr>疑問を<wbr>まとめました。<wbr>ここに<wbr>ない<wbr>点も、<wbr>初回の<wbr>ご相談で<wbr>遠慮なく<wbr>お尋ねください。</p>
       </aside>
       <div class="faq-wrap rv d1">
@@ -1750,7 +1789,7 @@ var ro=new IntersectionObserver(function(entries){
 },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.rv,.rvl').forEach(function(el){ro.observe(el)});
 
-// 見出しの各行を、実際のペン先と同じ速さで一度だけ引く。
+// 小さな木軸の鉛筆で、緩やかな筆圧と速度の線を一度だけ添える。
 (function(){
  if(window.__mnPenCleanup)window.__mnPenCleanup();
  var ns='http://www.w3.org/2000/svg',reduce=matchMedia('(prefers-reduced-motion: reduce)'),items=[],frames=new Set(),resizeTimer;
@@ -1761,11 +1800,11 @@ document.querySelectorAll('.rv,.rvl').forEach(function(el){ro.observe(el)});
   var h=item.heading.getBoundingClientRect(),range=document.createRange();range.selectNodeContents(item.strong);
   var lines=[];Array.from(range.getClientRects()).filter(function(r){return r.width>1&&r.height>1;}).forEach(function(r){var row=lines.find(function(x){return Math.abs(x.top-r.top)<4;});if(row){row.left=Math.min(row.left,r.left);row.right=Math.max(row.right,r.right);row.bottom=Math.max(row.bottom,r.bottom);}else lines.push({left:r.left,right:r.right,top:r.top,bottom:r.bottom});});
   var layer=svg('svg',{'class':'pen-layer','aria-hidden':'true'});item.paths=[];
-  lines.sort(function(a,b){return a.top-b.top;}).forEach(function(r){var x=Math.max(1,r.left-h.left),y=r.bottom-h.top-5,w=Math.min(h.width-2,r.right-h.left)-x;var path=svg('path',{d:'M '+x+' '+y+' L '+(x+w)+' '+y,fill:'none',stroke:'#9dccb0','stroke-width':Math.max(6,(r.bottom-r.top)*.2),'stroke-linecap':'round',opacity:'.65'});path.style.strokeDasharray=w;path.style.strokeDashoffset=item.done||reduce.matches?0:w;layer.appendChild(path);item.paths.push({el:path,x:x,y:y,w:w});});
-  var pen=svg('g',{'class':'pen-tip'});pen.appendChild(svg('path',{d:'M 0 0 L -5 -12 L -5 -40 Q 0 -45 5 -40 L 5 -12 Z',fill:'#174c39',stroke:'#fff','stroke-width':'1.5'}));pen.appendChild(svg('path',{d:'M -5 -13 L 5 -13 L 0 0 Z',fill:'#f5cf64'}));pen.appendChild(svg('path',{d:'M -5 -31 L 5 -31',stroke:'#f5cf64','stroke-width':'4'}));layer.appendChild(pen);item.pen=pen;item.layer=layer;item.heading.appendChild(layer);item.heading.classList.add('pen-ready');
+  lines.sort(function(a,b){return a.top-b.top;}).forEach(function(r){var x=Math.max(1,r.left-h.left),y=r.bottom-h.top-5,w=Math.min(h.width-2,r.right-h.left)-x;var path=svg('path',{d:'M '+x+' '+y+' Q '+(x+w*.48)+' '+(y+3)+' '+(x+w)+' '+(y-1),fill:'none',stroke:'#9dccb0','stroke-width':Math.max(6,(r.bottom-r.top)*.2),'stroke-linecap':'round',opacity:'.65'});w=path.getTotalLength();path.style.strokeDasharray=w;path.style.strokeDashoffset=item.done||reduce.matches?0:w;layer.appendChild(path);item.paths.push({el:path,x:x,y:y,w:w});});
+  var pen=svg('g',{'class':'pen-tip'});pen.appendChild(svg('path',{d:'M -3 -8 L -3 -28 Q 0 -31 3 -28 L 3 -8 Z',fill:'#d7ac6b',stroke:'#71583b','stroke-width':'.7'}));pen.appendChild(svg('path',{d:'M -3 -8 L 3 -8 L 0 0 Z',fill:'#f0ddbb'}));pen.appendChild(svg('path',{d:'M -1 -3 L 1 -3 L 0 0 Z',fill:'#46594a'}));pen.appendChild(svg('path',{d:'M 0 -26 L 0 -10',stroke:'#f3d69c','stroke-width':'1.4','stroke-linecap':'round'}));layer.appendChild(pen);item.pen=pen;item.layer=layer;item.heading.appendChild(layer);item.heading.classList.add('pen-ready');
  }
- function draw(item){if(item.done)return;item.done=true;if(reduce.matches){build(item);return;}var began=null,total=item.paths.length*850;
-  function tick(t){if(!item.heading.isConnected)return;if(began===null)began=t;var elapsed=t-began,index=Math.min(item.paths.length-1,Math.floor(elapsed/850)),part=Math.min(1,(elapsed-index*850)/850);item.paths.forEach(function(p,i){p.el.style.strokeDashoffset=i<index?0:i===index?p.w*(1-part):p.w;});var p=item.paths[index];if(p){item.pen.style.opacity=elapsed<total?'1':'0';item.pen.setAttribute('transform','translate('+(p.x+p.w*part)+' '+p.y+') rotate(28)');}if(elapsed<total){var id=requestAnimationFrame(function(t){frames.delete(id);tick(t);});frames.add(id);}}
+ function draw(item){if(item.done)return;item.done=true;if(reduce.matches){build(item);return;}var began=null,duration=1100,total=item.paths.length*duration;
+  function tick(t){if(!item.heading.isConnected)return;if(began===null)began=t;var elapsed=t-began,index=Math.min(item.paths.length-1,Math.floor(elapsed/duration)),phase=Math.min(1,(elapsed-index*duration)/duration),linear=Math.min(1,phase/.86),part=linear*linear*(3-2*linear);item.paths.forEach(function(p,i){p.el.style.strokeDashoffset=i<index?0:i===index?p.w*(1-part):p.w;});var p=item.paths[index];if(p){var point=p.el.getPointAtLength(p.w*part),fade=Math.min(1,phase/.12)*Math.max(0,Math.min(1,(1-phase)/.14));item.pen.style.opacity=elapsed<total?String(fade):'0';item.pen.setAttribute('transform','translate('+point.x+' '+(point.y-Math.max(0,phase-.86)*35)+') rotate('+(24+Math.sin(part*Math.PI)*5)+')');}if(elapsed<total){var id=requestAnimationFrame(function(t){frames.delete(id);tick(t);});frames.add(id);}}
   var id=requestAnimationFrame(function(t){frames.delete(id);tick(t);});frames.add(id);
  }
  var observer=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var item=items.find(function(x){return x.strong===e.target;});if(item){build(item);draw(item);}observer.unobserve(e.target);}});},{threshold:.8,rootMargin:'0px 0px -12% 0px'});
@@ -1850,6 +1889,7 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
 <script defer src="terms.js?v=20260812-terms1"></script>
 <script defer src="nav-spy.js?v=20260812-navspy2"></script>
 <script id="pf-hover">(function(){var d={};function pf(u){if(d[u])return;d[u]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u;document.head.appendChild(l);}function h(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var hr=a.getAttribute("href");if(!hr||hr[0]==="#"||/^(mailto:|tel:|https?:)/.test(hr))return;if(a.target==="_blank")return;pf(a.href);}document.addEventListener("mouseover",h,{passive:true});document.addEventListener("touchstart",h,{passive:true});})();</script>
+
 <style id="brushup-2026">/* skin-v2.css に統合済み */</style>
 <script id="stg-highlight">/* CASE段階ハイライトは 2026-07 にユーザー判断で削除（復活させないこと） */</script>
 <script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/"}' async src="//gc.zgo.at/count.js"></script>
