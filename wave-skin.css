@@ -175,6 +175,6 @@ figcaption a:has(wbr), blockquote a:has(wbr), .page-hero .lead a:has(wbr) {
 .phrase-unit{display:inline-block;max-width:100%}
 
 /* 短い本文リンクを行末の残り幅で分断せず、長いリンクは器の中で折る。 */
-main :is(p,li,dd) > a:not([class]){display:inline-block;max-width:100%;vertical-align:baseline}
+main :is(p,li,dd) > a:not([class]):not(:has(wbr)){display:inline-block;max-width:100%;vertical-align:baseline}
 main a.jl{white-space:nowrap}
 main :is(.btn-primary,.btn-white,.btn-ghost,.startup-primary,.startup-secondary){max-width:100%;white-space:normal;text-wrap:balance;overflow-wrap:break-word}

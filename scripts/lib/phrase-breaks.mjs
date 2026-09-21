@@ -75,6 +75,12 @@ function classesOf(attrs) {
   return m ? m[1].split(/\s+/).filter(Boolean) : [];
 }
 
+/** レイアウトを担うリンクと、色だけを指定した本文リンクを区別する。 */
+function isStructuredLink(attrs) {
+  return /\bclass\s*=|\bhref\s*=\s*["'](?:tel:|mailto:)/i.test(attrs)
+    || /\bstyle\s*=\s*["'][^"']*(?:display\s*:|white-space\s*:\s*nowrap)/i.test(attrs);
+}
+
 function isTarget(name, attrs) {
   // svc-info-name（サービス一覧カードの題）は h3 でも処理しない。
   // 漢字連続の題は文節境界が全部禁止され、10文字上限の強制分割が
@@ -115,7 +121,7 @@ function findTargets(html) {
         inCell,
         target: !inCell && (isTarget(name, attrs)
           || (name === 'a' && !stack.some((el) => el.target)
-            && !/(?:\b(?:class|style)\s*=|\bhref\s*=\s*["'](?:tel:|mailto:))/i.test(attrs))),
+            && !isStructuredLink(attrs))),
         innerStart: m.index + raw.length,
         hasTargetChild: false,
       });
@@ -253,7 +259,7 @@ function rebuild(inner, ownerTag) {
       if (!closing && !VOID_TAGS.has(a.name) && !a.raw.endsWith('/>')) {
         const nowrap = classesOf(a.raw).some((c) => NOWRAP_CLASSES.has(c))
           || (NOWRAP_TAGS.has(a.name) && (!PROSE_TAGS.has(ownerTag)
-            || /(?:\b(?:class|style)\s*=|\bhref\s*=\s*["'](?:tel:|mailto:))/i.test(a.raw)));
+            || isStructuredLink(a.raw)));
         nowrapStack.push(nowrap);
         if (nowrap) { nowrapSeq += 1; openNowrap.push(nowrapSeq); }
       } else if (closing) {

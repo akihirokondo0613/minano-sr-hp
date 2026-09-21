@@ -24,4 +24,9 @@ for (const source of [
   '<p><a href="mailto:contact@example.com">contact@example.com</a></p>',
   '<h2><strong><span class="phrase-unit">無料で</span><wbr><span class="phrase-unit">ご相談いただけます。</span></strong></h2>',
 ]) assert.equal(markPhrases(source).html, source, '操作部品・連絡先・手置き境界を保護');
-console.log('本文リンクの文節: 12例と保護対象3例 合格');
+const styled = markPhrases('<p><a href="/source" style="color:green;text-decoration:underline">厚生労働省「トライアル雇用助成金の公式ページ」</a></p>').html;
+assert.match(styled, /<wbr>/, '色だけの指定は文節処理の対象');
+assert.ok(styled.includes('トライアル'), 'カタカナの語を保持');
+const numbers = markPhrases('<p>料金は月10,000円、成功報酬15％、受付は9:00–18:00です。</p>').html;
+for (const value of ['10,000円', '15％', '9:00–18:00']) assert.ok(numbers.includes(value), value + ' を分断しない');
+console.log('文節生成の実例・保護対象・数値 合格');
