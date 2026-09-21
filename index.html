@@ -593,6 +593,49 @@ main > section:not(.hero) {
 }
 @media (prefers-reduced-motion:reduce){.hero-spot{transition:none}}
 </style>
+
+<style id="home-visual-story">
+/* 図版・流れ・実写真で章の役割を分け、囲みを増やさず読む順番をつくる。 */
+#why .home-why-head{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:24px clamp(32px,5vw,72px)}
+#why .sec-head-idx{grid-column:1/-1;flex-direction:row;align-items:baseline;gap:14px}
+#why .home-why-copy{grid-column:2;grid-row:2}
+#why .home-why-photo{grid-column:1;grid-row:2;width:100%;max-width:none;margin:0}
+#why .home-why-photo .ph-frame{border:0;border-radius:0;box-shadow:none;background:transparent}
+#why .home-why-copy .sec-h{font-size:clamp(28px,3vw,42px)}
+#why .belief-card{background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;box-shadow:none;padding:22px 0}
+#why .belief-card:hover{transform:none;box-shadow:none}
+#why .home-why-beliefs{gap:28px}
+#cases .home-phase-card{position:relative;overflow:visible;padding-top:24px;border-top:1px solid var(--line)}
+#cases .home-phase-card::before{content:'';position:absolute;top:-5px;left:0;width:9px;height:9px;border-radius:50%;background:var(--sugi-7)}
+#cases .home-phase-body{padding:18px 0 0}
+#cases .home-phase-media{background:transparent}
+#cases .home-phase-title{color:var(--sugi);font-size:clamp(19px,2vw,25px)}
+#about .about-inner{display:block}
+#about .sec-head{grid-template-columns:minmax(0,1fr);gap:22px;margin-bottom:40px}
+#about .sec-head-idx{flex-direction:row;align-items:baseline;gap:14px}
+#about .home-about-card{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);grid-template-areas:'photo copy';gap:clamp(32px,5vw,72px);padding:0;border:0}
+#about .home-office-photo{grid-area:photo;margin:0;min-width:0}
+#about .home-office-photo img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;border-radius:4px 40px 4px 4px}
+#about .home-office-photo figcaption{margin-top:12px;color:var(--line2);font-size:12px;letter-spacing:.04em}
+#about .home-about-meta{display:grid;gap:8px}
+@media(max-width:700px){
+ #why .home-why-head{display:flex;flex-direction:column;align-items:stretch;gap:20px}
+ #why .home-why-copy{display:contents}
+ #why .home-why-copy .sec-h{font-size:27px}
+ #why .home-why-photo{width:min(100%,240px);max-width:240px;margin:0 auto}
+ #why .home-why-beliefs{gap:0}
+ #why .belief-card{padding:16px 0;border-top:0}
+ #cases .home-phase-grid{gap:0;padding-left:18px}
+ #cases .home-phase-card{grid-template-columns:minmax(0,1fr) minmax(90px,32%);text-align:left;border-top:0;border-left:1px solid var(--line);padding:8px 0 24px 20px;gap:10px}
+ #cases .home-phase-card::before{top:22px;left:-5px}
+ #cases .home-phase-body{grid-column:1;grid-row:1;padding:0}
+ #cases .home-phase-media{grid-column:2;grid-row:1;width:100%;padding:0}
+ #cases .home-phase-title{font-size:18px}
+ #about .sec-head{margin-bottom:28px}
+ #about .home-about-card{grid-template-columns:minmax(0,1fr);grid-template-areas:'photo' 'copy';gap:28px}
+ #about .home-office-photo img{border-top-right-radius:28px}
+}
+</style>
 <style id="home-tool-cards">
 /* 07 TOOLS ― 社内書式（無料ツール）と行政の公式窓口の2枚カード。06 TOPICS の記事カード（tp-card）と同じ言葉づかい：
    上に色の帯（分野名の文字）、下に題・説明・リンク。帯はトップの深杉系で統一。記事の分野別配色とは役割を分ける。 */
@@ -1025,7 +1068,7 @@ main > section:not(.hero) {
           <p>私たちは<wbr>複雑に<wbr>絡み合った<wbr>労務管理を<wbr>一つずつほどき、<wbr>本来の<wbr>目的を<wbr>残したまま、<wbr>現場で<wbr>続けられる<wbr>仕組みへ<wbr>整えます。</p>
         </div>
       </div>
-      <div class="sec-photo home-why-photo"><div class="ph-frame"><image-slot id="home-why-main" src="assets/photos/why-main.webp" placeholder="経営者との打ち合わせシーン"></image-slot></div></div>
+      <div class="sec-photo home-why-photo"><div class="ph-frame"><image-slot id="home-why-main" src="assets/photos/why-main.webp" fit="contain" placeholder="複雑な労務を整理するイメージ"></image-slot></div></div>
     </div>
     <div class="why-beliefs home-why-beliefs rv d2" aria-label="3つの支援方針">
       <article class="belief-card">
@@ -1388,7 +1431,8 @@ main > section:not(.hero) {
       <div class="sec-head-idx"><span class="idx-num">08</span><span class="idx-lat">ABOUT</span><span class="idx-jp">事務所案内</span></div>
       <div class="sec-head-body"><h2 class="sec-h">日々の<wbr>労務に、<wbr><strong>確かな手続きを。</strong></h2><p class="sec-sub">業務内容や<wbr>ご希望に<wbr>合わせて、<wbr>相談方法と<wbr>進め方を<wbr>調整します。</p></div>
     </div>
-    <div class="home-about-card" style="grid-template-columns:minmax(0,1fr);grid-template-areas:'copy';gap:0">
+    <div class="home-about-card">
+      <figure class="home-office-photo rv"><img src="assets/photos/about-scop-building.webp" width="960" height="720" loading="lazy" decoding="async" alt="みなの社会保険労務士事務所が入るSCOP TOYAMAの外観"><figcaption>SCOP TOYAMA 外<wbr>観</figcaption></figure>
       <div class="home-about-copy rv d1"><h3 class="rep-h">複雑な<wbr>ルールを、<wbr><strong>運用しやすい形に。</strong></h3><p style="max-inline-size:none">むずかしい<wbr>言葉を<wbr>そのまま<wbr>使わず、<wbr>明日からの<wbr>現場で<wbr>使える<wbr>形に<wbr>してお渡しします。<wbr>地域に<wbr>根ざした<wbr>相談相手と<wbr>して、<wbr>会社の<wbr>状況を<wbr>一緒に<wbr>整理します。</p><div class="home-about-meta"><span>代表　近藤 昭宏</span><span>富山県富山市蓮町1丁目7-4　SCOP TOYAMA</span><span>平日 9:00–18:00</span></div><div><a href="about.html" class="link-more">代表・事務所情報を見る →</a></div></div>
     </div>
   </div>
