@@ -5,7 +5,7 @@
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta name="msvalidate.01" content="77FD18A4932A50E35E3C40CFA2EA7804">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="page-enter.js?v=20260919-funnel1"></script>
+<script defer src="page-enter.js?v=20260921-friendly1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>みなの社会保険労務士事務所｜富山市の社労士（助成金・給与計算・顧問）</title>
@@ -544,7 +544,8 @@ main > section:not(.hero) {
 .home-startup-offer-eyebrow,.home-startup-offer-title,.home-startup-offer-text{display:block}
 .home-startup-offer-eyebrow{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.15em;color:var(--moegi-t)}
 .home-startup-offer-title{margin-top:5px;font-family:var(--disp);font-size:clamp(18px,2vw,24px);font-weight:900;line-height:1.55;color:var(--iwa)}
-.home-startup-offer-text{margin-top:5px;color:var(--ink2);font-size:13.5px;line-height:1.8}
+.home-startup-offer-text{word-break:auto-phrase;overflow-wrap:break-word;text-wrap:pretty;margin-top:5px;color:var(--ink2);font-size:13.5px;line-height:1.8}
+.home-startup-sentence{display:block}
 .home-startup-offer-meta{display:flex;flex-wrap:wrap;gap:5px 14px;margin-top:10px;color:var(--ink3);font-size:11.5px;line-height:1.65}
 .home-startup-offer-meta span{white-space:nowrap}
 .home-startup-offer-link{display:inline-flex;align-items:center;gap:10px;padding:10px 0;color:var(--sugi);border-bottom:1px solid var(--moegi);font-size:13px;font-weight:700;white-space:nowrap}
@@ -645,7 +646,7 @@ main:has(> .home-compact-section:target)>section{content-visibility:visible;cont
 .home-shortcuts .w{display:grid;grid-template-columns:auto minmax(0,1fr);gap:32px;align-items:center}
 .home-shortcuts-label{font-size:12px;font-weight:700;color:var(--ink3)}
 .home-shortcuts-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
-.home-shortcuts a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;font-weight:700;color:var(--sugi);text-decoration:none}
+.home-shortcuts a{white-space:nowrap;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;font-weight:700;color:var(--sugi);text-decoration:none}
 .home-shortcuts a span{font-size:18px;transition:transform .25s var(--ease)}
 .home-shortcuts a:hover span{transform:translateY(3px)}
 .home-shortcuts a:hover{border-color:var(--sugi)}
@@ -655,6 +656,7 @@ a.home-detail-link:hover{opacity:1}
 a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(--sugi-7)}
 #about a.home-detail-link .detail-arrow{border-color:var(--line2);background:transparent;color:var(--shiro)}
 .home-shortcuts a:focus-visible,a.home-detail-link:focus-visible{outline:2px solid var(--moegi);outline-offset:5px;border-radius:3px}
+@media(max-width:1000px){.home-shortcuts .w{grid-template-columns:minmax(0,1fr);gap:10px}.home-shortcuts-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}}
 @media(max-width:700px){.home-shortcuts .w{grid-template-columns:minmax(0,1fr);gap:10px}.home-shortcuts-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}.home-shortcuts a{font-size:13px}.home-compact-section a.home-detail-link{text-align:left;gap:18px}}
 @media(prefers-reduced-motion:reduce){.home-shortcuts a span,a.home-detail-link .detail-arrow{transition:none}.home-shortcuts a:hover span,a.home-detail-link:hover .detail-arrow{transform:none}}
 </style>
@@ -1066,7 +1068,7 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
       <span>
         <span class="home-startup-offer-eyebrow">創業3年以内の会社さまへ</span>
         <span class="home-startup-offer-title" id="home-startup-offer-title">労務顧問 月25,000円から</span>
-        <span class="home-startup-offer-text">給与計算なし・従業員5名までのスタート顧問です。給与計算と個別の労務相談まで含める場合は、月45,000円から。</span>
+        <span class="home-startup-offer-text"><span class="home-startup-sentence">給与計算なし・従業員5名までのスタート顧問です。</span><span class="home-startup-sentence">給与計算と個別の労務相談まで含める場合は、<span class="nw">月45,000円から。</span></span></span>
         <span class="home-startup-offer-meta"><span>税抜</span><span>創業3周年まで・最低12か月間</span><span>割引終了後 月35,000円から</span></span>
       </span>
       <a class="home-startup-offer-link" href="startup-payroll.html?entry=home-hero-startup">詳しく見る <span aria-hidden="true">→</span></a>

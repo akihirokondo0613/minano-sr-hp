@@ -2,12 +2,12 @@
    page-enter.js v2 — 自前SPA遷移エンジン ＋ 緑カーテン（2026-07 全面書き換え）
 
    【仕組み】サイト内リンクのクリックを横取りし、
-     ① 緑カーテンで覆う(.22s) → ② fetchで次ページHTML取得（並行）
+     ① 淡緑の案内で覆う(.16s) → ② fetchで次ページHTML取得（並行）
      → ③ <head>のスタイル・<body>を差し替え、history.pushState
      → ④ 準備（フォント＋トップのみヒーロー画像）を待つ
-     → ⑤ マーカー線(.12+.46s) → 一拍(.12s) → めくり(.34s)   …= motion-lab「5a」の固定リズム
+     → ⑤ 小さな線(.15s、準備と並行) → 待機を加えずめくる(.22s)
    ドキュメントが生き続けるので読み込みの凍結が画面に出ず、
-   波と文字は途切れず動き続ける（旧：入場/退場の二重実装・
+   ページ間の配色・移動先表示を揃える（旧：入場/退場の二重実装・
    sessionStorage引き継ぎ・prerender注入・壁時計位相同期は全廃）。
 
    【再初期化の約束事】
@@ -26,55 +26,6 @@ window.addEventListener('unhandledrejection', function (e) {
   if (typeof m === 'string' && /Transition was skipped/i.test(m)) { e.preventDefault(); }
 });
 
-// 時間帯に応じた、来訪者を労う前向きな声かけ（毎回ランダム）
-function mnGreeting() {
-  var h = new Date().getHours();
-  var sets = {
-    morning: [
-      'おはようございます。今日も一日、応援しています。',
-      'おはようございます。すてきな一日になりますように。',
-      'おはようございます。今日もいいことがありますように。',
-      'おはようございます。お立ち寄りいただきありがとうございます。',
-      'おはようございます。今日もなさるべきことを一つずつ。',
-      'おはようございます。朝の空気、気持ちいいですね。',
-      'おはようございます。今日も一歩、前へ。',
-      'おはようございます。あなたの今日を応援しています。'
-    ],
-    day: [
-      'お仕事、おつかれさまです。',
-      'いつもがんばっていらっしゃいますね。',
-      'あなたの毎日を、応援しています。',
-      'こんにちは。お立ち寄りいただきありがとうございます。',
-      'お仕事の合間に、おつかれさまです。',
-      '今日もひとがんばり、すてきです。',
-      'こんにちは。今日もおたがいにがんばりましょう。',
-      'いつも本当におつかれさまです。'
-    ],
-    evening: [
-      '今日も一日、おつかれさまです。',
-      '夕方もおつかれさまです。あと少し、応援しています。',
-      '今日もよくがんばられましたね。',
-      'こんばんは。お立ち寄りいただきありがとうございます。',
-      '今日一日、がんばったあなたへ。',
-      '夕暮れ時、おつかれさまです。',
-      '今日も一日、おたがいにおつかれさまでした。',
-      'こんばんは。今日もひとがんばりでしたね。'
-    ],
-    night: [
-      '夜分までおつかれさまです。',
-      'こんばんは。今日も一日おつかれさまです。',
-      '遅くまでがんばるあなたを応援しています。',
-      'いつもおつかれさまです。明日もいい日になりますように。',
-      '今日一日、本当におつかれさまでした。',
-      '静かな夜に、おつかれさまです。',
-      '今日もよく頑張りましたね。あなたを応援しています。',
-      'こんばんは。お立ち寄りいただきありがとうございます。'
-    ]
-  };
-  var key = (h >= 5 && h < 10) ? 'morning' : (h >= 10 && h < 17) ? 'day' : (h >= 17 && h < 21) ? 'evening' : 'night';
-  var list = sets[key];
-  return list[Math.floor(Math.random() * list.length)];
-}
 function mnIsHomePath(p) { return /(^|\/)(index\.html)?$/.test(p || ''); }
 
 /* ── 固定相談UI：ヒーロー／最終CTA／フッターとの重なりを防ぐ ── */
@@ -158,47 +109,8 @@ function mnIsHomePath(p) { return /(^|\/)(index\.html)?$/.test(p || ''); }
   else init();
 })();
 function mnSplitLabel(el, text) {
-  // 文字は1字ずつ揺らすが、改行は文節のかたまり（.pv-w＝nowrap）単位でだけ起こす。
-  // 旧実装は全文字が独立spanで、狭い画面では任意の位置（単語の途中）で折れていた。
-  el.textContent = '';
-  var chunks = null;
-  try {
-    if (window.Intl && Intl.Segmenter) {
-      chunks = [];
-      var iter = new Intl.Segmenter('ja', { granularity: 'word' }).segment(text)[Symbol.iterator]();
-      for (var v = iter.next(); !v.done; v = iter.next()) chunks.push(v.value.segment);
-    }
-  } catch (e) { chunks = null; }
-  if (!chunks || !chunks.length) {   // Segmenter非対応：句読点・括弧の後で切る
-    chunks = [];
-    var buf = '';
-    for (var i = 0; i < text.length; i++) {
-      buf += text.charAt(i);
-      if (/[、。・！？）」』〜…]/.test(text.charAt(i))) { chunks.push(buf); buf = ''; }
-    }
-    if (buf) chunks.push(buf);
-  }
-  // 行頭に置けない閉じ括弧・句読点は前のかたまりへ、行末に残せない開き括弧は次のかたまりへ
-  var merged = [];
-  chunks.forEach(function (c) {
-    if (!c) return;
-    var prev = merged.length ? merged[merged.length - 1] : '';
-    if (merged.length && (/^[、。・！？）」』〜…ー]/.test(c) || /[（「『]$/.test(prev))) merged[merged.length - 1] = prev + c;
-    else merged.push(c);
-  });
-  // 実機（特にモバイル）でのカクつき対策：文字を1字ずつ独立レイヤー化すると、ラベルが長いほど
-  // will-change:transform の合成レイヤーが並び、遷移のたびに新規生成されるレイヤー昇格コストが
-  // メインスレッドの他処理（scriptの再実行等）と重なってフレーム落ちの原因になっていた。
-  // 単語（かたまり）単位のアニメーションに変更し、レイヤー数を大幅に削減する（見た目は継続して漂う）。
-  var idx = 0;
-  merged.forEach(function (c) {
-    var w = document.createElement('span');
-    w.className = 'pv-w';
-    w.textContent = c;
-    w.style.animationDelay = (idx * 0.09).toFixed(3) + 's';
-    idx++;
-    el.appendChild(w);
-  });
+  // 短い移動先名を自然に折り返す。文字ごとの揺れ・レイヤーは作らない。
+  el.textContent = text;
 }
 
 /* ════════════════ SPA遷移エンジン本体 ════════════════ */
@@ -213,7 +125,6 @@ function mnSplitLabel(el, text) {
   try { history.scrollRestoration = 'manual'; } catch (e) {}
 
   /* ---- カーテン（単一・使い回し。<html>直下に置くので body 差し替えの影響を受けない） ---- */
-  var WAVE_URL = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 24' preserveAspectRatio='none'%3E%3Cpath d='M0 12Q30 0 60 12T120 12L120 0L0 0Z' fill='%23123F30'/%3E%3C/svg%3E";
   var veil = null, veilStyle = null;
   // ルート⇄uploads 間ではページCSSが html の zoom を 1⇄.9（超ワイドでは1.15）へ切り替える。
   // カーテンは <html> 直下に残り続けるため、その倍率を受けたままだと表示途中で文字まで拡縮する。
@@ -229,42 +140,22 @@ function mnSplitLabel(el, text) {
     veilStyle = document.createElement('style');
     veilStyle.id = 'pg-veil-style';
     veilStyle.textContent =
-      '#pg-veil{position:fixed;left:0;top:0;width:100%;height:calc(100% + 24px);z-index:2147483645;pointer-events:none;' +
-      '  transform:translateY(-101%);will-change:transform;visibility:hidden;contain:strict}' +
+      '#pg-veil{position:fixed;left:0;top:0;width:100%;height:100%;z-index:2147483645;pointer-events:none;transform:translateY(-101%);visibility:hidden;contain:strict}' +
       '#pg-veil.show{visibility:visible;pointer-events:auto}' +
-      '#pg-veil .pv-body{position:absolute;inset:0 0 18px 0;background:var(--pg-curtain,#123F30)}' +
-      '#pg-veil .pv-wave{position:absolute;left:0;bottom:0;width:calc(100% + 120px);height:24px;will-change:transform;' +
-      '  background:url("' + WAVE_URL + '") left top/120px 24px repeat-x;animation:pvWave 2.4s linear infinite}' +
-      '@keyframes pvWave{0%{transform:translate3d(0,0,0)}50%{transform:translate3d(-60px,1.6px,0)}100%{transform:translate3d(-120px,0,0)}}' +
-      '#pg-veil .pv-lbl{position:absolute;left:0;right:0;top:calc(50% - 12px);transform:translateY(-50%) translateY(12px);opacity:0;' +
-      '  text-align:center;padding:0 32px;color:#fff;letter-spacing:.05em;font-weight:700;font-size:22px;line-height:1.7;' +
-      '  font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium",YuGothic,"Noto Sans JP",sans-serif;' +
-      '  will-change:transform,opacity;text-wrap:balance}' +
-      '@media(max-width:560px){#pg-veil .pv-lbl{font-size:18px;padding:0 24px;line-height:1.9}}' +
-      '#pg-veil .pv-in{position:relative;display:inline-block}' +
-      '#pg-veil .pv-in::after{content:"";position:absolute;left:-5px;right:-5px;bottom:2px;height:9px;background:rgba(255,255,255,.2);' +
-      '  border-radius:2px;transform:scaleX(0);transform-origin:left center;z-index:-1}' +
-      '#pg-veil .pv-w{display:inline-block;white-space:nowrap;animation:pvBob 2.9s ease-in-out infinite;will-change:transform}' +
-      '@keyframes pvBob{0%,100%{transform:translate3d(0,2.2px,0)}50%{transform:translate3d(0,-2.2px,0)}}' +
-      /* 覆う */
-      'html.pv-on #pg-veil{transform:translateY(0);transition:transform .22s cubic-bezier(.6,0,.15,1)}' +
-      'html.pv-on #pg-veil .pv-lbl{opacity:.97;transform:translateY(-50%);transition:opacity .18s ease .02s,transform .22s cubic-bezier(.6,0,.15,1) .02s}' +
-      /* マーカー（準備完了後にだけ引かれる＝途中で切れない） */
-      'html.pv-mark #pg-veil .pv-in::after{transform:scaleX(1);transition:transform .46s cubic-bezier(.45,.05,.35,.95) .12s}' +
-      /* めくる */
-      'html.pv-lift #pg-veil{transform:translateY(-101%);transition:transform .34s cubic-bezier(.6,0,.15,1)}' +
-      'html.pv-lift #pg-veil .pv-lbl{opacity:0;transform:translateY(-50%) translateY(-12px);transition:opacity .22s ease,transform .32s cubic-bezier(.6,0,.15,1)}' +
-      /* めくり中はカーテン内の常時アニメ（波の流れ・文字の揺れ）を止め、静止した1枚の面にする。
-         重い遷移先（社労士とは＝大きなDOM＋クイズ再構築／顧問先＝file-slot.js初回ロード＋一覧生成）では
-         めくりの瞬間にレイアウト・描画でメインスレッドが飽和し、常時再描画の子を抱えたカーテンは
-         コンポジット層を維持できず“めくりが一瞬で飛ぶ＝上がって見えない”。子アニメを止めれば面は静的な
-         1枚となり、transform だけがGPUで滑るので、描画が詰まっていても最後まで上へめくれる。 */
-      'html.pv-lift #pg-veil .pv-wave,html.pv-lift #pg-veil .pv-in span{animation-play-state:paused}';
+      '#pg-veil .pv-body{position:absolute;inset:0;background:#EDF5F0}' +
+      '#pg-veil .pv-lbl{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center;color:#123F30;font-family:system-ui,-apple-system,"Hiragino Sans","Yu Gothic",sans-serif}' +
+      '#pg-veil .pv-brand{display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:#123F30;color:#fff;font-size:27px;font-weight:700}' +
+      '#pg-veil .pv-kicker{font-size:12px;font-weight:600;letter-spacing:.08em}' +
+      '#pg-veil .pv-in{position:relative;max-width:28em;font-size:clamp(18px,3vw,24px);font-weight:700;line-height:1.65;text-wrap:balance;overflow-wrap:break-word}' +
+      '#pg-veil .pv-in::after{content:"";display:block;width:40px;height:2px;margin:18px auto 0;background:#598269;transform:scaleX(0);transform-origin:center}' +
+      'html.pv-on #pg-veil{transform:translateY(0);transition:transform .16s cubic-bezier(.22,1,.36,1)}' +
+      'html.pv-mark #pg-veil .pv-in::after{transform:scaleX(1);transition:transform .15s ease}' +
+      'html.pv-lift #pg-veil{transform:translateY(-101%);transition:transform .22s cubic-bezier(.22,1,.36,1)}';
     document.head.appendChild(veilStyle);
     veil = document.createElement('div');
     veil.id = 'pg-veil';
     veil.setAttribute('aria-hidden', 'true');
-    veil.innerHTML = '<div class="pv-body"></div><div class="pv-wave"></div><div class="pv-lbl"><span class="pv-in"></span></div>';
+    veil.innerHTML = '<div class="pv-body"></div><div class="pv-lbl"><span class="pv-brand">み</span><span class="pv-kicker">みなの社会保険労務士事務所</span><span class="pv-in"></span></div>';
     de.appendChild(veil);   // body ではなく <html> 直下（差し替えの影響を受けない）
     syncVeilZoom();
     return veil;
@@ -272,21 +163,16 @@ function mnSplitLabel(el, text) {
   window.addEventListener('resize', function () {
     if (veil && veil.classList.contains('show')) syncVeilZoom();
   }, { passive: true });
-  function themeColor() {
-    var m = document.querySelector('meta[name="theme-color"]');
-    return (m && m.getAttribute('content')) || '#123F30';
-  }
   var coverDone = Promise.resolve();     // 直近の「覆いきり」完了（navigate が swap 前に待つ）
   function showVeil(label) {
     ensureVeil();
-    try { de.style.setProperty('--pg-curtain', themeColor()); } catch (e) {}
     mnSplitLabel(veil.querySelector('.pv-in'), label || '');
     veil.classList.add('show');
     void veil.offsetWidth;               // 表示化を確定させてから
     coverDone = new Promise(function (resolve) {
       requestAnimationFrame(function () {  // 1フレームのちに覆う＝初回でも確実に走らせる
         de.classList.add('pv-on');                 // 文字の立ち上げ（opacity）
-        animVeil('-101%', '0', 220).then(resolve, resolve);   // 降りきった時点で解決
+        animVeil('-101%', '0', 160).then(resolve, resolve);   // 降りきった時点で解決
       });
     });
   }
@@ -306,7 +192,7 @@ function mnSplitLabel(el, text) {
   // 終わり、finished を待ってから hideVeil するので、どのページでも必ず最後までめくれる。
   // CSSの transform ルール（.pv-on / .pv-lift）はWAAPI非対応時のフォールバックとして残す。
   var veilAnim = null;
-  var VEIL_EASE = 'cubic-bezier(.6,0,.15,1)';
+  var VEIL_EASE = 'cubic-bezier(.22,1,.36,1)';
   function animVeil(fromY, toY, ms) {
     if (!veil) return Promise.resolve();
     if (!veil.animate) return wait(ms);                 // 非対応：CSSトランジションに時間だけ与える
@@ -334,6 +220,14 @@ function mnSplitLabel(el, text) {
   // 記事（/blog/配下）が「移動先」なら演出しない＝素のリンク遷移に任せる（記事を続けて読む導線を優先）。
   // ブログ一覧 blog.html は通常ページ扱い＝演出あり（ユーザー要望 2026-07-19）。判断基準は原則「移動先」。
   var GENERIC = 'ページを移動します';
+  function destinationName(href) {
+    var url; try { url = new URL(href, location.href); } catch (e) { return ''; }
+    if (mnIsHomePath(url.pathname)) return 'ホーム';
+    var names = {'services.html':'サービス','joseikin.html':'助成金の申請サポート','pricing.html':'料金・顧問プラン','support.html':'支援の進め方','about.html':'事務所案内','blog.html':'コラム・ブログ','infographic.html':'社労士とは','portal.html':'書式・窓口','contact.html':'無料相談'};
+    if (url && names[url.pathname.split('/').pop()]) return names[url.pathname.split('/').pop()];
+
+    return '';
+  }
   function isArticleDest(u) {
     var p = (u && u.pathname) || '';
     return /\/blog\//i.test(p);   // 記事のみ（blog.html は /blog/ を含まないので対象外＝演出あり）
@@ -375,7 +269,7 @@ function mnSplitLabel(el, text) {
   // 汎用フォールバックのままなら、swap 後に確定した実タイトルへ格上げ（文字は絶対に空にしない）
   function maybeUpgradeLabel() {
     if (!veil) return;
-    if (mnIsHomePath(location.pathname)) return;           // ホームは greeting のまま
+    if (mnIsHomePath(location.pathname)) return;           // ホームは統一ラベルのまま
     var el = veil.querySelector('.pv-in');
     var cur = el ? (el.textContent || '').trim() : '';
     if (cur && cur !== GENERIC) return;                    // 実ラベルがあるなら触らない
@@ -581,7 +475,7 @@ function mnSplitLabel(el, text) {
     return Promise.all(ps);
   }
 
-  /* ---- 遷移本体（5a 固定リズム） ---- */
+  /* ---- 遷移本体：準備が整ったら短く開く ---- */
   var busy = false;
   function hardGo(url) { try { location.href = url; } catch (e) {} }
   function navigate(url, opts) {
@@ -592,7 +486,7 @@ function mnSplitLabel(el, text) {
     function doLift() {
       if (lifted) return Promise.resolve(); lifted = true;
       de.classList.add('pv-lift');                    // 文字の退場（opacity）
-      return animVeil('0', '-101%', 340).then(function () { hideVeil(); busy = false; });
+      return animVeil('0', '-101%', 220).then(function () { hideVeil(); busy = false; });
     }
     var watchdog = setTimeout(function () {
       if (swapped) { doLift(); }   // 新DOMは差し替え済み → カーテンだけめくって続行（再読込しない）
@@ -601,7 +495,7 @@ function mnSplitLabel(el, text) {
     try { history.replaceState({ mn: 1, y: window.scrollY || 0 }, '', location.href); } catch (e) {}
 
     // 遷移文言は必ず非空にする（空だと「文字なしのアンダーライン」になる）。
-    var label = resolveLabel(opts.label);
+    var label = resolveLabel(destinationName(url) || opts.label);
     showVeil(label);
     var hash = '';
     try { hash = new URL(url, location.href).hash; } catch (e) {}
@@ -668,11 +562,11 @@ function mnSplitLabel(el, text) {
     // 「線が出ている間は必ず文字が出ている」ことを hasVeilText でゲートして保証する。
     var markP = coverDone.then(function () {
       if (hasVeilText()) de.classList.add('pv-mark');   // 文字がある時だけ線を引く
-      return wait(580);                                 // .12s待ち + .46s描画ぶん
+      return wait(150); // 小さな線の表示は読み込み準備と並行し、読ませるための待機を置かない
     });
 
     // 覆いきりは実測（coverDone）で待つ。降りきる前に swap すると新ページが一瞬見える（cap1.5sは非表示tab対策）
-    var readyP = Promise.all([fetchP, wait(300), Promise.race([coverDone, wait(1500)])])
+    var readyP = Promise.all([fetchP, Promise.race([coverDone, wait(1500)])])
       .then(function (vals) {
         var doc = new DOMParser().parseFromString(vals[0], 'text/html');
         if (!doc || !doc.body) throw new Error('parse');
@@ -712,10 +606,9 @@ function mnSplitLabel(el, text) {
         });
       });
 
-    // 線の描画ぶん(markP)と移動先の準備(readyP)が両方そろってから一拍おいてめくる。
+    // 線の短い表示(markP)と移動先の準備(readyP)がそろい次第めくる。
     // この順序で「文字→線→（保持）→めくり」が毎回同じになり、線が途中で切れない。
     Promise.all([markP, readyP])
-      .then(function () { return wait(120); })          // 一拍
       // ★めくり直前のペイント沈静化（カクツキ対策）：無料相談(uploads/contact.html)だけは root→uploads で
       //   スタイルシート一式が skin-v2.css→service.css+wave-skin.css に総入れ替えになり、新DOMへの
       //   スタイル再計算＋全面リフローが「めくりのtransformが走る瞬間」に重なってメインスレッドが飽和し、
@@ -762,9 +655,11 @@ function mnSplitLabel(el, text) {
   // どの経路でも必ず非空を返す（空文字のまま遷移画面を開始しない）。
   function destLabel(a) {
     var url; try { url = new URL(a.href, location.href); } catch (e) { url = null; }
-    if (url && mnIsHomePath(url.pathname)) return mnGreeting();
+    if (url && mnIsHomePath(url.pathname)) return 'ホーム';
+    var pageName = destinationName(a.href);
+    if (pageName) return pageName;
     // サービスカードは番号・説明・矢印まで含むため、遷移ラベルにはサービス名だけを使う。
-    var serviceName = a.matches && a.matches('.svc-row') && a.querySelector('.svc-info-name');
+    var serviceName = a.querySelector && a.querySelector('.svc-info-name, .jk-guide-n, h2, h3');
     var t = safeLabel(serviceName ? serviceName.textContent : a.textContent);
     if (!t) t = safeLabel(a.getAttribute('aria-label'));
     if (!t) { var img = a.querySelector && a.querySelector('img[alt]'); if (img) t = safeLabel(img.getAttribute('alt')); }
@@ -818,7 +713,7 @@ function mnSplitLabel(el, text) {
           e.stopPropagation();
           var t = (oc.textContent || '').replace(/\s+/g, ' ').trim();
           if (t.length > 20) t = t.slice(0, 20) + '…';
-          navigate(withQuery(u.href), { label: mnIsHomePath(u.pathname) ? mnGreeting() : t });
+          navigate(withQuery(u.href), { label: mnIsHomePath(u.pathname) ? 'ホーム' : t });
         }
         break;
       }
@@ -858,7 +753,7 @@ function mnSplitLabel(el, text) {
     var p = location.pathname;
     lastPath = p;
     var known = labelCache[p];
-    var label = mnIsHomePath(p) ? mnGreeting() : (known || GENERIC);   // 未知なら汎用→swap後に実タイトルへ格上げ
+    var label = mnIsHomePath(p) ? 'ホーム' : (known || GENERIC);   // 未知なら汎用→swap後に実タイトルへ格上げ
     navigate(location.href, {
       push: false,
       label: label,
@@ -868,7 +763,7 @@ function mnSplitLabel(el, text) {
   try { history.replaceState({ mn: 1, y: window.scrollY || 0 }, '', location.href); } catch (e) {}
 
   // デバッグ・検証用フック（v7：社内書式 shoshiki を演出対象外に。v6：ページCSSの html zoom 変更からカーテンを分離）
-  window.__mnSpa = { navigate: navigate, v: 8, isArticleDest: isArticleDest, isFormDest: isFormDest, isSpotDest: isSpotDest };
+  window.__mnSpa = { navigate: navigate, v: 9, isArticleDest: isArticleDest, isFormDest: isFormDest, isSpotDest: isSpotDest };
 })();
 
 /* ============================================================
