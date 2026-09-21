@@ -55,11 +55,16 @@ h1{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-size:16pt;font-weig
 .date{text-align:right;margin:0 0 3mm}
 .to{margin:0 0 4mm}
 .to div{margin:0}
-.to .sender{display:block;width:94mm;margin:1.5mm 0 0 auto;line-height:1.7;text-align:left}  /* .to div{margin:0} より強くする */
+.to .sender{display:block;width:128mm;max-width:100%;margin:1.5mm 0 0 auto;line-height:1.7;text-align:left}  /* .to div{margin:0} より強くする */
 /* 発信者欄（所在地・担当者・電話）は左揃えで、ラベルの直後から値が続く形。右端に寄せた箱の中で左揃えにする */
 .sender .bl{text-align:left}
-/* 入力済みの欄は行内扱いにして、長い住所は箱の中で折り返す（箱の左端は動かない） */
-.sender .bl:not(:empty){display:inline;min-width:0}
+/* ラベルを固定し、長い値は同じ開始位置へ折り返す。電話は担当者と分離する。 */
+.sender-row{display:grid;grid-template-columns:4.5em minmax(0,1fr);align-items:baseline;column-gap:.25em}
+.sender-row>.t{white-space:nowrap}
+.sender .sender-row .bl{display:block;min-width:0!important;margin:0;padding-inline:0;text-align:left;max-width:100%;overflow-wrap:anywhere}
+.sender .co-addr:not(:empty){font-size:9.5pt;line-height:1.5}
+.sender .co-tel:not(:empty){white-space:nowrap}
+.sender .co-name{overflow-wrap:anywhere}
 p{margin:0 0 1.6mm}
 p.note{font-size:9pt;color:var(--ink2);margin-top:1.5mm}
 table.f{width:100%;border-collapse:collapse;table-layout:fixed;margin:2.5mm 0 3mm}
@@ -272,8 +277,8 @@ def addressee_html(to, ed, f=None):
     if to == "本人":
         return (
             f'<div class="to"><div><span class="bl" style="min-width:48mm"{ce}></span><span class="t"{ce}>殿</span></div>'
-            f'<div class="sender"><div class="t co-name"{ce}>{esc(CO)}</div><div><span class="t"{ce}>所在地：</span><span class="bl co-addr" style="min-width:60mm"{ce}></span></div>'
-            f'<div><span class="t"{ce}>担当者：</span><span class="bl co-dept" style="min-width:36mm"{ce}></span>　<span class="t"{ce}>電話：</span><span class="bl co-tel" style="min-width:30mm"{ce}></span></div></div></div>'
+            f'<div class="sender"><div class="t co-name"{ce}>{esc(CO)}</div><div class="sender-row"><span class="t"{ce}>所在地：</span><span class="bl co-addr"{ce}></span></div>'
+            f'<div class="sender-row"><span class="t"{ce}>担当者：</span><span class="bl co-dept"{ce}></span></div><div class="sender-row"><span class="t"{ce}>電話：</span><span class="bl co-tel"{ce}></span></div></div></div>'
         )
     if to == "主治医":
         return f'<div class="to"><div><span class="bl" style="min-width:44mm"{ce}></span><span class="t"{ce}>病院・医院</span></div><div><span class="bl" style="min-width:44mm"{ce}></span><span class="t"{ce}>先生　御机下</span></div></div>'
