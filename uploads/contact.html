@@ -754,14 +754,14 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
               <div class="info-icon" style="padding-top:2px;">2</div>
               <div>
                 <p style="font-size:14px; font-weight:600; color:var(--ink); margin-bottom:4px;">初回相談（無料）</p>
-                <p style="font-size:13px; color:var(--ink3);">現状と<wbr>課題を<wbr>丁寧に<wbr>お聞きします。</p>
+                <p style="font-size:13px; color:var(--ink3);">困っている<wbr>ことと、<wbr>任せたい<wbr>範囲を<wbr>お聞きし、<wbr>必要な<wbr>支援と<wbr>進める<wbr>順番を<wbr>整理します。</p>
               </div>
             </div>
              <div class="info-item">
               <div class="info-icon" style="padding-top:2px;">3</div>
               <div>
                 <p style="font-size:14px; font-weight:600; color:var(--ink); margin-bottom:4px;">ご提案・お見積もり</p>
-                <p style="font-size:13px; color:var(--ink3);">最適な<wbr>サービスプランと<wbr>費用を<wbr>ご提示します。</p>
+                <p style="font-size:13px; color:var(--ink3);">依頼する<wbr>業務、<wbr>会社側で<wbr>行う<wbr>こと、<wbr>料金に<wbr>含む範囲と<wbr>別料金を<wbr>確認します。</p>
               </div>
             </div>
         </div>
@@ -1052,6 +1052,7 @@ function collectMeta() {
   // 両方あると「トップのカードから入って、LPの料金セクションで申し込んだ」まで分かる。
   var entryParam = q.get('entry') || '';
   var entryLabels = {
+    'services-request-guide': 'サービス一覧・依頼内容から選ぶ案内',
     'home-hero-startup': 'トップページ・ヒーロー直下の創業期カード',
     'about-startup-card': '事務所案内・代表紹介の創業期カード'
   };
@@ -1216,6 +1217,8 @@ var fromPlan = urlParams.get('from');
 if (fromPlan) {
   const fromBase = fromPlan.replace(/-(price|process|final|flow|list|spot)$/, '');
   const entry = {
+    "request-guide": ["自社に必要な支援と費用について相談したいです。", ""],
+    "about-strengths": ["事務所の支援内容と、自社に合う依頼方法を相談したいです。", ""],
     start:    ["スタート顧問プランについて詳しく知りたいです。", "顧問契約について"],
     standard: ["スタンダードプランについて詳しく知りたいです。", "顧問契約について"],
     custom:   ["31名以上プランについて、従業員数に応じた顧問料と業務範囲を相談したいです。", "顧問契約について"],
