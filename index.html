@@ -449,6 +449,62 @@ main > section:not(.hero) {
 </style>
 <link rel="stylesheet" href="skin-v2.css?v=20260921-softfooter1" media="print" data-async-style onload="this.media='all';this.onload=null">
 <noscript><link rel="stylesheet" href="skin-v2.css?v=20260921-softfooter1"></noscript>
+<style id="home-scroll-rhythm">
+/* 章ごとに色面と配置を変え、短いトップのまま読み進めるリズムをつくる。 */
+.home-compact-section .idx-num{color:var(--sugi);-webkit-text-stroke:0;font-size:clamp(32px,4vw,52px);font-weight:600}
+#services{background:var(--g50);border-radius:40px 40px 0 0}
+#services .svc-row{background:var(--shiro);border-radius:16px;border:1px solid var(--line)}
+#cases{background:var(--yuki);border-bottom:1px solid var(--line)}
+#cases .home-phase-card{border-top:4px solid var(--sugi);box-shadow:var(--sh-xs)}
+#cases .home-phase-label{color:var(--sugi)}
+#pricing{background:var(--shiro)}
+#faq{background:var(--sora-l);border-radius:40px 40px 0 0}
+#faq .faq-layout>*{min-width:0}
+#faq .faq-btn{padding:18px 0}
+#faq .faq-wrap{background:var(--shiro);border-radius:20px;padding:4px 24px}
+#news{background:var(--yuki)}
+#tools{background:var(--shiro)}
+#about{background:var(--sugi);border-radius:40px 40px 0 0}
+#about .sec-h,#about .sec-h strong,#about .rep-h,#about .rep-h strong,#about .idx-num{color:var(--shiro)}
+#about .sec-sub,#about .home-about-copy p,#about .home-about-meta,#about .idx-jp{color:var(--line2)}
+#about .idx-lat{color:var(--moegi-b)}
+#about .link-more{color:var(--shiro)}
+#about .home-about-card{border-top:1px solid rgba(255,255,255,.25);padding-top:28px}
+#about .home-about-meta{padding-top:16px;border-top:1px solid rgba(255,255,255,.25)}
+#about a:focus-visible{outline-color:var(--shiro)}
+/* 動きは既存の一度きりの表示に限定。読み始めるまでの待ち時間を短くする。 */
+.home-compact-section .rv,.home-compact-section .rvl{transition-duration:.55s}
+@media(min-width:1100px){
+  #services>.w{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);column-gap:clamp(40px,5vw,80px);align-items:start}
+  #services .sec-head{grid-column:1;grid-row:1;grid-template-columns:minmax(0,1fr);gap:24px;margin-bottom:0}
+  #services .sec-head-idx{flex-direction:row;align-items:baseline;gap:14px}
+  #services .sec-h{font-size:clamp(28px,2.8vw,40px)}
+  #services .home-service-list{grid-column:2;grid-row:1;grid-template-columns:minmax(0,1fr);gap:12px}
+  #services .svc-row{grid-template-columns:32px 80px minmax(0,1fr) 24px;padding:16px;gap:14px}
+  #services .svc-row>span:nth-of-type(3){min-height:88px}
+  #services .svc-ill{width:80px}
+  #services .svc-info-name{font-size:19px}
+  #services .home-section-more{grid-column:2;text-align:left}
+  #about .about-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:start}
+  #about .sec-head{grid-template-columns:minmax(0,1fr);gap:24px;margin:0}
+  #about .sec-head-idx{flex-direction:row;align-items:baseline;gap:14px}
+  #about .home-about-card{border-top:0;border-left:1px solid rgba(255,255,255,.25);padding:24px 0 24px 48px}
+}
+/* 低い画面・拡大表示・動きを減らす設定では追従せず、すべて普通に読める。 */
+@media(min-width:1100px) and (min-height:760px) and (prefers-reduced-motion:no-preference){
+  #services .sec-head{position:sticky;top:calc(var(--nav-h) + 32px)}
+}
+@media(max-width:700px){
+  #services,#faq,#about{border-radius:24px 24px 0 0}
+  #faq .faq-wrap{padding:0 14px}
+  #services .svc-row{border-radius:12px}
+  #about .home-about-card{padding-top:22px}
+}
+@media(prefers-reduced-motion:reduce){
+  .home-compact-section .rv,.home-compact-section .rvl{opacity:1;transform:none;transition:none}
+}
+</style>
+
 <style id="home-hero-legibility">
 /* 写真全体を白くせず、文字の位置を中心に明るさを残す。 */
 .hero-veil{background:linear-gradient(100deg,rgba(249,250,247,.60) 0%,rgba(249,250,247,.48) 35%,rgba(249,250,247,.18) 65%,rgba(249,250,247,0) 88%);mask-image:linear-gradient(#000 0%,#000 43%,rgba(0,0,0,.65) 60%,transparent 82%)}
