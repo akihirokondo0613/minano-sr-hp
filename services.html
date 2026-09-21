@@ -5,7 +5,17 @@
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <script defer src="page-enter.js?v=20260921-pace1"></script>
-<style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
+<style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+@media(max-width:640px){
+.service-catalog .svc-row{grid-template-columns:32px minmax(0,1fr) 22px;gap:12px;padding:18px 14px;align-items:start}
+.service-catalog .svc-num{grid-column:1;grid-row:1}
+.service-catalog .svc-ill{grid-column:2;grid-row:1;width:68px}
+.service-catalog .svc-arr{grid-column:3;grid-row:1}
+.service-catalog .svc-row>div{grid-column:1 / -1;grid-row:2;min-width:0}
+.service-catalog .svc-info-name{display:block;transform:none;font-size:20px;line-height:1.65}
+.service-catalog .svc-info-desc{display:block;opacity:1;transform:none;margin-top:10px}
+}
+</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>サービス一覧｜助成金・手続き・給与計算・就業規則・労務相談・DX｜富山の社労士みなの</title>
 <meta name="description" content="みなの社会保険労務士事務所（富山）のサービス一覧。助成金の申請代行、社会保険・労働保険の手続き、給与計算、就業規則の作成・見直し、労働基準監督署の調査対応と労務相談、勤怠・人事労務のDX支援。各ページに料金と進め方を掲載しています。">
@@ -32,7 +42,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="skin-v2.css?v=20260921-softfooter1">
+<link rel="stylesheet" href="skin-v2.css?v=20260921-phrase1">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"サービス一覧｜助成金・手続き・給与計算・就業規則・労務相談・DX｜富山の社労士みなの","description":"みなの社会保険労務士事務所（富山）のサービス一覧。助成金の申請代行、社会保険・労働保険の手続き、給与計算、就業規則の作成・見直し、労働基準監督署の調査対応と労務相談、勤怠・人事労務のDX支援。各ページに料金と進め方を掲載しています。","url":"https://minano-sr.com/services.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://minano-sr.com/"},{"@type":"ListItem","position":2,"name":"サービス","item":"https://minano-sr.com/services.html"}]}]}
 </script>
@@ -47,6 +57,7 @@
 @media(max-width:480px){#tools .tools-logo{min-height:76px;padding:20px 12px}}
 
 /* 本文中の内部リンク（料金表・制度一覧・申請代行ページ）。service.css の .subsidy-desc a と同じ見え方 */
+.page-hero .lead a{display:inline-block;max-width:100%;vertical-align:baseline}
 .page-hero .lead a,.sub-row-name a{color:var(--g700);font-weight:700;text-decoration:underline;text-underline-offset:4px;word-break:normal}
 </style>
 <style id="ask-ai-style">
@@ -117,9 +128,9 @@
     <div class="page-hero-inner">
       <nav class="breadcrumb" aria-label="パンくずリスト"><a href="/">ホーム</a><span class="sep">›</span><span>サービス</span></nav>
       <span class="page-kicker">Services</span>
-      <h1>サービス一覧。<br><strong>必要な支援を、<br class="sp-br">組み合わせて。</strong></h1>
-      <p class="lead">手続きだけ、<wbr>給与計算だけ、と<wbr>いう<wbr>分断ではなく、<wbr>会社の<wbr>課題に<wbr>合わせて<wbr>必要な<wbr>支援を<wbr>組み合わせます。<wbr>各サービスの<wbr>料金と<wbr>進め方は、<wbr>それぞれの<wbr>ページに<wbr>まとめています。<wbr>料金の<wbr>全体は<wbr><a href="pricing.html">料金表（顧問・スポット）</a>を<wbr>ご覧ください。</p>
-      <p class="lead">求人票の<wbr>見直し・提出は、<wbr><a href="uploads/lp-kyujinhyo.html">ハローワーク求人票の無料点検・作成代行</a>を<wbr>ご覧ください。</p>
+      <h1>サービス一覧。<br><strong>必要な<wbr>支援を、<br class="sp-br">組み合わせて。</strong></h1>
+      <p class="lead">手続きだけ、<wbr>給与計算だけ、と<wbr>いう<wbr>分断ではなく、<wbr>会社の<wbr>課題に<wbr>合わせて<wbr>必要な<wbr>支援を<wbr>組み合わせます。<wbr>各サービスの<wbr>料金と<wbr>進め方は、<wbr>それぞれの<wbr>ページに<wbr>まとめています。<wbr>料金の<wbr>全体は<wbr><a href="pricing.html">料金表<wbr>（顧問・スポット）</a>を<wbr>ご覧ください。</p>
+      <p class="lead">求人票の<wbr>見直し・提出は、<wbr><a href="uploads/lp-kyujinhyo.html">ハローワーク求人票の<wbr>無料点検・作成代行</a>を<wbr>ご覧ください。</p>
     </div>
   </header>
 
@@ -128,7 +139,7 @@
     <div class="sec-head rv">
       <div class="sec-head-idx"><span class="idx-lat">APPROACH</span><span class="idx-jp">私たちのアプローチ</span></div>
       <div class="sec-head-body">
-        <h2 class="sec-h">コストを<wbr>下げ、<wbr>質を<wbr>上げる。<br><strong>その両立を、3つの動かし方で。</strong></h2>
+        <h2 class="sec-h">コストを<wbr>下げ、<wbr>質を<wbr>上げる。<br><strong>その<wbr>両立を、<wbr>3つの<wbr>動かし方で。</strong></h2>
         <p class="sec-sub">煩雑な<wbr>実務は、<wbr>私たちが<wbr>引き<wbr>受けます。<wbr>属人化は、<wbr>システムで<wbr>ひと<wbr>つずつ<wbr>ほぐしていきます。<wbr>使える<wbr>助成金は、<wbr>幅広く<wbr>提案します。
 ——<wbr>この<wbr>3つを<wbr>同じ<wbr>テーブルで<wbr>進められる<wbr>ことが、<wbr>私たち社労士の<wbr>役割だと<wbr>考えています。</p>
       </div>
@@ -178,7 +189,7 @@
     <div class="sec-head has-photo rv">
       <div class="sec-head-idx"><span class="idx-lat">TOOLS</span><span class="idx-jp">ツール活用・見直し</span></div>
       <div class="sec-head-body">
-        <h2 class="sec-h">今の<wbr>ツールを<wbr>活かし、<br><strong>必要なら整えます。</strong></h2>
+        <h2 class="sec-h">今の<wbr>ツールを<wbr>活かし、<br><strong>必要なら<wbr>整えます。</strong></h2>
         <p class="sec-sub">マネーフォワード・<wbr>freee・<wbr>SmartHRなど、<wbr>すでに<wbr>お使いの<wbr>サービスは<wbr>そのまま<wbr>活用できます。<wbr>一方、<wbr>現状の<wbr>ソフトが<wbr>古い・業務に<wbr>合っていないと<wbr>感じるなら、<wbr>不要な<wbr>作業に<wbr>時間を<wbr>取られないよう、<wbr>最適な<wbr>ツールを<wbr>ご提案します。</p>
       </div>
       <div class="sec-photo tools-img">
@@ -216,7 +227,7 @@
         <span class="tools-benefit">ツール見直し・乗り換え提案</span>
         <span class="tools-benefit">不要作業の排除</span>
       </div>
-      <p class="tools-note">現状の<wbr>ツールが<wbr>合っているか迷う<wbr>場合も、<wbr><a href="uploads/contact.html">無料相談でご確認いただけます</a>。</p>
+      <p class="tools-note">現状の<wbr>ツールが<wbr>合っているか迷う<wbr>場合も、<wbr><a href="uploads/contact.html">無料相談で<wbr>ご確認いただけます</a>。</p>
     </div>
   </div>
 </section>
@@ -262,7 +273,7 @@
         <span class="svc-num">03</span>
         <span class="svc-ill" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="svc-ill-shaho" src="assets/illustrations/service-social-insurance.webp" fit="contain" placeholder="社会保険・労働保険手続きのイラスト（推奨 4:3）"></image-slot></span>
         <div>
-          <h3 class="svc-info-name">社会保険・労働保険の手続き代行</h3>
+          <h3 class="svc-info-name"><span><span class="phrase-unit">社会保険・</span><wbr><span class="phrase-unit">労働保険の</span><wbr><span class="phrase-unit">手続き代行</span></span></h3>
           <div class="svc-info-desc">入<wbr>退<wbr>社・年度更新・算定基礎届な<wbr>どを、<wbr>期限に<wbr>沿って<wbr>対応します。<br>労務手続きの<wbr>一覧と<wbr>期限を<wbr>見る →</div>
         </div>
         <span class="svc-arr">→</span>
@@ -280,7 +291,7 @@
         <span class="svc-num">05</span>
         <span class="svc-ill" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="svc-ill-sodan" src="assets/illustrations/service-labor-consultation.webp" fit="contain" placeholder="労務トラブル相談のイラスト（推奨 4:3）"></image-slot></span>
         <div>
-          <h3 class="svc-info-name">労務相談・労働基準監督署の調査対応</h3>
+          <h3 class="svc-info-name"><span><span class="phrase-unit">労務相談・</span><wbr><span class="phrase-unit">労働基準監督署の</span><wbr><span class="phrase-unit">調査対応</span></span></h3>
           <div class="svc-info-desc">退職・残業代・<wbr>ハラスメント等に<wbr>迅速対応。<wbr>予防策も<wbr>支援。<br>労務相談の<wbr>料金と<wbr>進め方を<wbr>見る →</div>
         </div>
         <span class="svc-arr">→</span>
@@ -297,7 +308,7 @@
     </div>
     <div class="svc-cta rv">
       <p>「手続きだけ<wbr>頼みたい」<wbr>「どこから<wbr>直せば<wbr>いいか<wbr>分からない」の<wbr>どちらでも<wbr>構いません。<wbr>現状を<wbr>聞いて、<wbr>必要な<wbr>範囲だけ提案します。<wbr>初回の<wbr>ご相談は<wbr>無料です。</p>
-      <a href="uploads/contact.html" class="btn-primary" style="flex-shrink:0;max-width:100%;white-space:normal;text-align:center;overflow-wrap:anywhere">どのサービスが合うか相談する</a>
+      <a href="uploads/contact.html" class="btn-primary" style="flex-shrink:0;max-width:100%;white-space:normal;text-align:center;overflow-wrap:anywhere"><span><span class="phrase-unit">どのサービスが合うか</span><wbr><span class="phrase-unit">相談する</span></span></a>
     </div>
   </div>
 </section>
@@ -308,7 +319,7 @@
   <div class="sub-layout">
     <div class="rvl">
       <div class="section-label"><span class="badge">SUBSIDY</span>助成金の活用</div>
-      <h2 class="sec-h">活用できる<wbr>可能性の<wbr>ある<wbr>助成金を、<wbr><strong>知らないまま見逃していませんか。</strong></h2>
+      <h2 class="sec-h">活用できる<wbr>可能性の<wbr>ある<wbr>助成金を、<wbr><strong>知らないまま<wbr>見逃していませんか。</strong></h2>
       <ul class="checklist">
         <li><span class="chk"></span>初回相談は無料</li>
         <li><span class="chk"></span>受給可能性の<wbr>高い<wbr>助成金のみを<wbr>提案</li>
@@ -323,7 +334,7 @@
       <div class="sub-card">
         <p class="sub-head">制度と<wbr>申請代行は、<wbr>それぞれの<wbr>ページへ</p>
         <div class="sub-row">
-          <div><div class="sub-row-name"><a href="joseikin.html">使える助成金の一覧と対象の確認</a></div><div class="sub-row-desc">キャリアアップ・両立支援・人材開発・働き方改革など、制度ごとの要件と期限</div></div>
+          <div><div class="sub-row-name"><a href="joseikin.html">使える<wbr>助成金の<wbr>一覧と<wbr>対象の<wbr>確認</a></div><div class="sub-row-desc">キャリアアップ・両立支援・人材開発・働き方改革など、制度ごとの要件と期限</div></div>
           <span class="sub-tag">制度一覧</span>
         </div>
         <div class="sub-row">
@@ -343,14 +354,14 @@
   <div class="final-inner rv">
     <span class="final-label"><i class="live-dot" aria-hidden="true"></i>無料相談受付中</span>
     <h2 class="final-h">
-      まずは<wbr>現状を<wbr>聞かせてください。<br class="sp-br"><strong>無料でご相談いただけます。</strong>
+      まずは<wbr>現状を<wbr>聞かせてください。<br class="sp-br"><strong><span class="phrase-unit">無料で</span><wbr><span class="phrase-unit">ご相談いただけます。</span></strong>
     </h2>
     <p class="final-p"><span class="nw">料金はすべて税抜の固定額で</span><wbr><span class="nw">料金ページに公開しています。</span><wbr><span class="nw">掲載外の業務は</span><wbr><span class="nw">着手前に見積りを出します。</span><wbr><span class="nw">対象は富山県内を中心とする</span><wbr><span class="nw">従業員1〜30名の会社</span><wbr><span class="nw">（31名以上はカスタム）。</span><wbr><span class="nw">税務（税理士）、登記（司法書士）、</span><wbr><span class="nw">紛争の代理（弁護士）は対応外で、</span><wbr><span class="nw">年末調整は資料整理と</span><wbr><span class="nw">税理士連携まで承ります。</span></p>
     <div class="final-btns">
       <a href="uploads/contact.html" class="btn-white">どのサービスが合うか相談する</a>
       <a href="tel:076-460-2562" class="btn-ghost">076-460-2562</a>
     </div>
-    <p class="final-note">平日 9<wbr>:<wbr>00–<wbr>18<wbr>:00　/　土日祝の<wbr>フォーム送信は<wbr>翌営業日に<wbr>ご返信</p>
+    <p class="final-note">平<wbr>日 9:00–18:00　/　土<wbr>日祝<wbr>の<wbr>フォーム送信は<wbr>翌営業日に<wbr>ご返信</p>
   </div>
 </section>
 </main>

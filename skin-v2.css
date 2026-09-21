@@ -1589,3 +1589,18 @@ html { scroll-padding-top: 88px; }
   .home-service-list .svc-info-name { font-size: 14.5px; line-height: 1.55; }
   .home-service-list .svc-arr { display: none; }
 }
+
+/* 本文リンクは用語の途中を避け、生成した文節の境界で折り返す。 */
+a:not([class]):has(wbr), p a:has(wbr), li a:has(wbr), dd a:has(wbr),
+figcaption a:has(wbr), blockquote a:has(wbr), .page-hero .lead a:has(wbr) {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* 強調見出しも意味のまとまりで折り返す。 */
+.phrase-unit{display:inline-block;max-width:100%}
+
+/* 短い本文リンクを行末の残り幅で分断せず、長いリンクは器の中で折る。 */
+main :is(p,li,dd) > a:not([class]){display:inline-block;max-width:100%;vertical-align:baseline}
+main a.jl{white-space:nowrap}
+main :is(.btn-primary,.btn-white,.btn-ghost,.startup-primary,.startup-secondary){max-width:100%;white-space:normal;text-wrap:balance;overflow-wrap:break-word}

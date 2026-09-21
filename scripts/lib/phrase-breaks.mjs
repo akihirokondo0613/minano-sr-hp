@@ -113,7 +113,9 @@ function findTargets(html) {
       stack.push({
         name,
         inCell,
-        target: !inCell && isTarget(name, attrs),
+        target: !inCell && (isTarget(name, attrs)
+          || (name === 'a' && !stack.some((el) => el.target)
+            && !/(?:\b(?:class|style)\s*=|\bhref\s*=\s*["'](?:tel:|mailto:))/i.test(attrs))),
         innerStart: m.index + raw.length,
         hasTargetChild: false,
       });
@@ -193,20 +195,21 @@ const KANJI = /[\u3005\u3006\u3007\u4E00-\u9FFF\u3400-\u4DBF]/;
  * 打っても効かないので、最初から置かない。
  */
 const NOWRAP_CLASSES = new Set([
-  'nw', 'nobr',
+  'nw', 'nobr', 'phrase-unit',
   'jk-hit-tag', 'jk-hit-amt-l', 'jg-amount-l',
   'optional-details-state', 'optional-details-state-open', 'optional-details-state-closed',
 ]);
 /**
  * class ではなくCSSの子孫セレクタで nowrap になる箱。
- *   .sec-h strong / .page-hero h1 strong …… 見出しの中の強調はひと塊で扱う
  *   .nav-links a / .footer-ul a[href^=…] …… ナビ・フッターのリンク
  * 「この字の中では折らない」を静的に判定するために、タグで丸ごと外す。
  */
 const NOWRAP_TAGS = new Set(['a']);
-/** 見出しの中では、この字も丸ごと外す */
-const NOWRAP_TAGS_IN_HEADING = new Set(['strong', 'b']);
-const HEADING_TAGS = new Set(['h1', 'h2', 'h3', 'h4', 'h5']);
+// 本文リンクだけ文節処理する。ボタンやナビの構造は対象にしない。
+const PROSE_TAGS = new Set(['p', 'li', 'dd', 'figcaption', 'blockquote']);
+const LINK_WORDS = ['手続き', '作成代行', '無料点検', '年休管理簿', '取得義務', '電子申請',
+  '賃上げ', '見直し', '届け出', '進め方', '製造業', 'について', '所在地',
+  'に関する', 'における', '洗い出し', 'またぐ', 'しない'];
 
 /**
  * 手で置いた <wbr> か、この生成器が置いた <wbr> かを見分ける。
@@ -235,6 +238,8 @@ function rebuild(inner, ownerTag) {
   const nowrapStack = [];
   const openNowrap = [];
   const nowrapAt = [];
+  const linkAt = [];
+  let linkDepth = ownerTag === 'a' ? 1 : 0;
   // <br> で区切って、行をまたいだ文脈でBudouXを走らせない
   const segmentAt = [];
   let nowrapSeq = 0;
@@ -244,10 +249,11 @@ function rebuild(inner, ownerTag) {
     if (a.kind === 'tag') {
       const closing = a.raw[1] === '/';
       if (a.name === 'br') segment += 1;
+      if (a.name === 'a') linkDepth += closing ? -1 : 1;
       if (!closing && !VOID_TAGS.has(a.name) && !a.raw.endsWith('/>')) {
         const nowrap = classesOf(a.raw).some((c) => NOWRAP_CLASSES.has(c))
-          || NOWRAP_TAGS.has(a.name)
-          || (HEADING_TAGS.has(ownerTag) && NOWRAP_TAGS_IN_HEADING.has(a.name));
+          || (NOWRAP_TAGS.has(a.name) && (!PROSE_TAGS.has(ownerTag)
+            || /(?:\b(?:class|style)\s*=|\bhref\s*=\s*["'](?:tel:|mailto:))/i.test(a.raw)));
         nowrapStack.push(nowrap);
         if (nowrap) { nowrapSeq += 1; openNowrap.push(nowrapSeq); }
       } else if (closing) {
@@ -259,6 +265,7 @@ function rebuild(inner, ownerTag) {
     indexOfAtom.push(i);
     nowrapAt.push(openNowrap.length ? openNowrap[openNowrap.length - 1] : 0);
     segmentAt.push(segment);
+    linkAt.push(linkDepth > 0);
   }
 
   const sentence = text.join('');
@@ -270,12 +277,25 @@ function rebuild(inner, ownerTag) {
   // 前後の境目も外す。terms.js は実行時に <span class="term"> で包むので、
   // 語の直前・直後の <wbr> は flex/grid の箱の中で独立したアイテムになる。
   const protectedAt = new Array(sentence.length + 1).fill(false);
-  for (const key of TERM_KEYS) {
+  for (const key of [...TERM_KEYS, ...LINK_WORDS]) {
     let at = sentence.indexOf(key);
     while (at >= 0) {
-      for (let i = at; i <= at + key.length; i += 1) protectedAt[i] = true;
+      // terms.js はリンクを処理しない。リンク内では用語の境界を使い、
+      // 用語自体の途中は守る。それ以外は従来のツールチップ保護を維持。
+      for (let i = at; i <= at + key.length; i += 1) {
+        if ((!linkAt[at] && TERM_KEYS.includes(key)) || (i > at && i < at + key.length)) protectedAt[i] = true;
+      }
       at = sentence.indexOf(key, at + 1);
     }
+  }
+  // 字数調整のために「トラ／イアル」「プ／ラン」を作らない。
+  // 長い名称は助詞・中点・括弧で折り、入り切らない幅だけCSSの逃げ道を使う。
+  for (const match of sentence.matchAll(/[ァ-ヶー]+/g)) {
+    for (let i = match.index + 1; i < match.index + match[0].length; i += 1) protectedAt[i] = true;
+  }
+  // 桁区切り、時刻、数値と単位の間に強制分割を入れない。
+  for (const match of sentence.matchAll(/\d(?:[\d,.:/–-]*\d)?(?:[％%円人名年月日時分件回])?/g)) {
+    for (let i = match.index + 1; i < match.index + match[0].length; i += 1) protectedAt[i] = true;
   }
 
   /**
