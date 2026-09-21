@@ -33,7 +33,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preload" as="image" type="image/avif" href="assets/illustrations/hero-actor-plant.avif" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" href="assets/illustrations/hero-toyama.avif" fetchpriority="high" media="(min-width:1101px)">
 <style id="critical-home">
 /* ============================================================
    skin-v2.css — みなの社労士HP 共通デザインCSS「稜線（りょうせん）」
@@ -904,25 +904,41 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 </style>
 
 <style id="home-illustration-hero">
-/* 大きな文字と働く街のイラスト。文章・ボタンは演出を待たず表示する。 */
+/* 富山の街と働く人々。読み物と操作は登場演出を待たず表示する。 */
 #top.hero{background:#fff;min-height:0;height:auto;overflow:clip}
-#top .hero-stage{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;max-width:1440px;width:100%;margin:auto;padding:122px clamp(20px,4vw,58px) 32px;background:#fff!important;position:relative;--hero-progress:0}
-#top .hero-overlay{grid-column:1;grid-row:1;padding:0;min-width:0;max-width:none;z-index:2;align-items:center;text-align:center}
-#top .why-label.hero-label{background:#f8e78a;color:var(--sugi-9);border:0;font-size:12px;margin-bottom:22px}
-#top .hero-h1{width:100%;min-width:0;max-width:1120px;font-size:clamp(30px,3.4vw,46px);line-height:1.55;letter-spacing:.01em}
+#top .hero-stage{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:100svh auto;gap:0;width:100%;max-width:none;margin:auto;padding:0 0 30px;position:relative;background:#fff!important;--hero-progress:0}
+#top .hero-overlay{grid-column:1;grid-row:1;align-self:start;justify-self:center;width:min(90%,1100px);padding:104px 0 0;min-height:0;min-width:0;max-width:none;z-index:2;align-items:center;text-align:center;pointer-events:none}
+#top .hero-overlay a{pointer-events:auto}
+#top .why-label.hero-label{background:#f8e78a;color:var(--sugi-9);border:0;font-size:12px;margin-bottom:16px}
+#top .hero-h1{width:100%;min-width:0;max-width:1120px;font-size:clamp(30px,3vw,46px);line-height:1.4;letter-spacing:.01em}
 #top .hero-h1 .nw{display:inline-block}
 #top .hero-h1 strong{color:var(--sugi);background:none!important;box-shadow:none}
-#top .hero-sub{font-size:14px;font-weight:500;line-height:1.9;max-width:760px;margin-top:18px}
-#top .hero-btns{gap:24px;margin-top:23px;flex-wrap:wrap;justify-content:center}
-#top .hero-btns .btn-primary{flex:initial;width:auto;font-size:15px;padding:16px 32px}
+#top .hero-sub{font-size:14px;font-weight:500;line-height:1.8;max-width:850px;margin-top:14px}
+#top .hero-btns{gap:24px;margin-top:18px;flex-wrap:wrap;justify-content:center}
+#top .hero-btns .btn-primary{flex:initial;width:auto;font-size:15px;padding:14px 32px}
 #top .hero-sub-link{display:inline-flex;align-items:center;min-height:44px;padding:0 2px;border:0;border-bottom:1px solid var(--moegi);border-radius:0;background:none;font-size:13px}
-#top .hero-scene{grid-column:1;grid-row:2;position:relative;min-width:0;width:100%;isolation:isolate;align-self:center}
-#top .hero-media{display:block;position:relative;width:100%;aspect-ratio:3/1;transform:translateY(calc(var(--hero-progress)*-10px))}
-#top .hero-media img{display:block;width:100%;height:100%;object-fit:contain}
-.hero-bloom,.hero-bird{position:absolute;height:auto;pointer-events:none;z-index:1}
-.hero-bloom{left:3%;top:164px;width:65px;transform:rotate(calc(-12deg + var(--hero-progress)*55deg))}
-.hero-bird{right:3%;top:258px;width:75px;transform:translateY(calc(var(--hero-progress)*-24px)) rotate(calc(var(--hero-progress)*-8deg))}
-#top .hero-updates{grid-column:1;grid-row:3;border-top:1px solid var(--line);padding-top:22px;margin-top:0;min-width:0}
+#top .hero-scene{grid-column:1;grid-row:1;position:relative;align-self:stretch;min-width:0;width:100%;height:100%;pointer-events:none;overflow:clip;isolation:isolate}
+.hero-town{position:absolute;display:block;left:0;bottom:12svh;width:100%;height:44svh;transform:translateY(calc(var(--hero-progress)*-16px))}
+.hero-town img{display:block;width:100%;height:100%;object-fit:cover}
+.hero-actor{position:absolute;width:min(19vw,28svh);aspect-ratio:3/4;bottom:2svh;transform:translateY(calc(var(--hero-progress)*var(--drift, -24px)));--delay:0s}
+#top .hero-actor .hero-media{display:block;position:relative;width:100%;height:100%;aspect-ratio:auto}
+#top .hero-actor .actor-sprite{display:block;width:100%;height:100%;object-fit:cover;object-position:0 0}
+.actor-plant{left:0%;bottom:0;--delay:.12s;--drift:-18px;z-index:2}
+.actor-cafe{left:12%;bottom:17svh;width:min(15vw,22svh);--delay:.45s;--drift:-38px}
+.actor-craft{left:20%;bottom:1svh;--delay:.7s;z-index:2}
+.actor-laptop{left:33%;bottom:14svh;width:min(14vw,20svh);--delay:.28s;--drift:-42px}
+.actor-delivery{left:40%;bottom:0;--delay:.85s;z-index:2}
+.actor-florist{left:54%;bottom:17svh;width:min(14vw,22svh);--delay:.58s;--drift:-38px}
+.actor-baker{left:61%;bottom:0;--delay:.2s;z-index:2}
+.actor-builder{left:77%;bottom:17svh;width:min(14vw,21svh);--delay:.65s;--drift:-36px}
+.actor-sewing{left:2%;bottom:17svh;width:min(12vw,18svh);--delay:.36s;--drift:-44px}
+.actor-mechanic{right:0%;bottom:1svh;--delay:.78s;z-index:2}
+#top .actor-builder .actor-sprite,#top .actor-mechanic .actor-sprite{object-position:100% 0}
+/* 登場は一度で終了する。待機中に動き続けるアニメーションは使わない。 */
+.hero-entering .hero-media{animation:person-arrive 1.25s cubic-bezier(.2,.75,.3,1) var(--delay) both}
+@keyframes person-arrive{0%{transform:translateY(-45vh);opacity:0}12%{opacity:1}72%{transform:translateY(9px)}88%{transform:translateY(-4px)}100%{transform:translateY(0);opacity:1}}
+#top .hero-settled .hero-actor:not(.actor-baker):not(.actor-builder):not(.actor-sewing):not(.actor-mechanic) .actor-sprite{object-position:100% 0}
+#top .hero-updates{grid-column:1;grid-row:2;width:min(1200px,calc(100% - 48px));justify-self:center;box-sizing:border-box;border-top:1px solid var(--line);padding-top:22px;margin-top:0;min-width:0}
 #top .hero-spots{grid-template-columns:repeat(2,minmax(0,1fr));width:100%;max-width:100%;margin-top:0;gap:28px}
 #top .hero-spot{box-shadow:none;border:0;border-radius:0;padding:0 0 8px;background:none;max-inline-size:none;text-align:left;transform:none}
 #top .hero-spot+ .hero-spot{border-left:1px solid var(--line);padding-left:28px}
@@ -930,71 +946,34 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 #top .hero-trust{margin-top:14px;gap:20px}
 #top .trust-item{padding:0;border:0;background:none;font-size:11.5px}
 #top .hero-spot-note{font-size:11.5px}
-@media(max-width:1100px){.hero-bloom,.hero-bird{display:none}}
+@media(min-width:1101px) and (max-height:800px){#top .hero-overlay{padding-top:92px}#top .why-label.hero-label{margin-bottom:10px}#top .hero-h1{font-size:34px}#top .hero-sub{font-size:13px;margin-top:10px}#top .hero-btns{margin-top:12px}.hero-town{height:36svh;bottom:11svh}.hero-actor{width:min(19vw,27svh)}.actor-cafe,.actor-laptop,.actor-florist,.actor-builder{width:min(14vw,20svh);bottom:14svh}.actor-sewing{width:min(12vw,18svh)}}
+@media(max-width:1100px){
+ #top .hero-stage{grid-template-rows:auto auto auto}
+ #top .hero-overlay{width:100%;padding:106px 24px 12px;box-sizing:border-box}
+ #top .hero-h1{font-size:clamp(30px,3.4vw,40px)}
+ #top .hero-scene{grid-row:2;height:36vw;min-height:250px}
+ .hero-town{bottom:4vw;height:32vw}
+ .hero-actor{width:19%;bottom:0}.actor-cafe,.actor-laptop,.actor-florist,.actor-builder{width:14%;bottom:12vw}.actor-sewing{width:12%;bottom:16vw}
+ #top .hero-updates{grid-row:3;margin-top:12px}
+}
 @media(max-width:700px){
- #top .hero-stage{padding:94px 20px 24px;gap:18px}
+ #top .hero-overlay{padding:94px 20px 14px}
  #top .why-label.hero-label{font-size:11px;margin-bottom:17px;padding:7px 13px}
  #top .hero-h1{font-size:clamp(23px,5.5vw,32px);line-height:1.55}
  #top .hero-sub{font-size:13px;line-height:1.9;margin-top:16px}
  #top .hero-btns{margin-top:20px;gap:10px 20px}
  #top .hero-btns .btn-primary{padding:15px 28px;font-size:14px}
- #top .hero-scene{width:min(100%,440px);justify-self:center}
- #top .hero-media{aspect-ratio:4/3;transform:none}
+ #top .hero-scene{height:66vw;min-height:215px;max-height:450px}
+ .hero-town{height:40vw;bottom:24vw;width:100%;left:0}
+ .hero-actor,.actor-cafe,.actor-florist{width:22%;bottom:0}
+ .actor-plant{left:0}.actor-cafe{left:15.5%;bottom:10vw}.actor-craft{left:31%;bottom:0}.actor-florist{left:46.5%;bottom:8vw}.actor-baker{left:62%;bottom:0}.actor-mechanic{right:0;bottom:6vw}
+ .actor-laptop,.actor-delivery,.actor-builder,.actor-sewing{display:none}
+ #top .hero-updates{width:calc(100% - 40px);margin-top:12px}
  #top .hero-spots{grid-template-columns:minmax(0,1fr);gap:16px}
  #top .hero-spot+ .hero-spot{border-left:0;border-top:1px solid var(--line);padding:16px 0 0}
  #top .hero-trust{display:none}
 }
-@media(prefers-reduced-motion:reduce){#top .hero-media,.hero-bloom,.hero-bird{transform:none}}
-/* 人物を一人ずつ配置し、中央の文章と操作を常に読める状態にする。 */
-#top .hero-stage{max-width:none;padding:0 0 30px;gap:0}
-#top .hero-overlay{grid-row:1;justify-self:center;width:min(62%,900px);padding:130px 0 350px;min-height:850px;min-height:max(850px,100svh);justify-content:center;box-sizing:border-box;pointer-events:none}
-#top .hero-overlay a{pointer-events:auto}
-#top .hero-h1{font-size:clamp(30px,2.8vw,46px)}
-#top .hero-scene{grid-row:1;grid-column:1;align-self:stretch;height:100%;width:100%;position:relative;pointer-events:none;overflow:clip;isolation:isolate}
-.hero-actor{position:absolute;width:clamp(160px,17vw,290px);aspect-ratio:3/4;transform-origin:50% 95%;--delay:0s;--tempo:7s}
-#top .hero-actor .hero-media{display:block;width:100%;height:100%;aspect-ratio:auto;transform:none}
-#top .hero-actor .actor-sprite{display:block;width:100%;height:100%;object-fit:cover;object-position:0 0;transform-origin:50% 90%}
-.actor-plant{left:1%;top:135px;--delay:.12s;--tempo:7.8s}
-.actor-cafe{right:1%;top:110px;--delay:.45s;--tempo:8.5s}
-.actor-craft{left:13%;bottom:24px;--delay:.7s;--tempo:7.1s}
-.actor-laptop{left:36%;bottom:2px;--delay:.28s;--tempo:6.8s}
-.actor-delivery{right:1%;bottom:18px;--delay:.85s;--tempo:8.1s}
-.actor-florist{right:21%;bottom:8px;--delay:.58s;--tempo:7.4s}
-.motion-ready .hero-actor{animation:person-arrive 1.45s cubic-bezier(.2,.75,.3,1) var(--delay) both}
-.motion-ready .actor-sprite{animation:person-pose var(--tempo) steps(1,end) calc(1.5s + var(--delay)) infinite,person-breathe 5.3s ease-in-out calc(1.5s + var(--delay)) infinite}
-@keyframes person-arrive{0%{transform:translateY(-65vh);opacity:0}12%{opacity:1}72%{transform:translateY(10px)}88%{transform:translateY(-6px)}100%{transform:translateY(0) rotate(0);opacity:1}}
-@keyframes person-pose{0%,46%,100%{object-position:0 0}25%,45%{object-position:100% 0}}
-@keyframes person-breathe{0%,100%{transform:translateY(0) rotate(0)}45%{transform:translateY(-7px) rotate(1.2deg)}70%{transform:translateY(-2px) rotate(-.5deg)}}
-.motion-paused .hero-actor,.motion-paused .actor-sprite{animation-play-state:paused!important}
-.hero-motion-toggle{display:none;position:relative;grid-column:1;grid-row:1;align-self:end;justify-self:end;right:24px;bottom:14px;z-index:4;border:1px solid var(--line);border-radius:999px;padding:10px 16px;min-height:44px;color:var(--sugi);background:#fff;font-size:12px;cursor:pointer}
-.motion-ready .hero-motion-toggle{display:inline-flex;align-items:center;gap:7px}
-.hero-motion-toggle:focus-visible{outline:3px solid var(--moegi);outline-offset:3px}
-#top .hero-updates{grid-row:2;width:min(1200px,calc(100% - 48px));justify-self:center;box-sizing:border-box}
-.hero-bloom{left:21%;top:126px;width:55px;z-index:2}
-.hero-bird{right:20%;top:125px;width:60px;z-index:2}
-@media(max-width:1100px){
- #top .hero-overlay{width:100%;padding:120px 24px 20px;min-height:0}
- #top .hero-h1{font-size:clamp(30px,3.4vw,40px)}
- #top .hero-scene{grid-row:2;height:clamp(230px,29vw,310px);overflow:clip}
- .hero-actor{width:16%;max-width:none;top:auto;bottom:28px;aspect-ratio:3/4}
- .actor-plant{left:1%}.actor-cafe{left:16.666%;right:auto}.actor-craft{left:33.333%}.actor-laptop{left:50%}.actor-delivery{left:66.666%;right:auto}.actor-florist{left:83.333%;right:auto}
- .hero-motion-toggle{grid-row:2;bottom:2px;right:16px}
- #top .hero-updates{grid-row:3;margin-top:12px}
-}
-@media(max-width:700px){
- #top .hero-overlay{padding:94px 20px 14px}
- #top .hero-h1{font-size:clamp(23px,5.5vw,32px)}
- #top .hero-scene{width:100%;height:clamp(205px,48vw,300px)}
- .hero-actor{width:31.333%;max-width:210px;bottom:36px}
- .actor-plant{left:2%}.actor-craft{left:33.333%}.actor-florist{left:66.666%;right:auto}
- .actor-cafe,.actor-laptop,.actor-delivery{display:none}
- #top .hero-updates{width:calc(100% - 40px);margin-top:12px}
- .hero-motion-toggle{font-size:11px;min-height:44px;padding:8px 12px;right:20px}
-}
-@media(prefers-reduced-motion:reduce){
- .motion-ready .hero-actor,.motion-ready .actor-sprite{animation:none!important;transform:none!important;opacity:1!important}
- .motion-ready .hero-motion-toggle{display:none}
-}
+@media(prefers-reduced-motion:reduce){#top .hero-actor,#top .hero-town,#top .hero-media{animation:none!important;transform:none!important;opacity:1!important}}
 
 </style>
 </head>
@@ -1043,17 +1022,19 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 <main id="main">
 <section class="hero" id="top">
   <div class="hero-stage">
-    <svg class="hero-bloom" aria-hidden="true" viewBox="0 0 100 100"><path d="M50 30C18-8 0 25 29 48C-10 66 25 107 47 73C65 114 105 78 72 53C116 34 81-7 56 29Z" fill="#ed7859"/><circle cx="51" cy="51" r="15" fill="#f8db5a"/></svg>
-    <svg class="hero-bird" aria-hidden="true" viewBox="0 0 120 90"><path d="M12 48C40 56 45 43 51 34C34 21 33 12 34 6C56 10 71 26 76 38C90 28 97 32 101 36L115 38L103 44C96 68 79 76 58 66L27 81L34 60Z" fill="#57b5cb"/><circle cx="97" cy="37" r="2" fill="#123f30"/></svg>
     <div class="hero-scene" aria-hidden="true">
-      <div class="hero-actor actor-plant"><picture class="hero-media"><source type="image/avif" srcset="assets/illustrations/hero-actor-plant.avif"><img class="actor-sprite" src="assets/illustrations/hero-actor-plant.webp" width="900" height="600" alt="" decoding="async" fetchpriority="high"></picture></div>
-      <div class="hero-actor actor-cafe"><picture class="hero-media"><source type="image/avif" srcset="assets/illustrations/hero-actor-cafe.avif"><img class="actor-sprite" src="assets/illustrations/hero-actor-cafe.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
-      <div class="hero-actor actor-craft"><picture class="hero-media"><source type="image/avif" srcset="assets/illustrations/hero-actor-craft.avif"><img class="actor-sprite" src="assets/illustrations/hero-actor-craft.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
+      <picture class="hero-town"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-toyama-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-toyama.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-toyama-sm.webp"><img src="assets/illustrations/hero-toyama.webp" width="1920" height="640" alt="" decoding="async" loading="lazy"></picture>
+      <div class="hero-actor actor-plant"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-actor-plant-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-actor-plant.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-actor-plant-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-actor-plant.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
+      <div class="hero-actor actor-cafe"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-actor-cafe-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-actor-cafe.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-actor-cafe-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-actor-cafe.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
+      <div class="hero-actor actor-craft"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-actor-craft-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-actor-craft.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-actor-craft-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-actor-craft.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
       <div class="hero-actor actor-laptop"><picture class="hero-media"><source type="image/avif" srcset="assets/illustrations/hero-actor-laptop.avif"><img class="actor-sprite" src="assets/illustrations/hero-actor-laptop.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
       <div class="hero-actor actor-delivery"><picture class="hero-media"><source type="image/avif" srcset="assets/illustrations/hero-actor-delivery.avif"><img class="actor-sprite" src="assets/illustrations/hero-actor-delivery.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
-      <div class="hero-actor actor-florist"><picture class="hero-media"><source type="image/avif" srcset="assets/illustrations/hero-actor-florist.avif"><img class="actor-sprite" src="assets/illustrations/hero-actor-florist.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
+      <div class="hero-actor actor-florist"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-actor-florist-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-actor-florist.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-actor-florist-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-actor-florist.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
+      <div class="hero-actor actor-baker"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-actor-trades-a-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-actor-trades-a.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-actor-trades-a-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-actor-trades-a.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
+      <div class="hero-actor actor-builder"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-actor-trades-a-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-actor-trades-a.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-actor-trades-a-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-actor-trades-a.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
+      <div class="hero-actor actor-sewing"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-actor-trades-b-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-actor-trades-b.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-actor-trades-b-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-actor-trades-b.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
+      <div class="hero-actor actor-mechanic"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-actor-trades-b-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-actor-trades-b.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-actor-trades-b-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-actor-trades-b.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
     </div>
-    <button class="hero-motion-toggle" type="button" aria-pressed="false" aria-label="イラストの動きを一時停止">Ⅱ 動きを止める</button>
     <div class="hero-overlay">
       <div class="why-label hero-label">富山の社会保険労務士事務所</div>
       <h1 class="hero-h1"><span class="nw">手続きも、</span><wbr><span class="nw">給与計算も、</span><wbr><span class="nw">助成金も。</span><br><strong><span class="nw">会社の労務を、</span><wbr><span class="nw">まるごと任せられる。</span></strong></h1>
@@ -1782,18 +1763,19 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
 <script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/"}' async src="//gc.zgo.at/count.js"></script>
 
 <script>
-/* SPA再訪時は前の監視を解除。画面外・非表示タブ・本人の停止指定で休止する。 */
+/* 初回だけ登場し、その後はスクロール操作にだけ反応する。SPA再訪では繰り返さない。 */
 (function(){
  if(window.__mnHeroMotionCleanup)window.__mnHeroMotionCleanup();
  var stage=document.querySelector('#top .hero-stage');if(!stage)return;
- var motion=matchMedia('(prefers-reduced-motion: reduce)'),button=stage.querySelector('.hero-motion-toggle');
- var userPaused=false,inView=true;try{userPaused=sessionStorage.getItem('mn-hero-motion-paused')==='1';}catch(e){}
- function sync(){stage.classList.toggle('motion-paused',userPaused||!inView||document.hidden||motion.matches);button.setAttribute('aria-pressed',String(userPaused));button.textContent=userPaused?'▶ 動きを再開':'Ⅱ 動きを止める';button.setAttribute('aria-label',userPaused?'イラストの動きを再開':'イラストの動きを一時停止');}
- function toggle(){userPaused=!userPaused;try{sessionStorage.setItem('mn-hero-motion-paused',userPaused?'1':'0');}catch(e){}sync();}
- var observer=new IntersectionObserver(function(entries){inView=entries[0].isIntersecting;sync();},{threshold:0});observer.observe(stage);
- button.addEventListener('click',toggle);document.addEventListener('visibilitychange',sync);motion.addEventListener('change',sync);
- stage.classList.add('motion-ready');sync();
- window.__mnHeroMotionCleanup=function(){observer.disconnect();button.removeEventListener('click',toggle);document.removeEventListener('visibilitychange',sync);motion.removeEventListener('change',sync);};
+ var motion=matchMedia('(prefers-reduced-motion: reduce)'),frame=0,timer=0;
+ function update(){frame=0;if(!stage.isConnected)return;var y=stage.getBoundingClientRect().top;stage.style.setProperty('--hero-progress',motion.matches?0:Math.max(0,Math.min(1,-y/innerHeight)));}
+ function scroll(){if(!frame)frame=requestAnimationFrame(update);}
+ function settle(){stage.classList.remove('hero-entering');stage.classList.add('hero-settled');}
+ function preference(){if(motion.matches){clearTimeout(timer);settle();}update();}
+ if(!motion.matches&&!window.__mnHeroHasEntered){stage.classList.add('hero-entering');timer=setTimeout(settle,2300);}else settle();
+ window.__mnHeroHasEntered=true;
+ window.addEventListener('scroll',scroll,{passive:true});window.addEventListener('resize',scroll,{passive:true});motion.addEventListener('change',preference);update();
+ window.__mnHeroMotionCleanup=function(){clearTimeout(timer);cancelAnimationFrame(frame);window.removeEventListener('scroll',scroll);window.removeEventListener('resize',scroll);motion.removeEventListener('change',preference);};
 })();
 
 </script>
