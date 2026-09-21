@@ -8,6 +8,8 @@
 <script defer src="page-enter.js?v=20260921-pace1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preload" as="image" type="image/avif" imagesrcset="assets/illustrations/hero-toyama-portrait-540.avif 540w, assets/illustrations/hero-toyama-portrait-1080.avif 1080w" imagesizes="120vw" media="(max-width:700px)" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" imagesrcset="assets/illustrations/hero-toyama.avif 1920w, assets/illustrations/hero-toyama-detail.avif 2172w" imagesizes="(max-width:1100px) 129vw, 100vw" media="(min-width:701px)" fetchpriority="high">
 <title>みなの社会保険労務士事務所｜富山市の社労士（助成金・給与計算・顧問）</title>
 <meta name="description" content="富山の社会保険労務士事務所。中小企業向けに助成金申請・就業規則作成・社会保険手続き・給与計算を支援します。来所・訪問・オンラインに対応し、全国からご相談いただけます。">
 
@@ -33,7 +35,6 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preload" as="image" type="image/avif" href="assets/illustrations/hero-toyama.avif" fetchpriority="high" media="(min-width:1101px)">
 <style id="critical-home">
 /* ============================================================
    skin-v2.css — みなの社労士HP 共通デザインCSS「稜線（りょうせん）」
@@ -1000,16 +1001,45 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 @media(prefers-reduced-motion:reduce){.actor-face{transition:none}}
 
 
-/* 業務名を主役にし、地域名は説明文へ統合する。 */
-#top .hero-overlay{width:min(88%,1200px);padding-top:108px}
-#top .hero-h1{font-size:clamp(27px,2.7vw,39px);line-height:1.45}
-#top .hero-services{display:inline;font-size:clamp(40px,4vw,58px);font-weight:800;letter-spacing:-.025em}
+/* 文字と人物を同じ画面比率で拡縮し、縦長画面でも顔の位置関係を保つ。 */
+@media(min-width:1101px){#top .hero-stage{grid-template-rows:min(100svh,80vw) auto}.hero-town{height:min(48svh,30vw);bottom:min(10svh,6vw)}}
+#top .hero-overlay{width:88%;padding-top:clamp(100px,12svh,180px)}
+#top .hero-h1{max-width:none;font-size:clamp(28px,min(2.8vw,4.8svh),70px);line-height:1.4}
+#top .hero-services{display:inline;font-size:clamp(36px,min(4.2vw,7.2svh),106px);font-weight:800;letter-spacing:-.025em}
 #top .why-label.hero-label{display:inline;background:none;border:0;border-radius:0;padding:0;margin:0;font:inherit;color:inherit;letter-spacing:inherit;box-shadow:none}
-#top .hero-sub{max-width:930px;margin-top:14px}
-#top .actor-wave{--person-height:40svh;right:6%;--person-bottom:13svh}
-@media(min-width:1101px) and (max-height:800px){#top .hero-overlay{padding-top:96px}#top .hero-services{font-size:44px}#top .hero-h1{font-size:30px}#top .hero-sub{font-size:12px;max-width:840px}}
-@media(max-width:1100px){#top .hero-overlay{width:100%;padding:100px 24px 12px}#top .hero-services{font-size:clamp(36px,4vw,44px)}#top .actor-wave{--tablet-height:34vw;--tablet-bottom:12vw;right:6%}}
-@media(max-width:700px){#top .hero-overlay{padding:94px 20px 10px}#top .hero-services{font-size:clamp(27px,7.2vw,42px);line-height:1.5}#top .hero-h1{font-size:clamp(21px,5.3vw,29px);line-height:1.5}#top .hero-sub{margin-top:16px;font-size:13px}#top .hero-scene{height:86vw;min-height:280px}.hero-town{height:110vw;bottom:0}.hero-town img{object-position:50% 50%}#top .actor-wave{--tablet-height:42vw;--tablet-bottom:27vw;right:10%}}
+#top .hero-sub{max-width:40em;font-size:clamp(16px,min(1.3vw,2.25svh),28px);line-height:1.85;margin:18px auto 0;color:var(--iwa)}
+#top .hero-btns{margin-top:20px}
+#top .hero-actor{height:min(var(--wide-height),var(--person-height));bottom:min(var(--wide-bottom,0px),var(--person-bottom,0px))}
+.actor-cafe{--wide-height:27vw;--wide-bottom:1.1vw}
+.actor-builder{--wide-height:25vw;--wide-bottom:5vw}
+.actor-garden{--wide-height:18vw}
+.actor-seated{--wide-height:19vw}
+.actor-delivery{--wide-height:20vw;--wide-bottom:4.4vw}
+.actor-kneel{--wide-height:18.5vw}
+.actor-florist{--wide-height:22.5vw;--wide-bottom:6vw}
+.actor-baker{--wide-height:22vw}
+#top .actor-wave{--person-height:40svh;--wide-height:22vw;right:6%;--person-bottom:13svh;--wide-bottom:7.2vw}
+.actor-mechanic{--wide-height:24vw}
+@media(min-width:1101px) and (max-height:800px){#top .hero-overlay{padding-top:96px}#top .hero-sub{font-size:16px;margin-top:12px}#top .hero-btns{margin-top:14px}}
+@media(max-width:1100px){
+ #top .hero-overlay{width:100%;padding:100px 24px 12px}
+ #top .hero-services{font-size:clamp(36px,4.8vw,54px)}
+ #top .hero-h1{font-size:clamp(26px,3.2vw,36px)}
+ #top .hero-sub{font-size:17px;max-width:48em}
+ #top .hero-actor{height:var(--tablet-height,32vw);bottom:var(--tablet-bottom,0)}
+ #top .actor-wave{--tablet-height:32vw;--tablet-bottom:15vw;right:6%}
+ .actor-florist{--tablet-height:30vw;--tablet-bottom:7vw}
+}
+@media(max-width:700px){
+ #top .hero-overlay{padding:94px 20px 10px}
+ #top .hero-services{font-size:clamp(27px,7.2vw,42px);line-height:1.5}
+ #top .hero-h1{font-size:clamp(21px,5.3vw,29px);line-height:1.5}
+ #top .hero-sub{margin-top:16px;font-size:15px;line-height:1.9}
+ #top .hero-scene{height:82vw;min-height:270px}
+ .hero-town{height:80vw;bottom:12vw;opacity:1}
+ .hero-town img{object-position:50% 50%}
+ #top .actor-wave{--tablet-height:42vw;--tablet-bottom:27vw;right:10%}
+}
 /* 下線は文字行の実寸に合わせて描画。ペン先と線の終点を一致させる。 */
 .pen-heading{position:relative;isolation:isolate}
 .pen-heading.pen-ready strong{background:none!important;box-shadow:none!important}
@@ -1018,7 +1048,6 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 @media(prefers-reduced-motion:reduce){.pen-tip{display:none}}
 
 </style>
-<link rel="preload" as="image" type="image/avif" href="assets/illustrations/hero-toyama-sm.avif" media="(max-width:700px)">
 </head>
 <body data-nav="B">
 <a class="skip-link" href="#main">本文へスキップ</a>
@@ -1066,7 +1095,7 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 <section class="hero" id="top">
   <div class="hero-stage">
     <div class="hero-scene" aria-hidden="true">
-      <picture class="hero-town"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-toyama-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-toyama.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-toyama-sm.webp"><img src="assets/illustrations/hero-toyama.webp" width="1920" height="640" alt="" decoding="async" loading="eager" fetchpriority="high"></picture>
+      <picture class="hero-town"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-toyama-portrait-540.avif 540w, assets/illustrations/hero-toyama-portrait-1080.avif 1080w" sizes="120vw"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-toyama-portrait-540.webp 540w, assets/illustrations/hero-toyama-portrait-1080.webp 1080w" sizes="120vw"><source type="image/avif" srcset="assets/illustrations/hero-toyama.avif 1920w, assets/illustrations/hero-toyama-detail.avif 2172w" sizes="(max-width:700px) 240vw, (max-width:1100px) 129vw, 100vw"><img src="assets/illustrations/hero-toyama-detail.webp" srcset="assets/illustrations/hero-toyama.webp 1920w, assets/illustrations/hero-toyama-detail.webp 2172w" sizes="(max-width:700px) 240vw, (max-width:1100px) 129vw, 100vw" width="2172" height="724" alt="" decoding="async" loading="eager" fetchpriority="high"></picture>
       <div class="hero-actor actor-seated" style="--person-ratio:462/567"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-crowd-seated-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-crowd-seated.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-crowd-seated-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-crowd-seated.webp" width="462" height="567" alt="" decoding="async" loading="lazy"></picture><img class="actor-face" src="assets/illustrations/hero-face-seated.webp" width="55" height="63" alt="" decoding="async" loading="lazy" style="left:29.653679653679653%;top:10.582010582010582%;width:11.904761904761903%;height:11.11111111111111%;border-radius:35%"></div>
       <div class="hero-actor actor-wave" style="--person-ratio:421/640"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-crowd-wave-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-crowd-wave.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-crowd-wave-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-crowd-wave.webp" width="421" height="640" alt="" decoding="async" loading="lazy"></picture><img class="actor-face" src="assets/illustrations/hero-face-wave.webp" width="57" height="62" alt="" decoding="async" loading="lazy" style="left:34.204275534441805%;top:16.25%;width:13.539192399049881%;height:9.6875%;border-radius:35%"></div>
       <div class="hero-actor actor-kneel" style="--person-ratio:505/555"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-crowd-kneel-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-crowd-kneel.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-crowd-kneel-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-crowd-kneel.webp" width="505" height="555" alt="" decoding="async" loading="lazy"></picture><img class="actor-face" src="assets/illustrations/hero-face-kneel.webp" width="57" height="66" alt="" decoding="async" loading="lazy" style="left:54.05940594059406%;top:10.45045045045045%;width:11.287128712871288%;height:11.891891891891893%;border-radius:35%"></div>
@@ -1080,7 +1109,7 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
     </div>
     <div class="hero-overlay">
       <h1 class="hero-h1"><span class="nw hero-services">手続きも、</span><wbr><span class="nw hero-services">給与計算も、</span><wbr><span class="nw hero-services">助成金も。</span><br><strong><span class="nw">会社の労務を、</span><wbr><span class="nw">まるごと任せられる。</span></strong></h1>
-      <p class="hero-sub"><span class="nw why-label hero-label">富山の社会保険労務士事務所。</span><wbr><span class="nw">中小企業の経営者に向けて、</span><wbr><span class="nw">労務顧問・手続き・給与計算・</span><wbr><span class="nw">助成金・DXまで</span><wbr><span class="nw">実務に沿ってサポート。</span><br><span class="nw">初めてのご相談でも、</span><wbr><span class="nw">むずかしい言葉を使わずに整理します。</span></p>
+      <p class="hero-sub"><span class="nw why-label hero-label">富山の社会保険労務士事務所。</span><wbr><span class="nw">中小企業の経営者に向けて、</span><wbr><span class="nw">労務顧問・手続き・給与計算・</span><wbr><span class="nw">助成金・DXまで</span><wbr><span class="nw">実務に沿ってサポート。</span><br><span class="nw">初めてのご相談でも、</span><wbr><span class="nw">むずかしい言葉を使わずに</span><wbr><span class="nw">整理します。</span></p>
       <div class="hero-btns">
         <a href="uploads/contact.html" class="btn-primary">無料で相談する</a>
         <a href="infographic.html" class="hero-sub-link">社労士とは？ →</a>
