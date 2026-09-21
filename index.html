@@ -33,8 +33,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preload" as="image" type="image/avif" media="(max-width:700px)" href="assets/illustrations/hero-town-ink-mobile-720.avif" imagesrcset="assets/illustrations/hero-town-ink-mobile-720.avif 720w, assets/illustrations/hero-town-ink-mobile-1200.avif 1200w" imagesizes="(max-width:480px) calc(100vw - 40px), 440px" fetchpriority="high">
-<link rel="preload" as="image" type="image/avif" media="(min-width:701px)" href="assets/illustrations/hero-town-ink-1200.avif" imagesrcset="assets/illustrations/hero-town-ink-1200.avif 1200w, assets/illustrations/hero-town-ink-2000.avif 2000w" imagesizes="(min-width:1440px) 1324px, 92vw" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" href="assets/illustrations/hero-actor-plant.avif" fetchpriority="high">
 <style id="critical-home">
 /* ============================================================
    skin-v2.css — みなの社労士HP 共通デザインCSS「稜線（りょうせん）」
@@ -946,6 +945,57 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
  #top .hero-trust{display:none}
 }
 @media(prefers-reduced-motion:reduce){#top .hero-media,.hero-bloom,.hero-bird{transform:none}}
+/* 人物を一人ずつ配置し、中央の文章と操作を常に読める状態にする。 */
+#top .hero-stage{max-width:none;padding:0 0 30px;gap:0}
+#top .hero-overlay{grid-row:1;justify-self:center;width:min(62%,900px);padding:130px 0 350px;min-height:850px;min-height:max(850px,100svh);justify-content:center;box-sizing:border-box;pointer-events:none}
+#top .hero-overlay a{pointer-events:auto}
+#top .hero-h1{font-size:clamp(30px,2.8vw,46px)}
+#top .hero-scene{grid-row:1;grid-column:1;align-self:stretch;height:100%;width:100%;position:relative;pointer-events:none;overflow:clip;isolation:isolate}
+.hero-actor{position:absolute;width:clamp(160px,17vw,290px);aspect-ratio:3/4;transform-origin:50% 95%;--delay:0s;--tempo:7s}
+#top .hero-actor .hero-media{display:block;width:100%;height:100%;aspect-ratio:auto;transform:none}
+#top .hero-actor .actor-sprite{display:block;width:100%;height:100%;object-fit:cover;object-position:0 0;transform-origin:50% 90%}
+.actor-plant{left:1%;top:135px;--delay:.12s;--tempo:7.8s}
+.actor-cafe{right:1%;top:110px;--delay:.45s;--tempo:8.5s}
+.actor-craft{left:13%;bottom:24px;--delay:.7s;--tempo:7.1s}
+.actor-laptop{left:36%;bottom:2px;--delay:.28s;--tempo:6.8s}
+.actor-delivery{right:1%;bottom:18px;--delay:.85s;--tempo:8.1s}
+.actor-florist{right:21%;bottom:8px;--delay:.58s;--tempo:7.4s}
+.motion-ready .hero-actor{animation:person-arrive 1.45s cubic-bezier(.2,.75,.3,1) var(--delay) both}
+.motion-ready .actor-sprite{animation:person-pose var(--tempo) steps(1,end) calc(1.5s + var(--delay)) infinite,person-breathe 5.3s ease-in-out calc(1.5s + var(--delay)) infinite}
+@keyframes person-arrive{0%{transform:translateY(-65vh);opacity:0}12%{opacity:1}72%{transform:translateY(10px)}88%{transform:translateY(-6px)}100%{transform:translateY(0) rotate(0);opacity:1}}
+@keyframes person-pose{0%,46%,100%{object-position:0 0}25%,45%{object-position:100% 0}}
+@keyframes person-breathe{0%,100%{transform:translateY(0) rotate(0)}45%{transform:translateY(-7px) rotate(1.2deg)}70%{transform:translateY(-2px) rotate(-.5deg)}}
+.motion-paused .hero-actor,.motion-paused .actor-sprite{animation-play-state:paused!important}
+.hero-motion-toggle{display:none;position:relative;grid-column:1;grid-row:1;align-self:end;justify-self:end;right:24px;bottom:14px;z-index:4;border:1px solid var(--line);border-radius:999px;padding:10px 16px;min-height:44px;color:var(--sugi);background:#fff;font-size:12px;cursor:pointer}
+.motion-ready .hero-motion-toggle{display:inline-flex;align-items:center;gap:7px}
+.hero-motion-toggle:focus-visible{outline:3px solid var(--moegi);outline-offset:3px}
+#top .hero-updates{grid-row:2;width:min(1200px,calc(100% - 48px));justify-self:center;box-sizing:border-box}
+.hero-bloom{left:21%;top:126px;width:55px;z-index:2}
+.hero-bird{right:20%;top:125px;width:60px;z-index:2}
+@media(max-width:1100px){
+ #top .hero-overlay{width:100%;padding:120px 24px 20px;min-height:0}
+ #top .hero-h1{font-size:clamp(30px,3.4vw,40px)}
+ #top .hero-scene{grid-row:2;height:clamp(230px,29vw,310px);overflow:clip}
+ .hero-actor{width:16%;max-width:none;top:auto;bottom:28px;aspect-ratio:3/4}
+ .actor-plant{left:1%}.actor-cafe{left:16.666%;right:auto}.actor-craft{left:33.333%}.actor-laptop{left:50%}.actor-delivery{left:66.666%;right:auto}.actor-florist{left:83.333%;right:auto}
+ .hero-motion-toggle{grid-row:2;bottom:2px;right:16px}
+ #top .hero-updates{grid-row:3;margin-top:12px}
+}
+@media(max-width:700px){
+ #top .hero-overlay{padding:94px 20px 14px}
+ #top .hero-h1{font-size:clamp(23px,5.5vw,32px)}
+ #top .hero-scene{width:100%;height:clamp(205px,48vw,300px)}
+ .hero-actor{width:31.333%;max-width:210px;bottom:36px}
+ .actor-plant{left:2%}.actor-craft{left:33.333%}.actor-florist{left:66.666%;right:auto}
+ .actor-cafe,.actor-laptop,.actor-delivery{display:none}
+ #top .hero-updates{width:calc(100% - 40px);margin-top:12px}
+ .hero-motion-toggle{font-size:11px;min-height:44px;padding:8px 12px;right:20px}
+}
+@media(prefers-reduced-motion:reduce){
+ .motion-ready .hero-actor,.motion-ready .actor-sprite{animation:none!important;transform:none!important;opacity:1!important}
+ .motion-ready .hero-motion-toggle{display:none}
+}
+
 </style>
 </head>
 <body data-nav="B">
@@ -996,14 +1046,14 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
     <svg class="hero-bloom" aria-hidden="true" viewBox="0 0 100 100"><path d="M50 30C18-8 0 25 29 48C-10 66 25 107 47 73C65 114 105 78 72 53C116 34 81-7 56 29Z" fill="#ed7859"/><circle cx="51" cy="51" r="15" fill="#f8db5a"/></svg>
     <svg class="hero-bird" aria-hidden="true" viewBox="0 0 120 90"><path d="M12 48C40 56 45 43 51 34C34 21 33 12 34 6C56 10 71 26 76 38C90 28 97 32 101 36L115 38L103 44C96 68 79 76 58 66L27 81L34 60Z" fill="#57b5cb"/><circle cx="97" cy="37" r="2" fill="#123f30"/></svg>
     <div class="hero-scene" aria-hidden="true">
-      <picture class="hero-media">
-        <source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-town-ink-mobile-720.avif 720w, assets/illustrations/hero-town-ink-mobile-1200.avif 1200w" sizes="(max-width:480px) calc(100vw - 40px), 440px">
-        <source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-town-ink-mobile-720.webp 720w, assets/illustrations/hero-town-ink-mobile-1200.webp 1200w" sizes="(max-width:480px) calc(100vw - 40px), 440px">
-        <source type="image/avif" srcset="assets/illustrations/hero-town-ink-1200.avif 1200w, assets/illustrations/hero-town-ink-2000.avif 2000w" sizes="(min-width:1440px) 1324px, 92vw">
-        <source type="image/webp" srcset="assets/illustrations/hero-town-ink-1200.webp 1200w, assets/illustrations/hero-town-ink-2000.webp 2000w" sizes="(min-width:1440px) 1324px, 92vw">
-        <img src="assets/illustrations/hero-town-ink-1200.webp" width="2160" height="720" alt="" fetchpriority="high" decoding="async">
-      </picture>
+      <div class="hero-actor actor-plant"><picture class="hero-media"><source type="image/avif" srcset="assets/illustrations/hero-actor-plant.avif"><img class="actor-sprite" src="assets/illustrations/hero-actor-plant.webp" width="900" height="600" alt="" decoding="async" fetchpriority="high"></picture></div>
+      <div class="hero-actor actor-cafe"><picture class="hero-media"><source type="image/avif" srcset="assets/illustrations/hero-actor-cafe.avif"><img class="actor-sprite" src="assets/illustrations/hero-actor-cafe.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
+      <div class="hero-actor actor-craft"><picture class="hero-media"><source type="image/avif" srcset="assets/illustrations/hero-actor-craft.avif"><img class="actor-sprite" src="assets/illustrations/hero-actor-craft.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
+      <div class="hero-actor actor-laptop"><picture class="hero-media"><source type="image/avif" srcset="assets/illustrations/hero-actor-laptop.avif"><img class="actor-sprite" src="assets/illustrations/hero-actor-laptop.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
+      <div class="hero-actor actor-delivery"><picture class="hero-media"><source type="image/avif" srcset="assets/illustrations/hero-actor-delivery.avif"><img class="actor-sprite" src="assets/illustrations/hero-actor-delivery.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
+      <div class="hero-actor actor-florist"><picture class="hero-media"><source type="image/avif" srcset="assets/illustrations/hero-actor-florist.avif"><img class="actor-sprite" src="assets/illustrations/hero-actor-florist.webp" width="900" height="600" alt="" decoding="async" loading="lazy"></picture></div>
     </div>
+    <button class="hero-motion-toggle" type="button" aria-pressed="false" aria-label="イラストの動きを一時停止">Ⅱ 動きを止める</button>
     <div class="hero-overlay">
       <div class="why-label hero-label">富山の社会保険労務士事務所</div>
       <h1 class="hero-h1"><span class="nw">手続きも、</span><wbr><span class="nw">給与計算も、</span><wbr><span class="nw">助成金も。</span><br><strong><span class="nw">会社の労務を、</span><wbr><span class="nw">まるごと任せられる。</span></strong></h1>
@@ -1732,18 +1782,20 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
 <script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/"}' async src="//gc.zgo.at/count.js"></script>
 
 <script>
-/* SPAで再訪しても一組だけ登録し、現在の要素をその都度取得する。 */
+/* SPA再訪時は前の監視を解除。画面外・非表示タブ・本人の停止指定で休止する。 */
 (function(){
  if(window.__mnHeroMotionCleanup)window.__mnHeroMotionCleanup();
- var frame=0,motion=matchMedia('(prefers-reduced-motion: reduce)'),desktop=matchMedia('(min-width:701px)');
- function draw(){frame=0;var stage=document.querySelector('#top .hero-stage');if(!stage)return;
-  var progress=0;if(!motion.matches&&desktop.matches){var rect=stage.getBoundingClientRect();progress=Math.max(0,Math.min(1,-rect.top/Math.min(460,rect.height)));}
-  stage.style.setProperty('--hero-progress',progress.toFixed(3));
- }
- function update(){if(!frame)frame=requestAnimationFrame(draw);}
- window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update,{passive:true});motion.addEventListener('change',update);draw();
- window.__mnHeroMotionCleanup=function(){window.removeEventListener('scroll',update);window.removeEventListener('resize',update);motion.removeEventListener('change',update);cancelAnimationFrame(frame);};
+ var stage=document.querySelector('#top .hero-stage');if(!stage)return;
+ var motion=matchMedia('(prefers-reduced-motion: reduce)'),button=stage.querySelector('.hero-motion-toggle');
+ var userPaused=false,inView=true;try{userPaused=sessionStorage.getItem('mn-hero-motion-paused')==='1';}catch(e){}
+ function sync(){stage.classList.toggle('motion-paused',userPaused||!inView||document.hidden||motion.matches);button.setAttribute('aria-pressed',String(userPaused));button.textContent=userPaused?'▶ 動きを再開':'Ⅱ 動きを止める';button.setAttribute('aria-label',userPaused?'イラストの動きを再開':'イラストの動きを一時停止');}
+ function toggle(){userPaused=!userPaused;try{sessionStorage.setItem('mn-hero-motion-paused',userPaused?'1':'0');}catch(e){}sync();}
+ var observer=new IntersectionObserver(function(entries){inView=entries[0].isIntersecting;sync();},{threshold:0});observer.observe(stage);
+ button.addEventListener('click',toggle);document.addEventListener('visibilitychange',sync);motion.addEventListener('change',sync);
+ stage.classList.add('motion-ready');sync();
+ window.__mnHeroMotionCleanup=function(){observer.disconnect();button.removeEventListener('click',toggle);document.removeEventListener('visibilitychange',sync);motion.removeEventListener('change',sync);};
 })();
+
 </script>
 </body>
 </html>
