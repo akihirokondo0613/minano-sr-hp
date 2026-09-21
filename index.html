@@ -33,10 +33,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preload" as="image" type="image/avif"
-      href="assets/photos/hero-main-800.avif"
-      imagesrcset="assets/photos/hero-main-720.avif 720w, assets/photos/hero-main-800.avif 800w, assets/photos/hero-main-1200.avif 1200w, assets/photos/hero-main-1600.avif 1600w"
-      imagesizes="100vw" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" href="assets/illustrations/hero-consult-720.avif" imagesrcset="assets/illustrations/hero-consult-720.avif 720w, assets/illustrations/hero-consult-1200.avif 1200w, assets/illustrations/hero-consult-1600.avif 1600w" imagesizes="(min-width:1000px) 45vw, (min-width:701px) 520px, 90vw" fetchpriority="high">
 <style id="critical-home">
 /* ============================================================
    skin-v2.css — みなの社労士HP 共通デザインCSS「稜線（りょうせん）」
@@ -519,24 +516,7 @@ main > section:not(.hero) {
 </style>
 
 <style id="home-hero-legibility">
-/* 写真全体を白くせず、文字の位置を中心に明るさを残す。 */
-.hero-veil{background:linear-gradient(100deg,rgba(249,250,247,.60) 0%,rgba(249,250,247,.48) 35%,rgba(249,250,247,.18) 65%,rgba(249,250,247,0) 88%);mask-image:linear-gradient(#000 0%,#000 43%,rgba(0,0,0,.65) 60%,transparent 82%)}
-.hero-h1 strong{color:var(--sugi-9)}
-.hero-sub{font-weight:500}
-@media(min-width:701px){.hero-sub-link{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.94)}}
-@media(max-width:700px){
-  /* 文字が重なる上側は明るく保ち、下側の建物・水面は写真本来の色を見せる。 */
-  .hero-veil{background:linear-gradient(to bottom,rgba(249,250,247,.56) 0%,rgba(249,250,247,.50) 38%,rgba(249,250,247,.34) 56%,rgba(249,250,247,0) 78%);mask-image:none}
-  /* 写真の上では下線だけだと読めず、白マーカーだと角ばった箱が貼りついて見える。
-     すぐ下の .trust-item と同じ白い丸チップに寄せて、副ボタンとして成立させる。 */
-  .hero-sub-link{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 18px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.94);color:var(--sugi);font-size:13.5px;font-weight:400;letter-spacing:.05em;text-shadow:none}
-  /* 340px以下では横に並びきらずチップ内で「社労士と／は？」と割れる。
-     並びきる幅では従来どおり1行のまま、入らないときだけ下へ落とす。 */
-  .hero-btns{flex-wrap:wrap}
-}
-@media(min-width:641px) and (max-width:900px){
-  .home-plan-card:last-child{grid-column:1 / -1;width:calc(50% - 8px);justify-self:center}
-}
+@media(min-width:641px) and (max-width:900px){.home-plan-card:last-child{grid-column:1 / -1;width:calc(50% - 8px);justify-self:center}}
 </style>
 <style id="home-startup-offer-rail">
 .home-startup-offer{background:var(--yuki);padding:clamp(18px,2.6vw,30px) 0 clamp(24px,3.5vw,42px)}
@@ -922,6 +902,63 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
   .aa-pop{inset:auto 14px calc(max(14px, env(safe-area-inset-bottom) + 12px) + 112px) 14px;width:auto}
 }
 </style>
+
+<style id="home-illustration-hero">
+/* 最初から読める文章と、別レイヤーで動く相談風景。画像待ちで操作を隠さない。 */
+#top.hero{background:#fff;min-height:0;height:auto;overflow:clip}
+#top .hero-stage{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:24px 12px;align-items:center;max-width:1360px;width:100%;margin:auto;padding:clamp(116px,12vw,156px) clamp(24px,4.5vw,64px) 36px;background:#fff!important;--hero-progress:0}
+#top .hero-overlay{grid-column:1;grid-row:1;padding:0;min-width:0;max-width:none;z-index:2;align-items:flex-start}
+#top .hero-h1{width:100%;min-width:0;max-width:100%;font-size:clamp(29px,2.75vw,40px);line-height:1.6;letter-spacing:.01em}
+#top .hero-h1 .nw{display:inline-block}
+#top .hero-h1 strong{color:var(--sugi-9)}
+#top .hero-sub{font-size:14px;font-weight:500;line-height:2.05;max-width:100%;margin-top:22px}
+#top .hero-btns{gap:16px;margin-top:28px;flex-wrap:wrap;justify-content:flex-start}
+#top .hero-btns .btn-primary{flex:initial;width:auto;font-size:15px;padding:17px 30px}
+#top .hero-sub-link{display:inline-flex;align-items:center;min-height:44px;padding:0 2px;border:0;border-bottom:1px solid var(--moegi);border-radius:0;background:none;font-size:13px}
+#top .hero-scene{grid-column:2;grid-row:1;position:relative;min-width:0;isolation:isolate;padding-top:40px;align-self:center}
+#top .hero-media{display:block;position:relative;width:100%;aspect-ratio:4/3}
+#top .hero-media img{display:block;width:100%;height:100%;object-fit:contain}
+.hero-schedule,.hero-papers{position:absolute;width:17%;height:auto;z-index:1;pointer-events:none;transform-origin:center}
+.hero-schedule{right:12%;top:0;transform:translateY(calc(var(--hero-progress)*20px)) rotate(calc(-7deg + var(--hero-progress)*7deg))}
+.hero-papers{left:13%;top:4%;transform:translateY(calc(var(--hero-progress)*30px)) rotate(calc(9deg - var(--hero-progress)*9deg))}
+.hero-paper-back{transform-origin:center;transform:rotate(calc(-10deg + var(--hero-progress)*10deg))}
+.hero-check{stroke-dasharray:34;stroke-dashoffset:calc(17 - var(--hero-progress)*17)}
+#top .hero-updates{grid-column:1 / -1;grid-row:2;border-top:1px solid var(--line);padding-top:22px;margin-top:14px;min-width:0}
+#top .hero-spots{grid-template-columns:repeat(2,minmax(0,1fr));width:100%;max-width:100%;margin-top:0;gap:28px}
+#top .hero-spot{box-shadow:none;border:0;border-radius:0;padding:0 0 8px;background:none;max-inline-size:none;text-align:left;transform:none}
+#top .hero-spot+ .hero-spot{border-left:1px solid var(--line);padding-left:28px}
+#top .hero-spot-badge{margin-inline:0}
+#top .hero-trust{margin-top:14px;gap:20px}
+#top .trust-item{padding:0;border:0;background:none;font-size:11.5px}
+#top .hero-spot-note{font-size:11.5px}
+@media(max-width:999px){
+ #top .hero-stage{grid-template-columns:minmax(0,1fr);padding-top:112px;gap:18px}
+ #top .hero-overlay{align-items:center;text-align:center}
+ #top .hero-h1{font-size:clamp(28px,4vw,38px)}
+ #top .hero-btns{justify-content:center}
+ #top .hero-scene{grid-column:1;grid-row:2;width:min(100%,520px);justify-self:center;padding-top:26px}
+ #top .hero-updates{grid-row:3;margin-top:0}
+}
+@media(max-width:700px){
+ #top .hero-stage{padding:96px 20px 24px;gap:20px}
+ #top .why-label.hero-label{font-size:11px;margin-bottom:17px;padding:7px 13px}
+ #top .hero-h1{font-size:clamp(23px,5.5vw,32px);line-height:1.55}
+ #top .hero-sub{font-size:13px;line-height:1.95;margin-top:16px}
+ #top .hero-btns{margin-top:20px;gap:10px 20px}
+ #top .hero-btns .btn-primary{padding:15px 28px;font-size:14px}
+ #top .hero-scene{width:min(90%,380px);padding-top:22px}
+ #top .hero-spots{grid-template-columns:minmax(0,1fr);gap:16px}
+ #top .hero-spot+ .hero-spot{border-left:0;border-top:1px solid var(--line);padding:16px 0 0}
+ #top .hero-trust{display:none}
+ .hero-schedule,.hero-papers{transform:none}
+ .hero-paper-back{transform:none}
+ .hero-check{stroke-dashoffset:0}
+}
+@media(prefers-reduced-motion:reduce){
+ .hero-schedule,.hero-papers,.hero-paper-back{transform:none}
+ .hero-check{stroke-dashoffset:0}
+}
+</style>
 </head>
 <body data-nav="B">
 <a class="skip-link" href="#main">本文へスキップ</a>
@@ -967,48 +1004,16 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 ════════════════════════════════ -->
 <main id="main">
 <section class="hero" id="top">
-  <span class="hero-eng-cap" aria-hidden="true">LABOR &amp; SOCIAL SECURITY ATTORNEY</span>
-  <div class="hero-ridge" aria-hidden="true">
-    <div class="mt-sky">
-      <svg viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,80 L0,52 C 60,48 110,42 170,40 C 230,38 270,30 330,32 C 390,34 430,22 490,24 C 550,26 590,18 650,22 C 710,26 760,32 820,30 C 880,28 920,22 980,26 C 1040,30 1090,36 1150,32 L1200,30 L1200,80 Z" fill="currentColor"></path>
-      </svg>
-    </div>
-    <div class="mt-back">
-      <svg viewBox="0 0 1200 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,90 L0,58 C 50,54 100,46 150,42 C 200,38 240,28 290,30 C 340,32 380,18 440,20 C 500,22 540,12 600,16 C 660,20 700,28 760,32 C 820,36 870,22 930,26 C 990,30 1040,40 1100,36 C 1150,33 1180,38 1200,36 L1200,90 Z" fill="currentColor"></path>
-      </svg>
-    </div>
-    <div class="mt">
-      <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,120 L0,82 C 50,76 100,62 150,56 C 200,50 240,32 290,30 C 340,28 380,12 440,16 C 500,20 540,4 600,8 C 660,12 700,30 760,38 C 820,46 870,24 930,28 C 990,32 1040,52 1100,48 C 1150,45 1180,52 1200,50 L1200,120 Z" fill="currentColor"></path>
-      </svg>
-    </div>
-    <div class="sea">
-      <svg viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,60 L0,28 C 80,20 160,36 240,28 C 320,20 400,36 480,28 C 560,20 640,36 720,28 C 800,20 880,36 960,28 C 1040,20 1120,36 1200,28 L1200,60 Z" fill="currentColor"></path>
-      </svg>
-    </div>
-    <div class="sea-front">
-      <svg viewBox="0 0 1200 36" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,36 L0,18 C 60,12 120,22 180,18 C 240,14 300,22 360,18 C 420,14 480,22 540,18 C 600,14 660,22 720,18 C 780,14 840,22 900,18 C 960,14 1020,22 1080,18 C 1140,14 1180,22 1200,18 L1200,36 Z" fill="currentColor"></path>
-      </svg>
-    </div>
-  </div>
   <div class="hero-stage">
-    <picture class="hero-media" aria-hidden="true">
-      <source type="image/avif"
-              srcset="assets/photos/hero-main-720.avif 720w, assets/photos/hero-main-800.avif 800w, assets/photos/hero-main-1200.avif 1200w, assets/photos/hero-main-1600.avif 1600w"
-              sizes="100vw">
-      <source type="image/webp"
-              srcset="assets/photos/hero-main-720.webp 720w, assets/photos/hero-main-800.webp 800w, assets/photos/hero-main-1200.webp 1200w, assets/photos/hero-main-1600.webp 1600w"
-              sizes="100vw">
-      <img src="assets/photos/hero-main-1200.webp"
-           srcset="assets/photos/hero-main-720.webp 720w, assets/photos/hero-main-800.webp 800w, assets/photos/hero-main-1200.webp 1200w, assets/photos/hero-main-1600.webp 1600w"
-           sizes="100vw" width="1600" height="1424" alt=""
-           fetchpriority="high" decoding="sync">
+    <div class="hero-scene" aria-hidden="true">
+      <svg class="hero-schedule" viewBox="0 0 100 105" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="12" y="15" width="76" height="76" rx="7" fill="#fff" stroke="#123f30" stroke-width="3"/><path d="M12 35H88V22Q88 15 81 15H19Q12 15 12 22Z" fill="#b6ccb8"/><path d="M12 35H88M32 8V23M68 8V23" stroke="#123f30" stroke-width="3" stroke-linecap="round"/><path d="M28 51H36M47 51H55M66 51H74M28 67H36M47 67H55" stroke="#b6ccb8" stroke-width="4" stroke-linecap="round"/><path class="hero-check" d="M62 69L68 75L80 60" stroke="#2e9e63" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg class="hero-papers" viewBox="0 0 105 110" fill="none" xmlns="http://www.w3.org/2000/svg"><rect class="hero-paper-back" x="17" y="13" width="60" height="78" rx="4" fill="#f8c950" stroke="#123f30" stroke-width="3"/><rect x="28" y="20" width="60" height="78" rx="4" fill="#fff" stroke="#123f30" stroke-width="3"/><path d="M41 40H73M41 53H73M41 66H63M41 79H56" stroke="#9fbda5" stroke-width="4" stroke-linecap="round"/></svg>
+    <picture class="hero-media">
+      <source type="image/avif" srcset="assets/illustrations/hero-consult-720.avif 720w, assets/illustrations/hero-consult-1200.avif 1200w, assets/illustrations/hero-consult-1600.avif 1600w" sizes="(min-width:1000px) 45vw, (min-width:701px) 520px, 90vw">
+      <source type="image/webp" srcset="assets/illustrations/hero-consult-720.webp 720w, assets/illustrations/hero-consult-1200.webp 1200w, assets/illustrations/hero-consult-1600.webp 1600w" sizes="(min-width:1000px) 45vw, (min-width:701px) 520px, 90vw">
+      <img src="assets/illustrations/hero-consult-1200.webp" width="1600" height="1200" alt="" fetchpriority="high" decoding="sync">
     </picture>
-    <div class="hero-veil" aria-hidden="true"></div>
+    </div>
     <div class="hero-overlay">
       <div class="why-label hero-label">富山の社会保険労務士事務所</div>
       <h1 class="hero-h1"><span class="nw">手続きも、</span><wbr><span class="nw">給与計算も、</span><wbr><span class="nw">助成金も。</span><br><strong><span class="nw">会社の労務を、</span><wbr><span class="nw">まるごと任せられる。</span></strong></h1>
@@ -1017,6 +1022,8 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
         <a href="uploads/contact.html" class="btn-primary">無料で相談する</a>
         <a href="infographic.html" class="hero-sub-link">社労士とは？ →</a>
       </div>
+    </div>
+    <div class="hero-updates">
       <!-- スポット業務カード：時期が来たら中身を差し替えるか、このブロックごと消す。
            次の見直し 2026-10-01（令和8年度の業務改善助成金の締切見込み 9/30 の翌日）。
            求人票の無料点検は広告の着地ページ（uploads/lp-kyujinhyo.html）への入口。
@@ -1733,5 +1740,20 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
 <style id="brushup-2026">/* skin-v2.css に統合済み */</style>
 <script id="stg-highlight">/* CASE段階ハイライトは 2026-07 にユーザー判断で削除（復活させないこと） */</script>
 <script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/"}' async src="//gc.zgo.at/count.js"></script>
+
+<script>
+/* SPAで再訪しても一組だけ登録し、現在の要素をその都度取得する。 */
+(function(){
+ if(window.__mnHeroMotionCleanup)window.__mnHeroMotionCleanup();
+ var frame=0,motion=matchMedia('(prefers-reduced-motion: reduce)'),desktop=matchMedia('(min-width:701px)');
+ function draw(){frame=0;var stage=document.querySelector('#top .hero-stage');if(!stage)return;
+  var progress=0;if(!motion.matches&&desktop.matches){var rect=stage.getBoundingClientRect();progress=Math.max(0,Math.min(1,-rect.top/Math.min(460,rect.height)));}
+  stage.style.setProperty('--hero-progress',progress.toFixed(3));
+ }
+ function update(){if(!frame)frame=requestAnimationFrame(draw);}
+ window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update,{passive:true});motion.addEventListener('change',update);draw();
+ window.__mnHeroMotionCleanup=function(){window.removeEventListener('scroll',update);window.removeEventListener('resize',update);motion.removeEventListener('change',update);cancelAnimationFrame(frame);};
+})();
+</script>
 </body>
 </html>
