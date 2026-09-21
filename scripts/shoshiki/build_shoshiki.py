@@ -164,6 +164,9 @@ CSS = """
 .qk::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--moegi);flex-shrink:0}
 .qk:hover{border-color:var(--moegi-t);transform:translateY(-2px);color:var(--sugi)}
 .qk.xl::before{background:#C9A227}
+.qk{max-width:100%}
+.qk-label{min-width:0;overflow-wrap:break-word}
+.qk-label:has(wbr){word-break:keep-all}
 .qk.xl::after{content:'Excel';font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.04em;color:var(--ink4)}
 .sh-scenes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:12px;align-items:start}
 .sh-scene{min-width:0;background:var(--shiro);border:1px solid var(--line);border-radius:14px;padding:14px 16px 10px;display:flex;flex-direction:column;gap:10px}
@@ -197,12 +200,17 @@ CSS = """
 """
 
 
+def scene_label(title):
+    """長い書式名は意味の区切りで折り返す。"""
+    return e(title).replace("に関する", "に関する<wbr>")
+
+
 def scene_block():
     out = ['<div class="sh-scenes">']
     for icon, name, lead, nos in SCENES:
         fs = [BY_NO[n] for n in nos if n in BY_NO]
         links = "".join(
-            f'<a class="qk{" xl" if f.get("kind") == "xlsx" else ""}"{link_attrs(f)}>{e(f["title"])}</a>'
+            f'<a class="qk{" xl" if f.get("kind") == "xlsx" else ""}"{link_attrs(f)}><span class="qk-label">{scene_label(f["title"])}</span></a>'
             for f in fs
         )
         out.append(
@@ -396,7 +404,13 @@ def build_index():
         '<a href="portal.html" onclick="closeNav()">書式・窓口</a>',
     )
     # portal.html 先頭の入口カード（社内書式／公式窓口の2択）はこのページには不要。CSSも fs-portal ごと差し替わるので必ず外す
-    s = re.sub(r'\n  <!-- 入口：社内書式か公式窓口かを選ぶ -->\n  <section class="hub".*?</section>\n', '\n', s, count=1, flags=re.S)
+    s = re.sub(
+        r'\n  <!-- 入口：社内書式か公式窓口かを選ぶ -->\n  <section class="hub".*?</section>\n',
+        "\n",
+        s,
+        count=1,
+        flags=re.S,
+    )
     # hero
     s = re.sub(
         r'<nav class="breadcrumb">.*?</nav>',

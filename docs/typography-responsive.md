@@ -20,7 +20,7 @@
 - 長い文節自体をnowrapにしない。文節の実幅を測ってから採用する。
 - 句読点の孤立には `hanging-punctuation:allow-end`、末尾一文字の泣き別れには `text-wrap:pretty` を先に検討する。`balance` は孤立防止の代わりではない。
 - 本文（`p, li, dd, dt, figcaption, blockquote, summary`）と見出し（`h1`〜`h5`）には `word-break: auto-phrase` を当てる。これが無いと文節の途中で切れ、末尾に1〜2文字だけ残る行が出る。3系統（`skin-v2.css` / `wave-skin.css` / `uploads/service.css`）すべてに同じ規則を置く。
-- **`auto-phrase` には必ず逃げ道を用意する。** 文節が器より長いと折り返せずに溢れる。`overflow-wrap: break-word` を併記し、本文中のリンク（`p a, li a, dd a`）は `word-break: normal` に戻す。出典名・制度名は一つの長い文節になりやすく、320pxのブログ本文で20pxはみ出した実測がある。
+- **`auto-phrase` には必ず逃げ道を用意する。** 文節が器より長いと折り返せずに溢れる。`overflow-wrap: break-word` を併記し、本文中のリンク（`p a, li a, dd a`）は `word-break: normal` に戻す。出典名・制度名は一つの長い文節になりやすく、320pxのブログ本文で20pxはみ出した実測がある。文節印を持つ本文リンクは例外として `keep-all; overflow-wrap: break-word` を両エンジンへ適用する。生成器で用語内部とカタカナ語を保護し、リンク名の意味の切れ目で折る。クラス付きボタン・電話・メールはこの処理から除外する。
 - **表のセル（`td, th`）は `auto-phrase` の対象外にする。** 列が狭いと文節が入りきらず、折り返せずにセルからはみ出す（`uploads/case-*.html` の360px幅で23〜62pxのはみ出しを実測）。
 - 連絡先の英数字（メール・電話・URL）は `word-break: keep-all; overflow-wrap: anywhere` で行中の分断を防ぐ。
 - **`word-break: auto-phrase` も `text-wrap: pretty` も WebKit では効かない**（Playwright WebKitで `word-break` は `normal`、`text-wrap` は `wrap` に解決される）。CSSだけで直ったと説明しない。
@@ -30,7 +30,7 @@
   - **逃げ道は `overflow-wrap: break-word`。** `anywhere` は min-content 幅を1文字まで下げるので、flex/grid の列がその幅まで潰れる（ブログの `li` で、右の説明が32pxまで縮んで2文字ずつ折れた）。
   - **印は文字の直後にだけ置く。** 開始タグの手前までは戻してよい（`…、<wbr><strong>…` にしないと `<strong>` が1行に居座って器から出る）が、**閉じタグの直後には置かない**。`<wbr>` は要素なので、flex/grid の箱の直下だと1個のアイテムとして数えられ、列がずれる。
   - **人が置いた `<wbr>` は剥がさない。** 生成器が剥がすのは「文字と文字のあいだ」にある印だけ。`<span class="nw">…</span><wbr><span class="nw">…</span>` のような手置きの印を消すと `test-home-hero.cjs` が落ちる。
-  - **用語（`terms.js`）は前後の境目も外す。** 実行時に `<span class="term">` で包まれるので、語の直前・直後の `<wbr>` が独立したアイテムになる。
+  - **用語（`terms.js`）は前後の境目も外す。** 実行時に `<span class="term">` で包まれるので、語の直前・直後の `<wbr>` が独立したアイテムになる。ただし、`terms.js` が除外している本文リンク内は用語の前後で折ってよい。
   - **漢字と漢字のあいだでは折らない。** BudouXは統計モデルで、「中／小企業」「人／材開発支援助成金」「随時／改定」のように熟語や制度名を割る。全78ページで356か所あり、ほぼ全部が誤りだった。
   - **禁則を自前で外す。** `<wbr>` は `line-break: strict` より強い明示の切れ目なので、「合わせる｜：」のように行頭に置けない字の前へ入れないよう生成器で弾く。
   - **10文字を超える塊は割る。** 器に収まらないと逃げ道が禁則を無視して折る（句点だけが次の行へ落ちる）か、折れずに溢れる。割る場所が無ければ熟語の中でも折る（「雇用関係助成金申請サポート」は、そうしないと `services.html` の320pxで62pxはみ出した）。
@@ -48,6 +48,10 @@
 - 横スクロールUIは、続きがあることを明確に示せない限り採用しない。
 - 見出しの固定 `<br>`、nowrap、`clamp()`、グリッド列数はブレークポイント前後で確認する。
 - ホバーやトランジションでは `padding`、`width`、`margin` を動かさず、`transform` と `opacity` を使う。既存の所要時間とイージングを優先する。
+
+短いリンクを含む導入文は、必要に応じてリンクを `inline-block; max-width:100%` にする。長いリンク全体の `nowrap` は使わない。強調見出しの `.phrase-unit` は短い意味のまとまりに限定し、境界の `wbr` とともに使う。
+
+生成器を変更したときは `node scripts/test-prose-link-phrases.mjs` で実例・文字保持・冪等性・除外対象を確認する。
 
 ## 検証の順序
 
