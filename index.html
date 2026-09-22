@@ -1121,6 +1121,9 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
  #top .hero-actor{height:var(--wide-height);bottom:var(--wide-bottom,0)}
  .hero-town{top:0;bottom:auto;height:clamp(250px,18vw,360px)}
 }
+/* 狭い画面でも、スクロール時に人物の上端がCTAへ接しないよう間隔を確保する。 */
+@media(min-width:701px) and (max-width:1100px){#top .hero-scene{margin-top:24px}}
+@media(max-width:700px){#top .hero-scene{margin-top:16px}}
 </style>
 </head>
 <body data-nav="B">
