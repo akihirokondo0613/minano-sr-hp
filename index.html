@@ -1102,6 +1102,16 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
  #top .hero-overlay{padding-top:90px}
  #top .hero-sub{margin-top:18px}
 }
+
+/* 見出しの下に残る余白を抑え、狭い画面でも業務名を一行で読ませる。 */
+@media(min-width:1101px){
+ #top .hero-stage{grid-template-rows:min(92svh,70vw) auto}
+}
+@media(max-width:540px){
+ #top .hero-h1 .hero-services{display:inline;white-space:nowrap;font-size:clamp(19px,6.4vw,26px);line-height:1.45;letter-spacing:-.035em}
+ #top .hero-h1 .hero-services:last-of-type{display:inline}
+ #top .hero-h1 wbr{display:none}
+}
 </style>
 </head>
 <body data-nav="B">
