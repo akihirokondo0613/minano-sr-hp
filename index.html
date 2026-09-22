@@ -323,15 +323,6 @@ html.nav-menu-open .floating { opacity: 0 !important; pointer-events: none !impo
 .hero-eng-cap { position: absolute; z-index: 3; top: clamp(88px, 12vh, 128px); right: clamp(20px, 4vw, 48px); font-family: var(--mono); font-size: 10px; letter-spacing: .34em; color: rgba(255,255,255,.75); text-shadow: 0 1px 10px rgba(30,39,33,.45); }
 .hero-scroll { display: none; }
 
-/* 中間幅：大画面用の余白を残しすぎず、見出しを主役として見せる。 */
-@media (min-width: 1024px) and (max-width: 1399px) {
-  .hero { min-height: max(560px, calc(92svh - var(--hs-h))); }
-  .hero-overlay { padding-top: clamp(82px, 11vh, 122px); padding-bottom: clamp(68px, 9vh, 104px); }
-  .hero-h1 { font-size: clamp(40px, 5.2vw, 64px); }
-  .hero-sub { margin-top: clamp(14px, 1.8vw, 22px); }
-  .hero-btns { margin-top: clamp(22px, 2.6vw, 32px); }
-}
-
 
 /* 稜線（写真の裾は深杉の山なみ→最前面の1枚だけ雪白で次の帯へつなぐ） */
 .hero-ridge { position: absolute; left: 0; right: 0; bottom: -1px; z-index: 2; pointer-events: none; }
