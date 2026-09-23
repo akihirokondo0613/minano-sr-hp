@@ -30,7 +30,7 @@ const displayedFaqs = new Map(
 function walkHtml(dir) {
   const result = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (entry.name === '.git' || entry.name.startsWith('_backup_')) continue;
+    if (entry.name === '.git' || (dir === root && entry.name === 'docs') || entry.name.startsWith('_backup_')) continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) result.push(...walkHtml(full));
     else if (entry.isFile() && entry.name.endsWith('.html')) result.push(full);

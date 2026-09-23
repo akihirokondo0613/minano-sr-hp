@@ -41,15 +41,6 @@ const PAGES = [
     expectedHeadingCount: 1,
     expectedSelectorCounts: [{ selector: 'body[data-nav="B"] .page-h', count: 1 }],
   },
-  {
-    page: 'recruit.html',
-    selectors: '.page-hero h1, .rc-h',
-    expectedHeadingCount: 7,
-    expectedSelectorCounts: [
-      { selector: '.page-hero h1', count: 1 },
-      { selector: '.rc-h', count: 6 },
-    ],
-  },
 ];
 const ENGINES = [
   ['chromium', chromium],

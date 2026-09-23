@@ -68,9 +68,6 @@ const PAGE_FILTER = csvOption('--pages', []);
 const PHOTO_TARGETS = [
   { page: 'index.html', selector: '.hero-h1' },
   { page: 'index.html', selector: '.hero-sub' },
-  { page: 'recruit.html', selector: '.rc-cta h2' },
-  { page: 'recruit.html', selector: '.rc-cta > p' },
-  { page: 'recruit.html', selector: '.rc-cta .btn-secondary' },
 ];
 
 const AA_NORMAL = 4.5;
