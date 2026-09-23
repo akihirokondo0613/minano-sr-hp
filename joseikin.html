@@ -373,6 +373,15 @@
 @media(max-width:900px){.jk-hero-inner{grid-template-columns:minmax(0,1fr) 220px}.jk-hero-txt h1{font-size:clamp(26px,3.7vw,36px)}}
 @media(max-width:760px){.jk-hero-inner{grid-template-columns:minmax(0,1fr)}.jk-hero-ill{width:min(64vw,280px)}.jk-section-nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}.jk-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.page-hero{border-radius:0 0 24px 24px}.jk-hero-txt .lead{font-size:14px}.jk-now-card{grid-template-columns:minmax(0,1fr);gap:10px}.jk-now-card p,.jk-now-card .arr,.jk-now-card h3,.jk-now-card .jk-now-tag{grid-column:1;grid-row:auto}.jk-guides{grid-template-columns:minmax(0,1fr)}.jk-steps{grid-template-columns:minmax(0,1fr);gap:0}.jk-steps li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:4px 14px}.jk-steps li::before{grid-column:1;grid-row:1/span 2}.jk-steps b,.jk-steps span{grid-column:2}.jk-section-nav a{font-size:13px}.jg-fit{grid-template-columns:minmax(0,1fr)}.jg-fit .jg-ill{grid-column:1;grid-row:auto;width:min(100%,260px);margin:12px auto}.jg-fit ul{grid-column:1}}
+@media(max-width:640px){
+  /* 共通CSSの子要素へのauto余白で、番号と見出しが離れないようにする。 */
+  .jk-sec-head{text-align:left}
+  .jk-sec-head > *{margin-inline:0}
+  .jk-chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 14px;text-align:left}
+  .jk-chip{align-items:flex-start;min-width:0}
+  .jk-chip::before{margin-top:.55em}
+}
+@media(max-width:360px){.jk-chips{grid-template-columns:minmax(0,1fr)}}
 @media(prefers-reduced-motion:reduce){.jk-section-nav a span{transition:none}.jk-section-nav a:hover span{transform:none}}
 </style>
 <body>
