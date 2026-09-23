@@ -920,9 +920,10 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 .actor-sewing{left:2%;bottom:17svh;width:min(12vw,18svh);--delay:.36s;--drift:-44px}
 .actor-mechanic{right:0%;bottom:1svh;--delay:.78s;z-index:2}
 #top .actor-builder .actor-sprite,#top .actor-mechanic .actor-sprite{object-position:100% 0}
-/* 登場は一度で終了する。待機中に動き続けるアニメーションは使わない。 */
+/* 登場は一度だけ。人物エリア上端で切らず、画面上方から降ろす。 */
+#top .hero-entering .hero-scene{overflow:visible}
 .hero-entering .hero-media{animation:person-arrive 1.25s cubic-bezier(.2,.75,.3,1) var(--delay) both}
-@keyframes person-arrive{0%{transform:translateY(-45vh);opacity:0}12%{opacity:1}72%{transform:translateY(9px)}88%{transform:translateY(-4px)}100%{transform:translateY(0);opacity:1}}
+@keyframes person-arrive{0%{transform:translateY(calc(-100svh - 100%));opacity:0}12%{opacity:1}72%{transform:translateY(9px)}88%{transform:translateY(-4px)}100%{transform:translateY(0);opacity:1}}
 #top .hero-updates{grid-column:1;grid-row:2;width:min(1200px,calc(100% - 48px));justify-self:center;box-sizing:border-box;border-top:1px solid var(--line);padding-top:22px;margin-top:0;min-width:0}
 #top .hero-spots{grid-template-columns:repeat(2,minmax(0,1fr));width:100%;max-width:100%;margin-top:0;gap:28px}
 #top .hero-spot{box-shadow:none;border:0;border-radius:0;padding:0 0 8px;background:none;max-inline-size:none;text-align:left;transform:none}
@@ -979,11 +980,13 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 .actor-mechanic{--person-height:44svh;--person-left:87%;--person-layer:4}
 .actor-wave,.actor-mechanic{left:auto;right:0}
 .actor-face{position:absolute;display:block;opacity:0;pointer-events:none;transition:opacity .18s ease}
-#top .hero-settled .actor-face{opacity:1}
+#top .hero-settled .actor-face{opacity:1;animation:actor-expression 8s linear infinite}
+/* 約4秒ごとに元の表情と交互に切り替える。 */
+@keyframes actor-expression{0%,47.75%,100%{opacity:1}50%,97.75%{opacity:0}}
 @media(min-width:1101px) and (max-height:800px){#top .hero-overlay{padding-top:88px}#top .hero-h1{font-size:32px}#top .hero-sub{font-size:12px;margin-top:8px}#top .hero-btns{margin-top:10px}.hero-town{height:44svh;bottom:10svh}}
 @media(max-width:1100px){#top .hero-overlay{width:100%;padding:106px 24px 12px}#top .hero-scene{height:55vw;min-height:300px}.hero-town{height:43vw;bottom:10vw}.hero-actor{height:var(--tablet-height,32vw);bottom:var(--tablet-bottom,0)}.actor-cafe{--tablet-height:42vw}.actor-builder{--tablet-height:38vw;--tablet-bottom:8vw}.actor-garden{--tablet-height:28vw}.actor-seated{--tablet-height:29vw}.actor-delivery{--tablet-height:30vw;--tablet-bottom:7vw}.actor-kneel{--tablet-height:28vw}.actor-florist{--tablet-height:34vw;--tablet-bottom:8vw}.actor-baker{--tablet-height:34vw}.actor-wave{--tablet-height:47vw;--tablet-bottom:5vw}.actor-mechanic{--tablet-height:36vw}}
 @media(max-width:700px){#top .hero-overlay{padding:94px 20px 14px}#top .hero-h1{font-size:clamp(23px,5.5vw,32px)}#top .hero-scene{height:80vw;min-height:260px;max-height:none}.hero-town{height:48vw;bottom:24vw}.actor-builder,.actor-delivery,.actor-florist,.actor-mechanic{display:none}.actor-cafe{--person-left:0%;--tablet-height:49vw;--tablet-bottom:19vw}.actor-wave{--person-left:61%;--tablet-height:60vw;--tablet-bottom:17vw}.actor-garden{--person-left:0%;--tablet-height:35vw}.actor-seated{--person-left:26%;--tablet-height:38vw}.actor-kneel{--person-left:52%;--tablet-height:35vw}.actor-baker{left:auto;right:0;--tablet-height:40vw;--tablet-bottom:0}}
-@media(prefers-reduced-motion:reduce){.actor-face{transition:none}}
+@media(prefers-reduced-motion:reduce){#top .hero-settled .actor-face{transition:none;animation:none}}
 
 
 /* 文字と人物を同じ画面比率で拡縮し、縦長画面でも顔の位置関係を保つ。 */
@@ -1919,7 +1922,7 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
 <script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/"}' async src="//gc.zgo.at/count.js"></script>
 
 <script>
-/* 初回だけ登場し、その後はスクロール操作にだけ反応する。SPA再訪では繰り返さない。 */
+/* 登場は初回だけ。着地後は表情を切り替え、SPA再訪では落下を繰り返さない。 */
 (function(){
  if(window.__mnHeroMotionCleanup)window.__mnHeroMotionCleanup();
  var stage=document.querySelector('#top .hero-stage');if(!stage)return;
