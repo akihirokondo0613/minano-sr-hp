@@ -312,14 +312,16 @@ export function discoverFaqPages(root) {
     ),
   });
 
-  const recruitSource = read(root, RECRUIT_FAQ_PATH);
-  pages.push({
-    relativePath: RECRUIT_FAQ_PATH,
-    pairs: withFileContext(
-      RECRUIT_FAQ_PATH,
-      () => extractRecruitFaq(recruitSource, RECRUIT_FAQ_PATH),
-    ),
-  });
+  if (fs.existsSync(path.join(root, RECRUIT_FAQ_PATH))) {
+    const recruitSource = read(root, RECRUIT_FAQ_PATH);
+    pages.push({
+      relativePath: RECRUIT_FAQ_PATH,
+      pairs: withFileContext(
+        RECRUIT_FAQ_PATH,
+        () => extractRecruitFaq(recruitSource, RECRUIT_FAQ_PATH),
+      ),
+    });
+  }
 
   const blogDir = path.join(root, 'blog');
   const blogFiles = fs.readdirSync(blogDir, { withFileTypes: true })

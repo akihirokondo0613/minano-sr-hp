@@ -66,6 +66,7 @@ async function collectHtml(dir) {
     if (entry.name.startsWith('.') || entry.name.startsWith('_backup_')) continue;
     const full = join(dir, entry.name);
     if (entry.isDirectory()) {
+      if (relative(root, full) === 'docs') continue;
       if (relative(root, full).split('/').length <= 2) await collectHtml(full);
     } else if (entry.name.endsWith('.html')) {
       const rel = relative(root, full);
