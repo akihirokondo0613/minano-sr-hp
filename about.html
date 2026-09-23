@@ -104,7 +104,7 @@
 .flow-zoom-btn { flex: none; font: inherit; font-size: 13.5px; font-weight: 700; letter-spacing: .04em; color: var(--sugi); background: var(--shiro); border: 1.5px solid var(--sugi); border-radius: var(--r); padding: 10px 18px; cursor: pointer; transition: background .3s, color .3s; }
 .flow-zoom-btn:hover { background: var(--sugi); color: #fff; }
 .flow-zoom-btn::before { content: "⤢ "; }
-.flow-modal { position: fixed; inset: 0; width: var(--flow-view-w, 100vw); height: var(--flow-view-h, 100dvh); z-index: 1200; background: #092016; color: #fff; overflow: hidden; overscroll-behavior: none; }
+.flow-modal { position: fixed; inset: 0; width: var(--flow-view-w, 100vw); height: var(--flow-view-h, 100dvh); z-index: 1200; background: #092016; color: #fff; overflow: hidden; overscroll-behavior: none; touch-action: none; }
 .flow-modal-panel { position: absolute; inset: 0; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
 .flow-modal :focus-visible { outline: 3px solid #f8e78a; outline-offset: -3px; }
 .flow-modal[hidden] { display: none; }
@@ -117,7 +117,7 @@
 .flow-tool-text { width: auto; padding: 0 12px; font-size: 13px; font-weight: 700; letter-spacing: .06em; }
 .flow-tool-close { width: auto; padding: 0 12px; font-size: 13px; white-space: nowrap; }
 .flow-zoom-val { min-width: 3.6em; text-align: center; font-size: 13px; font-variant-numeric: tabular-nums; }
-.flow-modal-body { flex: 1 1 0; min-height: 0; min-width: 0; overflow: auto; overscroll-behavior: contain; touch-action: pan-x pan-y pinch-zoom; -webkit-overflow-scrolling: touch; padding: 12px; background: var(--yuki); cursor: grab; }
+.flow-modal-body { flex: 1 1 0; min-height: 0; min-width: 0; overflow: auto; overscroll-behavior: contain; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-overflow-scrolling: touch; padding: 12px; background: var(--yuki); cursor: grab; }
 .flow-modal-body.is-dragging { cursor: grabbing; user-select: none; }
 .flow-modal-body svg { display: block; width: var(--flow-w, 100%); max-width: none; height: auto; margin: 0 auto; }
 .flow-modal-hint { flex: none; margin: 0; padding: 6px 14px max(6px, env(safe-area-inset-bottom)); font-size: 12px; line-height: 1.5; color: rgba(255,255,255,.85); }
@@ -314,7 +314,7 @@
         <button type="button" class="flow-tool flow-tool-close" id="flow-zoom-close" aria-label="閉じる">× 閉じる</button>
       </div>
       <div class="flow-modal-body" id="flow-modal-body" tabindex="0"></div>
-      <p class="flow-modal-hint">横向きで<wbr>ご覧ください。<wbr>「文字を<wbr>大きく」で<wbr>拡大し、<wbr>図を<wbr>上下・左右に<wbr>動かせます。</p>
+      <p class="flow-modal-hint">2本指で<wbr>拡大・縮小、<wbr>1本指で<wbr>上下・左右に<wbr>動かせます。<wbr>「全体」で<wbr>元の<wbr>大きさに<wbr>戻ります。</p>
       </div>
     </div>
   </div>
@@ -647,17 +647,18 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
   // content-visibilityを持つ節の外へ出し、全画面の基準をビューポートにする。
   var pageBody=document.body, root=document.documentElement;
   pageBody.appendChild(modal);
-  var steps=[1,1.5,2,3,4,6], idx=0, lastFocus=null, saved=null, inertNodes=[], drag=null;
+  var steps=[1,1.5,2,3,4,6], zoom=1, lastFocus=null, saved=null, inertNodes=[], drag=null, pointers=new Map();
   var nativeFullscreen=false, session=0, frame=0, viewport=window.visualViewport;
   function fitScale(){ return Math.max(.01,Math.min((body.clientWidth-24)/2204,(body.clientHeight-24)/1002)); }
   function apply(){
-    var scale=steps[idx]; body.style.setProperty('--flow-w',Math.floor(2204*fitScale()*scale)+'px');
+    var scale=zoom; body.style.setProperty('--flow-w',Math.floor(2204*fitScale()*scale)+'px');
     val.textContent=Math.round(scale*100)+'%';
-    modal.querySelector('[data-zoom="out"]').disabled=idx===0;
-    modal.querySelector('[data-zoom="in"]').disabled=idx===steps.length-1;
+    modal.querySelector('[data-zoom="out"]').disabled=zoom<=1;
+    modal.querySelector('[data-zoom="in"]').disabled=zoom>=6;
   }
   function layout(){
     frame=0; if(modal.hidden) return;
+    endDrag();
     modal.style.setProperty('--flow-view-w',(viewport?viewport.width:innerWidth)+'px');
     modal.style.setProperty('--flow-view-h',(viewport?viewport.height:innerHeight)+'px');
     modal.style.left=(viewport?viewport.offsetLeft:0)+'px';
@@ -685,7 +686,7 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
     root.style.overflow='hidden'; pageBody.style.position='fixed';pageBody.style.top=-saved.y+'px';pageBody.style.width='100%';
     inertNodes=Array.from(pageBody.children).filter(function(el){return el!==modal&&!el.inert;});
     inertNodes.forEach(function(el){el.inert=true;});
-    modal.hidden=false; idx=0;layout();body.scrollLeft=0;body.scrollTop=0;closeBtn.focus({preventScroll:true});
+    modal.hidden=false; zoom=1;layout();body.scrollLeft=0;body.scrollTop=0;closeBtn.focus({preventScroll:true});
     // 非対応・拒否時も同じ横長ビューをブラウザ内いっぱいに表示する。
     if(modal.requestFullscreen&&document.fullscreenEnabled){
       modal.requestFullscreen().then(function(){
@@ -723,17 +724,56 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
   function fullscreen(){if(document.fullscreenElement===modal){nativeFullscreen=true;resize();}else if(nativeFullscreen)close();}
   function history(){close(false);}
   openBtn.addEventListener('click',open);closeBtn.addEventListener('click',function(){close();});
+  // 図だけを拡大し、操作バーとブラウザの表示倍率は動かさない。
+  function point(x,y){
+    var r=body.getBoundingClientRect(), rotated=matchMedia('(max-width: 900px) and (orientation: portrait)').matches;
+    var ratio=(rotated?r.height:r.width)/body.clientWidth;
+    return rotated?{x:(y-r.top)/ratio,y:(r.right-x)/ratio}:{x:(x-r.left)/ratio,y:(y-r.top)/ratio};
+  }
+  function origin(width){return Math.max(12,(body.clientWidth-width)/2);}
+  function anchor(p){
+    // 回転前の幅を使い、図上の同じ点を指の中央に保つ。
+    var width=parseFloat(getComputedStyle(body.firstChild).width);
+    return {x:(body.scrollLeft+p.x-origin(width))/width,y:(body.scrollTop+p.y-12)/width};
+  }
+  function setZoom(value,p,a){
+    zoom=Math.max(1,Math.min(6,value));apply();
+    if(p&&a){var width=parseFloat(getComputedStyle(body.firstChild).width);body.scrollLeft=a.x*width+origin(width)-p.x;body.scrollTop=a.y*width+12-p.y;}
+  }
   modal.querySelectorAll('[data-zoom]').forEach(function(button){button.addEventListener('click',function(){
-    var z=button.getAttribute('data-zoom');
-    if(z==='in')idx=Math.min(idx+1,steps.length-1);else if(z==='out')idx=Math.max(idx-1,0);else if(z==='read'){
-      idx=steps.findIndex(function(step){return 17*fitScale()*step>=14;});if(idx<0)idx=steps.length-1;
-    }else idx=0;
-    apply();if(z==='fit'||z==='read'){body.scrollLeft=0;body.scrollTop=0;}
+    endDrag();var z=button.getAttribute('data-zoom'), value=1;
+    var center={x:body.clientWidth/2,y:body.clientHeight/2}, fixed=anchor(center);
+    if(z==='in')value=steps.find(function(step){return step>zoom+.001;})||6;
+    else if(z==='out')value=steps.slice().reverse().find(function(step){return step<zoom-.001;})||1;
+    else if(z==='read')value=steps.find(function(step){return 17*fitScale()*step>=14;})||6;
+    setZoom(value,center,fixed);if(z==='fit'||z==='read'){body.scrollLeft=0;body.scrollTop=0;}
   });});
-  body.addEventListener('pointerdown',function(e){if(e.pointerType!=='mouse'||e.button!==0)return;drag={x:e.clientX,y:e.clientY,l:body.scrollLeft,t:body.scrollTop};body.classList.add('is-dragging');body.setPointerCapture(e.pointerId);});
-  body.addEventListener('pointermove',function(e){if(!drag)return;var x=e.clientX-drag.x,y=e.clientY-drag.y;var rotated=matchMedia('(max-width: 900px) and (orientation: portrait)').matches;body.scrollLeft=drag.l-(rotated?y:x);body.scrollTop=drag.t-(rotated?-x:y);});
-  function endDrag(){drag=null;body.classList.remove('is-dragging');}
-  body.addEventListener('pointerup',endDrag);body.addEventListener('pointercancel',endDrag);body.addEventListener('lostpointercapture',endDrag);
+  function fingers(){return Array.from(pointers.values()).slice(0,2).map(function(p){return point(p.x,p.y);});}
+  function midpoint(a,b){return {x:(a.x+b.x)/2,y:(a.y+b.y)/2};}
+  function distance(a,b){return Math.max(2,Math.hypot(a.x-b.x,a.y-b.y));}
+  function beginDrag(){
+    var p=fingers();drag=null;
+    if(p.length===2){var center=midpoint(p[0],p[1]);drag={distance:distance(p[0],p[1]),zoom:zoom,anchor:anchor(center)};}
+    else if(p.length===1)drag={x:p[0].x,y:p[0].y,l:body.scrollLeft,t:body.scrollTop};
+    body.classList.toggle('is-dragging',p.length>0);
+  }
+  body.addEventListener('pointerdown',function(e){
+    if(e.pointerType==='mouse'&&e.button!==0)return;
+    e.preventDefault();pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});body.setPointerCapture(e.pointerId);beginDrag();
+  });
+  body.addEventListener('pointermove',function(e){
+    if(!pointers.has(e.pointerId)||!drag)return;
+    e.preventDefault();pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});var p=fingers();
+    if(p.length===2&&drag.distance)setZoom(drag.zoom*distance(p[0],p[1])/drag.distance,midpoint(p[0],p[1]),drag.anchor);
+    else if(p.length===1){body.scrollLeft=drag.l-(p[0].x-drag.x);body.scrollTop=drag.t-(p[0].y-drag.y);}
+  });
+  function release(e){if(pointers.delete(e.pointerId))beginDrag();}
+  function endDrag(){
+    var ids=Array.from(pointers.keys());pointers.clear();drag=null;body.classList.remove('is-dragging');
+    ids.forEach(function(id){if(body.hasPointerCapture(id))body.releasePointerCapture(id);});
+  }
+  body.addEventListener('pointerup',release);body.addEventListener('pointercancel',release);body.addEventListener('lostpointercapture',release);
+  body.addEventListener('wheel',function(e){if(!e.ctrlKey)return;e.preventDefault();endDrag();var p=point(e.clientX,e.clientY);setZoom(zoom*Math.exp(-e.deltaY*.01),p,anchor(p));},{passive:false});
   document.addEventListener('keydown',keydown);document.addEventListener('fullscreenchange',fullscreen);
   window.addEventListener('resize',resize);window.addEventListener('popstate',history);if(viewport){viewport.addEventListener('resize',resize);viewport.addEventListener('scroll',resize);}
   var observer=new MutationObserver(function(){if(!pageBody.isConnected)cleanup();});observer.observe(root,{childList:true});
