@@ -381,7 +381,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
       <div class="form-wrap">
         <h2 style="font-size:20px; font-weight:700; color:var(--ink); margin-bottom:8px;">無料相談フォーム</h2>
         <p style="font-size:14px; color:var(--ink3); margin-bottom:32px;">基本の<wbr>必須は<wbr><b style="color:var(--g700)">3項目</b>です。<wbr>電話での<wbr>ご連絡を<wbr>希望する<wbr>場合は、<wbr>電話番号も<wbr>入力してください。<wbr>担当者より<wbr>ご連絡します。</p>
-        
+
         <div id="formSuccess" style="display:none; text-align:center; padding:46px 20px 42px; position:relative; overflow:hidden;">
             <div id="confetti" aria-hidden="true" style="position:absolute; inset:0; pointer-events:none; overflow:hidden;"></div>
             <div class="su-badge">
@@ -395,7 +395,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
             <p class="su-t2" style="font-size:16px; color:var(--ink2); line-height:1.65; margin-bottom:24px;">お問い合わせ<wbr>ありがとう<wbr>ございます。<br>原則、<wbr>翌営業日までに<wbr>担当者より<wbr>ご連絡します。</p>
             <a href="../" class="su-t3 form-submit" style="display:inline-block;width:auto;padding:12px 28px;">ホームへ戻る</a>
         </div>
-        
+
         <form id="contactForm" onsubmit="handleSubmit(event)">
             <div class="grid-2">
               <div class="form-group">
@@ -783,7 +783,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
         <p class="footer-desc">助成金活用・<wbr>手続き代行・<wbr>DX支援で<wbr>中小企業の<wbr>労務コストを<wbr>最適化します。</p>
         <address class="footer-contact">
           <span class="footer-contact-row footer-contact-address">〒931-8333 富山県富山市蓮町1丁目7-4　SCOP TOYAMA</span>
-          <span class="footer-contact-row"><a href="tel:076-460-2562">TEL: 076-460-2562</a><span class="footer-contact-hours">平日 9:00–18:00</span></span>
+          <span class="footer-contact-row"><span>TEL: 076-460-2562</span><span class="footer-contact-hours">平日 9:00–18:00</span></span>
           <span class="footer-contact-row">適格請求書<wbr>発行事業者<wbr>登録番号: T2810856672476</span>
         </address>
       </div>
@@ -817,7 +817,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
         <p class="footer-h">お問い合わせ</p>
         <ul class="footer-ul">
           <li><a href="contact.html">無料相談フォーム</a></li>
-          <li><a href="tel:076-460-2562">電話: 076-460-2562</a></li>
+          <li><span>電話<wbr>: 076-460-2562</span></li>
           <li><a href="mailto:contact@minano-sr.com">contact@minano-sr.com</a></li>
           <li><a href="../portal.html">書式・窓口</a></li>
           <li><a href="../privacy-policy.html">プライバシーポリシー</a></li>
@@ -850,7 +850,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
     <button class="fl-ai" popovertarget="ask-ai-pop" type="button" aria-label="AIに聞く">
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5 13.8 11.3 12 16l-1.8-4.7L5.5 9.5l4.7-1.8L12 3z" fill="#fff"/><path d="M18.5 15.5l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9.9-2.3z" fill="#8FC9A9"/></svg>
     </button>
-    <a href="tel:076-460-2562" class="fl-icon" aria-label="電話で問い合わせ"><svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 16.2c-1.2 0-2.4-.2-3.5-.6a1 1 0 0 0-1 .25l-1.6 1.6a14.5 14.5 0 0 1-6.4-6.4l1.6-1.6a1 1 0 0 0 .25-1c-.4-1.1-.6-2.3-.6-3.5a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1A16.5 16.5 0 0 0 19.5 21a1 1 0 0 0 1-1v-2.8a1 1 0 0 0-1-1z" fill="#123F30"/></svg></a>
+
   </div>
   <a href="contact.html" class="fl-primary">
     <span class="fl-primary-tx"><span class="fl-primary-main">無料で相談する</span><span class="fl-primary-sub">無料相談・オンライン可</span></span>
@@ -1160,7 +1160,7 @@ function showError(data) {
   var box = document.getElementById('formSuccess');
   box.innerHTML =
     '<h3 style="font-size:24px; font-weight:700; color:var(--ink); margin-bottom:10px;">送信結果を確認できませんでした</h3>' +
-    '<p style="font-size:16px; color:var(--ink2); line-height:1.7; margin-bottom:24px;">通信の状態により、送信結果を確認できませんでした。<br><b>入力いただいた内容は残っています。</b>届いている可能性もあるため、再送する前に電話またはメールでご確認ください。<br>お電話（<b>076-460-2562</b>）でも承ります。</p>' +
+    '<p style="font-size:16px; color:var(--ink2); line-height:1.7; margin-bottom:24px;">通信の状態により、送信結果を確認できませんでした。<br><b>入力いただいた内容は残っています。</b>届いている可能性もあるため、再送する前にメール（contact@minano-sr.com）でご確認ください。</p>' +
     '<div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">' +
     '<button type="button" class="form-submit" style="width:auto;padding:12px 28px;" onclick="restoreForm()">入力内容を保ったまま戻る</button>' +
     '<a class="form-submit" style="width:auto;padding:12px 28px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;" href="' + buildMailtoFallback(data) + '">メールで送る</a>' +
