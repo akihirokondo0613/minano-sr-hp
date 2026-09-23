@@ -165,12 +165,6 @@ const office = {
     latitude: 36.741023,
     longitude: 137.225116,
   },
-  openingHoursSpecification: {
-    '@type': 'OpeningHoursSpecification',
-    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-    opens: '09:00',
-    closes: '18:00',
-  },
   priceRange: '月額 ¥35,000から（税抜）',
 };
 

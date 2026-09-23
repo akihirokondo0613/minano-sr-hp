@@ -195,8 +195,8 @@ for (const [relativePath, { schemas }] of pages) {
       office.geo?.longitude !== 137.225116 ||
       !Array.isArray(office.areaServed) ||
       !office.areaServed.includes('日本') ||
-      office.openingHoursSpecification?.opens !== '09:00' ||
-      office.openingHoursSpecification?.closes !== '18:00' ||
+      Object.hasOwn(office, 'openingHoursSpecification') ||
+      Object.hasOwn(office, 'openingHours') ||
       typeof office.priceRange !== 'string' ||
       !office.priceRange
     ) {

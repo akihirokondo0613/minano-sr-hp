@@ -39,7 +39,7 @@ function buildIndex() {
   lines.push(`> ${d.summary}`);
   lines.push('');
   lines.push(`所在地: ${o.address}`);
-  lines.push(`電話: ${o.tel}（${o.hours}）／メール: ${o.mail}`);
+  lines.push(`電話: ${o.tel}／メール: ${o.mail}`);
   lines.push(`対応エリア: ${o.area}`);
   lines.push(`代表: ${o.person}／${o.belong}`);
   lines.push(`開業: ${o.opened}`);
@@ -81,7 +81,7 @@ function buildFull() {
   lines.push(`- 代表: ${o.person}`);
   lines.push(`- 所属: ${o.belong}`);
   lines.push(`- 所在地: ${o.address}`);
-  lines.push(`- 電話: ${o.tel}（受付 ${o.hours}）`);
+  lines.push(`- 電話: ${o.tel}`);
   lines.push(`- メール: ${o.mail}`);
   lines.push(`- サイト: ${o.url}`);
   lines.push(`- 対応エリア: ${o.area}`);
