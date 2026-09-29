@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://minano-sr.com/</loc>
-    <lastmod>2026-09-24</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog.html</loc>
-    <lastmod>2026-09-23</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -56,13 +56,13 @@
   </url>
   <url>
     <loc>https://minano-sr.com/uploads/service-joseikin.html</loc>
-    <lastmod>2026-09-23</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://minano-sr.com/uploads/service-kyuyo-keisan.html</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -80,13 +80,19 @@
   </url>
   <url>
     <loc>https://minano-sr.com/uploads/service-shugyo-kisoku.html</loc>
-    <lastmod>2026-09-28</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://minano-sr.com/blog/36kyotei-jogen-kanri.html</loc>
     <lastmod>2026-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://minano-sr.com/blog/ai-reskilling-joseikin-2026.html</loc>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -110,13 +116,13 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/gyomu-kaizen-joseikin-2026.html</loc>
-    <lastmod>2026-09-23</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://minano-sr.com/blog/gyomu-kaizen-toyama-2026.html</loc>
-    <lastmod>2026-09-23</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -140,13 +146,13 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/jinzai-kaihatsu-joseikin-2026.html</loc>
-    <lastmod>2026-09-23</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://minano-sr.com/blog/joseikin-career-up-2026.html</loc>
-    <lastmod>2026-09-23</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -182,7 +188,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/kaigo-technology-jininhaichi-2027.html</loc>
-    <lastmod>2026-09-23</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -194,7 +200,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/kintai-dx-donyu-junbi.html</loc>
-    <lastmod>2026-09-23</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -272,7 +278,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/ryoritsu-shien-josei.html</loc>
-    <lastmod>2026-09-23</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -362,7 +368,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/trial-koyo-joseikin-2026.html</loc>
-    <lastmod>2026-09-23</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
