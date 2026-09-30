@@ -41,7 +41,7 @@ function buildIndex() {
   lines.push(`所在地: ${o.address}`);
   lines.push(`電話: ${o.tel}／メール: ${o.mail}`);
   lines.push(`対応エリア: ${o.area}`);
-  lines.push(`代表: ${o.person}／${o.belong}`);
+  lines.push(o.person.includes(o.name) ? `所属: ${o.belong}` : `代表: ${o.person}／${o.belong}`);
   lines.push(`開業: ${o.opened}`);
   lines.push('');
   lines.push('## この事務所が向いている会社');
@@ -78,7 +78,7 @@ function buildFull() {
   lines.push('## 基本情報');
   lines.push('');
   lines.push(`- 名称: ${o.name}`);
-  lines.push(`- 代表: ${o.person}`);
+  if (!o.person.includes(o.name)) lines.push(`- 代表: ${o.person}`);
   lines.push(`- 所属: ${o.belong}`);
   lines.push(`- 所在地: ${o.address}`);
   lines.push(`- 電話: ${o.tel}`);
