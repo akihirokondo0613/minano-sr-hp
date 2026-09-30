@@ -446,7 +446,7 @@ function recordConsoleError(target) {
       founderState.heading === '経営者と、同じ視点で。' &&
       JSON.stringify(founderState.paragraphs) === JSON.stringify(expectedFounderParagraphs) &&
       founderState.photoCount === 0 &&
-      /代表 社会保険労務士\s*近藤 昭宏\s*所属\s*富山県社会保険労務士会/.test(founderState.signature) &&
+      /事務所\s*みなの社会保険労務士事務所\s*所属\s*富山県社会保険労務士会/.test(founderState.signature) &&
       founderState.bodyWidthRatio >= 0.98 &&
       founderState.textWidthRatio >= 0.98 &&
       founderState.signBelowBody &&

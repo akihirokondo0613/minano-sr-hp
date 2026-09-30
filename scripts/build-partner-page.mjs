@@ -324,7 +324,7 @@ function buildMain() {
       <h2 class="sec-h" style="margin-top:6px">まずは、フォームからご連絡ください。</h2>
       <a class="tel" href="uploads/contact.html?from=partner">相談フォームへ</a>
       <p class="sub">電話番号（事務所情報）076-460-2562　／　contact@minano-sr.com<br>
-      みなの社会保険労務士事務所　社会保険労務士　近藤 昭宏（富山県社会保険労務士会 所属）<br>
+      みなの社会保険労務士事務所　社会保険労務士　みなの社会保険労務士事務所（富山県社会保険労務士会 所属）<br>
       〒931-8333 富山県富山市蓮町1丁目7-4　SCOP TOYAMA</p>
     </div>
   </div>
