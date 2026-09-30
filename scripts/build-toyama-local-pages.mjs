@@ -493,8 +493,8 @@ const PAGES = [
     build: (url) => buildSaiteiMain({
       // 額と出典は給与計算ページと共通の正本。注記だけは「○月○日時点」を含まない文にこのページで差し替える。
       numbers: [
-        { ...numberByLabel('富山県最低賃金（地域別）'), label: '令和8年9月30日までの額', note: saitei.numbersNote.ima },
-        { ...numberByLabel('令和8年度の改定（令和8年10月1日発効）'), note: saitei.numbersNote.tsugi },
+        { ...numberByLabel('富山県最低賃金（令和8年9月30日まで）'), label: '令和8年9月30日までの額', note: saitei.numbersNote.ima },
+        { ...numberByLabel('富山県最低賃金（令和8年10月1日から）'), note: saitei.numbersNote.tsugi },
       ],
       suii: saitei.suii,
       tl: saitei.timeline,

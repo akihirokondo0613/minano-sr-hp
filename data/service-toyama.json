@@ -60,13 +60,13 @@
         "caption": "富山県の給与計算で使う数字（2026年8月24日 確認）",
         "rows": [
           {
-            "label": "富山県最低賃金（地域別）",
+            "label": "富山県最低賃金（令和8年9月30日まで）",
             "value": "時間額 1,062円",
             "note": "令和7年10月12日に発効した額で、2026年8月24日の時点で有効なのはこちらです。",
             "source": "https://jsite.mhlw.go.jp/toyama-roudoukyoku/riyousha_mokuteki_menu/mokuteki_naiyou/saiteichingin_koutin.html"
           },
           {
-            "label": "令和8年度の改定（令和8年10月1日発効）",
+            "label": "富山県最低賃金（令和8年10月1日から）",
             "value": "時間額 1,119円",
             "note": "令和8年8月5日、富山地方最低賃金審議会が、現行の1,062円を57円引き上げて1,119円に改正することが適当である旨を富山労働局長へ答申しました。令和8年10月1日から1,119円（富山労働局公表）。それまでは1,062円です。",
             "source": "https://jsite.mhlw.go.jp/toyama-roudoukyoku/news_topics/saichinshin_R08toushin_00001.html"
@@ -96,7 +96,7 @@
       "moreLinks": [
         {
           "href": "toyama-saitei-chingin.html",
-          "label": "富山県の最低賃金 いまの額と次の額（詳しい解説）→"
+          "label": "富山県の最低賃金 適用期間ごとの額（詳しい解説）→"
         }
       ]
     },
