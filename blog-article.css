@@ -359,6 +359,12 @@ article.post .post-action li {
   line-height: 1.75;
 }
 
+/* 濃い背景では、本文用の暗い強調色を継承させない。 */
+article.post .post-action :is(strong, b) {
+  color: inherit;
+  text-decoration: none;
+}
+
 article.post .post-action li::marker { color: var(--moegi-b); }
 
 article.post .post-action .term { color: var(--moegi-b); border-bottom-color: var(--moegi-b); }
