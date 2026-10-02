@@ -1,0 +1,258 @@
+{
+  "generator": "built-in image_gen",
+  "date": "2026-10-03",
+  "referenceMechanism": "https://gaaboo.jp/",
+  "referenceAssetsCopied": false,
+  "sources": "Existing hero-crowd-*.webp assets from this repository",
+  "repairPrompt": "Edit target: this existing website character illustration. Produce ONE faithful clean redrawing of exactly this character, same person, face, clothes, color palette, pose, props and full body silhouette. It is for a polished Japanese service website. Repair only the poor cutout and raster quality: eliminate every gray/white checkerboard pixel, all gray square halos, all background residue around the outline and between arms, legs and props. Clean smooth confident black outlines and flat solid fill colors, consistent lightly hand-drawn vector-like quality, crisp at high resolution. Preserve the white clothing/shoes and all interior details. Use a genuinely transparent background, no backdrop, no checkerboard pattern drawn into the image, no floor, no added shadow, no extra character, no text. Keep whole character inside frame with small transparent padding, retaining the original pose and proportions. Output production-ready transparent character asset.",
+  "expressionPrompt": "Surgical animation-frame edit. This transparent full-body character image is the BEFORE frame. Make its matching AFTER frame. Change ONLY the tiny facial expression: replace the open mouth with a relaxed small closed curved smile and the eyes with happy closed curved eyes. Keep every other visible pixel, outline, position, shape, anatomy, color, silhouette, clothing, limbs, props and transparent padding exactly unchanged. Do not redraw, restyle, reframe, move, scale, recrop, add texture, add lighting or change body pose. The image must align seamlessly when overlaid on the reference frame at identical dimensions. Preserve genuinely transparent background. One character only, no checkerboard, text, shadow or backdrop. This image will be briefly swapped as a 2-frame website character expression animation.",
+  "export": "WebP with alpha, quality 88; smaller responsive copies. Paired frames normalized to identical dimensions. Raw generated PNGs remain in sibling generated_images directory.",
+  "validation": {
+    "alphaCornersPassed": 28,
+    "sameSizeFramePairs": 8,
+    "preflight": "28/28",
+    "browser": "Codex IAB Chromium",
+    "viewportWidths": [
+      320,
+      360,
+      390,
+      430,
+      768,
+      769,
+      1024,
+      1100,
+      1101,
+      1280,
+      1440,
+      1920
+    ],
+    "reducedMotion": "No entrance animation, no expression frames requested. Emulation cleared by closing test tab.",
+    "navigation": "Pricing and contact navigation, returning home. Keyboard Enter on consultation CTA. No form submission."
+  },
+  "assets": [
+    {
+      "file": "baker-sm.webp",
+      "width": 240,
+      "height": 480,
+      "bytes": 27208,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "baker.webp",
+      "width": 480,
+      "height": 960,
+      "bytes": 69958,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "builder-sm.webp",
+      "width": 276,
+      "height": 480,
+      "bytes": 27008,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "builder.webp",
+      "width": 551,
+      "height": 960,
+      "bytes": 69352,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "cafe-sm.webp",
+      "width": 258,
+      "height": 480,
+      "bytes": 23620,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "cafe.webp",
+      "width": 516,
+      "height": 960,
+      "bytes": 62112,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "delivery-sm.webp",
+      "width": 360,
+      "height": 431,
+      "bytes": 25112,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "delivery.webp",
+      "width": 720,
+      "height": 861,
+      "bytes": 66668,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "florist-sm.webp",
+      "width": 293,
+      "height": 480,
+      "bytes": 28846,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "florist.webp",
+      "width": 586,
+      "height": 960,
+      "bytes": 75590,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "garden-after-sm.webp",
+      "width": 360,
+      "height": 344,
+      "bytes": 33446,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "garden-after.webp",
+      "width": 720,
+      "height": 688,
+      "bytes": 79762,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "garden-sm.webp",
+      "width": 360,
+      "height": 344,
+      "bytes": 31490,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "garden.webp",
+      "width": 720,
+      "height": 688,
+      "bytes": 80006,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "kneel-after-sm.webp",
+      "width": 360,
+      "height": 396,
+      "bytes": 32194,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "kneel-after.webp",
+      "width": 720,
+      "height": 792,
+      "bytes": 78334,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "kneel-sm.webp",
+      "width": 360,
+      "height": 396,
+      "bytes": 29830,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "kneel.webp",
+      "width": 720,
+      "height": 792,
+      "bytes": 77548,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "mechanic-sm.webp",
+      "width": 220,
+      "height": 480,
+      "bytes": 25420,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "mechanic.webp",
+      "width": 439,
+      "height": 960,
+      "bytes": 63924,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "seated-after-sm.webp",
+      "width": 360,
+      "height": 443,
+      "bytes": 30948,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "seated-after.webp",
+      "width": 720,
+      "height": 886,
+      "bytes": 76380,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "seated-sm.webp",
+      "width": 360,
+      "height": 443,
+      "bytes": 30314,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "seated.webp",
+      "width": 720,
+      "height": 886,
+      "bytes": 78840,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "wave-after-sm.webp",
+      "width": 316,
+      "height": 480,
+      "bytes": 29742,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "wave-after.webp",
+      "width": 631,
+      "height": 960,
+      "bytes": 72576,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "wave-sm.webp",
+      "width": 316,
+      "height": 480,
+      "bytes": 28520,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    },
+    {
+      "file": "wave.webp",
+      "width": 631,
+      "height": 960,
+      "bytes": 75184,
+      "mode": "RGBA",
+      "cornersTransparent": true
+    }
+  ]
+}
