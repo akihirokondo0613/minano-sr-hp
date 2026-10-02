@@ -77,123 +77,31 @@
   ]
 }
 </script>
-<style id="koyou-hoken-kanyu-more-post">
-body:has(#koyou-hoken-kanyu-more-article) .post-hero{padding-top:128px;padding-bottom:36px;background:linear-gradient(135deg,var(--yuki),var(--moegi-l));border-bottom:1px solid var(--line)}
-body:has(#koyou-hoken-kanyu-more-article) .post-hero-inner{max-width:1160px}
-body:has(#koyou-hoken-kanyu-more-article) .post-h1{font-size:clamp(27px,3.2vw,42px);line-height:1.5;letter-spacing:.015em;margin:12px 0 20px}
-body:has(#koyou-hoken-kanyu-more-article) .ed-hero-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:42px;align-items:center}
-body:has(#koyou-hoken-kanyu-more-article) .ed-hero-note{font-size:15px;line-height:1.9;max-width:34em;color:var(--ink2);margin:0 0 20px}
-body:has(#koyou-hoken-kanyu-more-article) .ed-hero-link{display:inline-flex;gap:16px;padding:12px 18px;border-radius:10px;background:var(--sugi);color:var(--shiro);font-size:14px;font-weight:750}
-body:has(#koyou-hoken-kanyu-more-article) .ed-cover{padding:26px;background:var(--shiro);border:1px solid var(--line);border-radius:22px;box-shadow:var(--sh-sm);transform:rotate(-1deg)}
-body:has(#koyou-hoken-kanyu-more-article) .ed-cover small{display:block;font-size:12px;color:var(--moegi-t);font-weight:800;letter-spacing:.08em;margin-bottom:14px}
-body:has(#koyou-hoken-kanyu-more-article) .ed-cover-row{display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding:10px 0;font-size:14px;line-height:1.7;color:var(--ink2)}
-body:has(#koyou-hoken-kanyu-more-article) .ed-cover-row.is-new{border:1px solid var(--moegi);background:var(--moegi-l);border-radius:10px;padding:12px;margin-top:12px;color:var(--sugi);font-weight:800}
-body:has(#koyou-hoken-kanyu-more-article) .ed-cover-n{display:grid;place-items:center;flex:0 0 28px;width:28px;height:28px;background:var(--sugi);color:var(--shiro);border-radius:7px;font-size:13px}
-body:has(#koyou-hoken-kanyu-more-article) .ed-cover-title{font-size:22px;font-weight:800;color:var(--sugi);line-height:1.6;margin-bottom:14px}
-body:has(#koyou-hoken-kanyu-more-article) .ed-cover-foot{font-size:12px;line-height:1.7;color:var(--ink2);margin-top:15px}
-#koyou-hoken-kanyu-more-article{padding-top:34px}
-#koyou-hoken-kanyu-more-article > p{font-size:16px;line-height:1.95;margin-bottom:1.25em}
-#koyou-hoken-kanyu-more-article .ed-kicker{font:800 12px/1.7 var(--font-body);letter-spacing:.06em;color:var(--moegi-t);margin:0 0 7px}
-#koyou-hoken-kanyu-more-article .ed-summary{padding:24px;background:var(--sugi);color:var(--shiro);border-radius:18px;margin:26px 0}
-#koyou-hoken-kanyu-more-article .ed-summary p{color:var(--shiro);font-size:18px;font-weight:800;line-height:1.7;margin:0 0 16px}
-#koyou-hoken-kanyu-more-article .ed-summary small{font-size:12px;display:block;margin-bottom:8px;color:var(--moegi-b)}
-#koyou-hoken-kanyu-more-article .ed-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-#koyou-hoken-kanyu-more-article .ed-summary a{border:1px solid color-mix(in srgb,var(--shiro) 25%,transparent);border-radius:10px;padding:12px;color:var(--shiro);font-size:13px;line-height:1.65;text-decoration:none}
-#koyou-hoken-kanyu-more-article .ed-summary a b{color:var(--shiro);display:block;font-size:15px;margin-bottom:3px}
-#koyou-hoken-kanyu-more-article .ed-summary a:hover{background:color-mix(in srgb,var(--shiro) 12%,transparent)}
-#koyou-hoken-kanyu-more-article .post-viz.ed-figure{padding:clamp(20px,3vw,28px);background:var(--shiro);border:1px solid var(--line);box-shadow:none;margin:22px 0 28px;border-radius:18px;overflow:visible}
-#koyou-hoken-kanyu-more-article .ed-figure .post-viz-title{font-size:18px;align-items:center;line-height:1.65;display:block;margin-bottom:20px}
-#koyou-hoken-kanyu-more-article .ed-figure .post-viz-title::before{content:none}
-#koyou-hoken-kanyu-more-article .ed-figure .ed-fig-no{display:block;color:var(--moegi-t);font-size:12px;font-weight:800;letter-spacing:.08em;margin:0 0 6px}
-#koyou-hoken-kanyu-more-article .ed-figure figcaption{font-size:12.5px;color:var(--ink2);margin-top:17px;line-height:1.85}
-#koyou-hoken-kanyu-more-article .ed-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-#koyou-hoken-kanyu-more-article .ed-grid.ed-three{grid-template-columns:repeat(3,minmax(0,1fr))}
-#koyou-hoken-kanyu-more-article .ed-card{padding:20px;border:1px solid var(--line);border-radius:12px;background:var(--yuki);min-width:0;position:relative}
-#koyou-hoken-kanyu-more-article .ed-card.is-green{background:var(--moegi-l);border-color:var(--moegi)}
-#koyou-hoken-kanyu-more-article .ed-card.is-blue{background:var(--sora-l);border-color:var(--line2)}
-#koyou-hoken-kanyu-more-article .ed-card.is-dark{background:var(--sugi);color:var(--shiro);border-color:var(--sugi)}
-#koyou-hoken-kanyu-more-article .ed-card .ed-tag{display:inline-block;margin-bottom:12px;padding:3px 9px;border:1px solid var(--line);background:var(--shiro);border-radius:6px;color:var(--sugi);font-size:12px;font-weight:800}
-#koyou-hoken-kanyu-more-article .ed-card h3,#koyou-hoken-kanyu-more-article .ed-card h4{font-size:17px;color:var(--sugi);line-height:1.65;margin:0 0 9px}
-#koyou-hoken-kanyu-more-article .ed-card p{font-size:14px;color:var(--ink2);line-height:1.85;margin:0}
-#koyou-hoken-kanyu-more-article .ed-card.is-dark h3,#koyou-hoken-kanyu-more-article .ed-card.is-dark p{color:var(--shiro)}
-#koyou-hoken-kanyu-more-article .ed-card .ed-next{display:block;border-top:1px solid var(--line);padding-top:11px;margin-top:13px;font-size:13px;font-weight:800;color:var(--sugi);line-height:1.75}
-#koyou-hoken-kanyu-more-article .ed-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;counter-reset:ed-step}
-#koyou-hoken-kanyu-more-article .ed-step{background:var(--yuki);border:1px solid var(--line);border-radius:12px;padding:16px;min-width:0;counter-increment:ed-step;position:relative}
-#koyou-hoken-kanyu-more-article .ed-step::before{content:counter(ed-step,decimal-leading-zero);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--sugi);color:var(--shiro);font-size:13px;font-weight:800;margin-bottom:12px}
-#koyou-hoken-kanyu-more-article .ed-step:not(:last-child)::after{content:"→";position:absolute;right:-13px;top:27px;z-index:1;background:var(--shiro);color:var(--moegi-t);font-weight:800;font-size:17px}
-#koyou-hoken-kanyu-more-article .ed-step b{display:block;font-size:16px;color:var(--sugi);line-height:1.6;margin-bottom:7px}
-#koyou-hoken-kanyu-more-article .ed-step p{font-size:13px;line-height:1.75;margin:0;color:var(--ink2)}
-#koyou-hoken-kanyu-more-article .ed-step small{display:block;font-size:12px;color:var(--moegi-t);line-height:1.7;margin-top:12px;font-weight:800}
-#koyou-hoken-kanyu-more-article .ed-number{display:block;font-family:var(--disp);font-size:clamp(27px,4vw,38px);font-weight:850;line-height:1.4;letter-spacing:-.025em;color:var(--sugi);margin-bottom:8px;font-variant-numeric:tabular-nums}
-#koyou-hoken-kanyu-more-article .ed-number small{font-size:14px;letter-spacing:0}
-#koyou-hoken-kanyu-more-article .ed-card.is-dark .ed-number{color:var(--shiro)}
-#koyou-hoken-kanyu-more-article .ed-bridge{display:flex;align-items:center;justify-content:center;gap:15px;padding:15px;background:var(--moegi-l);color:var(--sugi);border-radius:10px;font-weight:800;font-size:15px;line-height:1.8;margin:14px 0}
-#koyou-hoken-kanyu-more-article .ed-bridge .ed-arrow{font-size:24px}
-#koyou-hoken-kanyu-more-article .ed-months{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;margin-top:12px}
-#koyou-hoken-kanyu-more-article .ed-month{min-width:0;padding:12px 5px;border:1px solid var(--moegi);border-radius:10px;background:var(--moegi-l);text-align:center;color:var(--sugi)}
-#koyou-hoken-kanyu-more-article .ed-month small{display:block;font-size:12px;margin-bottom:4px}
-#koyou-hoken-kanyu-more-article .ed-month b{display:block;font-size:14px;white-space:nowrap;letter-spacing:-.03em}
-#koyou-hoken-kanyu-more-article .ed-form{padding:20px;background:var(--yuki);border:1px solid var(--line);border-radius:12px}
-#koyou-hoken-kanyu-more-article .ed-form-row{display:grid;grid-template-columns:115px minmax(0,1fr);gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.8;color:var(--ink2)}
-#koyou-hoken-kanyu-more-article .ed-form-row b{color:var(--sugi)}
-#koyou-hoken-kanyu-more-article .ed-form-new{margin-top:13px;padding:16px;background:var(--moegi-l);border:2px solid var(--moegi);border-radius:10px}
-#koyou-hoken-kanyu-more-article .ed-form-new p{font-size:15px;line-height:1.9;margin:8px 0;color:var(--sugi)}
-#koyou-hoken-kanyu-more-article .ed-form-new b{font-size:13px;color:var(--sugi)}
-#koyou-hoken-kanyu-more-article .ed-form-new small{display:block;font-size:12px;line-height:1.8;color:var(--ink2)}
-#koyou-hoken-kanyu-more-article .ed-labels{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0}
-#koyou-hoken-kanyu-more-article .ed-labels span{display:block;border:1px solid var(--line);border-radius:6px;background:var(--shiro);padding:6px 9px;font-size:12px;color:var(--sugi);line-height:1.6}
-#koyou-hoken-kanyu-more-article .ed-fold{border:1px solid var(--line);border-radius:12px;padding:0 18px;background:var(--yuki);margin:20px 0}
-#koyou-hoken-kanyu-more-article .ed-fold summary{padding:16px 0;color:var(--sugi);font-weight:750;font-size:14px;cursor:pointer;line-height:1.7}
-#koyou-hoken-kanyu-more-article .ed-fold .tbl-wrap{margin-bottom:18px}
-#koyou-hoken-kanyu-more-article .ed-bubble{padding:19px 22px;background:var(--moegi-l);border-left:4px solid var(--moegi);border-radius:0 13px 13px 0;font-size:15px;line-height:1.95;color:var(--sugi);margin:15px 0}
-#koyou-hoken-kanyu-more-article .ed-message{margin:23px 0;padding:22px;border:1px solid var(--line);border-radius:15px;background:var(--yuki)}
-#koyou-hoken-kanyu-more-article .ed-message .pb-t{font-size:13px;font-weight:800;margin:0 0 10px;color:var(--moegi-t)}
-#koyou-hoken-kanyu-more-article .ed-message p{font-size:14px;line-height:1.9;margin-bottom:10px}
-#koyou-hoken-kanyu-more-article .ed-checks{display:grid;gap:9px;margin:24px 0 14px}
-#koyou-hoken-kanyu-more-article .ed-checks label{display:flex;gap:12px;align-items:flex-start;padding:15px 17px;background:var(--shiro);border:1px solid var(--line);border-radius:10px;cursor:pointer;font-size:14px;line-height:1.85;color:var(--ink2)}
-#koyou-hoken-kanyu-more-article .ed-checks input{margin-top:5px;flex:0 0 19px;width:19px;height:19px;accent-color:var(--sugi)}
-#koyou-hoken-kanyu-more-article .ed-checks label:has(input:checked){background:var(--moegi-l);border-color:var(--moegi)}
-#koyou-hoken-kanyu-more-article .ed-tools{margin:24px 0;padding:24px;border:1px solid var(--moegi);background:var(--moegi-l);border-radius:15px}
-#koyou-hoken-kanyu-more-article .ed-tools p{font-size:14px;line-height:1.85;margin:0 0 14px;color:var(--ink2)}
-#koyou-hoken-kanyu-more-article .ed-tools a{display:inline-block;background:var(--sugi);color:var(--shiro);padding:10px 14px;border:0;border-radius:9px;font-size:13px;margin:4px 7px 4px 0}
-#koyou-hoken-kanyu-more-article .ed-observation{margin:30px 0 10px;padding-top:20px;border-top:1px solid var(--line)}
-#koyou-hoken-kanyu-more-article .ed-observation p{font-size:12.5px;line-height:1.85;margin-bottom:10px;color:var(--ink2)}
-#koyou-hoken-kanyu-more-article .ed-observation summary{font-size:13px;color:var(--sugi);font-weight:700;cursor:pointer;padding:10px 0}
-#koyou-hoken-kanyu-more-article .ed-observation a{font-size:12.5px}
-@media(max-width:800px){body:has(#koyou-hoken-kanyu-more-article) .ed-hero-grid{gap:24px}#koyou-hoken-kanyu-more-article .ed-steps{grid-template-columns:repeat(2,minmax(0,1fr))}#koyou-hoken-kanyu-more-article .ed-step::after{display:none}#koyou-hoken-kanyu-more-article .ed-grid.ed-three{grid-template-columns:1fr}}
-@media(max-width:600px){body:has(#koyou-hoken-kanyu-more-article) .post-hero{padding-top:115px;padding-bottom:24px}body:has(#koyou-hoken-kanyu-more-article) .ed-hero-grid{grid-template-columns:1fr;gap:25px}body:has(#koyou-hoken-kanyu-more-article) .ed-cover{padding:20px;transform:none}body:has(#koyou-hoken-kanyu-more-article) .ed-hero-note{font-size:14px}#koyou-hoken-kanyu-more-article > p{font-size:15px;line-height:1.95}#koyou-hoken-kanyu-more-article .ed-grid,#koyou-hoken-kanyu-more-article .ed-summary-grid{grid-template-columns:1fr}#koyou-hoken-kanyu-more-article .ed-summary{padding:20px}#koyou-hoken-kanyu-more-article .ed-summary-grid{gap:7px}#koyou-hoken-kanyu-more-article .ed-summary a{display:block;padding:11px 14px}#koyou-hoken-kanyu-more-article .ed-summary a b{display:inline;margin-right:10px}#koyou-hoken-kanyu-more-article .ed-steps{grid-template-columns:1fr}#koyou-hoken-kanyu-more-article .ed-step{padding:18px 18px 18px 62px}#koyou-hoken-kanyu-more-article .ed-step::before{position:absolute;top:18px;left:17px}#koyou-hoken-kanyu-more-article .ed-step:not(:last-child)::after{display:block;content:"↓";top:auto;bottom:-17px;left:50%;right:auto}#koyou-hoken-kanyu-more-article .ed-form{padding:15px}#koyou-hoken-kanyu-more-article .ed-form-row{grid-template-columns:1fr;gap:3px}#koyou-hoken-kanyu-more-article .ed-months{grid-template-columns:repeat(3,minmax(0,1fr))}#koyou-hoken-kanyu-more-article .ed-card{padding:18px}#koyou-hoken-kanyu-more-article .ed-bridge{flex-wrap:wrap;text-align:center}#koyou-hoken-kanyu-more-article .ed-figure .post-viz-title{font-size:17px}#koyou-hoken-kanyu-more-article .ed-figure figcaption{font-size:12px}}
-@media print{body:has(#koyou-hoken-kanyu-more-article) .nav,body:has(#koyou-hoken-kanyu-more-article) .post-toc,.ed-hero-link{display:none!important}.post-hero{padding-top:20px!important}.post-viz{break-inside:avoid}.ed-checks input{appearance:auto}.ed-cover{transform:none!important}}
-</style><style id="editorial-design-refinement">
-#koyou-hoken-kanyu-more-article .point-box{margin:0;padding:0;background:transparent;border:0;border-radius:0;box-shadow:none}
-#koyou-hoken-kanyu-more-article .ed-summary{margin-top:0;margin-bottom:22px}
-#koyou-hoken-kanyu-more-article .post-reader{background:transparent;box-shadow:none;border:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:0;padding:20px 0;margin:24px 0 28px}
-#koyou-hoken-kanyu-more-article .post-reader-grid{gap:18px;border:0;border-radius:0;background:transparent;overflow:visible}
-#koyou-hoken-kanyu-more-article .post-reader-item{padding:0;background:transparent}
-#koyou-hoken-kanyu-more-article .post-reader-kicker{font-size:13px}
-#koyou-hoken-kanyu-more-article .post-reader-label{font-size:12px}
-#koyou-hoken-kanyu-more-article .post-reader-item strong{font-size:14px;line-height:1.8}
-#koyou-hoken-kanyu-more-article .ed-figure figcaption{font-size:14px;line-height:1.85}
-#koyou-hoken-kanyu-more-article .ed-figure .ed-step p{font-size:14px}
-#koyou-hoken-kanyu-more-article .ed-figure .ed-step small{font-size:13px}
-#koyou-hoken-kanyu-more-article .ed-figure .ed-form-new small{font-size:14px}
-#koyou-hoken-kanyu-more-article h2,#koyou-hoken-kanyu-more-article h3,#koyou-hoken-kanyu-more-article figure[id]{scroll-margin-top:105px}
-#koyou-hoken-kanyu-more-article .ed-figure .ed-number{overflow-wrap:normal;word-break:normal}
-body:has(#koyou-hoken-kanyu-more-article) .post-toc-card .post-toc-link{font-size:13px}
-@media(max-width:600px){
-#koyou-hoken-kanyu-more-article > p{font-size:16px}
-#koyou-hoken-kanyu-more-article .post-reader-grid{gap:13px}
-#koyou-hoken-kanyu-more-article .post-reader-item{border-bottom:0}
-#koyou-hoken-kanyu-more-article .post-reader-item strong{font-size:14px;font-weight:500}
-#koyou-hoken-kanyu-more-article .ed-figure .ed-card p,#koyou-hoken-kanyu-more-article .ed-figure .ed-step p{font-size:15px}
-#koyou-hoken-kanyu-more-article .ed-figure figcaption{font-size:14px}
-#koyou-hoken-kanyu-more-article .ed-months{grid-template-columns:repeat(2,minmax(0,1fr))}
-#koyou-hoken-kanyu-more-article .ed-figure .ed-month{padding:14px 10px}
-#koyou-hoken-kanyu-more-article .ed-form{padding:14px}
-#koyou-hoken-kanyu-more-article .ed-form-new{padding:14px}
-body:has(#koyou-hoken-kanyu-more-article) .post-toc-mobile > summary,body:has(#koyou-hoken-kanyu-more-article) .post-toc-mobile .post-toc-link{font-size:14px}
-}
-@media(prefers-reduced-motion:reduce){body:has(#koyou-hoken-kanyu-more-article) *{scroll-behavior:auto!important}}
-</style></head>
+<style id="article-specific-diagrams">
+/* 既存の記事部品を使用。通知書と定期代の固有図だけ補足する。 */
+article.post .post-viz-card h3{margin:0 0 6px;color:var(--sugi);font-size:13.5px;line-height:1.55}
+article.post .post-viz-card p,article.post .post-flow-step p{margin:0;color:var(--ink3);font-size:12.5px;line-height:1.75}
+article.post .post-flow-step small{display:block;margin-top:8px;color:var(--ink3);font-size:12.5px;line-height:1.75}
+article.post .post-viz-label{margin-bottom:8px;color:var(--moegi-t);font-size:12.5px;font-weight:700}
+article.post .post-viz-note{margin-top:10px;padding-top:8px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.75}
+article.post .post-viz-card .post-number{color:var(--sugi);font-size:24px;line-height:1.5;font-weight:800;font-variant-numeric:tabular-nums}
+article.post .post-number small{font-size:12.5px}
+article.post .post-equation{padding:14px;margin:12px 0;background:var(--yuki);border:1px solid var(--line);border-radius:12px;text-align:center;color:var(--sugi);font-size:14px;line-height:1.85;font-weight:700}
+article.post .post-equation span{display:inline}
+article.post .post-months{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,120px),1fr));gap:10px;margin:12px 0}
+article.post .post-month{text-align:center}
+article.post .post-month small{display:block;font-size:12.5px;color:var(--ink3);margin-bottom:6px}
+article.post .post-month b{white-space:nowrap}
+article.post .post-form-row{display:grid;grid-template-columns:115px minmax(0,1fr);gap:12px;margin:10px 0;padding-bottom:10px;border-bottom:1px solid var(--line);font-size:12.5px;line-height:1.75}
+article.post .post-form-row b{font-size:12.5px}
+article.post .post-form-sample>p{margin:0 0 10px;font-size:12.5px;color:var(--sugi);font-weight:700}
+article.post .post-form-sample .is-primary p{font-size:13.5px;line-height:1.85;margin:8px 0}
+article.post .post-form-sample small{display:block;font-size:12.5px;line-height:1.8;color:var(--ink3)}
+article.post details.post-detail{margin:18px 0}
+article.post .post-detail summary{font-size:14px;line-height:1.8;font-weight:700;color:var(--sugi);cursor:pointer}
+@media(max-width:640px){article.post .post-form-row{grid-template-columns:minmax(0,1fr);gap:4px}}
+</style>
+</head>
 <body data-nav="B" data-editorial="202610">
 <a class="skip-link" href="#main">本文へ移動</a>
 <div id="prog"></div>
@@ -241,33 +149,36 @@ body:has(#koyou-hoken-kanyu-more-article) .post-toc-mobile > summary,body:has(#k
       <span>社会保険</span>
     </nav>
     <span class="cat-tag">社会保険</span>
-    <div class="ed-hero-grid"><div><h1 class="post-h1">雇用保険の<wbr>加入漏れに<wbr>気づいた<wbr>会社が<wbr>行う<wbr>手続き</h1><p class="ed-hero-note">見つからない<wbr>加入記録、<wbr>過去の<wbr>天引き、<wbr>退職者への<wbr>説明。<wbr>慌てて<wbr>精算する<wbr>前に、<wbr>会社が<wbr>確認する<wbr>順番を<wbr>示します。</p><a class="ed-hero-link" href="#s2">記録の確認順へ<span aria-hidden="true">↓</span></a>
+    <h1 class="post-h1">雇用保険の<wbr>加入漏れに<wbr>気づいた<wbr>会社が<wbr>行う<wbr>手続き</h1>
     <div class="post-meta">
-      <span>読了 約7分</span>
-    </div></div><div class="ed-cover" aria-label="記事の要点"><small>加入漏れが疑われたときの確認</small><div class="ed-cover-title">天引きしている。<br>だから加入済み？</div><div class="ed-cover-row"><span class="ed-cover-n">1</span>給与明細：控除した記録</div><div class="ed-cover-row"><span class="ed-cover-n">2</span>取得通知：加入した記録</div><div class="ed-cover-row"><span class="ed-cover-n">3</span>年度更新：申告した記録</div><div class="ed-cover-foot">3つの記録を、別々に突き合わせます。</div></div></div>
+      <span>読了 約6分</span>
+    </div>
   </div>
 </header>
 
-<article class="post"><div id="koyou-hoken-kanyu-more-article"><div class="point-box"><div class="ed-summary"><small>先に押さえる結論</small><p>まず、<wbr>加入記録と<wbr>給与控除を<wbr>分けて<wbr>調べます。</p><div class="ed-summary-grid"><a href="#s2"><b>記録を<wbr>確認</b>取得・控除・申告</a><a href="#s3"><b>資料を<wbr>揃える</b>通常と<wbr>特例を<wbr>区別</a><a href="#s4"><b>本人へ<wbr>説明</b>事実と<wbr>次回連絡日</a></div></div></div><p>給与明細には<wbr>雇用保険料が<wbr>あるのに、<wbr>資格取得の<wbr>通知が<wbr>見当たらない。<wbr>退職する<wbr>従業員の<wbr>手続きを<wbr>始めて、<wbr>加入漏れの<wbr>可能性に<wbr>気づく<wbr>ことがあります。</p><section class="post-reader" data-reader-map aria-label="この記事が役立つ方"><p class="post-reader-kicker">この記事が役立つ方</p><div class="post-reader-grid"><div class="post-reader-item"><span class="post-reader-label">対象</span><strong>パートを含む従業員の入退社手続きを管理する事業主・総務担当者</strong></div><div class="post-reader-item"><span class="post-reader-label">困りごと</span><strong>給与から雇用保険料を引いているのに加入記録が見当たらない</strong></div><div class="post-reader-item"><span class="post-reader-label">読後にできること</span><strong>記録・控除・申告を分けて調べ、管轄窓口へ持参する資料を揃えられる</strong></div></div></section><nav class="post-toc" aria-labelledby="post-toc-t"><p class="post-toc-t" id="post-toc-t">この記事の内容</p><ol><li><a href="#s1">加入が<wbr>必要だった<wbr>人か<wbr>確認する</a></li><li><a href="#s2">記録・<wbr>控除・年度更新を<wbr>分けて<wbr>調べる</a></li><li><a href="#s3">遡及手続きの<wbr>資料を<wbr>揃える</a></li><li><a href="#s4">本人説明と<wbr>退職者への<wbr>対応</a></li><li><a href="#s5">再発を防ぐ管理表</a></li><li><a href="#judgment">判断が難しい場面</a></li><li><a href="#faq">よくある質問</a></li></ol></nav>
-<figure aria-labelledby="koyou-hoken-kanyu-more-figure-1" class="post-viz ed-figure" data-visual="comparison"><p class="post-viz-title" id="koyou-hoken-kanyu-more-figure-1"><span class="ed-fig-no">図1</span>加入の<wbr>入口は、<wbr>名称より<wbr>契約条件</p><div class="ed-grid "><div class="ed-card "><span class="ed-tag">週の所定労働時間</span><h3><span class="ed-number">20<small>時間以上</small></span></h3><p>契約上の<wbr>週所定時間を<wbr>確認。</p></div><div class="ed-card is-green"><span class="ed-tag">雇用の見込み</span><h3><span class="ed-number">31<small>日以上</small></span></h3><p>雇用期間・<wbr>更新見込みを<wbr>確認。</p><span class="ed-next">両方を満たすか確認</span></div></div><figcaption>一般の<wbr>適用事業の<wbr>基本要件。<wbr>昼間学生などの<wbr>例外は<wbr>本文で<wbr>確認します。<wbr>パートと<wbr>いう<wbr>呼称や<wbr>本人の<wbr>希望だけで<wbr>判断しません。</figcaption></figure><h2 id="s1">まず、<wbr>加入が<wbr>必要だった<wbr>人か<wbr>確認する</h2>
+<article class="post">
+<p>給与明細には<wbr>雇用保険料が<wbr>あるのに、<wbr>資格取得の<wbr>通知が<wbr>見当たらない。<wbr>退職する<wbr>従業員の<wbr>手続きを<wbr>始めて、<wbr>加入漏れの<wbr>可能性に<wbr>気づく<wbr>ことがあります。</p><section class="post-reader" data-reader-map aria-label="この記事が役立つ方"><p class="post-reader-kicker">この記事が役立つ方</p><div class="post-reader-grid"><div class="post-reader-item"><span class="post-reader-label">対象</span><strong>パートを含む従業員の入退社手続きを管理する事業主・総務担当者</strong></div><div class="post-reader-item"><span class="post-reader-label">困りごと</span><strong>給与から雇用保険料を引いているのに加入記録が見当たらない</strong></div><div class="post-reader-item"><span class="post-reader-label">読後にできること</span><strong>記録・控除・申告を分けて調べ、管轄窓口へ持参する資料を揃えられる</strong></div></div></section>
+<div class="point-box"><p class="pb-t">この記事のポイント</p><ul><li>加入記録・<wbr>給与控除・年度更新を<wbr>分けて<wbr>確認する</li><li>通常の<wbr>遡及と、<wbr>天引きの<wbr>証拠が<wbr>ある<wbr>場合の<wbr>特例を<wbr>区別する</li><li>管轄窓口へ<wbr>資料を<wbr>揃え、<wbr>本人への<wbr>説明と<wbr>取得・喪失の<wbr>確認まで<wbr>進める</li></ul></div>
+<nav class="post-toc" aria-labelledby="post-toc-t"><p class="post-toc-t" id="post-toc-t">この記事の内容</p><ol><li><a href="#s1">加入が<wbr>必要だった<wbr>人か<wbr>確認する</a></li><li><a href="#s2">記録・<wbr>控除・年度更新を<wbr>分けて<wbr>調べる</a></li><li><a href="#s3">遡及手続きの<wbr>資料を<wbr>揃える</a></li><li><a href="#s4">本人説明と<wbr>退職者への<wbr>対応</a></li><li><a href="#s5">再発を防ぐ管理表</a></li><li><a href="#judgment">判断が難しい場面</a></li><li><a href="#faq">よくある質問</a></li></ol></nav>
+<figure aria-labelledby="koyou-hoken-kanyu-more-figure-1" class="post-viz" data-visual="comparison"><p class="post-viz-title" id="koyou-hoken-kanyu-more-figure-1">図1　加入の<wbr>入口は、<wbr>名称より<wbr>契約条件</p><div class="post-viz-grid"><div class="post-viz-card"><span class="post-viz-label">週の所定労働時間</span><h3><span class="post-number">20<small>時間以上</small></span></h3><p>契約上の<wbr>週所定時間を<wbr>確認。</p></div><div class="post-viz-card is-primary"><span class="post-viz-label">雇用の見込み</span><h3><span class="post-number">31<small>日以上</small></span></h3><p>雇用期間・<wbr>更新見込みを<wbr>確認。</p><span class="post-viz-note">両方を満たすか確認</span></div></div><figcaption>一般の<wbr>適用事業の<wbr>基本要件。<wbr>昼間学生などの<wbr>例外は<wbr>本文で<wbr>確認します。<wbr>パートと<wbr>いう<wbr>呼称や<wbr>本人の<wbr>希望だけで<wbr>判断しません。</figcaption></figure><h2 id="s1">まず、<wbr>加入が<wbr>必要だった<wbr>人か<wbr>確認する</h2>
 <p><strong>パートと<wbr>いう<wbr>名称や<wbr>本人の<wbr>希望ではなく、<wbr>雇用契約の<wbr>条件から<wbr>加入要否を<wbr>確認します。</strong>一般の<wbr>適用事業では、<wbr>週の<wbr>所定労働時間が<wbr>20時間以上で、<wbr>31日以上の<wbr>雇用見込みが<wbr>ある<wbr>人が<wbr>対象です。<wbr>昼間学生は<wbr>原則対象外ですが<wbr>例外も<wbr>ある<wbr>ため、<wbr>学生・役員・<wbr>同居親族等は<wbr>別途確認します。<wbr>根拠：<wbr><a href="https://jsite.mhlw.go.jp/tokyo-hellowork/kakushu_jouhou/koyouhoken/koyouhoken/QA/hihokensya_qa.html" target="_blank" rel="noopener">東京ハローワーク<wbr>「被保険者に関する<wbr>Q&A」</a>（Q2・<wbr>Q18）。</p>
 <p>総務担当者は、<wbr>入社時と<wbr>条件変更時<wbr>の雇用契約書・<wbr>通知書を<wbr>並べ、<wbr>週所定時間、<wbr>契約期間、<wbr>更新見込み、<wbr>条件変更日を<wbr>書き出します。<wbr>試用期間・研修期間も<wbr>含めた<wbr>契約上の<wbr>在籍初日が<wbr>取得日の<wbr>確認点です。<wbr>「試用期間が<wbr>終わってから<wbr>加入」の<wbr>運用が<wbr>なかったかも<wbr>調べます。<wbr>根拠：同Q5。</p>
 <h2 id="s2">加入記録・<wbr>給与控除・年度更新を<wbr>分けて<wbr>調べる</h2>
 <p><strong>「保険料を<wbr>引いた」<wbr>「保険料を<wbr>納めた」<wbr>「加入記録が<wbr>ある」は、<wbr>それぞれ別の<wbr>確認事項で<wbr>す。</strong>資格取得の<wbr>通知が<wbr>見当たらない<wbr>だけでは、<wbr>未加入と<wbr>断定できません。<wbr>まず<wbr>提出控えや電子申請の<wbr>処理結果を<wbr>探し、<wbr>見つからなければ<wbr>管轄ハローワークへ<wbr>加入記録の<wbr>確認方法を<wbr>聞きます。</p>
-<figure aria-labelledby="koyou-hoken-kanyu-more-figure-2" class="post-viz ed-figure" data-visual="comparison"><p class="post-viz-title" id="koyou-hoken-kanyu-more-figure-2"><span class="ed-fig-no">図2</span>給与明細・<wbr>加<wbr>入記録・年度更新は、<wbr>別の<wbr>証拠</p><div class="ed-grid ed-three"><div class="ed-card "><span class="ed-tag">給与担当</span><h3>給与から控除したか</h3><p>賃金台帳・<wbr>給与明細で、<wbr>控除した月と<wbr>額を<wbr>確認。</p><span class="ed-next">天引き＝加入完了とは限らない</span></div><div class="ed-card is-green"><span class="ed-tag">手続き担当</span><h3>資格取得が確認されたか</h3><p>取得通知・電子申請の<wbr>公文書で、<wbr>取得日と<wbr>番号を<wbr>確認。</p><span class="ed-next">提出控えだけで完了にしない</span></div><div class="ed-card "><span class="ed-tag">経理・労務担当</span><h3>賃金を申告したか</h3><p>年度更新の<wbr>控えと<wbr>賃金集計で、<wbr>対象者の<wbr>算入を<wbr>確認。</p><span class="ed-next">申告済みの賃金を重複加算しない</span></div></div><figcaption>資格取得の<wbr>是正と、<wbr>保険料の<wbr>申告・納付は<wbr>分けて<wbr>確認します。<wbr>記録が<wbr>見つからなければ<wbr>管轄ハローワークへ<wbr>照会方法を<wbr>確認します。</figcaption></figure>
+<figure aria-labelledby="koyou-hoken-kanyu-more-figure-2" class="post-viz" data-visual="comparison"><p class="post-viz-title" id="koyou-hoken-kanyu-more-figure-2">図2　給与明細・<wbr>加<wbr>入記録・年度更新は、<wbr>別の<wbr>証拠</p><div class="post-viz-grid"><div class="post-viz-card"><span class="post-viz-label">給与担当</span><h3>給与から控除したか</h3><p>賃金台帳・<wbr>給与明細で、<wbr>控除した月と<wbr>額を<wbr>確認。</p><span class="post-viz-note">天引き＝加入完了とは限らない</span></div><div class="post-viz-card is-primary"><span class="post-viz-label">手続き担当</span><h3>資格取得が確認されたか</h3><p>取得通知・電子申請の<wbr>公文書で、<wbr>取得日と<wbr>番号を<wbr>確認。</p><span class="post-viz-note">提出控えだけで完了にしない</span></div><div class="post-viz-card"><span class="post-viz-label">経理・労務担当</span><h3>賃金を申告したか</h3><p>年度更新の<wbr>控えと<wbr>賃金集計で、<wbr>対象者の<wbr>算入を<wbr>確認。</p><span class="post-viz-note">申告済みの賃金を重複加算しない</span></div></div><figcaption>資格取得の<wbr>是正と、<wbr>保険料の<wbr>申告・納付は<wbr>分けて<wbr>確認します。<wbr>記録が<wbr>見つからなければ<wbr>管轄ハローワークへ<wbr>照会方法を<wbr>確認します。</figcaption></figure>
 <p>例えば、<wbr>給与からの<wbr>控除と年度更新の<wbr>賃金集計は<wbr>行っていて、<wbr>資格取得だけが<wbr>未処理だった<wbr>場合も<wbr>あり得ます。<wbr>逆に、<wbr>加入記録は<wbr>あるのに<wbr>給与の<wbr>控除設定が<wbr>誤っている<wbr>場合も<wbr>あります。<wbr>これは<wbr>確認の<wbr>ための<wbr>想定例であり、<wbr>当事務所の<wbr>受任事例では<wbr>ありません。</p>
-<figure aria-labelledby="koyou-hoken-kanyu-more-figure-3" class="post-viz ed-figure" data-visual="branch"><p class="post-viz-title" id="koyou-hoken-kanyu-more-figure-3"><span class="ed-fig-no">図3</span>何年前まで<wbr>遡れるかは、<wbr>控除の<wbr>証拠で<wbr>分かれる</p><div class="ed-grid "><div class="ed-card "><span class="ed-tag">通常の取扱い</span><h3>確認された<wbr>日から<wbr>2年前まで</h3><p>2年より<wbr>前の<wbr>期間は、<wbr>特例の<wbr>対象かを<wbr>確認します。</p><span class="ed-next">入社日から必ず遡れると約束しない</span></div><div class="ed-card is-green"><span class="ed-tag">2年を超える特例</span><h3>天引きを<wbr>確認できる<wbr>資料が<wbr>ある</h3><p>賃金台帳・<wbr>給与明細等を<wbr>管轄ハローワークへ<wbr>提示。</p><span class="ed-next">対象期間と手続きを窓口で確認</span></div></div><figcaption>通常の<wbr>遡及と、<wbr>天引きが<wbr>確認できる<wbr>場合の<wbr>特例を<wbr>整理した図です。<wbr>年数だけで<wbr>結論を<wbr>出さず、<wbr>資料に<wbr>基づいて<wbr>確認します。</figcaption></figure><h2 id="s3">遡及手続きに<wbr>使う<wbr>資料を<wbr>揃えて、<wbr>管轄窓口へ<wbr>相談する</h2>
+<figure aria-labelledby="koyou-hoken-kanyu-more-figure-3" class="post-viz" data-visual="branch"><p class="post-viz-title" id="koyou-hoken-kanyu-more-figure-3">図3　何年前まで<wbr>遡れるかは、<wbr>控除の<wbr>証拠で<wbr>分かれる</p><div class="post-viz-grid"><div class="post-viz-card"><span class="post-viz-label">通常の取扱い</span><h3>確認された<wbr>日から<wbr>2年前まで</h3><p>2年より<wbr>前の<wbr>期間は、<wbr>特例の<wbr>対象かを<wbr>確認します。</p><span class="post-viz-note">入社日から必ず遡れると約束しない</span></div><div class="post-viz-card is-primary"><span class="post-viz-label">2年を超える特例</span><h3>天引きを<wbr>確認できる<wbr>資料が<wbr>ある</h3><p>賃金台帳・<wbr>給与明細等を<wbr>管轄ハローワークへ<wbr>提示。</p><span class="post-viz-note">対象期間と手続きを窓口で確認</span></div></div><figcaption>通常の<wbr>遡及と、<wbr>天引きが<wbr>確認できる<wbr>場合の<wbr>特例を<wbr>整理した図です。<wbr>年数だけで<wbr>結論を<wbr>出さず、<wbr>資料に<wbr>基づいて<wbr>確認します。</figcaption></figure><h2 id="s3">遡及手続きに<wbr>使う<wbr>資料を<wbr>揃えて、<wbr>管轄窓口へ<wbr>相談する</h2>
 <p><strong>2年以上前の<wbr>加入漏れは、<wbr>保険料を<wbr>控除していた<wbr>証拠が<wbr>あるかで<wbr>取扱いが<wbr>変わります。</strong>通常は、<wbr>被保険者だった<wbr>ことの<wbr>確認が<wbr>行われた<wbr>日から<wbr>2年前までの<wbr>遡及が<wbr>基本です。賃金台帳や<wbr>給与明細で<wbr>雇用保険料の<wbr>天引きが<wbr>確認できる<wbr>場合、<wbr>2年を<wbr>超える<wbr>遡及が<wbr>可能と<wbr>なる<wbr>特例が<wbr>あります。<wbr>入社日に<wbr>必ず<wbr>遡れると<wbr>約束せず、<wbr>資料を<wbr>管轄ハローワークへ<wbr>提示します。<wbr>根拠：<wbr><a href="https://jsite.mhlw.go.jp/tokyo-hellowork/kakushu_jouhou/koyouhoken/koyouhoken/QA/hihokensya_qa.html" target="_blank" rel="noopener">東京ハローワーク<wbr>「被保険者に関する<wbr>Q&A」</a>（Q12）。</p>
-<figure aria-labelledby="koyou-hoken-kanyu-more-figure-4" class="post-viz ed-figure" data-visual="checklist"><p class="post-viz-title" id="koyou-hoken-kanyu-more-figure-4"><span class="ed-fig-no">図4</span>管轄窓口へ<wbr>相談する<wbr>前に<wbr>揃える<wbr>5点</p><div class="ed-grid"><div class="ed-card "><span class="ed-tag">条件</span><h3>雇用契約書・更新履歴</h3><p>週所定時間・<wbr>雇用期間・<wbr>条件変更日。</p></div><div class="ed-card "><span class="ed-tag">勤務と控除</span><h3>賃金台帳・給与明細・<wbr>勤怠</h3><p>控除の<wbr>有無と<wbr>期間、<wbr>勤務実態。</p></div><div class="ed-card "><span class="ed-tag">提出</span><h3>取得・喪失の控えと通知</h3><p>処理結果、<wbr>取得日、<wbr>被保険者番号。</p></div><div class="ed-card "><span class="ed-tag">申告</span><h3>年度更新の<wbr>控えと<wbr>賃金集計</h3><p>対象者の<wbr>賃金を<wbr>含めたか。</p></div><div class="ed-card "><span class="ed-tag">退職者</span><h3>退職日・退職理由の資料</h3><p>喪失・離職手続きも<wbr>一緒に<wbr>確認。</p></div></div><figcaption>一般的な<wbr>準備例です。<wbr>提出書類と<wbr>対象期間は、<wbr>管轄窓口の<wbr>案内に<wbr>合わせます。</figcaption></figure>
+
 <p>相談する<wbr>ときは<wbr>「対象者、<wbr>契約条件、<wbr>入社・条件変更日、<wbr>控除開始月、<wbr>加入記録の<wbr>有無」を<wbr>一枚に<wbr>まとめます。<wbr>総務と<wbr>経理で<wbr>確認担当を<wbr>分け、<wbr>資格取得の<wbr>届出と、<wbr>必要な労働保険料の<wbr>確認・訂正を<wbr>進めます。</p>
 <p>年度更新については、<wbr>加入記録の<wbr>是正だけを<wbr>見て<wbr>賃金を<wbr>機械的に<wbr>追加しないように<wbr>します。<wbr>すでに<wbr>雇用保険対象賃金へ<wbr>含めて<wbr>申告しているかを<wbr>年度ごとに<wbr>確認し、<wbr>訂正・追加納付の<wbr>要否と<wbr>手順を<wbr>労働局等へ<wbr>確認します。</p>
 <h2 id="s4">本人への<wbr>説明と、<wbr>退職者の<wbr>手続きを<wbr>並行して<wbr>進める</h2>
 <p><strong>本人には、<wbr>分かっている<wbr>事実、<wbr>確認中の<wbr>事項、<wbr>次の<wbr>連絡日を<wbr>分けて<wbr>伝えます。</strong>退職予定者<wbr>や<wbr>給付手続きが<wbr>近い人は、<wbr>その<wbr>予定も<wbr>管轄ハローワークへ<wbr>伝えます。<wbr>手続き漏れに<wbr>よって<wbr>失業等給付や<wbr>育児休業給付等の<wbr>手続きに<wbr>影響する<wbr>可能性が<wbr>ある<wbr>ためです。</p>
-<div class="ed-message"><p class="pb-t">本人へ伝える文例</p><p>雇用保険の<wbr>加入記録について、<wbr>当社の<wbr>控えから<wbr>確認できていない<wbr>事項が<wbr>見つかりました。<wbr>現在、<wbr>契約条件・<wbr>給与控除・提出記録を<wbr>照合し、<wbr>管轄ハローワークへ<wbr>確認しています。<wbr>確認結果と<wbr>必要な<wbr>手続きは<wbr>［次回連絡日］までに<wbr>ご説明します。<wbr>退職・育児休業等の<wbr>予定が<wbr>ある<wbr>場合は、<wbr>担当［氏名］<wbr>へ<wbr>お知らせ<wbr>ください。</p><p>未加入が<wbr>未確定の<wbr>段階の<wbr>文例です。<wbr>確認後は、<wbr>実際の<wbr>原因と<wbr>是正内容を<wbr>正確に<wbr>伝えてください。</p></div>
+<div class="point-box"><p class="pb-t">本人へ伝える文例</p><p>雇用保険の<wbr>加入記録について、<wbr>当社の<wbr>控えから<wbr>確認できていない<wbr>事項が<wbr>見つかりました。<wbr>現在、<wbr>契約条件・<wbr>給与控除・提出記録を<wbr>照合し、<wbr>管轄ハローワークへ<wbr>確認しています。<wbr>確認結果と<wbr>必要な<wbr>手続きは<wbr>［次回連絡日］までに<wbr>ご説明します。<wbr>退職・育児休業等の<wbr>予定が<wbr>ある<wbr>場合は、<wbr>担当［氏名］<wbr>へ<wbr>お知らせ<wbr>ください。</p><p>未加入が<wbr>未確定の<wbr>段階の<wbr>文例です。<wbr>確認後は、<wbr>実際の<wbr>原因と<wbr>是正内容を<wbr>正確に<wbr>伝えてください。</p></div>
 <p>すでに<wbr>退職している<wbr>人は、<wbr>遡及取得だけで<wbr>終わら<wbr>せず、資格喪失届と、<wbr>必要な<wbr>離職証明書の<wbr>作成・<wbr>提出も<wbr>確認します。<wbr>短期間の<wbr>勤務だけを<wbr>理由に、<wbr>会社が<wbr>給付対象外と<wbr>決めないように<wbr>します。<wbr>根拠：<wbr><a href="https://jsite.mhlw.go.jp/tokyo-hellowork/kakushu_jouhou/koyouhoken/koyouhoken/QA/hihokensya_qa.html" target="_blank" rel="noopener">東京ハローワーク<wbr>「被保険者に関する<wbr>Q&A」</a>（Q14・<wbr>Q16）。<wbr>過去の<wbr>本人負担分を<wbr>今月の<wbr>給与から<wbr>一括控除する<wbr>前に、<wbr>対象期間・<wbr>負担額・精算方法を<wbr>確認し、<wbr>本人への<wbr>説明と<wbr>必要な<wbr>手続きを<wbr>整理します。</p>
 <h2 id="s5">「提出」ではなく<wbr>「確認が<wbr>完了」まで<wbr>管理する</h2>
 <p><strong>採用担当、<wbr>手続き<wbr>担当、<wbr>給与担当の<wbr>受渡しを、<wbr>従業員一人に<wbr>つき一行で<wbr>管理します。</strong>事業主は<wbr>確認責任者を<wbr>一人決め、<wbr>毎月の<wbr>給与締め前に<wbr>未完了者だけを<wbr>確認できるように<wbr>します。</p>
-<figure aria-labelledby="koyou-hoken-kanyu-more-figure-5" class="post-viz ed-figure" data-visual="flow"><p class="post-viz-title" id="koyou-hoken-kanyu-more-figure-5"><span class="ed-fig-no">図5</span>担当者の<wbr>受渡しは、<wbr>取得の<wbr>確認まで<wbr>追う</p><div class="ed-steps"><div class="ed-step"><b>採用</b><p>契約条件と<wbr>加入要否を<wbr>判定。</p><small>根拠と判定者を記録</small></div><div class="ed-step"><b>手続き</b><p>翌月10日までを<wbr>原則と<wbr>して<wbr>届出。</p><small>提出日と処理結果を保存</small></div><div class="ed-step"><b>給与</b><p>取得記録と<wbr>控除設定を<wbr>照合。</p><small>設定者と確認者を記録</small></div><div class="ed-step"><b>退職</b><p>喪失・離職書類も確認。</p><small>必要書類の受渡しまで確認</small></div></div><figcaption>ここでの<wbr>「翌月10日」は、<wbr>原則と<wbr>して<wbr>被保険者と<wbr>なった<wbr>月の<wbr>翌月10日です。<wbr>出しただけで<wbr>完了に<wbr>せず、<wbr>返された<wbr>処理結果を<wbr>確認します。</figcaption></figure><h2 id="judgment">ここは<wbr>自社だけで<wbr>判断しない<wbr>ほうが<wbr>よい</h2><div class="post-hard"><p class="post-hard-title">資料を<wbr>揃えて<wbr>管轄窓口や<wbr>社会保険労務士へ<wbr>確認する<wbr>場面</p><div class="post-hard-grid"><div class="post-hard-item"><b>2年を超える加入漏れ</b><span>控除の証拠と期間によって遡及の取扱いが変わり、給付に影響する場合があります。</span></div><div class="post-hard-item"><b>過去の保険料を給与から精算したい</b><span>申告済み分との重複と、本人負担分の精算方法を確認します。</span></div><div class="post-hard-item"><b>退職・休業が近い人に漏れがある</b><span>取得・喪失・給付手続きの順番を管轄窓口へ確認します。</span></div></div></div><h2 id="faq">よくある質問</h2><dl class="faq"><dt>給与明細に<wbr>雇用保険料が<wbr>あれば<wbr>加入済みですか？</dt><dd>給与控除と<wbr>資格取得の<wbr>確認は<wbr>別です。<wbr>取得通知や電子申請の<wbr>公文書などを<wbr>確認してください。</dd><dt>入社日まで<wbr>必ず<wbr>遡って<wbr>加入できますか？</dt><dd>必ずとは<wbr>限りません。<wbr>通常の<wbr>2年の<wbr>取扱いと、<wbr>控除を<wbr>確認できる<wbr>場合の<wbr>特例を<wbr>分け、<wbr>管轄ハローワークに<wbr>確認します。</dd><dt>従業員が<wbr>加入を<wbr>希望しないと<wbr>言っています。</dt><dd>加入要件を<wbr>満たす<wbr>場合は、<wbr>本人や<wbr>会社の<wbr>希望だけで<wbr>加入を<wbr>省略できません。</dd></dl><div class="post-action"><p class="post-action-title">まず行う3手</p><ol><li><strong>総務担当者が、<wbr>契約書・取得記録・<wbr>月別の<wbr>給与明細を<wbr>揃える。</strong></li><li><strong>給与・経理担当者が、<wbr>控除と年度更新の<wbr>集計を<wbr>別々に<wbr>確認する。</strong></li><li><strong>事業主が、<wbr>管轄窓口への<wbr>確認担当と<wbr>本人への<wbr>次回説明日を<wbr>決める。</strong></li></ol></div><section aria-label="実務チェックリスト"><h2 id="company-checklist">確認した<wbr>ことを、<wbr>社内の<wbr>担当者へつなぐ</h2><div class="ed-checks"><label><input type="checkbox" aria-label="契約条件と、加入要件を満たした日を確認した"><span>契約条件と、加入要件を満たした日を確認した</span></label><label><input type="checkbox" aria-label="取得通知・電子申請の公文書を確認した"><span>取得通知・電子申請の公文書を確認した</span></label><label><input type="checkbox" aria-label="給与明細と年度更新の控えを別々に調べた"><span>給与明細と年度更新の控えを別々に調べた</span></label><label><input type="checkbox" aria-label="管轄窓口へ確認する担当者と資料を決めた"><span>管轄窓口へ確認する担当者と資料を決めた</span></label><label><input type="checkbox" aria-label="本人への次回連絡日と、取得・喪失の進捗を記録した"><span>本人への次回連絡日と、取得・喪失の進捗を記録した</span></label></div><div class="ed-tools"><p>確認した<wbr>項目に<wbr>チェックできます。<wbr>チェックは<wbr>この<wbr>画面だけの<wbr>目印です。<wbr>社内で<wbr>担当者と<wbr>進捗を<wbr>共有する<wbr>場合は、<wbr>記入用シートを<wbr>ご利用ください。</p><a href="../assets/checklists/koyou-hoken-kanyu-more.csv" download>社内確認表を<wbr>ダウンロード<wbr>（CSV）</a><a href="../checklists.html#koyou-hoken-kanyu-more">印刷用の確認表を開く</a></div></section><h2>当事務所のサポート</h2><p>加入漏れの<wbr>確認では、<wbr>従業員の<wbr>条件と<wbr>提出記録、<wbr>給与、年度更新を<wbr>つな<wbr>げて<wbr>見る<wbr>必要が<wbr>あります。<wbr>現在の<wbr>契約書・給与明細・<wbr>届出の<wbr>控えを<wbr>揃えて<wbr>ご相談ください。<wbr>みなの<wbr>社会保険労務士事務所<wbr>が、<wbr>確認する<wbr>事項と<wbr>手続きの<wbr>進め方を<wbr>一緒に<wbr>整理します。</p></div></article>
+<figure aria-labelledby="koyou-hoken-kanyu-more-figure-5" class="post-viz" data-visual="flow"><p class="post-viz-title" id="koyou-hoken-kanyu-more-figure-5">図4　担当者の<wbr>受渡しは、<wbr>取得の<wbr>確認まで<wbr>追う</p><div class="post-flow"><div class="post-flow-step"><b>採用</b><p>契約条件と<wbr>加入要否を<wbr>判定。</p><small>根拠と判定者を記録</small></div><span class="post-flow-arrow" aria-hidden="true">→</span><div class="post-flow-step"><b>手続き</b><p>翌月10日までを<wbr>原則と<wbr>して<wbr>届出。</p><small>提出日と処理結果を保存</small></div><span class="post-flow-arrow" aria-hidden="true">→</span><div class="post-flow-step"><b>給与</b><p>取得記録と<wbr>控除設定を<wbr>照合。</p><small>設定者と確認者を記録</small></div><span class="post-flow-arrow" aria-hidden="true">→</span><div class="post-flow-step"><b>退職</b><p>喪失・離職書類も確認。</p><small>必要書類の受渡しまで確認</small></div></div><figcaption>ここでの<wbr>「翌月10日」は、<wbr>原則と<wbr>して<wbr>被保険者と<wbr>なった<wbr>月の<wbr>翌月10日です。<wbr>出しただけで<wbr>完了に<wbr>せず、<wbr>返された<wbr>処理結果を<wbr>確認します。</figcaption></figure><h2 id="judgment">ここは<wbr>自社だけで<wbr>判断しない<wbr>ほうが<wbr>よい</h2><div class="post-hard"><p class="post-hard-title">資料を<wbr>揃えて<wbr>管轄窓口や<wbr>社会保険労務士へ<wbr>確認する<wbr>場面</p><div class="post-hard-grid"><div class="post-hard-item"><b>2年を超える加入漏れ</b><span>控除の証拠と期間によって遡及の取扱いが変わり、給付に影響する場合があります。</span></div><div class="post-hard-item"><b>過去の保険料を給与から精算したい</b><span>申告済み分との重複と、本人負担分の精算方法を確認します。</span></div><div class="post-hard-item"><b>退職・休業が近い人に漏れがある</b><span>取得・喪失・給付手続きの順番を管轄窓口へ確認します。</span></div></div></div><h2 id="faq">よくある質問</h2><dl class="faq"><dt>給与明細に<wbr>雇用保険料が<wbr>あれば<wbr>加入済みですか？</dt><dd>給与控除と<wbr>資格取得の<wbr>確認は<wbr>別です。<wbr>取得通知や電子申請の<wbr>公文書などを<wbr>確認してください。</dd><dt>入社日まで<wbr>必ず<wbr>遡って<wbr>加入できますか？</dt><dd>必ずとは<wbr>限りません。<wbr>通常の<wbr>2年の<wbr>取扱いと、<wbr>控除を<wbr>確認できる<wbr>場合の<wbr>特例を<wbr>分け、<wbr>管轄ハローワークに<wbr>確認します。</dd><dt>従業員が<wbr>加入を<wbr>希望しないと<wbr>言っています。</dt><dd>加入要件を<wbr>満たす<wbr>場合は、<wbr>本人や<wbr>会社の<wbr>希望だけで<wbr>加入を<wbr>省略できません。</dd></dl><div class="post-action"><p class="post-action-title">まず行う3手</p><ol><li><strong>総務担当者が、<wbr>契約書・取得記録・<wbr>月別の<wbr>給与明細を<wbr>揃える。</strong></li><li><strong>給与・経理担当者が、<wbr>控除と年度更新の<wbr>集計を<wbr>別々に<wbr>確認する。</strong></li><li><strong>事業主が、<wbr>管轄窓口への<wbr>確認担当と<wbr>本人への<wbr>次回説明日を<wbr>決める。</strong></li></ol></div><h2>当事務所のサポート</h2><p>加入漏れの<wbr>確認では、<wbr>従業員の<wbr>条件と<wbr>提出記録、<wbr>給与、年度更新を<wbr>つな<wbr>げて<wbr>見る<wbr>必要が<wbr>あります。<wbr>現在の<wbr>契約書・給与明細・<wbr>届出の<wbr>控えを<wbr>揃えて<wbr>ご相談ください。<wbr>みなの<wbr>社会保険労務士事務所<wbr>が、<wbr>確認する<wbr>事項と<wbr>手続きの<wbr>進め方を<wbr>一緒に<wbr>整理します。</p></article>
 
 <section class="post-refs" style="max-width:820px;margin:24px auto;padding:24px;border:1px solid var(--line);border-radius:14px"><h2>参考となる公式情報</h2><ul><li><a href="https://jsite.mhlw.go.jp/tokyo-hellowork/kakushu_jouhou/koyouhoken/koyouhoken/QA/hihokensya_qa.html" target="_blank" rel="noopener">東京ハローワーク：<wbr>被保険者に関する<wbr>Q&A</a></li><li><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000131698.html" target="_blank" rel="noopener">厚生労働省：<wbr>雇用保険事務手続きの<wbr>手引き</a></li></ul><p>公式情報確認日：<wbr>2026年<wbr>10月3日。<wbr>個別の<wbr>届出や<wbr>精算は、<wbr>該当者の<wbr>条件と<wbr>管轄窓口の<wbr>案内を<wbr>確認してください。</p></section>
 <section class="post-related" style="max-width:820px;margin:24px auto;padding:24px"><h2>あわせて読みたい</h2><ul><li><a href="nyusha-tetsuzuki-checklist.html">入社手続きの<wbr>期限と<wbr>確認項目</a></li><li><a href="taishoku-trouble-prevention.html">退職トラブルを防ぐ準備</a></li></ul></section>
@@ -289,7 +200,7 @@ body:has(#koyou-hoken-kanyu-more-article) .post-toc-mobile > summary,body:has(#k
       <a href="tsukin-teate-shakai-hoken.html" class="rp-card">
         <span class="rp-cat">社会保険</span>
         <span class="rp-title">非課税の<wbr>通勤手当も<wbr>社会保険に<wbr>含めて<wbr>計算します</span>
-        <span class="rp-read">読了 約7分</span>
+        <span class="rp-read">読了 約6分</span>
       </a>
       <a href="hitori-shacho-kenko-hoken.html" class="rp-card">
         <span class="rp-cat">社会保険</span>
