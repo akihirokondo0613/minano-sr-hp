@@ -6,7 +6,7 @@
   "sources": "Existing hero-crowd-*.webp assets from this repository",
   "repairPrompt": "Edit target: this existing website character illustration. Produce ONE faithful clean redrawing of exactly this character, same person, face, clothes, color palette, pose, props and full body silhouette. It is for a polished Japanese service website. Repair only the poor cutout and raster quality: eliminate every gray/white checkerboard pixel, all gray square halos, all background residue around the outline and between arms, legs and props. Clean smooth confident black outlines and flat solid fill colors, consistent lightly hand-drawn vector-like quality, crisp at high resolution. Preserve the white clothing/shoes and all interior details. Use a genuinely transparent background, no backdrop, no checkerboard pattern drawn into the image, no floor, no added shadow, no extra character, no text. Keep whole character inside frame with small transparent padding, retaining the original pose and proportions. Output production-ready transparent character asset.",
   "expressionPrompt": "Surgical animation-frame edit. This transparent full-body character image is the BEFORE frame. Make its matching AFTER frame. Change ONLY the tiny facial expression: replace the open mouth with a relaxed small closed curved smile and the eyes with happy closed curved eyes. Keep every other visible pixel, outline, position, shape, anatomy, color, silhouette, clothing, limbs, props and transparent padding exactly unchanged. Do not redraw, restyle, reframe, move, scale, recrop, add texture, add lighting or change body pose. The image must align seamlessly when overlaid on the reference frame at identical dimensions. Preserve genuinely transparent background. One character only, no checkerboard, text, shadow or backdrop. This image will be briefly swapped as a 2-frame website character expression animation.",
-  "export": "WebP with alpha, quality 88, plus AVIF with alpha encoded from the same WebP at quality 50 using ImageMagick. Responsive small copies; paired frames share identical dimensions. Raw generated PNGs remain in sibling generated_images directory.",
+  "export": "WebP with alpha, quality 88, plus AVIF with alpha at quality 50 using ImageMagick. AVIF: small files fit 312x416 for viewports up to 499px; medium files use twice each desktop actor width at a 1440px canvas, served through 1440px; larger screens keep the original high-resolution files. Paired frames share dimensions within each size. Raw generated PNGs remain in sibling generated_images directory.",
   "validation": {
     "alphaCornersPassed": 28,
     "sameSizeFramePairs": 8,
@@ -29,12 +29,12 @@
     "reducedMotion": "No entrance animation, no expression frames requested. Emulation cleared by closing test tab.",
     "navigation": "Pricing and contact navigation, returning home. Keyboard Enter on consultation CTA. No form submission.",
     "avif": {
-      "assets": 28,
-      "sameSizeFramePairs": 8,
+      "assets": 42,
+      "sameSizeFramePairs": 12,
       "maximumCornerAlpha": 1,
-      "maximumAlphaOutsideWebpSilhouette": 22,
+      "maximumAlphaOutsideSourceSilhouette": 22,
       "unexpectedPixelsAboveAlpha32": 0,
-      "visualReview": "Local IAB PC and 390px previews show intact cutouts; expression pictures decode successfully."
+      "visualReview": "Local IAB at actual 1280px and 390px: images decode and cutouts remain intact. Pricing navigation and back preserve both hero scenes."
     }
   },
   "assets": [
@@ -263,10 +263,24 @@
       "cornersTransparent": true
     },
     {
+      "file": "baker-md.avif",
+      "width": 271,
+      "height": 542,
+      "bytes": 12370,
+      "mode": "RGBA",
+      "cornerAlphaValues": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "maximumAlphaOutsideSourceSilhouette": 16
+    },
+    {
       "file": "baker-sm.avif",
-      "width": 240,
-      "height": 480,
-      "bytes": 10196,
+      "width": 208,
+      "height": 416,
+      "bytes": 8385,
       "mode": "RGBA",
       "cornerAlphaValues": [
         0,
@@ -274,7 +288,7 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 18
+      "maximumAlphaOutsideSourceSilhouette": 18
     },
     {
       "file": "baker.avif",
@@ -288,13 +302,13 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 20
+      "maximumAlphaOutsideSourceSilhouette": 20
     },
     {
-      "file": "builder-sm.avif",
-      "width": 276,
-      "height": 480,
-      "bytes": 10566,
+      "file": "builder-md.avif",
+      "width": 317,
+      "height": 552,
+      "bytes": 13068,
       "mode": "RGBA",
       "cornerAlphaValues": [
         0,
@@ -302,7 +316,21 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 15
+      "maximumAlphaOutsideSourceSilhouette": 13
+    },
+    {
+      "file": "builder-sm.avif",
+      "width": 239,
+      "height": 416,
+      "bytes": 9011,
+      "mode": "RGBA",
+      "cornerAlphaValues": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "maximumAlphaOutsideSourceSilhouette": 14
     },
     {
       "file": "builder.avif",
@@ -316,13 +344,13 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 17
+      "maximumAlphaOutsideSourceSilhouette": 17
     },
     {
-      "file": "cafe-sm.avif",
-      "width": 258,
-      "height": 480,
-      "bytes": 9633,
+      "file": "cafe-md.avif",
+      "width": 369,
+      "height": 687,
+      "bytes": 15077,
       "mode": "RGBA",
       "cornerAlphaValues": [
         0,
@@ -330,7 +358,21 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 16
+      "maximumAlphaOutsideSourceSilhouette": 19
+    },
+    {
+      "file": "cafe-sm.avif",
+      "width": 224,
+      "height": 416,
+      "bytes": 8563,
+      "mode": "RGBA",
+      "cornerAlphaValues": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "maximumAlphaOutsideSourceSilhouette": 15
     },
     {
       "file": "cafe.avif",
@@ -344,13 +386,13 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 17
+      "maximumAlphaOutsideSourceSilhouette": 17
     },
     {
-      "file": "delivery-sm.avif",
-      "width": 360,
-      "height": 431,
-      "bytes": 9595,
+      "file": "delivery-md.avif",
+      "width": 398,
+      "height": 476,
+      "bytes": 11666,
       "mode": "RGBA",
       "cornerAlphaValues": [
         0,
@@ -358,7 +400,21 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 13
+      "maximumAlphaOutsideSourceSilhouette": 14
+    },
+    {
+      "file": "delivery-sm.avif",
+      "width": 312,
+      "height": 374,
+      "bytes": 8027,
+      "mode": "RGBA",
+      "cornerAlphaValues": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "maximumAlphaOutsideSourceSilhouette": 20
     },
     {
       "file": "delivery.avif",
@@ -372,13 +428,13 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 19
+      "maximumAlphaOutsideSourceSilhouette": 19
     },
     {
-      "file": "florist-sm.avif",
-      "width": 293,
-      "height": 480,
-      "bytes": 11696,
+      "file": "florist-md.avif",
+      "width": 360,
+      "height": 590,
+      "bytes": 16077,
       "mode": "RGBA",
       "cornerAlphaValues": [
         0,
@@ -386,7 +442,21 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 17
+      "maximumAlphaOutsideSourceSilhouette": 16
+    },
+    {
+      "file": "florist-sm.avif",
+      "width": 254,
+      "height": 416,
+      "bytes": 10317,
+      "mode": "RGBA",
+      "cornerAlphaValues": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "maximumAlphaOutsideSourceSilhouette": 16
     },
     {
       "file": "florist.avif",
@@ -400,13 +470,13 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 21
+      "maximumAlphaOutsideSourceSilhouette": 21
     },
     {
-      "file": "garden-after-sm.avif",
-      "width": 360,
-      "height": 344,
-      "bytes": 12170,
+      "file": "garden-after-md.avif",
+      "width": 450,
+      "height": 430,
+      "bytes": 15410,
       "mode": "RGBA",
       "cornerAlphaValues": [
         0,
@@ -414,7 +484,21 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 19
+      "maximumAlphaOutsideSourceSilhouette": 17
+    },
+    {
+      "file": "garden-after-sm.avif",
+      "width": 312,
+      "height": 298,
+      "bytes": 9779,
+      "mode": "RGBA",
+      "cornerAlphaValues": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "maximumAlphaOutsideSourceSilhouette": 17
     },
     {
       "file": "garden-after.avif",
@@ -428,13 +512,13 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 17
+      "maximumAlphaOutsideSourceSilhouette": 17
     },
     {
-      "file": "garden-sm.avif",
-      "width": 360,
-      "height": 344,
-      "bytes": 11669,
+      "file": "garden-md.avif",
+      "width": 450,
+      "height": 430,
+      "bytes": 15090,
       "mode": "RGBA",
       "cornerAlphaValues": [
         0,
@@ -442,7 +526,21 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 17
+      "maximumAlphaOutsideSourceSilhouette": 20
+    },
+    {
+      "file": "garden-sm.avif",
+      "width": 312,
+      "height": 298,
+      "bytes": 9574,
+      "mode": "RGBA",
+      "cornerAlphaValues": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "maximumAlphaOutsideSourceSilhouette": 13
     },
     {
       "file": "garden.avif",
@@ -456,13 +554,13 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 19
+      "maximumAlphaOutsideSourceSilhouette": 19
     },
     {
-      "file": "kneel-after-sm.avif",
-      "width": 360,
-      "height": 396,
-      "bytes": 11571,
+      "file": "kneel-after-md.avif",
+      "width": 352,
+      "height": 387,
+      "bytes": 12013,
       "mode": "RGBA",
       "cornerAlphaValues": [
         0,
@@ -470,7 +568,21 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 13
+      "maximumAlphaOutsideSourceSilhouette": 17
+    },
+    {
+      "file": "kneel-after-sm.avif",
+      "width": 312,
+      "height": 343,
+      "bytes": 9718,
+      "mode": "RGBA",
+      "cornerAlphaValues": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "maximumAlphaOutsideSourceSilhouette": 18
     },
     {
       "file": "kneel-after.avif",
@@ -484,13 +596,13 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 15
+      "maximumAlphaOutsideSourceSilhouette": 15
     },
     {
-      "file": "kneel-sm.avif",
-      "width": 360,
-      "height": 396,
-      "bytes": 11100,
+      "file": "kneel-md.avif",
+      "width": 352,
+      "height": 387,
+      "bytes": 11971,
       "mode": "RGBA",
       "cornerAlphaValues": [
         0,
@@ -498,7 +610,21 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 14
+      "maximumAlphaOutsideSourceSilhouette": 20
+    },
+    {
+      "file": "kneel-sm.avif",
+      "width": 312,
+      "height": 343,
+      "bytes": 9517,
+      "mode": "RGBA",
+      "cornerAlphaValues": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "maximumAlphaOutsideSourceSilhouette": 13
     },
     {
       "file": "kneel.avif",
@@ -512,13 +638,27 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 22
+      "maximumAlphaOutsideSourceSilhouette": 22
+    },
+    {
+      "file": "mechanic-md.avif",
+      "width": 268,
+      "height": 586,
+      "bytes": 12363,
+      "mode": "RGBA",
+      "cornerAlphaValues": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "maximumAlphaOutsideSourceSilhouette": 16
     },
     {
       "file": "mechanic-sm.avif",
-      "width": 220,
-      "height": 480,
-      "bytes": 9493,
+      "width": 191,
+      "height": 416,
+      "bytes": 7947,
       "mode": "RGBA",
       "cornerAlphaValues": [
         0,
@@ -526,7 +666,7 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 15
+      "maximumAlphaOutsideSourceSilhouette": 17
     },
     {
       "file": "mechanic.avif",
@@ -540,13 +680,13 @@
         0,
         1
       ],
-      "maximumAlphaOutsideWebpSilhouette": 14
+      "maximumAlphaOutsideSourceSilhouette": 14
     },
     {
-      "file": "seated-after-sm.avif",
-      "width": 360,
-      "height": 443,
-      "bytes": 11182,
+      "file": "seated-after-md.avif",
+      "width": 404,
+      "height": 497,
+      "bytes": 13580,
       "mode": "RGBA",
       "cornerAlphaValues": [
         0,
@@ -554,7 +694,21 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 19
+      "maximumAlphaOutsideSourceSilhouette": 14
+    },
+    {
+      "file": "seated-after-sm.avif",
+      "width": 312,
+      "height": 384,
+      "bytes": 9496,
+      "mode": "RGBA",
+      "cornerAlphaValues": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "maximumAlphaOutsideSourceSilhouette": 12
     },
     {
       "file": "seated-after.avif",
@@ -568,13 +722,13 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 16
+      "maximumAlphaOutsideSourceSilhouette": 16
     },
     {
-      "file": "seated-sm.avif",
-      "width": 360,
-      "height": 443,
-      "bytes": 10918,
+      "file": "seated-md.avif",
+      "width": 404,
+      "height": 497,
+      "bytes": 13385,
       "mode": "RGBA",
       "cornerAlphaValues": [
         0,
@@ -582,7 +736,21 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 13
+      "maximumAlphaOutsideSourceSilhouette": 19
+    },
+    {
+      "file": "seated-sm.avif",
+      "width": 312,
+      "height": 384,
+      "bytes": 9195,
+      "mode": "RGBA",
+      "cornerAlphaValues": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "maximumAlphaOutsideSourceSilhouette": 17
     },
     {
       "file": "seated.avif",
@@ -596,21 +764,35 @@
         0,
         0
       ],
-      "maximumAlphaOutsideWebpSilhouette": 21
+      "maximumAlphaOutsideSourceSilhouette": 21
     },
     {
-      "file": "wave-after-sm.avif",
-      "width": 316,
-      "height": 480,
-      "bytes": 11741,
+      "file": "wave-after-md.avif",
+      "width": 378,
+      "height": 575,
+      "bytes": 14658,
       "mode": "RGBA",
       "cornerAlphaValues": [
         0,
         0,
         0,
-        0
+        1
       ],
-      "maximumAlphaOutsideWebpSilhouette": 16
+      "maximumAlphaOutsideSourceSilhouette": 20
+    },
+    {
+      "file": "wave-after-sm.avif",
+      "width": 274,
+      "height": 416,
+      "bytes": 9912,
+      "mode": "RGBA",
+      "cornerAlphaValues": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "maximumAlphaOutsideSourceSilhouette": 17
     },
     {
       "file": "wave-after.avif",
@@ -624,13 +806,13 @@
         0,
         1
       ],
-      "maximumAlphaOutsideWebpSilhouette": 19
+      "maximumAlphaOutsideSourceSilhouette": 19
     },
     {
-      "file": "wave-sm.avif",
-      "width": 316,
-      "height": 480,
-      "bytes": 11632,
+      "file": "wave-md.avif",
+      "width": 378,
+      "height": 575,
+      "bytes": 14751,
       "mode": "RGBA",
       "cornerAlphaValues": [
         0,
@@ -638,7 +820,21 @@
         0,
         1
       ],
-      "maximumAlphaOutsideWebpSilhouette": 16
+      "maximumAlphaOutsideSourceSilhouette": 16
+    },
+    {
+      "file": "wave-sm.avif",
+      "width": 274,
+      "height": 416,
+      "bytes": 9827,
+      "mode": "RGBA",
+      "cornerAlphaValues": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "maximumAlphaOutsideSourceSilhouette": 15
     },
     {
       "file": "wave.avif",
@@ -652,7 +848,7 @@
         0,
         1
       ],
-      "maximumAlphaOutsideWebpSilhouette": 15
+      "maximumAlphaOutsideSourceSilhouette": 15
     }
   ]
 }
