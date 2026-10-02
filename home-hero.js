@@ -18,7 +18,7 @@
     function scheduleExpression(actor, index) {
       later(function () {
         if (stopped || motion.matches || !visible || document.hidden || !stage.isConnected) return;
-        var after = actor.querySelector('.actor-after');
+        var after = actor.querySelector('.actor-after img');
         if (after && after.complete && after.naturalWidth) {
           actor.classList.add('is-wow');
           later(function () { actor.classList.remove('is-wow'); }, 420);
@@ -31,8 +31,13 @@
       stage.querySelectorAll('.is-wow').forEach(function (actor) { actor.classList.remove('is-wow'); });
       if (stopped || motion.matches || !visible || document.hidden) return;
       activeCanvas().querySelectorAll('.hero-actor:has(.actor-after)').forEach(function (actor, index) {
-        var after = actor.querySelector('.actor-after');
-        if (!after.src) after.src = after.getAttribute('data-src');
+        var after = actor.querySelector('.actor-after img');
+        if (!after.getAttribute('src')) {
+          actor.querySelectorAll('.actor-after source').forEach(function (source) {
+            source.srcset = source.getAttribute('data-srcset');
+          });
+          after.src = after.getAttribute('data-src');
+        }
         scheduleExpression(actor, index);
       });
     }
