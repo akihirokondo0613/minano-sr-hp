@@ -1,8 +1,8 @@
 /* Fixed illustration canvases, independently composited transparent characters.
    Desktop 1440×768 / mobile 400×592. Coordinates belong to each canvas. */
-#top.hero{height:auto;min-height:0;background:#fff;overflow:clip}
+#top.hero{height:auto;min-height:0;background:#fff;overflow-x:clip;overflow-y:visible}
 #top .hero-stage{position:relative;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto;gap:0;width:100%;max-width:none;margin:0;padding:0 0 30px;background:#fff!important}
-#top .hero-scene{position:relative;grid-column:1;grid-row:1;display:block;width:100%;height:auto;min-width:0;min-height:0;max-height:none;margin:0;aspect-ratio:1440/768;isolation:isolate;pointer-events:none;overflow:clip}
+#top .hero-scene{position:relative;grid-column:1;grid-row:1;display:block;width:100%;height:auto;min-width:0;min-height:0;max-height:none;margin:0;aspect-ratio:1440/768;isolation:isolate;pointer-events:none;overflow-x:clip;overflow-y:visible}
 #top .hero-canvas-sp{display:none}
 #top .hero-town{position:absolute;display:block;left:0;top:40%;bottom:auto;width:100%;height:43%;opacity:1;transform:none}
 #top .hero-town img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
@@ -30,10 +30,9 @@
 #top .hero-trust{margin-top:14px;gap:20px}
 #top .trust-item{padding:0;border:0;background:none;font-size:11.5px}
 #top .hero-spot-note{font-size:11.5px}
-/* Entrance belongs to the complete character layer. The resting pose never floats. */
-#top .hero-entering .hero-poses{animation:hero-character-arrive 900ms cubic-bezier(.22,.8,.25,1) var(--actor-delay,0ms) both}
-@keyframes hero-character-arrive{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
-@media(min-width:769px) and (max-width:1100px){
+/* Initial opacity prevents a resting-pose flash before the entrance is prepared. */
+#top .hero-pending .hero-poses{opacity:0}
+@media(min-width:768px) and (max-width:1100px){
  #top .hero-stage{grid-template-rows:auto auto auto}
  #top .hero-overlay{padding-top:92px}
  #top .hero-h1{font-size:clamp(22px,2.8vw,31px)}
@@ -44,7 +43,7 @@
  #top .hero-btns{margin-top:12px;gap:12px}
  #top .hero-btns .btn-primary{padding:12px 24px;font-size:13px}
 }
-@media(max-width:768px){
+@media(max-width:767px){
  #top .hero-stage{grid-template-rows:auto auto auto}
  #top .hero-canvas-pc{display:none}
  #top .hero-canvas-sp{display:block;width:min(100%,540px);justify-self:center;aspect-ratio:400/592}
