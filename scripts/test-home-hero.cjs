@@ -34,12 +34,12 @@ const MOTION_WIDTHS = [390, 767, 768, 1280];
 // allow one 16.7ms RAF interval, without sharing the production easing function.
 // User override: start during initialization, without the reference site's delay.
 const MOTION_REFERENCE = {
-  sp: { distance: -600, duration: 2400, count: 6, checkpoints: [
+  sp: { distance: -600, duration: 2400, count: 3, checkpoints: [
     { fraction: 0.2, y: -91.597182, angle: -9.159718, yTolerance: 11, angleTolerance: 1.05 },
     { fraction: 0.4, y: 9.533188, angle: 0.953319, yTolerance: 2, angleTolerance: 0.2 },
     { fraction: 0.5, y: 12.278639, angle: 1.227864, yTolerance: 1.5, angleTolerance: 0.15 },
   ] },
-  pc: { distance: -1200, duration: 2000, count: 10, checkpoints: [
+  pc: { distance: -1200, duration: 2000, count: 5, checkpoints: [
     { fraction: 0.2, y: -183.194364, angle: -9.159718, yTolerance: 23, angleTolerance: 1.2 },
     { fraction: 0.4, y: 19.066375, angle: 0.953319, yTolerance: 3.2, angleTolerance: 0.22 },
     { fraction: 0.5, y: 24.557278, angle: 1.227864, yTolerance: 1.8, angleTolerance: 0.15 },
@@ -172,6 +172,18 @@ async function measure(page) {
       });
     const h1Phrases = phrasesOf('.hero-h1');
     const subPhrases = phrasesOf('.hero-sub');
+    const canvas = [...document.querySelectorAll('#top .hero-scene')]
+      .find((element) => getComputedStyle(element).display !== 'none');
+    const boxOf = (element) => {
+      const { left, top, right, bottom, width, height } = element.getBoundingClientRect();
+      return { left, top, right, bottom, width, height };
+    };
+    // Actor wrappers give the settled layout, independently of the entrance transform.
+    const actorBoxes = [...canvas.querySelectorAll('.hero-actor')]
+      .map((actor) => ({ actor: actor.dataset.actor, ...boxOf(actor) }))
+      .sort((a, b) => a.left - b.left);
+    const canvasBox = boxOf(canvas);
+    const titleBox = boxOf(document.querySelector('.hero-h1'));
 
     return {
       viewportWidth,
@@ -179,6 +191,14 @@ async function measure(page) {
       titleFonts: {
         primary: parseFloat(getComputedStyle(document.querySelector('.hero-services')).fontSize),
         secondary: parseFloat(getComputedStyle(document.querySelector('.hero-h1 strong')).fontSize),
+      },
+      composition: {
+        canvas: canvasBox, actors: actorBoxes,
+        gaps: actorBoxes.slice(1).map((actor, index) => actor.left - actorBoxes[index].right),
+        titleGap: Math.min(...actorBoxes.map((actor) => actor.top)) - titleBox.bottom,
+        introGap: boxOf(document.querySelector('.hero-intro')).top
+          - Math.max(...actorBoxes.map((actor) => actor.bottom)),
+        backgroundOpacity: Number(getComputedStyle(canvas.querySelector('.hero-town')).opacity),
       },
       summaryColumns: getComputedStyle(document.querySelector('.hs-inner'))
         .gridTemplateColumns.split(' ').filter(Boolean).length,
@@ -297,7 +317,7 @@ function checkResting(state, check) {
 }
 
 async function motionScreenshot(page, engine, width, phase, screenshots) {
-  if (!process.env.RUNNER_TEMP || ![390, 1280].includes(width)) return;
+  if (!process.env.RUNNER_TEMP || ![390, 768, 1280].includes(width)) return;
   // performance.yml uploads this directory; run-layout-checks.cjs inherits env.
   const directory = path.join(process.env.RUNNER_TEMP, 'layout-results', 'hero-motion');
   await fs.mkdir(directory, { recursive: true });
@@ -498,6 +518,21 @@ async function checkReducedMotion(browser, engine, width, failures) {
         results.push({ engine: engineName, width, errors, ...result,
           entryScreenshots: await entryScreenshots(page, engineName, width) });
 
+        const composition = result.composition;
+        const expectedActors = width <= 767 ? 3 : 5;
+        if (composition.actors.length !== expectedActors || composition.gaps.length !== expectedActors - 1) {
+          failures.push(`${engineName}@${width}px: 人物の配置数・間隔を測定できません`);
+        }
+        if (composition.gaps.some((gap) => gap < 8) || composition.titleGap < 20 || composition.introGap < 20) {
+          failures.push(`${engineName}@${width}px: 人物同士・見出し・説明の余白が足りません`
+            + ` (gaps=${composition.gaps}, title=${composition.titleGap}, intro=${composition.introGap})`);
+        }
+        if (composition.actors.some((actor) => actor.left < composition.canvas.left - EPSILON
+          || actor.right > composition.canvas.right + EPSILON
+          || actor.top < composition.canvas.top - EPSILON
+          || actor.bottom > composition.canvas.bottom + EPSILON)) {
+          failures.push(`${engineName}@${width}px: 人物が画像帯からはみ出しています`);
+        }
         if (result.startupPhrases.length < 3 || result.startupPhrases.some((phrase) => phrase.rectCount !== 1)) {
           failures.push(`${engineName}@${width}px: 料金案内の文節・スタート顧問・金額が途中で割れています`);
         }
