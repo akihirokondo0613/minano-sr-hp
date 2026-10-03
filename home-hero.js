@@ -9,7 +9,7 @@
     var motion = matchMedia('(prefers-reduced-motion: reduce)');
     var mobile = matchMedia('(max-width: 767px)');
     var timers = new Set(), stopped = false, visible = true;
-    var entranceTimer = 0, frame = 0, entered = false;
+    var frame = 0, entered = false;
     function later(callback, delay) {
       var timer = setTimeout(function () { timers.delete(timer); callback(); }, delay);
       timers.add(timer);
@@ -17,9 +17,7 @@
     function clearTimers() { timers.forEach(clearTimeout); timers.clear(); }
     function activeCanvas() { return stage.querySelector(mobile.matches ? '.hero-canvas-sp' : '.hero-canvas-pc'); }
     function clearEntrance() {
-      clearTimeout(entranceTimer);
       cancelAnimationFrame(frame);
-      document.removeEventListener('DOMContentLoaded', waitToEnter);
     }
     function settle() {
       clearEntrance();
@@ -88,17 +86,13 @@
       }
       frame = requestAnimationFrame(tick);
     }
-    function waitToEnter() {
-      if (!stopped && !entered) entranceTimer = setTimeout(enter, 3200);
-    }
     function preference() { loadNormalPoses(); settle(); expressions(); }
     loadNormalPoses();
     if (motion.matches || document.hidden) { settle(); expressions(); }
     else {
       stage.classList.add('hero-pending');
       activeCanvas().querySelectorAll('.hero-poses').forEach(function (pose) { draw(pose, 1, 0); });
-      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', waitToEnter, { once: true });
-      else waitToEnter();
+      enter();
     }
     var visibilityObserver = new IntersectionObserver(function (entries) {
       var next = entries[0].isIntersecting;
