@@ -186,6 +186,7 @@ async function measure(page) {
       summaryDisplay: getComputedStyle(document.querySelector('.hero-summary')).display,
       h1Phrases,
       subPhrases,
+      startupPhrases: phrasesOf('.home-startup-sentence'),
       h1Boundaries: boundariesOf('.hero-h1'),
       subBoundaries: boundariesOf('.hero-sub'),
       h1TextCovered: textCoveredBy('.hero-h1', h1Phrases),
@@ -496,6 +497,10 @@ async function checkReducedMotion(browser, engine, width, failures) {
         const result = await measure(page);
         results.push({ engine: engineName, width, errors, ...result,
           entryScreenshots: await entryScreenshots(page, engineName, width) });
+
+        if (result.startupPhrases.length < 3 || result.startupPhrases.some((phrase) => phrase.rectCount !== 1)) {
+          failures.push(`${engineName}@${width}px: 料金案内の文節・スタート顧問・金額が途中で割れています`);
+        }
 
         if (width === 390 || width === 1280) {
           const minimum = width === 390 ? { primary: 30, secondary: 26 } : { primary: 64, secondary: 42 };
