@@ -20,7 +20,7 @@ const base = (args.find((arg) => arg.startsWith('http')) || 'http://127.0.0.1:88
   .replace(/\/?$/, '/');
 const asJson = args.includes('--json');
 
-const WIDTHS = [320, 360, 375, 390, 402, 429, 430, 431, 699, 700, 701];
+const WIDTHS = [320, 360, 375, 390, 402, 429, 430, 431, 699, 700, 701, 767, 768, 1024, 1100, 1101, 1280];
 const ENGINES = [
   ['chromium', chromium],
   ['webkit', webkit],
@@ -29,9 +29,10 @@ const EPSILON = 1;
 const MOTION_WIDTHS = [390, 767, 768, 1280];
 // External reference, rather than values read from home-hero.js:
 // https://gaaboo.jp/wp/wp-content/themes/gaaboo/assets/js/top.js?ver=1766493868
-// O() / people1+people2: 3200ms delay, 30ms stagger, 160ms linear opacity,
+// O() / people1+people2: 30ms stagger, 160ms linear opacity,
 // SP 2400ms / PC 2000ms, elastic.out(0.8, 1.1). Fixed curve checkpoints below
 // allow one 16.7ms RAF interval, without sharing the production easing function.
+// User override: start during initialization, without the reference site's delay.
 const MOTION_REFERENCE = {
   sp: { distance: -600, duration: 2400, count: 6, checkpoints: [
     { fraction: 0.2, y: -91.597182, angle: -9.159718, yTolerance: 11, angleTolerance: 1.05 },
@@ -175,11 +176,17 @@ async function measure(page) {
     return {
       viewportWidth,
       documentScrollWidth: document.documentElement.scrollWidth,
+      titleFonts: {
+        primary: parseFloat(getComputedStyle(document.querySelector('.hero-services')).fontSize),
+        secondary: parseFloat(getComputedStyle(document.querySelector('.hero-h1 strong')).fontSize),
+      },
       summaryColumns: getComputedStyle(document.querySelector('.hs-inner'))
         .gridTemplateColumns.split(' ').filter(Boolean).length,
+      summaryLayout: getComputedStyle(document.querySelector('.hs-inner')).display,
       summaryDisplay: getComputedStyle(document.querySelector('.hero-summary')).display,
       h1Phrases,
       subPhrases,
+      startupPhrases: phrasesOf('.home-startup-sentence'),
       h1Boundaries: boundariesOf('.hero-h1'),
       subBoundaries: boundariesOf('.hero-sub'),
       h1TextCovered: textCoveredBy('.hero-h1', h1Phrases),
@@ -217,6 +224,9 @@ async function readMotion(page, label) {
     return {
       label, now: performance.now(), classes: [...stage.classList],
       canvas: canvas.classList.contains('hero-canvas-sp') ? 'sp' : 'pc', actors,
+      titleGap: Math.min(...[...canvas.querySelectorAll('.hero-poses')]
+        .map((pose) => pose.getBoundingClientRect().top))
+        - document.querySelector('.hero-h1').getBoundingClientRect().bottom,
       overflow: [document.querySelector('#top'), canvas].map((element) => ({
         x: getComputedStyle(element).overflowX, y: getComputedStyle(element).overflowY,
       })),
@@ -238,16 +248,35 @@ async function openMotionPage(browser, width, reducedMotion = 'no-preference') {
   page.on('pageerror', (error) => errors.push(error.message));
   await prepareLocalHttpPage(page);
   await page.clock.install({ time: new Date('2026-01-01T00:00:00Z') });
+  // Freeze before parsing: an immediate entrance can already be past its first
+  // frame by DOMContentLoaded. Parsing, CSS, and network loading are not mocked.
+  await page.clock.pauseAt(new Date('2026-01-01T00:00:01Z'));
   await page.addInitScript(() => {
-    document.addEventListener('DOMContentLoaded', () => {
-      window.__heroAuditDcl = performance.now();
-    }, { once: true });
+    let initialize, lastStage;
+    Object.defineProperty(window, 'mnInitHomeHero', {
+      configurable: true, enumerable: true,
+      get() { return initialize; },
+      set(callback) {
+        initialize = function (...args) {
+          const stage = document.querySelector('#top .hero-stage');
+          const fresh = stage && stage !== lastStage;
+          const audit = fresh ? { now: performance.now(), readyState: document.readyState } : null;
+          const result = callback.apply(this, args);
+          if (fresh) {
+            audit.classesAfterInit = [...stage.classList];
+            window.__heroAuditInit = audit;
+            lastStage = stage;
+          }
+          return result;
+        };
+      },
+    });
   });
   const response = await page.goto(base, { waitUntil: 'domcontentloaded', timeout: 20000 });
-  // Loading proceeds normally before freezing timers, as recommended by Clock.
-  // runFor, not fastForward, is required to visit every animation frame.
-  await page.clock.pauseAt(new Date(await page.evaluate(() => Date.now() + 30)));
-  return { page, errors, origin: await page.evaluate(() => window.__heroAuditDcl),
+  // runFor, not fastForward, visits every scheduled animation frame.
+  const initialization = await page.evaluate(() => window.__heroAuditInit);
+  if (!initialization) throw new Error('The home hero initializer was not called');
+  return { page, errors, origin: initialization.now, initialization,
     html: await response.text() };
 }
 
@@ -264,6 +293,7 @@ function checkResting(state, check) {
   check(state.actors.every((actor) => Math.abs(actor.y) < 0.01
     && Math.abs(actor.angle) < 0.01 && Math.abs(actor.opacity - 1) < 0.001),
   `${state.label}: 定位置・角度0・不透明度1へ戻っていません`);
+  check(state.titleGap >= 8, `${state.label}: タイトルと着地後の人物の間隔が不足 (${state.titleGap}px)`);
 }
 
 async function motionScreenshot(page, engine, width, phase, screenshots) {
@@ -276,8 +306,21 @@ async function motionScreenshot(page, engine, width, phase, screenshots) {
   screenshots.push({ phase, path: target });
 }
 
+async function entryScreenshots(page, engine, width) {
+  if (!process.env.RUNNER_TEMP || ![390, 1280].includes(width)) return [];
+  const directory = path.join(process.env.RUNNER_TEMP, 'layout-results', 'hero-motion');
+  await fs.mkdir(directory, { recursive: true });
+  const screenshots = [];
+  for (const [name, selector] of [['startup-offer', '#startup-offer'], ['shortcuts', '.home-shortcuts']]) {
+    const target = path.join(directory, `${engine}-${width}-${name}.png`);
+    await page.locator(selector).screenshot({ path: target });
+    screenshots.push({ name, path: target });
+  }
+  return screenshots;
+}
+
 async function checkMotionTimeline(browser, engine, width, failures) {
-  const { page, origin, errors, html } = await openMotionPage(browser, width);
+  const { page, origin, initialization, errors, html } = await openMotionPage(browser, width);
   const check = motionChecks(engine, width, 'timeline', failures);
   const reference = MOTION_REFERENCE[width <= 767 ? 'sp' : 'pc'];
   const samples = [], screenshots = [];
@@ -286,11 +329,15 @@ async function checkMotionTimeline(browser, engine, width, failures) {
     const state = await readMotion(page, label); samples.push(state); return state;
   };
   try {
-    const initial = await sample('pending');
+    const initial = await sample('immediate-start');
     check(initial.canvas === (width <= 767 ? 'sp' : 'pc'), '767/768pxのキャンバス境界が不一致です');
     check(initial.actors.length === reference.count, `人物数が${reference.count}ではありません`);
-    check(initial.classes.includes('hero-pending') && !initial.classes.includes('hero-entering'),
-      '3200ms待機前に登場が始まっています');
+    check(initialization.readyState === 'loading'
+      && initialization.classesAfterInit.includes('hero-entering')
+      && !initialization.classesAfterInit.includes('hero-pending'),
+    'DCL前の初期化で登場が開始せず、待機が残っています');
+    check(initial.classes.includes('hero-entering') && !initial.classes.includes('hero-pending'),
+      '初期化直後に登場状態へ移りません');
     check(initial.actors.every((actor) => Math.abs(actor.y - reference.distance) < 0.01
       && Math.abs(actor.angle + 60) < 0.01 && actor.opacity === 0),
     '初期位置・rotateY=-60deg・不透明度0が不一致です');
@@ -299,19 +346,13 @@ async function checkMotionTimeline(browser, engine, width, failures) {
     check(initial.normalLoading.every((loading) => loading === 'eager'),
       '有効キャンバスの人物画像が登場前に読み込まれません');
 
-    await advanceMotionTo(page, origin + 1600);
-    await page.evaluate(() => window.mnInitHomeHero()); // Same DOM must not reset the deadline.
-    const before = await sample('before-3200ms', 3199);
-    check(before.classes.includes('hero-pending')
-      && before.actors.every((actor) => actor.opacity === 0 && Math.abs(actor.y - reference.distance) < 0.01),
-    '3199msより前に動いたか、同一DOM初期化で期限が変わりました');
-    const onset = await sample('first-animation-frame', 3217);
+    const onset = await sample('first-animation-frame', 17);
     check(onset.classes.includes('hero-entering') && !onset.classes.includes('hero-pending'),
-      '3200ms待機後に登場へ移りません');
+      '初期化直後に登場へ移りません');
     check(onset.actors[0].opacity > 0 && onset.actors[0].y > reference.distance,
-      '待機終了後17ms以内に第1人物が落下しません');
+      '初期化後17ms以内に第1人物が落下しません');
 
-    const stagger = await sample('opacity-stagger', 3328);
+    const stagger = await sample('opacity-stagger', 128);
     stagger.actors.slice(0, 3).forEach((actor, index) => {
       check(Math.abs(actor.opacity - (128 - index * 30) / 160) <= 0.11,
         `${actor.actor}: 160msの線形不透明度が不一致 (${actor.opacity})`);
@@ -321,7 +362,7 @@ async function checkMotionTimeline(browser, engine, width, failures) {
       check(Math.abs(delay - 30) < 0.1, `DOM順の間隔が30msではありません (${delay}ms)`);
     }
     for (const point of reference.checkpoints) {
-      const state = await sample(`fall-${point.fraction * 100}%`, 3200 + reference.duration * point.fraction);
+      const state = await sample(`fall-${point.fraction * 100}%`, reference.duration * point.fraction);
       const actor = state.actors[0];
       check(Math.abs(actor.y - point.y) <= point.yTolerance
         && Math.abs(actor.angle - point.angle) <= point.angleTolerance,
@@ -331,13 +372,14 @@ async function checkMotionTimeline(browser, engine, width, failures) {
       if (point.fraction === 0.2) await page.evaluate(() => window.mnInitHomeHero());
       if (point.fraction === 0.5) await motionScreenshot(page, engine, width, 'overshoot', screenshots);
     }
-    const end = 3200 + reference.duration + (reference.count - 1) * 30;
+    const end = reference.duration + (reference.count - 1) * 30;
     const beforeEnd = await sample('before-last-landing', end - 17);
     check(beforeEnd.classes.includes('hero-entering'), '最後の人物が着地する前に終端化されました');
     checkResting(await sample('settled', end + 17), check);
     await motionScreenshot(page, engine, width, 'settled', screenshots);
     await page.evaluate(() => window.mnInitHomeHero());
-    checkResting(await sample('same-stage-no-replay', end + 3300), check);
+    checkResting(await sample('same-stage-no-replay'), check);
+    checkResting(await sample('same-stage-still-settled', end + 100), check);
 
     // Replace with the server's fresh body, the same operation the SPA performs.
     // Retain detached poses to verify cancellation, not merely their disappearance.
@@ -348,14 +390,15 @@ async function checkMotionTimeline(browser, engine, width, failures) {
     }, html);
     await replaceBody();
     await page.evaluate(() => window.mnInitHomeHero());
-    const freshOrigin = await page.evaluate(() => performance.now());
+    const freshOrigin = await page.evaluate(() => window.__heroAuditInit.now);
     const fresh = await readMotion(page, 'fresh-SPA-stage'); samples.push(fresh);
-    check(fresh.classes.includes('hero-pending') && fresh.actors.every((actor) => actor.opacity === 0),
-      '新しいSPA stageの登場が再生されません');
-    await advanceMotionTo(page, freshOrigin + 3328);
+    check(fresh.classes.includes('hero-entering') && !fresh.classes.includes('hero-pending')
+      && fresh.actors.every((actor) => actor.opacity === 0),
+    '新しいSPA stageの初期化で直ちに登場が始まりません');
+    await advanceMotionTo(page, freshOrigin + 17);
     const freshEntering = await readMotion(page, 'SPA-entering'); samples.push(freshEntering);
     check(freshEntering.classes.includes('hero-entering') && freshEntering.actors[0].opacity > 0,
-      '新しいSPA stageが3200ms後に動きません');
+      '新しいSPA stageが初期化後17ms以内に動きません');
     await replaceBody();
     // evaluate returns after the DOM mutation observer's microtask checkpoint.
     const detachedBefore = await page.evaluate(() => window.__heroDetachedPoses.map((pose) => pose.getAttribute('style')));
@@ -364,7 +407,7 @@ async function checkMotionTimeline(browser, engine, width, failures) {
     check(JSON.stringify(detachedBefore) === JSON.stringify(detachedAfter),
       'SPA離脱後も旧人物のrAFがDOMを書き換えています');
     check(errors.length === 0, `pageerror: ${errors.join(' / ')}`);
-    return { engine, width, scenario: 'timeline+SPA', samples, screenshots, errors };
+    return { engine, width, scenario: 'timeline+SPA', initialization, samples, screenshots, errors };
   } finally { await page.close(); }
 }
 
@@ -375,7 +418,7 @@ async function checkMotionCancellation(browser, engine, failures) {
   let stageOrigin = origin;
   try {
     for (const reason of ['offscreen', 'hidden-event', 'breakpoint', 'reduced-motion']) {
-      await advanceMotionTo(page, stageOrigin + 3328);
+      await advanceMotionTo(page, stageOrigin + 128);
       if (reason === 'offscreen') {
         await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }));
       } else if (reason === 'hidden-event') {
@@ -409,7 +452,7 @@ async function checkMotionCancellation(browser, engine, failures) {
           document.documentElement.replaceChild(body, document.body);
         }, html);
         await page.evaluate(() => window.mnInitHomeHero());
-        stageOrigin = await page.evaluate(() => performance.now());
+        stageOrigin = await page.evaluate(() => window.__heroAuditInit.now);
       }
     }
     check(errors.length === 0, `pageerror: ${errors.join(' / ')}`);
@@ -452,7 +495,20 @@ async function checkReducedMotion(browser, engine, width, failures) {
         await page.goto(base, { waitUntil: 'domcontentloaded', timeout: 20000 });
         await page.evaluate(() => document.fonts.ready);
         const result = await measure(page);
-        results.push({ engine: engineName, width, errors, ...result });
+        results.push({ engine: engineName, width, errors, ...result,
+          entryScreenshots: await entryScreenshots(page, engineName, width) });
+
+        if (result.startupPhrases.length < 3 || result.startupPhrases.some((phrase) => phrase.rectCount !== 1)) {
+          failures.push(`${engineName}@${width}px: 料金案内の文節・スタート顧問・金額が途中で割れています`);
+        }
+
+        if (width === 390 || width === 1280) {
+          const minimum = width === 390 ? { primary: 30, secondary: 26 } : { primary: 64, secondary: 42 };
+          if (result.titleFonts.primary < minimum.primary || result.titleFonts.secondary < minimum.secondary) {
+            failures.push(`${engineName}@${width}px: タイトルが指定した大きさへ拡大されていません`
+              + ` (primary=${result.titleFonts.primary}, secondary=${result.titleFonts.secondary})`);
+          }
+        }
 
         if (result.offenders.length) {
           failures.push(
@@ -526,10 +582,12 @@ async function checkReducedMotion(browser, engine, width, failures) {
               + `（display=${result.summaryDisplay}）`,
             );
           }
-        } else if (result.summaryColumns !== 2) {
+        } else if (width < 1024 && result.summaryColumns !== 2) {
           failures.push(
             `${engineName}@${width}px: ヒーロー直下サマリーが2列ではありません（${result.summaryColumns}列）`,
           );
+        } else if (width >= 1024 && result.summaryLayout !== 'flex') {
+          failures.push(`${engineName}@${width}px: PCのサマリーが既存のflex配列ではありません`);
         }
         if (errors.length) failures.push(`${engineName}@${width}px: ${errors.join(' / ')}`);
         await page.close();
@@ -572,7 +630,7 @@ async function checkReducedMotion(browser, engine, width, failures) {
         console.log(`  h1 lines: ${result.h1Lines.map((line) => line.text).join(' / ')}`);
       }
     }
-    console.log(`登場演出: ${motionResults.length}条件（待機・落下・着地・中断・SPA・動きの抑制）`);
+    console.log(`登場演出: ${motionResults.length}条件（即時開始・落下・着地・中断・SPA・動きの抑制）`);
     console.log(failures.length ? `失敗: ${failures.length}件` : '合格: ヒーローの横はみ出し・登場演出');
     for (const failure of failures) console.error(`- ${failure}`);
   }
