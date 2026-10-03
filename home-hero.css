@@ -1,0 +1,76 @@
+/* Fixed illustration canvases, independently composited transparent characters.
+   Desktop 1440×768 / mobile 400×592. Coordinates belong to each canvas. */
+#top.hero{height:auto;min-height:0;background:#fff;overflow:clip}
+#top .hero-stage{position:relative;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto;gap:0;width:100%;max-width:none;margin:0;padding:0 0 30px;background:#fff!important}
+#top .hero-scene{position:relative;grid-column:1;grid-row:1;display:block;width:100%;height:auto;min-width:0;min-height:0;max-height:none;margin:0;aspect-ratio:1440/768;isolation:isolate;pointer-events:none;overflow:clip}
+#top .hero-canvas-sp{display:none}
+#top .hero-town{position:absolute;display:block;left:0;top:40%;bottom:auto;width:100%;height:43%;opacity:1;transform:none}
+#top .hero-town img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+#top .hero-actor{position:absolute;left:var(--actor-x);top:var(--actor-y);right:auto;bottom:auto;width:var(--actor-width)!important;height:auto;aspect-ratio:var(--person-ratio);z-index:var(--actor-layer,2);transform:none}
+#top .hero-poses,#top .hero-media{position:relative;display:block;width:100%;height:100%;aspect-ratio:var(--person-ratio);transform:none}
+#top .actor-sprite{display:block;width:100%;height:100%;object-fit:contain;object-position:center!important}
+#top .actor-after{position:absolute;inset:0;visibility:hidden}
+#top .hero-actor.is-wow .actor-after{visibility:visible}
+#top .hero-overlay{position:absolute;grid-column:1/2;grid-row:1/2;inset:0 0 auto;display:block;align-self:start;justify-self:center;width:94%;max-width:1800px;min-width:0;min-height:0;margin:0 auto;padding:clamp(88px,7.4vw,180px) 0 0;text-align:center;z-index:3;pointer-events:none}
+#top .hero-h1{width:100%;max-width:none;margin:0;font-size:clamp(26px,2.8vw,58px);font-weight:800;line-height:1.45;letter-spacing:-.025em}
+#top .hero-h1 .nw{display:inline-block;white-space:nowrap}
+#top .hero-h1 .hero-services{display:inline;font-size:clamp(32px,4vw,90px);line-height:1.35;font-weight:900}
+#top .hero-h1 strong{display:block;margin-top:9px;color:var(--sugi);background:none!important;box-shadow:none;font-size:inherit}
+#top .hero-intro{position:relative;grid-column:1;grid-row:2;width:min(72%,1040px);margin:24px auto 0;z-index:3;text-align:center}
+#top .hero-sub{max-width:54em;margin:0 auto;font-size:clamp(14px,1.2vw,18px);font-weight:500;line-height:1.85;color:var(--iwa);letter-spacing:.015em}
+#top .why-label.hero-label{display:inline;background:none;border:0;border-radius:0;padding:0;margin:0;font:inherit;color:inherit;letter-spacing:inherit;box-shadow:none}
+#top .why-label.hero-label::before{display:none}
+#top .hero-btns{justify-content:center;gap:12px 24px;flex-wrap:wrap;margin-top:18px}
+#top .hero-btns .btn-primary{flex:initial;width:auto;padding:14px 32px;font-size:15px}
+#top .hero-sub-link{display:inline-flex;align-items:center;min-height:44px;padding:0 2px;border:0;border-bottom:1px solid var(--moegi);border-radius:0;background:none;font-size:13px}
+#top .hero-updates{grid-column:1;grid-row:3;width:min(1200px,calc(100% - 48px));justify-self:center;box-sizing:border-box;border-top:1px solid var(--line);padding-top:22px;margin-top:24px;min-width:0}
+#top .hero-spots{grid-template-columns:minmax(0,1fr);width:100%;max-width:100%;margin-top:0;gap:28px}
+#top .hero-spot{box-shadow:none;border:0;border-radius:0;padding:0 0 8px;background:none;max-inline-size:none;text-align:left;transform:none}
+#top .hero-spot-badge{margin-inline:0}
+#top .hero-trust{margin-top:14px;gap:20px}
+#top .trust-item{padding:0;border:0;background:none;font-size:11.5px}
+#top .hero-spot-note{font-size:11.5px}
+/* Entrance belongs to the complete character layer. The resting pose never floats. */
+#top .hero-entering .hero-poses{animation:hero-character-arrive 900ms cubic-bezier(.22,.8,.25,1) var(--actor-delay,0ms) both}
+@keyframes hero-character-arrive{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:769px) and (max-width:1100px){
+ #top .hero-stage{grid-template-rows:auto auto auto}
+ #top .hero-overlay{padding-top:92px}
+ #top .hero-h1{font-size:clamp(22px,2.8vw,31px)}
+ #top .hero-h1 .hero-services{font-size:clamp(30px,4vw,44px)}
+ #top .hero-intro{position:static;grid-row:2;width:72%;margin:16px auto 0;transform:none}
+ #top .hero-updates{grid-row:3}
+ #top .hero-sub{font-size:15px;line-height:1.85}
+ #top .hero-btns{margin-top:12px;gap:12px}
+ #top .hero-btns .btn-primary{padding:12px 24px;font-size:13px}
+}
+@media(max-width:768px){
+ #top .hero-stage{grid-template-rows:auto auto auto}
+ #top .hero-canvas-pc{display:none}
+ #top .hero-canvas-sp{display:block;width:min(100%,540px);justify-self:center;aspect-ratio:400/592}
+ #top .hero-town{top:32%;height:45%}
+ #top .hero-overlay{width:calc(100% - 32px);padding:104px 0 0}
+ #top .hero-h1{font-size:clamp(21px,5.5vw,36px);line-height:1.5}
+ #top .hero-h1 .hero-services{display:inline;white-space:nowrap;font-size:clamp(20px,6.4vw,40px);line-height:1.45;letter-spacing:-.035em}
+ #top .hero-h1>br{display:block}
+ #top .hero-h1>strong{display:block;margin-top:14px;font-size:inherit}
+ #top .hero-h1 wbr{display:none}
+ #top .hero-intro{position:static;grid-row:2;width:calc(100% - 40px);margin:16px auto 0;transform:none}
+ #top .hero-sub{max-width:38em;font-size:15px;line-height:1.9}
+ #top .hero-btns{margin-top:18px;gap:10px 20px}
+ #top .hero-btns .btn-primary{padding:15px 28px;font-size:14px}
+ #top .hero-updates{grid-row:3;width:calc(100% - 40px);margin-top:32px}
+ #top .hero-spots{gap:16px}
+ #top .hero-trust{display:none}
+}
+@media(max-width:360px){
+ #top .hero-overlay{padding-top:98px}
+ #top .hero-canvas-sp .actor-wave{--actor-y:46%!important;--actor-width:28%!important}
+ #top .hero-canvas-sp .actor-cafe{--actor-y:47%!important;--actor-width:24%!important}
+ #top .hero-sub{font-size:14px}
+ #top .hero-intro{width:calc(100% - 28px)}
+}
+@media(prefers-reduced-motion:reduce){
+ #top .hero-poses{animation:none!important;transform:none!important;opacity:1!important}
+ #top .actor-after{visibility:hidden!important}
+}

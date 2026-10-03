@@ -822,152 +822,6 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 </style>
 
 <style id="home-illustration-hero">
-/* 富山の街と働く人々。読み物と操作は登場演出を待たず表示する。 */
-#top.hero{background:#fff;min-height:0;height:auto;overflow:clip}
-#top .hero-stage{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:100svh auto;gap:0;width:100%;max-width:none;margin:auto;padding:0 0 30px;position:relative;background:#fff!important;--hero-progress:0}
-#top .hero-overlay{grid-column:1;grid-row:1;align-self:start;justify-self:center;width:min(90%,1100px);padding:104px 0 0;min-height:0;min-width:0;max-width:none;z-index:2;align-items:center;text-align:center;pointer-events:none}
-#top .hero-overlay a{pointer-events:auto}
-#top .why-label.hero-label{background:#f8e78a;color:var(--sugi-9);border:0;font-size:12px;margin-bottom:16px}
-#top .hero-h1{width:100%;min-width:0;max-width:1120px;font-size:clamp(30px,3vw,46px);line-height:1.4;letter-spacing:.01em}
-#top .hero-h1 .nw{display:inline-block}
-#top .hero-h1 strong{color:var(--sugi);background:none!important;box-shadow:none}
-#top .hero-sub{font-size:14px;font-weight:500;line-height:1.8;max-width:850px;margin-top:14px}
-#top .hero-btns{gap:24px;margin-top:18px;flex-wrap:wrap;justify-content:center}
-#top .hero-btns .btn-primary{flex:initial;width:auto;font-size:15px;padding:14px 32px}
-#top .hero-sub-link{display:inline-flex;align-items:center;min-height:44px;padding:0 2px;border:0;border-bottom:1px solid var(--moegi);border-radius:0;background:none;font-size:13px}
-#top .hero-scene{grid-column:1;grid-row:1;position:relative;align-self:stretch;min-width:0;width:100%;height:100%;pointer-events:none;overflow:clip;isolation:isolate}
-.hero-town{position:absolute;display:block;left:0;bottom:12svh;width:100%;height:44svh;transform:translateY(calc(var(--hero-progress)*-16px))}
-.hero-town img{display:block;width:100%;height:100%;object-fit:cover}
-.hero-actor{position:absolute;width:min(19vw,28svh);aspect-ratio:3/4;bottom:2svh;transform:translateY(calc(var(--hero-progress)*var(--drift, -24px)));--delay:0s}
-#top .hero-actor .hero-media{display:block;position:relative;width:100%;height:100%;aspect-ratio:auto}
-#top .hero-actor .actor-sprite{display:block;width:100%;height:100%;object-fit:cover;object-position:0 0}
-.actor-plant{left:0%;bottom:0;--delay:.12s;--drift:-18px;z-index:2}
-.actor-cafe{left:12%;bottom:17svh;width:min(15vw,22svh);--delay:.45s;--drift:-38px}
-.actor-craft{left:20%;bottom:1svh;--delay:.7s;z-index:2}
-.actor-laptop{left:33%;bottom:14svh;width:min(14vw,20svh);--delay:.28s;--drift:-42px}
-.actor-delivery{left:40%;bottom:0;--delay:.85s;z-index:2}
-.actor-florist{left:54%;bottom:17svh;width:min(14vw,22svh);--delay:.58s;--drift:-38px}
-.actor-baker{left:61%;bottom:0;--delay:.2s;z-index:2}
-.actor-builder{left:77%;bottom:17svh;width:min(14vw,21svh);--delay:.65s;--drift:-36px}
-.actor-sewing{left:2%;bottom:17svh;width:min(12vw,18svh);--delay:.36s;--drift:-44px}
-.actor-mechanic{right:0%;bottom:1svh;--delay:.78s;z-index:2}
-#top .actor-builder .actor-sprite,#top .actor-mechanic .actor-sprite{object-position:100% 0}
-/* 登場は一度だけ。人物エリア上端で切らず、画面上方から降ろす。 */
-#top .hero-entering .hero-scene{overflow:visible}
-.hero-entering .hero-media{animation:person-arrive 1.25s cubic-bezier(.2,.75,.3,1) var(--delay) both}
-@keyframes person-arrive{0%{transform:translateY(calc(-100svh - 100%));opacity:0}12%{opacity:1}72%{transform:translateY(9px)}88%{transform:translateY(-4px)}100%{transform:translateY(0);opacity:1}}
-#top .hero-updates{grid-column:1;grid-row:2;width:min(1200px,calc(100% - 48px));justify-self:center;box-sizing:border-box;border-top:1px solid var(--line);padding-top:22px;margin-top:0;min-width:0}
-#top .hero-spots{grid-template-columns:minmax(0,1fr);width:100%;max-width:100%;margin-top:0;gap:28px}
-#top .hero-spot{box-shadow:none;border:0;border-radius:0;padding:0 0 8px;background:none;max-inline-size:none;text-align:left;transform:none}
-#top .hero-spot+ .hero-spot{border-left:1px solid var(--line);padding-left:28px}
-#top .hero-spot-badge{margin-inline:0}
-#top .hero-trust{margin-top:14px;gap:20px}
-#top .trust-item{padding:0;border:0;background:none;font-size:11.5px}
-#top .hero-spot-note{font-size:11.5px}
-@media(min-width:1101px) and (max-height:800px){#top .hero-overlay{padding-top:92px}#top .why-label.hero-label{margin-bottom:10px}#top .hero-h1{font-size:34px}#top .hero-sub{font-size:13px;margin-top:10px}#top .hero-btns{margin-top:12px}.hero-town{height:36svh;bottom:11svh}.hero-actor{width:min(19vw,27svh)}.actor-cafe,.actor-laptop,.actor-florist,.actor-builder{width:min(14vw,20svh);bottom:14svh}.actor-sewing{width:min(12vw,18svh)}}
-@media(max-width:1100px){
- #top .hero-stage{grid-template-rows:auto auto auto}
- #top .hero-overlay{width:100%;padding:106px 24px 12px;box-sizing:border-box}
- #top .hero-h1{font-size:clamp(30px,3.4vw,40px)}
- #top .hero-scene{grid-row:2;height:36vw;min-height:250px}
- .hero-town{bottom:4vw;height:32vw}
- .hero-actor{width:19%;bottom:0}.actor-cafe,.actor-laptop,.actor-florist,.actor-builder{width:14%;bottom:12vw}.actor-sewing{width:12%;bottom:16vw}
- #top .hero-updates{grid-row:3;margin-top:12px}
-}
-@media(max-width:700px){
- #top .hero-overlay{padding:94px 20px 14px}
- #top .why-label.hero-label{font-size:11px;margin-bottom:17px;padding:7px 13px}
- #top .hero-h1{font-size:clamp(23px,5.5vw,32px);line-height:1.55}
- #top .hero-sub{font-size:13px;line-height:1.9;margin-top:16px}
- #top .hero-btns{margin-top:20px;gap:10px 20px}
- #top .hero-btns .btn-primary{padding:15px 28px;font-size:14px}
- #top .hero-scene{height:66vw;min-height:215px;max-height:450px}
- .hero-town{height:40vw;bottom:24vw;width:100%;left:0}
- .hero-actor,.actor-cafe,.actor-florist{width:22%;bottom:0}
- .actor-plant{left:0}.actor-cafe{left:15.5%;bottom:10vw}.actor-craft{left:31%;bottom:0}.actor-florist{left:46.5%;bottom:8vw}.actor-baker{left:62%;bottom:0}.actor-mechanic{right:0;bottom:6vw}
- .actor-laptop,.actor-delivery,.actor-builder,.actor-sewing{display:none}
- #top .hero-updates{width:calc(100% - 40px);margin-top:12px}
- #top .hero-spots{grid-template-columns:minmax(0,1fr);gap:16px}
- #top .hero-spot+ .hero-spot{border-left:0;border-top:1px solid var(--line);padding:16px 0 0}
- #top .hero-trust{display:none}
-}
-@media(prefers-reduced-motion:reduce){#top .hero-actor,#top .hero-town,#top .hero-media{animation:none!important;transform:none!important;opacity:1!important}}
-
-/* 人物は固定ポーズ。顔の内側だけを別レイヤーで切り替える。 */
-#top .hero-overlay{width:min(70%,1020px);padding-top:96px}
-#top .hero-h1{font-size:clamp(30px,3.1vw,46px)}
-#top .hero-sub{max-width:800px}
-.hero-town{height:48svh;bottom:10svh;opacity:.85}
-.hero-actor{width:auto!important;height:var(--person-height);aspect-ratio:var(--person-ratio);bottom:var(--person-bottom,0);left:var(--person-left);right:auto;z-index:var(--person-layer,2)}
-#top .hero-actor .actor-sprite{object-fit:contain;object-position:center!important}
-.actor-cafe{--person-height:49svh;--person-left:0%;--person-bottom:2svh;--person-layer:3}
-.actor-builder{--person-height:46svh;--person-left:15%;--person-bottom:9svh;--person-layer:1}
-.actor-garden{--person-height:33svh;--person-left:13%;--person-layer:4;--delay:.62s;--drift:-18px}
-.actor-seated{--person-height:35svh;--person-left:30%;--person-layer:4;--delay:.25s;--drift:-24px}
-.actor-delivery{--person-height:37svh;--person-left:43%;--person-bottom:8svh;--person-layer:2}
-.actor-kneel{--person-height:34svh;--person-left:48%;--person-layer:5;--delay:.7s;--drift:-20px}
-.actor-florist{--person-height:41svh;--person-left:62%;--person-bottom:11svh;--person-layer:2}
-.actor-baker{--person-height:40svh;--person-left:70%;--person-layer:4}
-.actor-wave{--person-height:57svh;--person-left:79%;--person-bottom:5svh;--person-layer:1;--delay:.35s;--drift:-36px}
-.actor-mechanic{--person-height:44svh;--person-left:87%;--person-layer:4}
-.actor-wave,.actor-mechanic{left:auto;right:0}
-.actor-face{position:absolute;display:block;opacity:0;pointer-events:none;transition:opacity .18s ease}
-#top .hero-settled .actor-face{opacity:1;animation:actor-expression 8s linear infinite}
-/* 約4秒ごとに元の表情と交互に切り替える。 */
-@keyframes actor-expression{0%,47.75%,100%{opacity:1}50%,97.75%{opacity:0}}
-@media(min-width:1101px) and (max-height:800px){#top .hero-overlay{padding-top:88px}#top .hero-h1{font-size:32px}#top .hero-sub{font-size:12px;margin-top:8px}#top .hero-btns{margin-top:10px}.hero-town{height:44svh;bottom:10svh}}
-@media(max-width:1100px){#top .hero-overlay{width:100%;padding:106px 24px 12px}#top .hero-scene{height:55vw;min-height:300px}.hero-town{height:43vw;bottom:10vw}.hero-actor{height:var(--tablet-height,32vw);bottom:var(--tablet-bottom,0)}.actor-cafe{--tablet-height:42vw}.actor-builder{--tablet-height:38vw;--tablet-bottom:8vw}.actor-garden{--tablet-height:28vw}.actor-seated{--tablet-height:29vw}.actor-delivery{--tablet-height:30vw;--tablet-bottom:7vw}.actor-kneel{--tablet-height:28vw}.actor-florist{--tablet-height:34vw;--tablet-bottom:8vw}.actor-baker{--tablet-height:34vw}.actor-wave{--tablet-height:47vw;--tablet-bottom:5vw}.actor-mechanic{--tablet-height:36vw}}
-@media(max-width:700px){#top .hero-overlay{padding:94px 20px 14px}#top .hero-h1{font-size:clamp(23px,5.5vw,32px)}#top .hero-scene{height:80vw;min-height:260px;max-height:none}.hero-town{height:48vw;bottom:24vw}.actor-builder,.actor-delivery,.actor-florist,.actor-mechanic{display:none}.actor-cafe{--person-left:0%;--tablet-height:49vw;--tablet-bottom:19vw}.actor-wave{--person-left:61%;--tablet-height:60vw;--tablet-bottom:17vw}.actor-garden{--person-left:0%;--tablet-height:35vw}.actor-seated{--person-left:26%;--tablet-height:38vw}.actor-kneel{--person-left:52%;--tablet-height:35vw}.actor-baker{left:auto;right:0;--tablet-height:40vw;--tablet-bottom:0}}
-@media(prefers-reduced-motion:reduce){#top .hero-settled .actor-face{transition:none;animation:none}}
-
-
-/* 文字と人物を同じ画面比率で拡縮し、縦長画面でも顔の位置関係を保つ。 */
-@media(min-width:1101px){#top .hero-stage{grid-template-rows:min(100svh,80vw) auto}.hero-town{height:min(48svh,30vw);bottom:min(10svh,6vw)}}
-#top .hero-overlay{width:88%;padding-top:clamp(100px,12svh,180px)}
-#top .hero-h1{max-width:none;font-size:clamp(28px,min(2.8vw,4.8svh),70px);line-height:1.4}
-#top .hero-services{display:inline;font-size:clamp(36px,min(4.2vw,7.2svh),106px);font-weight:800;letter-spacing:-.025em}
-#top .why-label.hero-label{display:inline;background:none;border:0;border-radius:0;padding:0;margin:0;font:inherit;color:inherit;letter-spacing:inherit;box-shadow:none}
-#top .hero-sub{max-width:40em;font-size:clamp(16px,min(1.3vw,2.25svh),28px);line-height:1.85;margin:18px auto 0;color:var(--iwa)}
-#top .hero-btns{margin-top:20px}
-#top .hero-actor{height:min(var(--wide-height),var(--person-height));bottom:min(var(--wide-bottom,0px),var(--person-bottom,0px))}
-.actor-cafe{--wide-height:27vw;--wide-bottom:1.1vw}
-.actor-builder{--wide-height:25vw;--wide-bottom:5vw}
-.actor-garden{--wide-height:18vw}
-.actor-seated{--wide-height:19vw}
-.actor-delivery{--wide-height:20vw;--wide-bottom:4.4vw}
-.actor-kneel{--wide-height:18.5vw}
-.actor-florist{--wide-height:22.5vw;--wide-bottom:6vw}
-.actor-baker{--wide-height:22vw}
-#top .actor-wave{--person-height:40svh;--wide-height:22vw;right:6%;--person-bottom:13svh;--wide-bottom:7.2vw}
-.actor-mechanic{--wide-height:24vw}
-@media(min-width:1101px) and (max-height:800px){#top .hero-overlay{padding-top:96px}#top .hero-sub{font-size:16px;margin-top:12px}#top .hero-btns{margin-top:14px}}
-@media(max-width:1100px){
- #top .hero-overlay{width:100%;padding:100px 24px 12px}
- #top .hero-services{font-size:clamp(36px,4.8vw,54px)}
- #top .hero-h1{font-size:clamp(26px,3.2vw,36px)}
- #top .hero-sub{font-size:17px;max-width:48em}
- #top .hero-actor{height:var(--tablet-height,32vw);bottom:var(--tablet-bottom,0)}
- #top .actor-wave{--tablet-height:32vw;--tablet-bottom:15vw;right:6%}
- .actor-florist{--tablet-height:30vw;--tablet-bottom:7vw}
-}
-@media(min-width:701px) and (max-width:1100px){
- #top .hero-overlay{padding-top:110px;padding-bottom:0}
- #top .hero-services{font-size:clamp(44px,5.8vw,64px)}
- #top .hero-h1{font-size:clamp(32px,3.8vw,44px)}
- #top .hero-sub{margin-top:12px}
- #top .hero-btns{margin-top:14px}
- #top .hero-scene{height:47vw;min-height:260px}
-}
-@media(max-width:700px){
- #top .hero-overlay{padding:94px 20px 10px}
- #top .hero-services{font-size:clamp(27px,7.2vw,42px);line-height:1.5}
- #top .hero-h1{font-size:clamp(21px,5.3vw,29px);line-height:1.5}
- #top .hero-sub{margin-top:16px;font-size:15px;line-height:1.9}
- #top .hero-scene{height:82vw;min-height:270px}
- .hero-town{height:80vw;bottom:12vw;opacity:1}
- .hero-town img{object-position:50% 50%}
- #top .actor-wave{--tablet-height:42vw;--tablet-bottom:27vw;right:10%}
-}
 /* 下線は文字行の実寸に合わせて描画。ペン先と線の終点を一致させる。 */
 .pen-heading{position:relative;isolation:isolate}
 .pen-heading.pen-ready strong{background:none!important;box-shadow:none!important}
@@ -1012,42 +866,8 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
  #faq .faq-btn{padding:22px 0;gap:12px}
  #faq .faq-a-in{padding:0 0 24px 28px}
 }
-/* 短い意味のまとまりを保ち、狭い画面では三つの業務を同じ大きさで並べる。 */
-@media(min-width:541px) and (max-width:1100px){
- #top .hero-h1 .hero-services{font-size:clamp(40px,5.8vw,64px)}
- #top .hero-h1{font-size:clamp(28px,3.8vw,42px)}
-}
-@media(max-width:540px){
- #top .hero-h1 .hero-services{display:inline-block;font-size:clamp(29px,7.5vw,40px);line-height:1.4}
- #top .hero-h1 .hero-services:last-of-type{display:block}
- #top .hero-h1>br{display:none}
- #top .hero-h1>strong{display:block;margin-top:14px;font-size:clamp(21px,5.5vw,28px);line-height:1.5}
- #top .hero-overlay{padding-top:90px}
- #top .hero-sub{margin-top:18px}
-}
-
-/* 見出しの下に残る余白を抑え、狭い画面でも業務名を一行で読ませる。 */
-@media(min-width:1101px){
- #top .hero-stage{grid-template-rows:min(92svh,70vw) auto}
-}
-@media(max-width:700px){
- #top .hero-overlay{padding-top:110px}
- #top .hero-h1 .hero-services{display:inline;white-space:nowrap;font-size:clamp(19px,6.4vw,40px);line-height:1.45;letter-spacing:-.035em}
- #top .hero-h1 .hero-services:last-of-type{display:inline}
- #top .hero-h1 wbr{display:none}
-}
-/* 横幅のある短い画面では、人物を文字の行から分離して重なりを防ぐ。 */
-@media(min-width:1101px) and (max-height:1100px){
- #top .hero-stage{grid-template-rows:auto auto auto}
- #top .hero-scene{grid-row:2;height:clamp(420px,38vw,640px);margin-top:24px}
- #top .hero-updates{grid-row:3}
- #top .hero-actor{height:var(--wide-height);bottom:var(--wide-bottom,0)}
- .hero-town{top:0;bottom:auto;height:clamp(250px,18vw,360px)}
-}
-/* 狭い画面でも、スクロール時に人物の上端がCTAへ接しないよう間隔を確保する。 */
-@media(min-width:701px) and (max-width:1100px){#top .hero-scene{margin-top:24px}}
-@media(max-width:700px){#top .hero-scene{margin-top:16px}}
 </style>
+<link rel="stylesheet" href="home-hero.css?v=20261003-layers1">
 </head>
 <body data-nav="B">
 <a class="skip-link" href="#main">本文へスキップ</a>
@@ -1094,21 +914,32 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 <main id="main">
 <section class="hero" id="top">
   <div class="hero-stage">
-    <div class="hero-scene" aria-hidden="true">
+    <div class="hero-scene hero-canvas-pc" aria-hidden="true">
       <picture class="hero-town"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-toyama-portrait-540.avif 540w, assets/illustrations/hero-toyama-portrait-1080.avif 1080w" sizes="120vw"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-toyama-portrait-540.webp 540w, assets/illustrations/hero-toyama-portrait-1080.webp 1080w" sizes="120vw"><source type="image/avif" srcset="assets/illustrations/hero-toyama.avif 1920w, assets/illustrations/hero-toyama-detail.avif 2172w" sizes="(max-width:700px) 240vw, (max-width:1100px) 129vw, 100vw"><img src="assets/illustrations/hero-toyama-detail.webp" srcset="assets/illustrations/hero-toyama.webp 1920w, assets/illustrations/hero-toyama-detail.webp 2172w" sizes="(max-width:700px) 240vw, (max-width:1100px) 129vw, 100vw" width="2172" height="724" alt="" decoding="async" loading="eager" fetchpriority="high"></picture>
-      <div class="hero-actor actor-seated" style="--person-ratio:462/567"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-crowd-seated-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-crowd-seated.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-crowd-seated-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-crowd-seated.webp" width="462" height="567" alt="" decoding="async" loading="lazy"></picture><img class="actor-face" src="assets/illustrations/hero-face-seated.webp" width="55" height="63" alt="" decoding="async" loading="lazy" style="left:29.653679653679653%;top:10.582010582010582%;width:11.904761904761903%;height:11.11111111111111%;border-radius:35%"></div>
-      <div class="hero-actor actor-wave" style="--person-ratio:421/640"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-crowd-wave-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-crowd-wave.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-crowd-wave-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-crowd-wave.webp" width="421" height="640" alt="" decoding="async" loading="lazy"></picture><img class="actor-face" src="assets/illustrations/hero-face-wave.webp" width="57" height="62" alt="" decoding="async" loading="lazy" style="left:34.204275534441805%;top:16.25%;width:13.539192399049881%;height:9.6875%;border-radius:35%"></div>
-      <div class="hero-actor actor-kneel" style="--person-ratio:505/555"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-crowd-kneel-sm.avif?v=20260922-cutout2"><source type="image/avif" srcset="assets/illustrations/hero-crowd-kneel.avif?v=20260922-cutout2"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-crowd-kneel-sm.webp?v=20260922-cutout2"><img class="actor-sprite" src="assets/illustrations/hero-crowd-kneel.webp?v=20260922-cutout2" width="505" height="555" alt="" decoding="async" loading="lazy"></picture><img class="actor-face" src="assets/illustrations/hero-face-kneel.webp" width="57" height="66" alt="" decoding="async" loading="lazy" style="left:54.05940594059406%;top:10.45045045045045%;width:11.287128712871288%;height:11.891891891891893%;border-radius:35%"></div>
-      <div class="hero-actor actor-garden" style="--person-ratio:487/466"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-crowd-garden-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-crowd-garden.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-crowd-garden-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-crowd-garden.webp" width="487" height="466" alt="" decoding="async" loading="lazy"></picture><img class="actor-face" src="assets/illustrations/hero-face-garden.webp" width="48" height="59" alt="" decoding="async" loading="lazy" style="left:43.737166324435314%;top:11.373390557939913%;width:9.856262833675565%;height:12.660944206008583%;border-radius:35%"></div>
-      <div class="hero-actor actor-cafe" style="--person-ratio:438/814"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-crowd-cafe-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-crowd-cafe.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-crowd-cafe-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-crowd-cafe.webp" width="438" height="814" alt="" decoding="async" loading="lazy"></picture></div>
-      <div class="hero-actor actor-delivery" style="--person-ratio:646/773"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-crowd-delivery-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-crowd-delivery.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-crowd-delivery-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-crowd-delivery.webp" width="646" height="773" alt="" decoding="async" loading="lazy"></picture></div>
-      <div class="hero-actor actor-florist" style="--person-ratio:491/803"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-crowd-florist-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-crowd-florist.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-crowd-florist-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-crowd-florist.webp" width="491" height="803" alt="" decoding="async" loading="lazy"></picture></div>
-      <div class="hero-actor actor-baker" style="--person-ratio:443/887"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-crowd-baker-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-crowd-baker.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-crowd-baker-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-crowd-baker.webp" width="443" height="887" alt="" decoding="async" loading="lazy"></picture></div>
-      <div class="hero-actor actor-builder" style="--person-ratio:515/895"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-crowd-builder-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-crowd-builder.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-crowd-builder-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-crowd-builder.webp" width="515" height="895" alt="" decoding="async" loading="lazy"></picture></div>
-      <div class="hero-actor actor-mechanic" style="--person-ratio:426/930"><picture class="hero-media"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-crowd-mechanic-sm.avif"><source type="image/avif" srcset="assets/illustrations/hero-crowd-mechanic.avif"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-crowd-mechanic-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-crowd-mechanic.webp" width="426" height="930" alt="" decoding="async" loading="lazy"></picture></div>
+      <div class="hero-actor actor-cafe" data-actor="cafe" style="--person-ratio:516/960;--actor-x:0.5%;--actor-y:50%;--actor-width:12.8%;--actor-layer:3;--actor-delay:0ms"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/cafe-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/cafe-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/cafe.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/cafe-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/cafe.webp" width="516" height="960" alt="" decoding="async" loading="lazy"></picture></div></div>
+      <div class="hero-actor actor-builder" data-actor="builder" style="--person-ratio:551/960;--actor-x:15%;--actor-y:45%;--actor-width:11%;--actor-layer:1;--actor-delay:55ms"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/builder-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/builder-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/builder.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/builder-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/builder.webp" width="551" height="960" alt="" decoding="async" loading="lazy"></picture></div></div>
+      <div class="hero-actor actor-garden" data-actor="garden" style="--person-ratio:720/688;--actor-x:11%;--actor-y:70%;--actor-width:15.6%;--actor-layer:4;--actor-delay:110ms"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/garden-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/garden-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/garden.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/garden-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/garden.webp" width="720" height="688" alt="" decoding="async" loading="lazy"></picture><picture class="hero-media actor-after"><source media="(max-width:499px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/garden-after-sm.avif"><source media="(max-width:1440px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/garden-after-md.avif"><source type="image/avif" data-srcset="assets/illustrations/hero-clean/garden-after.avif"><source media="(max-width:768px)" type="image/webp" data-srcset="assets/illustrations/hero-clean/garden-after-sm.webp"><img class="actor-sprite" data-src="assets/illustrations/hero-clean/garden-after.webp" width="720" height="688" alt="" decoding="async"></picture></div></div>
+      <div class="hero-actor actor-seated" data-actor="seated" style="--person-ratio:720/886;--actor-x:28.5%;--actor-y:65%;--actor-width:14%;--actor-layer:4;--actor-delay:165ms"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/seated-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/seated-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/seated.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/seated-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/seated.webp" width="720" height="886" alt="" decoding="async" loading="lazy"></picture><picture class="hero-media actor-after"><source media="(max-width:499px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/seated-after-sm.avif"><source media="(max-width:1440px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/seated-after-md.avif"><source type="image/avif" data-srcset="assets/illustrations/hero-clean/seated-after.avif"><source media="(max-width:768px)" type="image/webp" data-srcset="assets/illustrations/hero-clean/seated-after-sm.webp"><img class="actor-sprite" data-src="assets/illustrations/hero-clean/seated-after.webp" width="720" height="886" alt="" decoding="async"></picture></div></div>
+      <div class="hero-actor actor-delivery" data-actor="delivery" style="--person-ratio:720/861;--actor-x:43%;--actor-y:61%;--actor-width:13.8%;--actor-layer:2;--actor-delay:220ms"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/delivery-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/delivery-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/delivery.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/delivery-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/delivery.webp" width="720" height="861" alt="" decoding="async" loading="lazy"></picture></div></div>
+      <div class="hero-actor actor-kneel" data-actor="kneel" style="--person-ratio:720/792;--actor-x:49%;--actor-y:73%;--actor-width:12.2%;--actor-layer:5;--actor-delay:275ms"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/kneel-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/kneel-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/kneel.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/kneel-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/kneel.webp" width="720" height="792" alt="" decoding="async" loading="lazy"></picture><picture class="hero-media actor-after"><source media="(max-width:499px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/kneel-after-sm.avif"><source media="(max-width:1440px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/kneel-after-md.avif"><source type="image/avif" data-srcset="assets/illustrations/hero-clean/kneel-after.avif"><source media="(max-width:768px)" type="image/webp" data-srcset="assets/illustrations/hero-clean/kneel-after-sm.webp"><img class="actor-sprite" data-src="assets/illustrations/hero-clean/kneel-after.webp" width="720" height="792" alt="" decoding="async"></picture></div></div>
+      <div class="hero-actor actor-florist" data-actor="florist" style="--person-ratio:586/960;--actor-x:63%;--actor-y:46%;--actor-width:12.5%;--actor-layer:2;--actor-delay:330ms"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/florist-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/florist-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/florist.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/florist-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/florist.webp" width="586" height="960" alt="" decoding="async" loading="lazy"></picture></div></div>
+      <div class="hero-actor actor-baker" data-actor="baker" style="--person-ratio:480/960;--actor-x:73%;--actor-y:62%;--actor-width:9.4%;--actor-layer:4;--actor-delay:385ms"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/baker-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/baker-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/baker.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/baker-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/baker.webp" width="480" height="960" alt="" decoding="async" loading="lazy"></picture></div></div>
+      <div class="hero-actor actor-wave" data-actor="wave" style="--person-ratio:631/960;--actor-x:82%;--actor-y:46%;--actor-width:13.1%;--actor-layer:1;--actor-delay:440ms"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/wave-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/wave-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/wave.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/wave-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/wave.webp" width="631" height="960" alt="" decoding="async" loading="lazy"></picture><picture class="hero-media actor-after"><source media="(max-width:499px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/wave-after-sm.avif"><source media="(max-width:1440px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/wave-after-md.avif"><source type="image/avif" data-srcset="assets/illustrations/hero-clean/wave-after.avif"><source media="(max-width:768px)" type="image/webp" data-srcset="assets/illustrations/hero-clean/wave-after-sm.webp"><img class="actor-sprite" data-src="assets/illustrations/hero-clean/wave-after.webp" width="631" height="960" alt="" decoding="async"></picture></div></div>
+      <div class="hero-actor actor-mechanic" data-actor="mechanic" style="--person-ratio:439/960;--actor-x:90%;--actor-y:60%;--actor-width:9.3%;--actor-layer:4;--actor-delay:495ms"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/mechanic-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/mechanic-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/mechanic.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/mechanic-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/mechanic.webp" width="439" height="960" alt="" decoding="async" loading="lazy"></picture></div></div>
+    </div>
+    <div class="hero-scene hero-canvas-sp" aria-hidden="true">
+      <picture class="hero-town"><source media="(max-width:700px)" type="image/avif" srcset="assets/illustrations/hero-toyama-portrait-540.avif 540w, assets/illustrations/hero-toyama-portrait-1080.avif 1080w" sizes="120vw"><source media="(max-width:700px)" type="image/webp" srcset="assets/illustrations/hero-toyama-portrait-540.webp 540w, assets/illustrations/hero-toyama-portrait-1080.webp 1080w" sizes="120vw"><source type="image/avif" srcset="assets/illustrations/hero-toyama.avif 1920w, assets/illustrations/hero-toyama-detail.avif 2172w" sizes="(max-width:700px) 240vw, (max-width:1100px) 129vw, 100vw"><img src="assets/illustrations/hero-toyama-detail.webp" srcset="assets/illustrations/hero-toyama.webp 1920w, assets/illustrations/hero-toyama-detail.webp 2172w" sizes="(max-width:700px) 240vw, (max-width:1100px) 129vw, 100vw" width="2172" height="724" alt="" decoding="async" loading="eager" fetchpriority="high"></picture>
+      <div class="hero-actor actor-cafe" data-actor="cafe" style="--person-ratio:516/960;--actor-x:1%;--actor-y:43%;--actor-width:25.5%;--actor-layer:2;--actor-delay:0ms"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/cafe-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/cafe-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/cafe.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/cafe-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/cafe.webp" width="516" height="960" alt="" decoding="async" loading="lazy"></picture></div></div>
+      <div class="hero-actor actor-wave" data-actor="wave" style="--person-ratio:631/960;--actor-x:66%;--actor-y:42%;--actor-width:31%;--actor-layer:1;--actor-delay:55ms"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/wave-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/wave-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/wave.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/wave-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/wave.webp" width="631" height="960" alt="" decoding="async" loading="lazy"></picture><picture class="hero-media actor-after"><source media="(max-width:499px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/wave-after-sm.avif"><source media="(max-width:1440px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/wave-after-md.avif"><source type="image/avif" data-srcset="assets/illustrations/hero-clean/wave-after.avif"><source media="(max-width:768px)" type="image/webp" data-srcset="assets/illustrations/hero-clean/wave-after-sm.webp"><img class="actor-sprite" data-src="assets/illustrations/hero-clean/wave-after-sm.webp" width="631" height="960" alt="" decoding="async"></picture></div></div>
+      <div class="hero-actor actor-garden" data-actor="garden" style="--person-ratio:720/688;--actor-x:0%;--actor-y:71%;--actor-width:33%;--actor-layer:4;--actor-delay:110ms"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/garden-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/garden-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/garden.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/garden-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/garden.webp" width="720" height="688" alt="" decoding="async" loading="lazy"></picture><picture class="hero-media actor-after"><source media="(max-width:499px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/garden-after-sm.avif"><source media="(max-width:1440px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/garden-after-md.avif"><source type="image/avif" data-srcset="assets/illustrations/hero-clean/garden-after.avif"><source media="(max-width:768px)" type="image/webp" data-srcset="assets/illustrations/hero-clean/garden-after-sm.webp"><img class="actor-sprite" data-src="assets/illustrations/hero-clean/garden-after-sm.webp" width="720" height="688" alt="" decoding="async"></picture></div></div>
+      <div class="hero-actor actor-seated" data-actor="seated" style="--person-ratio:720/886;--actor-x:27%;--actor-y:64%;--actor-width:32%;--actor-layer:3;--actor-delay:165ms"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/seated-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/seated-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/seated.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/seated-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/seated.webp" width="720" height="886" alt="" decoding="async" loading="lazy"></picture><picture class="hero-media actor-after"><source media="(max-width:499px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/seated-after-sm.avif"><source media="(max-width:1440px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/seated-after-md.avif"><source type="image/avif" data-srcset="assets/illustrations/hero-clean/seated-after.avif"><source media="(max-width:768px)" type="image/webp" data-srcset="assets/illustrations/hero-clean/seated-after-sm.webp"><img class="actor-sprite" data-src="assets/illustrations/hero-clean/seated-after-sm.webp" width="720" height="886" alt="" decoding="async"></picture></div></div>
+      <div class="hero-actor actor-kneel" data-actor="kneel" style="--person-ratio:720/792;--actor-x:55%;--actor-y:73%;--actor-width:31%;--actor-layer:5;--actor-delay:220ms"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/kneel-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/kneel-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/kneel.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/kneel-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/kneel.webp" width="720" height="792" alt="" decoding="async" loading="lazy"></picture><picture class="hero-media actor-after"><source media="(max-width:499px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/kneel-after-sm.avif"><source media="(max-width:1440px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/kneel-after-md.avif"><source type="image/avif" data-srcset="assets/illustrations/hero-clean/kneel-after.avif"><source media="(max-width:768px)" type="image/webp" data-srcset="assets/illustrations/hero-clean/kneel-after-sm.webp"><img class="actor-sprite" data-src="assets/illustrations/hero-clean/kneel-after-sm.webp" width="720" height="792" alt="" decoding="async"></picture></div></div>
+      <div class="hero-actor actor-baker" data-actor="baker" style="--person-ratio:480/960;--actor-x:76%;--actor-y:66%;--actor-width:23.5%;--actor-layer:4;--actor-delay:275ms"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/baker-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/baker-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/baker.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/baker-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/baker.webp" width="480" height="960" alt="" decoding="async" loading="lazy"></picture></div></div>
     </div>
     <div class="hero-overlay">
       <h1 class="hero-h1"><span class="nw hero-services">手続き、</span><wbr><span class="nw hero-services">給与計算、</span><wbr><span class="nw hero-services">助成金も。</span><br><strong><span class="nw">会社の労務を、</span><wbr><span class="nw">まるごと任せられる。</span></strong></h1>
+    </div>
+    <div class="hero-intro">
       <p class="hero-sub"><span class="nw why-label hero-label">富山の社会保険労務士事務所。</span><wbr><span class="nw">中小企業の経営者に向けて、</span><wbr><span class="nw">労務顧問・手続き・給与計算・</span><wbr><span class="nw">助成金・DXまで</span><wbr><span class="nw">実務に沿ってサポート。</span><br><span class="nw">初めてのご相談でも、</span><wbr><span class="nw">むずかしい言葉を使わずに</span><wbr><span class="nw">整理します。</span></p>
       <div class="hero-btns">
         <a href="uploads/contact.html" class="btn-primary">無料で相談する</a>
@@ -1842,22 +1673,7 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
 <script id="stg-highlight">/* CASE段階ハイライトは 2026-07 にユーザー判断で削除（復活させないこと） */</script>
 <script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/"}' async src="//gc.zgo.at/count.js"></script>
 
-<script>
-/* 登場は初回だけ。着地後は表情を切り替え、SPA再訪では落下を繰り返さない。 */
-(function(){
- if(window.__mnHeroMotionCleanup)window.__mnHeroMotionCleanup();
- var stage=document.querySelector('#top .hero-stage');if(!stage)return;
- var motion=matchMedia('(prefers-reduced-motion: reduce)'),frame=0,timer=0;
- function update(){frame=0;if(!stage.isConnected)return;var y=stage.getBoundingClientRect().top;stage.style.setProperty('--hero-progress',motion.matches?0:Math.max(0,Math.min(1,-y/innerHeight)));}
- function scroll(){if(!frame)frame=requestAnimationFrame(update);}
- function settle(){stage.classList.remove('hero-entering');stage.classList.add('hero-settled');}
- function preference(){if(motion.matches){clearTimeout(timer);settle();}update();}
- if(!motion.matches&&!window.__mnHeroHasEntered){stage.classList.add('hero-entering');timer=setTimeout(settle,2300);}else settle();
- window.__mnHeroHasEntered=true;
- window.addEventListener('scroll',scroll,{passive:true});window.addEventListener('resize',scroll,{passive:true});motion.addEventListener('change',preference);update();
- window.__mnHeroMotionCleanup=function(){clearTimeout(timer);cancelAnimationFrame(frame);window.removeEventListener('scroll',scroll);window.removeEventListener('resize',scroll);motion.removeEventListener('change',preference);};
-})();
-
-</script>
+<script src="home-hero.js?v=20261003-layers3"></script>
+<script id="home-hero-init">if(window.mnInitHomeHero)window.mnInitHomeHero();</script>
 </body>
 </html>
