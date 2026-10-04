@@ -1530,7 +1530,7 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
   }
   function start(){
     if(window.__mnFormGalleryLoadObserver)window.__mnFormGalleryLoadObserver.disconnect();
-    var css=document.getElementById('home-form-gallery-style');
+    var css=document.getElementById('home-form-gallery-style')||document.querySelector('link[href^="home-form-gallery.css"]');
     if(css&&css.sheet){afterStyle();return;}
     if(!css){
       css=document.createElement('link');css.id='home-form-gallery-style';css.rel='stylesheet';
