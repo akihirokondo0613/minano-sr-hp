@@ -360,7 +360,7 @@ def main_html():
       <li>2ページ目の赤字の記入例を参考に、1ページ目の枠をクリックして入力します。番号の欄には、確認する資料の案内を添えています。</li>
       <li>入力後に保存し、開き直して内容を確認のうえ、ご依頼の担当者へお送りください。</li>
     </ol>
-    <p class="sh-pdf-note">関連する添付資料は各PDFの下部に記載しています。休職連絡票は産前産後・育児・介護休業の連絡や、傷病手当金の申請書とは別の書式です。手続きの依頼は、<a href="uploads/service-shakai-hoken.html">社会保険・労働保険の手続き代行</a>をご覧ください。</p>
+    <p class="sh-pdf-note">申請内容に応じて必要な賃金台帳・勤怠台帳等は、各PDFの下部に記載しています。休職連絡票は産前産後・育児・介護休業の連絡や、傷病手当金の申請書とは別の書式です。手続きの依頼は、<a href="uploads/service-shakai-hoken.html">社会保険・労働保険の手続き代行</a>をご覧ください。</p>
   </section>
 
   <section class="cat rv" id="dependent-forms" aria-labelledby="dependent-forms-title">
