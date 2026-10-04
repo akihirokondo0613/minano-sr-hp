@@ -234,16 +234,19 @@ async function readMotion(page, label) {
     const canvas = [...stage.querySelectorAll('.hero-scene')]
       .find((element) => getComputedStyle(element).display !== 'none');
     const actors = [...canvas.querySelectorAll('.hero-actor')].map((actor) => {
-      const style = getComputedStyle(actor.querySelector('.hero-poses'));
+      const pose = actor.querySelector('.hero-poses');
+      const style = getComputedStyle(pose);
       const matrix = new DOMMatrixReadOnly(style.transform === 'none' ? undefined : style.transform);
       return {
         actor: actor.dataset.actor, y: matrix.m42,
         angle: Math.atan2(-matrix.m13, matrix.m11) * 180 / Math.PI,
         opacity: Number(style.opacity),
+        inlineTransform: pose.style.transform, inlineOpacity: pose.style.opacity,
       };
     });
     return {
       label, now: performance.now(), classes: [...stage.classList],
+      reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
       canvas: canvas.classList.contains('hero-canvas-sp') ? 'sp' : 'pc', actors,
       titleGap: Math.min(...[...canvas.querySelectorAll('.hero-poses')]
         .map((pose) => pose.getBoundingClientRect().top))
@@ -307,14 +310,27 @@ function motionChecks(engine, width, scenario, failures) {
   };
 }
 
+function restingConditions(state) {
+  return {
+    classes: state.classes.includes('hero-settled')
+      && !state.classes.includes('hero-pending') && !state.classes.includes('hero-entering'),
+    actors: state.actors.every((actor) => Math.abs(actor.y) < 0.01
+      && Math.abs(actor.angle) < 0.01 && Math.abs(actor.opacity - 1) < 0.001),
+    gap: state.titleGap >= 8,
+  };
+}
+
+function isResting(state) {
+  return Object.values(restingConditions(state)).every(Boolean);
+}
+
 function checkResting(state, check) {
-  check(state.classes.includes('hero-settled')
-    && !state.classes.includes('hero-pending') && !state.classes.includes('hero-entering'),
+  const resting = restingConditions(state);
+  check(resting.classes,
   `${state.label}: 終端クラスが一致しません (${state.classes.join(' ')})`);
-  check(state.actors.every((actor) => Math.abs(actor.y) < 0.01
-    && Math.abs(actor.angle) < 0.01 && Math.abs(actor.opacity - 1) < 0.001),
+  check(resting.actors,
   `${state.label}: 定位置・角度0・不透明度1へ戻っていません`);
-  check(state.titleGap >= 8, `${state.label}: タイトルと着地後の人物の間隔が不足 (${state.titleGap}px)`);
+  check(resting.gap, `${state.label}: タイトルと着地後の人物の間隔が不足 (${state.titleGap}px)`);
 }
 
 async function motionScreenshot(page, engine, width, phase, screenshots) {
@@ -436,6 +452,7 @@ async function checkMotionCancellation(browser, engine, failures) {
   const { page, html, origin, errors } = await openMotionPage(browser, 390);
   const check = motionChecks(engine, 390, 'cancel', failures);
   const samples = [];
+  const screenshots = [];
   let stageOrigin = origin;
   try {
     for (const reason of ['offscreen', 'hidden-event', 'breakpoint', 'reduced-motion']) {
@@ -451,19 +468,32 @@ async function checkMotionCancellation(browser, engine, failures) {
       } else if (reason === 'breakpoint') await page.setViewportSize({ width: 768, height: 900 });
       else await page.emulateMedia({ reducedMotion: 'reduce' });
       let state;
-      // IntersectionObserver is delivered by rendering, independently of fake timers.
+      // IO/media style updates are delivered by rendering, independently of fake timers.
+      // Keep the existing 10 x 17ms bound; a terminal class alone is not a painted resting pose.
       for (let attempt = 0; attempt < 10; attempt += 1) {
         await page.clock.runFor(17);
         state = await readMotion(page, `cancel-${reason}`);
-        if (state.classes.includes('hero-settled')) break;
+        if (isResting(state)) break;
       }
       samples.push(state); checkResting(state, check);
+      if (!isResting(state)) {
+        await motionScreenshot(page, engine, 390, `cancel-${reason}-failure`, screenshots);
+      }
       if (reason === 'offscreen') await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
       else if (reason === 'hidden-event') await page.evaluate(() => {
         delete document.hidden; document.dispatchEvent(new Event('visibilitychange'));
       });
       else if (reason === 'breakpoint') await page.setViewportSize({ width: 390, height: 900 });
       else await page.emulateMedia({ reducedMotion: 'no-preference' });
+      if (reason === 'reduced-motion') {
+        let restoredImmediate;
+        for (let attempt = 0; attempt < 10; attempt += 1) {
+          await page.clock.runFor(17);
+          restoredImmediate = await readMotion(page, 'restored-reduced-motion-immediate');
+          if (isResting(restoredImmediate)) break;
+        }
+        samples.push(restoredImmediate); checkResting(restoredImmediate, check);
+      }
       await page.clock.runFor(7000);
       const restored = await readMotion(page, `restored-${reason}`); samples.push(restored);
       checkResting(restored, check);
@@ -477,7 +507,7 @@ async function checkMotionCancellation(browser, engine, failures) {
       }
     }
     check(errors.length === 0, `pageerror: ${errors.join(' / ')}`);
-    return { engine, width: 390, scenario: 'cancellation', samples, errors };
+    return { engine, width: 390, scenario: 'cancellation', samples, screenshots, errors };
   } finally { await page.close(); }
 }
 
@@ -700,8 +730,7 @@ async function checkReducedMotion(browser, engine, width, failures) {
   }
 
   if (asJson) {
-    // JSONは巨大で、失敗時に process.exit するとログ側で末尾が切れて failures が読めない。
-    // 失敗の要点だけ先に stderr へ出す（実行ログはこちらを優先表示する）。
+    // 失敗要点はstderrへ先に出し、JSONも自然終了までflushして保存する。
     if (failures.length) {
       console.error(`失敗: ${failures.length}件`);
       for (const failure of failures) console.error(`- ${failure}`);
@@ -730,8 +759,8 @@ async function checkReducedMotion(browser, engine, width, failures) {
     for (const failure of failures) console.error(`- ${failure}`);
   }
 
-  if (failures.length) process.exit(1);
+  if (failures.length) process.exitCode = 1;
 })().catch((error) => {
   console.error(error);
-  process.exit(1);
+  process.exitCode = 1;
 });
