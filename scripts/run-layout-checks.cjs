@@ -449,6 +449,19 @@ async function runTaskPool(tasks, limit = 2) {
         isolated: true,
       },
     ];
+    if (full || blogSelection.changedFiles.some((file) =>
+      file === 'portal.html' || file === 'shoshiki.html'
+      || file.startsWith('shoshiki/') || file.startsWith('scripts/shoshiki/')
+      || file.startsWith('data/shoshiki/') || file === 'scripts/test-shoshiki.cjs')) {
+      tasks.push({
+        name: '書式・窓口と全社内書式',
+        command: process.execPath,
+        args: ['scripts/test-shoshiki.cjs', base, '--json'],
+        output: 'shoshiki.json',
+        timeoutMs: 8 * 60 * 1000,
+        isolated: true,
+      });
+    }
     if (full) {
       tasks.push(
         {

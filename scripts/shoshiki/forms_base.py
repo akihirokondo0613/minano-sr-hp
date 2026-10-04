@@ -8,7 +8,7 @@ from openpyxl.utils import get_column_letter
 
 CO = "【会社名】"
 
-DATE = "2026-09-05"
+DATE = "2026-10-04"
 XLSX_FORMS = [
     dict(
         no="D-31",
@@ -17,7 +17,7 @@ XLSX_FORMS = [
         guide=(
             "従業員ごとの日々の始業・終業・休憩・時間外の記録。",
             "会社には労働時間を客観的に把握する義務がある（安衛法66条の8の3、労働時間適正把握ガイドライン）。出勤簿・タイムカードは賃金台帳と併せて5年（当分3年）保存（労基法109条）。",
-            "1か月1シート。始業・終業を入れると実労働・時間外・深夜が自動計算される。休憩は分で入力。",
+            "1か月1シート。24時間未満の勤務を扱い、終業が始業より早い場合は翌日として計算する。休憩はF列に総分数、K列に深夜時間帯に実際に取った分数を入力。時間外欄は所定労働時間を超えた時間の目安。",
         ),
     ),
     dict(
@@ -27,7 +27,7 @@ XLSX_FORMS = [
         guide=(
             "従業員ごとに基準日・付与日数・取得日を記録する法定帳簿。",
             "年10日以上付与する労働者には年5日の取得義務があり（労基法39条7項）、基準日・日数・時季を記載した管理簿の作成と5年（当分3年）保存が義務（労基則24条の7）。",
-            "1人1行。取得日を入れると取得日数と残日数が自動計算され、5日未満の人に印が付く。",
+            "社員IDと基準日を入力し、付与日数は主行だけに入力する。16日目以降は同じ社員ID・基準日の継続行に記録すると、取得日数・残日数・5日判定を合算する。半日取得はAA列の当行取得日数を手修正し、時間単位取得は別途管理する。",
         ),
     ),
 ]
@@ -627,7 +627,7 @@ FORMS = [
                 [
                     "当社の業務に支障を生じさせません。",
                     "当社の秘密情報を副業・兼業先で利用・開示しません。",
-                    "当社と競合する事業には従事しません。",
+                    "競業により当社の正当な利益を害する副業・兼業を行いません。",
                     "副業・兼業先が雇用の場合、労働時間を通算して管理するため、実労働時間を毎月報告します。",
                     "健康に支障が生じたときは速やかに申し出ます。",
                 ],
@@ -644,7 +644,7 @@ FORMS = [
         ],
         guide=(
             "副業・兼業の届出を受け、労働時間の通算と秘密保持・競業の確認をする。",
-            "副業・兼業は原則自由で、会社が制限できるのは業務に支障・秘密漏えい・競業・信用毀損のおそれがある場合（厚労省「副業・兼業の促進に関するガイドライン」）。雇用型の副業は労働時間を通算する（労基法38条1項）。",
+            "副業・兼業は原則自由。会社が制限できる場合は、労務提供上の支障がある場合、企業秘密が漏えいする場合、競業により自社の利益が害される場合、会社の名誉・信用を損なう行為や信頼関係を破壊する行為がある場合など、厚労省「副業・兼業の促進に関するガイドライン」に沿って個別に判断する。雇用型の副業は労働時間を通算する（労基法38条1項）。",
             "厚労省ガイドラインの届出様式例を参考にしている。労災の給付基礎日額は複数就業先の賃金を合算する（労災法8条3項）ので、副業先の把握が要る。",
         ),
     ),
@@ -1129,7 +1129,7 @@ FORMS = [
         ],
         guide=(
             "有期契約を更新しないこと（雇止め）を予告する。",
-            "3回以上更新した契約、または1年を超えて継続勤務している契約を更新しないときは、期間満了の30日前までに予告しなければならない（有期労働契約の締結、更新及び雇止めに関する基準・厚労省告示 第1条）。本人が理由の証明書を求めたら交付する（同2条）。更新の期待に合理性があると雇止めが無効になることがある（労契法19条）。",
+            "3回以上更新した契約、または1年を超えて継続勤務している契約を更新しないときは、期間満了の30日前までに予告しなければならない。ただし、あらかじめ当該契約を更新しない旨を明示しているものを除く（有期労働契約の締結、更新、雇止め等に関する基準・厚労省告示 第2条）。本人が理由の証明書を求めたら遅滞なく交付する（同3条）。更新の期待に合理性があると雇止めが無効になることがある（労契法19条）。",
             "通算5年を超えると無期転換申込権が発生する（労契法18条）。更新回数・通算期間を必ず書く。",
         ),
     ),
@@ -1174,7 +1174,7 @@ FORMS = [
         ],
         guide=(
             "退職勧奨や労使トラブルの解決として、合意退職の条件を書面化する。",
-            "退職理由（自己都合か会社都合か）は失業給付の給付制限に直結するので明記する。清算条項を入れることで後日の請求を防ぐが、未払残業代など法定の権利を放棄させる内容は無効になりうる。解決金を払うときは源泉徴収の要否（退職所得か否か）を税理士に確認する。",
+            "退職の実際の経緯を確認し、離職証明書には事実に基づく理由を記載する。雇用保険上の離職理由はハローワークが本人と会社の説明・資料を確認して判断し、合意書の名称や自己都合・会社都合の選択だけでは決まらない。清算条項を入れても、未払残業代など法定の権利を放棄させる内容は無効になりうる。解決金を払うときは源泉徴収の要否（退職所得か否か）を税理士に確認する。",
             "退職勧奨は本人の自由な意思が前提。執拗な勧奨は違法になる。合意書への署名を急がせない。",
         ),
     ),
@@ -1304,7 +1304,7 @@ FORMS = [
         ],
         guide=(
             "介護のための所定労働時間短縮の申出。厚労省の社内様式に「介護短時間勤務申出書」単独の様式が無かったので補った。",
-            "事業主は要介護状態の家族を介護する労働者に、短時間勤務・フレックス・時差出勤・介護費用助成のいずれかの措置を講じる義務がある（育介法23条3項）。利用開始から3年の間に2回以上利用できるようにする（育介則74条3項）。",
+            "事業主は要介護状態の家族を介護する労働者に、短時間勤務・フレックス・時差出勤・介護費用助成のいずれかの措置を講じる義務がある（育介法23条3項）。短時間勤務・フレックス・時差出勤は、利用開始から3年以上の期間に2回以上利用できる制度とする。介護費用助成には2回以上の利用要件は適用されない（育介則74条の2）。",
             "会社が選んだ措置が短時間勤務でない場合は、この書式の名称と内容を合わせる。",
         ),
     ),
@@ -1542,7 +1542,7 @@ XLSX_FORMS = [
         guide=(
             "従業員ごとの日々の始業・終業・休憩・時間外の記録。",
             "会社には労働時間を客観的に把握する義務がある（安衛法66条の8の3、労働時間適正把握ガイドライン）。出勤簿・タイムカードは賃金台帳と併せて5年（当分3年）保存（労基法109条）。",
-            "1か月1シート。始業・終業を入れると実労働・時間外・深夜が自動計算される。休憩は分で入力。",
+            "1か月1シート。24時間未満の勤務を扱い、終業が始業より早い場合は翌日として計算する。休憩はF列に総分数、K列に深夜時間帯に実際に取った分数を入力。時間外欄は所定労働時間を超えた時間の目安。",
         ),
     ),
     dict(
@@ -1552,7 +1552,7 @@ XLSX_FORMS = [
         guide=(
             "従業員ごとに基準日・付与日数・取得日を記録する法定帳簿。",
             "年10日以上付与する労働者には年5日の取得義務があり（労基法39条7項）、基準日・日数・時季を記載した管理簿の作成と5年（当分3年）保存が義務（労基則24条の7）。",
-            "1人1行。取得日を入れると取得日数と残日数が自動計算され、5日未満の人に印が付く。",
+            "社員IDと基準日を入力し、付与日数は主行だけに入力する。16日目以降は同じ社員ID・基準日の継続行に記録すると、取得日数・残日数・5日判定を合算する。半日取得はAA列の当行取得日数を手修正し、時間単位取得は別途管理する。",
         ),
     ),
 ]
@@ -1564,6 +1564,9 @@ XLSX_FORMS = [
 
 
 def build_shukkinbo(path):
+    import datetime
+    from openpyxl.worksheet.datavalidation import DataValidation
+
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = "出勤簿"
@@ -1575,13 +1578,14 @@ def build_shukkinbo(path):
     ws["G2"] = "対象月"
     ws["H2"] = "2026/10"
     ws["A3"] = "所定：始業"
-    ws["B3"] = "9:00"
+    ws["B3"] = datetime.time(9, 0)
     ws["C3"] = "終業"
-    ws["D3"] = "18:00"
+    ws["D3"] = datetime.time(18, 0)
+    ws["B3"].number_format = ws["D3"].number_format = "h:mm"
     ws["E3"] = "休憩(分)"
     ws["F3"] = 60
     ws["G3"] = "所定労働(h)"
-    ws["H3"] = "=(D3-B3)*24-F3/60"
+    ws["H3"] = "=(D3+IF(D3<B3,1,0)-B3)*24-F3/60"
     ws["H3"].number_format = "0.00"
     heads = [
         "日",
@@ -1594,35 +1598,54 @@ def build_shukkinbo(path):
         "時間外(h)",
         "深夜(h)",
         "備考",
+        "深夜休憩(分)",
     ]
     for i, h in enumerate(heads, 1):
         c = ws.cell(row=5, column=i, value=h)
         c.font = Font(bold=True)
         c.fill = HEAD
         c.border = BORDER
-        c.alignment = Alignment(horizontal="center")
+        c.alignment = Alignment(horizontal="center", wrap_text=True)
+    ws.row_dimensions[5].height = 30
+    month_start = 'DATEVALUE($H$2&"/1")'
+    month_days = f"DAY(EOMONTH({month_start},0))"
     for d in range(1, 32):
         r = 5 + d
-        ws.cell(row=r, column=1, value=d)
+        ws.cell(row=r, column=1, value=f'=IF({d}<={month_days},{d},"")')
         ws.cell(
             row=r,
             column=2,
             value=f'=IF(A{r}="","",TEXT(DATE(YEAR(DATEVALUE($H$2&"/1")),MONTH(DATEVALUE($H$2&"/1")),A{r}),"aaa"))',
         )
-        ws.cell(row=r, column=3, value="出勤")
-        ws.cell(row=r, column=6, value=60)
+        ws.cell(row=r, column=3, value=f'=IF(A{r}="","","出勤")')
+        ws.cell(row=r, column=6, value=f'=IF(A{r}="","",60)')
+        ws.cell(row=r, column=11, value=f'=IF(A{r}="","",0)')
+        end = f"(E{r}+IF(E{r}<D{r},1,0))"
+        elapsed = f"({end}-D{r})"
+        # 0〜5時、22〜翌5時、翌22〜翌々5時との重複。24時間未満の勤務を扱う。
+        # 深夜中に実際に取った休憩はK列で入力し、総休憩F列から推測しない。
+        deep_minutes = "(" + "+".join(
+            f"MAX(0,MIN({end},{hi})-MAX(D{r},{lo}))"
+            for lo, hi in (
+                ("0", "TIME(5,0,0)"),
+                ("TIME(22,0,0)", "1+TIME(5,0,0)"),
+                ("1+TIME(22,0,0)", "2+TIME(5,0,0)"),
+            )
+        ) + ")*1440"
+        empty = f'OR(A{r}="",D{r}="",E{r}="")'
+        invalid_shift = f"OR(D{r}<0,D{r}>=1,E{r}<0,{elapsed}<0,{elapsed}>=1)"
         ws.cell(
             row=r,
             column=7,
-            value=f'=IF(OR(D{r}="",E{r}=""),"",ROUND((E{r}-D{r})*24-F{r}/60,2))',
+            value=f'=IF({empty},"",IF(OR({invalid_shift},F{r}<0,F{r}>{elapsed}*1440),NA(),ROUND({elapsed}*24-F{r}/60,2)))',
         )
         ws.cell(row=r, column=8, value=f'=IF(G{r}="","",MAX(0,G{r}-$H$3))')
         ws.cell(
             row=r,
             column=9,
-            value=f'=IF(OR(D{r}="",E{r}=""),"",ROUND(MAX(0,(E{r}-MAX(D{r},TIME(22,0,0)))*24),2))',
+            value=f'=IF({empty},"",IF(OR({invalid_shift},K{r}<0,K{r}>F{r},K{r}>{deep_minutes}+0.000001),NA(),ROUND(({deep_minutes}-K{r})/60,2)))',
         )
-        for col in range(1, 11):
+        for col in range(1, 12):
             c = ws.cell(row=r, column=col)
             c.border = BORDER
             if col in (4, 5):
@@ -1638,27 +1661,45 @@ def build_shukkinbo(path):
     ws.cell(
         row=38,
         column=1,
-        value="区分：出勤／欠勤／有給／半休／休日／特別休暇　※始業・終業は h:mm で入力。時間外は所定労働時間を超えた分、深夜は22時以降の分（翌日にまたがる場合は備考に記入）。",
+        value="区分：出勤／欠勤／有給／半休／休日／特別休暇。始業・終業は h:mm。終業が始業より早い場合は翌日として計算（勤務は24時間未満）。時間外は所定労働時間を超えた分。深夜は22時〜翌5時。",
     )
     ws.cell(
         row=39,
         column=1,
         value="保存：賃金台帳と併せて5年（当分の間3年）。労基法109条・安衛法66条の8の3",
     )
-    for col, w in zip("ABCDEFGHIJ", (9, 6, 8, 9, 9, 9, 11, 12, 9, 26)):
+    ws.cell(row=40, column=1, value="F列は休憩の総分数、K列はそのうち22時〜翌5時に実際に取った休憩の分数（深夜休憩なしは0）。総休憩をK列へ重ねて入力しないでください。")
+    ws.cell(row=41, column=1, value="#N/A が出た行は、勤務24時間以上・負の休憩・勤務/深夜時間より長い休憩などを確認してください。勤務時間が24時間以上の場合は日付ごとに分けて記録してください。")
+    for r in (38, 39, 40, 41):
+        ws.merge_cells(start_row=r, start_column=1, end_row=r, end_column=11)
+        ws.cell(row=r, column=1).alignment = Alignment(wrap_text=True, vertical="center")
+        ws.row_dimensions[r].height = 32 if r != 39 else 20
+    for col, w in zip("ABCDEFGHIJK", (9, 6, 8, 9, 9, 9, 11, 12, 9, 26, 13)):
         ws.column_dimensions[col].width = w
     ws.column_dimensions["A"].width = max(
         ws.column_dimensions["A"].width or 0, 12
     )  # 「所定：始業」が欠けないように
     ws.freeze_panes = "A6"
-    ws.print_area = "A1:J39"
+    for column in ("F", "K"):
+        validation = DataValidation(type="decimal", operator="between", formula1=0, formula2=1440, allow_blank=True)
+        validation.showErrorMessage = True
+        validation.errorStyle = "stop"
+        validation.errorTitle = "休憩は分数で入力"
+        validation.error = "0以上1440以下の分数を入力してください。深夜休憩は総休憩の内数です。"
+        ws.add_data_validation(validation)
+        validation.add(f"{column}6:{column}36")
+    ws.print_area = "A1:K41"
+    ws.print_title_rows = "1:5"
     ws.page_setup.orientation = "portrait"
+    ws.page_setup.paperSize = ws.PAPERSIZE_A4
     ws.page_setup.fitToWidth = 1
     ws.sheet_properties.pageSetUpPr.fitToPage = True
     wb.save(path)
 
 
 def build_yukyu(path):
+    from openpyxl.worksheet.datavalidation import DataValidation
+
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = "年次有給休暇管理簿"
@@ -1672,7 +1713,7 @@ def build_yukyu(path):
         "労基則24条の7：基準日・日数・時季を記載し、5年（当分3年）保存。年10日以上付与の人は年5日の取得が必要（労基法39条7項）。"
     )
     heads = [
-        "No.",
+        "社員ID",
         "氏名",
         "入社日",
         "基準日",
@@ -1683,7 +1724,7 @@ def build_yukyu(path):
         "残日数",
         "5日取得",
         "時季指定（会社）",
-    ] + [f"取得日{i}" for i in range(1, 16)]
+    ] + [f"取得日{i}" for i in range(1, 16)] + ["当行取得日数", "付与入力行（内部）", "社員ID照合（内部）"]
     for i, h in enumerate(heads, 1):
         c = ws.cell(row=5, column=i, value=h)
         c.font = Font(bold=True)
@@ -1691,29 +1732,65 @@ def build_yukyu(path):
         c.border = BORDER
         c.alignment = Alignment(horizontal="center", wrap_text=True)
     for r in range(6, 56):
-        ws.cell(row=r, column=1, value=r - 5)
-        ws.cell(row=r, column=7, value=f'=IF(AND(E{r}="",F{r}=""),"",N(E{r})+N(F{r}))')
-        ws.cell(row=r, column=8, value=f"=COUNTA(L{r}:Z{r})")
+        ws.cell(row=r, column=1).number_format = "@"
+        # 同姓の別人を混ぜず、付与年度も分ける。継続行の付与入力は空欄にする。
+        # SUMIFSのワイルドカードや数値化で EMP*、001/1 などを混同しない。
+        literal_id = f'"="&SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(AC{r},"~","~~"),"*","~*"),"?","~?")'
+        criteria = f"$AC$6:$AC$55,{literal_id},$D$6:$D$55,D{r}"
+        missing_key = f'OR(A{r}="",D{r}="")'
+        grant_rows = f"SUMIFS($AB$6:$AB$55,{criteria})"
+        grant_total = f"SUMIFS($E$6:$E$55,{criteria})+SUMIFS($F$6:$F$55,{criteria})"
+        this_grant = f"SUMIFS($F$6:$F$55,{criteria})"
+        ws.cell(row=r, column=7, value=f'=IF({missing_key},"",IF({grant_rows}=1,{grant_total},""))')
+        ws.cell(row=r, column=8, value=f'=IF({missing_key},"",SUMIFS($AA$6:$AA$55,{criteria}))')
         ws.cell(row=r, column=9, value=f'=IF(G{r}="","",G{r}-H{r})')
         ws.cell(
             row=r,
             column=10,
-            value=f'=IF(F{r}="","",IF(F{r}<10,"対象外",IF(H{r}>=5,"済","未達")))',
+            value=f'=IF(COUNTA(A{r}:F{r},L{r}:Z{r})=0,"",IF({missing_key},"ID・基準日要入力",IF({grant_rows}<>1,"付与は1行に入力",IF({this_grant}<10,"対象外",IF(H{r}>=5,"済","未達")))))',
         )
-        for col in range(1, 27):
+        ws.cell(row=r, column=27, value=f'=IF(COUNTA(L{r}:Z{r})=0,"",COUNTA(L{r}:Z{r}))')
+        ws.cell(row=r, column=28, value=f'=IF(COUNT(E{r}:F{r})=0,0,1)')
+        ws.cell(row=r, column=29, value=f'=IF(A{r}="","","ID:"&A{r})')
+        for col in range(1, 30):
             c = ws.cell(row=r, column=col)
             c.border = BORDER
-            if col in (3, 4) or col >= 12:
+            if col in (3, 4):
+                c.number_format = "yyyy/m/d"
+            if 12 <= col <= 26:
                 c.number_format = "m/d"
+            if col in (8, 9, 27):
+                c.number_format = "0.0"
+            if col == 10:
+                c.alignment = Alignment(wrap_text=True, vertical="center")
+        ws.row_dimensions[r].height = 30
     ws.cell(
         row=57,
         column=1,
-        value="※ 取得日が16日以上になる人は、2行目を使って続けてください。半日取得は 0.5 と数えたい場合、「取得日数」を手で修正してください。時間単位取得は別途管理。",
+        value="社員ID（社員番号など、同姓の別人を区別できる番号）と基準日を必ず入力。同じ社員ID・基準日の継続行は合算されます。前年繰越・今年付与は主行1行だけに入力し、継続行では空欄にします。",
     )
-    for col, w in zip(range(1, 27), (5, 14, 10, 10, 8, 8, 7, 8, 8, 8, 12) + (8,) * 15):
+    ws.cell(row=58, column=1, value="取得日が16日以上なら、同じ社員ID・基準日を次行に入力して続けてください。半日取得はAA列「当行取得日数」を0.5日単位の合計へ手修正（H列は合算結果なので変更しない）。時間単位取得は別途管理し、年5日の判定に含めません。")
+    for r in (57, 58):
+        ws.merge_cells(start_row=r, start_column=1, end_row=r, end_column=27)
+        ws.cell(row=r, column=1).alignment = Alignment(wrap_text=True, vertical="center")
+        ws.row_dimensions[r].height = 32
+    for col, w in zip(range(1, 30), (9, 14, 13, 13, 8, 8, 7, 8, 8, 15, 12) + (8,) * 15 + (13, 8, 8)):
         ws.column_dimensions[get_column_letter(col)].width = w
+    ws.column_dimensions["AB"].hidden = True
+    ws.column_dimensions["AC"].hidden = True
+    for column in ("E", "F", "AA"):
+        validation = DataValidation(type="decimal", operator="between", formula1=0, formula2=366, allow_blank=True)
+        validation.showErrorMessage = True
+        validation.errorStyle = "stop"
+        validation.errorTitle = "日数で入力"
+        validation.error = "0以上の日数を数値で入力してください。半日は0.5として数えます。"
+        ws.add_data_validation(validation)
+        validation.add(f"{column}6:{column}55")
     ws.freeze_panes = "C6"
+    ws.print_area = "A1:AA58"
+    ws.print_title_rows = "1:5"
     ws.page_setup.orientation = "landscape"
+    ws.page_setup.paperSize = ws.PAPERSIZE_A4
     ws.page_setup.fitToWidth = 1
     ws.sheet_properties.pageSetUpPr.fitToPage = True
     wb.save(path)

@@ -76,6 +76,7 @@
 .sh-set .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .sh-set button{font:inherit;font-size:12.5px;font-weight:700;padding:7px 12px;border:1px solid var(--moegi-t);background:var(--shiro);color:var(--sugi);border-radius:8px;cursor:pointer}
 .sh-set .hint{margin:10px 0 0;font-size:12px;line-height:1.9;color:var(--ink4)}
+.sh-set .co-status{margin:10px 0 0;font-size:12px;color:#8A4116;line-height:1.8}
 .sh-now{font-weight:700;color:var(--sugi)}
 .qk{display:inline-flex;align-items:center;gap:7px;background:var(--shiro);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:600;color:var(--ink2);letter-spacing:.02em;text-decoration:none;transition:border-color .34s cubic-bezier(.22,.61,.36,1),transform .34s cubic-bezier(.22,.61,.36,1)}
 .qk::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--moegi);flex-shrink:0}
@@ -169,7 +170,7 @@
   <div class="notice">
     <span class="notice-icon">!</span>
     <div>
-      <b>ご利用にあたって</b>書式は一般的な内容です。就業規則や労使協定と食い違うときは規程が優先します。入力した会社情報はブラウザ内にだけ保存され、当事務所には送信されません。使い方や就業規則との整合はお気軽にご相談ください。
+      <b>ご利用にあたって</b>書式は一般的な内容です。法令に反しない範囲で、自社の就業規則・労使協定と実情に合わせて修正してください。入力した会社情報はブラウザ内にだけ保存され、当事務所には送信されません。使い方や就業規則との整合はお気軽にご相談ください。
     </div>
   </div>
 </header>
@@ -183,7 +184,7 @@
       <h2 class="cat-title">会社情報を入れる</h2>
     </div>
     <p class="cat-desc">最初に<wbr>一度だけ<wbr>入力してください。<wbr>すべての<wbr>書式の<wbr>宛名・発信者欄に<wbr>入ります。</p>
-    <div class="sh-set" id="cfg-wrap"><div class="row"><label>会社名<input id="co-name" placeholder="株式会社○○"></label><label>代表者の役職<input id="co-title" placeholder="代表取締役"></label><label>代表者氏名<input id="co-rep" placeholder="○○ ○○"></label><label>所在地<input id="co-addr" placeholder="富山市○○1-2-3"></label><label>電話<input id="co-tel" placeholder="076-000-0000"></label><label>担当部署・担当者<input id="co-dept" placeholder="総務部 ○○"></label></div><div class="btns"><button type="button" onclick="coExport()">設定をファイルに書き出す</button><button type="button" onclick="document.getElementById('co-file').click()">設定ファイルを読み込む</button><input type="file" id="co-file" accept=".json" style="display:none" onchange="coImport(this)"><button type="button" onclick="coClear()">消去</button></div><p class="hint">いま設定されている<wbr>会社名：<span class="co-name sh-now">【会社名】</span>。<wbr>入力した<wbr>内容は<wbr>この<wbr>ブラウザの<wbr>中にだけ保存され、<wbr>当事務所には<wbr>送信されません。<wbr>各書式を<wbr>開くと<wbr>宛名・発信者欄に<wbr>自動で<wbr>入ります。<wbr>別の<wbr>PCで<wbr>使う<wbr>ときは<wbr>「書き出す」で<wbr>保存した<wbr>ファイルを<wbr>読み込んでください。</p></div>
+    <div class="sh-set" id="cfg-wrap"><div class="row"><label>会社名<input id="co-name" placeholder="株式会社○○"></label><label>代表者の役職<input id="co-title" placeholder="代表取締役"></label><label>代表者氏名<input id="co-rep" placeholder="○○ ○○"></label><label>所在地<input id="co-addr" placeholder="富山市○○1-2-3"></label><label>電話<input id="co-tel" placeholder="076-000-0000"></label><label>担当部署・担当者<input id="co-dept" placeholder="総務部 ○○"></label></div><div class="btns"><button type="button" onclick="coExport()">設定をファイルに書き出す</button><button type="button" onclick="document.getElementById('co-file').click()">設定ファイルを読み込む</button><input type="file" id="co-file" accept=".json" style="display:none" onchange="coImport(this)"><button type="button" onclick="coClear()">消去</button></div><p id="co-status" class="co-status" role="status" hidden></p><p class="hint">いま設定されている<wbr>会社名：<span class="co-name sh-now">【会社名】</span>。<wbr>入力した<wbr>内容は<wbr>この<wbr>ブラウザの<wbr>中にだけ保存され、<wbr>当事務所には<wbr>送信されません。<wbr>各書式を<wbr>開くと<wbr>宛名・発信者欄に<wbr>自動で<wbr>入ります。<wbr>別の<wbr>PCで<wbr>使う<wbr>ときは<wbr>「書き出す」で<wbr>保存した<wbr>ファイルを<wbr>読み込んでください。</p></div>
   </section>
 
   <section class="cat rv" id="scene">
@@ -220,7 +221,7 @@
       <div class="cat-icon kmono" aria-hidden="true">注</div>
       <h2 class="cat-title">この書式集について</h2>
     </div>
-    <p>書式は<wbr>一般的な<wbr>内容で、<wbr>法令は<wbr>2026年<wbr>09月時点の<wbr>理解に<wbr>基づいて<wbr>作っています。<wbr>会社の<wbr>就業規則・労使協定と<wbr>食い<wbr>違う<wbr>ときは<wbr>規程が<wbr>優先します。<wbr>解雇・<wbr>懲戒・労使協定など、<wbr>書式だけでは<wbr>判断できない<wbr>場面は、<wbr>使う<wbr>前に<wbr>専門家に<wbr>ご確認ください。</p>
+    <p>書式は<wbr>一般的な<wbr>内容で、<wbr>法令は<wbr>2026年<wbr>10月時点の<wbr>理解に<wbr>基づいて<wbr>作っています。<wbr>法令に<wbr>反しない<wbr>範囲で、<wbr>自社の<wbr>就業規則・労使協定と<wbr>実情に<wbr>合わせて<wbr>修正してください。<wbr>解雇・<wbr>懲戒・労使協定など、<wbr>書式だけでは<wbr>判断できない<wbr>場面は、<wbr>使う<wbr>前に<wbr>専門家に<wbr>ご確認ください。</p>
     <p>自社内での<wbr>利用と<wbr>改変は<wbr>自由です。<wbr>第三者への<wbr>再配布・販売は<wbr>ご遠慮ください。<wbr>作成・<wbr>提供：みなの<wbr>社会保険労務士事務所<wbr>（富山市）。</p>
   </section>
 
@@ -341,7 +342,14 @@ document.querySelectorAll('.rv').forEach(function(el){ro.observe(el)});
 <script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/shoshiki.html"}' async src="//gc.zgo.at/count.js"></script>
 <script>
 (function(){
-document.querySelectorAll('.bx').forEach(b=>b.addEventListener('click',()=>{b.textContent=b.textContent==='☐'?'☑':'☐';}));
+document.querySelectorAll('.bx').forEach(b=>{
+  b.setAttribute('role','checkbox'); b.tabIndex=0; b.setAttribute('aria-checked',String(b.textContent==='☑'));
+  const label=(b.parentElement.textContent||'').replace(/[☐☑]/g,'').trim();
+  b.setAttribute('aria-label',label||'選択');
+  const toggle=()=>{const checked=b.getAttribute('aria-checked')!=='true'; b.textContent=checked?'☑':'☐'; b.setAttribute('aria-checked',String(checked));};
+  b.addEventListener('click',toggle);
+  b.addEventListener('keydown',ev=>{if((ev.key===' '||ev.key==='Enter')&&!ev.isComposing){ev.preventDefault();toggle();}});
+});
 // 下線の記入欄（.bl）は1行欄。Enter で改行が入るとラベルより1行上に跳ねるので確定扱いにする（IMEの変換確定は除く）。
 // 貼り付けは改行を落として文字として入れる。編集を終えたら末尾の空行を捨てる。
 document.querySelectorAll('.bl[contenteditable]').forEach(e=>{
@@ -356,27 +364,47 @@ window.pdf=function(){window.print();};
 // 関数は即時関数で包み、onclick から使うものだけ window に出す（他ページのJSと同名の const が衝突しないように）
 const CO_KEY='shoshiki.company';
 const CO_FIELDS=['name','title','rep','addr','tel','dept'];
-function coLoad(){try{return JSON.parse(localStorage.getItem(CO_KEY)||'{}');}catch(e){return {};}}
-function coSave(o){try{localStorage.setItem(CO_KEY,JSON.stringify(o));}catch(e){}}
+let coState={}, coStorageAvailable=true, coWarning='';
+const STORAGE_WARNING='このブラウザでは会社情報を保存できません。入力はこのページ内で使えます。別の書式や次回に使うには設定ファイルを書き出して読み込んでください。';
+function coNormalize(o){
+  if(!o||typeof o!=='object'||Array.isArray(o)||Object.keys(o).some(k=>!CO_FIELDS.includes(k)||typeof o[k]!=='string')) throw new Error('invalid company settings');
+  const c={}; CO_FIELDS.forEach(k=>{if(Object.prototype.hasOwnProperty.call(o,k)) c[k]=o[k];}); return c;
+}
+function coStatus(){const el=document.getElementById('co-status'); if(el){el.textContent=coWarning; el.hidden=!coWarning;}}
+function coLoad(){
+  if(!coStorageAvailable) return coState;
+  let raw; try{raw=localStorage.getItem(CO_KEY);}catch(e){coStorageAvailable=false;coWarning=STORAGE_WARNING;return coState;}
+  try{coState=coNormalize(JSON.parse(raw||'{}')); coWarning='';}
+  catch(e){coState={};coWarning='保存されていた会社情報を読み込めませんでした。会社情報を入力し直すか、設定ファイルを読み込んでください。';}
+  return coState;
+}
+function coSave(o){
+  coState=o;
+  if(coStorageAvailable){try{localStorage.setItem(CO_KEY,JSON.stringify(o));coWarning='';}catch(e){coStorageAvailable=false;coWarning=STORAGE_WARNING;}}
+  coStatus();
+}
 function coApply(o){
   const set=(sel,v,def)=>document.querySelectorAll(sel).forEach(el=>{el.textContent=(v&&v.trim())?v.trim():(def||'');});
   set('.co-name',o.name,'【会社名】'); set('.co-title',o.title,'代表取締役'); set('.co-rep',o.rep,'');
   set('.co-addr',o.addr,''); set('.co-tel',o.tel,''); set('.co-dept',o.dept,'');
 }
-function coInit(){
-  const o=coLoad(); coApply(o);
+function coInit(reload=true){
+  const o=reload?coLoad():coState; coApply(o); coStatus();
   CO_FIELDS.forEach(k=>{const i=document.getElementById('co-'+k); if(!i) return; i.value=o[k]||'';
-    i.oninput=()=>{const c=coLoad(); c[k]=i.value; coSave(c); coApply(c);};});
+    i.oninput=()=>{const c={...coLoad(),[k]:i.value}; coSave(c); coApply(c);};});
 }
 window.coToggle=function(){document.getElementById('cfg').classList.toggle('open');};
-window.coExport=function(){const o=coLoad(); const a=document.createElement('a');
+window.coExport=function(){const o=coState; const a=document.createElement('a');
   a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(o,null,1)); a.download='会社情報.json'; a.click();};
-window.coImport=function(inp){const f=inp.files[0]; if(!f) return; const r=new FileReader();
-  r.onload=()=>{try{const o=JSON.parse(r.result); coSave(o); coInit();}catch(e){alert('読み込めませんでした');}}; r.readAsText(f);};
-window.coClear=function(){if(confirm('保存した会社情報を消しますか？')){localStorage.removeItem(CO_KEY); coInit();}};
+window.coImport=function(inp){const f=inp.files[0]; if(!f) return; inp.value=''; const r=new FileReader();
+  r.onload=()=>{try{const o=coNormalize(JSON.parse(r.result)); coSave(o); coInit(false);}catch(e){alert('会社情報の設定ファイルを読み込めませんでした。会社名などの項目が文字列になっているJSONファイルを選んでください。現在の設定は変更していません。');}};
+  r.onerror=()=>alert('設定ファイルを読み込めませんでした。現在の設定は変更していません。'); r.readAsText(f);};
+window.coClear=function(){if(confirm('保存した会社情報を消しますか？')){coState={};try{localStorage.removeItem(CO_KEY);if(coStorageAvailable)coWarning='';}catch(e){coStorageAvailable=false;coWarning='保存済みの会社情報をブラウザから消去できませんでした。このページの入力だけを消去しました。保存済み情報を消すにはブラウザのサイトデータ設定をご確認ください。';}coInit(false);}};
 coInit();
 // 戻る／進むでキャッシュから復帰したときも保存内容を読み直す
 window.addEventListener('pageshow',e=>{if(e.persisted) coInit();});
+// 同じサイトを別タブで使う場合にも、会社情報を最新の保存内容にそろえる。
+window.addEventListener('storage',e=>{if(coStorageAvailable&&(e.key===CO_KEY||e.key===null)) coInit();});
 })();
 </script>
 </body>

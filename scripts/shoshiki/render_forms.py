@@ -75,6 +75,7 @@ table.f td{min-height:8mm;height:8mm}
 .opt{display:inline-block;white-space:nowrap}
 .grp > :not(:last-child){margin-right:1.4em}
 .opt .bx{display:inline-block;width:1.1em;cursor:pointer;user-select:none}
+.bx:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .lab{white-space:nowrap}
 .bl{display:inline-block;border-bottom:0.6pt solid var(--ink);min-width:8mm;min-height:1.35em;line-height:1.35em;vertical-align:baseline;margin:0 .35em;padding:0 .3em .05em;text-align:center}
 /* 入力前の空欄は箱の高さだけ確保し、下線を文字の基線より少し下に置く（旧版より約2px下。入力済みの欄と下線の高さが揃う位置）。入力後は文字の基線を周りの文字（ラベル）と揃える。
@@ -102,20 +103,28 @@ table.f td{min-height:8mm;height:8mm}
 .cfg{background:#fff;border-bottom:1px solid #C9D1CB;padding:12px 16px;display:none;font-size:13px}
 .cfg.open{display:block}
 .cfg .row{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;max-width:980px;margin:0 auto}
-.cfg label{display:flex;flex-direction:column;gap:2px;font-size:11.5px;color:#4A554D}
-.cfg input{font:inherit;font-size:13.5px;padding:4px 8px;border:1px solid #C9D1CB;border-radius:3px;min-width:180px}
-.cfg input.wide{min-width:320px}
-.cfg .btns{display:flex;gap:8px;margin:8px auto 0;max-width:980px}
+.cfg label{display:flex;flex-direction:column;gap:2px;font-size:11.5px;color:#4A554D;min-width:0;max-width:100%}
+.cfg input{font:inherit;font-size:13.5px;padding:4px 8px;border:1px solid #C9D1CB;border-radius:3px;width:180px;min-width:0;max-width:100%}
+.cfg input.wide{width:320px}
+.cfg .btns{display:flex;flex-wrap:wrap;gap:8px;margin:8px auto 0;max-width:980px}
 .cfg button{font:inherit;font-size:12.5px;padding:4px 10px;border:1px solid #1C5842;background:#fff;color:#1C5842;border-radius:3px;cursor:pointer}
 .cfg .hint{font-size:11.5px;color:#4A554D;margin:6px auto 0;max-width:980px}
+.co-status{font-size:12px;color:#8A4116;margin:6px auto 0;max-width:980px}
 @media print{.cfg{display:none!important}}
 @page{size:A4;margin:0}
-@media print{html,body{background:#fff}.page{margin:0;box-shadow:none;width:210mm;height:297mm;page-break-after:always}.bar{display:none}.t[contenteditable]:hover,.t[contenteditable]:focus,.bl:focus{outline:none;background:transparent}}
+@media print{html,body{background:#fff}.page{margin:0;box-shadow:none;width:210mm;height:297mm;page-break-after:always}.bar{display:none}.t[contenteditable]:hover,.t[contenteditable]:focus,.bl:focus,.bx:focus-visible{outline:none;background:transparent}}
 """
 
 JS = r"""
 (function(){
-document.querySelectorAll('.bx').forEach(b=>b.addEventListener('click',()=>{b.textContent=b.textContent==='☐'?'☑':'☐';}));
+document.querySelectorAll('.bx').forEach(b=>{
+  b.setAttribute('role','checkbox'); b.tabIndex=0; b.setAttribute('aria-checked',String(b.textContent==='☑'));
+  const label=(b.parentElement.textContent||'').replace(/[☐☑]/g,'').trim();
+  b.setAttribute('aria-label',label||'選択');
+  const toggle=()=>{const checked=b.getAttribute('aria-checked')!=='true'; b.textContent=checked?'☑':'☐'; b.setAttribute('aria-checked',String(checked));};
+  b.addEventListener('click',toggle);
+  b.addEventListener('keydown',ev=>{if((ev.key===' '||ev.key==='Enter')&&!ev.isComposing){ev.preventDefault();toggle();}});
+});
 // 下線の記入欄（.bl）は1行欄。Enter で改行が入るとラベルより1行上に跳ねるので確定扱いにする（IMEの変換確定は除く）。
 // 貼り付けは改行を落として文字として入れる。編集を終えたら末尾の空行を捨てる。
 document.querySelectorAll('.bl[contenteditable]').forEach(e=>{
@@ -130,27 +139,47 @@ window.pdf=function(){window.print();};
 // 関数は即時関数で包み、onclick から使うものだけ window に出す（他ページのJSと同名の const が衝突しないように）
 const CO_KEY='shoshiki.company';
 const CO_FIELDS=['name','title','rep','addr','tel','dept'];
-function coLoad(){try{return JSON.parse(localStorage.getItem(CO_KEY)||'{}');}catch(e){return {};}}
-function coSave(o){try{localStorage.setItem(CO_KEY,JSON.stringify(o));}catch(e){}}
+let coState={}, coStorageAvailable=true, coWarning='';
+const STORAGE_WARNING='このブラウザでは会社情報を保存できません。入力はこのページ内で使えます。別の書式や次回に使うには設定ファイルを書き出して読み込んでください。';
+function coNormalize(o){
+  if(!o||typeof o!=='object'||Array.isArray(o)||Object.keys(o).some(k=>!CO_FIELDS.includes(k)||typeof o[k]!=='string')) throw new Error('invalid company settings');
+  const c={}; CO_FIELDS.forEach(k=>{if(Object.prototype.hasOwnProperty.call(o,k)) c[k]=o[k];}); return c;
+}
+function coStatus(){const el=document.getElementById('co-status'); if(el){el.textContent=coWarning; el.hidden=!coWarning;}}
+function coLoad(){
+  if(!coStorageAvailable) return coState;
+  let raw; try{raw=localStorage.getItem(CO_KEY);}catch(e){coStorageAvailable=false;coWarning=STORAGE_WARNING;return coState;}
+  try{coState=coNormalize(JSON.parse(raw||'{}')); coWarning='';}
+  catch(e){coState={};coWarning='保存されていた会社情報を読み込めませんでした。会社情報を入力し直すか、設定ファイルを読み込んでください。';}
+  return coState;
+}
+function coSave(o){
+  coState=o;
+  if(coStorageAvailable){try{localStorage.setItem(CO_KEY,JSON.stringify(o));coWarning='';}catch(e){coStorageAvailable=false;coWarning=STORAGE_WARNING;}}
+  coStatus();
+}
 function coApply(o){
   const set=(sel,v,def)=>document.querySelectorAll(sel).forEach(el=>{el.textContent=(v&&v.trim())?v.trim():(def||'');});
   set('.co-name',o.name,'【会社名】'); set('.co-title',o.title,'代表取締役'); set('.co-rep',o.rep,'');
   set('.co-addr',o.addr,''); set('.co-tel',o.tel,''); set('.co-dept',o.dept,'');
 }
-function coInit(){
-  const o=coLoad(); coApply(o);
+function coInit(reload=true){
+  const o=reload?coLoad():coState; coApply(o); coStatus();
   CO_FIELDS.forEach(k=>{const i=document.getElementById('co-'+k); if(!i) return; i.value=o[k]||'';
-    i.oninput=()=>{const c=coLoad(); c[k]=i.value; coSave(c); coApply(c);};});
+    i.oninput=()=>{const c={...coLoad(),[k]:i.value}; coSave(c); coApply(c);};});
 }
 window.coToggle=function(){document.getElementById('cfg').classList.toggle('open');};
-window.coExport=function(){const o=coLoad(); const a=document.createElement('a');
+window.coExport=function(){const o=coState; const a=document.createElement('a');
   a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(o,null,1)); a.download='会社情報.json'; a.click();};
-window.coImport=function(inp){const f=inp.files[0]; if(!f) return; const r=new FileReader();
-  r.onload=()=>{try{const o=JSON.parse(r.result); coSave(o); coInit();}catch(e){alert('読み込めませんでした');}}; r.readAsText(f);};
-window.coClear=function(){if(confirm('保存した会社情報を消しますか？')){localStorage.removeItem(CO_KEY); coInit();}};
+window.coImport=function(inp){const f=inp.files[0]; if(!f) return; inp.value=''; const r=new FileReader();
+  r.onload=()=>{try{const o=coNormalize(JSON.parse(r.result)); coSave(o); coInit(false);}catch(e){alert('会社情報の設定ファイルを読み込めませんでした。会社名などの項目が文字列になっているJSONファイルを選んでください。現在の設定は変更していません。');}};
+  r.onerror=()=>alert('設定ファイルを読み込めませんでした。現在の設定は変更していません。'); r.readAsText(f);};
+window.coClear=function(){if(confirm('保存した会社情報を消しますか？')){coState={};try{localStorage.removeItem(CO_KEY);if(coStorageAvailable)coWarning='';}catch(e){coStorageAvailable=false;coWarning='保存済みの会社情報をブラウザから消去できませんでした。このページの入力だけを消去しました。保存済み情報を消すにはブラウザのサイトデータ設定をご確認ください。';}coInit(false);}};
 coInit();
 // 戻る／進むでキャッシュから復帰したときも保存内容を読み直す
 window.addEventListener('pageshow',e=>{if(e.persisted) coInit();});
+// 同じサイトを別タブで使う場合にも、会社情報を最新の保存内容にそろえる。
+window.addEventListener('storage',e=>{if(coStorageAvailable&&(e.key===CO_KEY||e.key===null)) coInit();});
 })();
 """
 
@@ -165,6 +194,7 @@ CFG_HTML = (
     '</div><div class="btns"><button onclick="coExport()">設定をファイルに書き出す</button>'
     '<button onclick="document.getElementById(\'co-file\').click()">設定ファイルを読み込む</button><input type="file" id="co-file" accept=".json" style="display:none" onchange="coImport(this)">'
     '<button onclick="coClear()">消去</button></div>'
+    '<p id="co-status" class="co-status" role="status" hidden></p>'
     '<p class="hint">入力した会社情報はこのブラウザの中にだけ保存され、どこにも送信されません。書式の宛名・発信者欄に自動で入ります。別のPCで使うときは「書き出す」で保存したファイルを読み込んでください。</p></div>'
 )
 
@@ -329,12 +359,32 @@ def fields_html(rows, ed, wide=False):
             else (' style="height:13mm"' if val == "" else "")
         )
         val = re.sub(r"\{h\d+\}", "", val)
+        value_html = rich(val, ed)
+        ce = ' contenteditable="true"' if ed else ""
+        # 双方署名・労使協定の会社署名にも、設定した役職と代表者を差し込む。
+        if lab in ("会社", "使用者") and CO in val and "代表取締役{b40}" in val:
+            value_html = value_html.replace(
+                f'<span class="t"{ce}>　代表取締役</span>',
+                f'<span class="t"{ce}>　</span><span class="t co-title"{ce}>代表取締役</span>',
+            ).replace(
+                f'<span class="bl" style="min-width:40mm"{ce}>',
+                f'<span class="bl co-rep" style="min-width:40mm"{ce}>',
+            )
+        # 主治医への情報提供依頼は、会社が発信者になる。
+        if lab == "会社担当者" and CO in val:
+            value_html = value_html.replace(
+                f'<span class="bl" style="min-width:48mm"{ce}>',
+                f'<span class="bl co-dept" style="min-width:48mm"{ce}>',
+            ).replace(
+                f'<span class="bl" style="min-width:28mm"{ce}>',
+                f'<span class="bl co-tel" style="min-width:28mm"{ce}>',
+            )
         h.append(
             f'<tr><th class="{"w" if wide else ""}"><span class="t"{' contenteditable="true"' if ed else ""}>{esc(lab)}</span></th>'
             + (
                 f'<td class="t"{tall} contenteditable="true"></td>'
                 if ed and val == ""
-                else f"<td{tall}>{rich(val, ed)}</td>"
+                else f"<td{tall}>{value_html}</td>"
             )
             + "</tr>"
         )
@@ -376,7 +426,7 @@ def form_html(f, ed):
             )
         elif t == "note":
             b.append(
-                f'<p class="note"><span class="t"{ce}>※ </span><span class="t"{ce}>{esc(blk["text"])}</span></p>'
+                f'<p class="note"><span class="t"{ce}>※ </span>{rich(blk["text"], ed)}</p>'
             )
         elif t == "cut":
             # 点線（切り取り線の目安）＋見出し。margin-top:auto で用紙の最下段に寄せる（.page は flex 列にする）。
@@ -409,7 +459,7 @@ def page(f, ed):
     bar = ""
     if ed:
         bar = (
-            '<div class="bar"><b>編集モード</b><span>文字をクリックして打ち替え／☐をクリックで☑／下線の空欄や空の枠をクリックして入力できます。</span>'
+            '<div class="bar"><b>編集モード</b><span>文字をクリックして打ち替え／☐はクリック・Spaceキーで選択／下線の空欄や空の枠に入力できます。記入内容は保存されません。閉じる前に印刷・PDF保存してください。</span>'
             '<button onclick="coToggle()">会社情報</button><button onclick="pdf()">印刷・PDFに保存</button><span>（印刷先を「PDFに保存」に）</span></div>'
             + CFG_HTML
         )
@@ -780,7 +830,7 @@ def build_docx(f, path):
             tail = doc.add_paragraph()
             tail.paragraph_format.space_after = Pt(2)
         elif t == "note":
-            para(doc, "※ " + blk["text"], 9, after=3, ls=13)
+            para(doc, "※ " + flat(blk["text"]), 9, after=3, ls=13)
         elif t == "cut":
             # 点線（切り取り線の目安）を段落の上罫線で引き、見出しを太字で置く
             p = para(doc, blk["title"], 9.5, True, after=2, ls=14)

@@ -45,7 +45,7 @@ def readme_text():
         "■ 利用条件",
         "・自社内での利用は自由です。改変も自由です。",
         "・第三者への再配布・販売はご遠慮ください。",
-        "・法令は作成時点の理解に基づく一般的な内容です。就業規則・労使協定と食い違うときは規程が優先します。",
+        "・法令は作成時点の理解に基づく一般的な内容です。法令に反しない範囲で、自社の就業規則・労使協定と実情に合わせて修正してください。",
         "  重要な手続（解雇・懲戒・労使協定など）は、実際に使う前に専門家にご確認ください。",
         "",
         "■ ブラウザで記入できる版",
@@ -103,6 +103,10 @@ def main():
             z.writestr(zi, src.read_bytes())
             n += 1
     size = zpath.stat().st_size
+    # 過去の案内にある直リンクでも、修正済みの配布物を受け取れるようにする。
+    for legacy in DL_DIR.glob("shanai-shoshiki-word-*.zip"):
+        if legacy != zpath:
+            shutil.copyfile(zpath, legacy)
     print(f"wrote {zpath.relative_to(REPO)} ({n} files + README, {size // 1024} KB)")
     for no, p in site_xlsx.items():
         print(f"wrote {p.relative_to(REPO)}")

@@ -159,6 +159,7 @@ CSS = """
 .sh-set .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .sh-set button{font:inherit;font-size:12.5px;font-weight:700;padding:7px 12px;border:1px solid var(--moegi-t);background:var(--shiro);color:var(--sugi);border-radius:8px;cursor:pointer}
 .sh-set .hint{margin:10px 0 0;font-size:12px;line-height:1.9;color:var(--ink4)}
+.sh-set .co-status{margin:10px 0 0;font-size:12px;color:#8A4116;line-height:1.8}
 .sh-now{font-weight:700;color:var(--sugi)}
 .qk{display:inline-flex;align-items:center;gap:7px;background:var(--shiro);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:600;color:var(--ink2);letter-spacing:.02em;text-decoration:none;transition:border-color .34s cubic-bezier(.22,.61,.36,1),transform .34s cubic-bezier(.22,.61,.36,1)}
 .qk::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--moegi);flex-shrink:0}
@@ -262,6 +263,7 @@ def main_html():
         '<button type="button" onclick="document.getElementById(\'co-file\').click()">設定ファイルを読み込む</button>'
         '<input type="file" id="co-file" accept=".json" style="display:none" onchange="coImport(this)">'
         '<button type="button" onclick="coClear()">消去</button></div>'
+        '<p id="co-status" class="co-status" role="status" hidden></p>'
         '<p class="hint">いま設定されている会社名：<span class="co-name sh-now">【会社名】</span>。入力した内容はこのブラウザの中にだけ保存され、当事務所には送信されません。各書式を開くと宛名・発信者欄に自動で入ります。別のPCで使うときは「書き出す」で保存したファイルを読み込んでください。</p></div>'
     )
     return f"""<main id="main" class="content">
@@ -309,7 +311,7 @@ def main_html():
       <div class="cat-icon kmono" aria-hidden="true">注</div>
       <h2 class="cat-title">この書式集について</h2>
     </div>
-    <p>書式は一般的な内容で、法令は{e(AS_OF[:7].replace("-", "年"))}月時点の理解に基づいて作っています。会社の就業規則・労使協定と食い違うときは規程が優先します。解雇・懲戒・労使協定など、書式だけでは判断できない場面は、使う前に専門家にご確認ください。</p>
+    <p>書式は一般的な内容で、法令は{e(AS_OF[:7].replace("-", "年"))}月時点の理解に基づいて作っています。法令に反しない範囲で、自社の就業規則・労使協定と実情に合わせて修正してください。解雇・懲戒・労使協定など、書式だけでは判断できない場面は、使う前に専門家にご確認ください。</p>
     <p>自社内での利用と改変は自由です。第三者への再配布・販売はご遠慮ください。作成・提供：みなの社会保険労務士事務所（富山市）。</p>
   </section>
 
@@ -442,7 +444,7 @@ def build_index():
     )
     s = re.sub(
         r"<b>ご利用にあたって</b>.*?</div>\s*</div>\s*</header>",
-        "<b>ご利用にあたって</b>書式は一般的な内容です。就業規則や労使協定と食い違うときは規程が優先します。入力した会社情報はブラウザ内にだけ保存され、当事務所には送信されません。使い方や就業規則との整合はお気軽にご相談ください。\n    </div>\n  </div>\n</header>",
+        "<b>ご利用にあたって</b>書式は一般的な内容です。法令に反しない範囲で、自社の就業規則・労使協定と実情に合わせて修正してください。入力した会社情報はブラウザ内にだけ保存され、当事務所には送信されません。使い方や就業規則との整合はお気軽にご相談ください。\n    </div>\n  </div>\n</header>",
         s,
         count=1,
         flags=re.S,
@@ -532,7 +534,7 @@ a{{color:#1C5842}}
 <h2>利用条件</h2>
 <ul>
 <li>自社内での利用と改変は自由です。第三者への再配布・販売はご遠慮ください。</li>
-<li>法令は作成時点の理解に基づく一般的な内容です。就業規則・労使協定と食い違うときは規程が優先します。解雇・懲戒・労使協定などは、使う前に専門家にご確認ください。</li>
+<li>法令は作成時点の理解に基づく一般的な内容です。法令に反しない範囲で、自社の就業規則・労使協定と実情に合わせて修正してください。解雇・懲戒・労使協定などは、使う前に専門家にご確認ください。</li>
 </ul>
 <details><summary>収録一覧（{N_FORMS + N_XLSX}本）</summary><ul class="list">{items}</ul></details>
 <p class="foot">ブラウザで記入できる版は <a href="../../../shoshiki.html">社内書式のひな形</a> にあります（会社名を入れると全書式に入ります）。<br>作成・提供：みなの社会保険労務士事務所（富山市）</p>
