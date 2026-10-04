@@ -115,6 +115,18 @@ table.f td{min-height:8mm;height:8mm}
 @media print{html,body{background:#fff}.page{margin:0;box-shadow:none;width:210mm;height:297mm;page-break-after:always}.bar{display:none}.t[contenteditable]:hover,.t[contenteditable]:focus,.bl:focus,.bx:focus-visible{outline:none;background:transparent}}
 """
 
+# D-52 は20行の入力欄と切り取り欄をA4一枚に置く。
+# 文字サイズや内容を削らず、他の書式へ影響しない余白・行送りで収める。
+D52_CSS = """
+.page.form-d52{padding-top:12mm;padding-bottom:10mm}
+.form-d52 h1{margin-bottom:3mm}
+.form-d52 .to{margin-bottom:3mm}
+.form-d52 p{margin-bottom:1mm}
+.form-d52 table.f{margin:1.5mm 0 2mm}
+.form-d52 table.f th,.form-d52 table.f td{padding:1mm 2.2mm;line-height:1.45}
+.form-d52 table.f td{height:7.5mm;min-height:7.5mm}
+"""
+
 JS = r"""
 (function(){
 document.querySelectorAll('.bx').forEach(b=>{
@@ -448,7 +460,7 @@ def form_html(f, ed):
     if any(blk["type"] == "cut" for blk in f["blocks"]):
         # cut ブロックを最下段へ寄せるため、この書式だけ .page を flex 列にする
         return (
-            '<div class="page" style="display:flex;flex-direction:column">'
+            f'<div class="page{" form-d52" if f["no"] == "D-52" else ""}" style="display:flex;flex-direction:column">'
             + "".join(b)
             + "</div>"
         )
@@ -465,7 +477,7 @@ def page(f, ed):
         )
     return (
         f'<!doctype html>\n<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
-        f"<title>{esc(f['no'])} {esc(f['title'])}</title><style>{CSS}</style></head><body>{bar}{form_html(f, ed)}"
+        f"<title>{esc(f['no'])} {esc(f['title'])}</title><style>{CSS}{D52_CSS if f['no'] == 'D-52' else ''}</style></head><body>{bar}{form_html(f, ed)}"
         f"<script>{JS}</script></body></html>\n"
     )
 

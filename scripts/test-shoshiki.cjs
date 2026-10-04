@@ -24,6 +24,7 @@ const WIDTHS = [320, 390, 768, 1280];
 const ENGINES = [['chromium', chromium], ['webkit', webkit]];
 const EPSILON = 1;
 const EXPECTED_FORM_COUNT = 50;
+const EXPECTED_TABLE_CATEGORIES = 11;
 // D-27 の離職経緯に3択を用意する改訂後の全50書式。
 const EXPECTED_CHECKBOX_COUNT = 380;
 const PDF_FORMS = ['D-04', 'D-18', 'D-27', 'D-40', 'D-45', 'D-52'];
@@ -46,6 +47,7 @@ const mergePrintResults = [];
 const behaviorResults = [];
 const navigationResults = [];
 const mobileResults = [];
+const tableScrollResults = [];
 const artifacts = [];
 
 function check(condition, message) {
@@ -188,8 +190,11 @@ async function measureIndex(page) {
       }
       return null;
     };
-    const clippingAncestor = (element, rect) => {
+    const clippingAncestor = (element, rect, scroller) => {
       for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+        // 内部スクロールの外側にあるbodyのclipは、この瞬間の非表示を
+        // 示すだけ。内側のhidden/clipは調べ、スクロール境界で止める。
+        if (parent === scroller) break;
         const style = getComputedStyle(parent);
         if (!['hidden', 'clip'].includes(style.overflowX)) continue;
         const pr = parent.getBoundingClientRect();
@@ -214,7 +219,7 @@ async function measureIndex(page) {
           for (const textRect of range.getClientRects()) {
             if (textRect.width <= 0 || textRect.height <= 0) continue;
             measuredTextRects += 1;
-            const clip = clippingAncestor(element, textRect);
+            const clip = clippingAncestor(element, textRect, scroller);
             if (clip || (!scroller && (textRect.left < -epsilon || textRect.right > viewportWidth + epsilon))) {
               offenders.push({ kind: 'text', selector: selectorOf(element), text: node.textContent.trim().slice(0, 80),
                 left: textRect.left, right: textRect.right, clip });
@@ -226,6 +231,81 @@ async function measureIndex(page) {
     return { viewportWidth, documentScrollWidth: document.documentElement.scrollWidth,
       measuredElements, measuredTextRects, offenders };
   }, { epsilon: EPSILON });
+}
+
+async function checkCategoryTableScroll(page, engine, width) {
+  const wrappers = page.locator('.sh-tblwrap');
+  const count = await wrappers.count();
+  check(count === EXPECTED_TABLE_CATEGORIES,
+    `${engine}:shoshiki@${width}px:スクロール検査のカテゴリ数 ${count} ≠ ${EXPECTED_TABLE_CATEGORIES}`);
+  for (let index = 0; index < count; index += 1) {
+    const label = `${engine}:shoshiki@${width}px:table${index + 1}`;
+    const wrapper = wrappers.nth(index);
+    let result = { engine, width, categoryIndex: index + 1 };
+    let initialScrollLeft;
+    try {
+      initialScrollLeft = await wrapper.evaluate((element) => element.scrollLeft);
+      await wrapper.scrollIntoViewIfNeeded();
+      const lastCTA = wrapper.locator('tbody tr:last-child td.go a').last();
+      check(await lastCTA.count() === 1, `${label}:最終行の記入/Excel CTAがありません`);
+      // 行数の多い表でも最後のCTAが縦方向に見える位置へ移動する。
+      // 横位置はその後明示的に0→最右端へ動かして移動量を測る。
+      await lastCTA.evaluate((element) => element.scrollIntoView({
+        block: 'center', inline: 'nearest', behavior: 'instant',
+      }));
+      await wrapper.evaluate((element) => { element.scrollLeft = 0; });
+      await settle(page);
+      const before = await wrapper.evaluate((element) => ({
+        scrollLeft: element.scrollLeft, scrollWidth: element.scrollWidth,
+        clientWidth: element.clientWidth, maxScrollLeft: element.scrollWidth - element.clientWidth,
+      }));
+      await wrapper.evaluate((element) => { element.scrollLeft = element.scrollWidth - element.clientWidth; });
+      await settle(page);
+      const after = await wrapper.evaluate((element) => {
+        const cta = element.querySelector('tbody tr:last-child td.go a');
+        if (!cta) throw new Error('last CTA missing');
+        const wrapperRect = element.getBoundingClientRect();
+        const rect = cta.getBoundingClientRect();
+        const hit = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        const rectOf = (r) => ({ left: r.left, right: r.right, top: r.top, bottom: r.bottom,
+          width: r.width, height: r.height });
+        return {
+          category: element.closest('.sh-cat')?.querySelector('h3')?.textContent ?? '',
+          scrollLeft: element.scrollLeft, scrollWidth: element.scrollWidth,
+          clientWidth: element.clientWidth, maxScrollLeft: element.scrollWidth - element.clientWidth,
+          viewportWidth: document.documentElement.clientWidth,
+          viewportHeight: document.documentElement.clientHeight,
+          wrapper: rectOf(wrapperRect), cta: { text: cta.textContent.trim(), href: cta.getAttribute('href'),
+            ...rectOf(rect), hit: Boolean(hit && (hit === cta || cta.contains(hit))) },
+        };
+      });
+      const moved = after.scrollLeft - before.scrollLeft;
+      result = { ...result, before, after, moved };
+      check(before.maxScrollLeft > EPSILON && before.clientWidth > 0 && before.scrollWidth > 0
+        && Math.abs(before.scrollLeft) <= EPSILON && moved > EPSILON
+        && Math.abs(after.scrollLeft - after.maxScrollLeft) <= EPSILON,
+      `${label}:横スクロールの幅/最右端への移動が実測できません ${JSON.stringify({ before, after: after.scrollLeft, moved })}`);
+      check(/^(記入する|Excel)/.test(after.cta.text) && after.wrapper.width > 0 && after.wrapper.height > 0
+        && after.cta.width > 0 && after.cta.height > 0
+        && after.cta.left >= after.wrapper.left - EPSILON && after.cta.right <= after.wrapper.right + EPSILON
+        && after.cta.left >= -EPSILON && after.cta.right <= after.viewportWidth + EPSILON
+        && after.cta.top >= -EPSILON && after.cta.bottom <= after.viewportHeight + EPSILON && after.cta.hit,
+      `${label}:右端CTAが表/画面内で操作できません ${JSON.stringify(after.cta)}`);
+      if (index === count - 1) await screenshot(page, `${engine}-list-${width}-table-right`, false);
+    } catch (error) {
+      result.error = error.message;
+      failures.push(`${label}: ${error.message}`);
+    } finally {
+      if (initialScrollLeft !== undefined) {
+        await wrapper.evaluate((element, initial) => { element.scrollLeft = initial; }, initialScrollLeft);
+        await settle(page);
+        result.restoredScrollLeft = await wrapper.evaluate((element) => element.scrollLeft);
+        check(Math.abs(result.restoredScrollLeft - initialScrollLeft) <= EPSILON,
+          `${label}:横スクロールを元に戻せません`);
+      }
+      tableScrollResults.push(result);
+    }
+  }
 }
 
 async function reachableControls(page, selectors) {
@@ -853,6 +933,7 @@ async function runEngine(browser, engine, forms) {
             const controls = await reachableControls(page, '#cfg-wrap input:not([type="file"]), #cfg-wrap button');
             check(controls.controls.length === 9 && controls.controls.every((control) => control.reachable), `${label}:会社設定を操作できません ${JSON.stringify(controls.controls.filter((control) => !control.reachable))}`);
             metrics.companyControls = controls;
+            if ([320, 390].includes(width)) await checkCategoryTableScroll(page, engine, width);
           }
           if ([390, 1280].includes(width)) {
             await page.evaluate(() => window.scrollTo(0, 0));
@@ -973,6 +1054,9 @@ async function runEngine(browser, engine, forms) {
   check(printResults.length === ENGINES.length * EXPECTED_FORM_COUNT, `印刷検査数 ${printResults.length} ≠ ${ENGINES.length * EXPECTED_FORM_COUNT}`);
   check(mergePrintResults.length === ENGINES.length * 3, `会社差込印刷検査数 ${mergePrintResults.length} ≠ ${ENGINES.length * 3}`);
   check(mobileResults.length === ENGINES.length * 4, `実スマホ390pxの検査数 ${mobileResults.length} ≠ ${ENGINES.length * 4}`);
+  const expectedTableScrollResults = ENGINES.length * 2 * EXPECTED_TABLE_CATEGORIES;
+  check(tableScrollResults.length === expectedTableScrollResults,
+    `一覧表横スクロール検査数 ${tableScrollResults.length} ≠ ${expectedTableScrollResults}`);
   const expectedBehaviorResults = ENGINES.length * 20;
   check(behaviorResults.length === expectedBehaviorResults, `会社/入力挙動検査数 ${behaviorResults.length} ≠ ${expectedBehaviorResults}`);
   check(behaviorResults.filter((result) => result.scenario === 'cross-tab-company-sync').length === ENGINES.length,
@@ -991,9 +1075,11 @@ async function runEngine(browser, engine, forms) {
       behaviorConditions: expectedBehaviorResults, crossTabConditions: ENGINES.length,
       changedCompanyHistoryConditions: ENGINES.length, seededStorageRemovalDeniedConditions: ENGINES.length * 2,
       navigationConditions: ENGINES.length,
+      categoryTableScrollConditions: expectedTableScrollResults,
       externalFormSubmission: 'not attempted', physicalPrinter: 'not tested',
       pdf: process.env.RUNNER_TEMP ? 'Chromium six blank + three company-merged native PDFs' : 'no RUNNER_TEMP; PDF artifacts not saved' },
-    results, printResults, mergePrintResults, behaviorResults, navigationResults, mobileResults, artifacts, failures };
+    results, printResults, mergePrintResults, behaviorResults, navigationResults, mobileResults,
+    tableScrollResults, artifacts, failures };
   if (failures.length) {
     console.error(`書式検査の失敗: ${failures.length}件`);
     for (const failure of failures) console.error(`- ${failure}`);

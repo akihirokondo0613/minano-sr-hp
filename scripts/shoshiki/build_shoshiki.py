@@ -429,7 +429,7 @@ def build_index():
         flags=re.S,
     )
     s = re.sub(
-        r'<h1 class="page-h">.*?</h1>',
+        r'<h1 class="page-h(?: [^"]*)?">.*?</h1>',
         '<h1 class="page-h">会社で使う<br><strong>社内書式のひな形</strong></h1>',
         s,
         count=1,
