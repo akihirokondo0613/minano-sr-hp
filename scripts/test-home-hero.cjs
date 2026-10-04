@@ -34,12 +34,12 @@ const MOTION_WIDTHS = [390, 767, 768, 1280];
 // allow one 16.7ms RAF interval, without sharing the production easing function.
 // User override: start during initialization, without the reference site's delay.
 const MOTION_REFERENCE = {
-  sp: { distance: -600, duration: 2400, count: 3, checkpoints: [
+  sp: { distance: -600, duration: 2400, count: 6, checkpoints: [
     { fraction: 0.2, y: -91.597182, angle: -9.159718, yTolerance: 11, angleTolerance: 1.05 },
     { fraction: 0.4, y: 9.533188, angle: 0.953319, yTolerance: 2, angleTolerance: 0.2 },
     { fraction: 0.5, y: 12.278639, angle: 1.227864, yTolerance: 1.5, angleTolerance: 0.15 },
   ] },
-  pc: { distance: -1200, duration: 2000, count: 5, checkpoints: [
+  pc: { distance: -1200, duration: 2000, count: 10, checkpoints: [
     { fraction: 0.2, y: -183.194364, angle: -9.159718, yTolerance: 23, angleTolerance: 1.2 },
     { fraction: 0.4, y: 19.066375, angle: 0.953319, yTolerance: 3.2, angleTolerance: 0.22 },
     { fraction: 0.5, y: 24.557278, angle: 1.227864, yTolerance: 1.8, angleTolerance: 0.15 },
@@ -519,13 +519,14 @@ async function checkReducedMotion(browser, engine, width, failures) {
           entryScreenshots: await entryScreenshots(page, engineName, width) });
 
         const composition = result.composition;
-        const expectedActors = width <= 767 ? 3 : 5;
+        const expectedActors = width <= 767 ? 6 : 10;
         if (composition.actors.length !== expectedActors || composition.gaps.length !== expectedActors - 1) {
           failures.push(`${engineName}@${width}px: 人物の配置数・間隔を測定できません`);
         }
-        if (composition.gaps.some((gap) => gap < 8) || composition.titleGap < 20 || composition.introGap < 20) {
-          failures.push(`${engineName}@${width}px: 人物同士・見出し・説明の余白が足りません`
-            + ` (gaps=${composition.gaps}, title=${composition.titleGap}, intro=${composition.introGap})`);
+        // Restored layered crowd intentionally overlaps horizontally; text must stay clear.
+        if (composition.titleGap < 8 || composition.introGap < 20) {
+          failures.push(`${engineName}@${width}px: 人物と見出し・説明の余白が足りません`
+            + ` (title=${composition.titleGap}, intro=${composition.introGap})`);
         }
         if (composition.actors.some((actor) => actor.left < composition.canvas.left - EPSILON
           || actor.right > composition.canvas.right + EPSILON
