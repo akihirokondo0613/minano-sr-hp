@@ -7,14 +7,14 @@
 <script defer src="page-enter.js?v=20260921-pace1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>社内書式のひな形｜入社から退職まで50本を無料で｜みなの社会保険労務士事務所</title>
-<meta name="description" content="入社誓約書・有給休暇申請書・身上異動届・休職届・退職届・労働者代表の選出・就業規則意見書など、会社と従業員の間で使う社内書式50本。ブラウザで記入して印刷でき、会社名を入れると全書式に自動で入ります。登録不要。">
+<title>入社・退職・休職の連絡票と社内書式｜みなの社会保険労務士事務所</title>
+<meta name="description" content="入社・退職・休職の入力できる連絡票PDF3種（記入例付き）と、会社と従業員の間で使う社内書式50本。PDFはダウンロードして入力、社内書式はブラウザで記入・印刷できます。登録不要。">
 
 <link rel="canonical" href="https://minano-sr.com/shoshiki.html">
 <meta property="og:url" content="https://minano-sr.com/shoshiki.html">
 <meta property="og:type" content="website">
-<meta property="og:title" content="社内書式のひな形｜入社から退職まで50本を無料で｜みなの社会保険労務士事務所">
-<meta property="og:description" content="入社誓約書・有給休暇申請書・身上異動届・休職届・退職届・労働者代表の選出・就業規則意見書など、会社と従業員の間で使う社内書式50本。ブラウザで記入して印刷でき、会社名を入れると全書式に自動で入ります。登録不要。">
+<meta property="og:title" content="入社・退職・休職の連絡票と社内書式｜みなの社会保険労務士事務所">
+<meta property="og:description" content="入社・退職・休職の入力できる連絡票PDF3種（記入例付き）と、会社と従業員の間で使う社内書式50本。PDFはダウンロードして入力、社内書式はブラウザで記入・印刷できます。登録不要。">
 <meta property="og:site_name" content="みなの社会保険労務士事務所">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://minano-sr.com/assets/og/minano-og.png">
@@ -35,8 +35,8 @@
       "@type": "CollectionPage",
       "@id": "https://minano-sr.com/shoshiki.html#webpage",
       "url": "https://minano-sr.com/shoshiki.html",
-      "name": "社内書式のひな形｜入社から退職まで50本を無料で｜みなの社会保険労務士事務所",
-      "description": "入社誓約書・有給休暇申請書・身上異動届・休職届・退職届・労働者代表の選出・就業規則意見書など、会社と従業員の間で使う社内書式50本。ブラウザで記入して印刷でき、会社名を入れると全書式に自動で入ります。登録不要。",
+      "name": "入社・退職・休職の連絡票と社内書式｜みなの社会保険労務士事務所",
+      "description": "入社・退職・休職の入力できる連絡票PDF3種（記入例付き）と、会社と従業員の間で使う社内書式50本。PDFはダウンロードして入力、社内書式はブラウザで記入・印刷できます。登録不要。",
       "isPartOf": {
         "@id": "https://minano-sr.com/#website"
       },
@@ -110,6 +110,18 @@
 .sh-tbl td.go{white-space:nowrap}
 .sh-tbl td.go a{font-family:var(--mono);font-size:12px;color:var(--moegi-t);text-decoration:none;font-weight:600}
 .sh-about p{font-size:13px;line-height:1.95;color:var(--ink3);margin:0 0 6px}
+.sh-pdfs{display:grid;gap:12px}
+.sh-pdf{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 24px;align-items:center;background:var(--shiro);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.sh-pdf h3{margin:0 0 6px;font-family:var(--disp);font-size:18px;line-height:1.5;color:var(--iwa)}
+.sh-pdf p{margin:0;font-size:14px;line-height:1.85;color:var(--ink3)}
+.sh-pdf .sh-pdf-fields{margin-top:5px;font-size:13px;color:var(--ink4)}
+.sh-pdf-action{display:flex;flex-direction:column;align-items:center;gap:6px}
+.sh-pdf-action small{font-size:12px;color:var(--ink4)}
+.sh-pdf .qk{min-height:44px;border-color:var(--moegi-t);color:var(--sugi)}
+.sh-pdf .qk:focus-visible{outline:2px solid var(--sugi);outline-offset:4px}
+.sh-pdf-guide{margin:18px 0 0;padding-left:1.5em;font-size:14px;line-height:1.9;color:var(--ink3)}
+.sh-pdf-note{margin:10px 0 0;font-size:13px;line-height:1.9;color:var(--ink3)}
+@media(max-width:600px){.sh-pdf{grid-template-columns:minmax(0,1fr);padding:16px}.sh-pdf-action{align-items:flex-start}}
 </style>
 <link rel="stylesheet" href="skin-v2.css?v=20260921-scope1">
 </head>
@@ -158,14 +170,14 @@
     <nav class="breadcrumb"><a href="/">ホーム</a><span class="sep">›</span><span>社内書式</span></nav>
     <div class="page-label">Internal Forms</div>
     <h1 class="page-h">会社で<wbr>使う<br><strong>社内書式の<wbr>ひな形</strong></h1>
-    <p class="page-sub">入社から<wbr>退職までに<wbr>会社と<wbr>従業員の<wbr>間で<wbr>使う<wbr>申請書・届出・<wbr>誓約書・通知書の<wbr>ひな形です。<wbr>ブラウザで<wbr>記入して<wbr>印刷でき、<wbr>会社名を<wbr>入れると<wbr>全書式に<wbr>自動で<wbr>入ります。<wbr>登録は<wbr>不要です。</p>
+    <p class="page-sub">入社から<wbr>退職までに<wbr>会社と<wbr>従業員の<wbr>間で<wbr>使う<wbr>社内書式50本と、<wbr>当事務所への<wbr>手続き<wbr>連絡票PDF3種。<wbr>社内書式は<wbr>ブラウザで<wbr>記入・印刷でき、<wbr>設定した<wbr>会社情報が<wbr>入ります。<wbr>PDFは<wbr>ダウンロードして<wbr>入力できます。<wbr>登録は<wbr>不要です。</p>
   </div>
 
 
   <div class="notice">
     <span class="notice-icon">!</span>
     <div>
-      <b>ご利用にあたって</b>書式は一般的な内容です。法令に反しない範囲で、自社の就業規則・労使協定と実情に合わせて修正してください。入力した会社情報はブラウザ内にだけ保存され、当事務所には送信されません。
+      <b>ご利用にあたって</b>書式は一般的な内容です。法令に反しない範囲で、自社の就業規則・労使協定と実情に合わせて修正してください。HTML書式用に入力した会社情報はブラウザ内にだけ保存され、当事務所には送信されません。
     </div>
   </div>
 </header>
@@ -173,12 +185,27 @@
 <!-- CONTENT -->
 <main id="main" class="content">
 
+  <section class="cat rv" id="procedure-pdfs" aria-labelledby="procedure-pdfs-title">
+    <div class="cat-head">
+      <div class="cat-icon kmono" aria-hidden="true">連絡</div>
+      <h2 class="cat-title" id="procedure-pdfs-title">当事務所への<wbr>手続き連絡票</h2>
+    </div>
+    <p class="cat-desc">入社・退職・休職の<wbr>情報を<wbr>会社から<wbr>ご連絡いただく、<wbr>入力できる<wbr>PDFです。<wbr>1ページ目は<wbr>入力欄、<wbr>2ページ目は<wbr>架空の<wbr>記入例。<wbr>下の<wbr>社内書式とは<wbr>用途が<wbr>異なります。</p>
+    <div class="sh-pdfs"><article class="sh-pdf"><div><h3>入社連絡票</h3><p>従業員を<wbr>採用し、<wbr>社会保険・雇用保険の<wbr>加入手続きを<wbr>依頼する<wbr>とき。</p><p class="sh-pdf-fields"><b>主な<wbr>記入内容：</b>本人・<wbr>会社の<wbr>情報、<wbr>入社日、<wbr>勤務時間、<wbr>給与見込、<wbr>扶養家族の<wbr>有無。</p></div><div class="sh-pdf-action"><a class="qk" href="assets/download/procedure-onboarding.pdf" download="入社連絡票_入力用・記入例.pdf" aria-label="入社連絡票をダウンロード（入力欄・記入例付きPDF、全2ページ）">PDFをダウンロード ↓</a><small>入力欄・記入例付き／全2ページ</small></div></article><article class="sh-pdf"><div><h3>退職連絡票</h3><p>従業員の<wbr>退職に<wbr>伴う<wbr>資格喪失手続きを<wbr>依頼する<wbr>とき。離職票あり・な<wbr>しの<wbr>両方に<wbr>使えます。</p><p class="sh-pdf-fields"><b>主な<wbr>記入内容：</b>退職日、<wbr>最終出勤日、<wbr>退職理由、離職票の<wbr>希望、<wbr>最終給与、<wbr>資格確認書の<wbr>回収状況。</p></div><div class="sh-pdf-action"><a class="qk" href="assets/download/procedure-retirement.pdf" download="退職連絡票_入力用・記入例.pdf" aria-label="退職連絡票をダウンロード（入力欄・記入例付きPDF、全2ページ）">PDFをダウンロード ↓</a><small>入力欄・記入例付き／全2ページ</small></div></article><article class="sh-pdf"><div><h3>休職連絡票</h3><p>会社の<wbr>休職制度に<wbr>よる<wbr>休職開始・延長を<wbr>連絡する<wbr>とき。</p><p class="sh-pdf-fields"><b>主な<wbr>記入内容：</b>休職期間、<wbr>休職中の<wbr>給与、<wbr>保険料の<wbr>支払方法、<wbr>会社の<wbr>規程・本人への<wbr>通知状況。</p></div><div class="sh-pdf-action"><a class="qk" href="assets/download/procedure-leave.pdf" download="休職連絡票_入力用・記入例.pdf" aria-label="休職連絡票をダウンロード（入力欄・記入例付きPDF、全2ページ）">PDFをダウンロード ↓</a><small>入力欄・記入例付き／全2ページ</small></div></article></div>
+    <ol class="sh-pdf-guide">
+      <li>必要な<wbr>連絡票を<wbr>ダウンロードして、<wbr>PDFに<wbr>入力できる<wbr>アプリで<wbr>開きます。</li>
+      <li>2ページ目の<wbr>記入例を<wbr>参考に、<wbr>1ページ目の<wbr>枠を<wbr>クリックして<wbr>入力します。</li>
+      <li>入力後に<wbr>保存し、<wbr>開き直して<wbr>内容を<wbr>確認の<wbr>うえ、<wbr>ご依頼の<wbr>担当者へ<wbr>お送りください。</li>
+    </ol>
+    <p class="sh-pdf-note">関連する<wbr>添付資料は<wbr>各PDFの<wbr>下部に<wbr>記載しています。<wbr>休職連絡票は<wbr>産前産後・育児・<wbr>介護休業の<wbr>連絡や、傷病手当金の<wbr>申請書とは<wbr>別の<wbr>書式です。<wbr>手続きの<wbr>依頼は、<wbr><a href="uploads/service-shakai-hoken.html">社会保険・労働保険の<wbr>手続き代行</a>を<wbr>ご覧ください。</p>
+  </section>
+
   <section class="cat rv" id="setting">
     <div class="cat-head">
       <div class="cat-icon kmono" aria-hidden="true">社名</div>
-      <h2 class="cat-title">会社情報を入れる</h2>
+      <h2 class="cat-title">社内書式用の<wbr>会社情報を<wbr>入れる</h2>
     </div>
-    <p class="cat-desc">最初に<wbr>一度だけ<wbr>入力してください。<wbr>すべての<wbr>書式の<wbr>宛名・発信者欄に<wbr>入ります。</p>
+    <p class="cat-desc">以下の<wbr>HTML書式を<wbr>使う<wbr>場合は、<wbr>最初に<wbr>一度だけ<wbr>入力してください。<wbr>社内書式の<wbr>宛名・発信者欄に<wbr>入ります。<wbr>上の<wbr>PDFには<wbr>自動入力されません。</p>
     <div class="sh-set" id="cfg-wrap"><div class="row"><label>会社名<input id="co-name" placeholder="株式会社○○"></label><label>代表者の役職<input id="co-title" placeholder="代表取締役"></label><label>代表者氏名<input id="co-rep" placeholder="○○ ○○"></label><label>所在地<input id="co-addr" placeholder="富山市○○1-2-3"></label><label>電話<input id="co-tel" placeholder="076-000-0000"></label><label>担当部署・担当者<input id="co-dept" placeholder="総務部 ○○"></label></div><div class="btns"><button type="button" onclick="coExport()">設定をファイルに書き出す</button><button type="button" onclick="document.getElementById('co-file').click()">設定ファイルを読み込む</button><input type="file" id="co-file" accept=".json" style="display:none" onchange="coImport(this)"><button type="button" onclick="coClear()">消去</button></div><p id="co-status" class="co-status" role="status" hidden></p><p class="hint">いま設定されている<wbr>会社名：<span class="co-name sh-now">【会社名】</span>。<wbr>入力した<wbr>内容は<wbr>この<wbr>ブラウザの<wbr>中にだけ保存され、<wbr>当事務所には<wbr>送信されません。<wbr>各書式を<wbr>開くと<wbr>宛名・発信者欄に<wbr>自動で<wbr>入ります。<wbr>別の<wbr>PCで<wbr>使う<wbr>ときは<wbr>「書き出す」で<wbr>保存した<wbr>ファイルを<wbr>読み込んでください。</p></div>
   </section>
 

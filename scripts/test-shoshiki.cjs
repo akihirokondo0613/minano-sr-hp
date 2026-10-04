@@ -30,6 +30,11 @@ const RETIRED_OFFICE_FILES = [
   'shoshiki/dl/word-7kq3x9/shanai-shoshiki-word-202609.zip',
   'shoshiki/dl/word-7kq3x9/shanai-shoshiki-word-202610.zip',
 ];
+const PROCEDURE_PDFS = [
+  'assets/download/procedure-onboarding.pdf',
+  'assets/download/procedure-retirement.pdf',
+  'assets/download/procedure-leave.pdf',
+];
 // CIの静的サーバーは下位ディレクトリのindexを補完しない。
 // 案内本文・操作は明示indexで検査し、公開ディレクトリURLは本番GETで照合する。
 const LEGACY_LANDING = 'shoshiki/dl/word-7kq3x9/index.html';
@@ -174,7 +179,7 @@ async function revealSections(page, details) {
   }
   const mainSections = page.locator('main > section');
   const count = await mainSections.count();
-  const expected = 4;
+  const expected = details.relative === 'shoshiki.html' ? 5 : 4;
   check(count === expected, `${details.engine}:${details.relative}@${details.width}px:main節数 ${count} ≠ ${expected}`);
   for (let index = 0; index < count; index += 1) {
     const section = mainSections.nth(index);
@@ -269,7 +274,7 @@ async function revealSections(page, details) {
     sectionResults.push({ ...details, sectionIndex: index + 1, paintReady, metrics });
     if ((details.actualMobile || [320, 390].includes(details.width))
       && ((details.relative === 'portal.html' && index === 0)
-        || (details.relative === 'shoshiki.html' && ['setting', 'list'].includes(metrics.id)))) {
+        || (details.relative === 'shoshiki.html' && ['procedure-pdfs', 'setting', 'list'].includes(metrics.id)))) {
       const viewportName = details.actualMobile ? 'actual-mobile390' : String(details.width);
       await screenshot(page, `${details.engine}-${path.basename(details.relative, '.html')}-${viewportName}-${metrics.id}-viewport`, false);
     }
@@ -1003,7 +1008,9 @@ async function checkNavigation(browser, engine) {
       const rows = [...document.querySelectorAll('.sh-tbl tbody tr')];
       const formLinks = [...document.querySelectorAll('a[href]')].map((a) => new URL(a.href).pathname)
         .filter((pathname) => /\/shoshiki\/D-\d\d\.html$/.test(pathname));
-      return { rows: rows.length, uniqueForms: new Set(formLinks).size,
+      const procedureLinks = [...document.querySelectorAll('#procedure-pdfs a[download]')]
+        .map((a) => ({ href: a.getAttribute('href'), label: a.getAttribute('aria-label') }));
+      return { rows: rows.length, uniqueForms: new Set(formLinks).size, procedureLinks,
         officeLinks: [...document.querySelectorAll('a[href]')].filter((a) => /\.(?:xlsx?|docx?|zip)(?:[?#]|$)/i.test(a.href)).length,
         google: [...document.querySelectorAll('a[href]')].filter((a) => a.href === 'https://forms.gle/vFUpB3fqzetNHQQKA')
           .map((a) => ({ href: a.href, target: a.target, rel: a.rel })) };
@@ -1012,6 +1019,18 @@ async function checkNavigation(browser, engine) {
       `${engine}:HTML50本の一覧が不一致 ${JSON.stringify(counts)}`);
     check(counts.google.length === 0 && counts.officeLinks === 0,
       `${engine}:終了したOffice配布/申込リンクが残っています ${JSON.stringify(counts)}`);
+    check(counts.procedureLinks.length === 3
+      && PROCEDURE_PDFS.every((href) => counts.procedureLinks.some((link) => link.href === href))
+      && counts.procedureLinks.every((link) => link.label?.includes('全2ページ')),
+      `${engine}:手続き連絡票PDF3種のリンク/用途表示が不一致 ${JSON.stringify(counts.procedureLinks)}`);
+    distribution.procedurePdfs = [];
+    for (const relative of PROCEDURE_PDFS) {
+      const response = await context.request.get(new URL(relative, base).href);
+      const body = await response.body();
+      check(response.status() === 200 && body.subarray(0, 5).toString() === '%PDF-',
+        `${engine}:${relative}:連絡票PDFを取得できません (${response.status()})`);
+      distribution.procedurePdfs.push({ relative, status: response.status(), bytes: body.length });
+    }
     distribution.list = counts;
     for (const relative of RETIRED_OFFICE_FILES) {
       const response = await context.request.get(new URL(relative, base).href);
@@ -1287,7 +1306,7 @@ async function runEngine(browser, engine, forms) {
   const expectedTableNameResults = ENGINES.length * WIDTHS.length * EXPECTED_FORM_COUNT;
   check(tableNameResults.length === expectedTableNameResults,
     `書式名称の文字検査数 ${tableNameResults.length} ≠ ${expectedTableNameResults}`);
-  const expectedSectionResults = ENGINES.length * (4 * (PORTAL_WIDTHS.length + 1) + 4 * (WIDTHS.length + 1));
+  const expectedSectionResults = ENGINES.length * (4 * (PORTAL_WIDTHS.length + 1) + 5 * (WIDTHS.length + 1));
   check(sectionResults.length === expectedSectionResults,
     `画面内main節表示検査数 ${sectionResults.length} ≠ ${expectedSectionResults}`);
   const expectedBehaviorResults = ENGINES.length * 20;
