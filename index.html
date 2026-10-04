@@ -638,44 +638,64 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 @media(max-width:700px){.home-shortcuts .w{grid-template-columns:minmax(0,1fr);gap:10px}.home-shortcuts-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}.home-shortcuts a{font-size:clamp(14px,3.8vw,16px);gap:8px}.home-compact-section a.home-detail-link{text-align:left;gap:18px}}
 @media(prefers-reduced-motion:reduce){.home-shortcuts a span,a.home-detail-link .detail-arrow{transition:none}.home-shortcuts a:hover span,a.home-detail-link:hover .detail-arrow{transform:none}}
 </style>
-<style id="home-tool-cards">
-/* 07 TOOLS ― 社内書式（無料ツール）と行政の公式窓口の2枚カード。06 TOPICS の記事カード（tp-card）と同じ言葉づかい：
-   上に色の帯（分野名の文字）、下に題・説明・リンク。帯はトップの深杉系で統一。記事の分野別配色とは役割を分ける。 */
-.tool-sec{background:var(--yuki)}
-#tools + .about-sec{border-top:1px solid var(--line)}  /* 07 と 08 が同じ地色なので細い区切り */
-.tool-sec .sec-head{margin-bottom:clamp(22px,4vw,48px)}
-.tool-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(14px,2vw,24px)}
-.tool-card{display:flex;flex-direction:column;min-width:0;background:#fefefe;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;
-  color:inherit;text-decoration:none;transition:border-color .3s,transform .3s var(--ease),box-shadow .3s}
-.tool-card:hover{border-color:var(--moegi);transform:translateY(-3px);box-shadow:0 10px 24px rgba(18,63,48,.08)}
-.tool-card:focus-visible{border-color:var(--moegi);outline:2px solid var(--sugi);outline-offset:2px}
-.tool-band{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:clamp(18px,2.2vw,26px) 16px;
-  background:var(--tool-c,var(--sugi));color:#fff;text-align:center;overflow:hidden}
-.tool-band::after{content:'';position:absolute;inset:auto -12% -70% auto;width:38%;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.08)}  /* 右下隅に小さく。文字域に縁が掛からない大きさ（320〜1440で確認） */
-.tool-band[data-tone="tool"]{--tool-c:var(--sugi)}
-.tool-band[data-tone="gov"]{--tool-c:var(--sugi-7)}
-.tool-kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;white-space:nowrap}
-@media (max-width:360px){.tool-kicker{font-size:10px;letter-spacing:.1em}}  /* 320px で2行に折れない */  /* 白のまま（4.5:1 を守る） */
-.tool-mark{font-family:var(--disp);font-size:clamp(18px,1.9vw,23px);font-weight:900;letter-spacing:.1em;line-height:1.3}
-.tool-body{display:flex;flex-direction:column;gap:9px;padding:clamp(14px,1.6vw,20px) clamp(14px,1.6vw,20px) clamp(16px,1.8vw,20px);flex:1}
-.tool-title{font-family:var(--disp);font-size:clamp(15px,1.4vw,17.5px);font-weight:800;line-height:1.5;color:var(--iwa)}
-.tool-desc{font-size:12.5px;line-height:1.8;color:var(--ink3)}
-.tool-tags{display:flex;flex-wrap:wrap;gap:6px}
-.tool-tags span{font-size:11px;line-height:1.6;padding:3px 9px;border-radius:999px;background:var(--moegi-l);color:var(--sugi);white-space:nowrap}
-.tool-band[data-tone="gov"] ~ .tool-body .tool-tags span{background:var(--moegi-l);color:var(--sugi)}
-.tool-link{margin-top:auto;padding-top:4px;font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:.05em;color:var(--sugi)}
-.tool-link span{display:inline-block;transition:transform .3s var(--ease)}
-.tool-card:hover .tool-link span{transform:translateX(4px)}
-@media (max-width:760px){
-  .tool-grid{gap:12px}
-  .tool-band{padding:14px 10px}
-  .tool-body{padding:12px 12px 14px;gap:7px}
-  .tool-title{font-size:14px}
-  .tool-desc{font-size:11.5px;line-height:1.7;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;line-clamp:4;overflow:hidden}
-  .tool-tags{display:none}
-  .tool-link{font-size:11.5px}
+<style id="home-form-gallery">
+/* 07 TOOLS ― 実際のPDFを紙面のまま見せ、用途とダウンロードへつなぐ。 */
+#tools{background:var(--yuki)}
+#tools + .about-sec{border-top:1px solid var(--line)}
+#tools .sec-head{margin-bottom:24px}
+.fg-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.fg-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--ink3)}
+.fg-free{color:var(--sugi);font-weight:700}
+.fg-controls{display:flex;gap:8px;flex-shrink:0}
+.fg-controls[hidden]{display:none}
+.fg-control{display:grid;place-items:center;min-width:40px;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:var(--shiro);color:var(--sugi);font:inherit;font-size:12px;cursor:pointer}
+.fg-control:hover:not(:disabled){background:var(--moegi-l);border-color:var(--sugi)}
+.fg-control:disabled{opacity:.4;cursor:default}
+.fg-control svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7}
+.fg-control:focus-visible,.fg-rail:focus-visible{outline:2px solid var(--sugi);outline-offset:3px}
+.fg-rail{--fg-gap:clamp(20px,3vw,40px);display:flex;gap:var(--fg-gap);overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;list-style:none;margin:0;padding:12px 4px 18px;scroll-behavior:auto}
+.fg-rail::-webkit-scrollbar{display:none}
+.fg-item{flex:0 0 clamp(252px,27vw,324px);min-width:0}
+.fg-card{display:flex;flex-direction:column;gap:12px;color:var(--iwa);text-decoration:none}
+.fg-heading{display:flex;justify-content:space-between;align-items:baseline;gap:12px;color:var(--sugi)}
+.fg-heading h3{font-size:18px;font-weight:800;letter-spacing:.03em}
+.fg-heading span{font-family:var(--mono);font-size:11px;color:var(--ink3)}
+.fg-paper{position:relative;background:var(--shiro);border:1px solid var(--line);border-radius:3px;box-shadow:0 4px 6px rgba(18,63,48,.04),0 12px 24px -12px rgba(18,63,48,.2);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.fg-paper img{display:block;width:100%;height:auto;aspect-ratio:840/1189;border-radius:3px}
+.fg-card:hover .fg-paper{transform:translateY(-4px);box-shadow:0 8px 24px -8px rgba(18,63,48,.22)}
+.fg-card:focus-visible{outline:2px solid var(--sugi);outline-offset:3px;border-radius:3px}
+.fg-purpose{font-size:16px;font-weight:700;line-height:1.65;color:var(--sugi)}
+.fg-fields{display:block;margin-top:4px;font-size:12px;font-weight:400;line-height:1.8;color:var(--ink3)}
+.fg-open{display:flex;justify-content:space-between;gap:12px;align-items:center;padding-top:10px;border-top:1px solid var(--line);font-size:12px;font-weight:600;color:var(--sugi)}
+.fg-open span:last-child{font-size:16px}
+.fg-footer{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:6px;font-size:12px;color:var(--ink3)}
+.fg-footer a{color:var(--sugi);text-underline-offset:4px;padding-block:8px}
+.fg-resources{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:24px;padding-top:18px;border-top:1px solid var(--line)}
+.fg-resource{display:flex;justify-content:space-between;align-items:center;gap:12px;min-width:0;padding-block:6px;color:var(--sugi);text-decoration:none}
+.fg-resource strong{display:block;font-size:14px;font-weight:700}
+.fg-resource small{display:block;margin-top:4px;font-size:12px;line-height:1.7;font-weight:400;color:var(--ink3)}
+.fg-resource>span:last-child{flex-shrink:0;font-size:20px}
+.fg-resource:focus-visible{outline:2px solid var(--sugi);outline-offset:3px}
+@media(max-width:640px){
+  .fg-bar{align-items:flex-start;gap:8px}
+  .fg-meta{display:block;line-height:1.8;font-size:11px}
+  .fg-meta span{display:block}
+  .fg-controls{gap:5px}
+  .fg-control{min-width:36px;height:36px;padding-inline:10px}
+  .fg-item{flex-basis:clamp(224px,70vw,280px)}
+  .fg-rail{--fg-gap:20px}
+  .fg-heading h3{font-size:16px}
+  .fg-purpose{font-size:15px}
+  .fg-footer{flex-wrap:wrap;gap:0}
+  .fg-resources{gap:16px;margin-top:14px;padding-top:14px}
+  .fg-resource strong{font-size:13px}
+  .fg-resource small{font-size:11px}
 }
-@media (prefers-reduced-motion:reduce){.tool-card,.tool-link span{transition:none}.tool-card:hover{transform:none}.tool-card:hover .tool-link span{transform:none}}
+@media(prefers-reduced-motion:reduce){
+  .fg-copy,.fg-pause{display:none}
+  .fg-paper{transition:none}
+  .fg-card:hover .fg-paper{transform:none}
+}
 </style>
 <style id="home-topics-marquee">
 /* 06 TOPICS ― 記事カードの横送りレール。
@@ -1340,35 +1360,56 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
   </div>
 </section>
 
-<!-- 07 ツール・公式窓口：社内書式のひな形（shoshiki.html・SPA遷移の対象外）と公式情報（portal.html） -->
+<!-- 07 ツール・公式窓口：連絡票の実物見本と、社内書式・公式窓口への入口 -->
 <section class="tool-sec sec home-compact-section" id="tools">
   <div class="w">
     <div class="sec-head rv">
       <div class="sec-head-idx"><span class="idx-num">07</span><span class="idx-lat">TOOLS</span><span class="idx-jp">ツール・公式窓口</span></div>
       <div class="sec-head-body">
-        <h2 class="sec-h">社内手続きの<wbr>書類を、<br class="sp-br"><strong><span class="nw">ひとまとめに。</span></strong></h2>
-        <p class="sec-sub">社内書式は<wbr>ブラウザで<wbr>記入して<wbr>印刷、<wbr>行政の<wbr>公式窓口は<wbr>1か所に<wbr>まとめました。<wbr>どちらも<wbr>無料・登録不要です。</p>
+        <h2 class="sec-h">入社・退職・休職。<br><strong>伝える<wbr>ことを、<wbr>1枚に。</strong></h2>
+        <p class="sec-sub">手続きに<wbr>必要な<wbr>情報を<wbr>まとめる、<wbr>3種類の<wbr>連絡票。<wbr>PDFに<wbr>入力でき、<wbr>赤字の<wbr>記入例を<wbr>見ながら<wbr>準備できます。</p>
       </div>
     </div>
-    <div class="tool-grid">
-      <a class="tool-card rv d1" href="shoshiki.html">
-        <span class="tool-band" data-tone="tool"><span class="tool-kicker">FREE TOOL</span><span class="tool-mark">社内書式</span></span>
-        <span class="tool-body">
-          <span class="tool-title"><span class="nw">社内書式の</span><span class="nw">ひな形 50本</span></span>
-          <span class="tool-desc">入社誓約書・有給休暇申請書・休職届・退職届・労働者代表の選出など、会社と従業員の間で使う書式をブラウザで記入して印刷。会社名を入れると各書式に自動で入ります。</span>
-          <span class="tool-tags"><span>入社</span><span>勤怠・休暇</span><span>休職・復職</span><span>退職</span><span>36協定・就業規則</span></span>
-          <span class="tool-link">書式一覧を開く <span aria-hidden="true">→</span></span>
-        </span>
-      </a>
-      <a class="tool-card rv d2" href="portal.html">
-        <span class="tool-band" data-tone="gov"><span class="tool-kicker">OFFICIAL LINKS</span><span class="tool-mark">公式窓口</span></span>
-        <span class="tool-body">
-          <span class="tool-title"><span class="nw">行政の</span><span class="nw">公式窓口まとめ</span></span>
-          <span class="tool-desc">年金事務所・ハローワーク・労働基準監督署・協会けんぽなど、手続きや調べもので使う公的機関の公式サイトを分野別に。ブックマーク代わりにどうぞ。</span>
-          <span class="tool-tags"><span>年金・健康保険</span><span>雇用保険・労働基準</span><span>助成金・電子申請</span></span>
-          <span class="tool-link">公式情報のリンク集へ <span aria-hidden="true">→</span></span>
-        </span>
-      </a>
+    <div class="fg-gallery">
+      <div class="fg-bar">
+        <p class="fg-meta"><span class="fg-free">無料・<wbr>登録<wbr>不要</span><span>入力欄 ＋ 赤字<wbr>の<wbr>記入例付き</span></p>
+        <div class="fg-controls" hidden>
+          <button class="fg-control" type="button" data-fg-dir="-1" aria-label="前の連絡票を見る" aria-controls="form-gallery-rail"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button>
+          <button class="fg-control fg-pause" type="button" aria-label="連絡票の自動スクロールを一時停止" aria-pressed="false" aria-controls="form-gallery-rail">一時停止</button>
+          <button class="fg-control" type="button" data-fg-dir="1" aria-label="次の連絡票を見る" aria-controls="form-gallery-rail"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button>
+        </div>
+      </div>
+      <ul class="fg-rail" id="form-gallery-rail" tabindex="0" aria-label="入社・退職・休職の連絡票見本。横にスクロールできます">
+        <li class="fg-item">
+          <a class="fg-card" href="assets/download/procedure-onboarding.pdf" target="_blank" rel="noopener" aria-label="入社連絡票のPDFを見る（入力用と記入例の2ページ、新しいタブで開きます）">
+            <div class="fg-heading"><h3>入社連絡票</h3><span>01 / 入社</span></div>
+            <div class="fg-paper"><img src="assets/previews/procedure-onboarding-sample.webp" width="840" height="1189" loading="lazy" decoding="async" alt="入社日・勤務時間・給与・保険加入の欄がある入社連絡票の赤字記入例"></div>
+            <p class="fg-purpose">採用が<wbr>決まったら。<wbr><span class="fg-fields">入社日・給与・<wbr>保険加入の<wbr>情報を<br>ひと<wbr>まとめに。</span></p>
+            <span class="fg-open"><span>入力用PDF・記入例を見る</span><span aria-hidden="true">↗</span></span>
+          </a>
+        </li>
+        <li class="fg-item">
+          <a class="fg-card" href="assets/download/procedure-retirement.pdf" target="_blank" rel="noopener" aria-label="退職連絡票のPDFを見る（入力用と記入例の2ページ、新しいタブで開きます）">
+            <div class="fg-heading"><h3>退職連絡票</h3><span>02 / 退職</span></div>
+            <div class="fg-paper"><img src="assets/previews/procedure-retirement-sample.webp" width="840" height="1189" loading="lazy" decoding="async" alt="退職日・退職理由・離職票の希望・回収書類の欄がある退職連絡票の赤字記入例"></div>
+            <p class="fg-purpose">退職の<wbr>連絡を<wbr>受けたら。<wbr><span class="fg-fields">退職日・離職票の<wbr>希望・必要書類を<br>まとめて<wbr>確認。</span></p>
+            <span class="fg-open"><span>入力用PDF・記入例を見る</span><span aria-hidden="true">↗</span></span>
+          </a>
+        </li>
+        <li class="fg-item">
+          <a class="fg-card" href="assets/download/procedure-leave.pdf" target="_blank" rel="noopener" aria-label="休職連絡票のPDFを見る（入力用と記入例の2ページ、新しいタブで開きます）">
+            <div class="fg-heading"><h3>休職連絡票</h3><span>03 / 休職</span></div>
+            <div class="fg-paper"><img src="assets/previews/procedure-leave-sample.webp" width="840" height="1189" loading="lazy" decoding="async" alt="休職期間・休職中の給与・保険料の支払方法の欄がある休職連絡票の赤字記入例"></div>
+            <p class="fg-purpose">休職の<wbr>開始・<wbr>延長に。<wbr><span class="fg-fields">休職期間・給与・<wbr>保険料の<wbr>扱いを<br>会社から<wbr>共有。</span></p>
+            <span class="fg-open"><span>入力用PDF・記入例を見る</span><span aria-hidden="true">↗</span></span>
+          </a>
+        </li>
+      </ul>
+      <div class="fg-footer"><p>見本は<wbr>架空の<wbr>記入例です。<wbr>横に<wbr>送って<wbr>ご覧ください。</p><a href="shoshiki.html#procedure-pdfs">連絡票の<wbr>使い<wbr>方・ダウンロード <span aria-hidden="true">→</span></a></div>
+    </div>
+    <div class="fg-resources">
+      <a class="fg-resource" href="shoshiki.html"><span><strong>社内書式のひな形 50本</strong><small>入社誓約書・休暇申請書などを記入・印刷</small></span><span aria-hidden="true">→</span></a>
+      <a class="fg-resource" href="portal.html"><span><strong>行政の公式窓口まとめ</strong><small>年金事務所・ハローワークなどの公式情報</small></span><span aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
@@ -1513,6 +1554,97 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
   </a>
 </div>
 
+<script id="home-form-gallery-init">
+// SPAでトップへ戻るたびに初期化し、古い監視とアニメーションを片付ける。
+(function(){
+  if(window.__mnFormGalleryCleanup)window.__mnFormGalleryCleanup();
+  var rail=document.getElementById('form-gallery-rail');
+  if(!rail)return;
+  var root=rail.closest('.fg-gallery'),controls=root.querySelector('.fg-controls');
+  var pause=controls.querySelector('.fg-pause'),arrows=controls.querySelectorAll('[data-fg-dir]');
+  var originals=Array.prototype.slice.call(rail.children),reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
+  var frame=0,lastTime=0,position=null,cycle=0,inView=false,hover=false,focused=false,manual=false,observer;
+  // ループの継ぎ目を埋める複製は読み上げ・Tab移動から除外する。
+  for(var copy=0;copy<2;copy++)originals.forEach(function(item,index){
+    var clone=item.cloneNode(true),link=clone.querySelector('a');
+    clone.classList.add('fg-copy');clone.setAttribute('aria-hidden','true');
+    link.tabIndex=-1;
+    link.addEventListener('mousedown',function(e){e.preventDefault();});
+    link.addEventListener('focus',function(){originals[index].querySelector('a').focus();});
+    rail.appendChild(clone);
+  });
+  function measure(){
+    var firstCopy=rail.querySelector('.fg-copy');
+    cycle=firstCopy?firstCopy.offsetLeft-originals[0].offsetLeft:0;
+    position=null;update();
+  }
+  function canPlay(){return inView&&!manual&&!hover&&!focused&&!reduce.matches&&!document.hidden&&cycle>0;}
+  function tick(time){
+    frame=0;
+    if(!rail.isConnected){cleanup();return;}
+    if(!canPlay()){lastTime=0;return;}
+    if(position===null)position=rail.scrollLeft%cycle;
+    // 画面外・別タブから戻った際に距離が跳ばないよう、経過時間を制限する。
+    if(lastTime)position=(position+Math.min(time-lastTime,64)*.022)%cycle;
+    lastTime=time;rail.scrollLeft=position;
+    frame=requestAnimationFrame(tick);
+  }
+  function update(){
+    pause.textContent=manual?'再生':'一時停止';
+    pause.setAttribute('aria-pressed',String(manual));
+    pause.setAttribute('aria-label','連絡票の自動スクロールを'+(manual?'再開':'一時停止'));
+    arrows.forEach(function(button){
+      button.disabled=reduce.matches&&(button.dataset.fgDir==='-1'?rail.scrollLeft<1:rail.scrollLeft>=rail.scrollWidth-rail.clientWidth-1);
+    });
+    if(canPlay()){if(!frame){lastTime=0;frame=requestAnimationFrame(tick);}}
+    else{cancelAnimationFrame(frame);frame=0;lastTime=0;position=null;}
+  }
+  function stopManually(){manual=true;update();}
+  function move(dir){
+    stopManually();
+    var step=originals[1].offsetLeft-originals[0].offsetLeft;
+    var next=rail.scrollLeft+dir*step;
+    if(!reduce.matches&&cycle){
+      if(next<0){rail.scrollLeft+=cycle;next+=cycle;}
+      if(next>=cycle*2){rail.scrollLeft-=cycle;next-=cycle;}
+    }
+    rail.scrollTo({left:next,behavior:reduce.matches?'auto':'smooth'});
+  }
+  pause.addEventListener('click',function(){manual=!manual;update();});
+  arrows.forEach(function(button){button.addEventListener('click',function(){move(Number(button.dataset.fgDir));});});
+  rail.addEventListener('mouseenter',function(){hover=true;update();});
+  rail.addEventListener('mouseleave',function(){hover=false;update();});
+  rail.addEventListener('focusin',function(){focused=true;update();});
+  rail.addEventListener('focusout',function(e){focused=rail.contains(e.relatedTarget);update();});
+  rail.addEventListener('pointerdown',stopManually,{passive:true});
+  rail.addEventListener('wheel',stopManually,{passive:true});
+  rail.addEventListener('keydown',function(e){
+    if(e.target!==rail)return;
+    if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();move(e.key==='ArrowRight'?1:-1);}
+  });
+  rail.addEventListener('scroll',function(){if(reduce.matches)update();},{passive:true});
+  function visibility(){if(!rail.isConnected){cleanup();return;}update();}
+  function cleanup(){
+    cancelAnimationFrame(frame);frame=0;
+    if(observer)observer.disconnect();
+    window.removeEventListener('resize',measure);
+    document.removeEventListener('visibilitychange',visibility);
+    reduce.removeEventListener('change',measure);
+  }
+  window.__mnFormGalleryCleanup=cleanup;
+  window.addEventListener('resize',measure,{passive:true});
+  document.addEventListener('visibilitychange',visibility);
+  reduce.addEventListener('change',measure);
+  controls.hidden=false;
+  measure();
+  if('IntersectionObserver' in window){
+    observer=new IntersectionObserver(function(entries){
+      if(!rail.isConnected){cleanup();return;}
+      inView=entries[0].isIntersecting;update();
+    },{threshold:.05});observer.observe(rail);
+  }else{inView=true;update();}
+})();
+</script>
 <script>
 // Modal data removed — 詳細モーダルは未使用のため削除済み
 
