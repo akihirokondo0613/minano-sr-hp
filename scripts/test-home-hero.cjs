@@ -20,13 +20,13 @@ const base = (args.find((arg) => arg.startsWith('http')) || 'http://127.0.0.1:88
   .replace(/\/?$/, '/');
 const asJson = args.includes('--json');
 
-const WIDTHS = [320, 360, 375, 390, 402, 429, 430, 431, 699, 700, 701, 767, 768, 1024, 1100, 1101, 1280, 1440, 1599, 1600, 1601, 1920, 2560, 2774];
+const WIDTHS = [320, 360, 375, 390, 402, 429, 430, 431, 539, 540, 541, 600, 640, 641, 699, 700, 701, 733, 767, 768, 820, 900, 1024, 1100, 1101, 1280, 1440, 1599, 1600, 1601, 1920, 2560, 2774];
 const ENGINES = [
   ['chromium', chromium],
   ['webkit', webkit],
 ];
 const EPSILON = 1;
-const MOTION_WIDTHS = [390, 767, 768, 1280, 1920];
+const MOTION_WIDTHS = [390, 540, 541, 640, 733, 767, 768, 1280, 1920];
 // External reference, rather than values read from home-hero.js:
 // https://gaaboo.jp/wp/wp-content/themes/gaaboo/assets/js/top.js?ver=1766493868
 // O() / people1+people2: 30ms stagger, 160ms linear opacity,
@@ -317,7 +317,7 @@ function checkResting(state, check) {
 }
 
 async function motionScreenshot(page, engine, width, phase, screenshots) {
-  if (!process.env.RUNNER_TEMP || ![390, 768, 1280, 1920].includes(width)) return;
+  if (!process.env.RUNNER_TEMP || !MOTION_WIDTHS.includes(width)) return;
   // performance.yml uploads this directory; run-layout-checks.cjs inherits env.
   const directory = path.join(process.env.RUNNER_TEMP, 'layout-results', 'hero-motion');
   await fs.mkdir(directory, { recursive: true });
@@ -519,6 +519,16 @@ async function checkReducedMotion(browser, engine, width, failures) {
           entryScreenshots: await entryScreenshots(page, engineName, width) });
 
         const composition = result.composition;
+        if (width >= 541 && width <= 767 && (composition.canvas.width < result.metrics.h1.width
+          || composition.canvas.width > result.metrics.h1.width * 1.1)) {
+          failures.push(`${engineName}@${width}px: 中間幅の人物帯と見出しの幅が揃っていません`);
+        }
+        if (width === 733 && composition.canvas.height > width * 0.5) {
+          failures.push(`${engineName}@${width}px: 中間幅でもスマホの縦長構図が残っています`);
+        }
+        if (width >= 1600 && result.metrics.h1.width > composition.canvas.width + EPSILON) {
+          failures.push(`${engineName}@${width}px: 大画面の見出し器が人物帯より広がっています`);
+        }
         const expectedActors = width <= 767 ? 6 : 10;
         if (composition.actors.length !== expectedActors || composition.gaps.length !== expectedActors - 1) {
           failures.push(`${engineName}@${width}px: 人物の配置数・間隔を測定できません`);
@@ -627,6 +637,21 @@ async function checkReducedMotion(browser, engine, width, failures) {
         }
         if (errors.length) failures.push(`${engineName}@${width}px: ${errors.join(' / ')}`);
         await page.close();
+      }
+      const beforeSpread = results.find((item) => item.engine === engineName && item.width === 540).composition;
+      const afterSpread = results.find((item) => item.engine === engineName && item.width === 541).composition;
+      if (Math.abs(beforeSpread.canvas.height - afterSpread.canvas.height) > 2
+        || beforeSpread.actors.some((actor) => {
+          const next = afterSpread.actors.find((item) => item.actor === actor.actor);
+          return !next || Math.abs(actor.width - next.width) > 2
+            || Math.abs((actor.top - beforeSpread.canvas.top) - (next.top - afterSpread.canvas.top)) > 2;
+        })) {
+        failures.push(`${engineName}@540/541px: 中間幅への切替で人物帯の高さ・位置が急変しています`);
+      }
+      const beforePC = results.find((item) => item.engine === engineName && item.width === 767);
+      const afterPC = results.find((item) => item.engine === engineName && item.width === 768);
+      if (afterPC.titleFonts.secondary < beforePC.titleFonts.secondary - EPSILON) {
+        failures.push(`${engineName}@767/768px: 画面を広げると緑の見出しが小さくなっています`);
       }
       for (const width of MOTION_WIDTHS) {
         motionResults.push(await checkMotionTimeline(browser, engineName, width, failures));
