@@ -1520,7 +1520,10 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
     if(!script){
       script=document.createElement('script');script.src='home-form-gallery.js?v=20261005-lazy1';
       window.__mnFormGalleryScript=script;
-      script.addEventListener('error',function(){window.__mnFormGalleryScript=null;},{once:true});
+      script.addEventListener('error',function(){
+        window.__mnFormGalleryScript=null;
+        rail.querySelectorAll('img[data-src]').forEach(function(img){img.src=img.dataset.src;});
+      },{once:true});
       script.addEventListener('load',run,{once:true});
       document.head.appendChild(script);
     }else script.addEventListener('load',run,{once:true});
