@@ -30,16 +30,23 @@ BY_NO = {f["no"]: f for f in FORMS}
 N_FORMS = len(FORMS)
 PROCEDURE_PDFS = [
     {
+        "slug": "establishment",
+        "title": "事業所基本情報シート",
+        "context": "（初回・変更時）",
+        "use": "初めてのご依頼・事業所情報が変わったときに、各手続きで共通して使う情報をご連絡ください。",
+        "contents": "事業主・所在地、保険の事業所番号・加入先、通常の勤務条件・適用状況。",
+    },
+    {
         "slug": "onboarding",
         "title": "入社連絡票",
         "use": "従業員を採用し、社会保険・雇用保険の加入手続きを依頼するとき。",
-        "contents": "本人・会社の情報、入社日、勤務時間、給与見込、扶養家族の有無。",
+        "contents": "本人の情報、入社日、勤務時間、給与見込・現物支給、扶養家族の有無。",
     },
     {
         "slug": "retirement",
         "title": "退職連絡票",
         "use": "従業員の退職に伴う資格喪失手続きを依頼するとき。離職票あり・なしの両方に使えます。",
-        "contents": "退職日、最終出勤日、退職理由、離職票の希望、最終給与、資格確認書の回収状況。",
+        "contents": "退職日、最終出勤日、退職理由、離職票の希望、最終給与、本人・家族の資格確認書。",
     },
     {
         "slug": "leave",
@@ -69,7 +76,7 @@ DEPENDENT_OFFICIAL = {
 }
 
 TITLE = "入社・退職・休職の連絡票と社内書式｜みなの社会保険労務士事務所"
-DESC = f"入社・退職・休職の入力できる連絡票PDF3種（住所の項目別入力、赤字の記入例、番号の確認方法付き）と、会社と従業員の間で使う社内書式{N_FORMS}本。扶養届の公式書式・記入例もご案内。登録不要。"
+DESC = f"初回・変更時の事業所基本情報シートと、入社・退職・休職の入力できる連絡票PDF（各2ページ・赤字の記入例付き）。会社と従業員の間で使う社内書式{N_FORMS}本、扶養届の公式書式・記入例もご案内。登録不要。"
 
 CAT_NOTE = {
     "01_入社": "内定から入社までに取り交わす書類",
@@ -291,9 +298,14 @@ def procedure_pdf_block():
     rows = []
     for form in PROCEDURE_PDFS:
         title = e(form["title"])
+        context = (
+            f'<wbr><span class="nw">{e(form["context"])}</span>'
+            if form.get("context")
+            else ""
+        )
         rows.append(
             '<article class="sh-pdf">'
-            f"<div><h3>{title}</h3><p>{e(form['use'])}</p>"
+            f"<div><h3>{title}{context}</h3><p>{e(form['use'])}</p>"
             f'<p class="sh-pdf-fields"><b>主な記入内容：</b>{e(form["contents"])}</p></div>'
             '<div class="sh-pdf-action">'
             f'<a class="qk" href="assets/download/procedure-{e(form["slug"])}.pdf" download="{title}_入力用・記入例.pdf" '
@@ -341,10 +353,10 @@ def main_html():
       <div class="cat-icon kmono" aria-hidden="true">連絡</div>
       <h2 class="cat-title" id="procedure-pdfs-title">当事務所への手続き連絡票</h2>
     </div>
-    <p class="cat-desc">入社・退職・休職の情報を会社からご連絡いただく、入力できるPDFです。入力欄は1ページ目、赤字の架空の記入例は2ページ目。住所は郵便番号・都道府県・市区町村などに分けて入力できます。</p>
+    <p class="cat-desc">事業所情報と入社・退職・休職の情報を会社からご連絡いただく、入力できるPDFです。入力欄は1ページ目、赤字の架空の記入例は2ページ目。住所は郵便番号・都道府県・市区町村などに分けて入力できます。</p>
     {procedure_pdf_block()}
     <ol class="sh-pdf-guide">
-      <li>必要な連絡票をダウンロードして、PDFに入力できるアプリで開きます。</li>
+      <li>必要な連絡票をダウンロードします。初回・事業所情報の変更時は、基本情報シートもご用意ください。PDFに入力できるアプリで開きます。</li>
       <li>2ページ目の赤字の記入例を参考に、1ページ目の枠をクリックして入力します。番号の欄には、確認する資料の案内を添えています。</li>
       <li>入力後に保存し、開き直して内容を確認のうえ、ご依頼の担当者へお送りください。</li>
     </ol>
@@ -519,7 +531,7 @@ def build_index():
     )
     s = re.sub(
         r'<p class="page-sub">.*?</p>',
-        f'<p class="page-sub">入社から退職までに会社と従業員の間で使う社内書式{N_FORMS}本と、当事務所への手続き連絡票PDF3種。社内書式はブラウザで記入・印刷でき、設定した会社情報が入ります。PDFはダウンロードして入力できます。登録は不要です。</p>',
+        f'<p class="page-sub">入社から退職までに会社と従業員の間で使う社内書式{N_FORMS}本と、当事務所への手続き連絡票・事業所基本情報シートPDF4種。社内書式はブラウザで記入・印刷でき、設定した会社情報が入ります。PDFはダウンロードして入力できます。登録は不要です。</p>',
         s,
         count=1,
         flags=re.S,
