@@ -4,7 +4,8 @@
 #   python3 scripts/shoshiki/build_shoshiki.py --check  … 書き出さず、差分があれば exit 1
 # 正本: data/shoshiki/forms.json（文面。作り方は make_json.py と docs/shoshiki.md）。donor は portal.html（head・nav・footer の骨格を借りる）。
 # 書式ページ（shoshiki/D-xx.html）は印刷用の独立HTMLで、会社情報はブラウザ内（localStorage）にだけ保存する。
-# 公開対象はHTML書式のみ。Office版の元データと保管用生成器は非公開で保持する。
+# 社内書式はHTML版のみ。社労士への手続き連絡票3種は入力できるPDFとして別に案内する。
+# Office版の元データと保管用生成器は非公開で保持する。
 import html
 import json
 import pathlib
@@ -27,8 +28,30 @@ DL_PATH = "shoshiki/dl/word-7kq3x9"
 FORMS = [f for f in DATA["forms"] if f.get("to") != "社労士" and not f.get("kind")]
 BY_NO = {f["no"]: f for f in FORMS}
 N_FORMS = len(FORMS)
+PROCEDURE_PDFS = [
+    {
+        "slug": "onboarding",
+        "title": "入社連絡票",
+        "use": "従業員を採用し、社会保険・雇用保険の加入手続きを依頼するとき。",
+        "contents": "本人・会社の情報、入社日、勤務時間、給与見込、扶養家族の有無。",
+    },
+    {
+        "slug": "retirement",
+        "title": "退職連絡票",
+        "use": "従業員の退職に伴う資格喪失手続きを依頼するとき。離職票あり・なしの両方に使えます。",
+        "contents": "退職日、最終出勤日、退職理由、離職票の希望、最終給与、資格確認書の回収状況。",
+    },
+    {
+        "slug": "leave",
+        "title": "休職連絡票",
+        "use": "会社の休職制度による休職開始・延長を連絡するとき。",
+        "contents": "休職期間、休職中の給与、保険料の支払方法、会社の規程・本人への通知状況。",
+    },
+]
 
-TITLE = f"社内書式のひな形｜入社から退職まで{N_FORMS}本を無料で｜みなの社会保険労務士事務所"
+TITLE = (
+    f"社内書式のひな形｜入社から退職まで{N_FORMS}本を無料で｜みなの社会保険労務士事務所"
+)
 DESC = f"入社誓約書・有給休暇申請書・身上異動届・休職届・退職届・労働者代表の選出・就業規則意見書など、会社と従業員の間で使う社内書式{N_FORMS}本。ブラウザで記入して印刷でき、会社名を入れると全書式に自動で入ります。登録不要。"
 
 CAT_NOTE = {
@@ -181,6 +204,18 @@ CSS = """
 .sh-tbl td.go{white-space:nowrap}
 .sh-tbl td.go a{font-family:var(--mono);font-size:12px;color:var(--moegi-t);text-decoration:none;font-weight:600}
 .sh-about p{font-size:13px;line-height:1.95;color:var(--ink3);margin:0 0 6px}
+.sh-pdfs{display:grid;gap:12px}
+.sh-pdf{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 24px;align-items:center;background:var(--shiro);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.sh-pdf h3{margin:0 0 6px;font-family:var(--disp);font-size:18px;line-height:1.5;color:var(--iwa)}
+.sh-pdf p{margin:0;font-size:14px;line-height:1.85;color:var(--ink3)}
+.sh-pdf .sh-pdf-fields{margin-top:5px;font-size:13px;color:var(--ink4)}
+.sh-pdf-action{display:flex;flex-direction:column;align-items:center;gap:6px}
+.sh-pdf-action small{font-size:12px;color:var(--ink4)}
+.sh-pdf .qk{min-height:44px;border-color:var(--moegi-t);color:var(--sugi)}
+.sh-pdf .qk:focus-visible{outline:2px solid var(--sugi);outline-offset:4px}
+.sh-pdf-guide{margin:18px 0 0;padding-left:1.5em;font-size:14px;line-height:1.9;color:var(--ink3)}
+.sh-pdf-note{margin:10px 0 0;font-size:13px;line-height:1.9;color:var(--ink3)}
+@media(max-width:600px){.sh-pdf{grid-template-columns:minmax(0,1fr);padding:16px}.sh-pdf-action{align-items:flex-start}}
 """
 
 
@@ -233,6 +268,22 @@ def cat_blocks():
     return "".join(out)
 
 
+def procedure_pdf_block():
+    rows = []
+    for form in PROCEDURE_PDFS:
+        title = e(form["title"])
+        rows.append(
+            '<article class="sh-pdf">'
+            f"<div><h3>{title}</h3><p>{e(form['use'])}</p>"
+            f'<p class="sh-pdf-fields"><b>主な記入内容：</b>{e(form["contents"])}</p></div>'
+            '<div class="sh-pdf-action">'
+            f'<a class="qk" href="assets/download/procedure-{e(form["slug"])}.pdf" download="{title}_入力用・記入例.pdf" '
+            f'aria-label="{title}をダウンロード（入力欄・記入例付きPDF、全2ページ）">PDFをダウンロード ↓</a>'
+            "<small>入力欄・記入例付き／全2ページ</small></div></article>"
+        )
+    return '<div class="sh-pdfs">' + "".join(rows) + "</div>"
+
+
 def main_html():
     set_panel = (
         '<div class="sh-set" id="cfg-wrap"><div class="row">'
@@ -251,12 +302,27 @@ def main_html():
     )
     return f"""<main id="main" class="content">
 
+  <section class="cat rv" id="procedure-pdfs" aria-labelledby="procedure-pdfs-title">
+    <div class="cat-head">
+      <div class="cat-icon kmono" aria-hidden="true">連絡</div>
+      <h2 class="cat-title" id="procedure-pdfs-title">当事務所への手続き連絡票</h2>
+    </div>
+    <p class="cat-desc">入社・退職・休職の情報を会社からご連絡いただく、入力できるPDFです。1ページ目は入力欄、2ページ目は架空の記入例。下の社内書式とは用途が異なります。</p>
+    {procedure_pdf_block()}
+    <ol class="sh-pdf-guide">
+      <li>必要な連絡票をダウンロードして、PDFに入力できるアプリで開きます。</li>
+      <li>2ページ目の記入例を参考に、1ページ目の枠をクリックして入力します。</li>
+      <li>入力後に保存し、開き直して内容を確認のうえ、ご依頼の担当者へお送りください。</li>
+    </ol>
+    <p class="sh-pdf-note">関連する添付資料は各PDFの下部に記載しています。休職連絡票は産前産後・育児・介護休業の連絡や、傷病手当金の申請書とは別の書式です。手続きの依頼は、<a href="uploads/service-shakai-hoken.html">社会保険・労働保険の手続き代行</a>をご覧ください。</p>
+  </section>
+
   <section class="cat rv" id="setting">
     <div class="cat-head">
       <div class="cat-icon kmono" aria-hidden="true">社名</div>
-      <h2 class="cat-title">会社情報を入れる</h2>
+      <h2 class="cat-title">社内書式用の会社情報を入れる</h2>
     </div>
-    <p class="cat-desc">最初に一度だけ入力してください。すべての書式の宛名・発信者欄に入ります。</p>
+    <p class="cat-desc">以下のHTML書式を使う場合は、最初に一度だけ入力してください。社内書式の宛名・発信者欄に入ります。上のPDFには自動入力されません。</p>
     {set_panel}
   </section>
 
@@ -409,14 +475,14 @@ def build_index():
     )
     s = re.sub(
         r'<p class="page-sub">.*?</p>',
-        '<p class="page-sub">入社から退職までに会社と従業員の間で使う申請書・届出・誓約書・通知書のひな形です。ブラウザで記入して印刷でき、会社名を入れると全書式に自動で入ります。登録は不要です。</p>',
+        f'<p class="page-sub">入社から退職までに会社と従業員の間で使う社内書式{N_FORMS}本と、当事務所への手続き連絡票PDF3種。社内書式はブラウザで記入・印刷でき、設定した会社情報が入ります。PDFはダウンロードして入力できます。登録は不要です。</p>',
         s,
         count=1,
         flags=re.S,
     )
     s = re.sub(
         r"<b>ご利用にあたって</b>.*?</div>\s*</div>\s*</header>",
-        "<b>ご利用にあたって</b>書式は一般的な内容です。法令に反しない範囲で、自社の就業規則・労使協定と実情に合わせて修正してください。入力した会社情報はブラウザ内にだけ保存され、当事務所には送信されません。\n    </div>\n  </div>\n</header>",
+        "<b>ご利用にあたって</b>書式は一般的な内容です。法令に反しない範囲で、自社の就業規則・労使協定と実情に合わせて修正してください。HTML書式用に入力した会社情報はブラウザ内にだけ保存され、当事務所には送信されません。\n    </div>\n  </div>\n</header>",
         s,
         count=1,
         flags=re.S,
@@ -431,8 +497,8 @@ def build_index():
     )
     # 書式の相談サービスは掲載しない。donor の窓口向けCTAも引き継がない。
     s = re.sub(
-        r'<!-- BOTTOM CTA -->.*?(?=<!-- FOOTER -->)',
-        '',
+        r"<!-- BOTTOM CTA -->.*?(?=<!-- FOOTER -->)",
+        "",
         s,
         count=1,
         flags=re.S,
@@ -528,10 +594,15 @@ def mark_phrases(text):
 
 def main():
     check = "--check" in sys.argv
-    office_files = sorted(p.relative_to(REPO).as_posix() for p in (REPO / "shoshiki").rglob("*")
-                          if p.suffix.lower() in {".xlsx", ".xls", ".docx", ".doc", ".zip"})
+    office_files = sorted(
+        p.relative_to(REPO).as_posix()
+        for p in (REPO / "shoshiki").rglob("*")
+        if p.suffix.lower() in {".xlsx", ".xls", ".docx", ".doc", ".zip"}
+    )
     if office_files:
-        print("社内書式の公開対象はHTML版のみです。Office配布ファイルを公開ディレクトリに置かないでください。")
+        print(
+            "社内書式の公開対象はHTML版のみです。Office配布ファイルを公開ディレクトリに置かないでください。"
+        )
         for name in office_files:
             print("-", name)
         sys.exit(1)

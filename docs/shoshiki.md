@@ -1,6 +1,6 @@
 # 社内書式ページ（shoshiki.html）の直し方
 
-会社と従業員の間で使う社内書式50本のひな形を、ブラウザで記入・印刷できるHTML版のみで公開しているページ。Word・Excelファイルの配布と登録案内は終了した。正本と生成器はすべてこのリポジトリにある。デスクトップ側の旧生成器（顧問先用書式ページ_作業/04_書式生成）は 2026-09-06 以降は使わない。
+会社と従業員の間で使う社内書式50本のひな形を、ブラウザで記入・印刷できるHTML版で公開しているページ。別のセクション `#procedure-pdfs` で、社労士への入社・退職・休職連絡票PDF3種を案内する。Word・Excelファイルの配布と登録案内は終了した。正本と生成器はすべてこのリポジトリにある。デスクトップ側の旧生成器（顧問先用書式ページ_作業/04_書式生成）は 2026-09-06 以降は使わない。
 
 ## 何がどこにあるか
 
@@ -15,6 +15,8 @@
 | 保管用Office版のファイル名 | `scripts/shoshiki/shoshiki_names.py`（`build_zip.py` が使用） |
 | 非公開のOffice版生成器 | `scripts/shoshiki/build_zip.py` → `scripts/shoshiki/_build/office-*/`（毎回新しい保管フォルダ。Git管理・公開対象外） |
 | preflight の検査 | `scripts/build-shoshiki-page.mjs --check`（HTML が最新か） |
+| 手続き連絡票PDFの掲載文・リンク | `scripts/shoshiki/build_shoshiki.py` の `PROCEDURE_PDFS` と `procedure_pdf_block()` |
+| 手続き連絡票PDF（各2ページ） | `assets/download/procedure-onboarding.pdf`、`procedure-retirement.pdf`、`procedure-leave.pdf` |
 | 旧メール登録フォーム | Googleフォーム https://forms.gle/vFUpB3fqzetNHQQKA（所有者側の管理対象。サイトからの申込リンクは置かない） |
 
 ## 文面・改行位置を直す
@@ -46,11 +48,19 @@ node scripts/preflight.mjs
 
 ## 会社情報の差し込み
 
+この設定はHTML社内書式だけに反映される。手続き連絡票PDFの会社情報や記入内容とは連携しない。
+
 一覧ページの入力欄に入れた会社名・代表者・所在地・電話・担当は `localStorage`（キー `shoshiki.company`）にだけ保存し、各書式ページが開くときに `.co-name` などへ差し込む。どこにも送信しない。書式ページは印刷用の独自 CSS と自前の JS で組んであるため、`page-enter.js` の SPA 遷移から除外している（`isFormDest`）。除外を外すと、同名 `const` の二重宣言で JS が止まり会社名が入らない不具合が再発する。
 
 設定JSONは `name/title/rep/addr/tel/dept` の文字列だけを受理し、不正なファイルは既存設定を変えない。保存が拒否された場合はページ内の値を保持して警告を表示する。別タブの変更は `storage` イベントで同期する。書式本文とチェック状態は再読み込み後に保持しないため、印刷・PDF保存を案内する。チェック欄はTabで移動し、Space・Enterで変更できる。
 
 履歴復帰でブラウザが入力欄の旧値を復元する場合にも、`pageshow` 後の次taskで会社設定を読み直して入力欄と差し込み表示を揃える。BFCache復帰だけに限定しない。
+
+## 手続き連絡票PDFの更新
+
+入力欄付きの空欄ページを1枚目、架空の記入例を2枚目にまとめた3ファイルだけを `assets/download/` に置く。利用者の記入済みPDFをサイトへアップロード・保存する機能は設けない。掲載前に全ページの表示、フォームの入力・保存・再表示、住所など長文の収まり、架空例表示、公開用ファイルに実際の顧客情報が入っていないことを確認する。現行の代表者氏名非公開方針を維持する。
+
+原稿の内容とWebの用途・主な記入内容が一致するかを確認し、必要なら `PROCEDURE_PDFS` を直してHTMLを再生成する。`portal.html` の入口、`uploads/service-shakai-hoken.html` の連絡票リンク、`data/llms.json` も同期する。PDF3種は既存のHTML50本に加算しない。公開は実PDFの確認後に [release.md](release.md) の手順で進め、3つの本番URLからPDFを取得できることを確認する。
 
 D-52は入力欄と個人番号の切り取り欄をA4一枚に収めるため、HTML生成器の `D52_CSS` でこの書式だけ余白・セルの行送りを調整する。本文・文字サイズは共通版を維持する。
 
