@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-# 社内書式の配布物を作る（Excel帳簿2本 → shoshiki/、Word一式＋Excel＋README の zip → shoshiki/dl/word-7kq3x9/）。
+# 社内書式のOffice版を非公開の保管用に作る。公開サイトはHTML版のみ。
 #   python3 scripts/shoshiki/build_zip.py
 # 正本は data/shoshiki/forms.json（文面）と forms_base.py（Excel帳簿）。
 # ファイル名は ASCII にする（日本語名の URL は Googleフォームの自動リンクが途中で切れて 404 になった）。
 # zip の中のファイル名は日本語のまま（UTF-8 フラグ付きなので Windows/Mac とも正しく展開できる）。
 import pathlib
-import shutil
+import tempfile
 import sys
 import zipfile
 
@@ -18,7 +18,6 @@ from shoshiki_names import XLSX_FILES, ZIP_NAME  # noqa: E402
 
 DATA = R.DATA
 AS_OF = DATA["meta"]["as_of"]
-DL_DIR = REPO / "shoshiki" / "dl" / "word-7kq3x9"
 XLSX_BUILDERS = {"D-31": B.build_shukkinbo, "D-32": B.build_yukyu}
 BUILD = HERE / "_build"
 FORMS = [f for f in DATA["forms"] if f.get("to") != "社労士"]
@@ -61,13 +60,15 @@ def readme_text():
 
 
 def main():
-    if BUILD.exists():
-        shutil.rmtree(BUILD)
-    BUILD.mkdir()
-    # Excel帳簿 → shoshiki/（サイトから直接ダウンロードする分）
+    BUILD.mkdir(exist_ok=True)
+    # 既存の原本や過去成果物を削除・上書きせず、新しい保管フォルダを作る。
+    run_dir = pathlib.Path(tempfile.mkdtemp(prefix="office-", dir=BUILD))
+    excel_dir = run_dir / "excel"
+    excel_dir.mkdir()
+    # Excel帳簿 → 非公開の _build/ 配下
     site_xlsx = {}
     for no, name in XLSX_FILES.items():
-        out = REPO / "shoshiki" / name
+        out = excel_dir / name
         XLSX_BUILDERS[no](out)
         site_xlsx[no] = out
     # Word → _build/word/
@@ -75,13 +76,14 @@ def main():
     for f in FORMS:
         if f.get("kind") == "xlsx":
             continue
-        out = BUILD / "word" / f["cat"] / f"{f['no']}_{f['title']}.docx"
+        out = run_dir / "word" / f["cat"] / f"{f['no']}_{f['title']}.docx"
         out.parent.mkdir(parents=True, exist_ok=True)
         R.build_docx(f, out)
         docx_paths[f["no"]] = out
     # zip
-    DL_DIR.mkdir(parents=True, exist_ok=True)
-    zpath = DL_DIR / ZIP_NAME
+    package_dir = run_dir / "packages"
+    package_dir.mkdir()
+    zpath = package_dir / ZIP_NAME
     n = 0
     with zipfile.ZipFile(zpath, "w", zipfile.ZIP_DEFLATED) as z:
         zi = zipfile.ZipInfo(
@@ -103,10 +105,6 @@ def main():
             z.writestr(zi, src.read_bytes())
             n += 1
     size = zpath.stat().st_size
-    # 過去の案内にある直リンクでも、修正済みの配布物を受け取れるようにする。
-    for legacy in DL_DIR.glob("shanai-shoshiki-word-*.zip"):
-        if legacy != zpath:
-            shutil.copyfile(zpath, legacy)
     print(f"wrote {zpath.relative_to(REPO)} ({n} files + README, {size // 1024} KB)")
     for no, p in site_xlsx.items():
         print(f"wrote {p.relative_to(REPO)}")
@@ -126,7 +124,6 @@ def main():
     if bad:
         print("要確認:", bad)
         sys.exit(1)
-    shutil.rmtree(BUILD)
 
 
 if __name__ == "__main__":
