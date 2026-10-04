@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://minano-sr.com/</loc>
-    <lastmod>2026-10-04</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog.html</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -110,7 +110,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/getsugaku-henkou-todoke-zuiji-kaitei.html</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -134,7 +134,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/hitori-shacho-kenko-hoken.html</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -188,25 +188,25 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/kaigo-technology-jininhaichi-2027.html</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://minano-sr.com/blog/kensetsu-kokuho-hojinnari.html</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://minano-sr.com/blog/kintai-dx-donyu-junbi.html</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://minano-sr.com/blog/kodomo-kosodate-shienkin-2026.html</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -218,7 +218,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/koyou-hoken-kanyu-more.html</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -248,7 +248,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/nendo-koshin-santei.html</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -259,8 +259,14 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://minano-sr.com/blog/nourinsuisan-rousai-gimuka.html</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://minano-sr.com/blog/nyusha-tetsuzuki-checklist.html</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -302,7 +308,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/shaho-tekiyo-kakudai-2026.html</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -380,7 +386,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/blog/tsukin-teate-shakai-hoken.html</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -422,7 +428,7 @@
   </url>
   <url>
     <loc>https://minano-sr.com/startup-payroll.html</loc>
-    <lastmod>2026-10-01</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
