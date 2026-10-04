@@ -30,7 +30,9 @@ const RETIRED_OFFICE_FILES = [
   'shoshiki/dl/word-7kq3x9/shanai-shoshiki-word-202609.zip',
   'shoshiki/dl/word-7kq3x9/shanai-shoshiki-word-202610.zip',
 ];
-const LEGACY_LANDING = 'shoshiki/dl/word-7kq3x9/';
+// CIの静的サーバーは下位ディレクトリのindexを補完しない。
+// 案内本文・操作は明示indexで検査し、公開ディレクトリURLは本番GETで照合する。
+const LEGACY_LANDING = 'shoshiki/dl/word-7kq3x9/index.html';
 // D-27 の離職経緯に3択を用意する改訂後の全50書式。
 const EXPECTED_CHECKBOX_COUNT = 380;
 const PDF_FORMS = ['D-04', 'D-18', 'D-27', 'D-40', 'D-45', 'D-52'];
