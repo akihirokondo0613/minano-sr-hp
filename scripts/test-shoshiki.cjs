@@ -450,11 +450,13 @@ async function checkCompanyFlows(browser, engine, relative) {
 
 async function checkStorageFailures(browser, engine) {
   const scenarios = [
-    { name: 'corrupt-json', raw: '{' }, { name: 'stored-null', raw: 'null' },
-    { name: 'stored-array', raw: '[]' }, { name: 'stored-number', raw: '{"name":123}' },
+    { name: 'corrupt-json', raw: '{', invalidStored: true },
+    { name: 'stored-null', raw: 'null', invalidStored: true },
+    { name: 'stored-array', raw: '[]', invalidStored: true },
+    { name: 'stored-number', raw: '{"name":123}', invalidStored: true },
     { name: 'get-throws', throwMethods: ['getItem'] },
     { name: 'set-throws', throwMethods: ['setItem'] },
-    { name: 'remove-throws', throwMethods: ['removeItem'] },
+    { name: 'remove-throws', raw: JSON.stringify(IMPORT_COMPANY), throwMethods: ['removeItem'] },
     { name: 'all-storage-throws', throwMethods: ['getItem', 'setItem', 'removeItem'] },
   ];
   for (const relative of ['shoshiki.html', 'shoshiki/D-18.html']) {
@@ -466,16 +468,21 @@ async function checkStorageFailures(browser, engine) {
       page.on('dialog', (dialog) => dialog.accept());
       try {
         await goto(page, relative);
-        let state = await readCompany(page, false);
+        const removalDenied = scenario.name === 'remove-throws';
+        let state = await readCompany(page, removalDenied);
         states.push({ phase: 'initial', ...state });
         check(state.applied.name.length > 0, `${label}:会社名の測定対象がありません`);
-        if (scenario.raw !== undefined || scenario.throwMethods?.includes('getItem')) {
+        if (removalDenied) {
+          check(equalCompany(state.inputs, IMPORT_COMPANY) && equalCompany(state.saved, IMPORT_COMPANY),
+            `${label}:消去拒否検査の初期保存値が反映されていません`);
+        }
+        if (scenario.invalidStored || scenario.throwMethods?.includes('getItem')) {
           check(state.status?.role === 'status' && !state.status.hidden && state.status.text.trim().length > 0,
             `${label}:読込/保存例外を通知するstatusがありません`);
         }
         await fillCompany(page, COMPANY);
         // フィールドごとの書込みが失敗しても、先に入れた値をメモリで保持する。
-        state = await readCompany(page, false);
+        state = await readCompany(page, removalDenied);
         states.push({ phase: 'filled', ...state });
         check(equalCompany(state.inputs, COMPANY), `${label}:入力欄の値が失われました`);
         check(state.applied.name.every((text) => text === COMPANY.name), `${label}:保存不能時に会社名を反映できません`);
@@ -486,14 +493,22 @@ async function checkStorageFailures(browser, engine) {
           check(state.status?.role === 'status' && !state.status.hidden && state.status.text.trim().length > 0,
             `${label}:会社情報を保存できないことが通知されません`);
         }
+        const savedBeforeClear = state.saved;
+        if (removalDenied) {
+          check(equalCompany(savedBeforeClear, COMPANY), `${label}:消去前の保存値を測定できていません`);
+        }
         await page.evaluate(() => window.coClear());
-        state = await readCompany(page, false);
+        state = await readCompany(page, removalDenied);
         states.push({ phase: 'clear', ...state });
         check(CO_FIELDS.every((field) => state.inputs[field] === ''), `${label}:保存例外時に会社情報を消去できません`);
         check(state.applied.name.every((text) => text === '【会社名】'), `${label}:消去後の差込表示が戻りません`);
         if (scenario.throwMethods?.includes('removeItem')) {
-          check(state.status?.role === 'status' && !state.status.hidden && state.status.text.trim().length > 0,
-            `${label}:消去の保存例外が通知されません`);
+          check(state.status?.role === 'status' && !state.status.hidden
+            && state.status.text.includes('消去できませんでした'), `${label}:保存済み情報を消去できなかったことが通知されません`);
+        }
+        if (removalDenied) {
+          check(equalCompany(state.saved, savedBeforeClear) && equalCompany(state.saved, COMPANY),
+            `${label}:removeItem拒否時に保存値が残ることを確認できません`);
         }
       } catch (error) {
         failures.push(`${label}: ${error.message}`);
@@ -503,6 +518,74 @@ async function checkStorageFailures(browser, engine) {
         await context.close();
       }
     }
+  }
+}
+
+async function checkCrossTabCompany(browser, engine) {
+  const label = `${engine}:cross-tab-company-sync`;
+  const context = await prepareContext(browser);
+  const a = await monitoredPage(context);
+  const b = await monitoredPage(context);
+  const states = [];
+  const events = {};
+  try {
+    await a.page.bringToFront();
+    await goto(a.page, 'shoshiki.html');
+    await fillCompany(a.page, COMPANY);
+    await b.page.bringToFront();
+    await goto(b.page, 'shoshiki/D-18.html');
+    const initialB = await readCompany(b.page);
+    states.push({ phase: 'A-filled-B-opened', a: await readCompany(a.page), b: initialB });
+    check(equalCompany(initialB.inputs, COMPANY) && equalCompany(initialB.saved, COMPANY)
+      && initialB.applied.name.length > 0 && initialB.applied.name.every((text) => text === COMPANY.name),
+    `${label}:BがAの会社情報を読み込めません`);
+    for (const tab of [a, b]) {
+      await tab.page.evaluate((key) => {
+        window.__qaStorageEvents = [];
+        window.addEventListener('storage', (event) => {
+          if (event.key === key) window.__qaStorageEvents.push({ key: event.key,
+            oldValue: event.oldValue, newValue: event.newValue });
+        });
+      }, CO_KEY);
+    }
+    const changed = { ...COMPANY, name: 'QA別タブ株式会社', rep: 'QA別タブ代表' };
+    await fillCompany(b.page, COMPANY);
+    await b.page.locator('#co-name').fill(changed.name);
+    await b.page.locator('#co-rep').fill(changed.rep);
+    // 背景タブのRAF停止に左右されないよう、storage反映を100ms pollingで待つ。
+    await a.page.waitForFunction((expected) => document.getElementById('co-name')?.value === expected.name
+      && document.getElementById('co-rep')?.value === expected.rep
+      && window.__qaStorageEvents.length >= 2, changed, { polling: 100 });
+    const latestA = await readCompany(a.page);
+    states.push({ phase: 'B-changed-A-synchronized', a: latestA, b: await readCompany(b.page) });
+    check(equalCompany(latestA.inputs, changed) && equalCompany(latestA.saved, changed)
+      && latestA.applied.name.length > 0 && latestA.applied.name.every((text) => text === changed.name),
+    `${label}:storageイベントでAの入力欄/表示が最新になりません`);
+    const afterDepartment = { ...changed, dept: 'QA別タブ更新部署' };
+    await a.page.locator('#co-dept').fill(afterDepartment.dept);
+    await b.page.waitForFunction((expected) => document.getElementById('co-dept')?.value === expected.dept
+      && window.__qaStorageEvents.length > 0, afterDepartment, { polling: 100 });
+    const finalA = await readCompany(a.page);
+    const finalB = await readCompany(b.page);
+    states.push({ phase: 'A-dept-edited-latest-company-preserved', a: finalA, b: finalB });
+    check(equalCompany(finalA.inputs, afterDepartment) && equalCompany(finalA.saved, afterDepartment)
+      && equalCompany(finalB.inputs, afterDepartment) && equalCompany(finalB.saved, afterDepartment),
+    `${label}:Aで部署を変更するとBの最新会社名/代表者を上書きします`);
+    check(finalB.applied.name.length > 0 && finalB.applied.name.every((text) => text === afterDepartment.name)
+      && finalB.applied.dept.length > 0 && finalB.applied.dept.every((text) => text === afterDepartment.dept),
+    `${label}:逆方向の同期後にBの差込表示が不一致です`);
+    events.a = await a.page.evaluate(() => window.__qaStorageEvents);
+    events.b = await b.page.evaluate(() => window.__qaStorageEvents);
+    check(events.a.length >= 2 && events.b.length > 0, `${label}:storageイベントが実測されていません`);
+  } catch (error) {
+    failures.push(`${label}: ${error.message}`);
+  } finally {
+    const errors = [...a.errors, ...b.errors];
+    const httpErrors = [...a.httpErrors, ...b.httpErrors];
+    check(errors.length === 0, `${label}:pageerror ${errors.join(' / ')}`);
+    check(httpErrors.length === 0, `${label}:HTTP error ${httpErrors.join(' / ')}`);
+    behaviorResults.push({ engine, scenario: 'cross-tab-company-sync', states, events, errors, httpErrors });
+    await context.close();
   }
 }
 
@@ -591,6 +674,18 @@ async function clickPath(page, selector, relative) {
   await settle(page);
 }
 
+async function historyPath(page, direction, relative) {
+  await Promise.all([
+    page.waitForURL((url) => url.pathname === new URL(relative, base).pathname),
+    direction === 'back' ? page.goBack({ waitUntil: 'domcontentloaded' })
+      : page.goForward({ waitUntil: 'domcontentloaded' }),
+  ]);
+  await page.waitForLoadState('domcontentloaded');
+  await page.waitForFunction(() => !document.documentElement.matches('.pv-on,.pv-mark,.pv-lift'),
+    null, { timeout: 15000 });
+  await settle(page);
+}
+
 async function checkNavigation(browser, engine) {
   // page-enter.jsはreduce時にSPA自体を無効にする。除外契約を検査する
   // このシナリオでは実際の通常モードを初期化時から有効にする。
@@ -645,16 +740,35 @@ async function checkNavigation(browser, engine) {
     check(formToken !== listToken, `${engine}:一覧→個別書式がdocument遷移になっていません`);
     check(equalCompany((await readCompany(page)).inputs, COMPANY), `${engine}:個別書式に会社情報が保持されません`);
     steps.push({ path: 'shoshiki/D-04.html', token: formToken });
-    await page.goBack({ waitUntil: 'domcontentloaded' });
-    await settle(page);
+    await historyPath(page, 'back', 'shoshiki.html');
     check(new URL(page.url()).pathname === new URL('shoshiki.html', base).pathname
       && equalCompany((await readCompany(page)).inputs, COMPANY), `${engine}:戻るで一覧と会社情報が復元されません`);
     steps.push({ path: 'back:shoshiki.html', company: await readCompany(page) });
-    await page.goForward({ waitUntil: 'domcontentloaded' });
-    await settle(page);
+    await historyPath(page, 'forward', 'shoshiki/D-04.html');
     check(new URL(page.url()).pathname === new URL('shoshiki/D-04.html', base).pathname
       && equalCompany((await readCompany(page)).inputs, COMPANY), `${engine}:進むで個別書式と会社情報が復元されません`);
     steps.push({ path: 'forward:D-04.html', company: await readCompany(page) });
+    await clickPath(page, '.bar a[href="../shoshiki.html"]', 'shoshiki.html');
+    await clickPath(page, 'a[href="shoshiki/D-18.html"]', 'shoshiki/D-18.html');
+    const historyCompany = { ...COMPANY, name: 'QA履歴更新株式会社', rep: 'QA履歴更新代表', dept: 'QA履歴更新部署' };
+    await fillCompany(page, historyCompany);
+    const changedForm = await readCompany(page);
+    check(equalCompany(changedForm.inputs, historyCompany) && equalCompany(changedForm.saved, historyCompany),
+      `${engine}:D-18で履歴検査用の会社設定を更新できません`);
+    steps.push({ path: 'D-18-company-changed', company: changedForm, expected: historyCompany });
+    await historyPath(page, 'back', 'shoshiki.html');
+    const changedBack = await readCompany(page);
+    check(equalCompany(changedBack.inputs, historyCompany) && equalCompany(changedBack.saved, historyCompany)
+      && changedBack.applied.name.length > 0 && changedBack.applied.name.every((text) => text === historyCompany.name),
+    `${engine}:D-18で設定変更後に戻ると一覧が古い会社情報になります`);
+    steps.push({ path: 'changed-back:shoshiki.html', company: changedBack, expected: historyCompany });
+    await historyPath(page, 'forward', 'shoshiki/D-18.html');
+    const changedForward = await readCompany(page);
+    check(equalCompany(changedForward.inputs, historyCompany) && equalCompany(changedForward.saved, historyCompany)
+      && changedForward.applied.name.length > 0 && changedForward.applied.name.every((text) => text === historyCompany.name)
+      && changedForward.applied.dept.length > 0 && changedForward.applied.dept.every((text) => text === historyCompany.dept),
+    `${engine}:D-18で設定変更後に進むと書式が古い会社情報になります`);
+    steps.push({ path: 'changed-forward:D-18.html', company: changedForward, expected: historyCompany });
     await clickPath(page, '.bar a[href="../shoshiki.html"]', 'shoshiki.html');
     await clickPath(page, 'a[href="portal.html"]', 'portal.html');
     check(await page.locator('.hub-card[href="shoshiki.html"]').count() === 1, `${engine}:一覧→portalの本文が復元されません`);
@@ -840,6 +954,7 @@ async function runEngine(browser, engine, forms) {
   await checkCompanyFlows(browser, engine, 'shoshiki.html');
   await checkCompanyFlows(browser, engine, 'shoshiki/D-18.html');
   await checkStorageFailures(browser, engine);
+  await checkCrossTabCompany(browser, engine);
   await checkEditingAndMerge(browser, engine);
   await checkNavigation(browser, engine);
   await checkActualMobileViewport(browser, engine);
@@ -858,6 +973,13 @@ async function runEngine(browser, engine, forms) {
   check(printResults.length === ENGINES.length * EXPECTED_FORM_COUNT, `印刷検査数 ${printResults.length} ≠ ${ENGINES.length * EXPECTED_FORM_COUNT}`);
   check(mergePrintResults.length === ENGINES.length * 3, `会社差込印刷検査数 ${mergePrintResults.length} ≠ ${ENGINES.length * 3}`);
   check(mobileResults.length === ENGINES.length * 4, `実スマホ390pxの検査数 ${mobileResults.length} ≠ ${ENGINES.length * 4}`);
+  const expectedBehaviorResults = ENGINES.length * 20;
+  check(behaviorResults.length === expectedBehaviorResults, `会社/入力挙動検査数 ${behaviorResults.length} ≠ ${expectedBehaviorResults}`);
+  check(behaviorResults.filter((result) => result.scenario === 'cross-tab-company-sync').length === ENGINES.length,
+    '別タブ会社情報同期の2エンジン検査が揃っていません');
+  check(navigationResults.length === ENGINES.length
+    && navigationResults.every((result) => result.steps.some((step) => step.path === 'changed-forward:D-18.html')),
+  '設定変更後に戻る/進むの2エンジン検査が揃っていません');
   if (process.env.RUNNER_TEMP) {
     check(artifacts.filter((item) => item.type === 'native-pdf').length === PDF_FORMS.length, '代表6書式のnative PDFが揃っていません');
     check(artifacts.filter((item) => item.type === 'native-pdf-company').length === 3, '会社差込3書式のnative PDFが揃っていません');
@@ -865,6 +987,10 @@ async function runEngine(browser, engine, forms) {
   const report = { base, widths: WIDTHS, epsilon: EPSILON,
     scope: { htmlForms: EXPECTED_FORM_COUNT, excelForms: 2, choicesPerEngine: EXPECTED_CHECKBOX_COUNT,
       screenConditions: expectedScreenResults, printConditions: ENGINES.length * EXPECTED_FORM_COUNT,
+      companyMergedPrintConditions: ENGINES.length * 3, actualMobileConditions: ENGINES.length * 4,
+      behaviorConditions: expectedBehaviorResults, crossTabConditions: ENGINES.length,
+      changedCompanyHistoryConditions: ENGINES.length, seededStorageRemovalDeniedConditions: ENGINES.length * 2,
+      navigationConditions: ENGINES.length,
       externalFormSubmission: 'not attempted', physicalPrinter: 'not tested',
       pdf: process.env.RUNNER_TEMP ? 'Chromium six blank + three company-merged native PDFs' : 'no RUNNER_TEMP; PDF artifacts not saved' },
     results, printResults, mergePrintResults, behaviorResults, navigationResults, mobileResults, artifacts, failures };
