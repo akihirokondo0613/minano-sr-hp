@@ -213,6 +213,78 @@ async function faqChecks(page) {
   return results;
 }
 
+async function firstTextAnchorMetrics(page, target) {
+  await settle(page);
+  const probe = (el, epsilon) => {
+    const container = el.closest('section') || el;
+    const rect = el.getBoundingClientRect();
+    const cr = container.getBoundingClientRect();
+    const navRect = document.querySelector('#nav')?.getBoundingClientRect();
+    const navHeight = navRect?.bottom || 0;
+    const viewportWidth = document.documentElement.clientWidth;
+    const viewportHeight = innerHeight;
+    const scrolling = document.scrollingElement || document.documentElement;
+    const maxScroll = Math.max(0, scrolling.scrollHeight - scrolling.clientHeight);
+    const documentY = rect.top + scrollY;
+    const scrollMarginTop = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+    const scrollPaddingTop = parseFloat(getComputedStyle(scrolling).scrollPaddingTop) || 0;
+    const clamp = (y) => Math.max(0, Math.min(maxScroll, y));
+    // Existing native fragment navigation and page-enter.js's same-page
+    // popstate handler use distinct offsets. Match their clamped positions,
+    // including the document end; do not expand a geometric tolerance.
+    const expectedScroll = [
+      { source: 'native-scroll-margin-and-padding', y: clamp(documentY - scrollMarginTop - scrollPaddingTop) },
+      { source: 'existing-popstate-76px-offset', y: clamp(documentY - 76) },
+    ].map((candidate) => ({ ...candidate, difference: Math.abs(scrollY - candidate.y) }));
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+    let firstText = null, nonzeroRanges = 0;
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      const offset = node.textContent.search(/\S/);
+      if (offset < 0 || !node.parentElement || node.parentElement.closest('script,style,svg,[aria-hidden="true"],.sr-only')) continue;
+      let visible = true;
+      for (let p = node.parentElement; p; p = p.parentElement) {
+        const style = getComputedStyle(p);
+        if (style.display === 'none' || ['hidden', 'collapse'].includes(style.visibility) || Number(style.opacity) < 0.99) { visible = false; break; }
+      }
+      if (!visible) continue;
+      const range = document.createRange();
+      range.setStart(node, offset);
+      range.setEnd(node, offset + (node.textContent.codePointAt(offset) > 0xffff ? 2 : 1));
+      const glyphRect = [...range.getClientRects()].find((r) => r.width > 0 && r.height > 0);
+      if (!glyphRect) continue;
+      nonzeroRanges += 1;
+      let clippedBy = '';
+      for (let p = node.parentElement; p; p = p.parentElement) {
+        const style = getComputedStyle(p), pr = p.getBoundingClientRect();
+        if ((['hidden', 'clip'].includes(style.overflowX) && (glyphRect.left < pr.left - epsilon || glyphRect.right > pr.right + epsilon))
+          || (['hidden', 'clip'].includes(style.overflowY) && (glyphRect.top < pr.top - epsilon || glyphRect.bottom > pr.bottom + epsilon))) {
+          clippedBy = p.id || p.tagName; break;
+        }
+      }
+      firstText = { text: node.textContent.trim().slice(0, 80), left: glyphRect.left, right: glyphRect.right,
+        top: glyphRect.top, bottom: glyphRect.bottom, width: glyphRect.width, height: glyphRect.height, clippedBy };
+      break;
+    }
+    const positionNearExpected = expectedScroll.some((candidate) => candidate.difference <= epsilon);
+    const textInViewport = !!firstText && !firstText.clippedBy && firstText.top >= navHeight - 2
+      && firstText.bottom <= viewportHeight + epsilon && firstText.left >= -epsilon && firstText.right <= viewportWidth + epsilon;
+    return { tag: el.tagName, top: rect.top, bottom: rect.bottom, containerId: container.id,
+      containerTop: cr.top, navHeight, viewportWidth, viewportHeight, hash: location.hash,
+      scrollY, documentY, maxScroll, scrollMarginTop, scrollPaddingTop, expectedScroll,
+      nonzeroRanges, firstText, positionNearExpected, textInViewport,
+      measured: nonzeroRanges > 0, reached: nonzeroRanges > 0 && positionNearExpected && textInViewport };
+  };
+  // Wait for real painting/scroll settlement with the same measurement function,
+  // without injecting styles, bypassing CSP, or making hidden content visible.
+  let metrics;
+  for (let attempt = 0; attempt <= 15; attempt += 1) {
+    metrics = await target.evaluate(probe, EPSILON);
+    if (metrics.reached || attempt === 15) return metrics;
+    await page.waitForTimeout(100);
+  }
+  return metrics;
+}
+
 async function anchorChecks(page) {
   const results = [];
   for (const id of [...SECTION_IDS, ...LEGACY_ANCHORS]) {
@@ -221,15 +293,7 @@ async function anchorChecks(page) {
     if (count !== 1) { results.push({ id, count, reached: false }); continue; }
     // Same-document fragment navigation uses the browser's native anchor behavior.
     await page.evaluate((fragment) => { location.hash = fragment; }, id);
-    await settle(page);
-    const metrics = await target.evaluate((el) => {
-      const rect = el.getBoundingClientRect();
-      const container = el.closest('section') || el;
-      const navHeight = document.querySelector('#nav')?.getBoundingClientRect().height || 0;
-      return { tag: el.tagName, top: rect.top, bottom: rect.bottom, containerId: container.id,
-        navHeight, viewportHeight: innerHeight, hash: location.hash,
-        reached: rect.top >= navHeight - 2 && rect.top < innerHeight };
-    });
+    const metrics = await firstTextAnchorMetrics(page, target);
     results.push({ id, count, ...metrics });
   }
   return results;
@@ -248,12 +312,12 @@ async function realAnchorLinks(page) {
     }
     await link.click();
     await page.waitForFunction((hash) => location.hash === hash, href);
-    await settle(page);
-    results.push({ href, reached: await page.locator(`[id="${id}"]`).evaluate((el) => {
-      const rect = el.getBoundingClientRect();
-      const navHeight = document.querySelector('#nav')?.getBoundingClientRect().height || 0;
-      return rect.top >= navHeight - 2 && rect.top < innerHeight;
-    }) });
+    const metrics = await firstTextAnchorMetrics(page, page.locator(`[id="${id}"]`));
+    results.push({ href, ...metrics });
+    if (href === '#price' && [390, 1280].includes(page.viewportSize().width)) {
+      const engine = page.context().browser().browserType().name();
+      await screenshot(page, engine, page.viewportSize().width, 'anchor-price-first-text');
+    }
   }
   return results;
 }
