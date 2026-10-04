@@ -20,13 +20,13 @@ const base = (args.find((arg) => arg.startsWith('http')) || 'http://127.0.0.1:88
   .replace(/\/?$/, '/');
 const asJson = args.includes('--json');
 
-const WIDTHS = [320, 360, 375, 390, 402, 429, 430, 431, 699, 700, 701, 767, 768, 1024, 1100, 1101, 1280];
+const WIDTHS = [320, 360, 375, 390, 402, 429, 430, 431, 699, 700, 701, 767, 768, 1024, 1100, 1101, 1280, 1440, 1599, 1600, 1601, 1920, 2560, 2774];
 const ENGINES = [
   ['chromium', chromium],
   ['webkit', webkit],
 ];
 const EPSILON = 1;
-const MOTION_WIDTHS = [390, 767, 768, 1280];
+const MOTION_WIDTHS = [390, 767, 768, 1280, 1920];
 // External reference, rather than values read from home-hero.js:
 // https://gaaboo.jp/wp/wp-content/themes/gaaboo/assets/js/top.js?ver=1766493868
 // O() / people1+people2: 30ms stagger, 160ms linear opacity,
@@ -317,7 +317,7 @@ function checkResting(state, check) {
 }
 
 async function motionScreenshot(page, engine, width, phase, screenshots) {
-  if (!process.env.RUNNER_TEMP || ![390, 768, 1280].includes(width)) return;
+  if (!process.env.RUNNER_TEMP || ![390, 768, 1280, 1920].includes(width)) return;
   // performance.yml uploads this directory; run-layout-checks.cjs inherits env.
   const directory = path.join(process.env.RUNNER_TEMP, 'layout-results', 'hero-motion');
   await fs.mkdir(directory, { recursive: true });
@@ -524,8 +524,8 @@ async function checkReducedMotion(browser, engine, width, failures) {
           failures.push(`${engineName}@${width}px: 人物の配置数・間隔を測定できません`);
         }
         // Restored layered crowd intentionally overlaps horizontally; text must stay clear.
-        if (composition.titleGap < 8 || composition.introGap < 20) {
-          failures.push(`${engineName}@${width}px: 人物と見出し・説明の余白が足りません`
+        if (composition.titleGap < 8 || composition.titleGap > 80 || composition.introGap < 32) {
+          failures.push(`${engineName}@${width}px: 人物と見出し・説明の余白が適切ではありません`
             + ` (title=${composition.titleGap}, intro=${composition.introGap})`);
         }
         if (composition.actors.some((actor) => actor.left < composition.canvas.left - EPSILON
@@ -539,7 +539,7 @@ async function checkReducedMotion(browser, engine, width, failures) {
         }
 
         if (width === 390 || width === 1280) {
-          const minimum = width === 390 ? { primary: 30, secondary: 26 } : { primary: 64, secondary: 42 };
+          const minimum = width === 390 ? { primary: 34, secondary: 28 } : { primary: 72, secondary: 50 };
           if (result.titleFonts.primary < minimum.primary || result.titleFonts.secondary < minimum.secondary) {
             failures.push(`${engineName}@${width}px: タイトルが指定した大きさへ拡大されていません`
               + ` (primary=${result.titleFonts.primary}, secondary=${result.titleFonts.secondary})`);
