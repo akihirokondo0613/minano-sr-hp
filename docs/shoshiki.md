@@ -17,6 +17,7 @@
 | preflight の検査 | `scripts/build-shoshiki-page.mjs --check`（HTML が最新か） |
 | 手続き連絡票PDFの掲載文・リンク | `scripts/shoshiki/build_shoshiki.py` の `PROCEDURE_PDFS` と `procedure_pdf_block()` |
 | 手続き連絡票PDF（各2ページ） | `assets/download/procedure-onboarding.pdf`、`procedure-retirement.pdf`、`procedure-leave.pdf` |
+| 扶養届の公式書式・記入例リンク | `scripts/shoshiki/build_shoshiki.py` の `DEPENDENT_OFFICIAL` と `dependent_official_block()` |
 | 旧メール登録フォーム | Googleフォーム https://forms.gle/vFUpB3fqzetNHQQKA（所有者側の管理対象。サイトからの申込リンクは置かない） |
 
 ## 文面・改行位置を直す
@@ -58,9 +59,11 @@ node scripts/preflight.mjs
 
 ## 手続き連絡票PDFの更新
 
-入力欄付きの空欄ページを1枚目、架空の記入例を2枚目にまとめた3ファイルだけを `assets/download/` に置く。利用者の記入済みPDFをサイトへアップロード・保存する機能は設けない。掲載前に全ページの表示、フォームの入力・保存・再表示、住所など長文の収まり、架空例表示、公開用ファイルに実際の顧客情報が入っていないことを確認する。現行の代表者氏名非公開方針を維持する。
+入力欄付きの空欄ページを1枚目、赤字の架空の記入例を2枚目にまとめた3ファイルだけを `assets/download/` に置く。住所は郵便番号・都道府県・市区町村・町名番地・建物名等の入力欄に分け、保険の識別番号には確認資料の案内を添える。利用者の記入済みPDFをサイトへアップロード・保存する機能は設けない。掲載前に全ページの表示、フォームの入力・保存・再表示、住所など長文の収まり、架空例表示、公開用ファイルに実際の顧客情報が入っていないことを確認する。現行の代表者氏名非公開方針を維持する。
 
 原稿の内容とWebの用途・主な記入内容が一致するかを確認し、必要なら `PROCEDURE_PDFS` を直してHTMLを再生成する。`portal.html` の入口、`uploads/service-shakai-hoken.html` の連絡票リンク、`data/llms.json` も同期する。PDF3種は既存のHTML50本に加算しない。公開は実PDFの確認後に [release.md](release.md) の手順で進め、3つの本番URLからPDFを取得できることを確認する。
+
+扶養の公式書式は `#dependent-forms` に置き、日本年金機構の一般被保険者向け統合届・記入例・必要資料案内へ直接リンクする。協会けんぽの会社員の扶養と任意継続の扶養は区別し、公式案内の対象を確認する。公式リンクを変更するときは一次資料を実際に開いて、届書名・対象者・ファイル種別を照合する。本文・リンク・meta/OG・LLMSも同期する。
 
 D-52は入力欄と個人番号の切り取り欄をA4一枚に収めるため、HTML生成器の `D52_CSS` でこの書式だけ余白・セルの行送りを調整する。本文・文字サイズは共通版を維持する。
 
