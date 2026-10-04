@@ -445,7 +445,7 @@ def build_index():
     )
     s = re.sub(
         r"<b>ご利用にあたって</b>.*?</div>\s*</div>\s*</header>",
-        "<b>ご利用にあたって</b>書式は一般的な内容です。法令に反しない範囲で、自社の就業規則・労使協定と実情に合わせて修正してください。入力した会社情報はブラウザ内にだけ保存され、当事務所には送信されません。使い方や就業規則との整合はお気軽にご相談ください。\n    </div>\n  </div>\n</header>",
+        "<b>ご利用にあたって</b>書式は一般的な内容です。法令に反しない範囲で、自社の就業規則・労使協定と実情に合わせて修正してください。入力した会社情報はブラウザ内にだけ保存され、当事務所には送信されません。\n    </div>\n  </div>\n</header>",
         s,
         count=1,
         flags=re.S,
@@ -458,11 +458,10 @@ def build_index():
         count=1,
         flags=re.S,
     )
-    # bottom cta
+    # 書式の相談サービスは掲載しない。donor の窓口向けCTAも引き継がない。
     s = re.sub(
-        # portal.html 側の最終CTAは ?from=portal-final 付き・文言も窓口向けなので、ボタンごと書式向けに戻す
-        r'<div class="bcc-text">.*?</div>\s*<a href="uploads/contact.html[^"]*" class="bcc-btn">[^<]*</a>',
-        '<div class="bcc-text">\n      <h3>書式の使い方や、就業規則との整合はご相談ください</h3>\n      <p>解雇・懲戒・労使協定など、書式だけでは判断できない場面は、状況を伺ってから進め方をお伝えします。</p>\n    </div>\n    <a href="uploads/contact.html" class="bcc-btn">お問い合わせフォームへ →</a>',
+        r'<!-- BOTTOM CTA -->.*?(?=<!-- FOOTER -->)',
+        '',
         s,
         count=1,
         flags=re.S,
