@@ -48,9 +48,28 @@ PROCEDURE_PDFS = [
         "contents": "休職期間、休職中の給与、保険料の支払方法、会社の規程・本人への通知状況。",
     },
 ]
+DEPENDENT_OFFICIAL = {
+    "title": "健康保険被扶養者（異動）届・国民年金第3号被保険者関係届",
+    "landing_url": "https://www.nenkin.go.jp/shinsei/kounen/tekiyo/hihokensha/20141224.html",
+    "guidance_url": "https://www.nenkin.go.jp/shinsei/kounen/tekiyo/hihokensha/20141224.files/setumei.pdf",
+    "links": [
+        {
+            "label": "届書（PDF） ↗",
+            "url": "https://www.nenkin.go.jp/shinsei/kounen/tekiyo/hihokensha/20141224.files/01.pdf",
+        },
+        {
+            "label": "届書（Excel） ↗",
+            "url": "https://www.nenkin.go.jp/shinsei/kounen/tekiyo/hihokensha/20141224.files/02.xlsx",
+        },
+        {
+            "label": "扶養追加の記入例（PDF） ↗",
+            "url": "https://www.nenkin.go.jp/shinsei/kounen/tekiyo/hihokensha/20141224.files/kinyurei01.pdf",
+        },
+    ],
+}
 
 TITLE = "入社・退職・休職の連絡票と社内書式｜みなの社会保険労務士事務所"
-DESC = f"入社・退職・休職の入力できる連絡票PDF3種（記入例付き）と、会社と従業員の間で使う社内書式{N_FORMS}本。PDFはダウンロードして入力、社内書式はブラウザで記入・印刷できます。登録不要。"
+DESC = f"入社・退職・休職の入力できる連絡票PDF3種（住所の項目別入力、赤字の記入例、番号の確認方法付き）と、会社と従業員の間で使う社内書式{N_FORMS}本。扶養届の公式書式・記入例もご案内。登録不要。"
 
 CAT_NOTE = {
     "01_入社": "内定から入社までに取り交わす書類",
@@ -213,6 +232,8 @@ CSS = """
 .sh-pdf .qk:focus-visible{outline:2px solid var(--sugi);outline-offset:4px}
 .sh-pdf-guide{margin:18px 0 0;padding-left:1.5em;font-size:14px;line-height:1.9;color:var(--ink3)}
 .sh-pdf-note{margin:10px 0 0;font-size:13px;line-height:1.9;color:var(--ink3)}
+.sh-pdf-official .sh-pdf-action{align-items:flex-start}
+.sh-pdf-official .sh-pdf-action .qk{font-size:13px}
 @media(max-width:600px){.sh-pdf{grid-template-columns:minmax(0,1fr);padding:16px}.sh-pdf-action{align-items:flex-start}}
 """
 
@@ -282,6 +303,21 @@ def procedure_pdf_block():
     return '<div class="sh-pdfs">' + "".join(rows) + "</div>"
 
 
+def dependent_official_block():
+    links = "".join(
+        f'<a class="qk" href="{e(link["url"])}" target="_blank" rel="noopener noreferrer">{e(link["label"])}</a>'
+        for link in DEPENDENT_OFFICIAL["links"]
+    )
+    return (
+        '<article class="sh-pdf sh-pdf-official">'
+        "<div><h3>健康保険の扶養届</h3>"
+        f"<p>{e(DEPENDENT_OFFICIAL['title'])}</p>"
+        '<p class="sh-pdf-fields">会社を通じて日本年金機構へ提出します。配偶者が国民年金第3号の対象となる場合は、同時に届け出ます。</p></div>'
+        f'<div class="sh-pdf-action">{links}'
+        "<small>日本年金機構の公式サイトを開きます</small></div></article>"
+    )
+
+
 def main_html():
     set_panel = (
         '<div class="sh-set" id="cfg-wrap"><div class="row">'
@@ -305,14 +341,24 @@ def main_html():
       <div class="cat-icon kmono" aria-hidden="true">連絡</div>
       <h2 class="cat-title" id="procedure-pdfs-title">当事務所への手続き連絡票</h2>
     </div>
-    <p class="cat-desc">入社・退職・休職の情報を会社からご連絡いただく、入力できるPDFです。1ページ目は入力欄、2ページ目は架空の記入例。下の社内書式とは用途が異なります。</p>
+    <p class="cat-desc">入社・退職・休職の情報を会社からご連絡いただく、入力できるPDFです。入力欄は1ページ目、赤字の架空の記入例は2ページ目。住所は郵便番号・都道府県・市区町村などに分けて入力できます。</p>
     {procedure_pdf_block()}
     <ol class="sh-pdf-guide">
       <li>必要な連絡票をダウンロードして、PDFに入力できるアプリで開きます。</li>
-      <li>2ページ目の記入例を参考に、1ページ目の枠をクリックして入力します。</li>
+      <li>2ページ目の赤字の記入例を参考に、1ページ目の枠をクリックして入力します。番号の欄には、確認する資料の案内を添えています。</li>
       <li>入力後に保存し、開き直して内容を確認のうえ、ご依頼の担当者へお送りください。</li>
     </ol>
     <p class="sh-pdf-note">関連する添付資料は各PDFの下部に記載しています。休職連絡票は産前産後・育児・介護休業の連絡や、傷病手当金の申請書とは別の書式です。手続きの依頼は、<a href="uploads/service-shakai-hoken.html">社会保険・労働保険の手続き代行</a>をご覧ください。</p>
+  </section>
+
+  <section class="cat rv" id="dependent-forms" aria-labelledby="dependent-forms-title">
+    <div class="cat-head">
+      <div class="cat-icon kmono" aria-hidden="true">扶養</div>
+      <h2 class="cat-title" id="dependent-forms-title">扶養を追加・変更するときの公式書式</h2>
+    </div>
+    <p class="cat-desc">会社で協会けんぽに加入中の従業員が、ご家族を健康保険の扶養に追加するときの公式書式です。届書と扶養追加の記入例をこちらから確認できます。</p>
+    {dependent_official_block()}
+    <p class="sh-pdf-note">必要な添付資料はご家族の状況により異なります。<a href="{e(DEPENDENT_OFFICIAL["guidance_url"])}" target="_blank" rel="noopener noreferrer">添付資料・記入方法の説明（PDF）</a>をご確認ください。扶養の削除・変更の記入例は、<a href="{e(DEPENDENT_OFFICIAL["landing_url"])}" target="_blank" rel="noopener noreferrer">日本年金機構の公式案内</a>に掲載されています。新入社員の扶養も当事務所へ依頼する場合は、入社連絡票の扶養欄に状況をご記入ください。</p>
   </section>
 
   <section class="cat rv" id="setting">

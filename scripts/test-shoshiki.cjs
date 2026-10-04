@@ -179,7 +179,7 @@ async function revealSections(page, details) {
   }
   const mainSections = page.locator('main > section');
   const count = await mainSections.count();
-  const expected = details.relative === 'shoshiki.html' ? 5 : 4;
+  const expected = details.relative === 'shoshiki.html' ? 6 : 4;
   check(count === expected, `${details.engine}:${details.relative}@${details.width}px:main節数 ${count} ≠ ${expected}`);
   for (let index = 0; index < count; index += 1) {
     const section = mainSections.nth(index);
@@ -274,7 +274,7 @@ async function revealSections(page, details) {
     sectionResults.push({ ...details, sectionIndex: index + 1, paintReady, metrics });
     if ((details.actualMobile || [320, 390].includes(details.width))
       && ((details.relative === 'portal.html' && index === 0)
-        || (details.relative === 'shoshiki.html' && ['procedure-pdfs', 'setting', 'list'].includes(metrics.id)))) {
+        || (details.relative === 'shoshiki.html' && ['procedure-pdfs', 'dependent-forms', 'setting', 'list'].includes(metrics.id)))) {
       const viewportName = details.actualMobile ? 'actual-mobile390' : String(details.width);
       await screenshot(page, `${details.engine}-${path.basename(details.relative, '.html')}-${viewportName}-${metrics.id}-viewport`, false);
     }
@@ -1010,8 +1010,11 @@ async function checkNavigation(browser, engine) {
         .filter((pathname) => /\/shoshiki\/D-\d\d\.html$/.test(pathname));
       const procedureLinks = [...document.querySelectorAll('#procedure-pdfs a[download]')]
         .map((a) => ({ href: a.getAttribute('href'), label: a.getAttribute('aria-label') }));
-      return { rows: rows.length, uniqueForms: new Set(formLinks).size, procedureLinks,
-        officeLinks: [...document.querySelectorAll('a[href]')].filter((a) => /\.(?:xlsx?|docx?|zip)(?:[?#]|$)/i.test(a.href)).length,
+      const officialLinks = [...document.querySelectorAll('#dependent-forms a[href]')]
+        .map((a) => ({ href: a.href, label: a.textContent.trim(), target: a.target, rel: a.rel }));
+      return { rows: rows.length, uniqueForms: new Set(formLinks).size, procedureLinks, officialLinks,
+        officeLinks: [...document.querySelectorAll('a[href]')].filter((a) => /\.(?:xlsx?|docx?|zip)(?:[?#]|$)/i.test(a.href)
+          && !(a.closest('#dependent-forms') && new URL(a.href).hostname === 'www.nenkin.go.jp')).length,
         google: [...document.querySelectorAll('a[href]')].filter((a) => a.href === 'https://forms.gle/vFUpB3fqzetNHQQKA')
           .map((a) => ({ href: a.href, target: a.target, rel: a.rel })) };
     });
@@ -1023,6 +1026,14 @@ async function checkNavigation(browser, engine) {
       && PROCEDURE_PDFS.every((href) => counts.procedureLinks.some((link) => link.href === href))
       && counts.procedureLinks.every((link) => link.label?.includes('全2ページ')),
       `${engine}:手続き連絡票PDF3種のリンク/用途表示が不一致 ${JSON.stringify(counts.procedureLinks)}`);
+    check(counts.officialLinks.length >= 4
+      && counts.officialLinks.every((link) => new URL(link.href).protocol === 'https:'
+        && new URL(link.href).hostname === 'www.nenkin.go.jp' && link.target === '_blank'
+        && link.rel.split(/\s+/).includes('noopener') && link.rel.split(/\s+/).includes('noreferrer'))
+      && counts.officialLinks.some((link) => /\.pdf$/.test(link.href) && link.label.includes('届書'))
+      && counts.officialLinks.some((link) => /\.xlsx$/.test(link.href) && link.label.includes('Excel'))
+      && counts.officialLinks.some((link) => /\.pdf$/.test(link.href) && link.label.includes('扶養追加の記入例')),
+      `${engine}:扶養の公式届書/記入例リンクが不一致 ${JSON.stringify(counts.officialLinks)}`);
     distribution.procedurePdfs = [];
     for (const relative of PROCEDURE_PDFS) {
       const response = await context.request.get(new URL(relative, base).href);
@@ -1306,7 +1317,7 @@ async function runEngine(browser, engine, forms) {
   const expectedTableNameResults = ENGINES.length * WIDTHS.length * EXPECTED_FORM_COUNT;
   check(tableNameResults.length === expectedTableNameResults,
     `書式名称の文字検査数 ${tableNameResults.length} ≠ ${expectedTableNameResults}`);
-  const expectedSectionResults = ENGINES.length * (4 * (PORTAL_WIDTHS.length + 1) + 5 * (WIDTHS.length + 1));
+  const expectedSectionResults = ENGINES.length * (4 * (PORTAL_WIDTHS.length + 1) + 6 * (WIDTHS.length + 1));
   check(sectionResults.length === expectedSectionResults,
     `画面内main節表示検査数 ${sectionResults.length} ≠ ${expectedSectionResults}`);
   const expectedBehaviorResults = ENGINES.length * 20;
