@@ -660,8 +660,9 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 .fg-heading{display:flex;justify-content:space-between;align-items:baseline;gap:12px;color:var(--sugi)}
 .fg-heading h3{font-size:18px;font-weight:800;letter-spacing:.03em}
 .fg-heading span{font-family:var(--mono);font-size:11px;color:var(--ink3)}
-.fg-paper{position:relative;background:var(--shiro);border:1px solid var(--line);border-radius:3px;box-shadow:0 4px 6px rgba(18,63,48,.04),0 12px 24px -12px rgba(18,63,48,.2);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.fg-paper{position:relative;aspect-ratio:840/1189;background:var(--shiro);border:1px solid var(--line);border-radius:3px;box-shadow:0 4px 6px rgba(18,63,48,.04),0 12px 24px -12px rgba(18,63,48,.2);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
 .fg-paper img{display:block;width:100%;height:auto;aspect-ratio:840/1189;border-radius:3px}
+.fg-paper img:not([src]){display:none}
 .fg-card:hover .fg-paper{transform:translateY(-4px);box-shadow:0 8px 24px -8px rgba(18,63,48,.22)}
 .fg-card:focus-visible{outline:2px solid var(--sugi);outline-offset:3px;border-radius:3px}
 .fg-purpose{font-size:16px;font-weight:700;line-height:1.65;color:var(--sugi)}
@@ -1383,7 +1384,7 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
         <li class="fg-item">
           <a class="fg-card" href="assets/download/procedure-onboarding.pdf" target="_blank" rel="noopener" aria-label="入社連絡票のPDFを見る（入力用と記入例の2ページ、新しいタブで開きます）">
             <div class="fg-heading"><h3>入社連絡票</h3><span>01 / 入社</span></div>
-            <div class="fg-paper"><img src="assets/previews/procedure-onboarding-sample.webp" width="840" height="1189" loading="lazy" decoding="async" alt="入社日・勤務時間・給与・保険加入の欄がある入社連絡票の赤字記入例"></div>
+            <div class="fg-paper"><img data-src="assets/previews/procedure-onboarding-sample.webp" width="840" height="1189" loading="lazy" decoding="async" alt="入社日・勤務時間・給与・保険加入の欄がある入社連絡票の赤字記入例"><noscript><img src="assets/previews/procedure-onboarding-sample.webp" width="840" height="1189" alt="入社連絡票の赤字記入例"></noscript></div>
             <p class="fg-purpose">採用が<wbr>決まったら。<wbr><span class="fg-fields">入社日・給与・<wbr>保険加入の<wbr>情報を<br>ひと<wbr>まとめに。</span></p>
             <span class="fg-open"><span>入力用PDF・記入例を見る</span><span aria-hidden="true">↗</span></span>
           </a>
@@ -1391,7 +1392,7 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
         <li class="fg-item">
           <a class="fg-card" href="assets/download/procedure-retirement.pdf" target="_blank" rel="noopener" aria-label="退職連絡票のPDFを見る（入力用と記入例の2ページ、新しいタブで開きます）">
             <div class="fg-heading"><h3>退職連絡票</h3><span>02 / 退職</span></div>
-            <div class="fg-paper"><img src="assets/previews/procedure-retirement-sample.webp" width="840" height="1189" loading="lazy" decoding="async" alt="退職日・退職理由・離職票の希望・回収書類の欄がある退職連絡票の赤字記入例"></div>
+            <div class="fg-paper"><img data-src="assets/previews/procedure-retirement-sample.webp" width="840" height="1189" loading="lazy" decoding="async" alt="退職日・退職理由・離職票の希望・回収書類の欄がある退職連絡票の赤字記入例"><noscript><img src="assets/previews/procedure-retirement-sample.webp" width="840" height="1189" alt="退職連絡票の赤字記入例"></noscript></div>
             <p class="fg-purpose">退職の<wbr>連絡を<wbr>受けたら。<wbr><span class="fg-fields">退職日・離職票の<wbr>希望・必要書類を<br>まとめて<wbr>確認。</span></p>
             <span class="fg-open"><span>入力用PDF・記入例を見る</span><span aria-hidden="true">↗</span></span>
           </a>
@@ -1399,7 +1400,7 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
         <li class="fg-item">
           <a class="fg-card" href="assets/download/procedure-leave.pdf" target="_blank" rel="noopener" aria-label="休職連絡票のPDFを見る（入力用と記入例の2ページ、新しいタブで開きます）">
             <div class="fg-heading"><h3>休職連絡票</h3><span>03 / 休職</span></div>
-            <div class="fg-paper"><img src="assets/previews/procedure-leave-sample.webp" width="840" height="1189" loading="lazy" decoding="async" alt="休職期間・休職中の給与・保険料の支払方法の欄がある休職連絡票の赤字記入例"></div>
+            <div class="fg-paper"><img data-src="assets/previews/procedure-leave-sample.webp" width="840" height="1189" loading="lazy" decoding="async" alt="休職期間・休職中の給与・保険料の支払方法の欄がある休職連絡票の赤字記入例"><noscript><img src="assets/previews/procedure-leave-sample.webp" width="840" height="1189" alt="休職連絡票の赤字記入例"></noscript></div>
             <p class="fg-purpose">休職の<wbr>開始・<wbr>延長に。<wbr><span class="fg-fields">休職期間・給与・<wbr>保険料の<wbr>扱いを<br>会社から<wbr>共有。</span></p>
             <span class="fg-open"><span>入力用PDF・記入例を見る</span><span aria-hidden="true">↗</span></span>
           </a>
@@ -1563,7 +1564,7 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
   var root=rail.closest('.fg-gallery'),controls=root.querySelector('.fg-controls');
   var pause=controls.querySelector('.fg-pause'),arrows=controls.querySelectorAll('[data-fg-dir]');
   var originals=Array.prototype.slice.call(rail.children),reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
-  var frame=0,lastTime=0,position=null,cycle=0,inView=false,hover=false,focused=false,manual=false,observer;
+  var frame=0,lastTime=0,position=null,cycle=0,inView=false,hover=false,focused=false,manual=false,observer,imageObserver;
   // ループの継ぎ目を埋める複製は読み上げ・Tab移動から除外する。
   for(var copy=0;copy<2;copy++)originals.forEach(function(item,index){
     var clone=item.cloneNode(true),link=clone.querySelector('a');
@@ -1627,6 +1628,7 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
   function cleanup(){
     cancelAnimationFrame(frame);frame=0;
     if(observer)observer.disconnect();
+    if(imageObserver)imageObserver.disconnect();
     window.removeEventListener('resize',measure);
     document.removeEventListener('visibilitychange',visibility);
     reduce.removeEventListener('change',measure);
@@ -1637,6 +1639,15 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
   reduce.addEventListener('change',measure);
   controls.hidden=false;
   measure();
+  // 下方の見本は近づいたときに読み込み、ファーストビューの転送量を抑える。
+  function loadImages(){
+    rail.querySelectorAll('img[data-src]').forEach(function(img){img.src=img.dataset.src;delete img.dataset.src;});
+    if(imageObserver)imageObserver.disconnect();
+  }
+  if('IntersectionObserver' in window){
+    imageObserver=new IntersectionObserver(function(entries){if(entries[0].isIntersecting)loadImages();},{rootMargin:'600px 0px',threshold:0});
+    imageObserver.observe(rail);
+  }else loadImages();
   if('IntersectionObserver' in window){
     observer=new IntersectionObserver(function(entries){
       if(!rail.isConnected){cleanup();return;}
