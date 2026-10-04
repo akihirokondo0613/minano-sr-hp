@@ -638,66 +638,16 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 @media(max-width:700px){.home-shortcuts .w{grid-template-columns:minmax(0,1fr);gap:10px}.home-shortcuts-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}.home-shortcuts a{font-size:clamp(14px,3.8vw,16px);gap:8px}.home-compact-section a.home-detail-link{text-align:left;gap:18px}}
 @media(prefers-reduced-motion:reduce){.home-shortcuts a span,a.home-detail-link .detail-arrow{transition:none}.home-shortcuts a:hover span,a.home-detail-link:hover .detail-arrow{transform:none}}
 </style>
-<style id="home-form-gallery">
-/* 07 TOOLS ― 実際のPDFを紙面のまま見せ、用途とダウンロードへつなぐ。 */
+<style id="home-form-gallery-base">
 #tools{background:var(--yuki)}
-#tools + .about-sec{border-top:1px solid var(--line)}
-#tools .sec-head{margin-bottom:24px}
-.fg-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
-.fg-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--ink3)}
-.fg-free{color:var(--sugi);font-weight:700}
-.fg-controls{display:flex;gap:8px;flex-shrink:0}
 .fg-controls[hidden]{display:none}
-.fg-control{display:grid;place-items:center;min-width:40px;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:var(--shiro);color:var(--sugi);font:inherit;font-size:12px;cursor:pointer}
-.fg-control:hover:not(:disabled){background:var(--moegi-l);border-color:var(--sugi)}
-.fg-control:disabled{opacity:.4;cursor:default}
-.fg-control svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7}
-.fg-control:focus-visible,.fg-rail:focus-visible{outline:2px solid var(--sugi);outline-offset:3px}
-.fg-rail{--fg-gap:clamp(20px,3vw,40px);display:flex;gap:var(--fg-gap);overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;list-style:none;margin:0;padding:12px 4px 18px;scroll-behavior:auto}
-.fg-rail::-webkit-scrollbar{display:none}
-.fg-item{flex:0 0 clamp(252px,27vw,324px);min-width:0}
-.fg-card{display:flex;flex-direction:column;gap:12px;color:var(--iwa);text-decoration:none}
-.fg-heading{display:flex;justify-content:space-between;align-items:baseline;gap:12px;color:var(--sugi)}
-.fg-heading h3{font-size:18px;font-weight:800;letter-spacing:.03em}
-.fg-heading span{font-family:var(--mono);font-size:11px;color:var(--ink3)}
-.fg-paper{position:relative;aspect-ratio:840/1189;background:var(--shiro);border:1px solid var(--line);border-radius:3px;box-shadow:0 4px 6px rgba(18,63,48,.04),0 12px 24px -12px rgba(18,63,48,.2);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
-.fg-paper img{display:block;width:100%;height:auto;aspect-ratio:840/1189;border-radius:3px}
+.fg-rail{display:flex;gap:20px;overflow-x:auto;list-style:none;margin:0;padding:12px 4px 18px}
+.fg-item{flex:0 0 clamp(224px,70vw,324px)}
+.fg-paper{aspect-ratio:840/1189}
+.fg-paper img{display:block;width:100%;height:auto}
 .fg-paper img:not([src]){display:none}
-.fg-card:hover .fg-paper{transform:translateY(-4px);box-shadow:0 8px 24px -8px rgba(18,63,48,.22)}
-.fg-card:focus-visible{outline:2px solid var(--sugi);outline-offset:3px;border-radius:3px}
-.fg-purpose{font-size:16px;font-weight:700;line-height:1.65;color:var(--sugi)}
-.fg-fields{display:block;margin-top:4px;font-size:12px;font-weight:400;line-height:1.8;color:var(--ink3)}
-.fg-open{display:flex;justify-content:space-between;gap:12px;align-items:center;padding-top:10px;border-top:1px solid var(--line);font-size:12px;font-weight:600;color:var(--sugi)}
-.fg-open span:last-child{font-size:16px}
-.fg-footer{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:6px;font-size:12px;color:var(--ink3)}
-.fg-footer a{color:var(--sugi);text-underline-offset:4px;padding-block:8px}
-.fg-resources{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:24px;padding-top:18px;border-top:1px solid var(--line)}
-.fg-resource{display:flex;justify-content:space-between;align-items:center;gap:12px;min-width:0;padding-block:6px;color:var(--sugi);text-decoration:none}
-.fg-resource strong{display:block;font-size:14px;font-weight:700}
-.fg-resource small{display:block;margin-top:4px;font-size:12px;line-height:1.7;font-weight:400;color:var(--ink3)}
-.fg-resource>span:last-child{flex-shrink:0;font-size:20px}
-.fg-resource:focus-visible{outline:2px solid var(--sugi);outline-offset:3px}
-@media(max-width:640px){
-  .fg-bar{align-items:flex-start;gap:8px}
-  .fg-meta{display:block;line-height:1.8;font-size:11px}
-  .fg-meta span{display:block}
-  .fg-controls{gap:5px}
-  .fg-control{min-width:36px;height:36px;padding-inline:10px}
-  .fg-item{flex-basis:clamp(224px,70vw,280px)}
-  .fg-rail{--fg-gap:20px}
-  .fg-heading h3{font-size:16px}
-  .fg-purpose{font-size:15px}
-  .fg-footer{flex-wrap:wrap;gap:0}
-  .fg-resources{gap:16px;margin-top:14px;padding-top:14px}
-  .fg-resource strong{font-size:13px}
-  .fg-resource small{font-size:11px}
-}
-@media(prefers-reduced-motion:reduce){
-  .fg-copy,.fg-pause{display:none}
-  .fg-paper{transition:none}
-  .fg-card:hover .fg-paper{transform:none}
-}
 </style>
+<noscript><link rel="stylesheet" href="home-form-gallery.css?v=20261005-lazy1"></noscript>
 <style id="home-topics-marquee">
 /* 06 TOPICS ― 記事カードの横送りレール。
    自動では動かさず、スワイプと前後ボタンで送る。中身はCSSのスクロールスナップで、
@@ -1556,104 +1506,41 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 </div>
 
 <script id="home-form-gallery-init">
-// SPAでトップへ戻るたびに初期化し、古い監視とアニメーションを片付ける。
+// 連絡票が近づいてからCSSと横送り処理を読み込む。
 (function(){
+  if(window.__mnFormGalleryLoadObserver)window.__mnFormGalleryLoadObserver.disconnect();
   if(window.__mnFormGalleryCleanup)window.__mnFormGalleryCleanup();
   var rail=document.getElementById('form-gallery-rail');
   if(!rail)return;
-  var root=rail.closest('.fg-gallery'),controls=root.querySelector('.fg-controls');
-  var pause=controls.querySelector('.fg-pause'),arrows=controls.querySelectorAll('[data-fg-dir]');
-  var originals=Array.prototype.slice.call(rail.children),reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
-  var frame=0,lastTime=0,position=null,cycle=0,inView=false,hover=false,focused=false,manual=false,observer,imageObserver;
-  // ループの継ぎ目を埋める複製は読み上げ・Tab移動から除外する。
-  for(var copy=0;copy<2;copy++)originals.forEach(function(item,index){
-    var clone=item.cloneNode(true),link=clone.querySelector('a');
-    clone.classList.add('fg-copy');clone.setAttribute('aria-hidden','true');
-    link.tabIndex=-1;
-    link.addEventListener('mousedown',function(e){e.preventDefault();});
-    link.addEventListener('focus',function(){originals[index].querySelector('a').focus();});
-    rail.appendChild(clone);
-  });
-  function measure(){
-    var firstCopy=rail.querySelector('.fg-copy');
-    cycle=firstCopy?firstCopy.offsetLeft-originals[0].offsetLeft:0;
-    position=null;update();
+  function run(){if(rail.isConnected&&window.__mnInitFormGallery)window.__mnInitFormGallery();}
+  function afterStyle(){
+    if(!rail.isConnected)return;
+    if(window.__mnInitFormGallery){run();return;}
+    var script=window.__mnFormGalleryScript;
+    if(!script){
+      script=document.createElement('script');script.src='home-form-gallery.js?v=20261005-lazy1';
+      window.__mnFormGalleryScript=script;
+      script.addEventListener('error',function(){window.__mnFormGalleryScript=null;},{once:true});
+      script.addEventListener('load',run,{once:true});
+      document.head.appendChild(script);
+    }else script.addEventListener('load',run,{once:true});
   }
-  function canPlay(){return inView&&!manual&&!hover&&!focused&&!reduce.matches&&!document.hidden&&cycle>0;}
-  function tick(time){
-    frame=0;
-    if(!rail.isConnected){cleanup();return;}
-    if(!canPlay()){lastTime=0;return;}
-    if(position===null)position=rail.scrollLeft%cycle;
-    // 画面外・別タブから戻った際に距離が跳ばないよう、経過時間を制限する。
-    if(lastTime)position=(position+Math.min(time-lastTime,64)*.022)%cycle;
-    lastTime=time;rail.scrollLeft=position;
-    frame=requestAnimationFrame(tick);
-  }
-  function update(){
-    pause.textContent=manual?'再生':'一時停止';
-    pause.setAttribute('aria-pressed',String(manual));
-    pause.setAttribute('aria-label','連絡票の自動スクロールを'+(manual?'再開':'一時停止'));
-    arrows.forEach(function(button){
-      button.disabled=reduce.matches&&(button.dataset.fgDir==='-1'?rail.scrollLeft<1:rail.scrollLeft>=rail.scrollWidth-rail.clientWidth-1);
-    });
-    if(canPlay()){if(!frame){lastTime=0;frame=requestAnimationFrame(tick);}}
-    else{cancelAnimationFrame(frame);frame=0;lastTime=0;position=null;}
-  }
-  function stopManually(){manual=true;update();}
-  function move(dir){
-    stopManually();
-    var step=originals[1].offsetLeft-originals[0].offsetLeft;
-    var next=rail.scrollLeft+dir*step;
-    if(!reduce.matches&&cycle){
-      if(next<0){rail.scrollLeft+=cycle;next+=cycle;}
-      if(next>=cycle*2){rail.scrollLeft-=cycle;next-=cycle;}
+  function start(){
+    if(window.__mnFormGalleryLoadObserver)window.__mnFormGalleryLoadObserver.disconnect();
+    var css=document.getElementById('home-form-gallery-style');
+    if(css&&css.sheet){afterStyle();return;}
+    if(!css){
+      css=document.createElement('link');css.id='home-form-gallery-style';css.rel='stylesheet';
+      css.href='home-form-gallery.css?v=20261005-lazy1';
     }
-    rail.scrollTo({left:next,behavior:reduce.matches?'auto':'smooth'});
-  }
-  pause.addEventListener('click',function(){manual=!manual;update();});
-  arrows.forEach(function(button){button.addEventListener('click',function(){move(Number(button.dataset.fgDir));});});
-  rail.addEventListener('mouseenter',function(){hover=true;update();});
-  rail.addEventListener('mouseleave',function(){hover=false;update();});
-  rail.addEventListener('focusin',function(){focused=true;update();});
-  rail.addEventListener('focusout',function(e){focused=rail.contains(e.relatedTarget);update();});
-  rail.addEventListener('pointerdown',stopManually,{passive:true});
-  rail.addEventListener('wheel',stopManually,{passive:true});
-  rail.addEventListener('keydown',function(e){
-    if(e.target!==rail)return;
-    if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();move(e.key==='ArrowRight'?1:-1);}
-  });
-  rail.addEventListener('scroll',function(){if(reduce.matches)update();},{passive:true});
-  function visibility(){if(!rail.isConnected){cleanup();return;}update();}
-  function cleanup(){
-    cancelAnimationFrame(frame);frame=0;
-    if(observer)observer.disconnect();
-    if(imageObserver)imageObserver.disconnect();
-    window.removeEventListener('resize',measure);
-    document.removeEventListener('visibilitychange',visibility);
-    reduce.removeEventListener('change',measure);
-  }
-  window.__mnFormGalleryCleanup=cleanup;
-  window.addEventListener('resize',measure,{passive:true});
-  document.addEventListener('visibilitychange',visibility);
-  reduce.addEventListener('change',measure);
-  controls.hidden=false;
-  measure();
-  // 下方の見本は近づいたときに読み込み、ファーストビューの転送量を抑える。
-  function loadImages(){
-    rail.querySelectorAll('img[data-src]').forEach(function(img){img.src=img.dataset.src;delete img.dataset.src;});
-    if(imageObserver)imageObserver.disconnect();
+    css.addEventListener('load',afterStyle,{once:true});
+    css.addEventListener('error',afterStyle,{once:true});
+    if(!css.isConnected)document.head.appendChild(css);
   }
   if('IntersectionObserver' in window){
-    imageObserver=new IntersectionObserver(function(entries){if(entries[0].isIntersecting)loadImages();},{rootMargin:'600px 0px',threshold:0});
-    imageObserver.observe(rail);
-  }else loadImages();
-  if('IntersectionObserver' in window){
-    observer=new IntersectionObserver(function(entries){
-      if(!rail.isConnected){cleanup();return;}
-      inView=entries[0].isIntersecting;update();
-    },{threshold:.05});observer.observe(rail);
-  }else{inView=true;update();}
+    window.__mnFormGalleryLoadObserver=new IntersectionObserver(function(entries){if(entries[0].isIntersecting)start();},{rootMargin:'1200px 0px'});
+    window.__mnFormGalleryLoadObserver.observe(rail);
+  }else start();
 })();
 </script>
 <script>

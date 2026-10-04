@@ -1,0 +1,58 @@
+/* 07 TOOLS ― 実際のPDFを紙面のまま見せ、用途とダウンロードへつなぐ。 */
+#tools{background:var(--yuki)}
+#tools + .about-sec{border-top:1px solid var(--line)}
+#tools .sec-head{margin-bottom:24px}
+.fg-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.fg-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--ink3)}
+.fg-free{color:var(--sugi);font-weight:700}
+.fg-controls{display:flex;gap:8px;flex-shrink:0}
+.fg-controls[hidden]{display:none}
+.fg-control{display:grid;place-items:center;min-width:40px;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:var(--shiro);color:var(--sugi);font:inherit;font-size:12px;cursor:pointer}
+.fg-control:hover:not(:disabled){background:var(--moegi-l);border-color:var(--sugi)}
+.fg-control:disabled{opacity:.4;cursor:default}
+.fg-control svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7}
+.fg-control:focus-visible,.fg-rail:focus-visible{outline:2px solid var(--sugi);outline-offset:3px}
+.fg-rail{--fg-gap:clamp(20px,3vw,40px);display:flex;gap:var(--fg-gap);overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;list-style:none;margin:0;padding:12px 4px 18px;scroll-behavior:auto}
+.fg-rail::-webkit-scrollbar{display:none}
+.fg-item{flex:0 0 clamp(252px,27vw,324px);min-width:0}
+.fg-card{display:flex;flex-direction:column;gap:12px;color:var(--iwa);text-decoration:none}
+.fg-heading{display:flex;justify-content:space-between;align-items:baseline;gap:12px;color:var(--sugi)}
+.fg-heading h3{font-size:18px;font-weight:800;letter-spacing:.03em}
+.fg-heading span{font-family:var(--mono);font-size:11px;color:var(--ink3)}
+.fg-paper{position:relative;aspect-ratio:840/1189;background:var(--shiro);border:1px solid var(--line);border-radius:3px;box-shadow:0 4px 6px rgba(18,63,48,.04),0 12px 24px -12px rgba(18,63,48,.2);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.fg-paper img{display:block;width:100%;height:auto;aspect-ratio:840/1189;border-radius:3px}
+.fg-paper img:not([src]){display:none}
+.fg-card:hover .fg-paper{transform:translateY(-4px);box-shadow:0 8px 24px -8px rgba(18,63,48,.22)}
+.fg-card:focus-visible{outline:2px solid var(--sugi);outline-offset:3px;border-radius:3px}
+.fg-purpose{font-size:16px;font-weight:700;line-height:1.65;color:var(--sugi)}
+.fg-fields{display:block;margin-top:4px;font-size:12px;font-weight:400;line-height:1.8;color:var(--ink3)}
+.fg-open{display:flex;justify-content:space-between;gap:12px;align-items:center;padding-top:10px;border-top:1px solid var(--line);font-size:12px;font-weight:600;color:var(--sugi)}
+.fg-open span:last-child{font-size:16px}
+.fg-footer{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:6px;font-size:12px;color:var(--ink3)}
+.fg-footer a{color:var(--sugi);text-underline-offset:4px;padding-block:8px}
+.fg-resources{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:24px;padding-top:18px;border-top:1px solid var(--line)}
+.fg-resource{display:flex;justify-content:space-between;align-items:center;gap:12px;min-width:0;padding-block:6px;color:var(--sugi);text-decoration:none}
+.fg-resource strong{display:block;font-size:14px;font-weight:700}
+.fg-resource small{display:block;margin-top:4px;font-size:12px;line-height:1.7;font-weight:400;color:var(--ink3)}
+.fg-resource>span:last-child{flex-shrink:0;font-size:20px}
+.fg-resource:focus-visible{outline:2px solid var(--sugi);outline-offset:3px}
+@media(max-width:640px){
+  .fg-bar{align-items:flex-start;gap:8px}
+  .fg-meta{display:block;line-height:1.8;font-size:11px}
+  .fg-meta span{display:block}
+  .fg-controls{gap:5px}
+  .fg-control{min-width:36px;height:36px;padding-inline:10px}
+  .fg-item{flex-basis:clamp(224px,70vw,280px)}
+  .fg-rail{--fg-gap:20px}
+  .fg-heading h3{font-size:16px}
+  .fg-purpose{font-size:15px}
+  .fg-footer{flex-wrap:wrap;gap:0}
+  .fg-resources{gap:16px;margin-top:14px;padding-top:14px}
+  .fg-resource strong{font-size:13px}
+  .fg-resource small{font-size:11px}
+}
+@media(prefers-reduced-motion:reduce){
+  .fg-copy,.fg-pause{display:none}
+  .fg-paper{transition:none}
+  .fg-card:hover .fg-paper{transform:none}
+}
