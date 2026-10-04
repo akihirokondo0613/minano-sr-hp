@@ -28,6 +28,12 @@ const EXPECTED_TABLE_CATEGORIES = 11;
 // D-27 の離職経緯に3択を用意する改訂後の全50書式。
 const EXPECTED_CHECKBOX_COUNT = 380;
 const PDF_FORMS = ['D-04', 'D-18', 'D-27', 'D-40', 'D-45', 'D-52'];
+const COMPANY_PRINT_FORMS = [
+  ['D-18', ['name', 'dept', 'tel']],
+  ['D-27', ['name', 'title', 'rep']],
+  ['D-40', ['name', 'title', 'rep']],
+  ['D-52', ['name', 'title', 'rep']],
+];
 const CO_KEY = 'shoshiki.company';
 const CO_FIELDS = ['name', 'title', 'rep', 'addr', 'tel', 'dept'];
 const COMPANY = {
@@ -676,7 +682,7 @@ async function checkEditingAndMerge(browser, engine) {
   try {
     await goto(page, 'shoshiki.html');
     await fillCompany(page, COMPANY);
-    for (const [id, fields] of [['D-18', ['name', 'dept', 'tel']], ['D-27', ['name', 'title', 'rep']], ['D-40', ['name', 'title', 'rep']]]) {
+    for (const [id, fields] of COMPANY_PRINT_FORMS) {
       await goto(page, `shoshiki/${id}.html`);
       const state = await readCompany(page);
       merged.push({ id, ...state });
@@ -1052,7 +1058,8 @@ async function runEngine(browser, engine, forms) {
   const expectedScreenResults = ENGINES.length * WIDTHS.length * (EXPECTED_FORM_COUNT + 2);
   check(results.length === expectedScreenResults, `画面検査数 ${results.length} ≠ ${expectedScreenResults}`);
   check(printResults.length === ENGINES.length * EXPECTED_FORM_COUNT, `印刷検査数 ${printResults.length} ≠ ${ENGINES.length * EXPECTED_FORM_COUNT}`);
-  check(mergePrintResults.length === ENGINES.length * 3, `会社差込印刷検査数 ${mergePrintResults.length} ≠ ${ENGINES.length * 3}`);
+  check(mergePrintResults.length === ENGINES.length * COMPANY_PRINT_FORMS.length,
+    `会社差込印刷検査数 ${mergePrintResults.length} ≠ ${ENGINES.length * COMPANY_PRINT_FORMS.length}`);
   check(mobileResults.length === ENGINES.length * 4, `実スマホ390pxの検査数 ${mobileResults.length} ≠ ${ENGINES.length * 4}`);
   const expectedTableScrollResults = ENGINES.length * 2 * EXPECTED_TABLE_CATEGORIES;
   check(tableScrollResults.length === expectedTableScrollResults,
@@ -1066,18 +1073,19 @@ async function runEngine(browser, engine, forms) {
   '設定変更後に戻る/進むの2エンジン検査が揃っていません');
   if (process.env.RUNNER_TEMP) {
     check(artifacts.filter((item) => item.type === 'native-pdf').length === PDF_FORMS.length, '代表6書式のnative PDFが揃っていません');
-    check(artifacts.filter((item) => item.type === 'native-pdf-company').length === 3, '会社差込3書式のnative PDFが揃っていません');
+    check(artifacts.filter((item) => item.type === 'native-pdf-company').length === COMPANY_PRINT_FORMS.length,
+      '会社差込4書式のnative PDFが揃っていません');
   }
   const report = { base, widths: WIDTHS, epsilon: EPSILON,
     scope: { htmlForms: EXPECTED_FORM_COUNT, excelForms: 2, choicesPerEngine: EXPECTED_CHECKBOX_COUNT,
       screenConditions: expectedScreenResults, printConditions: ENGINES.length * EXPECTED_FORM_COUNT,
-      companyMergedPrintConditions: ENGINES.length * 3, actualMobileConditions: ENGINES.length * 4,
+      companyMergedPrintConditions: ENGINES.length * COMPANY_PRINT_FORMS.length, actualMobileConditions: ENGINES.length * 4,
       behaviorConditions: expectedBehaviorResults, crossTabConditions: ENGINES.length,
       changedCompanyHistoryConditions: ENGINES.length, seededStorageRemovalDeniedConditions: ENGINES.length * 2,
       navigationConditions: ENGINES.length,
       categoryTableScrollConditions: expectedTableScrollResults,
       externalFormSubmission: 'not attempted', physicalPrinter: 'not tested',
-      pdf: process.env.RUNNER_TEMP ? 'Chromium six blank + three company-merged native PDFs' : 'no RUNNER_TEMP; PDF artifacts not saved' },
+      pdf: process.env.RUNNER_TEMP ? 'Chromium six blank + four company-merged native PDFs' : 'no RUNNER_TEMP; PDF artifacts not saved' },
     results, printResults, mergePrintResults, behaviorResults, navigationResults, mobileResults,
     tableScrollResults, artifacts, failures };
   if (failures.length) {
