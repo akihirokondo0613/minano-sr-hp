@@ -199,6 +199,7 @@ async function measure(page) {
         introGap: boxOf(document.querySelector('.hero-intro')).top
           - Math.max(...actorBoxes.map((actor) => actor.bottom)),
         backgroundOpacity: Number(getComputedStyle(canvas.querySelector('.hero-town')).opacity),
+        backgroundSource: canvas.querySelector('.hero-town img').currentSrc,
       },
       summaryColumns: getComputedStyle(document.querySelector('.hs-inner'))
         .gridTemplateColumns.split(' ').filter(Boolean).length,
@@ -519,6 +520,10 @@ async function checkReducedMotion(browser, engine, width, failures) {
           entryScreenshots: await entryScreenshots(page, engineName, width) });
 
         const composition = result.composition;
+        if (!composition.backgroundSource
+          || composition.backgroundSource.includes('portrait') !== (width <= 540)) {
+          failures.push(`${engineName}@${width}px: 背景画像の縦横構図が人物帯と揃っていません`);
+        }
         if (width >= 541 && width <= 767 && (composition.canvas.width < result.metrics.h1.width
           || composition.canvas.width > result.metrics.h1.width * 1.1)) {
           failures.push(`${engineName}@${width}px: 中間幅の人物帯と見出しの幅が揃っていません`);
@@ -644,6 +649,7 @@ async function checkReducedMotion(browser, engine, width, failures) {
         || beforeSpread.actors.some((actor) => {
           const next = afterSpread.actors.find((item) => item.actor === actor.actor);
           return !next || Math.abs(actor.width - next.width) > 2
+            || Math.abs((actor.left - beforeSpread.canvas.left) - (next.left - afterSpread.canvas.left)) > 2
             || Math.abs((actor.top - beforeSpread.canvas.top) - (next.top - afterSpread.canvas.top)) > 2;
         })) {
         failures.push(`${engineName}@540/541px: 中間幅への切替で人物帯の高さ・位置が急変しています`);
