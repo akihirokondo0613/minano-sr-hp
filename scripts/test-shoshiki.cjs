@@ -54,6 +54,7 @@ const behaviorResults = [];
 const navigationResults = [];
 const mobileResults = [];
 const tableScrollResults = [];
+const sectionResults = [];
 const artifacts = [];
 
 function check(condition, message) {
@@ -156,12 +157,114 @@ async function goto(page, relative) {
   await settle(page);
 }
 
-async function revealSections(page) {
+async function revealSections(page, details) {
   const sections = page.locator('.rv, .page-hero, main section, .bottom-cta-card');
   for (let index = 0; index < await sections.count(); index += 1) {
     await sections.nth(index).scrollIntoViewIfNeeded();
+    await settle(page);
   }
-  await settle(page);
+  const mainSections = page.locator('main > section');
+  const count = await mainSections.count();
+  const expected = details.relative === 'portal.html' ? 4 : 5;
+  check(count === expected, `${details.engine}:${details.relative}@${details.width}px:main節数 ${count} ≠ ${expected}`);
+  for (let index = 0; index < count; index += 1) {
+    const section = mainSections.nth(index);
+    await section.evaluate((element) => {
+      element.scrollIntoView({ block: 'start', inline: 'nearest', behavior: 'instant' });
+      const nav = document.getElementById('nav');
+      const offset = (nav?.getBoundingClientRect().height || 0) + 16;
+      window.scrollBy({ top: -offset, behavior: 'instant' });
+    });
+    await settle(page);
+    let paintReady = false;
+    const handle = await section.elementHandle();
+    try {
+      // IOの配信とCSS反映を待つ。長すぎてthresholdを満たせない節も、
+      // 待ちを延長して黙って通さず、この上限後に実数を記録する。
+      await page.waitForFunction((element) => {
+        for (let ancestor = element; ancestor; ancestor = ancestor.parentElement) {
+          const style = getComputedStyle(ancestor);
+          if (style.display === 'none' || ['hidden', 'collapse'].includes(style.visibility)
+            || Number(style.opacity) <= 0) return false;
+          if ((ancestor.classList.contains('rv') || ancestor.classList.contains('rvl'))
+            && !ancestor.classList.contains('on')) return false;
+        }
+        return true;
+      }, handle, { timeout: 1500, polling: 100 });
+      paintReady = true;
+    } catch (error) {
+      if (error.name !== 'TimeoutError') throw error;
+    } finally {
+      await handle.dispose();
+    }
+    const metrics = await section.evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      const viewportWidth = document.documentElement.clientWidth;
+      const viewportHeight = document.documentElement.clientHeight;
+      const intersection = (r, bottom) => {
+        const width = Math.max(0, Math.min(r.right, viewportWidth) - Math.max(r.left, 0));
+        const height = Math.max(0, Math.min(r.bottom, bottom) - Math.max(r.top, 0));
+        return { width, height, area: width * height,
+          ratio: r.width > 0 && r.height > 0 ? width * height / (r.width * r.height) : 0 };
+      };
+      const ancestors = [];
+      let effectiveOpacity = 1;
+      for (let ancestor = element; ancestor; ancestor = ancestor.parentElement) {
+        const style = getComputedStyle(ancestor);
+        effectiveOpacity *= Number(style.opacity);
+        ancestors.push({ selector: ancestor.id ? `#${ancestor.id}` : ancestor.tagName.toLowerCase(),
+          rv: ancestor.classList.contains('rv') || ancestor.classList.contains('rvl'),
+          on: ancestor.classList.contains('on'), opacity: Number(style.opacity),
+          display: style.display, visibility: style.visibility });
+      }
+      let measuredElements = 0;
+      let measuredTextRects = 0;
+      let viewportTextRects = 0;
+      for (const child of [element, ...element.querySelectorAll('*')]) {
+        const style = getComputedStyle(child);
+        if (style.display === 'none' || ['hidden', 'collapse'].includes(style.visibility)
+          || Number(style.opacity) <= 0 || ['SCRIPT', 'STYLE', 'SVG', 'PATH'].includes(child.tagName)) continue;
+        const childRect = child.getBoundingClientRect();
+        if (childRect.width > 0 && childRect.height > 0) measuredElements += 1;
+        for (const node of child.childNodes) {
+          if (node.nodeType !== Node.TEXT_NODE || !node.textContent.trim()) continue;
+          const range = document.createRange();
+          range.selectNodeContents(node);
+          for (const textRect of range.getClientRects()) {
+            if (textRect.width <= 0 || textRect.height <= 0) continue;
+            measuredTextRects += 1;
+            if (intersection(textRect, viewportHeight).area > 0) viewportTextRects += 1;
+          }
+        }
+      }
+      return { id: element.id, sectionIndex: [...element.parentElement.children].indexOf(element),
+        rect: { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom,
+          width: rect.width, height: rect.height }, viewportWidth, viewportHeight,
+        contentVisibility: getComputedStyle(element).contentVisibility,
+        viewportIntersection: intersection(rect, viewportHeight),
+        // このページのIO設定: threshold .1 / rootMargin bottom -40px。
+        observerIntersection: intersection(rect, Math.max(0, viewportHeight - 40)),
+        observerThreshold: 0.1, observerRootMarginBottom: -40,
+        ancestors, effectiveOpacity, measuredElements, measuredTextRects, viewportTextRects };
+    });
+    const label = `${details.engine}:${details.relative}@${details.width}px:${metrics.id || `section${index + 1}`}`;
+    const visibleAncestors = metrics.ancestors.every((ancestor) => ancestor.display !== 'none'
+      && !['hidden', 'collapse'].includes(ancestor.visibility) && ancestor.opacity > 0
+      && (!ancestor.rv || ancestor.on));
+    check(paintReady && visibleAncestors && metrics.effectiveOpacity > 0,
+      `${label}:rv/on・祖先opacityが実表示になりません ${JSON.stringify({ ancestors: metrics.ancestors,
+        rect: metrics.rect, observerIntersection: metrics.observerIntersection, threshold: metrics.observerThreshold })}`);
+    check(metrics.rect.width > 0 && metrics.rect.height > 0 && metrics.viewportIntersection.area > 0
+      && metrics.measuredElements > 0 && metrics.measuredTextRects > 0 && metrics.viewportTextRects > 0,
+    `${label}:画面内の節/要素/Rangeの実測がありません ${JSON.stringify(metrics)}`);
+    sectionResults.push({ ...details, sectionIndex: index + 1, paintReady, metrics });
+    if ((details.actualMobile || [320, 390].includes(details.width))
+      && ((details.relative === 'portal.html' && index === 0)
+        || (details.relative === 'shoshiki.html' && ['setting', 'list'].includes(metrics.id)))) {
+      const viewportName = details.actualMobile ? 'actual-mobile390' : String(details.width);
+      await screenshot(page, `${details.engine}-${path.basename(details.relative, '.html')}-${viewportName}-${metrics.id}-viewport`, false);
+    }
+  }
 }
 
 async function duplicateIds(page) {
@@ -900,7 +1003,7 @@ async function checkActualMobileViewport(browser, engine) {
           `${engine}:mobile390:${relative}:実スマホの操作欄に到達できません`);
         await page.locator('button[onclick="coToggle()"]').click();
       } else {
-        await revealSections(page);
+        await revealSections(page, { engine, relative, width: 390, actualMobile: true });
       }
       await page.evaluate(() => window.scrollTo(0, 0));
       await screenshot(page, `${engine}-actual-mobile390-${path.basename(relative, '.html')}`);
@@ -927,8 +1030,10 @@ async function runEngine(browser, engine, forms) {
         await page.setViewportSize({ width, height: 900 });
         try {
           await goto(page, relative);
-          await revealSections(page);
+          await revealSections(page, { engine, relative, width, actualMobile: false });
           await page.evaluate(() => window.scrollTo(0, 0));
+          await settle(page);
+          if (width === 320) await screenshot(page, `${engine}-${path.basename(relative, '.html')}-320-hero-viewport`, false);
           const metrics = await measureIndex(page);
           const duplicates = await duplicateIds(page);
           check(metrics.measuredElements > 20 && metrics.measuredTextRects > 20, `${label}:測定対象が不足しています`);
@@ -1064,6 +1169,9 @@ async function runEngine(browser, engine, forms) {
   const expectedTableScrollResults = ENGINES.length * 2 * EXPECTED_TABLE_CATEGORIES;
   check(tableScrollResults.length === expectedTableScrollResults,
     `一覧表横スクロール検査数 ${tableScrollResults.length} ≠ ${expectedTableScrollResults}`);
+  const expectedSectionResults = ENGINES.length * (4 + 5) * (WIDTHS.length + 1);
+  check(sectionResults.length === expectedSectionResults,
+    `画面内main節表示検査数 ${sectionResults.length} ≠ ${expectedSectionResults}`);
   const expectedBehaviorResults = ENGINES.length * 20;
   check(behaviorResults.length === expectedBehaviorResults, `会社/入力挙動検査数 ${behaviorResults.length} ≠ ${expectedBehaviorResults}`);
   check(behaviorResults.filter((result) => result.scenario === 'cross-tab-company-sync').length === ENGINES.length,
@@ -1084,10 +1192,11 @@ async function runEngine(browser, engine, forms) {
       changedCompanyHistoryConditions: ENGINES.length, seededStorageRemovalDeniedConditions: ENGINES.length * 2,
       navigationConditions: ENGINES.length,
       categoryTableScrollConditions: expectedTableScrollResults,
+      sectionVisibilityConditions: expectedSectionResults,
       externalFormSubmission: 'not attempted', physicalPrinter: 'not tested',
       pdf: process.env.RUNNER_TEMP ? 'Chromium six blank + four company-merged native PDFs' : 'no RUNNER_TEMP; PDF artifacts not saved' },
     results, printResults, mergePrintResults, behaviorResults, navigationResults, mobileResults,
-    tableScrollResults, artifacts, failures };
+    tableScrollResults, sectionResults, artifacts, failures };
   if (failures.length) {
     console.error(`書式検査の失敗: ${failures.length}件`);
     for (const failure of failures) console.error(`- ${failure}`);

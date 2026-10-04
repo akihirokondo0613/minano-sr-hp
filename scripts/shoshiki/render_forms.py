@@ -188,8 +188,9 @@ window.coImport=function(inp){const f=inp.files[0]; if(!f) return; inp.value='';
   r.onerror=()=>alert('設定ファイルを読み込めませんでした。現在の設定は変更していません。'); r.readAsText(f);};
 window.coClear=function(){if(confirm('保存した会社情報を消しますか？')){coState={};try{localStorage.removeItem(CO_KEY);if(coStorageAvailable)coWarning='';}catch(e){coStorageAvailable=false;coWarning='保存済みの会社情報をブラウザから消去できませんでした。このページの入力だけを消去しました。保存済み情報を消すにはブラウザのサイトデータ設定をご確認ください。';}coInit(false);}};
 coInit();
-// 戻る／進むでキャッシュから復帰したときも保存内容を読み直す
-window.addEventListener('pageshow',e=>{if(e.persisted) coInit();});
+// BFCache以外の履歴復帰でも入力欄の旧valueが復元されるため、
+// ブラウザのform state復元が済んだ次のtaskで会社設定へ揃える。
+window.addEventListener('pageshow',()=>{setTimeout(()=>coInit(),0);});
 // 同じサイトを別タブで使う場合にも、会社情報を最新の保存内容にそろえる。
 window.addEventListener('storage',e=>{if(coStorageAvailable&&(e.key===CO_KEY||e.key===null)) coInit();});
 })();
