@@ -462,6 +462,24 @@ async function runTaskPool(tasks, limit = 2) {
         isolated: true,
       });
     }
+    const startupInputs = new Set([
+      'startup-payroll.html', 'uploads/contact.html', 'skin-v2.css', 'page-enter.js',
+      'link-keep.js', 'header-motion.js', 'terms.js', 'ads.js', 'assets-version.json',
+      'scripts/test-startup-payroll.cjs', 'scripts/run-layout-checks.cjs',
+    ]);
+    const startupChanged = blogSelection.changedFiles.some((file) => startupInputs.has(file)
+      || file.startsWith('scripts/lib/') || file.startsWith('assets/'));
+    // A missing comparison base or empty diff must not silently omit the LP.
+    if (full || !blogSelection.baseRef || !blogSelection.changedFiles.length || startupChanged) {
+      tasks.push({
+        name: '創業LP（内容・料金・FAQ・相談入口）',
+        command: process.execPath,
+        args: ['scripts/test-startup-payroll.cjs', base, '--json'],
+        output: 'startup-payroll.json',
+        timeoutMs: 6 * 60 * 1000,
+        isolated: true,
+      });
+    }
     if (full) {
       tasks.push(
         {
