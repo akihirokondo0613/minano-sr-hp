@@ -31,6 +31,7 @@ const RETIRED_OFFICE_FILES = [
   'shoshiki/dl/word-7kq3x9/shanai-shoshiki-word-202610.zip',
 ];
 const PROCEDURE_PDFS = [
+  'assets/download/procedure-establishment.pdf',
   'assets/download/procedure-onboarding.pdf',
   'assets/download/procedure-retirement.pdf',
   'assets/download/procedure-leave.pdf',
@@ -1022,10 +1023,10 @@ async function checkNavigation(browser, engine) {
       `${engine}:HTML50本の一覧が不一致 ${JSON.stringify(counts)}`);
     check(counts.google.length === 0 && counts.officeLinks === 0,
       `${engine}:終了したOffice配布/申込リンクが残っています ${JSON.stringify(counts)}`);
-    check(counts.procedureLinks.length === 3
+    check(counts.procedureLinks.length === PROCEDURE_PDFS.length
       && PROCEDURE_PDFS.every((href) => counts.procedureLinks.some((link) => link.href === href))
       && counts.procedureLinks.every((link) => link.label?.includes('全2ページ')),
-      `${engine}:手続き連絡票PDF3種のリンク/用途表示が不一致 ${JSON.stringify(counts.procedureLinks)}`);
+      `${engine}:手続き連絡票・基本情報PDF4種のリンク/用途表示が不一致 ${JSON.stringify(counts.procedureLinks)}`);
     check(counts.officialLinks.length >= 4
       && counts.officialLinks.every((link) => new URL(link.href).protocol === 'https:'
         && new URL(link.href).hostname === 'www.nenkin.go.jp' && link.target === '_blank'
