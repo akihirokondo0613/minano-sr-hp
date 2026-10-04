@@ -56,6 +56,10 @@
 <style id="fs-portal">
 /* WebKitでも強調行を見出しの内幅で折り返す。 */
 .page-h.portal-title strong{display:inline-block;max-width:100%;word-break:normal;text-wrap:wrap}
+@media(max-width:360px){
+  .page-h.portal-title strong > .nw{display:block}
+  .page-h.portal-title strong > wbr{display:none}
+}
 /* 本文中の内部リンク（一覧ページ・窓口ページへの送り先）。subsidy-desc a と同じ見え方 */
 .page-sub a,.qk-note a{color:var(--g700);font-weight:700;text-decoration:underline;text-underline-offset:4px;word-break:normal}
 

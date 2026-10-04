@@ -21,6 +21,7 @@ const baseUrl = new URL(base);
 const asJson = args.includes('--json');
 const root = path.resolve(__dirname, '..');
 const WIDTHS = [320, 390, 768, 1280];
+const PORTAL_WIDTHS = [320, 360, 361, 390, 768, 1280];
 const ENGINES = [['chromium', chromium], ['webkit', webkit]];
 const EPSILON = 1;
 const EXPECTED_FORM_COUNT = 50;
@@ -1024,7 +1025,7 @@ async function runEngine(browser, engine, forms) {
   let checkboxCount = 0;
   try {
     for (const relative of ['portal.html', 'shoshiki.html']) {
-      for (const width of WIDTHS) {
+      for (const width of relative === 'portal.html' ? PORTAL_WIDTHS : WIDTHS) {
         const label = `${engine}:${relative}@${width}px`;
         const errorStart = errors.length;
         await page.setViewportSize({ width, height: 900 });
@@ -1033,7 +1034,7 @@ async function runEngine(browser, engine, forms) {
           await revealSections(page, { engine, relative, width, actualMobile: false });
           await page.evaluate(() => window.scrollTo(0, 0));
           await settle(page);
-          if (width === 320) await screenshot(page, `${engine}-${path.basename(relative, '.html')}-320-hero-viewport`, false);
+          if ([320, 360, 361].includes(width)) await screenshot(page, `${engine}-${path.basename(relative, '.html')}-${width}-hero-viewport`, false);
           const metrics = await measureIndex(page);
           const duplicates = await duplicateIds(page);
           check(metrics.measuredElements > 20 && metrics.measuredTextRects > 20, `${label}:測定対象が不足しています`);
@@ -1160,7 +1161,7 @@ async function runEngine(browser, engine, forms) {
     const browser = await browserType.launch({ headless: true });
     try { await runEngine(browser, engine, forms); } finally { await browser.close(); }
   }
-  const expectedScreenResults = ENGINES.length * WIDTHS.length * (EXPECTED_FORM_COUNT + 2);
+  const expectedScreenResults = ENGINES.length * (WIDTHS.length * (EXPECTED_FORM_COUNT + 1) + PORTAL_WIDTHS.length);
   check(results.length === expectedScreenResults, `画面検査数 ${results.length} ≠ ${expectedScreenResults}`);
   check(printResults.length === ENGINES.length * EXPECTED_FORM_COUNT, `印刷検査数 ${printResults.length} ≠ ${ENGINES.length * EXPECTED_FORM_COUNT}`);
   check(mergePrintResults.length === ENGINES.length * COMPANY_PRINT_FORMS.length,
@@ -1169,7 +1170,7 @@ async function runEngine(browser, engine, forms) {
   const expectedTableScrollResults = ENGINES.length * 2 * EXPECTED_TABLE_CATEGORIES;
   check(tableScrollResults.length === expectedTableScrollResults,
     `一覧表横スクロール検査数 ${tableScrollResults.length} ≠ ${expectedTableScrollResults}`);
-  const expectedSectionResults = ENGINES.length * (4 + 5) * (WIDTHS.length + 1);
+  const expectedSectionResults = ENGINES.length * (4 * (PORTAL_WIDTHS.length + 1) + 5 * (WIDTHS.length + 1));
   check(sectionResults.length === expectedSectionResults,
     `画面内main節表示検査数 ${sectionResults.length} ≠ ${expectedSectionResults}`);
   const expectedBehaviorResults = ENGINES.length * 20;
@@ -1184,7 +1185,7 @@ async function runEngine(browser, engine, forms) {
     check(artifacts.filter((item) => item.type === 'native-pdf-company').length === COMPANY_PRINT_FORMS.length,
       '会社差込4書式のnative PDFが揃っていません');
   }
-  const report = { base, widths: WIDTHS, epsilon: EPSILON,
+  const report = { base, widths: WIDTHS, portalWidths: PORTAL_WIDTHS, epsilon: EPSILON,
     scope: { htmlForms: EXPECTED_FORM_COUNT, excelForms: 2, choicesPerEngine: EXPECTED_CHECKBOX_COUNT,
       screenConditions: expectedScreenResults, printConditions: ENGINES.length * EXPECTED_FORM_COUNT,
       companyMergedPrintConditions: ENGINES.length * COMPANY_PRINT_FORMS.length, actualMobileConditions: ENGINES.length * 4,
