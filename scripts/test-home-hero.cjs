@@ -496,6 +496,7 @@ async function checkReducedMotion(browser, engine, width, failures) {
 (async () => {
   const results = [];
   const motionResults = [];
+  const containerResults = [];
   const failures = [];
 
   for (const [engineName, browserType] of ENGINES) {
@@ -659,6 +660,31 @@ async function checkReducedMotion(browser, engine, width, failures) {
       if (afterPC.titleFonts.secondary < beforePC.titleFonts.secondary - EPSILON) {
         failures.push(`${engineName}@767/768px: 画面を広げると緑の見出しが小さくなっています`);
       }
+      // A classic scrollbar can make the stage narrower than 100vw. Exercise
+      // that width difference even on runners with overlay scrollbars.
+      for (const width of [541, 733]) {
+        const page = await browser.newPage({ viewport: { width, height: 900 } });
+        const errors = [];
+        page.on('pageerror', (error) => errors.push(error.message));
+        await prepareLocalHttpPage(page);
+        await page.goto(base, { waitUntil: 'domcontentloaded', timeout: 20000 });
+        await page.evaluate(() => document.fonts.ready);
+        await page.locator('#top .hero-stage').evaluate((stage) => {
+          stage.style.width = 'calc(100% - 17px)';
+        });
+        const result = await measure(page);
+        containerResults.push({ engine: engineName, width, errors, ...result });
+        const { canvas, actors } = result.composition;
+        if (canvas.width > result.metrics.stage.width + EPSILON || actors.length !== 6
+          || actors.some((actor) => actor.width <= 0 || actor.height <= 0
+            || actor.left < canvas.left - EPSILON || actor.right > canvas.right + EPSILON
+            || actor.top < canvas.top - EPSILON || actor.bottom > canvas.bottom + EPSILON)
+          || result.offenders.length) {
+          failures.push(`${engineName}@${width}px: 表示領域が17px狭くなると人物・文字が切れます`);
+        }
+        if (errors.length) failures.push(`${engineName}@${width}px narrowed stage: ${errors.join(' / ')}`);
+        await page.close();
+      }
       for (const width of MOTION_WIDTHS) {
         motionResults.push(await checkMotionTimeline(browser, engineName, width, failures));
       }
@@ -678,7 +704,7 @@ async function checkReducedMotion(browser, engine, width, failures) {
       console.error(`失敗: ${failures.length}件`);
       for (const failure of failures) console.error(`- ${failure}`);
     }
-    console.log(JSON.stringify({ base, epsilon: EPSILON, results, motionResults, failures }, null, 2));
+    console.log(JSON.stringify({ base, epsilon: EPSILON, results, containerResults, motionResults, failures }, null, 2));
   } else {
     for (const result of results) {
       const {
