@@ -31,8 +31,8 @@
 
 ```bash
 python3 scripts/shoshiki/make_json.py        # hints/forms_base/forms_extra → data/shoshiki/forms.json
-python3 scripts/shoshiki/build_shoshiki.py   # HTML
 python3 scripts/shoshiki/build_zip.py        # Excel帳簿と Word一式 zip
+python3 scripts/shoshiki/build_shoshiki.py   # HTML（新zipの容量も反映）
 node scripts/preflight.mjs
 ```
 
@@ -49,10 +49,22 @@ node scripts/preflight.mjs
 
 一覧ページの入力欄に入れた会社名・代表者・所在地・電話・担当は `localStorage`（キー `shoshiki.company`）にだけ保存し、各書式ページが開くときに `.co-name` などへ差し込む。どこにも送信しない。書式ページは印刷用の独自 CSS と自前の JS で組んであるため、`page-enter.js` の SPA 遷移から除外している（`isFormDest`）。除外を外すと、同名 `const` の二重宣言で JS が止まり会社名が入らない、Excel リンクが「PK…」の文字化け画面になる、の 2 つが再発する。
 
+設定JSONは `name/title/rep/addr/tel/dept` の文字列だけを受理し、不正なファイルは既存設定を変えない。保存が拒否された場合はページ内の値を保持して警告を表示する。別タブの変更は `storage` イベントで同期する。書式本文とチェック状態は再読み込み後に保持しないため、印刷・PDF保存を案内する。チェック欄はTabで移動し、Space・Enterで変更できる。
+
+履歴復帰でブラウザが入力欄の旧値を復元する場合にも、`pageshow` 後の次taskで会社設定を読み直して入力欄と差し込み表示を揃える。BFCache復帰だけに限定しない。
+
+D-52は入力欄と個人番号の切り取り欄をA4一枚に収めるため、HTML生成器の `D52_CSS` でこの書式だけ余白・セルの行送りを調整する。本文・文字サイズは共通版を維持する。ブラウザの印刷検証はWord版のページ割りの確認を兼ねない。
+
+## Excel帳簿の計算と検査
+
+出勤簿は24時間未満の勤務を扱い、終業が始業より早い場合は翌日とする。F列は総休憩分、K列はそのうち深夜に実際に取った休憩分。深夜休憩を総休憩から推測しない。年休管理簿は社員IDと基準日の組で継続行を合算し、付与日数は主行だけに入力する。半日はAA列の当行取得日数を修正し、時間単位取得は別途管理する。
+
+`python3 scripts/shoshiki/test_excel_templates.py` は保存済み数式の境界ケースを限定評価する。Excel実機での再計算・印刷とは区別する。対象変更のPerformance CIでは `scripts/test-shoshiki.cjs` を実行し、全50書式の画面・印刷、設定・キーボード・遷移・配布ファイルのハッシュをChromium/WebKitで検査する。
+
 ## 配布物のファイル名
 
 サイトに置くバイナリ（xlsx・zip）は ASCII 名にする。日本語名の URL は、Googleフォームの確認メッセージなど自動リンクの環境で日本語の手前で切れて 404 になる。表示名は `<a download="…">` で日本語にしている。zip のダウンロードページ `shoshiki/dl/word-7kq3x9/` は、リンクがディレクトリで切れても届くように置いてある。Googleフォームの確認メッセージにはこのディレクトリ URL（`https://minano-sr.com/shoshiki/dl/word-7kq3x9/`）だけを書く。zip 名は `as_of` の年月で変わるが、ディレクトリ URL なのでフォーム側は直さなくてよい。同ディレクトリの `.htaccess` で 404 をこのページに向けている（古い zip 名のリンクでも届く）。`robots.txt` で `/shoshiki/dl/` は Disallow、書式ページは `noindex`、sitemap には一覧だけ載る。IndexNow は `scripts/lib/indexnow-changes.mjs` で `shoshiki/` 配下を通知対象外にしている。
 
 ## 法令の確認
 
-各書式の `guide.law` は作成時点（2026-09）の理解で書いてある。法改正で直すときは `forms_base.py`／`forms_extra.py` の `guide` と、必要なら本文を直し、`meta.as_of`（`forms_base.py` の `DATE`）を更新して zip 名の年月も上がるようにする。更新案内はフォームで「希望する」に☑した人にだけ送る。
+各書式の `guide.law` は `meta.as_of` 時点の理解で書いてある。`guide.law/ops` は現行のHTML・Wordに出力していないため、公開本文の修正と生成元だけの修正を区別する。法改正で直すときは `forms_base.py`／`forms_extra.py` の `guide` と、必要なら本文を直し、`meta.as_of`（`forms_base.py` の `DATE`）を更新して zip 名の年月も上がるようにする。生成器は既存の旧zip名も最新配布物のコピーへ更新する。更新案内はフォームで「希望する」に☑した人にだけ送る。
