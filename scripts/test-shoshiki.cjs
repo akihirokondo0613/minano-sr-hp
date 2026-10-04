@@ -55,6 +55,7 @@ const behaviorResults = [];
 const navigationResults = [];
 const mobileResults = [];
 const tableScrollResults = [];
+const tableNameResults = [];
 const sectionResults = [];
 const artifacts = [];
 
@@ -341,6 +342,98 @@ async function measureIndex(page) {
     return { viewportWidth, documentScrollWidth: document.documentElement.scrollWidth,
       measuredElements, measuredTextRects, offenders };
   }, { epsilon: EPSILON });
+}
+
+async function checkTableNameTypography(page, engine, width) {
+  const links = page.locator('.sh-tbl td.nm a');
+  const count = await links.count();
+  check(count === EXPECTED_FORM_COUNT + 2,
+    `${engine}:shoshiki@${width}px:名称数 ${count} ≠ ${EXPECTED_FORM_COUNT + 2}`);
+  for (let index = 0; index < count; index += 1) {
+    const link = links.nth(index);
+    await link.evaluate((element) => element.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' }));
+    await settle(page);
+    const result = await link.evaluate((element) => {
+      const cell = element.closest('td');
+      const style = getComputedStyle(cell);
+      const box = cell.getBoundingClientRect();
+      const lines = [];
+      let characters = 0;
+      let measuredCharacters = 0;
+      let visibleCharacters = 0;
+      const offenders = [];
+      let painted = true;
+      for (let parent = element; parent; parent = parent.parentElement) {
+        const parentStyle = getComputedStyle(parent);
+        if (parentStyle.display === 'none' || parentStyle.visibility !== 'visible'
+          || Number(parentStyle.opacity) <= 0) painted = false;
+      }
+      const navBottom = Math.max(0, document.querySelector('#nav')?.getBoundingClientRect().bottom || 0);
+      const viewportWidth = document.documentElement.clientWidth;
+      const viewportHeight = document.documentElement.clientHeight;
+      const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+      while (walker.nextNode()) {
+        const node = walker.currentNode;
+        let offset = 0;
+        for (const character of node.textContent) {
+          const start = offset;
+          offset += character.length;
+          if (!character.trim()) continue;
+          characters += 1;
+          const range = document.createRange();
+          range.setStart(node, start);
+          range.setEnd(node, offset);
+          const rect = [...range.getClientRects()].find((item) => item.width > 0 && item.height > 0);
+          if (!rect) continue;
+          measuredCharacters += 1;
+          const x = (rect.left + rect.right) / 2;
+          const y = (rect.top + rect.bottom) / 2;
+          if (x > 0 && x < viewportWidth && y > navBottom && y < viewportHeight) {
+            const hit = document.elementFromPoint(x, y);
+            if (hit && element.contains(hit)) visibleCharacters += 1;
+          }
+          let line = lines.find((item) => Math.abs(item.top - rect.top) <= 1);
+          if (!line) {
+            line = { top: rect.top, text: '' };
+            lines.push(line);
+          }
+          line.text += character;
+          if (rect.left < box.left - 1 || rect.right > box.right + 1
+            || rect.top < box.top - 1 || rect.bottom > box.bottom + 1) {
+            offenders.push({ character, left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom });
+          }
+        }
+      }
+      return { text: element.textContent.trim(), href: element.getAttribute('href'),
+        cell: { width: box.width, height: box.height,
+          contentWidth: box.width - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight) },
+        computed: { textWrap: style.textWrap, wordBreak: style.wordBreak, fontSize: style.fontSize },
+        characters, measuredCharacters, visibleCharacters, painted,
+        lines: lines.sort((a, b) => a.top - b.top), offenders };
+    });
+    const label = `${engine}:shoshiki@${width}px:${result.text}`;
+    check(result.characters > 0 && result.measuredCharacters === result.characters
+      && result.cell.width > 0 && result.cell.height > 0 && result.lines.length > 0,
+    `${label}:名称の文字実測が不足しています`);
+    check(result.painted && result.visibleCharacters > 0,
+      `${label}:名称リンクを画面内で表示・操作できません`);
+    check(result.offenders.length === 0,
+      `${label}:名称がセルから逸脱します ${JSON.stringify(result.offenders)}`);
+    check(result.lines.length <= 3 && (result.characters > 10 || result.lines.length === 1),
+      `${label}:名称が細切れになります ${JSON.stringify(result.lines)}`);
+    tableNameResults.push({ engine, width, ...result });
+  }
+  // 名称の確認後、カテゴリ表の横移動検査を左端から始める。
+  await page.locator('.sh-tblwrap').evaluateAll((elements) => {
+    for (const element of elements) element.scrollLeft = 0;
+  });
+  await page.locator('.sh-tbl').first().evaluate((element) => {
+    element.scrollIntoView({ block: 'start', inline: 'nearest', behavior: 'instant' });
+    const navHeight = document.querySelector('#nav')?.getBoundingClientRect().height || 0;
+    window.scrollBy({ top: -navHeight - 16, behavior: 'instant' });
+  });
+  await settle(page);
+  await screenshot(page, `${engine}-shoshiki-${width}-names-viewport`, false);
 }
 
 async function checkCategoryTableScroll(page, engine, width) {
@@ -1045,6 +1138,7 @@ async function runEngine(browser, engine, forms) {
             const controls = await reachableControls(page, '#cfg-wrap input:not([type="file"]), #cfg-wrap button');
             check(controls.controls.length === 9 && controls.controls.every((control) => control.reachable), `${label}:会社設定を操作できません ${JSON.stringify(controls.controls.filter((control) => !control.reachable))}`);
             metrics.companyControls = controls;
+            await checkTableNameTypography(page, engine, width);
             if ([320, 390].includes(width)) await checkCategoryTableScroll(page, engine, width);
           }
           if ([390, 1280].includes(width)) {
@@ -1170,6 +1264,9 @@ async function runEngine(browser, engine, forms) {
   const expectedTableScrollResults = ENGINES.length * 2 * EXPECTED_TABLE_CATEGORIES;
   check(tableScrollResults.length === expectedTableScrollResults,
     `一覧表横スクロール検査数 ${tableScrollResults.length} ≠ ${expectedTableScrollResults}`);
+  const expectedTableNameResults = ENGINES.length * WIDTHS.length * (EXPECTED_FORM_COUNT + 2);
+  check(tableNameResults.length === expectedTableNameResults,
+    `書式名称の文字検査数 ${tableNameResults.length} ≠ ${expectedTableNameResults}`);
   const expectedSectionResults = ENGINES.length * (4 * (PORTAL_WIDTHS.length + 1) + 5 * (WIDTHS.length + 1));
   check(sectionResults.length === expectedSectionResults,
     `画面内main節表示検査数 ${sectionResults.length} ≠ ${expectedSectionResults}`);
@@ -1193,11 +1290,12 @@ async function runEngine(browser, engine, forms) {
       changedCompanyHistoryConditions: ENGINES.length, seededStorageRemovalDeniedConditions: ENGINES.length * 2,
       navigationConditions: ENGINES.length,
       categoryTableScrollConditions: expectedTableScrollResults,
+      tableNameTypographyConditions: expectedTableNameResults,
       sectionVisibilityConditions: expectedSectionResults,
       externalFormSubmission: 'not attempted', physicalPrinter: 'not tested',
       pdf: process.env.RUNNER_TEMP ? 'Chromium six blank + four company-merged native PDFs' : 'no RUNNER_TEMP; PDF artifacts not saved' },
     results, printResults, mergePrintResults, behaviorResults, navigationResults, mobileResults,
-    tableScrollResults, sectionResults, artifacts, failures };
+    tableScrollResults, tableNameResults, sectionResults, artifacts, failures };
   if (failures.length) {
     console.error(`書式検査の失敗: ${failures.length}件`);
     for (const failure of failures) console.error(`- ${failure}`);
