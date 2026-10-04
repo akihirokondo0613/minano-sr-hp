@@ -670,12 +670,14 @@ async function checkReducedMotion(browser, engine, width, failures) {
         await page.goto(base, { waitUntil: 'domcontentloaded', timeout: 20000 });
         await page.evaluate(() => document.fonts.ready);
         await page.locator('#top .hero-stage').evaluate((stage) => {
+          stage.style.flex = '0 0 auto';
           stage.style.width = 'calc(100% - 17px)';
         });
         const result = await measure(page);
         containerResults.push({ engine: engineName, width, errors, ...result });
         const { canvas, actors } = result.composition;
-        if (canvas.width > result.metrics.stage.width + EPSILON || actors.length !== 6
+        if (Math.abs(result.metrics.stage.width - (result.viewportWidth - 17)) > EPSILON
+          || canvas.width > result.metrics.stage.width + EPSILON || actors.length !== 6
           || actors.some((actor) => actor.width <= 0 || actor.height <= 0
             || actor.left < canvas.left - EPSILON || actor.right > canvas.right + EPSILON
             || actor.top < canvas.top - EPSILON || actor.bottom > canvas.bottom + EPSILON)
