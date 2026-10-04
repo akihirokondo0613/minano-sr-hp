@@ -12,7 +12,6 @@
 const { chromium, webkit } = require('playwright');
 const fs = require('node:fs/promises');
 const path = require('node:path');
-const { createHash } = require('node:crypto');
 
 const args = process.argv.slice(2);
 const base = (args.find((arg) => arg.startsWith('http')) || 'http://127.0.0.1:8811/')
@@ -25,7 +24,15 @@ const PORTAL_WIDTHS = [320, 360, 361, 390, 768, 1280];
 const ENGINES = [['chromium', chromium], ['webkit', webkit]];
 const EPSILON = 1;
 const EXPECTED_FORM_COUNT = 50;
-const EXPECTED_TABLE_CATEGORIES = 11;
+const EXPECTED_TABLE_CATEGORIES = 10;
+const RETIRED_OFFICE_FILES = [
+  'shoshiki/D-31_shukkinbo.xlsx', 'shoshiki/D-32_nenkyu-kanribo.xlsx',
+  'shoshiki/dl/word-7kq3x9/shanai-shoshiki-word-202609.zip',
+  'shoshiki/dl/word-7kq3x9/shanai-shoshiki-word-202610.zip',
+];
+// CIの静的サーバーは下位ディレクトリのindexを補完しない。
+// 案内本文・操作は明示indexで検査し、公開ディレクトリURLは本番GETで照合する。
+const LEGACY_LANDING = 'shoshiki/dl/word-7kq3x9/index.html';
 // D-27 の離職経緯に3択を用意する改訂後の全50書式。
 const EXPECTED_CHECKBOX_COUNT = 380;
 const PDF_FORMS = ['D-04', 'D-18', 'D-27', 'D-40', 'D-45', 'D-52'];
@@ -167,7 +174,7 @@ async function revealSections(page, details) {
   }
   const mainSections = page.locator('main > section');
   const count = await mainSections.count();
-  const expected = details.relative === 'portal.html' ? 4 : 5;
+  const expected = 4;
   check(count === expected, `${details.engine}:${details.relative}@${details.width}px:main節数 ${count} ≠ ${expected}`);
   for (let index = 0; index < count; index += 1) {
     const section = mainSections.nth(index);
@@ -347,8 +354,8 @@ async function measureIndex(page) {
 async function checkTableNameTypography(page, engine, width) {
   const links = page.locator('.sh-tbl td.nm a');
   const count = await links.count();
-  check(count === EXPECTED_FORM_COUNT + 2,
-    `${engine}:shoshiki@${width}px:名称数 ${count} ≠ ${EXPECTED_FORM_COUNT + 2}`);
+  check(count === EXPECTED_FORM_COUNT,
+    `${engine}:shoshiki@${width}px:名称数 ${count} ≠ ${EXPECTED_FORM_COUNT}`);
   for (let index = 0; index < count; index += 1) {
     const link = links.nth(index);
     await link.evaluate((element) => element.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' }));
@@ -450,7 +457,7 @@ async function checkCategoryTableScroll(page, engine, width) {
       initialScrollLeft = await wrapper.evaluate((element) => element.scrollLeft);
       await wrapper.scrollIntoViewIfNeeded();
       const lastCTA = wrapper.locator('tbody tr:last-child td.go a').last();
-      check(await lastCTA.count() === 1, `${label}:最終行の記入/Excel CTAがありません`);
+      check(await lastCTA.count() === 1, `${label}:最終行の記入CTAがありません`);
       // 行数の多い表でも最後のCTAが縦方向に見える位置へ移動する。
       // 横位置はその後明示的に0→最右端へ動かして移動量を測る。
       await lastCTA.evaluate((element) => element.scrollIntoView({
@@ -488,7 +495,7 @@ async function checkCategoryTableScroll(page, engine, width) {
         && Math.abs(before.scrollLeft) <= EPSILON && moved > EPSILON
         && Math.abs(after.scrollLeft - after.maxScrollLeft) <= EPSILON,
       `${label}:横スクロールの幅/最右端への移動が実測できません ${JSON.stringify({ before, after: after.scrollLeft, moved })}`);
-      check(/^(記入する|Excel)/.test(after.cta.text) && after.wrapper.width > 0 && after.wrapper.height > 0
+      check(/^記入する/.test(after.cta.text) && after.wrapper.width > 0 && after.wrapper.height > 0
         && after.cta.width > 0 && after.cta.height > 0
         && after.cta.left >= after.wrapper.left - EPSILON && after.cta.right <= after.wrapper.right + EPSILON
         && after.cta.left >= -EPSILON && after.cta.right <= after.viewportWidth + EPSILON
@@ -975,7 +982,7 @@ async function checkNavigation(browser, engine) {
   const context = await prepareContext(browser, undefined, { reducedMotion: 'no-preference' });
   const { page, errors, httpErrors } = await monitoredPage(context);
   const steps = [];
-  const downloads = [];
+  const distribution = { retiredFiles: [], legacyWidths: [] };
   try {
     await goto(page, 'portal.html');
     const token = await page.evaluate(() => window.__qaDocumentToken);
@@ -983,10 +990,9 @@ async function checkNavigation(browser, engine) {
       const api = window.__mnSpa;
       return { version: api?.v ?? null,
         excludesList: Boolean(api?.isFormDest?.(new URL('shoshiki.html', location.href))),
-        excludesForm: Boolean(api?.isFormDest?.(new URL('shoshiki/D-04.html', location.href))),
-        excludesExcel: Boolean(api?.isFormDest?.(new URL('shoshiki/D-31_shukkinbo.xlsx', location.href))) };
+        excludesForm: Boolean(api?.isFormDest?.(new URL('shoshiki/D-04.html', location.href))) };
     });
-    check(contract.excludesList && contract.excludesForm && contract.excludesExcel, `${engine}:書式/ExcelのSPA除外契約がありません`);
+    check(contract.excludesList && contract.excludesForm, `${engine}:書式のSPA除外契約がありません`);
     steps.push({ path: 'portal.html', token, contract });
     await clickPath(page, '.hub-card[href="shoshiki.html"]', 'shoshiki.html');
     const listToken = await page.evaluate(() => window.__qaDocumentToken);
@@ -998,25 +1004,21 @@ async function checkNavigation(browser, engine) {
       const formLinks = [...document.querySelectorAll('a[href]')].map((a) => new URL(a.href).pathname)
         .filter((pathname) => /\/shoshiki\/D-\d\d\.html$/.test(pathname));
       return { rows: rows.length, uniqueForms: new Set(formLinks).size,
+        officeLinks: [...document.querySelectorAll('a[href]')].filter((a) => /\.(?:xlsx?|docx?|zip)(?:[?#]|$)/i.test(a.href)).length,
         google: [...document.querySelectorAll('a[href]')].filter((a) => a.href === 'https://forms.gle/vFUpB3fqzetNHQQKA')
           .map((a) => ({ href: a.href, target: a.target, rel: a.rel })) };
     });
-    check(counts.rows === 52 && counts.uniqueForms === 50, `${engine}:一覧の52本/HTML50本が不一致 ${JSON.stringify(counts)}`);
-    check(counts.google.length > 0 && counts.google.every((link) => link.target === '_blank' && link.rel.includes('noopener')), `${engine}:登録Googleフォームのリンクが欠落/不一致`);
-    for (const [filename, japanese] of [['D-31_shukkinbo.xlsx', 'D-31_出勤簿.xlsx'], ['D-32_nenkyu-kanribo.xlsx', 'D-32_年次有給休暇管理簿.xlsx']]) {
-      const downloadPromise = page.waitForEvent('download');
-      await page.locator(`a[href="shoshiki/${filename}"][download]`).first().click();
-      const download = await downloadPromise;
-      const [buffer, original] = await Promise.all([
-        readDownload(download), fs.readFile(path.join(root, 'shoshiki', filename)),
-      ]);
-      const sha256 = createHash('sha256').update(buffer).digest('hex');
-      const originalSha256 = createHash('sha256').update(original).digest('hex');
-      check(download.suggestedFilename() === japanese && buffer.length > 100 && buffer.subarray(0, 2).toString() === 'PK', `${engine}:${filename}:Excelダウンロードが不正`);
-      check(sha256 === originalSha256, `${engine}:${filename}:Excelダウンロードが原本のSHA256と一致しません`);
-      check(new URL(page.url()).pathname === new URL('shoshiki.html', base).pathname, `${engine}:${filename}:ダウンロードで文字化け画面へ遷移しました`);
-      downloads.push({ filename, suggestedFilename: download.suggestedFilename(), bytes: buffer.length,
-        signature: buffer.subarray(0, 2).toString(), sha256, originalSha256 });
+    check(counts.rows === EXPECTED_FORM_COUNT && counts.uniqueForms === EXPECTED_FORM_COUNT,
+      `${engine}:HTML50本の一覧が不一致 ${JSON.stringify(counts)}`);
+    check(counts.google.length === 0 && counts.officeLinks === 0,
+      `${engine}:終了したOffice配布/申込リンクが残っています ${JSON.stringify(counts)}`);
+    distribution.list = counts;
+    for (const relative of RETIRED_OFFICE_FILES) {
+      const response = await context.request.get(new URL(relative, base).href);
+      const body = await response.body();
+      check(response.status() === 404 && body.subarray(0, 2).toString() !== 'PK',
+        `${engine}:${relative}:配布終了ファイルが提供されています (${response.status()})`);
+      distribution.retiredFiles.push({ relative, status: response.status(), bytes: body.length });
     }
     await clickPath(page, 'a[href="shoshiki/D-04.html"]', 'shoshiki/D-04.html');
     const formToken = await page.evaluate(() => window.__qaDocumentToken);
@@ -1056,13 +1058,31 @@ async function checkNavigation(browser, engine) {
     await clickPath(page, 'a[href="portal.html"]', 'portal.html');
     check(await page.locator('.hub-card[href="shoshiki.html"]').count() === 1, `${engine}:一覧→portalの本文が復元されません`);
     steps.push({ path: 'list→portal.html' });
+    for (const width of WIDTHS) {
+      await page.setViewportSize({ width, height: 900 });
+      await goto(page, LEGACY_LANDING);
+      const metrics = await measureIndex(page);
+      const controls = await reachableControls(page, 'a.dl');
+      const retiredLinks = await page.locator('a[download], a[href$=".zip"], a[href$=".xlsx"], a[href*="forms.gle"]').count();
+      check(metrics.measuredElements > 10 && metrics.measuredTextRects > 10
+        && metrics.documentScrollWidth <= metrics.viewportWidth + EPSILON && metrics.offenders.length === 0,
+        `${engine}:旧配布案内@${width}px:表示の実測/横はみ出し ${JSON.stringify(metrics)}`);
+      check(controls.controls.length === 1 && controls.controls[0].reachable && retiredLinks === 0,
+        `${engine}:旧配布案内@${width}px:HTML版への操作導線が不正`);
+      distribution.legacyWidths.push({ width, metrics, controls, retiredLinks });
+      if ([390, 1280].includes(width)) await screenshot(page, `${engine}-legacy-html-only-${width}`);
+    }
+    await clickPath(page, 'a.dl', 'shoshiki.html');
+    check(await page.locator('.sh-tbl tbody tr').count() === EXPECTED_FORM_COUNT,
+      `${engine}:旧配布URLからHTML一覧に到達できません`);
+    steps.push({ path: 'legacy→shoshiki.html' });
   } catch (error) {
     failures.push(`${engine}:導線/戻る進む/配布: ${error.message}`);
     await screenshot(page, `${engine}-navigation-failure`).catch(() => {});
   } finally {
     check(errors.length === 0, `${engine}:navigation:pageerror ${errors.join(' / ')}`);
     check(httpErrors.length === 0, `${engine}:navigation:HTTP error ${httpErrors.join(' / ')}`);
-    navigationResults.push({ engine, steps, downloads, errors, httpErrors });
+    navigationResults.push({ engine, steps, distribution, errors, httpErrors });
     await context.close();
   }
 }
@@ -1264,10 +1284,10 @@ async function runEngine(browser, engine, forms) {
   const expectedTableScrollResults = ENGINES.length * 2 * EXPECTED_TABLE_CATEGORIES;
   check(tableScrollResults.length === expectedTableScrollResults,
     `一覧表横スクロール検査数 ${tableScrollResults.length} ≠ ${expectedTableScrollResults}`);
-  const expectedTableNameResults = ENGINES.length * WIDTHS.length * (EXPECTED_FORM_COUNT + 2);
+  const expectedTableNameResults = ENGINES.length * WIDTHS.length * EXPECTED_FORM_COUNT;
   check(tableNameResults.length === expectedTableNameResults,
     `書式名称の文字検査数 ${tableNameResults.length} ≠ ${expectedTableNameResults}`);
-  const expectedSectionResults = ENGINES.length * (4 * (PORTAL_WIDTHS.length + 1) + 5 * (WIDTHS.length + 1));
+  const expectedSectionResults = ENGINES.length * (4 * (PORTAL_WIDTHS.length + 1) + 4 * (WIDTHS.length + 1));
   check(sectionResults.length === expectedSectionResults,
     `画面内main節表示検査数 ${sectionResults.length} ≠ ${expectedSectionResults}`);
   const expectedBehaviorResults = ENGINES.length * 20;
@@ -1277,13 +1297,18 @@ async function runEngine(browser, engine, forms) {
   check(navigationResults.length === ENGINES.length
     && navigationResults.every((result) => result.steps.some((step) => step.path === 'changed-forward:D-18.html')),
   '設定変更後に戻る/進むの2エンジン検査が揃っていません');
+  check(navigationResults.length === ENGINES.length && navigationResults.every((result) =>
+    result.distribution.retiredFiles.length === RETIRED_OFFICE_FILES.length
+    && result.distribution.legacyWidths.length === WIDTHS.length
+    && result.steps.some((step) => step.path === 'legacy→shoshiki.html')),
+  '配布終了ファイル・旧URLからHTML版への2エンジン検査が揃っていません');
   if (process.env.RUNNER_TEMP) {
     check(artifacts.filter((item) => item.type === 'native-pdf').length === PDF_FORMS.length, '代表6書式のnative PDFが揃っていません');
     check(artifacts.filter((item) => item.type === 'native-pdf-company').length === COMPANY_PRINT_FORMS.length,
       '会社差込4書式のnative PDFが揃っていません');
   }
   const report = { base, widths: WIDTHS, portalWidths: PORTAL_WIDTHS, epsilon: EPSILON,
-    scope: { htmlForms: EXPECTED_FORM_COUNT, excelForms: 2, choicesPerEngine: EXPECTED_CHECKBOX_COUNT,
+    scope: { htmlForms: EXPECTED_FORM_COUNT, excelForms: 0, wordPackages: 0, choicesPerEngine: EXPECTED_CHECKBOX_COUNT,
       screenConditions: expectedScreenResults, printConditions: ENGINES.length * EXPECTED_FORM_COUNT,
       companyMergedPrintConditions: ENGINES.length * COMPANY_PRINT_FORMS.length, actualMobileConditions: ENGINES.length * 4,
       behaviorConditions: expectedBehaviorResults, crossTabConditions: ENGINES.length,
@@ -1292,6 +1317,8 @@ async function runEngine(browser, engine, forms) {
       categoryTableScrollConditions: expectedTableScrollResults,
       tableNameTypographyConditions: expectedTableNameResults,
       sectionVisibilityConditions: expectedSectionResults,
+      retiredOfficeFileConditions: ENGINES.length * RETIRED_OFFICE_FILES.length,
+      legacyLandingConditions: ENGINES.length * WIDTHS.length,
       externalFormSubmission: 'not attempted', physicalPrinter: 'not tested',
       pdf: process.env.RUNNER_TEMP ? 'Chromium six blank + four company-merged native PDFs' : 'no RUNNER_TEMP; PDF artifacts not saved' },
     results, printResults, mergePrintResults, behaviorResults, navigationResults, mobileResults,

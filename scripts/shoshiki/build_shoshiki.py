@@ -4,7 +4,7 @@
 #   python3 scripts/shoshiki/build_shoshiki.py --check  … 書き出さず、差分があれば exit 1
 # 正本: data/shoshiki/forms.json（文面。作り方は make_json.py と docs/shoshiki.md）。donor は portal.html（head・nav・footer の骨格を借りる）。
 # 書式ページ（shoshiki/D-xx.html）は印刷用の独立HTMLで、会社情報はブラウザ内（localStorage）にだけ保存する。
-# Excel帳簿と Word一式 zip は build_zip.py が作る（ここでは扱わない）。
+# 公開対象はHTML書式のみ。Office版の元データと保管用生成器は非公開で保持する。
 import html
 import json
 import pathlib
@@ -16,7 +16,6 @@ HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE))
 import render_forms as R  # noqa: E402
-from shoshiki_names import XLSX_FILES, ZIP_NAME  # noqa: E402  build_zip（openpyxl依存）は import しない
 
 e = html.escape
 DATA = R.DATA
@@ -25,14 +24,12 @@ AS_OF = META["as_of"]
 DOMAIN = "https://minano-sr.com"
 PAGE = "shoshiki.html"
 DL_PATH = "shoshiki/dl/word-7kq3x9"
-FORM_URL = "https://forms.gle/vFUpB3fqzetNHQQKA"  # Word一式のメール登録（Googleフォーム・contact@・2026-09-05）
-FORMS = [f for f in DATA["forms"] if f.get("to") != "社労士"]
+FORMS = [f for f in DATA["forms"] if f.get("to") != "社労士" and not f.get("kind")]
 BY_NO = {f["no"]: f for f in FORMS}
-N_FORMS = len([f for f in FORMS if not f.get("kind")])
-N_XLSX = len([f for f in FORMS if f.get("kind")])
+N_FORMS = len(FORMS)
 
-TITLE = f"社内書式のひな形｜入社から退職まで{N_FORMS + N_XLSX}本を無料で｜みなの社会保険労務士事務所"
-DESC = f"入社誓約書・有給休暇申請書・身上異動届・休職届・退職届・労働者代表の選出・就業規則意見書など、会社と従業員の間で使う社内書式{N_FORMS + N_XLSX}本。ブラウザで記入して印刷でき、会社名を入れると全書式に自動で入ります。登録不要。"
+TITLE = f"社内書式のひな形｜入社から退職まで{N_FORMS}本を無料で｜みなの社会保険労務士事務所"
+DESC = f"入社誓約書・有給休暇申請書・身上異動届・休職届・退職届・労働者代表の選出・就業規則意見書など、会社と従業員の間で使う社内書式{N_FORMS}本。ブラウザで記入して印刷でき、会社名を入れると全書式に自動で入ります。登録不要。"
 
 CAT_NOTE = {
     "01_入社": "内定から入社までに取り交わす書類",
@@ -45,7 +42,6 @@ CAT_NOTE = {
     "09_証明書": "本人の求めに応じて会社が発行",
     "10_労使協定・労働者代表": "36協定・就業規則の前提になる手続",
     "11_人事・賃金": "異動・昇給などの通知",
-    "08_帳簿（Excel）": "法定帳簿のExcel",
 }
 CAT_ORDER = [
     "01_入社",
@@ -58,7 +54,6 @@ CAT_ORDER = [
     "09_証明書",
     "10_労使協定・労働者代表",
     "11_人事・賃金",
-    "08_帳簿（Excel）",
 ]
 # 場面から探す: (2文字のアイコン, 見出し, 一言, 書式番号)
 SCENES = [
@@ -84,8 +79,8 @@ SCENES = [
     (
         "勤怠",
         "残業・休暇・欠勤",
-        "日々の申請と承認。帳簿も",
-        ["D-11", "D-12", "D-13", "D-14", "D-50", "D-31", "D-32"],
+        "日々の申請と承認",
+        ["D-11", "D-12", "D-13", "D-14", "D-50"],
     ),
     (
         "変更",
@@ -136,17 +131,10 @@ SCENES = [
 
 
 def href(f):
-    if f.get("kind") == "xlsx":
-        return f"shoshiki/{XLSX_FILES[f['no']]}"
     return f"shoshiki/{f['no']}.html"
 
 
 def link_attrs(f):
-    """xlsx は download 属性で日本語の表示名にし、SPA遷移の対象からも外す"""
-    if f.get("kind") == "xlsx":
-        return (
-            f' href="{e(href(f))}" download="{e(f["no"] + "_" + f["title"] + ".xlsx")}"'
-        )
     return f' href="{e(href(f))}"'
 
 
@@ -164,11 +152,9 @@ CSS = """
 .qk{display:inline-flex;align-items:center;gap:7px;background:var(--shiro);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:600;color:var(--ink2);letter-spacing:.02em;text-decoration:none;transition:border-color .34s cubic-bezier(.22,.61,.36,1),transform .34s cubic-bezier(.22,.61,.36,1)}
 .qk::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--moegi);flex-shrink:0}
 .qk:hover{border-color:var(--moegi-t);transform:translateY(-2px);color:var(--sugi)}
-.qk.xl::before{background:#C9A227}
 .qk{max-width:100%}
 .qk-label{min-width:0;overflow-wrap:break-word}
 .qk-label:has(wbr){word-break:keep-all}
-.qk.xl::after{content:'Excel';font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.04em;color:var(--ink4)}
 .sh-scenes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:12px;align-items:start}
 .sh-scene{min-width:0;background:var(--shiro);border:1px solid var(--line);border-radius:14px;padding:14px 16px 10px;display:flex;flex-direction:column;gap:10px}
 .sh-scene-h{display:flex;align-items:center;gap:12px}
@@ -194,10 +180,6 @@ CSS = """
 .sh-tbl td.use{color:var(--ink3)}
 .sh-tbl td.go{white-space:nowrap}
 .sh-tbl td.go a{font-family:var(--mono);font-size:12px;color:var(--moegi-t);text-decoration:none;font-weight:600}
-.sh-word{background:var(--shiro);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
-.sh-word p{margin:0 0 10px;font-size:13.5px;line-height:1.9;color:var(--ink2)}
-.sh-word .gbtn{display:inline-block;padding:10px 18px;background:var(--sugi);color:#fff;border-radius:999px;text-decoration:none;font-weight:700;font-size:14px}
-.sh-word .gbtn:hover{background:var(--moegi-t)}
 .sh-about p{font-size:13px;line-height:1.95;color:var(--ink3);margin:0 0 6px}
 """
 
@@ -212,7 +194,7 @@ def scene_block():
     for icon, name, lead, nos in SCENES:
         fs = [BY_NO[n] for n in nos if n in BY_NO]
         links = "".join(
-            f'<a class="qk{" xl" if f.get("kind") == "xlsx" else ""}"{link_attrs(f)}><span class="qk-label">{scene_label(f["title"])}</span></a>'
+            f'<a class="qk"{link_attrs(f)}><span class="qk-label">{scene_label(f["title"])}</span></a>'
             for f in fs
         )
         out.append(
@@ -242,7 +224,7 @@ def cat_blocks():
             '<div class="sh-tblwrap"><table class="sh-tbl"><thead><tr><th>番号</th><th>書式</th><th>用途</th><th></th></tr></thead><tbody>'
         )
         for f in fs:
-            go = "Excel ↓" if f.get("kind") == "xlsx" else "記入する →"
+            go = "記入する →"
             out.append(
                 f'<tr><td class="no">{e(f["no"])}</td><td class="nm"><a{link_attrs(f)}>{e(f["title"])}</a></td>'
                 f'<td class="use">{e(f["guide"]["use"])}</td><td class="go"><a{link_attrs(f)}>{go}</a></td></tr>'
@@ -292,19 +274,8 @@ def main_html():
       <div class="cat-icon kmono" aria-hidden="true">一覧</div>
       <h2 class="cat-title">分類から探す</h2>
     </div>
-    <p class="cat-desc">書式{N_FORMS}本と帳簿{N_XLSX}本。用途の欄に、その書式が要る理由を一行で書いています。</p>
+    <p class="cat-desc">ブラウザで記入・印刷できる書式{N_FORMS}本。用途の欄に、その書式が要る理由を一行で書いています。</p>
     {cat_blocks()}
-  </section>
-
-  <section class="cat rv" id="word">
-    <div class="cat-head">
-      <div class="cat-icon kmono" aria-hidden="true">Word</div>
-      <h2 class="cat-title">Word版を一式でほしい方へ</h2>
-    </div>
-    <div class="sh-word">
-      <p>全書式のWord版（zip）を、メール登録の方にお渡しします。送信後の画面にダウンロードページのリンクが表示されます。法改正で書式を更新したときは、希望された方にだけお知らせします。登録した内容は書式のお渡しと更新案内にしか使いません。</p>
-      <a class="gbtn" href="{e(FORM_URL)}" target="_blank" rel="noopener">メール登録してWord一式を受け取る ↗</a>
-    </div>
   </section>
 
   <section class="cat rv sh-about" id="about">
@@ -497,15 +468,11 @@ def build_form(f):
 
 
 def build_dl_page():
-    """Word一式のダウンロードページ。Googleフォームの確認メッセージからここへ来る。
-    日本語のファイル名を含むURLは自動リンクが途中で切れるので、ディレクトリのURLで案内し、ここからzipへ。"""
-    zpath = REPO / DL_PATH / ZIP_NAME
-    size_mb = f"{zpath.stat().st_size / 1024 / 1024:.1f}MB" if zpath.exists() else ""
-    items = "".join(f"<li>{e(f['no'])}　{e(f['title'])}</li>" for f in FORMS)
+    """旧配布URLから来た利用者をHTML版へ案内する。申込・Office配布は行わない。"""
     return f"""<!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>社内書式 Word一式のダウンロード</title>
+<title>社内書式のHTML版をご利用ください</title>
 <style>
 body{{margin:0;padding:32px 20px 80px;font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;font-size:14.5px;line-height:1.85;color:#1E2721;background:#F9FAF7}}
 .wrap{{max-width:680px;margin:0 auto}}
@@ -520,25 +487,23 @@ details{{margin-top:8px}} summary{{cursor:pointer;color:#1C5842;font-weight:700}
 .list li{{font-size:13px;color:#4A554D}}
 .foot{{margin-top:36px;padding-top:14px;border-top:1px solid #DCE3DB;font-size:12.5px;color:#4A554D}}
 a{{color:#1C5842}}
-</style></head><body><div class="wrap">
-<h1>社内書式 Word一式のダウンロード</h1>
-<p class="lede">メール登録ありがとうございます。下のボタンから保存してください。</p>
-<a class="dl" href="{e(ZIP_NAME)}" download>ダウンロード（zip{"・" + size_mb if size_mb else ""}）</a>
-<p class="meta">Word {N_FORMS}本＋Excel {N_XLSX}本＋README。{e(AS_OF)}版。開けない場合は <a href="mailto:contact@minano-sr.com">contact@minano-sr.com</a> へ。</p>
+</style></head><body><main class="wrap">
+<h1>社内書式はブラウザでご利用いただけます</h1>
+<p class="lede">Word・Excelファイルの配布は終了しました。現在は、ブラウザで記入・印刷できるHTML書式{N_FORMS}本を公開しています。登録は不要です。</p>
+<a class="dl" href="../../../shoshiki.html">社内書式の一覧を開く →</a>
 <h2>使い方</h2>
 <ol>
-<li>必要な書式（.docx）をWordで開きます。</li>
-<li>「【会社名】」を自社名に置き換えます（Ctrl+H または ⌘+H で「すべて置換」）。</li>
-<li>宛名の代表者名・所在地・担当者を書き入れ、文面を自社の就業規則・実情に合わせて直します。</li>
+<li>一覧ページで会社情報を入力します。各書式の宛名・発信者欄に自動で入ります。</li>
+<li>必要な書式を開き、ブラウザ上で記入します。</li>
+<li>書式ページの「印刷」ボタンから印刷またはPDFに保存します。</li>
 </ol>
 <h2>利用条件</h2>
 <ul>
 <li>自社内での利用と改変は自由です。第三者への再配布・販売はご遠慮ください。</li>
 <li>法令は作成時点の理解に基づく一般的な内容です。法令に反しない範囲で、自社の就業規則・労使協定と実情に合わせて修正してください。解雇・懲戒・労使協定などは、使う前に専門家にご確認ください。</li>
 </ul>
-<details><summary>収録一覧（{N_FORMS + N_XLSX}本）</summary><ul class="list">{items}</ul></details>
-<p class="foot">ブラウザで記入できる版は <a href="../../../shoshiki.html">社内書式のひな形</a> にあります（会社名を入れると全書式に入ります）。<br>作成・提供：みなの社会保険労務士事務所（富山市）</p>
-</div></body></html>
+<p class="foot">作成・提供：みなの社会保険労務士事務所（富山市）</p>
+</main></body></html>
 """
 
 
@@ -563,6 +528,13 @@ def mark_phrases(text):
 
 def main():
     check = "--check" in sys.argv
+    office_files = sorted(p.relative_to(REPO).as_posix() for p in (REPO / "shoshiki").rglob("*")
+                          if p.suffix.lower() in {".xlsx", ".xls", ".docx", ".doc", ".zip"})
+    if office_files:
+        print("社内書式の公開対象はHTML版のみです。Office配布ファイルを公開ディレクトリに置かないでください。")
+        for name in office_files:
+            print("-", name)
+        sys.exit(1)
     outputs = {
         REPO / PAGE: mark_phrases(build_index()),
         REPO / DL_PATH / "index.html": build_dl_page(),
