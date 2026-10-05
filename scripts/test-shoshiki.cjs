@@ -24,6 +24,11 @@ const PORTAL_WIDTHS = [320, 360, 361, 390, 768, 1280];
 const ENGINES = [['chromium', chromium], ['webkit', webkit]];
 const EPSILON = 1;
 const EXPECTED_FORM_COUNT = 50;
+const EXPECTED_COMMON_FORM_COUNT = 22;
+const COMMON_PREVIEWS = JSON.parse(require('node:fs').readFileSync(
+  path.join(root, 'data/shoshiki/common_previews.json'), 'utf8',
+));
+const COMMON_CATEGORIES = ['入社', '勤務・休暇', '休職・退職', '証明・その他'];
 const EXPECTED_TABLE_CATEGORIES = 10;
 const RETIRED_OFFICE_FILES = [
   'shoshiki/D-31_shukkinbo.xlsx', 'shoshiki/D-32_nenkyu-kanribo.xlsx',
@@ -96,6 +101,7 @@ const mobileResults = [];
 const tableScrollResults = [];
 const tableNameResults = [];
 const sectionResults = [];
+const commonPreviewResults = [];
 const artifacts = [];
 
 function check(condition, message) {
@@ -198,6 +204,89 @@ async function goto(page, relative) {
   await settle(page);
 }
 
+async function measurePreviewImage(page, engine, key, source, preview) {
+  // 通常モードのsmoothスクロールとsectionのrevealが重なるため、
+  // 画像を即時に画面中央へ移動し、祖先の表示とlazy画像の読み込みを待つ。
+  await preview.evaluate((image) => image.scrollIntoView({
+    block: 'center', inline: 'nearest', behavior: 'instant',
+  }));
+  const previewHandle = await preview.elementHandle();
+  try {
+    await page.waitForFunction((image) => {
+      const rect = image.getBoundingClientRect();
+      if (rect.bottom <= 0 || rect.top >= innerHeight) return false;
+      for (let ancestor = image; ancestor; ancestor = ancestor.parentElement) {
+        const style = getComputedStyle(ancestor);
+        if (style.display === 'none' || ['hidden', 'collapse'].includes(style.visibility)
+          || Number(style.opacity) <= 0) return false;
+        if ((ancestor.classList.contains('rv') || ancestor.classList.contains('rvl'))
+          && !ancestor.classList.contains('on')) return false;
+      }
+      return image.complete && image.naturalWidth > 0 && image.naturalHeight > 0;
+    }, previewHandle, { timeout: 10000, polling: 100 });
+  } catch (error) {
+    const state = await preview.evaluate((image) => ({
+      complete: image.complete, naturalWidth: image.naturalWidth, source: image.currentSrc,
+      rect: image.getBoundingClientRect().toJSON(), scrollY,
+      section: image.closest('section')?.className,
+      opacity: getComputedStyle(image.closest('section')).opacity,
+    }));
+    throw new Error(`${key}:プレビュー画像の表示/読み込み確認: ${error.message} ${JSON.stringify(state)}`);
+  } finally {
+    await previewHandle.dispose();
+  }
+  const metrics = await preview.evaluate((image) => {
+    const rect = image.getBoundingClientRect();
+    const card = image.closest('article').getBoundingClientRect();
+    return { source: image.currentSrc, naturalWidth: image.naturalWidth, naturalHeight: image.naturalHeight,
+      width: rect.width, height: rect.height, top: rect.top, bottom: rect.bottom,
+      left: rect.left, right: rect.right, cardLeft: card.left, cardRight: card.right,
+      viewportWidth: document.documentElement.clientWidth, viewportHeight: innerHeight };
+  });
+  check(new URL(metrics.source).pathname === `/${source}` && metrics.naturalWidth === 840
+    && metrics.naturalHeight === 1189 && metrics.width > 0 && metrics.height > 0
+    && metrics.top >= -EPSILON && metrics.bottom <= metrics.viewportHeight + EPSILON
+    && metrics.left >= -EPSILON && metrics.right <= metrics.viewportWidth + EPSILON
+    && metrics.cardLeft >= -EPSILON && metrics.cardRight <= metrics.viewportWidth + EPSILON,
+  `${engine}:${key}:書類の見本を表示できません ${JSON.stringify(metrics)}`);
+  return metrics;
+}
+
+async function checkCommonPreviews(page, engine, width, actualMobile = false) {
+  const state = await page.locator('#common-forms').evaluate((section) => ({
+    revealDependent: section.matches('.rv,.rvl')
+      || Boolean(section.parentElement.closest('.rv,.rvl')),
+    groups: [...section.querySelectorAll('.sh-common-group > h3')].map((h3) => h3.textContent.trim()),
+    cards: [...section.querySelectorAll('[data-common-form]')].map((card) => ({
+      no: card.dataset.commonForm, title: card.querySelector('h4')?.textContent,
+      source: card.querySelector('img')?.getAttribute('src'), alt: card.querySelector('img')?.alt,
+      caption: card.querySelector('figcaption')?.textContent,
+      links: [...card.querySelectorAll('a')].map((a) => ({ href: a.getAttribute('href'), label: a.getAttribute('aria-label') })),
+    })),
+  }));
+  check(COMMON_PREVIEWS.length === EXPECTED_COMMON_FORM_COUNT
+    && state.cards.length === EXPECTED_COMMON_FORM_COUNT
+    && state.groups.join('/') === COMMON_CATEGORIES.join('/') && !state.revealDependent
+    && COMMON_PREVIEWS.every((form) => state.cards.some((card) => card.no === form.no
+      && card.title === form.title && card.source === form.preview
+      && card.alt?.includes('入力前の用紙') && card.caption === '入力前の用紙（1ページ目）'
+      && card.links.length === 2 && card.links.every((link) => link.href === `shoshiki/${form.no}.html`
+        && link.label?.includes('HTMLを開いて記入・印刷')))),
+  `${engine}:基本書式22点の分類・用紙・HTML表示先が不一致 ${JSON.stringify(state)}`);
+  for (const form of COMMON_PREVIEWS) {
+    const preview = page.locator(`[data-common-form="${form.no}"] .sh-common-preview img`);
+    const metrics = await measurePreviewImage(page, engine, form.no, form.preview, preview);
+    commonPreviewResults.push({ engine, width, actualMobile, no: form.no, ...metrics });
+  }
+  const quickLinks = await page.locator('.sh-jump').evaluate((nav) => (
+    [...nav.querySelectorAll('a')].map((a) => a.getAttribute('href'))
+  ));
+  check(['#common-forms', '#onboarding-kit', '#procedure-pdfs', '#dependent-forms', '#list']
+    .every((href) => quickLinks.includes(href))
+    && await page.locator('#procedure-pdfs a[href="#common-forms"]').count() === 1,
+  `${engine}:基本書式と既存一覧への移動リンクが不足しています ${JSON.stringify(quickLinks)}`);
+}
+
 async function revealSections(page, details) {
   const sections = page.locator('.rv, .page-hero, main section, .bottom-cta-card');
   for (let index = 0; index < await sections.count(); index += 1) {
@@ -206,7 +295,7 @@ async function revealSections(page, details) {
   }
   const mainSections = page.locator('main > section');
   const count = await mainSections.count();
-  const expected = details.relative === 'shoshiki.html' ? 7 : 4;
+  const expected = details.relative === 'shoshiki.html' ? 8 : 4;
   check(count === expected, `${details.engine}:${details.relative}@${details.width}px:main節数 ${count} ≠ ${expected}`);
   for (let index = 0; index < count; index += 1) {
     const section = mainSections.nth(index);
@@ -302,7 +391,7 @@ async function revealSections(page, details) {
     if ((details.actualMobile || [320, 390].includes(details.width))
       && ((details.relative === 'portal.html' && index === 0)
         || (details.relative === 'shoshiki.html' && (details.actualMobile
-          || ['onboarding-kit', 'procedure-pdfs', 'dependent-forms', 'setting', 'list'].includes(metrics.id))))) {
+          || ['common-forms', 'onboarding-kit', 'procedure-pdfs', 'dependent-forms', 'setting', 'list'].includes(metrics.id))))) {
       const viewportName = details.actualMobile ? 'actual-mobile390' : String(details.width);
       await screenshot(page, `${details.engine}-${path.basename(details.relative, '.html')}-${viewportName}-${metrics.id}-viewport`, false);
     }
@@ -1103,27 +1192,7 @@ async function checkNavigation(browser, engine) {
     distribution.documentPreviews = [];
     for (const [file, source] of DOCUMENT_PREVIEWS) {
       const preview = page.locator(`[data-kit-file="${file}"] .sh-kit-preview img, [data-procedure-file="${file}"] .sh-kit-preview img`);
-      await preview.scrollIntoViewIfNeeded({ timeout: 10000 });
-      // WebKitのlazy画像でdecodeのPromiseが保留されたままになることがあるため、
-      // 実際の読み込み完了を時間上限付きで確認する。
-      const previewHandle = await preview.elementHandle();
-      try {
-        await page.waitForFunction((image) => image.complete
-          && image.naturalWidth > 0 && image.naturalHeight > 0,
-        previewHandle, { timeout: 10000 });
-      } catch (error) {
-        throw new Error(`${file}:プレビュー画像の読み込み確認: ${error.message}`);
-      } finally {
-        await previewHandle.dispose();
-      }
-      const metrics = await preview.evaluate((image) => {
-        const rect = image.getBoundingClientRect();
-        return { source: image.currentSrc, naturalWidth: image.naturalWidth, naturalHeight: image.naturalHeight,
-          width: rect.width, height: rect.height };
-      });
-      check(new URL(metrics.source).pathname === `/${source}` && metrics.naturalWidth === 840
-        && metrics.naturalHeight === 1189 && metrics.width > 0 && metrics.height > 0,
-      `${engine}:${file}:書類の見本を表示できません ${JSON.stringify(metrics)}`);
+      const metrics = await measurePreviewImage(page, engine, file, source, preview);
       distribution.documentPreviews.push({ file, ...metrics });
     }
     check(counts.kitCards.length === ONBOARDING_KIT_FILES.length
@@ -1285,6 +1354,7 @@ async function checkActualMobileViewport(browser, engine) {
         await page.locator('button[onclick="coToggle()"]').click();
       } else {
         await revealSections(page, { engine, relative, width: 390, actualMobile: true });
+        if (relative === 'shoshiki.html') await checkCommonPreviews(page, engine, 390, true);
       }
       await page.evaluate(() => window.scrollTo(0, 0));
       // 実スマホはDPR=2。長い書式一覧の全ページ画像はWebKitの32767px上限を超える。
@@ -1328,6 +1398,7 @@ async function runEngine(browser, engine, forms) {
           check(metrics.offenders.length === 0, `${label}:要素/文字の見切れ ${JSON.stringify(metrics.offenders.slice(0, 5))}`);
           check(duplicates.length === 0, `${label}:重複ID ${JSON.stringify(duplicates)}`);
           if (relative === 'shoshiki.html') {
+            await checkCommonPreviews(page, engine, width);
             const controls = await reachableControls(page, '#cfg-wrap input:not([type="file"]), #cfg-wrap button');
             check(controls.controls.length === 9 && controls.controls.every((control) => control.reachable), `${label}:会社設定を操作できません ${JSON.stringify(controls.controls.filter((control) => !control.reachable))}`);
             metrics.companyControls = controls;
@@ -1460,9 +1531,12 @@ async function runEngine(browser, engine, forms) {
   const expectedTableNameResults = ENGINES.length * WIDTHS.length * EXPECTED_FORM_COUNT;
   check(tableNameResults.length === expectedTableNameResults,
     `書式名称の文字検査数 ${tableNameResults.length} ≠ ${expectedTableNameResults}`);
-  const expectedSectionResults = ENGINES.length * (4 * (PORTAL_WIDTHS.length + 1) + 7 * (WIDTHS.length + 1));
+  const expectedSectionResults = ENGINES.length * (4 * (PORTAL_WIDTHS.length + 1) + 8 * (WIDTHS.length + 1));
   check(sectionResults.length === expectedSectionResults,
     `画面内main節表示検査数 ${sectionResults.length} ≠ ${expectedSectionResults}`);
+  const expectedCommonPreviewResults = ENGINES.length * (WIDTHS.length + 1) * EXPECTED_COMMON_FORM_COUNT;
+  check(commonPreviewResults.length === expectedCommonPreviewResults,
+    `基本書式プレビュー実表示検査数 ${commonPreviewResults.length} ≠ ${expectedCommonPreviewResults}`);
   const expectedBehaviorResults = ENGINES.length * 20;
   check(behaviorResults.length === expectedBehaviorResults, `会社/入力挙動検査数 ${behaviorResults.length} ≠ ${expectedBehaviorResults}`);
   check(behaviorResults.filter((result) => result.scenario === 'cross-tab-company-sync').length === ENGINES.length,
@@ -1490,12 +1564,13 @@ async function runEngine(browser, engine, forms) {
       categoryTableScrollConditions: expectedTableScrollResults,
       tableNameTypographyConditions: expectedTableNameResults,
       sectionVisibilityConditions: expectedSectionResults,
+      commonFormPreviewConditions: expectedCommonPreviewResults,
       retiredOfficeFileConditions: ENGINES.length * RETIRED_OFFICE_FILES.length,
       legacyLandingConditions: ENGINES.length * WIDTHS.length,
       externalFormSubmission: 'not attempted', physicalPrinter: 'not tested',
       pdf: process.env.RUNNER_TEMP ? 'Chromium six blank + four company-merged native PDFs' : 'no RUNNER_TEMP; PDF artifacts not saved' },
     results, printResults, mergePrintResults, behaviorResults, navigationResults, mobileResults,
-    tableScrollResults, tableNameResults, sectionResults, artifacts, failures };
+    tableScrollResults, tableNameResults, sectionResults, commonPreviewResults, artifacts, failures };
   if (failures.length) {
     console.error(`書式検査の失敗: ${failures.length}件`);
     for (const failure of failures) console.error(`- ${failure}`);

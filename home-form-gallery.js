@@ -3,7 +3,9 @@ window.__mnInitFormGallery=function(){
   if(window.__mnFormGalleryCleanup)window.__mnFormGalleryCleanup();
   var rail=document.getElementById('form-gallery-rail');
   if(!rail)return;
+  rail.querySelectorAll('.fg-copy').forEach(function(copy){copy.remove();});
   var root=rail.closest('.fg-gallery'),controls=root.querySelector('.fg-controls');
+  var picker=root.querySelector('.fg-picker');
   var pause=controls.querySelector('.fg-pause'),arrows=controls.querySelectorAll('[data-fg-dir]');
   var originals=Array.prototype.slice.call(rail.children),reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
   var frame=0,lastTime=0,position=null,cycle=0,inView=false,hover=false,focused=false,manual=false,observer,imageObserver;
@@ -11,6 +13,8 @@ window.__mnInitFormGallery=function(){
   for(var copy=0;copy<2;copy++)originals.forEach(function(item,index){
     var clone=item.cloneNode(true),link=clone.querySelector('a');
     clone.classList.add('fg-copy');clone.setAttribute('aria-hidden','true');
+    clone.removeAttribute('id');
+    clone.querySelectorAll('[id]').forEach(function(element){element.removeAttribute('id');});
     link.tabIndex=-1;
     link.addEventListener('mousedown',function(e){e.preventDefault();});
     link.addEventListener('focus',function(){originals[index].querySelector('a').focus();});
@@ -42,7 +46,23 @@ window.__mnInitFormGallery=function(){
     if(canPlay()){if(!frame){lastTime=0;frame=requestAnimationFrame(tick);}}
     else{cancelAnimationFrame(frame);frame=0;lastTime=0;position=null;}
   }
-  function stopManually(){manual=true;update();}
+  function clearSelection(){
+    if(picker)picker.querySelectorAll('[aria-current]').forEach(function(link){link.removeAttribute('aria-current');});
+  }
+  function stopManually(){manual=true;clearSelection();update();}
+  function selectPreview(e){
+    var selection=e.target.closest('a[data-fg-select]');
+    if(!selection||!picker.contains(selection)||e.button>0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    var card=originals.find(function(item){return item.dataset.fgKey===selection.dataset.fgSelect;});
+    if(!card)return;
+    e.preventDefault();stopManually();
+    selection.setAttribute('aria-current','true');
+    // 名前で選んだ書式を待たずに表示し、続けて開けるようカードへフォーカスする。
+    rail.scrollTo({left:card.offsetLeft-originals[0].offsetLeft,behavior:'auto'});
+    rail.scrollIntoView({block:'start',behavior:'auto'});
+    card.querySelector('a').focus({preventScroll:true});
+  }
+  if(picker)picker.addEventListener('click',selectPreview);
   function move(dir){
     stopManually();
     var step=originals[1].offsetLeft-originals[0].offsetLeft;
@@ -53,7 +73,7 @@ window.__mnInitFormGallery=function(){
     }
     rail.scrollTo({left:next,behavior:reduce.matches?'auto':'smooth'});
   }
-  pause.addEventListener('click',function(){manual=!manual;update();});
+  pause.addEventListener('click',function(){manual=!manual;clearSelection();update();});
   arrows.forEach(function(button){button.addEventListener('click',function(){move(Number(button.dataset.fgDir));});});
   rail.addEventListener('mouseenter',function(){hover=true;update();});
   rail.addEventListener('mouseleave',function(){hover=false;update();});
@@ -71,6 +91,7 @@ window.__mnInitFormGallery=function(){
     cancelAnimationFrame(frame);frame=0;
     if(observer)observer.disconnect();
     if(imageObserver)imageObserver.disconnect();
+    if(picker)picker.removeEventListener('click',selectPreview);
     window.removeEventListener('resize',measure);
     document.removeEventListener('visibilitychange',visibility);
     reduce.removeEventListener('change',measure);
