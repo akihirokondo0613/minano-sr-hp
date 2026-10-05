@@ -122,6 +122,23 @@ async function artifactPath(name) {
 async function screenshot(page, name, fullPage = true) {
   const target = await artifactPath(`${name}.png`);
   if (!target) return;
+  if (fullPage) {
+    const size = await page.evaluate(() => ({
+      width: Math.max(document.documentElement.clientWidth, document.documentElement.scrollWidth),
+      height: Math.max(document.documentElement.clientHeight, document.documentElement.scrollHeight),
+    }));
+    // 基本書式の追加で長くなった一覧も、WebKitの32767px制限を超えず全範囲を残す。
+    if (size.height > 30000) {
+      for (let top = 0, part = 1; top < size.height; top += 15000, part += 1) {
+        const partTarget = await artifactPath(`${name}-part${part}.png`);
+        await page.screenshot({ path: partTarget, fullPage: true, animations: 'disabled',
+          clip: { x: 0, y: top, width: size.width, height: Math.min(15000, size.height - top) } });
+        artifacts.push({ type: 'screenshot', path: partTarget, range: { top,
+          bottom: Math.min(size.height, top + 15000), documentHeight: size.height } });
+      }
+      return;
+    }
+  }
   await page.screenshot({ path: target, fullPage, animations: 'disabled' });
   artifacts.push({ type: 'screenshot', path: target });
 }
