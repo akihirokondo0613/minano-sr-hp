@@ -1031,7 +1031,10 @@ async function checkNavigation(browser, engine) {
       const kit = document.querySelector('#onboarding-kit');
       const kitLinks = [...(kit?.querySelectorAll('a[download]') || [])]
         .map((a) => ({ href: a.getAttribute('href'), label: a.getAttribute('aria-label'),
-          download: a.getAttribute('download') }));
+          download: a.getAttribute('download'), type: a.getAttribute('type') }));
+      const noticePreviews = [...(kit?.querySelectorAll('[data-kit-file="labor-notice.xlsx"] .sh-kit-preview img') || [])]
+        .map((img) => ({ source: img.getAttribute('src'), alt: img.alt,
+          caption: img.closest('figure')?.querySelector('figcaption')?.textContent }));
       const kitCards = [...(kit?.querySelectorAll('[data-kit-file]') || [])]
         .map((card) => ({ file: card.dataset.kitFile, title: card.querySelector('h3')?.textContent,
           text: card.textContent }));
@@ -1040,7 +1043,7 @@ async function checkNavigation(browser, engine) {
       const taxLinks = [...(kit?.querySelectorAll('a[href^="https://www.nta.go.jp/"]') || [])]
         .map((a) => ({ href: a.href, label: a.textContent.trim(), target: a.target, rel: a.rel }));
       return { rows: rows.length, uniqueForms: new Set(formLinks).size, procedureLinks, officialLinks,
-        kitLinks, kitCards, kitSteps, taxLinks,
+        kitLinks, kitCards, kitSteps, taxLinks, noticePreviews,
         officeLinks: [...document.querySelectorAll('a[href]')].filter((a) => /\.(?:xlsx?|docx?|zip)(?:[?#]|$)/i.test(a.href)
           && !(a.closest('#dependent-forms') && new URL(a.href).hostname === 'www.nenkin.go.jp'))
           .map((a) => ({ href: a.getAttribute('href'), pathname: new URL(a.href).pathname,
@@ -1059,6 +1062,28 @@ async function checkNavigation(browser, engine) {
       && ONBOARDING_KIT_FILES.every(([href, title]) => counts.kitLinks.some((link) => link.href === href
         && link.label?.includes(title) && link.download)),
       `${engine}:入社書類セット7リンク/書類名が不一致 ${JSON.stringify(counts.kitLinks)}`);
+    check(counts.kitLinks.some((link) => link.href === 'assets/download/onboarding-kit/labor-notice.xlsx'
+      && link.label?.includes('Excel')
+      && link.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+      && counts.noticePreviews.length === 1
+      && counts.noticePreviews[0].source === 'assets/previews/labor-notice-sample.webp'
+      && counts.noticePreviews[0].alt.includes('架空記入例')
+      && counts.noticePreviews[0].caption?.includes('一般労働者用'),
+      `${engine}:労働条件通知書のExcel表示/架空見本が不一致 ${JSON.stringify(counts.noticePreviews)}`);
+    const noticePreview = page.locator('#onboarding-kit [data-kit-file="labor-notice.xlsx"] .sh-kit-preview img');
+    await noticePreview.scrollIntoViewIfNeeded({ timeout: 10000 });
+    await page.waitForFunction(() => {
+      const image = document.querySelector('#onboarding-kit [data-kit-file="labor-notice.xlsx"] .sh-kit-preview img');
+      return image?.complete && image.naturalWidth > 0 && image.naturalHeight > 0;
+    }, undefined, { timeout: 10000 });
+    const noticePreviewMetrics = await noticePreview.evaluate((image) => {
+      const rect = image.getBoundingClientRect();
+      return { source: image.currentSrc, naturalWidth: image.naturalWidth, naturalHeight: image.naturalHeight,
+        width: rect.width, height: rect.height };
+    });
+    check(new URL(noticePreviewMetrics.source).pathname === '/assets/previews/labor-notice-sample.webp'
+      && noticePreviewMetrics.width > 0 && noticePreviewMetrics.height > 0,
+      `${engine}:労働条件通知書の見本を表示できません ${JSON.stringify(noticePreviewMetrics)}`);
     check(counts.kitCards.length === ONBOARDING_KIT_FILES.length
       && counts.kitCards.some((card) => card.file === 'guide.pdf' && card.text.includes('会社が用意'))
       && counts.kitCards.some((card) => card.file === 'labor-notice.xlsx' && card.text.includes('会社が作成・交付'))

@@ -1,4 +1,4 @@
-/* イラストの次にPDFの実物見本を見せ、用途とダウンロードへつなぐ。 */
+/* イラストの次にPDF・Excelの実物見本を見せ、用途とダウンロードへつなぐ。 */
 #tools{background:var(--yuki)}
 #top #tools{position:relative;grid-column:1;grid-row:3;min-width:0;width:100%;margin-top:36px;text-align:left}
 #tools .sec-head{margin-bottom:24px}
@@ -27,6 +27,7 @@
 .fg-rail{--fg-gap:clamp(20px,3vw,40px);display:flex;gap:var(--fg-gap);overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;list-style:none;margin:0;padding:12px 4px 18px;scroll-behavior:auto}
 .fg-rail::-webkit-scrollbar{display:none}
 .fg-item{flex:0 0 clamp(252px,27vw,324px);min-width:0}
+@media(min-width:901px){.fg-item{flex-basis:calc((100% - 2 * var(--fg-gap)) / 3)}}
 .fg-card{display:flex;flex-direction:column;gap:12px;color:var(--iwa);text-decoration:none}
 .fg-heading{display:flex;justify-content:space-between;align-items:baseline;gap:12px;color:var(--sugi)}
 .fg-heading h3{font-size:18px;font-weight:800;letter-spacing:.03em}
