@@ -289,7 +289,8 @@ async function revealSections(page, details) {
     sectionResults.push({ ...details, sectionIndex: index + 1, paintReady, metrics });
     if ((details.actualMobile || [320, 390].includes(details.width))
       && ((details.relative === 'portal.html' && index === 0)
-        || (details.relative === 'shoshiki.html' && ['onboarding-kit', 'procedure-pdfs', 'dependent-forms', 'setting', 'list'].includes(metrics.id)))) {
+        || (details.relative === 'shoshiki.html' && (details.actualMobile
+          || ['onboarding-kit', 'procedure-pdfs', 'dependent-forms', 'setting', 'list'].includes(metrics.id))))) {
       const viewportName = details.actualMobile ? 'actual-mobile390' : String(details.width);
       await screenshot(page, `${details.engine}-${path.basename(details.relative, '.html')}-${viewportName}-${metrics.id}-viewport`, false);
     }
@@ -1219,7 +1220,13 @@ async function checkActualMobileViewport(browser, engine) {
         await revealSections(page, { engine, relative, width: 390, actualMobile: true });
       }
       await page.evaluate(() => window.scrollTo(0, 0));
-      await screenshot(page, `${engine}-actual-mobile390-${path.basename(relative, '.html')}`);
+      // 実スマホはDPR=2。長い書式一覧の全ページ画像はWebKitの32767px上限を超える。
+      // 全main節の実表示・文字矩形の検査と各節のviewport画像はrevealSectionsで維持し、
+      // 一覧の最後の画像だけは先頭viewportにする。他ページの全ページ画像は維持する。
+      const fullPage = relative !== 'shoshiki.html';
+      await screenshot(page,
+        `${engine}-actual-mobile390-${path.basename(relative, '.html')}${fullPage ? '' : '-viewport'}`,
+        fullPage);
       mobileResults.push({ engine, relative, physicalViewport: { width: 390, height: 844 },
         isMobile: true, viewport, controls });
     }
