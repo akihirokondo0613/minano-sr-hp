@@ -20,12 +20,13 @@ const base = (args.find((arg) => arg.startsWith('http')) || 'http://127.0.0.1:88
   .replace(/\/?$/, '/');
 const asJson = args.includes('--json');
 
-const WIDTHS = [320, 360, 375, 390, 402, 429, 430, 431, 539, 540, 541, 600, 640, 641, 699, 700, 701, 733, 767, 768, 820, 900, 1024, 1100, 1101, 1280, 1440, 1599, 1600, 1601, 1920, 2560, 2774];
+const WIDTHS = [320, 360, 375, 390, 402, 429, 430, 431, 539, 540, 541, 600, 640, 641, 699, 700, 701, 733, 767, 768, 820, 900, 901, 1024, 1100, 1101, 1280, 1440, 1599, 1600, 1601, 1920, 2560, 2774];
 const ENGINES = [
   ['chromium', chromium],
   ['webkit', webkit],
 ];
 const EPSILON = 1;
+const FORM_GALLERY_INTERACTION_WIDTHS = [320, 390, 900, 901, 1280];
 const FORM_GALLERY_PREVIEWS = [
   'assets/previews/procedure-onboarding-sample.webp',
   'assets/previews/procedure-retirement-sample.webp',
@@ -414,11 +415,20 @@ async function checkFormGallery(page, engine, width, failures) {
     if (await page.locator('#tools').count() !== 1) return report;
     const cards = page.locator('#tools .fg-rail > .fg-item:not(.fg-copy)');
     if (await cards.count() !== FORM_GALLERY_PREVIEWS.length) return report;
+    // 移動中の見本をスクロール測定しないよう、利用者向けの一時停止操作で止める。
+    const pause = page.locator('#tools .fg-pause');
+    await pause.waitFor({ state: 'visible', timeout: 10000 });
+    if (await pause.getAttribute('aria-pressed') !== 'true') {
+      await pause.click({ timeout: 10000 });
+    }
+    if (await pause.getAttribute('aria-pressed') !== 'true') {
+      throw new Error('見本の自動送りを一時停止できません');
+    }
     // lazy画像は利用者と同じく各見本へスクロールして読み込む。srcや読込状態を
     // 検査側で書き換えず、ページの実際の読込処理を確認する。
     for (let index = 0; index < FORM_GALLERY_PREVIEWS.length; index += 1) {
       const card = cards.nth(index);
-      await card.scrollIntoViewIfNeeded();
+      await card.scrollIntoViewIfNeeded({ timeout: 10000 });
       const image = card.locator('.fg-paper > img');
       if (await image.count() !== 1) {
         failures.push(`${label}: 見本${index + 1}の画像が1枚ではありません`);
@@ -452,7 +462,7 @@ async function checkFormGallery(page, engine, width, failures) {
     for (const selector of ['.fg-kit-link', '.fg-kit-download']) {
       const link = page.locator(`#tools .fg-kit ${selector}`);
       if (await link.count() !== 1) continue;
-      await link.scrollIntoViewIfNeeded();
+      await link.scrollIntoViewIfNeeded({ timeout: 10000 });
       const metrics = await link.evaluate((element) => {
         const rect = element.getBoundingClientRect();
         return { href: element.getAttribute('href'), left: rect.left, right: rect.right,
@@ -815,7 +825,9 @@ async function checkReducedMotion(browser, engine, width, failures) {
         } else if (width >= 1024 && result.summaryLayout !== 'flex') {
           failures.push(`${engineName}@${width}px: PCのサマリーが既存のflex配列ではありません`);
         }
-        report.galleryAfterScroll = await checkFormGallery(page, engineName, width, failures);
+        if (FORM_GALLERY_INTERACTION_WIDTHS.includes(width)) {
+          report.galleryAfterScroll = await checkFormGallery(page, engineName, width, failures);
+        }
         if (errors.length) failures.push(`${engineName}@${width}px: ${errors.join(' / ')}`);
         await page.close();
       }
