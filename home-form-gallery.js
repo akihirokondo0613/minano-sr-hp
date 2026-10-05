@@ -35,7 +35,7 @@ window.__mnInitFormGallery=function(){
   function update(){
     pause.textContent=manual?'再生':'一時停止';
     pause.setAttribute('aria-pressed',String(manual));
-    pause.setAttribute('aria-label','連絡票の自動スクロールを'+(manual?'再開':'一時停止'));
+    pause.setAttribute('aria-label','書式見本の自動スクロールを'+(manual?'再開':'一時停止'));
     arrows.forEach(function(button){
       button.disabled=reduce.matches&&(button.dataset.fgDir==='-1'?rail.scrollLeft<1:rail.scrollLeft>=rail.scrollWidth-rail.clientWidth-1);
     });

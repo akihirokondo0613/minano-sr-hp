@@ -46,6 +46,9 @@ ONBOARDING_KIT = [
         "contents": "契約期間、業務・就業場所、勤務時間・休日、賃金、退職に関する条件。",
         "format": "Excel／入力・一般・短時間の3シート",
         "download": "労働条件通知書_入力用.xlsx",
+        "preview": "assets/previews/labor-notice-sample.webp",
+        "preview_alt": "会社が作成する労働条件通知書の架空記入例（一般労働者用）",
+        "preview_caption": "一般労働者用の架空記入例",
     },
     {
         "file": "personal.pdf",
@@ -292,6 +295,9 @@ CSS = """
 .sh-pdf h3{margin:0 0 6px;font-family:var(--disp);font-size:18px;line-height:1.5;color:var(--iwa)}
 .sh-pdf p{margin:0;font-size:14px;line-height:1.85;color:var(--ink3)}
 .sh-pdf .sh-pdf-fields{margin-top:5px;font-size:13px;color:var(--ink4)}
+.sh-kit-preview{max-width:260px;margin:14px 0 0}
+.sh-kit-preview img{display:block;width:100%;height:auto;aspect-ratio:840/1189;border:1px solid var(--line);border-radius:3px;background:var(--shiro)}
+.sh-kit-preview figcaption{margin-top:6px;font-size:12px;line-height:1.7;color:var(--ink4)}
 .sh-pdf-action{display:flex;flex-direction:column;align-items:center;gap:6px}
 .sh-pdf-action small{font-size:12px;color:var(--ink4)}
 .sh-pdf .qk{min-height:44px;border-color:var(--moegi-t);color:var(--sugi)}
@@ -380,13 +386,27 @@ def onboarding_kit_block():
         title = e(form["title"])
         is_excel = form["file"].endswith(".xlsx")
         label = "Excelをダウンロード ↓" if is_excel else "PDFをダウンロード ↓"
+        file_type = (
+            'type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" '
+            if is_excel
+            else ""
+        )
+        preview = (
+            '<figure class="sh-kit-preview">'
+            f'<img src="{e(form["preview"])}" width="840" height="1189" loading="lazy" decoding="async" '
+            f'alt="{e(form["preview_alt"])}">'
+            f"<figcaption>{e(form['preview_caption'])}</figcaption></figure>"
+            if form.get("preview")
+            else ""
+        )
         rows.append(
             f'<article class="sh-pdf" data-kit-file="{e(form["file"])}">'
             f"<div><h3>{title}</h3><p><b>{e(form['role'])}：</b>{e(form['use'])}</p>"
-            f'<p class="sh-pdf-fields"><b>主な記入内容：</b>{e(form["contents"])}</p></div>'
+            f'<p class="sh-pdf-fields"><b>主な記入内容：</b>{e(form["contents"])}</p>{preview}</div>'
             '<div class="sh-pdf-action">'
             f'<a class="qk" href="assets/download/onboarding-kit/{e(form["file"])}" '
             f'download="{e(form["download"])}" '
+            f"{file_type}"
             f'aria-label="{title}をダウンロード（{e(form["format"])}）">{label}</a>'
             f"<small>{e(form['format'])}</small></div></article>"
         )

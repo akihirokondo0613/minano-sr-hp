@@ -18,6 +18,7 @@
 | 入社書類セットの掲載文・リンク | `scripts/shoshiki/build_shoshiki.py` の `ONBOARDING_KIT` と `onboarding_kit_block()` |
 | 入社書類セットの6ファイル | `assets/download/onboarding-kit/` の `guide.pdf`、`labor-notice.xlsx`、`personal.pdf`、`bank.pdf`、`commute.pdf`、`emergency.pdf` |
 | 入社書類セットの一括配布 | `assets/download/onboarding-kit.zip`（上の6点と入社連絡票・事業所基本情報シートの計8点。登録不要） |
+| 労働条件通知書の公開見本 | `assets/previews/labor-notice-sample.webp`（一般労働者用の架空記入例。トップと書式一覧で共用） |
 | 税の扶養控除等申告書の年別公式案内 | `scripts/shoshiki/build_shoshiki.py` の `TAX_DECLARATION_URL`（国税庁の様式・入力用PDF・記載例一覧） |
 | 手続き連絡票PDFの掲載文・リンク | `scripts/shoshiki/build_shoshiki.py` の `PROCEDURE_PDFS` と `procedure_pdf_block()` |
 | 手続き連絡票・基本情報PDF（各2ページ） | `assets/download/procedure-establishment.pdf`、`procedure-onboarding.pdf`、`procedure-retirement.pdf`、`procedure-leave.pdf` |
@@ -78,6 +79,8 @@ D-52は入力欄と個人番号の切り取り欄をA4一枚に収めるため�
 従業員用PDFは各2ページ（入力用と赤字の架空記入例）で、準備ガイドは案内2ページ。労働条件通知書Excelは現行の厚生労働省モデルを基準とする入力・一般労働者用・短時間労働者用の3シート。通知書を従業員自身が決める書式として案内しない。通勤届・緊急連絡先届は会社の運用に応じて使用し、一律の法定提出物として扱わない。番号・住所・資料の重複記入を減らす方針とし、書類本文と掲載文の担当・対象を一致させる。
 
 個別6ファイルとZIPの内容を同期する。ZIPには既存の入社連絡票・事業所基本情報シートも同梱し、会社から当事務所への依頼資料を含む8点（PDF7点・Excel1点）で配布する。公開前にはPDFの全ページ・入力保存・再表示・長い住所、Excelの空欄・入力反映・A4印刷を確認し、記入例は架空と明示する。記入済みファイルをサイトへ送信する仕組みは設けない。PDFとExcelの作者情報を含め、代表者氏名の非公開方針を維持する。
+
+労働条件通知書Excelを更新するときは、検証済みの架空記入例から `labor-notice-sample.webp` を作り、通知書の掲載項目とトップの見本にも反映する。トップの見本は入社連絡票、労働条件通知書、退職連絡票、休職連絡票の4種類で、901px以上では先頭3枚を並べる。通知書のリンクはExcelであること、会社が作成すること、ダウンロード先を明示し、PDFだけの見本として案内しない。
 
 国税庁の扶養控除等申告書は年ごとの公式一覧へリンクし、支給年に合う様式を選ぶよう案内する。健康保険の扶養届とは区別する。公式の入力用PDFは国税庁がブラウザ内利用に対応しないと案内しているため、利用者へはダウンロード後の利用を案内する。給与・税の書類は会社の給与担当者への提出とし、事務所単独の税務サービスを示さない。
 

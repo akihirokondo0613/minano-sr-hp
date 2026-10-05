@@ -29,8 +29,15 @@ const EPSILON = 1;
 const FORM_GALLERY_INTERACTION_WIDTHS = [320, 390, 900, 901, 1280];
 const FORM_GALLERY_PREVIEWS = [
   'assets/previews/procedure-onboarding-sample.webp',
+  'assets/previews/labor-notice-sample.webp',
   'assets/previews/procedure-retirement-sample.webp',
   'assets/previews/procedure-leave-sample.webp',
+];
+const FORM_GALLERY_DOWNLOADS = [
+  'assets/download/procedure-onboarding.pdf',
+  'assets/download/onboarding-kit/labor-notice.xlsx',
+  'assets/download/procedure-retirement.pdf',
+  'assets/download/procedure-leave.pdf',
 ];
 const MOTION_WIDTHS = [390, 540, 541, 640, 733, 767, 768, 1280, 1920];
 // External reference, rather than values read from home-hero.js:
@@ -212,6 +219,8 @@ async function measure(page) {
     const kitLink = kit?.querySelector('.fg-kit-link');
     const kitDownload = kit?.querySelector('.fg-kit-download');
     const galleryCards = [...document.querySelectorAll('#tools .fg-rail > .fg-item:not(.fg-copy)')];
+    const galleryRail = document.querySelector('#form-gallery-rail');
+    const railBox = galleryRail ? boxOf(galleryRail) : null;
 
     return {
       viewportWidth,
@@ -232,6 +241,18 @@ async function measure(page) {
           const image = card.querySelector('.fg-paper > img');
           return image?.getAttribute('src') || image?.dataset.src || null;
         }),
+        cardLinks: galleryCards.map((card) => {
+          const link = card.querySelector('.fg-card');
+          return { href: link?.getAttribute('href'), download: link?.getAttribute('download'),
+            type: link?.getAttribute('type'), label: link?.getAttribute('aria-label'),
+            text: link?.textContent };
+        }),
+        railWidth: galleryRail?.clientWidth,
+        firstThreeAtStart: railBox ? galleryCards.slice(0, 3).map((card) => {
+          const rect = boxOf(card);
+          return { left: rect.left - railBox.left + galleryRail.scrollLeft,
+            right: rect.right - railBox.left + galleryRail.scrollLeft, width: rect.width };
+        }) : [],
         kitCount: document.querySelectorAll('.fg-kit').length,
         kitText: kit?.textContent,
         kitLinkCount: document.querySelectorAll('.fg-kit-link').length,
@@ -410,7 +431,7 @@ async function entryScreenshots(page, engine, width) {
 
 async function checkFormGallery(page, engine, width, failures) {
   const report = { previews: [], links: [], errors: [] };
-  const label = `${engine}@${width}px PDF gallery`;
+  const label = `${engine}@${width}px 書式 gallery`;
   try {
     if (await page.locator('#tools').count() !== 1) return report;
     const cards = page.locator('#tools .fg-rail > .fg-item:not(.fg-copy)');
@@ -687,19 +708,35 @@ async function checkReducedMotion(browser, engine, width, failures) {
           || gallery.galleryCount !== 1 || gallery.railCount !== 1
           || !gallery.inStage || !gallery.followsOverlay || !gallery.precedesIntro
           || gallery.rows.join('/') !== '2/3/4/5') {
-          failures.push(`${engineName}@${width}px: タイトル・イラスト→PDF見本→説明/CTAの配置が一致しません`
+          failures.push(`${engineName}@${width}px: タイトル・イラスト→書式見本→説明/CTAの配置が一致しません`
             + ` (${JSON.stringify(gallery)})`);
         }
         if (gallery.cardCount !== FORM_GALLERY_PREVIEWS.length
           || gallery.previewSources.some((source, index) => source !== FORM_GALLERY_PREVIEWS[index])) {
-          failures.push(`${engineName}@${width}px: 入社・退職・休職の3見本が一致しません`
+          failures.push(`${engineName}@${width}px: 入社・労働条件通知書・退職・休職の4見本が一致しません`
             + ` (${JSON.stringify(gallery.previewSources)})`);
+        }
+        const noticeLink = gallery.cardLinks[1];
+        if (gallery.cardLinks.length !== FORM_GALLERY_DOWNLOADS.length
+          || gallery.cardLinks.some((link, index) => link.href !== FORM_GALLERY_DOWNLOADS[index])
+          || noticeLink?.download !== '労働条件通知書_入力用.xlsx'
+          || noticeLink?.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+          || !noticeLink?.label?.includes('Excel') || !noticeLink?.label?.includes('会社が作成・交付')
+          || !noticeLink?.text?.includes('入力用Excelをダウンロード')) {
+          failures.push(`${engineName}@${width}px: 見本の配布先・労働条件通知書のExcel表示が一致しません`
+            + ` (${JSON.stringify(gallery.cardLinks)})`);
+        }
+        if (width >= 901 && (gallery.firstThreeAtStart.length !== 3
+          || gallery.firstThreeAtStart.some((card) => card.width <= 0
+            || card.left < -EPSILON || card.right > gallery.railWidth + EPSILON))) {
+          failures.push(`${engineName}@${width}px: PCの初期位置で先頭3枚の見本が収まりません`
+            + ` (${JSON.stringify(gallery.firstThreeAtStart)})`);
         }
         if (gallery.kitCount !== 1 || !gallery.kitText?.replace(/\s+/g, '').includes('入社書類8点セット')
           || gallery.kitLinkCount !== 1 || gallery.kitHref !== 'shoshiki.html#onboarding-kit'
           || gallery.kitDownloadCount !== 1 || gallery.downloadHref !== 'assets/download/onboarding-kit.zip'
           || gallery.downloadAttribute === null || gallery.downloadAttribute === undefined) {
-          failures.push(`${engineName}@${width}px: PDF見本内の入社書類セット案内・ZIP導線が一致しません`
+          failures.push(`${engineName}@${width}px: 書式見本内の入社書類セット案内・ZIP導線が一致しません`
             + ` (${JSON.stringify(gallery)})`);
         }
         if (!composition.backgroundSource
@@ -725,7 +762,7 @@ async function checkReducedMotion(browser, engine, width, failures) {
           || !gallery.box || gallery.box.width <= 0 || gallery.box.height <= 0
           || composition.galleryGap === null || Math.abs(composition.galleryGap - 36) > EPSILON
           || composition.introGap === null || Math.abs(composition.introGap - 32) > EPSILON) {
-          failures.push(`${engineName}@${width}px: 見出し・人物・PDF見本・説明の余白が適切ではありません`
+          failures.push(`${engineName}@${width}px: 見出し・人物・書式見本・説明の余白が適切ではありません`
             + ` (title=${composition.titleGap}, scene→gallery=${composition.galleryGap}, gallery→intro=${composition.introGap})`);
         }
         if (composition.actors.some((actor) => actor.left < composition.canvas.left - EPSILON
