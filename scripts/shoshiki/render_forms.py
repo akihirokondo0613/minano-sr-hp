@@ -124,6 +124,7 @@ D52_CSS = """
 .form-d52 p{margin-bottom:1mm}
 .form-d52 table.f{margin:1.5mm 0 2mm}
 .form-d52 table.f th,.form-d52 table.f td{padding:1mm 2.2mm;line-height:1.45}
+.form-d52 table.f th.w{width:44mm}
 .form-d52 table.f td{height:7.5mm;min-height:7.5mm}
 """
 

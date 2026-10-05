@@ -36,6 +36,20 @@ const PROCEDURE_PDFS = [
   'assets/download/procedure-retirement.pdf',
   'assets/download/procedure-leave.pdf',
 ];
+const ONBOARDING_KIT_FILES = [
+  ['assets/download/onboarding-kit/guide.pdf', '準備ガイド'],
+  ['assets/download/onboarding-kit/labor-notice.xlsx', '労働条件通知書'],
+  ['assets/download/onboarding-kit/personal.pdf', '本人情報'],
+  ['assets/download/onboarding-kit/bank.pdf', '口座振込同意書'],
+  ['assets/download/onboarding-kit/commute.pdf', '通勤経路'],
+  ['assets/download/onboarding-kit/emergency.pdf', '緊急連絡先'],
+  ['assets/download/onboarding-kit.zip', '入社書類セット8点'],
+];
+// 入社セットのExcel・ZIPだけを例外とし、旧Office配布の再開は認めない。
+const ONBOARDING_OFFICE_PATHS = [
+  '/assets/download/onboarding-kit/labor-notice.xlsx',
+  '/assets/download/onboarding-kit.zip',
+];
 // CIの静的サーバーは下位ディレクトリのindexを補完しない。
 // 案内本文・操作は明示indexで検査し、公開ディレクトリURLは本番GETで照合する。
 const LEGACY_LANDING = 'shoshiki/dl/word-7kq3x9/index.html';
@@ -180,7 +194,7 @@ async function revealSections(page, details) {
   }
   const mainSections = page.locator('main > section');
   const count = await mainSections.count();
-  const expected = details.relative === 'shoshiki.html' ? 6 : 4;
+  const expected = details.relative === 'shoshiki.html' ? 7 : 4;
   check(count === expected, `${details.engine}:${details.relative}@${details.width}px:main節数 ${count} ≠ ${expected}`);
   for (let index = 0; index < count; index += 1) {
     const section = mainSections.nth(index);
@@ -275,7 +289,8 @@ async function revealSections(page, details) {
     sectionResults.push({ ...details, sectionIndex: index + 1, paintReady, metrics });
     if ((details.actualMobile || [320, 390].includes(details.width))
       && ((details.relative === 'portal.html' && index === 0)
-        || (details.relative === 'shoshiki.html' && ['procedure-pdfs', 'dependent-forms', 'setting', 'list'].includes(metrics.id)))) {
+        || (details.relative === 'shoshiki.html' && (details.actualMobile
+          || ['onboarding-kit', 'procedure-pdfs', 'dependent-forms', 'setting', 'list'].includes(metrics.id))))) {
       const viewportName = details.actualMobile ? 'actual-mobile390' : String(details.width);
       await screenshot(page, `${details.engine}-${path.basename(details.relative, '.html')}-${viewportName}-${metrics.id}-viewport`, false);
     }
@@ -1013,16 +1028,60 @@ async function checkNavigation(browser, engine) {
         .map((a) => ({ href: a.getAttribute('href'), label: a.getAttribute('aria-label') }));
       const officialLinks = [...document.querySelectorAll('#dependent-forms a[href]')]
         .map((a) => ({ href: a.href, label: a.textContent.trim(), target: a.target, rel: a.rel }));
+      const kit = document.querySelector('#onboarding-kit');
+      const kitLinks = [...(kit?.querySelectorAll('a[download]') || [])]
+        .map((a) => ({ href: a.getAttribute('href'), label: a.getAttribute('aria-label'),
+          download: a.getAttribute('download') }));
+      const kitCards = [...(kit?.querySelectorAll('[data-kit-file]') || [])]
+        .map((card) => ({ file: card.dataset.kitFile, title: card.querySelector('h3')?.textContent,
+          text: card.textContent }));
+      const kitSteps = [...(kit?.querySelectorAll('ol.sh-pdf-guide > li') || [])]
+        .map((li) => ({ role: li.querySelector('strong')?.textContent, text: li.textContent }));
+      const taxLinks = [...(kit?.querySelectorAll('a[href^="https://www.nta.go.jp/"]') || [])]
+        .map((a) => ({ href: a.href, label: a.textContent.trim(), target: a.target, rel: a.rel }));
       return { rows: rows.length, uniqueForms: new Set(formLinks).size, procedureLinks, officialLinks,
+        kitLinks, kitCards, kitSteps, taxLinks,
         officeLinks: [...document.querySelectorAll('a[href]')].filter((a) => /\.(?:xlsx?|docx?|zip)(?:[?#]|$)/i.test(a.href)
-          && !(a.closest('#dependent-forms') && new URL(a.href).hostname === 'www.nenkin.go.jp')).length,
+          && !(a.closest('#dependent-forms') && new URL(a.href).hostname === 'www.nenkin.go.jp'))
+          .map((a) => ({ href: a.getAttribute('href'), pathname: new URL(a.href).pathname,
+            local: new URL(a.href).origin === location.origin, inKit: Boolean(a.closest('#onboarding-kit')) })),
         google: [...document.querySelectorAll('a[href]')].filter((a) => a.href === 'https://forms.gle/vFUpB3fqzetNHQQKA')
           .map((a) => ({ href: a.href, target: a.target, rel: a.rel })) };
     });
     check(counts.rows === EXPECTED_FORM_COUNT && counts.uniqueForms === EXPECTED_FORM_COUNT,
       `${engine}:HTML50本の一覧が不一致 ${JSON.stringify(counts)}`);
-    check(counts.google.length === 0 && counts.officeLinks === 0,
+    check(counts.google.length === 0 && counts.officeLinks.length === ONBOARDING_OFFICE_PATHS.length
+      && counts.officeLinks.every((link) => link.local && link.inKit
+        && ONBOARDING_OFFICE_PATHS.includes(link.pathname))
+      && ONBOARDING_OFFICE_PATHS.every((pathname) => counts.officeLinks.some((link) => link.pathname === pathname)),
       `${engine}:終了したOffice配布/申込リンクが残っています ${JSON.stringify(counts)}`);
+    check(counts.kitLinks.length === ONBOARDING_KIT_FILES.length
+      && ONBOARDING_KIT_FILES.every(([href, title]) => counts.kitLinks.some((link) => link.href === href
+        && link.label?.includes(title) && link.download)),
+      `${engine}:入社書類セット7リンク/書類名が不一致 ${JSON.stringify(counts.kitLinks)}`);
+    check(counts.kitCards.length === ONBOARDING_KIT_FILES.length
+      && counts.kitCards.some((card) => card.file === 'guide.pdf' && card.text.includes('会社が用意'))
+      && counts.kitCards.some((card) => card.file === 'labor-notice.xlsx' && card.text.includes('会社が作成・交付'))
+      && counts.kitCards.some((card) => card.file === 'personal.pdf' && card.text.includes('従業員が記入'))
+      && counts.kitCards.some((card) => card.file === 'bank.pdf' && card.text.includes('口座振込を希望'))
+      && ['commute.pdf', 'emergency.pdf'].every((file) => counts.kitCards.some((card) => card.file === file
+        && card.text.includes('会社から案内された従業員')))
+      && counts.kitCards.filter((card) => ['personal.pdf', 'bank.pdf', 'commute.pdf', 'emergency.pdf'].includes(card.file))
+        .every((card) => card.text.includes('赤字の記入例') && card.text.includes('全2ページ')),
+      `${engine}:入社書類の記入担当/対象/記入例表示が不一致 ${JSON.stringify(counts.kitCards)}`);
+    check(counts.kitSteps.length === 4
+      && counts.kitSteps.map((step) => step.role).join('/') === '会社：/会社：/従業員：/会社：'
+      && counts.kitSteps[0].text.includes('労働条件通知書')
+      && counts.kitSteps[1].text.includes('提出先・提出期限')
+      && counts.kitSteps[2].text.includes('入力・保存')
+      && counts.kitSteps[3].text.includes('加入手続き'),
+      `${engine}:入社書類を渡す・集める4段フローが不一致 ${JSON.stringify(counts.kitSteps)}`);
+    check(counts.taxLinks.length === 1
+      && counts.taxLinks[0].href === 'https://www.nta.go.jp/taxes/tetsuzuki/shinsei/annai/gensen/annai/1648_01.htm'
+      && counts.taxLinks[0].label.includes('支給年') && counts.taxLinks[0].target === '_blank'
+      && counts.taxLinks[0].rel.split(/\s+/).includes('noopener')
+      && counts.taxLinks[0].rel.split(/\s+/).includes('noreferrer'),
+      `${engine}:支給年ごとの税の公式様式案内が不一致 ${JSON.stringify(counts.taxLinks)}`);
     check(counts.procedureLinks.length === PROCEDURE_PDFS.length
       && PROCEDURE_PDFS.every((href) => counts.procedureLinks.some((link) => link.href === href))
       && counts.procedureLinks.every((link) => link.label?.includes('全2ページ')),
@@ -1042,6 +1101,16 @@ async function checkNavigation(browser, engine) {
       check(response.status() === 200 && body.subarray(0, 5).toString() === '%PDF-',
         `${engine}:${relative}:連絡票PDFを取得できません (${response.status()})`);
       distribution.procedurePdfs.push({ relative, status: response.status(), bytes: body.length });
+    }
+    distribution.onboardingKit = [];
+    for (const [relative] of ONBOARDING_KIT_FILES) {
+      const response = await context.request.get(new URL(relative, base).href);
+      const body = await response.body();
+      const validSignature = relative.endsWith('.pdf')
+        ? body.subarray(0, 5).toString() === '%PDF-' : body.subarray(0, 2).toString() === 'PK';
+      check(response.status() === 200 && validSignature,
+        `${engine}:${relative}:入社セットのファイルを取得できません (${response.status()})`);
+      distribution.onboardingKit.push({ relative, status: response.status(), bytes: body.length });
     }
     distribution.list = counts;
     for (const relative of RETIRED_OFFICE_FILES) {
@@ -1151,7 +1220,13 @@ async function checkActualMobileViewport(browser, engine) {
         await revealSections(page, { engine, relative, width: 390, actualMobile: true });
       }
       await page.evaluate(() => window.scrollTo(0, 0));
-      await screenshot(page, `${engine}-actual-mobile390-${path.basename(relative, '.html')}`);
+      // 実スマホはDPR=2。長い書式一覧の全ページ画像はWebKitの32767px上限を超える。
+      // 全main節の実表示・文字矩形の検査と各節のviewport画像はrevealSectionsで維持し、
+      // 一覧の最後の画像だけは先頭viewportにする。他ページの全ページ画像は維持する。
+      const fullPage = relative !== 'shoshiki.html';
+      await screenshot(page,
+        `${engine}-actual-mobile390-${path.basename(relative, '.html')}${fullPage ? '' : '-viewport'}`,
+        fullPage);
       mobileResults.push({ engine, relative, physicalViewport: { width: 390, height: 844 },
         isMobile: true, viewport, controls });
     }
@@ -1318,7 +1393,7 @@ async function runEngine(browser, engine, forms) {
   const expectedTableNameResults = ENGINES.length * WIDTHS.length * EXPECTED_FORM_COUNT;
   check(tableNameResults.length === expectedTableNameResults,
     `書式名称の文字検査数 ${tableNameResults.length} ≠ ${expectedTableNameResults}`);
-  const expectedSectionResults = ENGINES.length * (4 * (PORTAL_WIDTHS.length + 1) + 6 * (WIDTHS.length + 1));
+  const expectedSectionResults = ENGINES.length * (4 * (PORTAL_WIDTHS.length + 1) + 7 * (WIDTHS.length + 1));
   check(sectionResults.length === expectedSectionResults,
     `画面内main節表示検査数 ${sectionResults.length} ≠ ${expectedSectionResults}`);
   const expectedBehaviorResults = ENGINES.length * 20;

@@ -184,10 +184,26 @@ async function measure(page) {
       .sort((a, b) => a.left - b.left);
     const canvasBox = boxOf(canvas);
     const titleBox = boxOf(document.querySelector('.hero-h1'));
+    const onboardingLinks = [...document.querySelectorAll('#top .hero-onboarding-link')];
+    const onboardingLink = onboardingLinks[0];
+    const onboardingBox = onboardingLink ? boxOf(onboardingLink) : null;
 
     return {
       viewportWidth,
       documentScrollWidth: document.documentElement.scrollWidth,
+      onboardingEntry: {
+        count: onboardingLinks.length,
+        href: onboardingLink?.getAttribute('href'),
+        text: onboardingLink?.textContent,
+        box: onboardingBox,
+        headerBottom: document.querySelector('.nav').getBoundingClientRect().bottom,
+        headingBottom: titleBox.bottom,
+        viewportHeight: innerHeight,
+        clickable: Boolean(onboardingBox && document.elementFromPoint(
+          onboardingBox.left + onboardingBox.width / 2,
+          onboardingBox.top + onboardingBox.height / 2,
+        )?.closest('.hero-onboarding-link') === onboardingLink),
+      },
       titleFonts: {
         primary: parseFloat(getComputedStyle(document.querySelector('.hero-services')).fontSize),
         secondary: parseFloat(getComputedStyle(document.querySelector('.hero-h1 strong')).fontSize),
@@ -551,6 +567,17 @@ async function checkReducedMotion(browser, engine, width, failures) {
           entryScreenshots: await entryScreenshots(page, engineName, width) });
 
         const composition = result.composition;
+        const entry = result.onboardingEntry;
+        if (entry.count !== 1 || entry.href !== 'shoshiki.html#onboarding-kit'
+          || !entry.text?.includes('入社書類セットを見る') || !entry.text?.includes('入力PDF・記入例')) {
+          failures.push(`${engineName}@${width}px: 入社書類セットの入口・案内先が一致しません`);
+        }
+        if (!entry.box || entry.box.height < 44 - EPSILON
+          || entry.box.top < Math.max(entry.headerBottom, entry.headingBottom) - EPSILON
+          || entry.box.bottom > entry.viewportHeight + EPSILON || !entry.clickable) {
+          failures.push(`${engineName}@${width}px: 入社書類の入口が初期画面で見えないか操作できません`
+            + ` (${JSON.stringify(entry)})`);
+        }
         if (!composition.backgroundSource
           || composition.backgroundSource.includes('portrait') !== (width <= 540)) {
           failures.push(`${engineName}@${width}px: 背景画像の縦横構図が人物帯と揃っていません`);

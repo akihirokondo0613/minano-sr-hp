@@ -1,6 +1,6 @@
 # 社内書式ページ（shoshiki.html）の直し方
 
-会社と従業員の間で使う社内書式50本のひな形を、ブラウザで記入・印刷できるHTML版で公開しているページ。別のセクション `#procedure-pdfs` で、社労士への入社・退職・休職連絡票PDF3種と、初回・変更時の事業所基本情報シートを案内する。Word・Excelファイルの配布と登録案内は終了した。正本と生成器はすべてこのリポジトリにある。デスクトップ側の旧生成器（顧問先用書式ページ_作業/04_書式生成）は 2026-09-06 以降は使わない。
+会社と従業員の間で使う社内書式50本のひな形を、ブラウザで記入・印刷できるHTML版で公開しているページ。先頭の `#onboarding-kit` では、会社用の準備ガイド・労働条件通知書Excelと、従業員用の入力できるPDF4点を入社書類セットとして配布する。`#procedure-pdfs` では、社労士への入社・退職・休職連絡票PDF3種と、初回・変更時の事業所基本情報シートを案内する。旧社内書式のWord・Excel配布と登録案内は終了したままとし、新しい入社セットとは分けて管理する。正本と生成器はすべてこのリポジトリにある。デスクトップ側の旧生成器（顧問先用書式ページ_作業/04_書式生成）は 2026-09-06 以降は使わない。
 
 ## 何がどこにあるか
 
@@ -15,6 +15,10 @@
 | 保管用Office版のファイル名 | `scripts/shoshiki/shoshiki_names.py`（`build_zip.py` が使用） |
 | 非公開のOffice版生成器 | `scripts/shoshiki/build_zip.py` → `scripts/shoshiki/_build/office-*/`（毎回新しい保管フォルダ。Git管理・公開対象外） |
 | preflight の検査 | `scripts/build-shoshiki-page.mjs --check`（HTML が最新か） |
+| 入社書類セットの掲載文・リンク | `scripts/shoshiki/build_shoshiki.py` の `ONBOARDING_KIT` と `onboarding_kit_block()` |
+| 入社書類セットの6ファイル | `assets/download/onboarding-kit/` の `guide.pdf`、`labor-notice.xlsx`、`personal.pdf`、`bank.pdf`、`commute.pdf`、`emergency.pdf` |
+| 入社書類セットの一括配布 | `assets/download/onboarding-kit.zip`（上の6点と入社連絡票・事業所基本情報シートの計8点。登録不要） |
+| 税の扶養控除等申告書の年別公式案内 | `scripts/shoshiki/build_shoshiki.py` の `TAX_DECLARATION_URL`（国税庁の様式・入力用PDF・記載例一覧） |
 | 手続き連絡票PDFの掲載文・リンク | `scripts/shoshiki/build_shoshiki.py` の `PROCEDURE_PDFS` と `procedure_pdf_block()` |
 | 手続き連絡票・基本情報PDF（各2ページ） | `assets/download/procedure-establishment.pdf`、`procedure-onboarding.pdf`、`procedure-retirement.pdf`、`procedure-leave.pdf` |
 | 扶養届の公式書式・記入例リンク | `scripts/shoshiki/build_shoshiki.py` の `DEPENDENT_OFFICIAL` と `dependent_official_block()` |
@@ -67,9 +71,19 @@ node scripts/preflight.mjs
 
 D-52は入力欄と個人番号の切り取り欄をA4一枚に収めるため、HTML生成器の `D52_CSS` でこの書式だけ余白・セルの行送りを調整する。本文・文字サイズは共通版を維持する。
 
+## 入社書類セットの更新
+
+入社セットは会社と従業員が使う書類で、社労士へ手続きを依頼する入社連絡票とは役割を分ける。掲載順は準備ガイド、会社が作成・交付する労働条件通知書、従業員が記入する本人情報・給与口座・通勤・緊急連絡先。Webの4段フローは会社が通知書を作成・交付、提出先・期限を案内、従業員が入力・保存して返送、会社が確認して加入手続きを進める順とする。
+
+従業員用PDFは各2ページ（入力用と赤字の架空記入例）で、準備ガイドは案内2ページ。労働条件通知書Excelは現行の厚生労働省モデルを基準とする入力・一般労働者用・短時間労働者用の3シート。通知書を従業員自身が決める書式として案内しない。通勤届・緊急連絡先届は会社の運用に応じて使用し、一律の法定提出物として扱わない。番号・住所・資料の重複記入を減らす方針とし、書類本文と掲載文の担当・対象を一致させる。
+
+個別6ファイルとZIPの内容を同期する。ZIPには既存の入社連絡票・事業所基本情報シートも同梱し、会社から当事務所への依頼資料を含む8点（PDF7点・Excel1点）で配布する。公開前にはPDFの全ページ・入力保存・再表示・長い住所、Excelの空欄・入力反映・A4印刷を確認し、記入例は架空と明示する。記入済みファイルをサイトへ送信する仕組みは設けない。PDFとExcelの作者情報を含め、代表者氏名の非公開方針を維持する。
+
+国税庁の扶養控除等申告書は年ごとの公式一覧へリンクし、支給年に合う様式を選ぶよう案内する。健康保険の扶養届とは区別する。公式の入力用PDFは国税庁がブラウザ内利用に対応しないと案内しているため、利用者へはダウンロード後の利用を案内する。給与・税の書類は会社の給与担当者への提出とし、事務所単独の税務サービスを示さない。
+
 ## 公開HTMLの検査とOffice版の保管
 
-対象変更のPerformance CIでは `scripts/test-shoshiki.cjs` を実行し、全50書式の画面・印刷、設定・キーボード・戻る進む・横スクロールをChromium/WebKitで検査する。Office配布リンクがないこと、旧4ファイルが提供されないこと、旧配布URLからHTML一覧へ到達できることも検査する。
+対象変更のPerformance CIでは `scripts/test-shoshiki.cjs` を実行し、全50書式の画面・印刷、設定・キーボード・戻る進む・横スクロールをChromium/WebKitで検査する。入社セットの7リンク、記入担当・対象、4段フロー、各ファイルの取得も検査する。Office配布リンクの例外は新しい `assets/download/onboarding-kit/labor-notice.xlsx` と `assets/download/onboarding-kit.zip` の2つだけとする（扶養届の日本年金機構公式Excelリンクは従来どおり別扱い）。旧4ファイルが提供されないこと、旧配布URLからHTML一覧へ到達できることを引き続き検査する。
 
 元データのD-31/D-32、Word描画機能、Office用検査スクリプトは保持する。`data/shoshiki/forms.json` は従来どおり公開対象で、Office版の生成物だけを非公開で保管する。必要な場合だけ `python3 scripts/shoshiki/build_zip.py` を実行する。出力先はGit管理対象外の `scripts/shoshiki/_build/office-*/` で、既存成果物を削除・上書きしない。deployは `scripts/` を公開から除外する。公開ディレクトリ `shoshiki/` にxlsx/docx/zip等が置かれた場合、HTML生成・preflightは失敗する。
 

@@ -17,6 +17,11 @@
 #top .hero-h1 .nw{display:inline-block;white-space:nowrap}
 #top .hero-h1 .hero-services{display:inline-block;font-size:clamp(56px,5.8vw,108px);line-height:1.15;font-weight:900}
 #top .hero-h1 strong{display:block;margin-top:12px;color:var(--sugi);background:none!important;box-shadow:none;font-size:inherit}
+/* 入社書類の入口は見出し直下の空きに置き、主見出し・相談導線の位置を保つ。 */
+#top .hero-onboarding-link{position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:12px;min-height:44px;width:max-content;max-width:100%;padding:8px 16px;border:1px solid var(--sugi);border-radius:var(--r);background:var(--shiro);color:var(--sugi);line-height:1.5;letter-spacing:0;pointer-events:auto}
+#top .hero-onboarding-link strong{font-size:15px;font-weight:800;white-space:nowrap}
+#top .hero-onboarding-link span{font-size:12px;white-space:nowrap}
+#top .hero-onboarding-link:hover{background:var(--moegi-l)}
 #top .hero-intro{position:relative;grid-column:1;grid-row:3;width:min(80%,1040px);margin:32px auto 0;z-index:3;text-align:center}
 #top .hero-sub{max-width:54em;margin:0 auto;font-size:clamp(18px,1.45vw,20px);font-weight:500;line-height:1.85;color:var(--iwa);letter-spacing:.015em}
 #top .why-label.hero-label{display:inline;background:none;border:0;border-radius:0;padding:0;margin:0;font:inherit;color:inherit;letter-spacing:inherit;box-shadow:none}
@@ -47,6 +52,9 @@
  #top .hero-h1 .hero-services{font-size:clamp(32px,8.8vw,44px);letter-spacing:-.025em}
  #top .hero-h1>br{display:block}
  #top .hero-h1>strong{display:block;margin-top:14px;font-size:inherit}
+ #top .hero-onboarding-link{top:calc(100% + 10px);gap:8px;padding:7px 10px}
+ #top .hero-onboarding-link strong{font-size:13px}
+ #top .hero-onboarding-link span{font-size:11px}
  #top .hero-intro{position:static;width:calc(100% - 40px);transform:none}
  #top .hero-sub{max-width:38em;font-size:16px;line-height:1.85}
  #top .hero-btns{gap:10px 20px}
