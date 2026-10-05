@@ -32,12 +32,24 @@ const FORM_GALLERY_PREVIEWS = [
   'assets/previews/labor-notice-sample.webp',
   'assets/previews/procedure-retirement-sample.webp',
   'assets/previews/procedure-leave-sample.webp',
+  'assets/previews/onboarding-guide-preview.webp',
+  'assets/previews/onboarding-personal-sample.webp',
+  'assets/previews/onboarding-bank-sample.webp',
+  'assets/previews/onboarding-commute-sample.webp',
+  'assets/previews/onboarding-emergency-sample.webp',
+  'assets/previews/procedure-establishment-sample.webp',
 ];
 const FORM_GALLERY_DOWNLOADS = [
   'assets/download/procedure-onboarding.pdf',
   'assets/download/onboarding-kit/labor-notice.xlsx',
   'assets/download/procedure-retirement.pdf',
   'assets/download/procedure-leave.pdf',
+  'assets/download/onboarding-kit/guide.pdf',
+  'assets/download/onboarding-kit/personal.pdf',
+  'assets/download/onboarding-kit/bank.pdf',
+  'assets/download/onboarding-kit/commute.pdf',
+  'assets/download/onboarding-kit/emergency.pdf',
+  'assets/download/procedure-establishment.pdf',
 ];
 const MOTION_WIDTHS = [390, 540, 541, 640, 733, 767, 768, 1280, 1920];
 // External reference, rather than values read from home-hero.js:
@@ -713,7 +725,7 @@ async function checkReducedMotion(browser, engine, width, failures) {
         }
         if (gallery.cardCount !== FORM_GALLERY_PREVIEWS.length
           || gallery.previewSources.some((source, index) => source !== FORM_GALLERY_PREVIEWS[index])) {
-          failures.push(`${engineName}@${width}px: 入社・労働条件通知書・退職・休職の4見本が一致しません`
+          failures.push(`${engineName}@${width}px: 入社書類8点と退職・休職の10プレビューが一致しません`
             + ` (${JSON.stringify(gallery.previewSources)})`);
         }
         const noticeLink = gallery.cardLinks[1];

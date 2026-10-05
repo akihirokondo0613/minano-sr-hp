@@ -81,14 +81,22 @@ window.__mnInitFormGallery=function(){
   reduce.addEventListener('change',measure);
   controls.hidden=false;
   measure();
-  // 見本レールが画面に入ったときに読み込み、タイトルとイラストの表示を優先する。
+  // 実際に見える見本から読み込み、横送りする前の書類を一括取得しない。
   function loadImages(){
     rail.querySelectorAll('img[data-src]').forEach(function(img){img.src=img.dataset.src;delete img.dataset.src;});
     if(imageObserver)imageObserver.disconnect();
   }
   if('IntersectionObserver' in window){
-    imageObserver=new IntersectionObserver(function(entries){if(entries[0].isIntersecting)loadImages();},{rootMargin:'0px 0px',threshold:0});
-    imageObserver.observe(rail);
+    // src未設定のimgはdisplay:noneなので、用紙枠を観測し画像を読み込む。
+    imageObserver=new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(!entry.isIntersecting)return;
+        var img=entry.target.querySelector('img[data-src]');
+        if(img){img.src=img.dataset.src;delete img.dataset.src;}
+        imageObserver.unobserve(entry.target);
+      });
+    },{rootMargin:'0px 0px',threshold:0});
+    rail.querySelectorAll('.fg-paper').forEach(function(paper){imageObserver.observe(paper);});
   }else loadImages();
   if('IntersectionObserver' in window){
     observer=new IntersectionObserver(function(entries){

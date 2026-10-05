@@ -19,9 +19,11 @@
 | 入社書類セットの6ファイル | `assets/download/onboarding-kit/` の `guide.pdf`、`labor-notice.xlsx`、`personal.pdf`、`bank.pdf`、`commute.pdf`、`emergency.pdf` |
 | 入社書類セットの一括配布 | `assets/download/onboarding-kit.zip`（上の6点と入社連絡票・事業所基本情報シートの計8点。登録不要） |
 | 労働条件通知書の公開見本 | `assets/previews/labor-notice-sample.webp`（一般労働者用の架空記入例。トップと書式一覧で共用） |
+| 入社セットPDFのプレビュー | `assets/previews/onboarding-guide-preview.webp`（準備ガイド1ページ目）と `onboarding-{personal,bank,commute,emergency}-sample.webp`（各PDF2ページ目の架空記入例） |
 | 税の扶養控除等申告書の年別公式案内 | `scripts/shoshiki/build_shoshiki.py` の `TAX_DECLARATION_URL`（国税庁の様式・入力用PDF・記載例一覧） |
 | 手続き連絡票PDFの掲載文・リンク | `scripts/shoshiki/build_shoshiki.py` の `PROCEDURE_PDFS` と `procedure_pdf_block()` |
 | 手続き連絡票・基本情報PDF（各2ページ） | `assets/download/procedure-establishment.pdf`、`procedure-onboarding.pdf`、`procedure-retirement.pdf`、`procedure-leave.pdf` |
+| 手続き連絡票・基本情報PDFのプレビュー | `assets/previews/procedure-{establishment,onboarding,retirement,leave}-sample.webp`（各PDF2ページ目の架空記入例） |
 | 扶養届の公式書式・記入例リンク | `scripts/shoshiki/build_shoshiki.py` の `DEPENDENT_OFFICIAL` と `dependent_official_block()` |
 | 旧メール登録フォーム | Googleフォーム https://forms.gle/vFUpB3fqzetNHQQKA（所有者側の管理対象。サイトからの申込リンクは置かない） |
 
@@ -80,13 +82,15 @@ D-52は入力欄と個人番号の切り取り欄をA4一枚に収めるため�
 
 個別6ファイルとZIPの内容を同期する。ZIPには既存の入社連絡票・事業所基本情報シートも同梱し、会社から当事務所への依頼資料を含む8点（PDF7点・Excel1点）で配布する。公開前にはPDFの全ページ・入力保存・再表示・長い住所、Excelの空欄・入力反映・A4印刷を確認し、記入例は架空と明示する。記入済みファイルをサイトへ送信する仕組みは設けない。PDFとExcelの作者情報を含め、代表者氏名の非公開方針を維持する。
 
-労働条件通知書Excelを更新するときは、検証済みの架空記入例から `labor-notice-sample.webp` を作り、通知書の掲載項目とトップの見本にも反映する。トップの見本は入社連絡票、労働条件通知書、退職連絡票、休職連絡票の4種類で、901px以上では先頭3枚を並べる。通知書のリンクはExcelであること、会社が作成すること、ダウンロード先を明示し、PDFだけの見本として案内しない。
+書式一覧では入社セットの個別6点と、手続き連絡票・基本情報PDF4点の全10点にプレビューを表示する。準備ガイドは1ページ目、その他のPDFは2ページ目の赤字の架空記入例を実ファイルから画像にする。PDFの画像リンクはダウンロードとは分け、同じファイルの全2ページを別タブで開く。画像は840×1189のWebPとし、原稿変更時は該当プレビューも更新する。
+
+労働条件通知書Excelを更新するときは、検証済みの架空記入例から `labor-notice-sample.webp` を作り、通知書の掲載項目とトップの見本にも反映する。トップの横送りには同じ全10点を掲載し、901px以上では先頭3枚を並べる。見える用紙から画像を読み込み、最初から10点を一括取得しない。通知書のリンクはExcelであること、会社が作成すること、ダウンロード先を明示し、PDFだけの見本として案内しない。
 
 国税庁の扶養控除等申告書は年ごとの公式一覧へリンクし、支給年に合う様式を選ぶよう案内する。健康保険の扶養届とは区別する。公式の入力用PDFは国税庁がブラウザ内利用に対応しないと案内しているため、利用者へはダウンロード後の利用を案内する。給与・税の書類は会社の給与担当者への提出とし、事務所単独の税務サービスを示さない。
 
 ## 公開HTMLの検査とOffice版の保管
 
-対象変更のPerformance CIでは `scripts/test-shoshiki.cjs` を実行し、全50書式の画面・印刷、設定・キーボード・戻る進む・横スクロールをChromium/WebKitで検査する。入社セットの7リンク、記入担当・対象、4段フロー、各ファイルの取得も検査する。Office配布リンクの例外は新しい `assets/download/onboarding-kit/labor-notice.xlsx` と `assets/download/onboarding-kit.zip` の2つだけとする（扶養届の日本年金機構公式Excelリンクは従来どおり別扱い）。旧4ファイルが提供されないこと、旧配布URLからHTML一覧へ到達できることを引き続き検査する。
+対象変更のPerformance CIでは `scripts/test-shoshiki.cjs` を実行し、全50書式の画面・印刷、設定・キーボード・戻る進む・横スクロールをChromium/WebKitで検査する。入社セットの7リンク、記入担当・対象、4段フロー、各ファイルの取得、全10点のプレビュー画像の実表示とPDF表示先も検査する。Office配布リンクの例外は新しい `assets/download/onboarding-kit/labor-notice.xlsx` と `assets/download/onboarding-kit.zip` の2つだけとする（扶養届の日本年金機構公式Excelリンクは従来どおり別扱い）。旧4ファイルが提供されないこと、旧配布URLからHTML一覧へ到達できることを引き続き検査する。
 
 元データのD-31/D-32、Word描画機能、Office用検査スクリプトは保持する。`data/shoshiki/forms.json` は従来どおり公開対象で、Office版の生成物だけを非公開で保管する。必要な場合だけ `python3 scripts/shoshiki/build_zip.py` を実行する。出力先はGit管理対象外の `scripts/shoshiki/_build/office-*/` で、既存成果物を削除・上書きしない。deployは `scripts/` を公開から除外する。公開ディレクトリ `shoshiki/` にxlsx/docx/zip等が置かれた場合、HTML生成・preflightは失敗する。
 
