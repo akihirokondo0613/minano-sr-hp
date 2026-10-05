@@ -26,6 +26,11 @@ const ENGINES = [
   ['webkit', webkit],
 ];
 const EPSILON = 1;
+const FORM_GALLERY_PREVIEWS = [
+  'assets/previews/procedure-onboarding-sample.webp',
+  'assets/previews/procedure-retirement-sample.webp',
+  'assets/previews/procedure-leave-sample.webp',
+];
 const MOTION_WIDTHS = [390, 540, 541, 640, 733, 767, 768, 1280, 1920];
 // External reference, rather than values read from home-hero.js:
 // https://gaaboo.jp/wp/wp-content/themes/gaaboo/assets/js/top.js?ver=1766493868
@@ -66,6 +71,12 @@ async function prepareLocalHttpPage(page) {
 }
 
 async function measure(page) {
+  // ギャラリーのCSSは近づいた時に読み込まれる。追加位置と行高を、未読込の
+  // 簡易スタイルで測らないように、実際のstylesheetの読込を待つ。
+  await page.waitForFunction(() => Boolean(
+    document.getElementById('home-form-gallery-style')?.sheet
+      || document.querySelector('link[href^="home-form-gallery.css"]')?.sheet,
+  ), null, { timeout: 10000 });
   return page.evaluate(({ epsilon }) => {
     const viewportWidth = document.documentElement.clientWidth;
     const selectorOf = (element) => {
@@ -153,6 +164,12 @@ async function measure(page) {
     };
     const offenders = [...document.querySelectorAll('.hero, .hero *')]
       .filter((element) => {
+        // 見本レール内の画面外カードは、局所的な横送りの範囲。レール自身と
+        // その外側の要素・全ページ幅は引き続き検査する。
+        const rail = element.closest('#tools .fg-rail');
+        if (rail && rail !== element && ['auto', 'scroll'].includes(getComputedStyle(rail).overflowX)) {
+          return false;
+        }
         const style = getComputedStyle(element);
         if (style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity) === 0) {
           return false;
@@ -184,25 +201,43 @@ async function measure(page) {
       .sort((a, b) => a.left - b.left);
     const canvasBox = boxOf(canvas);
     const titleBox = boxOf(document.querySelector('.hero-h1'));
-    const onboardingLinks = [...document.querySelectorAll('#top .hero-onboarding-link')];
-    const onboardingLink = onboardingLinks[0];
-    const onboardingBox = onboardingLink ? boxOf(onboardingLink) : null;
+    const stage = document.querySelector('#top .hero-stage');
+    const overlay = document.querySelector('#top .hero-overlay');
+    const intro = document.querySelector('#top .hero-intro');
+    const updates = document.querySelector('#top .hero-updates');
+    const tools = document.querySelector('#tools');
+    const toolsBox = tools ? boxOf(tools) : null;
+    const kit = tools?.querySelector('.fg-kit');
+    const kitLink = kit?.querySelector('.fg-kit-link');
+    const kitDownload = kit?.querySelector('.fg-kit-download');
+    const galleryCards = [...document.querySelectorAll('#tools .fg-rail > .fg-item:not(.fg-copy)')];
 
     return {
       viewportWidth,
       documentScrollWidth: document.documentElement.scrollWidth,
-      onboardingEntry: {
-        count: onboardingLinks.length,
-        href: onboardingLink?.getAttribute('href'),
-        text: onboardingLink?.textContent,
-        box: onboardingBox,
-        headerBottom: document.querySelector('.nav').getBoundingClientRect().bottom,
-        headingBottom: titleBox.bottom,
-        viewportHeight: innerHeight,
-        clickable: Boolean(onboardingBox && document.elementFromPoint(
-          onboardingBox.left + onboardingBox.width / 2,
-          onboardingBox.top + onboardingBox.height / 2,
-        )?.closest('.hero-onboarding-link') === onboardingLink),
+      formGallery: {
+        oldEntryCount: document.querySelectorAll('.hero-onboarding-link').length,
+        sectionCount: document.querySelectorAll('#tools').length,
+        galleryCount: document.querySelectorAll('.fg-gallery').length,
+        railCount: document.querySelectorAll('#form-gallery-rail').length,
+        inStage: tools?.parentElement === stage,
+        followsOverlay: overlay.nextElementSibling === tools,
+        precedesIntro: tools?.nextElementSibling === intro,
+        rows: [canvas, tools, intro, updates].map((element) => element
+          ? getComputedStyle(element).gridRowStart : null),
+        box: toolsBox,
+        cardCount: galleryCards.length,
+        previewSources: galleryCards.map((card) => {
+          const image = card.querySelector('.fg-paper > img');
+          return image?.getAttribute('src') || image?.dataset.src || null;
+        }),
+        kitCount: document.querySelectorAll('.fg-kit').length,
+        kitText: kit?.textContent,
+        kitLinkCount: document.querySelectorAll('.fg-kit-link').length,
+        kitHref: kitLink?.getAttribute('href'),
+        kitDownloadCount: document.querySelectorAll('.fg-kit-download').length,
+        downloadHref: kitDownload?.getAttribute('href'),
+        downloadAttribute: kitDownload?.getAttribute('download'),
       },
       titleFonts: {
         primary: parseFloat(getComputedStyle(document.querySelector('.hero-services')).fontSize),
@@ -212,8 +247,8 @@ async function measure(page) {
         canvas: canvasBox, actors: actorBoxes,
         gaps: actorBoxes.slice(1).map((actor, index) => actor.left - actorBoxes[index].right),
         titleGap: Math.min(...actorBoxes.map((actor) => actor.top)) - titleBox.bottom,
-        introGap: boxOf(document.querySelector('.hero-intro')).top
-          - Math.max(...actorBoxes.map((actor) => actor.bottom)),
+        galleryGap: toolsBox ? toolsBox.top - canvasBox.bottom : null,
+        introGap: toolsBox ? boxOf(intro).top - toolsBox.bottom : null,
         backgroundOpacity: Number(getComputedStyle(canvas.querySelector('.hero-town')).opacity),
         backgroundSource: canvas.querySelector('.hero-town img').currentSrc,
       },
@@ -370,6 +405,75 @@ async function entryScreenshots(page, engine, width) {
     screenshots.push({ name, path: target });
   }
   return screenshots;
+}
+
+async function checkFormGallery(page, engine, width, failures) {
+  const report = { previews: [], links: [], errors: [] };
+  const label = `${engine}@${width}px PDF gallery`;
+  try {
+    if (await page.locator('#tools').count() !== 1) return report;
+    const cards = page.locator('#tools .fg-rail > .fg-item:not(.fg-copy)');
+    if (await cards.count() !== FORM_GALLERY_PREVIEWS.length) return report;
+    // lazy画像は利用者と同じく各見本へスクロールして読み込む。srcや読込状態を
+    // 検査側で書き換えず、ページの実際の読込処理を確認する。
+    for (let index = 0; index < FORM_GALLERY_PREVIEWS.length; index += 1) {
+      const card = cards.nth(index);
+      await card.scrollIntoViewIfNeeded();
+      const image = card.locator('.fg-paper > img');
+      if (await image.count() !== 1) {
+        failures.push(`${label}: 見本${index + 1}の画像が1枚ではありません`);
+        continue;
+      }
+      const handle = await image.elementHandle();
+      try {
+        await page.waitForFunction((element) => element.complete
+          && element.naturalWidth > 0 && element.naturalHeight > 0,
+        handle, { timeout: 10000 });
+      } catch (error) {
+        if (error.name !== 'TimeoutError') throw error;
+        failures.push(`${label}: 見本${index + 1}の画像を読み込めません`);
+      } finally {
+        await handle.dispose();
+      }
+      const metrics = await image.evaluate((element) => {
+        const rect = element.getBoundingClientRect();
+        return { source: element.currentSrc, complete: element.complete,
+          naturalWidth: element.naturalWidth, naturalHeight: element.naturalHeight,
+          width: rect.width, height: rect.height };
+      });
+      report.previews.push(metrics);
+      if (!metrics.source || new URL(metrics.source).pathname
+        !== `/${FORM_GALLERY_PREVIEWS[index]}` || !metrics.complete
+        || metrics.naturalWidth <= 0 || metrics.naturalHeight <= 0
+        || metrics.width <= 0 || metrics.height <= 0) {
+        failures.push(`${label}: 見本${index + 1}の画像/表示寸法が不正です (${JSON.stringify(metrics)})`);
+      }
+    }
+    for (const selector of ['.fg-kit-link', '.fg-kit-download']) {
+      const link = page.locator(`#tools .fg-kit ${selector}`);
+      if (await link.count() !== 1) continue;
+      await link.scrollIntoViewIfNeeded();
+      const metrics = await link.evaluate((element) => {
+        const rect = element.getBoundingClientRect();
+        return { href: element.getAttribute('href'), left: rect.left, right: rect.right,
+          top: rect.top, bottom: rect.bottom, width: rect.width, height: rect.height,
+          viewportWidth: document.documentElement.clientWidth, viewportHeight: innerHeight,
+          clickable: document.elementFromPoint(rect.left + rect.width / 2,
+            rect.top + rect.height / 2)?.closest('a') === element };
+      });
+      report.links.push({ selector, ...metrics });
+      if (metrics.width <= 0 || metrics.height < 44 - EPSILON
+        || metrics.left < -EPSILON || metrics.right > metrics.viewportWidth + EPSILON
+        || metrics.top < -EPSILON || metrics.bottom > metrics.viewportHeight + EPSILON
+        || !metrics.clickable) {
+        failures.push(`${label}: 入社セットの${selector}を表示/操作できません (${JSON.stringify(metrics)})`);
+      }
+    }
+  } catch (error) {
+    report.errors.push(error.message);
+    failures.push(`${label}: ${error.message}`);
+  }
+  return report;
 }
 
 async function checkMotionTimeline(browser, engine, width, failures) {
@@ -563,20 +667,30 @@ async function checkReducedMotion(browser, engine, width, failures) {
         await page.goto(base, { waitUntil: 'domcontentloaded', timeout: 20000 });
         await page.evaluate(() => document.fonts.ready);
         const result = await measure(page);
-        results.push({ engine: engineName, width, errors, ...result,
-          entryScreenshots: await entryScreenshots(page, engineName, width) });
+        const report = { engine: engineName, width, errors, ...result,
+          entryScreenshots: await entryScreenshots(page, engineName, width) };
+        results.push(report);
 
         const composition = result.composition;
-        const entry = result.onboardingEntry;
-        if (entry.count !== 1 || entry.href !== 'shoshiki.html#onboarding-kit'
-          || !entry.text?.includes('入社書類セットを見る') || !entry.text?.includes('入力PDF・記入例')) {
-          failures.push(`${engineName}@${width}px: 入社書類セットの入口・案内先が一致しません`);
+        const gallery = result.formGallery;
+        if (gallery.oldEntryCount !== 0 || gallery.sectionCount !== 1
+          || gallery.galleryCount !== 1 || gallery.railCount !== 1
+          || !gallery.inStage || !gallery.followsOverlay || !gallery.precedesIntro
+          || gallery.rows.join('/') !== '2/3/4/5') {
+          failures.push(`${engineName}@${width}px: タイトル・イラスト→PDF見本→説明/CTAの配置が一致しません`
+            + ` (${JSON.stringify(gallery)})`);
         }
-        if (!entry.box || entry.box.height < 44 - EPSILON
-          || entry.box.top < Math.max(entry.headerBottom, entry.headingBottom) - EPSILON
-          || entry.box.bottom > entry.viewportHeight + EPSILON || !entry.clickable) {
-          failures.push(`${engineName}@${width}px: 入社書類の入口が初期画面で見えないか操作できません`
-            + ` (${JSON.stringify(entry)})`);
+        if (gallery.cardCount !== FORM_GALLERY_PREVIEWS.length
+          || gallery.previewSources.some((source, index) => source !== FORM_GALLERY_PREVIEWS[index])) {
+          failures.push(`${engineName}@${width}px: 入社・退職・休職の3見本が一致しません`
+            + ` (${JSON.stringify(gallery.previewSources)})`);
+        }
+        if (gallery.kitCount !== 1 || !gallery.kitText?.replace(/\s+/g, '').includes('入社書類8点セット')
+          || gallery.kitLinkCount !== 1 || gallery.kitHref !== 'shoshiki.html#onboarding-kit'
+          || gallery.kitDownloadCount !== 1 || gallery.downloadHref !== 'assets/download/onboarding-kit.zip'
+          || gallery.downloadAttribute === null || gallery.downloadAttribute === undefined) {
+          failures.push(`${engineName}@${width}px: PDF見本内の入社書類セット案内・ZIP導線が一致しません`
+            + ` (${JSON.stringify(gallery)})`);
         }
         if (!composition.backgroundSource
           || composition.backgroundSource.includes('portrait') !== (width <= 540)) {
@@ -597,9 +711,12 @@ async function checkReducedMotion(browser, engine, width, failures) {
           failures.push(`${engineName}@${width}px: 人物の配置数・間隔を測定できません`);
         }
         // Restored layered crowd intentionally overlaps horizontally; text must stay clear.
-        if (composition.titleGap < 8 || composition.titleGap > 80 || composition.introGap < 32) {
-          failures.push(`${engineName}@${width}px: 人物と見出し・説明の余白が適切ではありません`
-            + ` (title=${composition.titleGap}, intro=${composition.introGap})`);
+        if (composition.titleGap < 8 || composition.titleGap > 80
+          || !gallery.box || gallery.box.width <= 0 || gallery.box.height <= 0
+          || composition.galleryGap === null || Math.abs(composition.galleryGap - 36) > EPSILON
+          || composition.introGap === null || Math.abs(composition.introGap - 32) > EPSILON) {
+          failures.push(`${engineName}@${width}px: 見出し・人物・PDF見本・説明の余白が適切ではありません`
+            + ` (title=${composition.titleGap}, scene→gallery=${composition.galleryGap}, gallery→intro=${composition.introGap})`);
         }
         if (composition.actors.some((actor) => actor.left < composition.canvas.left - EPSILON
           || actor.right > composition.canvas.right + EPSILON
@@ -698,6 +815,7 @@ async function checkReducedMotion(browser, engine, width, failures) {
         } else if (width >= 1024 && result.summaryLayout !== 'flex') {
           failures.push(`${engineName}@${width}px: PCのサマリーが既存のflex配列ではありません`);
         }
+        report.galleryAfterScroll = await checkFormGallery(page, engineName, width, failures);
         if (errors.length) failures.push(`${engineName}@${width}px: ${errors.join(' / ')}`);
         await page.close();
       }

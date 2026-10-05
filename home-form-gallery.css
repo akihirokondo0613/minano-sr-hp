@@ -1,7 +1,19 @@
-/* 07 TOOLS ― 実際のPDFを紙面のまま見せ、用途とダウンロードへつなぐ。 */
+/* イラストの次にPDFの実物見本を見せ、用途とダウンロードへつなぐ。 */
 #tools{background:var(--yuki)}
-#tools + .about-sec{border-top:1px solid var(--line)}
+#top #tools{position:relative;grid-column:1;grid-row:3;min-width:0;width:100%;margin-top:36px;text-align:left}
 #tools .sec-head{margin-bottom:24px}
+.fg-kit{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:20px 24px;margin-bottom:28px;border:1px solid var(--line);background:var(--shiro)}
+.fg-kit-copy{min-width:0}
+.fg-kit-copy h3{font-size:18px;font-weight:800;color:var(--sugi);line-height:1.5}
+.fg-kit-copy p{margin-top:6px;font-size:13px;line-height:1.8;color:var(--ink3)}
+.fg-kit-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px 20px;flex-shrink:0}
+.fg-kit-link{display:inline-flex;align-items:center;gap:12px;min-height:44px;font-size:13px;font-weight:700;color:var(--sugi);text-underline-offset:4px}
+.fg-kit-download{display:flex;flex-direction:column;justify-content:center;min-height:52px;padding:10px 20px;border:1px solid var(--sugi);border-radius:var(--r);background:var(--sugi);color:var(--shiro);font-size:13px;font-weight:700;text-decoration:none;line-height:1.6}
+.fg-kit-download span{font-size:11px;font-weight:400}
+.fg-kit-download:hover{background:var(--sugi-7)}
+.fg-kit-link:focus-visible,.fg-kit-download:focus-visible{outline:2px solid var(--sugi);outline-offset:3px}
+@media(max-width:900px){.fg-kit{align-items:flex-start;flex-direction:column;gap:12px}.fg-kit-actions{width:100%}}
+@media(max-width:640px){.fg-kit{padding:16px;margin-bottom:20px}.fg-kit-copy h3{font-size:16px}.fg-kit-copy p{font-size:12px}.fg-kit-actions{gap:10px 16px}.fg-kit-download{padding-inline:16px}}
 .fg-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
 .fg-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--ink3)}
 .fg-free{color:var(--sugi);font-weight:700}
