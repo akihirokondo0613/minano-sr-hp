@@ -81,13 +81,13 @@ window.__mnInitFormGallery=function(){
   reduce.addEventListener('change',measure);
   controls.hidden=false;
   measure();
-  // 下方の見本は近づいたときに読み込み、ファーストビューの転送量を抑える。
+  // 見本レールが画面に入ったときに読み込み、タイトルとイラストの表示を優先する。
   function loadImages(){
     rail.querySelectorAll('img[data-src]').forEach(function(img){img.src=img.dataset.src;delete img.dataset.src;});
     if(imageObserver)imageObserver.disconnect();
   }
   if('IntersectionObserver' in window){
-    imageObserver=new IntersectionObserver(function(entries){if(entries[0].isIntersecting)loadImages();},{rootMargin:'600px 0px',threshold:0});
+    imageObserver=new IntersectionObserver(function(entries){if(entries[0].isIntersecting)loadImages();},{rootMargin:'0px 0px',threshold:0});
     imageObserver.observe(rail);
   }else loadImages();
   if('IntersectionObserver' in window){

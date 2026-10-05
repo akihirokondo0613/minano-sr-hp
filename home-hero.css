@@ -2,7 +2,7 @@
    Desktop 1440×768 → 1440×448 (320px); mobile 400×592 → 400×376 (216px).
    --canvas-scale/--canvas-crop rebase each original percentage without resizing people. */
 #top.hero{height:auto;min-height:0;background:#fff;overflow-x:clip;overflow-y:visible}
-#top .hero-stage{position:relative;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto auto;gap:0;width:100%;max-width:none;margin:0;padding:0 0 36px;background:#fff!important;container:home-hero/inline-size}
+#top .hero-stage{position:relative;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto auto auto;gap:0;width:100%;max-width:none;margin:0;padding:0 0 36px;background:#fff!important;container:home-hero/inline-size}
 #top .hero-scene{--canvas-scale:1.7142857143;--canvas-crop:71.4285714286%;position:relative;grid-column:1;grid-row:2;display:block;width:100%;max-width:1600px;height:auto;min-width:0;min-height:0;max-height:none;justify-self:center;margin:8px 0 0;aspect-ratio:1440/448;isolation:isolate;pointer-events:none;overflow-x:clip;overflow-y:visible}
 #top .hero-canvas-sp{display:none}
 #top .hero-town{position:absolute;display:block;left:0;top:0;bottom:auto;width:100%;height:73.7142857143%;opacity:1;transform:none}
@@ -17,19 +17,14 @@
 #top .hero-h1 .nw{display:inline-block;white-space:nowrap}
 #top .hero-h1 .hero-services{display:inline-block;font-size:clamp(56px,5.8vw,108px);line-height:1.15;font-weight:900}
 #top .hero-h1 strong{display:block;margin-top:12px;color:var(--sugi);background:none!important;box-shadow:none;font-size:inherit}
-/* 入社書類の入口は見出し直下の空きに置き、主見出し・相談導線の位置を保つ。 */
-#top .hero-onboarding-link{position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:12px;min-height:44px;width:max-content;max-width:100%;padding:8px 16px;border:1px solid var(--sugi);border-radius:var(--r);background:var(--shiro);color:var(--sugi);line-height:1.5;letter-spacing:0;pointer-events:auto}
-#top .hero-onboarding-link strong{font-size:15px;font-weight:800;white-space:nowrap}
-#top .hero-onboarding-link span{font-size:12px;white-space:nowrap}
-#top .hero-onboarding-link:hover{background:var(--moegi-l)}
-#top .hero-intro{position:relative;grid-column:1;grid-row:3;width:min(80%,1040px);margin:32px auto 0;z-index:3;text-align:center}
+#top .hero-intro{position:relative;grid-column:1;grid-row:4;width:min(80%,1040px);margin:32px auto 0;z-index:3;text-align:center}
 #top .hero-sub{max-width:54em;margin:0 auto;font-size:clamp(18px,1.45vw,20px);font-weight:500;line-height:1.85;color:var(--iwa);letter-spacing:.015em}
 #top .why-label.hero-label{display:inline;background:none;border:0;border-radius:0;padding:0;margin:0;font:inherit;color:inherit;letter-spacing:inherit;box-shadow:none}
 #top .why-label.hero-label::before{display:none}
 #top .hero-btns{justify-content:center;gap:12px 24px;flex-wrap:wrap;margin-top:24px}
 #top .hero-btns .btn-primary{flex:initial;width:auto;padding:16px 36px;font-size:17px}
 #top .hero-sub-link{display:inline-flex;align-items:center;min-height:44px;padding:0 2px;border:0;border-bottom:1px solid var(--moegi);border-radius:0;background:none;font-size:15px}
-#top .hero-updates{grid-column:1;grid-row:4;width:min(1200px,calc(100% - 48px));justify-self:center;box-sizing:border-box;border-top:1px solid var(--line);padding-top:24px;margin-top:32px;min-width:0}
+#top .hero-updates{grid-column:1;grid-row:5;width:min(1200px,calc(100% - 48px));justify-self:center;box-sizing:border-box;border-top:1px solid var(--line);padding-top:24px;margin-top:32px;min-width:0}
 #top .hero-spots{grid-template-columns:minmax(0,1fr);width:100%;max-width:100%;margin-top:0;gap:28px}
 #top .hero-spot{box-shadow:none;border:0;border-radius:0;padding:0 0 8px;background:none;max-inline-size:none;text-align:left;transform:none}
 #top .hero-spot-badge{margin-inline:0}
@@ -52,9 +47,6 @@
  #top .hero-h1 .hero-services{font-size:clamp(32px,8.8vw,44px);letter-spacing:-.025em}
  #top .hero-h1>br{display:block}
  #top .hero-h1>strong{display:block;margin-top:14px;font-size:inherit}
- #top .hero-onboarding-link{top:calc(100% + 10px);gap:8px;padding:7px 10px}
- #top .hero-onboarding-link strong{font-size:13px}
- #top .hero-onboarding-link span{font-size:11px}
  #top .hero-intro{position:static;width:calc(100% - 40px);transform:none}
  #top .hero-sub{max-width:38em;font-size:16px;line-height:1.85}
  #top .hero-btns{gap:10px 20px}
