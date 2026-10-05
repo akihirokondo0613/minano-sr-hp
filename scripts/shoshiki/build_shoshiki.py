@@ -4,8 +4,8 @@
 #   python3 scripts/shoshiki/build_shoshiki.py --check  … 書き出さず、差分があれば exit 1
 # 正本: data/shoshiki/forms.json（文面。作り方は make_json.py と docs/shoshiki.md）。donor は portal.html（head・nav・footer の骨格を借りる）。
 # 書式ページ（shoshiki/D-xx.html）は印刷用の独立HTMLで、会社情報はブラウザ内（localStorage）にだけ保存する。
-# 社内書式はHTML版のみ。社労士への手続き連絡票3種は入力できるPDFとして別に案内する。
-# Office版の元データと保管用生成器は非公開で保持する。
+# 社内書式50本はHTML版。入社書類セットと社労士への手続き連絡票は別に案内する。
+# 旧Office版の元データと保管用生成器は非公開で保持する。
 import html
 import json
 import pathlib
@@ -28,6 +28,65 @@ DL_PATH = "shoshiki/dl/word-7kq3x9"
 FORMS = [f for f in DATA["forms"] if f.get("to") != "社労士" and not f.get("kind")]
 BY_NO = {f["no"]: f for f in FORMS}
 N_FORMS = len(FORMS)
+ONBOARDING_KIT = [
+    {
+        "file": "guide.pdf",
+        "title": "入社書類の準備ガイド",
+        "role": "会社が用意",
+        "use": "提出先・提出期限を入力して、従業員へ渡します。必要な書類と、準備する順番を確認できます。",
+        "contents": "本人が記入する書類、番号を確認する資料、条件に応じて提出する資料。",
+        "format": "入力欄付き／全2ページ",
+        "download": "入社書類セット_準備ガイド.pdf",
+    },
+    {
+        "file": "labor-notice.xlsx",
+        "title": "労働条件通知書",
+        "role": "会社が作成・交付",
+        "use": "厚生労働省のモデルをもとにしたExcelです。入力シートに雇用条件を記入し、一般労働者用・短時間労働者用の通知書を印刷します。",
+        "contents": "契約期間、業務・就業場所、勤務時間・休日、賃金、退職に関する条件。",
+        "format": "Excel／入力・一般・短時間の3シート",
+        "download": "労働条件通知書_入力用.xlsx",
+    },
+    {
+        "file": "personal.pdf",
+        "title": "従業員本人情報シート",
+        "role": "従業員が記入",
+        "use": "氏名・住所と、社会保険・雇用保険の手続きに使う番号をご記入ください。番号の確認資料も欄の近くに記載しています。",
+        "contents": "本人情報、住所、基礎年金番号、雇用保険被保険者番号、マイナンバー。",
+        "format": "入力欄・赤字の記入例付き／全2ページ",
+        "download": "従業員本人情報シート_入力用・記入例.pdf",
+    },
+    {
+        "file": "bank.pdf",
+        "title": "給与口座振込同意書",
+        "role": "口座振込を希望する従業員が記入",
+        "use": "給与の口座振込に同意し、本人名義の振込先を指定する書類です。",
+        "contents": "銀行・支店、口座の種類・番号・名義、振込対象、開始希望時期、本人の同意。",
+        "format": "入力欄・赤字の記入例付き／全2ページ",
+        "download": "給与口座振込同意書_入力用・記入例.pdf",
+    },
+    {
+        "file": "commute.pdf",
+        "title": "通勤経路・通勤手当申請書",
+        "role": "会社から案内された従業員が記入",
+        "use": "通勤経路の確認や、通勤手当の申請に使います。会社のルールに従ってご記入ください。",
+        "contents": "通勤方法、利用区間・経由地、運賃・定期代、片道距離、所要時間。",
+        "format": "入力欄・赤字の記入例付き／全2ページ",
+        "download": "通勤経路・通勤手当申請書_入力用・記入例.pdf",
+    },
+    {
+        "file": "emergency.pdf",
+        "title": "緊急連絡先届",
+        "role": "会社から案内された従業員が記入",
+        "use": "緊急時の連絡先を会社へ届けます。住民票の住所と異なる現住所がある場合は、こちらへご記入ください。",
+        "contents": "緊急連絡先の氏名・本人との関係・電話番号、住民票と異なる現住所。",
+        "format": "入力欄・赤字の記入例付き／全2ページ",
+        "download": "緊急連絡先届_入力用・記入例.pdf",
+    },
+]
+TAX_DECLARATION_URL = (
+    "https://www.nta.go.jp/taxes/tetsuzuki/shinsei/annai/gensen/annai/1648_01.htm"
+)
 PROCEDURE_PDFS = [
     {
         "slug": "establishment",
@@ -75,8 +134,8 @@ DEPENDENT_OFFICIAL = {
     ],
 }
 
-TITLE = "入社・退職・休職の連絡票と社内書式｜みなの社会保険労務士事務所"
-DESC = f"初回・変更時の事業所基本情報シートと、入社・退職・休職の入力できる連絡票PDF（各2ページ・赤字の記入例付き）。会社と従業員の間で使う社内書式{N_FORMS}本、扶養届の公式書式・記入例もご案内。登録不要。"
+TITLE = "入社書類セット・手続き連絡票・社内書式｜みなの社会保険労務士事務所"
+DESC = f"労働条件通知書のExcelと、従業員が記入する本人情報・給与口座・通勤・緊急連絡先のPDFを入社書類セットで配布。入社・退職・休職の手続き連絡票、社内書式{N_FORMS}本、扶養届の公式書式もご案内。登録不要。"
 
 CAT_NOTE = {
     "01_入社": "内定から入社までに取り交わす書類",
@@ -315,6 +374,25 @@ def procedure_pdf_block():
     return '<div class="sh-pdfs">' + "".join(rows) + "</div>"
 
 
+def onboarding_kit_block():
+    rows = []
+    for form in ONBOARDING_KIT:
+        title = e(form["title"])
+        is_excel = form["file"].endswith(".xlsx")
+        label = "Excelをダウンロード ↓" if is_excel else "PDFをダウンロード ↓"
+        rows.append(
+            f'<article class="sh-pdf" data-kit-file="{e(form["file"])}">'
+            f"<div><h3>{title}</h3><p><b>{e(form['role'])}：</b>{e(form['use'])}</p>"
+            f'<p class="sh-pdf-fields"><b>主な記入内容：</b>{e(form["contents"])}</p></div>'
+            '<div class="sh-pdf-action">'
+            f'<a class="qk" href="assets/download/onboarding-kit/{e(form["file"])}" '
+            f'download="{e(form["download"])}" '
+            f'aria-label="{title}をダウンロード（{e(form["format"])}）">{label}</a>'
+            f"<small>{e(form['format'])}</small></div></article>"
+        )
+    return '<div class="sh-pdfs">' + "".join(rows) + "</div>"
+
+
 def dependent_official_block():
     links = "".join(
         f'<a class="qk" href="{e(link["url"])}" target="_blank" rel="noopener noreferrer">{e(link["label"])}</a>'
@@ -347,6 +425,30 @@ def main_html():
         '<p class="hint">いま設定されている会社名：<span class="co-name sh-now">【会社名】</span>。入力した内容はこのブラウザの中にだけ保存され、当事務所には送信されません。各書式を開くと宛名・発信者欄に自動で入ります。別のPCで使うときは「書き出す」で保存したファイルを読み込んでください。</p></div>'
     )
     return f"""<main id="main" class="content">
+
+  <section class="cat rv" id="onboarding-kit" aria-labelledby="onboarding-kit-title">
+    <div class="cat-head">
+      <div class="cat-icon kmono" aria-hidden="true">入社</div>
+      <h2 class="cat-title" id="onboarding-kit-title">入社時に渡す・集める書類セット</h2>
+    </div>
+    <p class="cat-desc">会社が作成する労働条件通知書と、従業員が記入する4つの書式をまとめました。準備ガイドで、必要な書類と提出先・期限を案内できます。</p>
+    <article class="sh-pdf" data-kit-file="onboarding-kit.zip">
+      <div><h3>8点をまとめてダウンロード</h3><p>準備ガイド、労働条件通知書、従業員が記入する4書式に、会社から当事務所へ送る入社連絡票・事業所基本情報シートを同梱しています。会社で必要なものを選んで、従業員へお渡しください。</p></div>
+      <div class="sh-pdf-action"><a class="qk" href="assets/download/onboarding-kit.zip" download="入社書類セット.zip" aria-label="入社書類セット8点をまとめてダウンロード（PDF7点・Excel1点のZIP）">一式をダウンロード ↓</a><small>PDF7点・Excel1点／ZIP・約40MB</small></div>
+    </article>
+    <ol class="sh-pdf-guide" aria-label="入社書類を準備する4つの手順">
+      <li><strong>会社：</strong>雇用条件を決め、労働条件通知書を作成して本人へ交付します。</li>
+      <li><strong>会社：</strong>準備ガイドに提出先・提出期限を入力し、本人が記入する書式と一緒に渡します。</li>
+      <li><strong>従業員：</strong>2ページ目の赤字の記入例を参考に、1ページ目へ入力・保存し、必要な資料と会社へ返送します。</li>
+      <li><strong>会社：</strong>従業員の回答と労働条件を照合し、社会保険・雇用保険の加入手続きを進めます。当事務所へのご依頼は、下の<a href="#procedure-pdfs">入社連絡票</a>をご利用ください。</li>
+    </ol>
+    <p class="sh-pdf-note">従業員用PDFは各2ページで、入力欄と赤字の記入例をセットにしています。住所は郵便番号・都道府県・市区町村・町名番地・建物名などに分けて入力できます。番号や口座を確認する資料と、条件に応じて必要な提出書類は準備ガイドをご覧ください。</p>
+    {onboarding_kit_block()}
+    <article class="sh-pdf sh-pdf-official">
+      <div><h3>税の扶養控除等申告書</h3><p>扶養家族がいない方も、主な給与の支払先へ提出する書類です。給与の支給年に合う国税庁の公式様式を選び、会社の給与担当者へ提出してください。</p><p class="sh-pdf-fields">健康保険の扶養届とは別の書類です。健康保険の扶養を申請する方は、下の<a href="#dependent-forms">扶養の公式書式</a>もご確認ください。</p></div>
+      <div class="sh-pdf-action"><a class="qk" href="{e(TAX_DECLARATION_URL)}" target="_blank" rel="noopener noreferrer">支給年の公式書式を選ぶ ↗</a><small>国税庁／入力用PDF・記載例</small></div>
+    </article>
+  </section>
 
   <section class="cat rv" id="procedure-pdfs" aria-labelledby="procedure-pdfs-title">
     <div class="cat-head">
@@ -531,7 +633,7 @@ def build_index():
     )
     s = re.sub(
         r'<p class="page-sub">.*?</p>',
-        f'<p class="page-sub">入社から退職までに会社と従業員の間で使う社内書式{N_FORMS}本と、当事務所への手続き連絡票・事業所基本情報シートPDF4種。社内書式はブラウザで記入・印刷でき、設定した会社情報が入ります。PDFはダウンロードして入力できます。登録は不要です。</p>',
+        f'<p class="page-sub">入社時に会社が用意する労働条件通知書と、従業員が記入する書類を一式でご用意しました。手続き連絡票PDF4種と、ブラウザで記入・印刷できる社内書式{N_FORMS}本も掲載。登録は不要です。</p>',
         s,
         count=1,
         flags=re.S,

@@ -1,2 +1,4 @@
 # 入力フォーム付き連絡票は、文字列差分・改行変換・自動マージを適用しない。
 /assets/download/procedure-*.pdf binary
+# 入社セットも日本語フォームと埋め込みフォントを保持する。
+/assets/download/onboarding-kit/*.pdf binary
