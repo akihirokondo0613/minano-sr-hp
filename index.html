@@ -584,12 +584,6 @@ main > section:not(.hero) {
 #why .belief-card{background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;box-shadow:none;padding:22px 0}
 #why .belief-card:hover{transform:none;box-shadow:none}
 #why .home-why-beliefs{gap:28px}
-#cases .home-phase-grid{--phase-gap:clamp(14px,2vw,22px);gap:var(--phase-gap)}
-#cases .home-phase-card{position:relative;overflow:visible;padding-top:24px}
-#cases .home-phase-card::before{content:'';position:absolute;top:-4px;left:0;width:9px;height:9px;border-radius:50%;background:var(--sugi-7);z-index:1}
-@media(min-width:761px){
- #cases .home-phase-card:not(:last-child)::after{content:'';position:absolute;top:0;left:4.5px;width:calc(100% + var(--phase-gap));height:1px;background:var(--line)}
-}
 #cases .home-phase-body{padding:18px 0 0}
 #cases .home-phase-media{background:transparent}
 #cases .home-phase-title{color:var(--sugi);font-size:clamp(19px,2vw,25px)}
@@ -613,9 +607,8 @@ main > section:not(.hero) {
  #about .home-office-photo img{border-top-right-radius:28px}
 }
 @media(max-width:760px){
- #cases .home-phase-grid{gap:0;padding-left:18px}
- #cases .home-phase-card{grid-template-columns:minmax(0,1fr) minmax(90px,32%);text-align:left;border-left:1px solid var(--line);padding:8px 0 24px 20px;gap:10px}
- #cases .home-phase-card::before{top:22px;left:-5px}
+ #cases .home-phase-grid{gap:0}
+ #cases .home-phase-card{grid-template-columns:minmax(0,1fr) minmax(90px,32%);text-align:left;padding:8px 0 24px;gap:10px}
  #cases .home-phase-body{grid-column:1;grid-row:1;padding:0}
  #cases .home-phase-media{grid-column:2;grid-row:1;width:100%;padding:0}
  #cases .home-phase-title{font-size:18px}
