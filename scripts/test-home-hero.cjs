@@ -621,7 +621,11 @@ async function checkMotionCancellation(browser, engine, failures) {
     for (const reason of ['offscreen', 'hidden-event', 'breakpoint', 'reduced-motion']) {
       await advanceMotionTo(page, stageOrigin + 128);
       if (reason === 'offscreen') {
-        await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }));
+        // 実際にフッターへ移動して描画を待ち、画面外という検査条件を成立させる。
+        // 未描画節の仮のscrollHeightとWebKitのIO通知タイミングに依存しない。
+        await page.locator('footer').scrollIntoViewIfNeeded({ timeout: 10000 });
+        check(await page.locator('#top .hero-stage').evaluate((stage) =>
+          stage.getBoundingClientRect().bottom <= 0), 'フッターへの移動でヒーローが画面外になりません');
       } else if (reason === 'hidden-event') {
         // Explicit event simulation; this does not claim to test OS/tab visibility.
         await page.evaluate(() => {

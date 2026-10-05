@@ -1104,7 +1104,18 @@ async function checkNavigation(browser, engine) {
     for (const [file, source] of DOCUMENT_PREVIEWS) {
       const preview = page.locator(`[data-kit-file="${file}"] .sh-kit-preview img, [data-procedure-file="${file}"] .sh-kit-preview img`);
       await preview.scrollIntoViewIfNeeded({ timeout: 10000 });
-      await preview.evaluate((image) => image.decode());
+      // WebKitのlazy画像でdecodeのPromiseが保留されたままになることがあるため、
+      // 実際の読み込み完了を時間上限付きで確認する。
+      const previewHandle = await preview.elementHandle();
+      try {
+        await page.waitForFunction((image) => image.complete
+          && image.naturalWidth > 0 && image.naturalHeight > 0,
+        previewHandle, { timeout: 10000 });
+      } catch (error) {
+        throw new Error(`${file}:プレビュー画像の読み込み確認: ${error.message}`);
+      } finally {
+        await previewHandle.dispose();
+      }
       const metrics = await preview.evaluate((image) => {
         const rect = image.getBoundingClientRect();
         return { source: image.currentSrc, naturalWidth: image.naturalWidth, naturalHeight: image.naturalHeight,
