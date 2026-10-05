@@ -71,8 +71,8 @@ async function prepareLocalHttpPage(page) {
 }
 
 async function measure(page) {
-  // ギャラリーのCSSは近づいた時に読み込まれる。追加位置と行高を、未読込の
-  // 簡易スタイルで測らないように、実際のstylesheetの読込を待つ。
+  // ギャラリーの位置と行高を、未読込の簡易スタイルで測らないように、
+  // 実際のstylesheetの読込を待つ。
   await page.waitForFunction(() => Boolean(
     document.getElementById('home-form-gallery-style')?.sheet
       || document.querySelector('link[href^="home-form-gallery.css"]')?.sheet,
