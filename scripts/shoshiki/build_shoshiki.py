@@ -28,6 +28,22 @@ DL_PATH = "shoshiki/dl/word-7kq3x9"
 FORMS = [f for f in DATA["forms"] if f.get("to") != "社労士" and not f.get("kind")]
 BY_NO = {f["no"]: f for f in FORMS}
 N_FORMS = len(FORMS)
+COMMON_PREVIEWS = json.loads(
+    (REPO / "data" / "shoshiki" / "common_previews.json").read_text(encoding="utf-8")
+)
+COMMON_CATEGORIES = ["入社", "勤務・休暇", "休職・退職", "証明・その他"]
+if len({form["no"] for form in COMMON_PREVIEWS}) != len(COMMON_PREVIEWS):
+    raise ValueError("基本書式のプレビュー番号が重複しています。")
+for form in COMMON_PREVIEWS:
+    source = BY_NO.get(form["no"])
+    if (
+        not source
+        or form["title"] != source["title"]
+        or form["category"] not in COMMON_CATEGORIES
+        or form["preview"] != f"assets/previews/common/{form['no']}.webp"
+        or not form["use"]
+    ):
+        raise ValueError(f"基本書式のプレビュー情報を確認してください：{form['no']}")
 ONBOARDING_KIT = [
     {
         "file": "guide.pdf",
@@ -37,6 +53,9 @@ ONBOARDING_KIT = [
         "contents": "本人が記入する書類、番号を確認する資料、条件に応じて提出する資料。",
         "format": "入力欄付き／全2ページ",
         "download": "入社書類セット_準備ガイド.pdf",
+        "preview": "assets/previews/onboarding-guide-preview.webp",
+        "preview_alt": "入社書類の準備ガイドの1ページ目",
+        "preview_caption": "準備ガイドの1ページ目",
     },
     {
         "file": "labor-notice.xlsx",
@@ -58,6 +77,9 @@ ONBOARDING_KIT = [
         "contents": "本人情報、住所、基礎年金番号、雇用保険被保険者番号、マイナンバー。",
         "format": "入力欄・赤字の記入例付き／全2ページ",
         "download": "従業員本人情報シート_入力用・記入例.pdf",
+        "preview": "assets/previews/onboarding-personal-sample.webp",
+        "preview_alt": "従業員本人情報シートの赤字の架空記入例",
+        "preview_caption": "赤字の架空記入例",
     },
     {
         "file": "bank.pdf",
@@ -67,6 +89,9 @@ ONBOARDING_KIT = [
         "contents": "銀行・支店、口座の種類・番号・名義、振込対象、開始希望時期、本人の同意。",
         "format": "入力欄・赤字の記入例付き／全2ページ",
         "download": "給与口座振込同意書_入力用・記入例.pdf",
+        "preview": "assets/previews/onboarding-bank-sample.webp",
+        "preview_alt": "給与口座振込同意書の赤字の架空記入例",
+        "preview_caption": "赤字の架空記入例",
     },
     {
         "file": "commute.pdf",
@@ -76,6 +101,9 @@ ONBOARDING_KIT = [
         "contents": "通勤方法、利用区間・経由地、運賃・定期代、片道距離、所要時間。",
         "format": "入力欄・赤字の記入例付き／全2ページ",
         "download": "通勤経路・通勤手当申請書_入力用・記入例.pdf",
+        "preview": "assets/previews/onboarding-commute-sample.webp",
+        "preview_alt": "通勤経路・通勤手当申請書の赤字の架空記入例",
+        "preview_caption": "赤字の架空記入例",
     },
     {
         "file": "emergency.pdf",
@@ -85,6 +113,9 @@ ONBOARDING_KIT = [
         "contents": "緊急連絡先の氏名・本人との関係・電話番号、住民票と異なる現住所。",
         "format": "入力欄・赤字の記入例付き／全2ページ",
         "download": "緊急連絡先届_入力用・記入例.pdf",
+        "preview": "assets/previews/onboarding-emergency-sample.webp",
+        "preview_alt": "緊急連絡先届の赤字の架空記入例",
+        "preview_caption": "赤字の架空記入例",
     },
 ]
 TAX_DECLARATION_URL = (
@@ -138,7 +169,7 @@ DEPENDENT_OFFICIAL = {
 }
 
 TITLE = "入社書類セット・手続き連絡票・社内書式｜みなの社会保険労務士事務所"
-DESC = f"労働条件通知書のExcelと、従業員が記入する本人情報・給与口座・通勤・緊急連絡先のPDFを入社書類セットで配布。入社・退職・休職の手続き連絡票、社内書式{N_FORMS}本、扶養届の公式書式もご案内。登録不要。"
+DESC = f"よく使う基本書式{len(COMMON_PREVIEWS)}点を用紙のプレビュー付きで掲載。労働条件通知書Excelと入力できる入社書類PDF、入社・退職・休職の手続き連絡票、社内書式{N_FORMS}本、扶養届の公式書式もご利用いただけます。登録不要。"
 
 CAT_NOTE = {
     "01_入社": "内定から入社までに取り交わす書類",
@@ -298,6 +329,8 @@ CSS = """
 .sh-kit-preview{max-width:260px;margin:14px 0 0}
 .sh-kit-preview img{display:block;width:100%;height:auto;aspect-ratio:840/1189;border:1px solid var(--line);border-radius:3px;background:var(--shiro)}
 .sh-kit-preview figcaption{margin-top:6px;font-size:12px;line-height:1.7;color:var(--ink4)}
+.sh-preview-link{display:block;color:var(--sugi);text-decoration:none}
+.sh-preview-link:focus-visible{outline:2px solid var(--sugi);outline-offset:4px;border-radius:3px}
 .sh-pdf-action{display:flex;flex-direction:column;align-items:center;gap:6px}
 .sh-pdf-action small{font-size:12px;color:var(--ink4)}
 .sh-pdf .qk{min-height:44px;border-color:var(--moegi-t);color:var(--sugi)}
@@ -307,6 +340,22 @@ CSS = """
 .sh-pdf-official .sh-pdf-action{align-items:flex-start}
 .sh-pdf-official .sh-pdf-action .qk{font-size:13px}
 @media(max-width:600px){.sh-pdf{grid-template-columns:minmax(0,1fr);padding:16px}.sh-pdf-action{align-items:flex-start}}
+.sh-jump{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 28px;padding:16px;background:var(--moegi-l);border-radius:14px}
+.sh-jump .qk{min-height:44px}
+.sh-common-group{margin-top:28px}
+.sh-common-group>h3{margin:0 0 12px;font-family:var(--disp);font-size:20px;line-height:1.5;color:var(--iwa)}
+.sh-common-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.sh-common-card{display:flex;flex-direction:column;min-width:0;padding:18px;background:var(--shiro);border:1px solid var(--line);border-radius:14px}
+.sh-common-card h4{margin:0 0 10px;font-family:var(--disp);font-size:17px;line-height:1.6;color:var(--iwa);overflow-wrap:break-word}
+.sh-common-no{margin:0 0 4px;font-family:var(--mono);font-size:11px;color:var(--ink4)}
+.sh-common-preview{width:100%;max-width:260px;margin:0 auto 12px}
+.sh-common-preview img{display:block;width:100%;height:auto;aspect-ratio:840/1189;border:1px solid var(--line);border-radius:3px;background:var(--shiro)}
+.sh-common-preview figcaption{margin-top:6px;font-size:12px;line-height:1.7;color:var(--ink4)}
+.sh-common-use{margin:0 0 14px;font-size:13px;line-height:1.85;color:var(--ink3)}
+.sh-common-card>.qk{align-self:flex-start;margin-top:auto;min-height:44px;border-color:var(--moegi-t);color:var(--sugi)}
+.sh-common-card>.qk:focus-visible,.sh-jump .qk:focus-visible{outline:2px solid var(--sugi);outline-offset:4px}
+@media(max-width:900px){.sh-common-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.sh-common-grid{grid-template-columns:minmax(0,1fr)}.sh-common-card{padding:16px}.sh-jump{padding:12px}}
 """
 
 
@@ -359,6 +408,25 @@ def cat_blocks():
     return "".join(out)
 
 
+def preview_block(form, pdf_href=None):
+    """実際のPDF・通知書の見本を表示し、PDFは全ページを別タブで開く。"""
+    image = (
+        f'<img src="{e(form["preview"])}" width="840" height="1189" loading="lazy" decoding="async" '
+        f'alt="{e(form["preview_alt"])}">'
+    )
+    caption = e(form["preview_caption"])
+    if pdf_href:
+        image = (
+            f'<a class="sh-preview-link" href="{e(pdf_href)}" target="_blank" rel="noopener noreferrer" '
+            f'aria-label="{e(form["title"])}のPDF全2ページを表示（別タブ）">{image}</a>'
+        )
+        caption += "（クリックで全2ページを見る ↗）"
+    return (
+        f'<figure class="sh-kit-preview">{image}'
+        f"<figcaption>{caption}</figcaption></figure>"
+    )
+
+
 def procedure_pdf_block():
     rows = []
     for form in PROCEDURE_PDFS:
@@ -368,12 +436,22 @@ def procedure_pdf_block():
             if form.get("context")
             else ""
         )
+        href = f"assets/download/procedure-{form['slug']}.pdf"
+        preview = preview_block(
+            {
+                **form,
+                "preview": f"assets/previews/procedure-{form['slug']}-sample.webp",
+                "preview_alt": f"{form['title']}の赤字の架空記入例",
+                "preview_caption": "赤字の架空記入例",
+            },
+            href,
+        )
         rows.append(
-            '<article class="sh-pdf">'
+            f'<article class="sh-pdf" data-procedure-file="{e(form["slug"])}">'
             f"<div><h3>{title}{context}</h3><p>{e(form['use'])}</p>"
-            f'<p class="sh-pdf-fields"><b>主な記入内容：</b>{e(form["contents"])}</p></div>'
+            f'<p class="sh-pdf-fields"><b>主な記入内容：</b>{e(form["contents"])}</p>{preview}</div>'
             '<div class="sh-pdf-action">'
-            f'<a class="qk" href="assets/download/procedure-{e(form["slug"])}.pdf" download="{title}_入力用・記入例.pdf" '
+            f'<a class="qk" href="{e(href)}" download="{title}_入力用・記入例.pdf" '
             f'aria-label="{title}をダウンロード（入力欄・記入例付きPDF、全2ページ）">PDFをダウンロード ↓</a>'
             "<small>入力欄・記入例付き／全2ページ</small></div></article>"
         )
@@ -391,13 +469,9 @@ def onboarding_kit_block():
             if is_excel
             else ""
         )
-        preview = (
-            '<figure class="sh-kit-preview">'
-            f'<img src="{e(form["preview"])}" width="840" height="1189" loading="lazy" decoding="async" '
-            f'alt="{e(form["preview_alt"])}">'
-            f"<figcaption>{e(form['preview_caption'])}</figcaption></figure>"
-            if form.get("preview")
-            else ""
+        preview = preview_block(
+            form,
+            None if is_excel else f"assets/download/onboarding-kit/{form['file']}",
         )
         rows.append(
             f'<article class="sh-pdf" data-kit-file="{e(form["file"])}">'
@@ -428,6 +502,37 @@ def dependent_official_block():
     )
 
 
+def common_forms_block():
+    """よく使うHTML書式を、実際の未記入用紙のプレビューと並べる。"""
+    groups = []
+    for index, category in enumerate(COMMON_CATEGORIES, start=1):
+        cards = []
+        for form in COMMON_PREVIEWS:
+            if form["category"] != category:
+                continue
+            title = e(form["title"])
+            form_href = e(href(form))
+            cards.append(
+                f'<article class="sh-common-card" data-common-form="{e(form["no"])}">'
+                f'<p class="sh-common-no">{e(form["no"])}</p><h4>{title}</h4>'
+                '<figure class="sh-common-preview">'
+                f'<a class="sh-preview-link" href="{form_href}" '
+                f'aria-label="{title}のHTMLを開いて記入・印刷">'
+                f'<img src="{e(form["preview"])}" width="840" height="1189" loading="lazy" '
+                f'decoding="async" alt="{title}の入力前の用紙（1ページ目）"></a>'
+                "<figcaption>入力前の用紙（1ページ目）</figcaption></figure>"
+                f'<p class="sh-common-use">{e(form["use"])}</p>'
+                f'<a class="qk" href="{form_href}" aria-label="{title}のHTMLを開いて記入・印刷">'
+                "HTMLを開いて記入・印刷 →</a></article>"
+            )
+        groups.append(
+            f'<div class="sh-common-group" aria-labelledby="common-group-{index}">'
+            f'<h3 id="common-group-{index}">{e(category)}</h3>'
+            '<div class="sh-common-grid">' + "".join(cards) + "</div></div>"
+        )
+    return "".join(groups)
+
+
 def main_html():
     set_panel = (
         '<div class="sh-set" id="cfg-wrap"><div class="row">'
@@ -445,6 +550,24 @@ def main_html():
         '<p class="hint">いま設定されている会社名：<span class="co-name sh-now">【会社名】</span>。入力した内容はこのブラウザの中にだけ保存され、当事務所には送信されません。各書式を開くと宛名・発信者欄に自動で入ります。別のPCで使うときは「書き出す」で保存したファイルを読み込んでください。</p></div>'
     )
     return f"""<main id="main" class="content">
+
+  <nav class="sh-jump" aria-label="書式の種類から移動">
+    <a class="qk" href="#common-forms">よく使う基本書式 {len(COMMON_PREVIEWS)}点</a>
+    <a class="qk" href="#onboarding-kit">入社書類セット</a>
+    <a class="qk" href="#procedure-pdfs">手続き連絡票PDF</a>
+    <a class="qk" href="#dependent-forms">扶養の公式書式</a>
+    <a class="qk" href="#list">社内書式 {N_FORMS}点の一覧</a>
+  </nav>
+
+  <section class="cat" id="common-forms" aria-labelledby="common-forms-title">
+    <div class="cat-head">
+      <div class="cat-icon kmono" aria-hidden="true">基本</div>
+      <h2 class="cat-title" id="common-forms-title">よく使う基本書式</h2>
+    </div>
+    <p class="cat-desc">入社、勤務・休暇、休職・退職、証明など、日常の労務管理で使う{len(COMMON_PREVIEWS)}点を並べました。用紙の画像をクリックすると、ブラウザで記入・印刷できるHTML書式を開きます。</p>
+    <p class="sh-pdf-note">プレビューは入力前の1ページ目です。全文と入力欄は各書式を開いてご確認ください。会社情報をまとめて入れる場合は、<a href="#setting">会社情報の設定</a>をご利用ください。その他の書式は<a href="#list">社内書式{N_FORMS}点の一覧</a>から探せます。</p>
+    {common_forms_block()}
+  </section>
 
   <section class="cat rv" id="onboarding-kit" aria-labelledby="onboarding-kit-title">
     <div class="cat-head">
@@ -476,6 +599,7 @@ def main_html():
       <h2 class="cat-title" id="procedure-pdfs-title">当事務所への手続き連絡票</h2>
     </div>
     <p class="cat-desc">事業所情報と入社・退職・休職の情報を会社からご連絡いただく、入力できるPDFです。入力欄は1ページ目、赤字の架空の記入例は2ページ目。住所は郵便番号・都道府県・市区町村などに分けて入力できます。</p>
+    <p class="sh-pdf-note">退職届・休職届・年次有給休暇申請書など、会社と従業員の間で使う書式は、<a href="#common-forms">よく使う基本書式のプレビュー</a>から開けます。</p>
     {procedure_pdf_block()}
     <ol class="sh-pdf-guide">
       <li>必要な連絡票をダウンロードします。初回・事業所情報の変更時は、基本情報シートもご用意ください。PDFに入力できるアプリで開きます。</li>
@@ -653,7 +777,7 @@ def build_index():
     )
     s = re.sub(
         r'<p class="page-sub">.*?</p>',
-        f'<p class="page-sub">入社時に会社が用意する労働条件通知書と、従業員が記入する書類を一式でご用意しました。手続き連絡票PDF4種と、ブラウザで記入・印刷できる社内書式{N_FORMS}本も掲載。登録は不要です。</p>',
+        f'<p class="page-sub">よく使う基本書式{len(COMMON_PREVIEWS)}点を、用紙のプレビュー付きで掲載しています。労働条件通知書Excel・入社書類セット・手続き連絡票PDFと、ブラウザで記入・印刷できる社内書式{N_FORMS}本もご利用いただけます。登録は不要です。</p>',
         s,
         count=1,
         flags=re.S,

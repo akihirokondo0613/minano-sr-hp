@@ -27,17 +27,37 @@ const ENGINES = [
 ];
 const EPSILON = 1;
 const FORM_GALLERY_INTERACTION_WIDTHS = [320, 390, 900, 901, 1280];
+const COMMON_FORM_PREVIEWS = require('../data/shoshiki/common_previews.json');
+const FORM_GALLERY_KEYS = [
+  'onboarding', 'labor-notice', 'retirement', 'leave', 'guide',
+  'personal', 'bank', 'commute', 'emergency', 'establishment',
+  ...COMMON_FORM_PREVIEWS.map((form) => form.no),
+];
 const FORM_GALLERY_PREVIEWS = [
   'assets/previews/procedure-onboarding-sample.webp',
   'assets/previews/labor-notice-sample.webp',
   'assets/previews/procedure-retirement-sample.webp',
   'assets/previews/procedure-leave-sample.webp',
+  'assets/previews/onboarding-guide-preview.webp',
+  'assets/previews/onboarding-personal-sample.webp',
+  'assets/previews/onboarding-bank-sample.webp',
+  'assets/previews/onboarding-commute-sample.webp',
+  'assets/previews/onboarding-emergency-sample.webp',
+  'assets/previews/procedure-establishment-sample.webp',
+  ...COMMON_FORM_PREVIEWS.map((form) => form.preview),
 ];
 const FORM_GALLERY_DOWNLOADS = [
   'assets/download/procedure-onboarding.pdf',
   'assets/download/onboarding-kit/labor-notice.xlsx',
   'assets/download/procedure-retirement.pdf',
   'assets/download/procedure-leave.pdf',
+  'assets/download/onboarding-kit/guide.pdf',
+  'assets/download/onboarding-kit/personal.pdf',
+  'assets/download/onboarding-kit/bank.pdf',
+  'assets/download/onboarding-kit/commute.pdf',
+  'assets/download/onboarding-kit/emergency.pdf',
+  'assets/download/procedure-establishment.pdf',
+  ...COMMON_FORM_PREVIEWS.map((form) => `shoshiki/${form.no}.html`),
 ];
 const MOTION_WIDTHS = [390, 540, 541, 640, 733, 767, 768, 1280, 1920];
 // External reference, rather than values read from home-hero.js:
@@ -219,6 +239,7 @@ async function measure(page) {
     const kitLink = kit?.querySelector('.fg-kit-link');
     const kitDownload = kit?.querySelector('.fg-kit-download');
     const galleryCards = [...document.querySelectorAll('#tools .fg-rail > .fg-item:not(.fg-copy)')];
+    const pickerLinks = [...document.querySelectorAll('#tools .fg-picker a[data-fg-select]')];
     const galleryRail = document.querySelector('#form-gallery-rail');
     const railBox = galleryRail ? boxOf(galleryRail) : null;
 
@@ -237,6 +258,20 @@ async function measure(page) {
           ? getComputedStyle(element).gridRowStart : null),
         box: toolsBox,
         cardCount: galleryCards.length,
+        cardKeys: galleryCards.map((card) => card.dataset.fgKey),
+        pickerGroups: [...document.querySelectorAll('#tools .fg-picker-group h3')]
+          .map((heading) => heading.textContent),
+        pickerLinks: pickerLinks.map((link) => {
+          const style = getComputedStyle(link);
+          const rect = link.getBoundingClientRect();
+          return { key: link.dataset.fgSelect, href: link.getAttribute('href'),
+            text: link.textContent, visible: style.display !== 'none'
+              && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0,
+            left: rect.left, right: rect.right, width: rect.width, height: rect.height };
+        }),
+        cloneIdCount: galleryRail?.querySelectorAll('.fg-copy[id], .fg-copy [id]').length,
+        cloneFocusableCount: [...(galleryRail?.querySelectorAll('.fg-copy a') || [])]
+          .filter((link) => link.tabIndex >= 0).length,
         previewSources: galleryCards.map((card) => {
           const image = card.querySelector('.fg-paper > img');
           return image?.getAttribute('src') || image?.dataset.src || null;
@@ -245,7 +280,7 @@ async function measure(page) {
           const link = card.querySelector('.fg-card');
           return { href: link?.getAttribute('href'), download: link?.getAttribute('download'),
             type: link?.getAttribute('type'), label: link?.getAttribute('aria-label'),
-            text: link?.textContent };
+            text: link?.textContent, heading: link?.querySelector('h3')?.textContent };
         }),
         railWidth: galleryRail?.clientWidth,
         firstThreeAtStart: railBox ? galleryCards.slice(0, 3).map((card) => {
@@ -430,7 +465,7 @@ async function entryScreenshots(page, engine, width) {
 }
 
 async function checkFormGallery(page, engine, width, failures) {
-  const report = { previews: [], links: [], errors: [] };
+  const report = { previews: [], selections: [], links: [], errors: [] };
   const label = `${engine}@${width}px 書式 gallery`;
   try {
     if (await page.locator('#tools').count() !== 1) return report;
@@ -445,11 +480,45 @@ async function checkFormGallery(page, engine, width, failures) {
     if (await pause.getAttribute('aria-pressed') !== 'true') {
       throw new Error('見本の自動送りを一時停止できません');
     }
+    const clones = await page.locator('#form-gallery-rail .fg-copy').evaluateAll((elements) => ({
+      count: elements.length,
+      interactive: elements.filter((element) => element.getAttribute('aria-hidden') !== 'true'
+        || element.id || element.querySelector('[id]')
+        || [...element.querySelectorAll('a')].some((link) => link.tabIndex >= 0)).length,
+    }));
+    if (clones.count !== FORM_GALLERY_KEYS.length * 2 || clones.interactive !== 0) {
+      failures.push(`${label}: ループ用複製の件数・Tab移動除外が不正です (${JSON.stringify(clones)})`);
+    }
     // lazy画像は利用者と同じく各見本へスクロールして読み込む。srcや読込状態を
     // 検査側で書き換えず、ページの実際の読込処理を確認する。
     for (let index = 0; index < FORM_GALLERY_PREVIEWS.length; index += 1) {
       const card = cards.nth(index);
-      await card.scrollIntoViewIfNeeded({ timeout: 10000 });
+      if (index >= 10) {
+        const key = FORM_GALLERY_KEYS[index];
+        const selection = page.locator(`#tools .fg-picker a[data-fg-select="${key}"]`);
+        // 全32の名称一覧から、画面外のHTML書式へ移動できることを確認する。
+        // 最後の書式はEnterでも選択し、マウスだけに依存させない。
+        if (index === FORM_GALLERY_PREVIEWS.length - 1) {
+          await selection.focus();
+          await selection.press('Enter');
+        } else await selection.click({ timeout: 10000 });
+        const selected = await card.evaluate((element) => {
+          const rail = element.closest('.fg-rail');
+          const rect = element.getBoundingClientRect();
+          const railRect = rail.getBoundingClientRect();
+          return { key: element.dataset.fgKey, left: rect.left, right: rect.right,
+            railLeft: railRect.left, railRight: railRect.right,
+            focused: document.activeElement === element.querySelector('a') };
+        });
+        report.selections.push(selected);
+        if (selected.key !== key || !selected.focused
+          || selected.left < selected.railLeft - EPSILON
+          || selected.right > selected.railRight + EPSILON
+          || await pause.getAttribute('aria-pressed') !== 'true'
+          || await selection.getAttribute('aria-current') !== 'true') {
+          failures.push(`${label}: ${key}を名称一覧から表示/選択できません (${JSON.stringify(selected)})`);
+        }
+      } else await card.scrollIntoViewIfNeeded({ timeout: 10000 });
       const image = card.locator('.fg-paper > img');
       if (await image.count() !== 1) {
         failures.push(`${label}: 見本${index + 1}の画像が1枚ではありません`);
@@ -479,6 +548,11 @@ async function checkFormGallery(page, engine, width, failures) {
         || metrics.width <= 0 || metrics.height <= 0) {
         failures.push(`${label}: 見本${index + 1}の画像/表示寸法が不正です (${JSON.stringify(metrics)})`);
       }
+    }
+    const firstSelection = page.locator('#tools .fg-picker a[data-fg-select="onboarding"]');
+    await firstSelection.click({ timeout: 10000 });
+    if (await page.locator('#form-gallery-rail').evaluate((element) => element.scrollLeft) > EPSILON) {
+      failures.push(`${label}: 末尾の見本から先頭の入社連絡票へ戻れません`);
     }
     for (const selector of ['.fg-kit-link', '.fg-kit-download']) {
       const link = page.locator(`#tools .fg-kit ${selector}`);
@@ -609,7 +683,11 @@ async function checkMotionCancellation(browser, engine, failures) {
     for (const reason of ['offscreen', 'hidden-event', 'breakpoint', 'reduced-motion']) {
       await advanceMotionTo(page, stageOrigin + 128);
       if (reason === 'offscreen') {
-        await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }));
+        // 実際にフッターへ移動して描画を待ち、画面外という検査条件を成立させる。
+        // 未描画節の仮のscrollHeightとWebKitのIO通知タイミングに依存しない。
+        await page.locator('footer').scrollIntoViewIfNeeded({ timeout: 10000 });
+        check(await page.locator('#top .hero-stage').evaluate((stage) =>
+          stage.getBoundingClientRect().bottom <= 0), 'フッターへの移動でヒーローが画面外になりません');
       } else if (reason === 'hidden-event') {
         // Explicit event simulation; this does not claim to test OS/tab visibility.
         await page.evaluate(() => {
@@ -713,8 +791,20 @@ async function checkReducedMotion(browser, engine, width, failures) {
         }
         if (gallery.cardCount !== FORM_GALLERY_PREVIEWS.length
           || gallery.previewSources.some((source, index) => source !== FORM_GALLERY_PREVIEWS[index])) {
-          failures.push(`${engineName}@${width}px: 入社・労働条件通知書・退職・休職の4見本が一致しません`
+          failures.push(`${engineName}@${width}px: 入社書類と社内基本書式の32プレビューが一致しません`
             + ` (${JSON.stringify(gallery.previewSources)})`);
+        }
+        if (gallery.cardKeys.join('/') !== FORM_GALLERY_KEYS.join('/')
+          || gallery.pickerLinks.length !== FORM_GALLERY_KEYS.length
+          || gallery.pickerGroups.join('/') !== '入社/勤務・休暇/休職・退職/証明・その他'
+          || gallery.pickerLinks.some((link) => !FORM_GALLERY_KEYS.includes(link.key)
+            || link.href !== `#fg-preview-${link.key}` || !link.visible || !link.text
+            || link.height < 24 - EPSILON || link.left < -EPSILON
+            || link.right > result.viewportWidth + EPSILON)
+          || new Set(gallery.pickerLinks.map((link) => link.key)).size !== FORM_GALLERY_KEYS.length
+          || gallery.cloneIdCount !== 0 || gallery.cloneFocusableCount !== 0) {
+          failures.push(`${engineName}@${width}px: 全32書式の名称一覧・参照先・複製の読み上げ除外が不正です`
+            + ` (${JSON.stringify(gallery.pickerLinks)})`);
         }
         const noticeLink = gallery.cardLinks[1];
         if (gallery.cardLinks.length !== FORM_GALLERY_DOWNLOADS.length
@@ -722,7 +812,12 @@ async function checkReducedMotion(browser, engine, width, failures) {
           || noticeLink?.download !== '労働条件通知書_入力用.xlsx'
           || noticeLink?.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
           || !noticeLink?.label?.includes('Excel') || !noticeLink?.label?.includes('会社が作成・交付')
-          || !noticeLink?.text?.includes('入力用Excelをダウンロード')) {
+          || !noticeLink?.text?.includes('入力用Excelをダウンロード')
+          || gallery.cardLinks.slice(10).some((link, index) =>
+            link.heading?.replace(/\s+/g, '') !== COMMON_FORM_PREVIEWS[index].title.replace(/\s+/g, '')
+            || !(link.label || link.text)?.replace(/\s+/g, '').includes(COMMON_FORM_PREVIEWS[index].title.replace(/\s+/g, ''))
+            || !link.text?.includes('入力前の用紙（1ページ目）')
+            || !link.text?.includes('HTMLを開いて記入・印刷'))) {
           failures.push(`${engineName}@${width}px: 見本の配布先・労働条件通知書のExcel表示が一致しません`
             + ` (${JSON.stringify(gallery.cardLinks)})`);
         }
