@@ -280,7 +280,7 @@ async function measure(page) {
           const link = card.querySelector('.fg-card');
           return { href: link?.getAttribute('href'), download: link?.getAttribute('download'),
             type: link?.getAttribute('type'), label: link?.getAttribute('aria-label'),
-            text: link?.textContent };
+            text: link?.textContent, heading: link?.querySelector('h3')?.textContent };
         }),
         railWidth: galleryRail?.clientWidth,
         firstThreeAtStart: railBox ? galleryCards.slice(0, 3).map((card) => {
@@ -813,7 +813,9 @@ async function checkReducedMotion(browser, engine, width, failures) {
           || noticeLink?.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
           || !noticeLink?.label?.includes('Excel') || !noticeLink?.label?.includes('会社が作成・交付')
           || !noticeLink?.text?.includes('入力用Excelをダウンロード')
-          || gallery.cardLinks.slice(10).some((link) => !link.label?.includes('HTML書式')
+          || gallery.cardLinks.slice(10).some((link, index) =>
+            link.heading?.replace(/\s+/g, '') !== COMMON_FORM_PREVIEWS[index].title.replace(/\s+/g, '')
+            || !(link.label || link.text)?.replace(/\s+/g, '').includes(COMMON_FORM_PREVIEWS[index].title.replace(/\s+/g, ''))
             || !link.text?.includes('入力前の用紙（1ページ目）')
             || !link.text?.includes('HTMLを開いて記入・印刷'))) {
           failures.push(`${engineName}@${width}px: 見本の配布先・労働条件通知書のExcel表示が一致しません`
