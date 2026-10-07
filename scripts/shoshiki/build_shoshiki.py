@@ -309,17 +309,37 @@ CSS = """
 .sh-cat h3{margin:0 0 2px;font-size:15.5px;font-family:var(--disp);font-weight:800;color:var(--iwa)}
 .sh-cat .note{margin:0 0 8px;font-size:12.5px;color:var(--ink4)}
 .sh-tblwrap{overflow-x:auto}
-.sh-tbl{width:100%;min-width:560px;border-collapse:collapse;background:var(--shiro);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+/* 列幅を表ごとにそろえる（固定レイアウトは1行目の見出しセルの幅で決まる） */
+.sh-tbl{width:100%;table-layout:fixed;border-collapse:collapse;background:var(--shiro);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.sh-tbl th:nth-child(1){width:64px}
+.sh-tbl th:nth-child(2){width:34%}
+.sh-tbl th:nth-child(4){width:104px}
 .sh-tbl th,.sh-tbl td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line2);vertical-align:top;font-size:13.5px;line-height:1.7}
 .sh-tbl th{font-family:var(--mono);font-size:10.5px;color:var(--ink4);font-weight:400;letter-spacing:.08em;background:var(--kinu,#F7F8F3)}
 .sh-tbl tr:last-child td{border-bottom:none}
 .sh-tbl td.no{font-family:var(--mono);font-size:11.5px;color:var(--ink4);white-space:nowrap}
-.sh-tbl td.nm{width:180px;min-width:180px;text-wrap:wrap}
+.sh-tbl td.nm{text-wrap:pretty;overflow-wrap:break-word}
 .sh-tbl td.nm a{color:var(--sugi);font-weight:700;text-decoration:none}
 .sh-tbl td.nm a:hover{text-decoration:underline}
-.sh-tbl td.use{color:var(--ink3)}
-.sh-tbl td.go{white-space:nowrap}
-.sh-tbl td.go a{font-family:var(--mono);font-size:12px;color:var(--moegi-t);text-decoration:none;font-weight:600}
+.sh-tbl td.use{color:var(--ink3);overflow-wrap:break-word}
+/* 「記入する →」は押せる高さを44pxにする。セルの上下余白をリンク側へ移す */
+.sh-tbl td.go{white-space:nowrap;padding-block:0}
+.sh-tbl td.go a{display:inline-flex;align-items:center;min-height:44px;font-family:var(--mono);font-size:12px;color:var(--moegi-t);text-decoration:none;font-weight:600}
+.sh-tbl td.go a:hover{text-decoration:underline}
+.sh-tbl td.go a:focus-visible{outline:2px solid var(--sugi);outline-offset:2px;border-radius:4px}
+/* スマホは横スクロールさせず、1書式1行のカード状に組み替える（番号・書式名・用途・記入リンク） */
+@media(max-width:640px){
+  .sh-tblwrap{overflow-x:visible}
+  .sh-tbl,.sh-tbl tbody,.sh-tbl tr,.sh-tbl td{display:block}
+  .sh-tbl thead{display:none}
+  .sh-tbl tr{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"no go" "nm go" "use use";column-gap:12px;padding:10px 14px 12px;border-bottom:1px solid var(--line2)}
+  .sh-tbl tr:last-child{border-bottom:none}
+  .sh-tbl td{padding:0;border-bottom:none;min-width:0}
+  .sh-tbl td.no{grid-area:no;line-height:1.6}
+  .sh-tbl td.nm{grid-area:nm}
+  .sh-tbl td.use{grid-area:use;margin-top:4px;font-size:13px;line-height:1.75}
+  .sh-tbl td.go{grid-area:go;align-self:center}
+}
 .sh-about p{font-size:13px;line-height:1.95;color:var(--ink3);margin:0 0 6px}
 .sh-pdfs{display:grid;gap:12px}
 .sh-pdf{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 24px;align-items:center;background:var(--shiro);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
@@ -356,6 +376,27 @@ CSS = """
 .sh-common-card>.qk:focus-visible,.sh-jump .qk:focus-visible{outline:2px solid var(--sugi);outline-offset:4px}
 @media(max-width:900px){.sh-common-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.sh-common-grid{grid-template-columns:minmax(0,1fr)}.sh-common-card{padding:16px}.sh-jump{padding:12px}}
+/* スマホは用紙を小さな見本にして横に並べ、1枚ごとの縦の長さを抑える */
+@media(max-width:600px){
+  .sh-common-grid{gap:12px}
+  .sh-common-card{display:grid;grid-template-columns:clamp(76px,24vw,104px) minmax(0,1fr);grid-template-rows:auto auto 1fr auto;grid-template-areas:"pv no" "pv h" "pv use" "go go";column-gap:14px;align-items:start;padding:14px}
+  .sh-common-preview{grid-area:pv;max-width:none;margin:0}
+  /* 「入力前の用紙（1ページ目）」は画像の alt と節の冒頭の説明で伝える */
+  .sh-common-preview figcaption{display:none}
+  .sh-common-no{grid-area:no}
+  .sh-common-card h4{grid-area:h;margin:0 0 4px;font-size:16px;line-height:1.5}
+  .sh-common-use{grid-area:use;margin:0;font-size:12.5px;line-height:1.75}
+  .sh-common-card>.qk{grid-area:go;justify-self:start;margin-top:12px}
+}
+/* 見出し・注意枠・本文の左端を、本文列（.content の内側）にそろえる */
+/* このstyleは skin-v2.css より前にあるので、同じ詳細度では負ける。親クラスを足して上書きする */
+.page-hero .page-hero-inner{max-width:1000px}
+.page-hero .notice{width:calc(min(100%,1000px) - 2 * clamp(20px,4.5vw,48px));margin-inline:auto}
+/* skin-v2 はスマホで .cat-head の子へ margin-inline:auto を当てるため、flex内で札と見出しが離れる。左寄せで並べる */
+@media(max-width:640px){
+  .content .cat-head{text-align:left}
+  .content .cat-head>*{margin-inline:0}
+}
 """
 
 
@@ -784,7 +825,7 @@ def build_index():
     )
     s = re.sub(
         r"<b>ご利用にあたって</b>.*?</div>\s*</div>\s*</header>",
-        "<b>ご利用にあたって</b>書式は一般的な内容です。法令に反しない範囲で、自社の就業規則・労使協定と実情に合わせて修正してください。HTML書式用に入力した会社情報はブラウザ内にだけ保存され、当事務所には送信されません。\n    </div>\n  </div>\n</header>",
+        "<b>ご利用にあたって</b>書式は一般的な内容です。法令に反しない範囲で、自社の就業規則・労使協定と実情に合わせて修正してください。HTML書式用に入力した会社情報は<span class=\"nw\">ブラウザ</span>内にだけ保存され、当事務所には送信されません。\n    </div>\n  </div>\n</header>",
         s,
         count=1,
         flags=re.S,

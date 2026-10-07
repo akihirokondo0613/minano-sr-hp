@@ -64,8 +64,12 @@
 .page-sub a,.qk-note a{color:var(--g700);font-weight:700;text-decoration:underline;text-underline-offset:4px;word-break:normal}
 
 /* 入口：社内書式か公式窓口かを選ぶ2枚カード */
-.hub{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:1000px;margin:0 auto 28px}
-@media(max-width:760px){.hub{grid-template-columns:1fr;gap:10px;margin-bottom:22px}}
+/* 入口カード・注意枠・見出しの左端を本文列（.content の内側）にそろえ、説明文との間を空ける。
+   このstyleは skin-v2.css より前にあるので、skin側と同じ規則は親クラスを足して上書きする */
+.page-hero .page-hero-inner{max-width:1000px}
+.page-hero .notice{width:calc(min(100%,1000px) - 2 * clamp(20px,4.5vw,48px));margin-inline:auto}
+.hub{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:calc(min(100%,1000px) - 2 * clamp(20px,4.5vw,48px));margin:clamp(24px,3.4vw,40px) auto 0}
+@media(max-width:760px){.hub{grid-template-columns:minmax(0,1fr);gap:10px}}
 .hub-card{display:flex;flex-direction:column;gap:6px;min-width:0;background:var(--shiro);border:1.5px solid var(--line);border-radius:16px;padding:18px 20px 16px;text-decoration:none;color:var(--iwa);transition:border-color .34s cubic-bezier(.22,.61,.36,1),transform .34s cubic-bezier(.22,.61,.36,1),box-shadow .34s cubic-bezier(.22,.61,.36,1)}
 .hub-card:hover{transform:translateY(-3px);border-color:var(--moegi-t);box-shadow:0 14px 30px -14px rgba(11,42,31,.18)}
 .hub-kicker{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--moegi-t)}
@@ -163,13 +167,13 @@
     <a class="hub-card rv d1" href="shoshiki.html">
       <span class="hub-kicker">FREE TOOL</span>
       <span class="hub-title">社内書式のひな形</span>
-      <span class="hub-desc">社内書式50本と、初回・変更時の事業所基本情報シート、入社・退職・休職連絡票PDF。住所の項目別入力・赤字記入例付きです。扶養の公式届書・記入例も確認できます。</span>
+      <span class="hub-desc">社内書式50本と、初回・変更時の事業所<span class="nw">基本情報シート</span>、入社・退職・休職連絡票PDF。住所の項目別入力・赤字記入例付きです。扶養の公式届書・記入例も確認できます。</span>
       <span class="hub-go">書式一覧を開く →</span>
     </a>
     <a class="hub-card rv d2" href="#cat-quick">
       <span class="hub-kicker">OFFICIAL LINKS</span>
       <span class="hub-title">行政の公式窓口</span>
-      <span class="hub-desc">年金事務所・ハローワーク・労働基準監督署・協会けんぽ・e-Govなど、手続きと調べもので使う公式サイトを分野別に。</span>
+      <span class="hub-desc">年金事務所・ハローワーク・労働基準監督署・協会けんぽ・e-Govなど、手続きと調べもので使う<span class="nw">公式サイト</span>を分野別に。</span>
       <span class="hub-go">このページの下へ ↓</span>
     </a>
   </section>
@@ -189,7 +193,7 @@
   <section class="cat rv lk-sec" id="cat-quick">
     <div class="cat-head">
       <div class="cat-icon kmono" aria-hidden="true">窓口</div>
-      <h2 class="cat-title">提出先を<wbr>探す<wbr>（よく<wbr>使う<wbr>届出）</h2>
+      <h2 class="cat-title"><span>提出先を<wbr>探す<wbr><span class="nw">（よく使う届出）</span></span></h2>
     </div>
     <p class="cat-desc">普段の<wbr>手続きは<wbr>ここから。<wbr>それぞれの<wbr>公式解説・<wbr>様式ページへ<wbr>直接飛べます。</p>
     <div class="qk-list">
@@ -226,7 +230,7 @@
       </a>
       <a href="https://www.kyoukaikenpo.or.jp/shibu/toyama/" class="lk-card" target="_blank" rel="noopener noreferrer">
         <div class="lk-top"><span class="lk-chip">富山</span><span class="lk-name">協会けんぽ 富山支部</span></div>
-        <p class="lk-desc">富山県の<wbr>保険料率・<wbr>支部からの<wbr>お知らせ・健診<wbr>（<wbr>生活習慣病予防健診）<wbr>の<wbr>案内。</p>
+        <p class="lk-desc">富山県の<wbr>保険料率・<wbr>支部からの<wbr>お知らせ・健診<wbr><span class="nw">（生活習慣病予防健診）</span><wbr>の<wbr>案内。</p>
         <div class="lk-foot"><span class="lk-domain">kyoukaikenpo.or.jp</span><span class="lk-go">公式サイトへ ↗</span></div>
       </a>
       <a href="https://www.kyoukaikenpo.or.jp/shibu/ishikawa/" class="lk-card" target="_blank" rel="noopener noreferrer">
@@ -246,7 +250,7 @@
     <p class="cat-desc">求人・雇用保険の<wbr>手続き、<wbr>労働時間や<wbr>安全衛生など<wbr>労働基準に関する<wbr>公式窓口です。</p>
     <div class="lk-grid">
       <a href="https://www.hellowork.mhlw.go.jp/" class="lk-card" target="_blank" rel="noopener noreferrer">
-        <div class="lk-top"><span class="lk-chip">HW</span><span class="lk-name">ハローワーク インターネットサービス</span></div>
+        <div class="lk-top"><span class="lk-chip">HW</span><span class="lk-name">ハローワーク <span class="nw">インターネットサービス</span></span></div>
         <p class="lk-desc">求人の<wbr>申込み・<wbr>雇用保険手続きの<wbr>案内・離職票関係。<wbr>求人票の<wbr>作成も<wbr>オンラインで<wbr>できます。</p>
         <div class="lk-foot"><span class="lk-domain">hellowork.mhlw.go.jp</span><span class="lk-go">公式サイトへ ↗</span></div>
       </a>
@@ -293,7 +297,7 @@
         <div class="lk-foot"><span class="lk-domain">laws.e-gov.go.jp</span><span class="lk-go">公式サイトへ ↗</span></div>
       </a>
       <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/format_index.html" class="lk-card" target="_blank" rel="noopener noreferrer">
-        <div class="lk-top"><span class="lk-chip">様式</span><span class="lk-name">主要様式ダウンロードコーナー</span></div>
+        <div class="lk-top"><span class="lk-chip">様式</span><span class="lk-name">主要様式<span class="nw">ダウンロードコーナー</span></span></div>
         <p class="lk-desc">労働条件通知書・36協定届<wbr>な<wbr>ど、<wbr>労働基準法関係の<wbr>様式を<wbr>無料で<wbr>ダウンロード<wbr>できます。</p>
         <div class="lk-foot"><span class="lk-domain">mhlw.go.jp</span><span class="lk-go">公式サイトへ ↗</span></div>
       </a>
