@@ -429,6 +429,58 @@ main > section:not(.hero) {
   .hero-overlay { padding-inline: 14px; }
   .hero-h1 { font-size: min(5.4vw, 30px); text-wrap: initial; }
 }
+
+/* ---------- セクション見出し（等高線ナンバー） ---------- */
+.sec-head { display: grid; grid-template-columns: 112px 1fr; gap: clamp(18px, 3vw, 44px); margin-bottom: clamp(40px, 5.5vw, 68px); align-items: start; }
+.sec-head.has-photo { grid-template-columns: 112px minmax(0, 1fr) clamp(200px, 19vw, 270px); }
+.sec-head-idx { display: flex; flex-direction: column; gap: 8px; padding-top: 8px; }
+.idx-num { font-family: var(--mono); font-size: 40px; font-weight: 500; line-height: 1; color: transparent; -webkit-text-stroke: 1.2px var(--sugi); letter-spacing: .02em; }
+@supports not (-webkit-text-stroke: 1px black) { .idx-num { color: var(--sugi); } }
+.idx-lat { font-family: var(--mono); font-size: 10px; letter-spacing: .32em; color: var(--moegi-t); font-weight: 600; }
+.idx-jp { font-size: 11.5px; font-weight: 500; letter-spacing: .05em; color: var(--ink3); }
+.sec-head-idx::after { content: ''; width: 56px; height: 10px; background: none no-repeat left / 100% 100%; margin-top: 6px; opacity: .8; }
+.sec-h { font-family: var(--disp); font-size: clamp(24px, 3.3vw, 40px); font-weight: 800; letter-spacing: .015em; line-height: 1.5; color: var(--iwa); }
+.sec-sub { margin-top: 16px; font-size: 14.5px; line-height: 2.1; letter-spacing: .02em; color: var(--ink3); max-width: 44em; }
+.sec-photo { align-self: center; }
+.ph-frame { position: relative; border-radius: var(--r-lg); overflow: hidden; height: 100%; background: var(--line2); aspect-ratio: 4/3; }
+.sec-photo .ph-frame { aspect-ratio: 4/3; min-height: 0; }
+.ph-frame image-slot { display: block; width: 100%; height: 100%; }
+@media (max-width: 900px) {
+  .sec-head { grid-template-columns: 1fr; gap: 16px; }
+  .sec-head.has-photo { grid-template-columns: minmax(0, 1fr) clamp(160px, 24vw, 220px); gap: 16px 24px; align-items: center; }
+  .sec-head.has-photo .sec-head-idx { grid-column: 1 / -1; }
+  .sec-head-idx { flex-direction: row; align-items: baseline; gap: 14px; padding-top: 0; }
+  .idx-num { font-size: 30px; }
+  .sec-head-idx::after { margin-top: 0; align-self: center; }
+  .sec-photo { align-self: center; }
+  .sec-photo .ph-frame { aspect-ratio: 4/3; min-height: 0; }
+}
+@media (max-width: 640px) {
+  .hero-overlay { text-align: center; }
+  .hero-sub { margin-inline: auto; }
+  .hero-btns { justify-content: center; width: 100%; }
+  .why-label.hero-label { display: flex; width: fit-content; margin-inline: auto; }
+  .hero-trust { justify-content: center; }
+  .page-hero-inner { text-align: center; }
+  .page-hero-inner .breadcrumb { justify-content: center; }
+  .page-sub, .page-hero .lead { margin-inline: auto; }
+  .page-hero .pub-board, .page-hero .hub-snapshot { text-align: left; }
+  .faq-aside { text-align: center; }
+  .jk-sec-head, .startup-hero-copy, .cat-head { text-align: center; }
+  .jg-block > h3, .jg-block > p, .startup-scope-heading { text-align: center; }
+  .startup-scope-heading { justify-content: center; }
+  .jk-sec-head > *, .cat-head > * { margin-inline: auto; }
+  .startup-hero-copy .btn-row, .startup-hero-copy .hero-btns { justify-content: center; }
+  .faq-aside .sec-head-idx { justify-content: center; }
+  .faq-aside .sec-sub { margin-inline: auto; }
+  .sec-head { justify-items: center; text-align: center; }
+  .sec-head-idx { justify-content: center; }
+  /* 見えない下線飾りが幅を取り、中央寄せが左にずれて見えるので消す */
+  .sec-head-idx::after { display: none; }
+  .sec-sub { margin-inline: auto; }
+  .sec-head.has-photo { grid-template-columns: 1fr; }
+  .sec-head.has-photo .sec-photo { max-width: 300px; width: 100%; margin-inline: auto; }
+}
 </style>
 <style id="home-once-style">
 /* 単発のご依頼の枠。顧問プランの手前に置く。困っている会社は顧問を探していないので、
@@ -445,8 +497,8 @@ main > section:not(.hero) {
 .home-once-actions{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:16px}
 .home-once-note{font-size:11.5px;color:var(--ink3);margin:10px 0 0;line-height:1.7}
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20261008-design1" media="print" data-async-style onload="this.media='all';this.onload=null">
-<noscript><link rel="stylesheet" href="skin-v2.css?v=20261008-design1"></noscript>
+<link rel="stylesheet" href="skin-v2.css?v=20261008-critical1" media="print" data-async-style onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="skin-v2.css?v=20261008-critical1"></noscript>
 <style id="home-scroll-rhythm">
 /* トップの配色：白/雪白を土台、淡緑を区切り、深杉を文字と導線に使う。
    分野の識別色は記事一覧だけに残し、追従の有無で別のデザインにしない。 */
@@ -639,6 +691,11 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 </style>
 <style id="home-form-gallery-base">
 #tools{background:var(--yuki)}
+/* 共通CSS（非同期）の到着前後で書式セクションが動かないよう、.home-compact-section の余白をここでも持つ */
+#tools.home-compact-section{padding-block:clamp(54px,6.8vw,92px)}
+#tools.home-compact-section .sec-head{margin-bottom:clamp(28px,4vw,46px)}
+#tools.home-compact-section .sec-sub{max-width:42em}
+@media (max-width:640px){#tools.home-compact-section{padding-block:28px}}
 .fg-controls[hidden]{display:none}
 .fg-rail{display:flex;gap:20px;overflow-x:auto;list-style:none;margin:0;padding:12px 4px 18px}
 .fg-item{flex:0 0 clamp(224px,70vw,324px)}
