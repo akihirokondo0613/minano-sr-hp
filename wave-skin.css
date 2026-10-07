@@ -149,6 +149,12 @@ h1, h2, h3, h4, h5 { word-break: auto-phrase; }
 }
 .footer-ul a[href^="mailto:"], .footer-ul a[href^="tel:"],
 .footer-contact a, address a { word-break: keep-all; overflow-wrap: anywhere; }
+/* 追従の「AIに聞く」（sync-ask-ai.mjs のページ内CSS）は var(--sugi) で塗るが、uploads 系は --sugi を
+   定義していないため白地に白アイコンで見えなかった。ルート系と同じ杉色を渡し、html{zoom:.9} でも
+   44px 以上の操作領域になるよう 49px にする。 */
+.floating .fl-ai { --sugi: #123F30; width: 49px; height: 49px; }
+/* フッターの電話番号（リンクにしない情報表示）を周りのリンクと同じ大きさ・色にそろえる。 */
+.footer-ul li > span { font-size: 13px; color: rgba(255,255,255,.6); letter-spacing: 0; font-variant-numeric: tabular-nums; }
 
 /* 専門用語ツールチップ（uploads配下もルートページと同じUIにする） */
 .term{color:var(--g800);font-weight:700;border-bottom:1.5px dashed var(--g500);cursor:help;padding-bottom:1px}

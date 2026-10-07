@@ -32,7 +32,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="skin-v2.css?v=20260921-scope1">
+<link rel="stylesheet" href="skin-v2.css?v=20261008-design1">
 <style>
 .rep-block--text-only {
   grid-template-columns: minmax(0, 1fr);
@@ -87,7 +87,8 @@
 .flow-head { max-width: 780px; margin-bottom: clamp(26px, 3.6vw, 40px); }
 .flow-fig { width: min(1400px, calc(100vw - 48px)); margin: 0 0 0 calc(50% - min(700px, 50vw - 24px)); border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--yuki); padding: clamp(10px, 1.4vw, 16px); }
 .flow-fig-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.flow-fig svg { display: block; width: 100%; min-width: 1260px; height: auto; }
+/* 横スクロールの手がかりが無いので、どの幅でも器に合わせて縮小する。細部は「横画面で全画面表示」で見る。 */
+.flow-fig svg { display: block; width: 100%; min-width: 0; height: auto; }
 .flow-fig figcaption { margin-top: 10px; font-size: 12.5px; line-height: 1.8; color: var(--ink3); }
 .flow-list { list-style: none; margin: clamp(26px, 3.6vw, 40px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 24px); }
 .flow-list li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: start; padding: clamp(18px, 2.4vw, 26px); border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--shiro); }
@@ -334,7 +335,6 @@
     <div class="rep-block rep-block--text-only rv d1">
       <div class="rep-body">
         <div class="rep-eyebrow">代表挨拶 / Message from the founder</div>
-        <h3 class="rep-h">経営者と、<strong>同じ視点で。</strong></h3>
         <p class="rep-text">「これで<wbr>合っているのかな」。<br>労務の<wbr>ルールは<wbr>年々こまかくなり、<wbr>そんな<wbr>不安を<wbr>抱えたまま<wbr>会社を<wbr>経営されている<wbr>方が、<wbr>少なく<wbr>ありません。</p>
         <p class="rep-text">私たちの<wbr>仕事は、<wbr>複雑な<wbr>ルールを<wbr>ひと<wbr>つずつほどく<wbr>こと。<wbr>そして、<wbr>明日からの<wbr>現場で<wbr>そのまま<wbr>使える<wbr>形に<wbr>して、<wbr>お渡しする<wbr>ことです。<wbr>むずかしい<wbr>言葉は<wbr>使いません。</p>
         <p class="rep-text">経営者のみなさまが<wbr>一番に<wbr>相談できる<wbr>事務所でありたい。<br>まずは<wbr>気軽に、<wbr>お話を<wbr>聞かせてください。</p>
@@ -630,7 +630,7 @@ document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
 <script defer src="image-slot.js?v=20260722-crop1"></script>
 <script defer src="link-keep.js?v=20260919-funnel1"></script>
 <script defer src="header-motion.js?v=20260809-nav1"></script>
-<script defer src="terms.js?v=20260812-terms1"></script>
+<script defer src="terms.js?v=20261008-design1"></script>
 <script defer src="ads.js?v=20260901-ads2"></script>
 <script id="pf-hover">(function(){var d={};function pf(u){if(d[u])return;d[u]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u;document.head.appendChild(l);}function h(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var hr=a.getAttribute("href");if(!hr||hr[0]==="#"||/^(mailto:|tel:|https?:)/.test(hr))return;if(a.target==="_blank")return;pf(a.href);}document.addEventListener("mouseover",h,{passive:true});document.addEventListener("touchstart",h,{passive:true});})();</script>
 <style id="brushup-2026">/* skin-v2.css に統合済み */</style>

@@ -185,6 +185,8 @@
     '[aria-hidden="true"]'
   ].join(',');
 
+  // 用語の直後にこの字が続くときは、用語と一緒に折らない（行頭に「、」が来るのを防ぐ）。
+  const TRAILING_PUNCT = /^[、。，．,.）」』】〕：；！？]/;
   const VIEWPORT_GUTTER = 12;
   const POP_GAP = 10;
   let controller = null;
@@ -241,6 +243,7 @@
     const abortController = new AbortController();
     const signal = abortController.signal;
     const markers = [];
+    const wrappers = [];
     const popovers = [];
     const pairs = new Map();
     const usedTerms = new Set();
@@ -389,9 +392,20 @@
         while (match) {
           if (match.index > cursor) fragment.appendChild(document.createTextNode(text.slice(cursor, match.index)));
           markerIndex += 1;
-          fragment.appendChild(addMarker(match.term, markerIndex));
+          // 用語と「？」バッジ（::after）のあいだ、バッジと直後の句読点のあいだで折れないよう、
+          // nowrap の箱にまとめる。箱には <wbr> が入らない（用語も句読点も同じテキストノードから切り出す）。
+          const wrapper = document.createElement('span');
+          wrapper.className = 'term-nw';
+          wrapper.style.whiteSpace = 'nowrap';
+          wrapper.appendChild(addMarker(match.term, markerIndex));
           usedTerms.add(match.term.key);
           cursor = match.index + match.term.key.length;
+          if (TRAILING_PUNCT.test(text.slice(cursor, cursor + 1))) {
+            wrapper.appendChild(document.createTextNode(text.charAt(cursor)));
+            cursor += 1;
+          }
+          wrappers.push(wrapper);
+          fragment.appendChild(wrapper);
           match = nextMatch(text, cursor, usedTerms);
         }
         if (cursor < text.length) fragment.appendChild(document.createTextNode(text.slice(cursor)));
@@ -475,6 +489,9 @@
         });
         markers.forEach(function (marker) {
           if (marker.parentNode) marker.replaceWith(document.createTextNode(marker.dataset.termKey || marker.textContent));
+        });
+        wrappers.forEach(function (wrapper) {
+          if (wrapper.parentNode) wrapper.replaceWith.apply(wrapper, Array.from(wrapper.childNodes));
         });
         if (body.dataset.mnTermsReady === 'true') delete body.dataset.mnTermsReady;
       }

@@ -26,7 +26,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="skin-v2.css?v=20260921-scope1">
+<link rel="stylesheet" href="skin-v2.css?v=20261008-design1">
 <style id="startup-payroll-page">
 .startup-page{background:var(--shiro);color:var(--ink2);line-height:1.85;line-break:strict}
 .startup-page .w{max-width:1120px;padding-inline:clamp(20px,4vw,48px)}
@@ -92,7 +92,7 @@
 .startup-setup-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.85fr);gap:32px;align-items:center}
 .startup-setup-price{min-width:0;border-left:3px solid var(--moegi);padding-left:24px}
 .startup-setup-price b{display:block;color:var(--sugi);font-family:var(--mono);font-size:clamp(28px,4vw,40px);line-height:1.4}
-.startup-setup-price span{display:block;margin-top:5px;font-size:13px;color:var(--ink3)}
+.startup-setup-price>span{display:block;margin-top:5px;font-size:13px;color:var(--ink3)}
 .startup-setup-copy{max-width:42em;font-size:14px}
 .startup-setup-copy p+p{margin-top:12px}
 .startup-setup-copy .startup-primary{margin-top:18px}
@@ -104,9 +104,9 @@
 .startup-consult-action{margin-top:18px}
 .startup-faq-band{background:var(--yuki)}
 .startup-faq{border-top:1px solid var(--line)}
-.startup-faq-item{padding:18px 0;border-bottom:1px solid var(--line)}
-.startup-faq-item summary{cursor:pointer;font-size:15px;font-weight:700;color:var(--iwa);min-height:24px}
-.startup-faq-answer{padding-top:12px;font-size:14px;color:var(--ink3);max-width:58em}
+.startup-faq-item{padding:10px 0;border-bottom:1px solid var(--line)}
+.startup-faq-item summary{cursor:pointer;font-size:15px;font-weight:700;color:var(--iwa);min-height:44px;padding-block:8px}
+.startup-faq-answer{padding:4px 0 8px;font-size:14px;color:var(--ink3);max-width:58em}
 .startup-profile{padding-block:28px}
 .startup-profile-inner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;font-size:13px}
 .startup-profile-inner strong{display:block;font-size:16px;color:var(--iwa)}
@@ -233,7 +233,7 @@
 <script>
 var ticking=false;if(window.__pgScroll)window.removeEventListener('scroll',window.__pgScroll);window.__pgScroll=function(){if(ticking)return;ticking=true;requestAnimationFrame(function(){var prog=document.getElementById('prog'),nav=document.getElementById('nav');var p=scrollY/(document.documentElement.scrollHeight-innerHeight||1);if(prog)prog.style.width=(p*100)+'%';if(nav){nav.classList.toggle('solid',scrollY>60);nav.classList.toggle('shrink',scrollY>240)}ticking=false})};window.addEventListener('scroll',window.__pgScroll,{passive:true});function toggleNav(){document.getElementById('mobNav').classList.toggle('open')}function closeNav(){document.getElementById('mobNav').classList.remove('open')}
 </script>
-<script defer src="link-keep.js?v=20260919-funnel1"></script><script defer src="header-motion.js?v=20260809-nav1"></script><script defer src="terms.js?v=20260812-terms1"></script><script defer src="ads.js?v=20260901-ads2"></script>
+<script defer src="link-keep.js?v=20260919-funnel1"></script><script defer src="header-motion.js?v=20260809-nav1"></script><script defer src="terms.js?v=20261008-design1"></script><script defer src="ads.js?v=20260901-ads2"></script>
 <script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/startup-payroll.html"}' async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

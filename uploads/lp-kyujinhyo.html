@@ -25,7 +25,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3E%E3%81%BF%3C/text%3E%3C/svg%3E">
 <link rel="icon" href="../favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
-<link rel="stylesheet" href="../skin-v2.css?v=20260921-scope1">
+<link rel="stylesheet" href="../skin-v2.css?v=20261008-design1">
 <style id="lp-kyujinhyo-style">
 /* ------------------------------------------------------------------
    広告用ランディングページ。
@@ -135,6 +135,8 @@ main .hero-proof li{padding:13px 10px;border-right:1px solid var(--line)}
 main .hero-proof li:last-child{border-right:0}
 main .hero-proof strong{display:block;color:var(--iwa);font-family:var(--disp);font-size:11.5px;font-weight:800;line-height:1.6}
 main .hero-proof small{display:block;margin-top:4px;color:var(--ink3);font-size:10.5px;line-height:1.55}
+/* 519px以下は3列だと1項目が3〜4行に折れるので、1項目1行（見出し＋補足を横並び）に組み替える */
+@media (max-width:519px){main .hero-proof{grid-template-columns:minmax(0,1fr)}main .hero-proof li{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:0 10px;padding:9px 4px;border-right:0;border-bottom:1px solid var(--line)}main .hero-proof li:last-child{border-bottom:0}main .hero-proof br{display:none}main .hero-proof small{margin-top:0}}
 main .hero-sign{margin-top:16px;color:var(--ink3);font-size:11.5px;line-height:1.7}
 main .hero-tel{margin-top:12px;font-size:13.5px;color:var(--ink2)}
 main .hero-tel a{color:var(--sugi);font-weight:700;text-decoration:none;border-bottom:2px solid var(--moegi)}
@@ -276,7 +278,7 @@ main .ft-links{margin-top:10px}
      980pxで中央寄せのままだと見出しだけ100px左に飛び出して見える */
   main .rep,main .price-list{max-width:none;margin-inline:0}
   main .anshin{max-width:none;margin-left:0;margin-right:0}
-  main .price-add{max-width:860px;margin-left:0;margin-right:0}
+  main .price-add{max-width:none;margin-left:0;margin-right:0}
   main .price-note,main .note-mid{max-width:860px;margin-inline:0}
   main .hero-grid{grid-template-columns:minmax(0,1fr) minmax(360px,.9fr)}
   main .hero-copy{align-items:flex-start;text-align:left}
@@ -793,7 +795,7 @@ main .ft-links{margin-top:10px}
 <script defer src="../page-enter.js?v=20260921-pace1"></script>
 <script defer src="../link-keep.js?v=20260919-funnel1"></script>
 <script defer src="../header-motion.js?v=20260809-nav1"></script>
-<script defer src="../terms.js?v=20260812-terms1"></script>
+<script defer src="../terms.js?v=20261008-design1"></script>
 <script defer src="../ads.js?v=20260901-ads2"></script>
 </body>
 </html>
