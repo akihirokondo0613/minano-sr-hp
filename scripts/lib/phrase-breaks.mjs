@@ -300,7 +300,8 @@ function rebuild(inner, ownerTag) {
     for (let i = match.index + 1; i < match.index + match[0].length; i += 1) protectedAt[i] = true;
   }
   // 桁区切り、時刻、数値と単位の間に強制分割を入れない。
-  for (const match of sentence.matchAll(/\d(?:[\d,.:/–-]*\d)?(?:[％%円人名年月日時分件回])?/g)) {
+  // 「12か／月間」「3／周年」「80万／円」のように、かな・漢字を含む単位の途中でも折らない。
+  for (const match of sentence.matchAll(/\d(?:[\d,.:/–-]*\d)?(?:か月間|ヶ月間|カ月間|か月|ヶ月|カ月|か所|ヵ所|週間|時間|年間|年度|周年|万円|億円|万人|[％%円人名年月日時分件回歳])?/g)) {
     for (let i = match.index + 1; i < match.index + match[0].length; i += 1) protectedAt[i] = true;
   }
 
