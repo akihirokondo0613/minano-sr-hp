@@ -1088,7 +1088,8 @@ function recordConsoleError(target) {
       const state = await sweepPage.evaluate(() => ({
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
         brokenImages: [...document.images]
-          .filter(img => img.complete && img.naturalWidth === 0)
+          // src未設定（data-srcで後から読む表情差分・書式見本）は読込前であって失敗ではない。
+          .filter(img => img.getAttribute('src') && img.complete && img.naturalWidth === 0)
           .map(img => img.currentSrc || img.src),
       }));
       if (!response?.ok()) failures.push(`${rel}: HTTP ${response?.status() || '応答なし'}`);
