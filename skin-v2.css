@@ -443,6 +443,7 @@ main > section:not(.hero) {
   .sec-head.has-photo { grid-template-columns: 1fr; }
   .sec-head.has-photo .sec-photo { max-width: 300px; width: 100%; margin-inline: auto; }
 }
+/* ---------- critical CSS（index.html #critical-home）はここまで。トップで最初に見える書式セクションの見出しまで含める ---------- */
 
 /* ---------- WHY ---------- */
 .why-sec { background: linear-gradient(180deg, var(--yuki) 0, var(--shiro) clamp(200px, 24vw, 360px)) var(--shiro); padding-block: clamp(76px, 10vw, 144px); position: relative; }

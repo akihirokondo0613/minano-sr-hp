@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const indexPath = path.join(root, 'index.html');
 const skinPath = path.join(root, 'skin-v2.css');
-const criticalBoundary = '/* ---------- セクション見出し（等高線ナンバー） ---------- */';
+const criticalBoundary = '/* ---------- critical CSS（index.html #critical-home）はここまで。トップで最初に見える書式セクションの見出しまで含める ---------- */';
 const checkOnly = process.argv.includes('--check');
 const unknownArgs = process.argv.slice(2).filter((arg) => arg !== '--check');
 
