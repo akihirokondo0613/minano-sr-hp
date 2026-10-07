@@ -278,6 +278,7 @@ function inspect(article) {
     hasRefs: source.includes('post-refs'),
     hasRelated: relatedLinks.size > 0,
     hasSelfRelated: relatedRaw.includes(article.slug),
+    relatedBlocks: (source.match(/<section class="(?:post-related|related-posts)"/g) ?? []).length,
     expectedCta,
     hasServiceMetadata: Boolean(expectedCta),
     ctaMatches: Boolean(expectedCta) && nextStepHrefs.some((href) => href.endsWith(`/uploads/${expectedCta}`) || href === `../uploads/${expectedCta}`),
@@ -312,6 +313,7 @@ for (const r of rows) {
   if (!r.hasRefs || r.officialLinks === 0) problems.push(`${r.slug}: 公式ソースへのリンクがありません`);
   if (!r.hasRelated) problems.push(`${r.slug}: あわせて読みたいがありません`);
   if (r.hasSelfRelated) problems.push(`${r.slug}: あわせて読みたいに自記事が入っています`);
+  if (r.relatedBlocks > 1) problems.push(`${r.slug}: あわせて読みたいが${r.relatedBlocks}つあります（.post-related の1つにまとめる。node scripts/sync-related-posts.mjs）`);
   if (!r.hasServiceMetadata) problems.push(`${r.slug}: articles.jsonのserviceが不足・不正です`);
   if (!r.ctaMatches) problems.push(`${r.slug}: articles.jsonのserviceと記事末CTAが一致しません（期待 ${r.expectedCta ?? '未設定'}）`);
   if (r.hasDraftMarkers) problems.push(`${r.slug}: 下書き用のreader・placeholder・TODOが残っています`);

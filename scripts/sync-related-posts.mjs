@@ -1,8 +1,17 @@
-// 記事末尾の「あわせて読みたい」を articles.json から生成して各記事へ埋め込む。
+// 記事末尾の「あわせて読みたい」（section.post-related）を articles.json から生成して各記事へ埋め込む。
 //
 // 記事どうしが本文中でほとんどつながっておらず、42本の記事へはブログ一覧からの
 // 1経路しかない状態だった。クロール経路と回遊の両方を増やすため、静的HTMLとして
 // 出力する（JSでの後差しにしない）。
+//
+// 以前は人が選ぶ .post-related と、この生成器の .related-posts が別々にあり、
+// 全記事で「あわせて読みたい」が2つ続いていた（2026-10-08に1つへ統合）。
+// いまは .post-related だけを使い、次の順で最大4本を並べる。
+//   1. 人が選んだ記事（ブロック内の data-auto の付いていないリンク。順序を保つ）
+//   2. 同じカテゴリの新しい記事
+//   3. 全体の新しい記事
+// 2・3で補った分には data-auto を付け、次回は選び直す（記事が増えても固定されない）。
+// 下書き表示（draft-placeholder）が残るブロックは触らない（audit-blog.mjs が止める）。
 //
 // 使い方:
 //   node scripts/sync-related-posts.mjs           反映する
@@ -15,12 +24,14 @@ import { markPhrases } from './lib/phrase-breaks.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const checkOnly = process.argv.includes('--check');
 const RELATED_COUNT = 3;
+const ARTICLE_RELATED_COUNT = 4;
 
 const raw = JSON.parse(fs.readFileSync(path.join(root, 'blog/articles.json'), 'utf8'));
 const articles = Array.isArray(raw) ? raw : raw.articles;
 if (!Array.isArray(articles) || articles.length === 0) {
   throw new Error('blog/articles.json から記事一覧を読めません');
 }
+const bySlug = new Map(articles.map((a) => [a.slug, a]));
 
 // 新しい順。日付は画面には出さないが、関連記事の並び順には使う。
 const byNewest = [...articles].sort((a, b) => String(b.date).localeCompare(String(a.date)));
@@ -33,45 +44,61 @@ function escapeHtml(value) {
     .replace(/"/g, '&quot;');
 }
 
-// 同じカテゴリを優先し、足りなければ新しい順で補う。
+const RELATED_BLOCK = /<section class="post-related"[\s\S]*?<\/section>\n?/;
+
+// ブロック内の <a> から、人が選んだ記事（data-auto なし）の slug を順に取り出す。
+function curatedSlugs(block, current) {
+  const slugs = [];
+  for (const match of block.matchAll(/<a\b([^>]*)>/g)) {
+    const attrs = match[1];
+    if (/\bdata-auto\b/.test(attrs)) continue;
+    const href = attrs.match(/\bhref="(?:\.\/)?([a-z0-9-]+)\.html"/)?.[1];
+    if (!href || href === current.slug || slugs.includes(href)) continue;
+    if (!bySlug.has(href)) throw new Error(`blog/${current.slug}.html: あわせて読みたいの ${href}.html が articles.json にありません`);
+    slugs.push(href);
+  }
+  return slugs;
+}
+
+// 人が選んだ記事を先頭に置き、足りない分を同じカテゴリ→新しい順で補う。
 // system のように2本しかないカテゴリがあるため、必ず補完が要る。
-function pickRelated(current) {
-  const picked = [];
-  const seen = new Set([current.slug]);
+function pickRelated(current, curated) {
+  const picked = curated.slice(0, ARTICLE_RELATED_COUNT).map((slug) => ({ article: bySlug.get(slug), auto: false }));
+  const seen = new Set([current.slug, ...curated]);
   for (const pool of [byNewest.filter((a) => a.cat === current.cat), byNewest]) {
     for (const article of pool) {
-      if (picked.length >= RELATED_COUNT) break;
+      if (picked.length >= ARTICLE_RELATED_COUNT) break;
       if (seen.has(article.slug)) continue;
       seen.add(article.slug);
-      picked.push(article);
+      picked.push({ article, auto: true });
     }
   }
   return picked;
 }
 
-function renderSection(current) {
-  const related = pickRelated(current);
+function renderSection(current, curated) {
+  const related = pickRelated(current, curated);
   if (related.length === 0) return '';
   const cards = related
-    .map((article) =>
+    .map(({ article, auto }) =>
       [
-        `      <a href="${article.slug}.html" class="rp-card">`,
-        `        <span class="rp-cat">${escapeHtml(article.catLabel)}</span>`,
-        `        <span class="rp-title">${escapeHtml(article.title)}</span>`,
-        `        <span class="rp-read">読了 約${article.read}分</span>`,
-        '      </a>',
+        `    <a href="${article.slug}.html" class="rp-card"${auto ? ' data-auto' : ''}>`,
+        `      <span class="rp-cat">${escapeHtml(article.catLabel)}</span>`,
+        `      <span class="rp-title">${escapeHtml(article.title)}</span>`,
+        `      <span class="rp-read">読了 約${article.read}分</span>`,
+        '    </a>',
       ].join('\n'),
     )
     .join('\n');
   // 生成した見出しにも文節印（<wbr>）を入れておく。あとから
   // sync-phrase-breaks.mjs に差し込ませると、この生成器の --check が毎回落ちる。
+  // 見出しの書式は minano-blog-post の new_post.py が下書きへ戻すときの検索条件
+  // （<section class="post-related"…><h2…>あわせて読みたい</h2>）に合わせてある。
   return markPhrases([
-    '<section class="related-posts" aria-labelledby="related-posts-t">',
-    '  <div class="related-posts-inner">',
-    '    <h2 class="related-posts-t" id="related-posts-t">あわせて読みたい</h2>',
-    '    <div class="related-posts-grid">',
+    '<section class="post-related" aria-labelledby="post-related-t">',
+    '  <h2 class="post-related-t" id="post-related-t">あわせて読みたい</h2>',
+    '  <div class="post-related-grid">',
     cards,
-    '    </div>',
     '  </div>',
     '</section>',
     '',
@@ -85,15 +112,23 @@ for (const article of articles) {
   if (!fs.existsSync(file)) throw new Error(`${relativePath}: 記事HTMLがありません`);
 
   const source = fs.readFileSync(file, 'utf8');
-  const anchor = '<section class="next-steps">';
-  if (!source.includes(anchor)) throw new Error(`${relativePath}: next-steps セクションがありません`);
-
-  // 既存の関連記事ブロックを取り除いてから、次のステップの直前へ入れ直す。
-  const stripped = source.replace(
-    /<section class="related-posts"[\s\S]*?<\/section>\n/,
-    '',
-  );
-  const next = stripped.replace(anchor, `${renderSection(article)}${anchor}`);
+  // 旧方式の自動ブロック（.related-posts）は記事からは外す。
+  let next = source.replace(/[ \t]*<section class="related-posts"[\s\S]*?<\/section>\n/g, '');
+  const existing = next.match(RELATED_BLOCK)?.[0] ?? '';
+  if (/class="draft-placeholder"/.test(existing)) {
+    console.warn(`下書きのまま: ${relativePath}（あわせて読みたいに記事を選んでから再実行）`);
+  } else if (existing) {
+    const section = renderSection(article, curatedSlugs(existing, article));
+    next = next.replace(RELATED_BLOCK, () => section);
+  } else {
+    // 管理画面の下書き等でブロックが無い記事は、著者欄（無ければ次のステップ）の直前へ入れる。
+    const anchor = ['<aside class="author-card">', '<section class="next-steps">'].find((a) => next.includes(a));
+    if (!anchor) throw new Error(`${relativePath}: author-card も next-steps もありません`);
+    const section = renderSection(article, []);
+    next = next.replace(anchor, () => `${section}\n${anchor}`);
+  }
+  const blocks = (next.match(/<section class="post-related"/g) || []).length;
+  if (blocks !== 1) throw new Error(`${relativePath}: あわせて読みたいが${blocks}個あります`);
 
   if (next === source) continue;
   changed += 1;
