@@ -384,6 +384,8 @@
       textNodes.forEach(function (node) {
         if (!node.isConnected || !node.parentElement || node.parentElement.closest(EXCLUDED_SELECTOR)) return;
         const text = node.nodeValue;
+        // 表のセルは列が狭く、折れない箱が「労働条件通知書、」の幅でセルからはみ出すので従来どおり折ってよい形にする。
+        const keepTogether = !node.parentElement.closest('td,th');
         const fragment = document.createDocumentFragment();
         let cursor = 0;
         let match = nextMatch(text, cursor, usedTerms);
@@ -394,12 +396,18 @@
           markerIndex += 1;
           // 用語と「？」バッジ（::after）のあいだ、バッジと直後の句読点のあいだで折れないよう、
           // nowrap の箱にまとめる。箱には <wbr> が入らない（用語も句読点も同じテキストノードから切り出す）。
+          const marker = addMarker(match.term, markerIndex);
+          usedTerms.add(match.term.key);
+          cursor = match.index + match.term.key.length;
+          if (!keepTogether) {
+            fragment.appendChild(marker);
+            match = nextMatch(text, cursor, usedTerms);
+            continue;
+          }
           const wrapper = document.createElement('span');
           wrapper.className = 'term-nw';
           wrapper.style.whiteSpace = 'nowrap';
-          wrapper.appendChild(addMarker(match.term, markerIndex));
-          usedTerms.add(match.term.key);
-          cursor = match.index + match.term.key.length;
+          wrapper.appendChild(marker);
           if (TRAILING_PUNCT.test(text.slice(cursor, cursor + 1))) {
             wrapper.appendChild(document.createTextNode(text.charAt(cursor)));
             cursor += 1;
