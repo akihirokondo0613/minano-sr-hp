@@ -186,6 +186,8 @@
 .sr-web{display:inline-flex;align-items:center;gap:6px;margin-top:9px;font-size:12px;font-weight:700;color:var(--sugi);border-bottom:1px solid var(--moegi);padding-bottom:2px;text-decoration:none}
 .sr-web:hover{color:var(--sugi-7)}
 .sr-item{display:flex;flex-direction:column}
+/* 同じ行のカードの高さをそろえ、「Webで読む」の位置を行内で一致させる */
+.sr-item .sr-card{flex:1 1 auto}
 .sr-note{margin-top:clamp(28px,4vw,44px);background:var(--moegi-l);border-radius:var(--r-lg);padding:clamp(18px,2.4vw,26px) clamp(20px,2.6vw,30px)}
 .sr-note b{color:var(--sugi)}
 .sr-note p{font-size:13.5px;line-height:1.95;color:var(--ink2)}
@@ -216,8 +218,8 @@
       <div class="sec-head rv">
         <div class="sec-head-idx"><span class="idx-lat">FOR BUSINESS</span><span class="idx-jp">事業主の方へ</span></div>
         <div class="sec-head-body">
-          <h2 class="sec-h">持ち<wbr>帰って、<wbr>社内で<wbr>共有できる形に。</h2>
-          <p class="sec-sub">助成金・補助金の<wbr>資料です。<wbr>登録は<wbr>不要で、<wbr>そのまま<wbr>保存できます。</p>
+          <h2 class="sec-h">制度ごとの<wbr>要点を、<wbr>A4の<wbr>2ページに。</h2>
+          <p class="sec-sub">金額・対象・申請の<wbr>順序と、<wbr>根拠を<wbr>確認した日を<wbr>載せています。</p>
         </div>
       </div>
       <div class="sr-grid">

@@ -158,6 +158,8 @@ const STYLE = `<style id="shiryo">
 .sr-web{display:inline-flex;align-items:center;gap:6px;margin-top:9px;font-size:12px;font-weight:700;color:var(--sugi);border-bottom:1px solid var(--moegi);padding-bottom:2px;text-decoration:none}
 .sr-web:hover{color:var(--sugi-7)}
 .sr-item{display:flex;flex-direction:column}
+/* 同じ行のカードの高さをそろえ、「Webで読む」の位置を行内で一致させる */
+.sr-item .sr-card{flex:1 1 auto}
 .sr-note{margin-top:clamp(28px,4vw,44px);background:var(--moegi-l);border-radius:var(--r-lg);padding:clamp(18px,2.4vw,26px) clamp(20px,2.6vw,30px)}
 .sr-note b{color:var(--sugi)}
 .sr-note p{font-size:13.5px;line-height:1.95;color:var(--ink2)}
