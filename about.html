@@ -159,7 +159,11 @@
 .aa-pop-close{position:absolute;top:10px;right:12px;width:28px;height:28px;border:0;background:transparent;color:var(--ink4);font-size:18px;line-height:1;cursor:pointer;border-radius:50%}
 .aa-pop-close:hover{background:var(--yuki);color:var(--iwa)}
 @media (max-width: 640px){
-  .aa-pop{inset:auto 14px calc(max(14px, env(safe-area-inset-bottom) + 12px) + 112px) 14px;width:auto}
+  .aa-pop{inset:auto 14px calc(max(14px, env(safe-area-inset-bottom) + 12px) + 62px) 14px;width:auto}
+  /* スマホは「AIに聞く」と相談ボタンを横1段にし、補足行を省いて本文を隠す面積を減らす */
+  .floating.floating{flex-direction:row;align-items:center;gap:8px}
+  .floating .fl-primary{padding:12px 18px;gap:10px}
+  .floating .fl-primary-sub{display:none}
 }
 </style>
 </head>
