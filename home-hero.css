@@ -33,7 +33,9 @@
 #top .trust-item{padding:0;border:0;background:none;font-size:13px}
 #top .hero-spot-note{font-size:15px;line-height:1.7}
 /* Initial opacity prevents a resting-pose flash before the entrance is prepared. */
-#top .hero-pending .hero-poses{opacity:0}
+#top .hero-pending .hero-poses{opacity:0;animation:mn-hero-failsafe 0s linear 4s forwards}
+/* home-hero.js が読めない・途中で止まった場合も、4秒後には人物を表示する。 */
+@keyframes mn-hero-failsafe{to{opacity:1}}
 @media(min-width:768px) and (max-width:1100px){
  #top .hero-h1{font-size:clamp(36px,3.95vw,44px)}
  #top .hero-h1 .hero-services{font-size:clamp(42px,5.8vw,64px)}

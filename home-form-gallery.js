@@ -77,10 +77,16 @@ window.__mnInitFormGallery=function(){
   arrows.forEach(function(button){button.addEventListener('click',function(){move(Number(button.dataset.fgDir));});});
   rail.addEventListener('mouseenter',function(){hover=true;update();});
   rail.addEventListener('mouseleave',function(){hover=false;update();});
-  rail.addEventListener('focusin',function(){focused=true;update();});
+  rail.addEventListener('focusin',function(e){
+    focused=true;update();
+    // Chromiumは一部が見えるだけのカードをスクロールしないため、Tabで移ったカードを枠内へ収める。
+    var item=e.target.closest&&e.target.closest('.fg-item');
+    if(item&&!item.classList.contains('fg-copy'))item.scrollIntoView({block:'nearest',inline:'nearest',behavior:reduce.matches?'auto':'smooth'});
+  });
   rail.addEventListener('focusout',function(e){focused=rail.contains(e.relatedTarget);update();});
   rail.addEventListener('pointerdown',stopManually,{passive:true});
-  rail.addEventListener('wheel',stopManually,{passive:true});
+  // ページを縦に読み進めるだけのホイールでは止めず、横送りの操作だけを手動扱いにする。
+  rail.addEventListener('wheel',function(e){if(Math.abs(e.deltaX)>Math.abs(e.deltaY)||e.shiftKey)stopManually();},{passive:true});
   rail.addEventListener('keydown',function(e){
     if(e.target!==rail)return;
     if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();move(e.key==='ArrowRight'?1:-1);}
