@@ -185,8 +185,7 @@
     '[aria-hidden="true"]'
   ].join(',');
 
-  // 用語の直後にこの字が続くときは、用語と一緒に折らない（行頭に「、」が来るのを防ぐ）。
-  const TRAILING_PUNCT = /^[、。，．,.）」』】〕：；！？]/;
+  const TRAILING_PUNCT = /[、。，．,.）」』】〕：；！？]/;
   const VIEWPORT_GUTTER = 12;
   const POP_GAP = 10;
   let controller = null;
@@ -346,6 +345,14 @@
       });
     }
 
+    function wrap(marker) {
+      const box = document.createElement('span');
+      box.style.whiteSpace = 'nowrap';
+      box.appendChild(marker);
+      wrappers.push(box);
+      return box;
+    }
+
     function addMarker(term, markerIndex) {
       const marker = document.createElement('span');
       const popover = document.createElement('span');
@@ -384,7 +391,7 @@
       textNodes.forEach(function (node) {
         if (!node.isConnected || !node.parentElement || node.parentElement.closest(EXCLUDED_SELECTOR)) return;
         const text = node.nodeValue;
-        // 表のセルは列が狭く、折れない箱が「労働条件通知書、」の幅でセルからはみ出すので従来どおり折ってよい形にする。
+        // 用語＋バッジ＋句読点1字は折らない（表のセルは除く）
         const keepTogether = !node.parentElement.closest('td,th');
         const fragment = document.createDocumentFragment();
         let cursor = 0;
@@ -394,26 +401,14 @@
         while (match) {
           if (match.index > cursor) fragment.appendChild(document.createTextNode(text.slice(cursor, match.index)));
           markerIndex += 1;
-          // 用語と「？」バッジ（::after）のあいだ、バッジと直後の句読点のあいだで折れないよう、
-          // nowrap の箱にまとめる。箱には <wbr> が入らない（用語も句読点も同じテキストノードから切り出す）。
-          const marker = addMarker(match.term, markerIndex);
+          let box = addMarker(match.term, markerIndex);
           usedTerms.add(match.term.key);
           cursor = match.index + match.term.key.length;
-          if (!keepTogether) {
-            fragment.appendChild(marker);
-            match = nextMatch(text, cursor, usedTerms);
-            continue;
+          if (keepTogether) {
+            box = wrap(box);
+            if (TRAILING_PUNCT.test(text.charAt(cursor))) box.append(text.charAt(cursor++));
           }
-          const wrapper = document.createElement('span');
-          wrapper.className = 'term-nw';
-          wrapper.style.whiteSpace = 'nowrap';
-          wrapper.appendChild(marker);
-          if (TRAILING_PUNCT.test(text.slice(cursor, cursor + 1))) {
-            wrapper.appendChild(document.createTextNode(text.charAt(cursor)));
-            cursor += 1;
-          }
-          wrappers.push(wrapper);
-          fragment.appendChild(wrapper);
+          fragment.appendChild(box);
           match = nextMatch(text, cursor, usedTerms);
         }
         if (cursor < text.length) fragment.appendChild(document.createTextNode(text.slice(cursor)));
@@ -498,8 +493,8 @@
         markers.forEach(function (marker) {
           if (marker.parentNode) marker.replaceWith(document.createTextNode(marker.dataset.termKey || marker.textContent));
         });
-        wrappers.forEach(function (wrapper) {
-          if (wrapper.parentNode) wrapper.replaceWith.apply(wrapper, Array.from(wrapper.childNodes));
+        wrappers.forEach(function (box) {
+          if (box.parentNode) box.replaceWith.apply(box, Array.from(box.childNodes));
         });
         if (body.dataset.mnTermsReady === 'true') delete body.dataset.mnTermsReady;
       }
