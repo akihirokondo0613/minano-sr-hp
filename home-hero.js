@@ -55,10 +55,14 @@
       }).forEach(function (actor, index) {
         var after = actor.querySelector('.actor-after img');
         if (!after.getAttribute('src')) {
-          actor.querySelectorAll('.actor-after source').forEach(function (source) {
-            source.srcset = source.getAttribute('data-srcset');
-          });
-          after.src = after.getAttribute('data-src');
+          // 表情差分は最初の切替（着地の3.6秒後）までに届けばよい。初回表示の通信と重ならないよう少し遅らせて読む。
+          later(function () {
+            if (stopped || after.getAttribute('src')) return;
+            actor.querySelectorAll('.actor-after source').forEach(function (source) {
+              source.srcset = source.getAttribute('data-srcset');
+            });
+            after.src = after.getAttribute('data-src');
+          }, 2000);
         }
         scheduleExpression(actor, index);
       });
