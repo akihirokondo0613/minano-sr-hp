@@ -49,7 +49,10 @@
       clearTimers();
       stage.querySelectorAll('.is-wow').forEach(function (actor) { actor.classList.remove('is-wow'); });
       if (stopped || !entered || motion.matches || !visible || document.hidden) return;
-      activeCanvas().querySelectorAll('.hero-actor:has(.actor-after)').forEach(function (actor, index) {
+      // :has() 非対応のブラウザでも止まらないよう、表情差分の有無はJSで絞り込む。
+      Array.from(activeCanvas().querySelectorAll('.hero-actor')).filter(function (actor) {
+        return actor.querySelector('.actor-after img');
+      }).forEach(function (actor, index) {
         var after = actor.querySelector('.actor-after img');
         if (!after.getAttribute('src')) {
           actor.querySelectorAll('.actor-after source').forEach(function (source) {

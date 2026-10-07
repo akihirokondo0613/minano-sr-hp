@@ -1281,8 +1281,8 @@ function clearContactDraft() {
 function saveContactDraft() {
   var form = document.getElementById('contactForm');
   if (!form || form.style.display === 'none') return;
-  var values = Array.prototype.map.call(form.querySelectorAll('input,textarea,select'), function (el) {
-    return { id: el.id, name: el.name, type: el.type, value: el.value, checked: el.checked };
+  var values = Array.prototype.map.call(form.querySelectorAll('input,textarea,select'), function (el, index) {
+    return { index: index, id: el.id, name: el.name, type: el.type, value: el.value, checked: el.checked };
   });
   try { sessionStorage.setItem(contactDraftKey, JSON.stringify({ savedAt: Date.now(), values: values })); } catch (e) {}
 }
@@ -1292,9 +1292,13 @@ try {
   if (savedDraft && Date.now() - savedDraft.savedAt < 30 * 60 * 1000 && Array.isArray(savedDraft.values)) {
     var draftInputs = Array.prototype.slice.call(draftForm.querySelectorAll('input,textarea,select'));
     savedDraft.values.forEach(function (item) {
-      var el = draftInputs.find(function (input) {
-        return item.id ? input.id === item.id : input.name === item.name && input.type === item.type && input.value === item.value;
-      });
+      // 「その他」など同じ値のチェック欄が複数あるため、まずフォーム内の順番で照合する。
+      var byIndex = draftInputs[item.index];
+      var el = byIndex && byIndex.id === item.id && byIndex.name === item.name && byIndex.type === item.type
+        && (byIndex.type !== 'checkbox' && byIndex.type !== 'radio' || byIndex.value === item.value) ? byIndex
+        : draftInputs.find(function (input) {
+          return item.id ? input.id === item.id : input.name === item.name && input.type === item.type && input.value === item.value;
+        });
       if (!el) return;
       if (el.type === 'checkbox' || el.type === 'radio') el.checked = !!item.checked;
       else el.value = item.value;
