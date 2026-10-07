@@ -44,6 +44,30 @@
   .filter-inner { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: thin; overscroll-behavior-inline: contain; }
   .filter-tab { flex: 0 0 auto; }
 }
+/* 検索欄：入力欄そのものの高さが27pxで押しにくかったので44pxにする（枠の高さ48pxは据え置き） */
+.blog-search-control { padding-block: 2px; }
+.blog-search input { min-height: 44px; }
+.blog-search button { min-height: 44px; }
+/* スマホの記事一覧：左のサムネイル（92px）の横に説明まで並べると本文幅が約210pxしかなく、
+   説明が8〜10行に伸びて一覧が約19,000pxあった。サムネイルの横には分類とタイトルだけを置き、
+   説明は行の全幅で3行まで表示する（残りは省略記号。本文は消さないので検索の対象のまま）。 */
+@media (max-width: 560px) {
+  .art-row { grid-template-rows: auto auto auto; row-gap: 6px; }
+  .art-body { display: contents; }
+  .art-thumb { grid-row: 1 / span 2; }
+  .art-cat-badge { grid-column: 2; grid-row: 1; align-self: start; justify-self: start; margin-bottom: 0; }
+  .art-title { grid-column: 2; grid-row: 2; align-self: start; }
+  .art-excerpt {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin-top: 2px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+  }
+}
 </style>
 <style id="ask-ai-style">
 .fl-ai{width:46px;height:46px;border-radius:50%;background:var(--sugi);border:1px solid var(--sugi);display:grid;place-items:center;box-shadow:0 8px 22px rgba(18,63,48,.2);cursor:pointer;padding:0;transition:transform .3s var(--ease),background .3s}
@@ -155,7 +179,7 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="12" width="124" height="64" rx="9" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="18" y="24" width="46" height="40" rx="6" fill="#fff" stroke="#123F30" stroke-width="1.6"/><rect x="18" y="24" width="46" height="12" rx="6" fill="#123F30"/><text x="41" y="33" text-anchor="middle" font-size="8" font-weight="700" fill="#fff">9月</text><text x="41" y="54" text-anchor="middle" font-size="10" font-weight="700" fill="#5D6962">届出</text><path d="M68 44h20M84 40l4 4-4 4" fill="none" stroke="#3DAA6A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="92" y="24" width="30" height="40" rx="6" fill="#123F30"/><text x="107" y="42" text-anchor="middle" font-size="8" font-weight="700" fill="#fff">10月</text><text x="107" y="55" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">1日</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">法改正情報</span>
-          <h2 class="art-title">歯科<wbr>ベースアップ評価料は<wbr>今から<wbr>でも<wbr>届け出られる<wbr>｜年度途中の<wbr>手順</h2>
+          <h2 class="art-title">歯科<wbr>ベースアップ評価料は<wbr>今から<wbr>でも<wbr>届け出られる｜<wbr>年度途中の<wbr>手順</h2>
           <p class="art-excerpt">5月の<wbr>届出期限を<wbr>過ぎても、<wbr>歯科<wbr>ベースアップ評価料は<wbr>年度途中に<wbr>届け出られます。<wbr>月末までに<wbr>受理されれば<wbr>翌月1日から<wbr>算定でき、<wbr>8月の<wbr>報告は<wbr>算定していた<wbr>期間だけが<wbr>対象です。<wbr>開始が<wbr>1か月遅れると<wbr>何が<wbr>減るのかまで<wbr>整理します。</p>
         </div>
         <span class="art-read">読む →</span>
@@ -191,7 +215,7 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="system-ui,sans-serif"><rect x="8" y="12" width="124" height="64" rx="9" fill="#F7FBF8" stroke="#A8D8B8"/><text x="70" y="33" text-anchor="middle" font-size="10" font-weight="700" fill="#1E7A4B">富山県 令和8年度</text><rect x="18" y="40" width="40" height="22" rx="5" fill="#fff" stroke="#123F30" stroke-width="1.6"/><text x="38" y="55" text-anchor="middle" font-size="9" font-weight="700" fill="#123F30">9/1</text><path d="M62 51h16M74 47l5 4-5 4" fill="none" stroke="#3DAA6A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="82" y="40" width="40" height="22" rx="5" fill="#B03A2E"/><text x="102" y="55" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">9/30</text><text x="70" y="72" text-anchor="middle" font-size="8" fill="#5D6962">締切まで約1か月</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">助成金</span>
-          <h2 class="art-title">【令和8年度】<wbr>富山県の<wbr>業務改善助成金<wbr>｜締切9月<wbr>30日必着と<wbr>順序</h2>
+          <h2 class="art-title">【令和8年度】<wbr>富山県の<wbr>業務改善助成金｜<wbr>締切9月<wbr>30日必着と<wbr>順序</h2>
           <p class="art-excerpt">富山県の<wbr>最低賃金は<wbr>令和<wbr>8年10月1日発効で<wbr>1,119円<wbr>（公示済み）。<wbr>業務改善助成金の<wbr>富山県の<wbr>締切は<wbr>9月30日必着。<wbr>対象判定、<wbr>申請・賃上げ・<wbr>設備導入の<wbr>順序、<wbr>県の<wbr>上乗せ補助2制度を<wbr>図解で<wbr>整理します。</p>
         </div>
         <span class="art-read">読む →</span>
@@ -200,7 +224,7 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="system-ui,sans-serif"><rect x="8" y="12" width="124" height="64" rx="9" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="16" y="34" width="34" height="24" rx="5" fill="#fff" stroke="#123F30" stroke-width="1.6"/><text x="33" y="50" text-anchor="middle" font-size="9" font-weight="700" fill="#123F30">個人</text><path d="M54 46h24M74 42l5 4-5 4" fill="none" stroke="#3DAA6A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><text x="66" y="37" text-anchor="middle" font-size="8" font-weight="700" fill="#1E7A4B">14日以内</text><rect x="84" y="34" width="39" height="24" rx="5" fill="#123F30"/><text x="103" y="50" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">法人</text><text x="70" y="70" text-anchor="middle" font-size="8" fill="#5D6962">建設国保はそのまま続けられる</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">社会保険</span>
-          <h2 class="art-title">建設国保は<wbr>法人成り後も<wbr>続けられる<wbr>｜適用除外承認と<wbr>協会けんぽ比較</h2>
+          <h2 class="art-title">建設国保は<wbr>法人成り後も<wbr>続けられる｜<wbr>適用除外承認と<wbr>協会けんぽ比較</h2>
           <p class="art-excerpt">適用除外承認を<wbr>受ければ、<wbr>建設国保は<wbr>法人成り後も<wbr>継続できます。<wbr>事実発生日から<wbr>14日以内の<wbr>手続きと、<wbr>令和8年度の<wbr>富山県建設国保・<wbr>協会けんぽの<wbr>保険料を<wbr>家族構成別に<wbr>比較します。</p>
         </div>
         <span class="art-read">読む →</span>
@@ -229,7 +253,7 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="14" width="124" height="60" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="26" y="46" width="18" height="18" fill="#A8D8B8"/><rect x="52" y="36" width="18" height="28" fill="#3DAA6A"/><rect x="78" y="26" width="18" height="38" fill="#123F30"/><circle cx="112" cy="32" r="10" fill="#fff" stroke="#006E3C" stroke-width="2"/><text x="112" y="36" text-anchor="middle" font-size="10" font-weight="700" fill="#006E3C">¥</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">助成金</span>
-          <h2 class="art-title">【令和8年度】<wbr>トライアル雇用助成金<wbr>｜月額最大4万円の<wbr>要件と<wbr>期限</h2>
+          <h2 class="art-title">【令和8年度】<wbr>トライアル<wbr>雇用助成金｜<wbr>月額最大4万円の<wbr>要件と<wbr>期限</h2>
           <p class="art-excerpt">令和8年度の<wbr>トライアル雇用助成金<wbr>（一般<wbr>トライアルコース）は<wbr>月額最大4万円<wbr>（最長3か月）です。<wbr>ハローワーク等の<wbr>紹介を<wbr>受けてから<wbr>選考を<wbr>始める<wbr>ことが<wbr>前提で、<wbr>自社応募や<wbr>縁故採用は<wbr>対象外です。<wbr>要件と<wbr>提出期限を<wbr>解説します。</p>
         </div>
         <span class="art-read">読む →</span>
@@ -249,7 +273,7 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="14" width="124" height="60" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="26" y="48" width="16" height="16" fill="#A8D8B8"/><rect x="50" y="38" width="16" height="26" fill="#3DAA6A"/><rect x="74" y="26" width="16" height="38" fill="#123F30"/><path d="M26 40l24-10 24-12" stroke="#A8442E" stroke-width="2" fill="none"/><circle cx="106" cy="34" r="10" fill="#fff" stroke="#006E3C" stroke-width="2"/><text x="106" y="38" text-anchor="middle" font-size="10" font-weight="700" fill="#006E3C">¥</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">助成金</span>
-          <h2 class="art-title">【令和8年度】<wbr>業務改善助成金<wbr>｜50円以上の<wbr>引上げが<wbr>条件に</h2>
+          <h2 class="art-title">【令和8年度】<wbr>業務改善助成金｜<wbr>50円以上の<wbr>引上げが<wbr>条件に</h2>
           <p class="art-excerpt">令和8年度の<wbr>業務改善助成金は、<wbr>事業場内最低賃金の<wbr>引上げ額が<wbr>30円以上から<wbr>50円以上に<wbr>変わりました。<wbr>50・70・90円の<wbr>3コースと<wbr>助成上限額、<wbr>令和<wbr>8年9月1日からの<wbr>申請期間、<wbr>交付決定前に<wbr>発注できない<wbr>点を<wbr>解説します。</p>
         </div>
         <span class="art-read">読む →</span>
@@ -259,7 +283,7 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="16" width="124" height="56" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><path d="M20 54h100" stroke="#A8D8B8" stroke-width="2"/><circle cx="29" cy="54" r="6" fill="#123F30"/><circle cx="62" cy="54" r="6" fill="#3DAA6A"/><circle cx="95" cy="54" r="6" fill="#E4F4EA" stroke="#3DAA6A"/><circle cx="117" cy="54" r="6" fill="#fff" stroke="#123F30"/><text x="29" y="35" text-anchor="middle" font-size="6.5" fill="#123F30">春〜夏</text><text x="62" y="35" text-anchor="middle" font-size="6.5" fill="#123F30">秋〜冬</text><text x="106" y="35" text-anchor="middle" font-size="6.5" font-weight="700" fill="#123F30">2027年</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">法改正情報</span>
-          <h2 class="art-title">2027年度<wbr>介護報酬改定<wbr>は<wbr>どう<wbr>進む？<wbr>｜確定事項と<wbr>審議中の<wbr>論点</h2>
+          <h2 class="art-title">2027年度<wbr>介護報酬改定<wbr>は<wbr>どう<wbr>進む？｜<wbr>確定事項と<wbr>審議中の<wbr>論点</h2>
           <p class="art-excerpt">2027年度<wbr>介護報酬改定<wbr>の<wbr>検討スケジュールと、<wbr>2026年<wbr>7月28日時点で<wbr>決まっている<wbr>こと・未確定の<wbr>ことを<wbr>整理。<wbr>介護事業所が<wbr>今から<wbr>そろえる<wbr>人員・賃金・<wbr>勤怠データを<wbr>解説します。</p>
         </div>
         <span class="art-read">読む →</span>
@@ -269,7 +293,7 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="16" width="124" height="56" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="14" y="27" width="34" height="34" rx="7" fill="#123F30"/><text x="31" y="47" text-anchor="middle" font-size="7.5" font-weight="700" fill="#fff">6月新設</text><path d="M53 44h8" stroke="#3DAA6A" stroke-width="1.5"/><rect x="62" y="23" width="61" height="17" rx="5" fill="#EEF8F2"/><text x="92.5" y="34" text-anchor="middle" font-size="6.3" font-weight="700" fill="#123F30">訪問看護・訪問リハ</text><rect x="62" y="47" width="61" height="17" rx="5" fill="#E4F4EA"/><text x="92.5" y="58" text-anchor="middle" font-size="6.3" font-weight="700" fill="#123F30">居宅介護支援</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">法改正情報</span>
-          <h2 class="art-title">訪問看護等3<wbr>サービスの<wbr>処遇改善加算<wbr>｜2026年<wbr>6月新設</h2>
+          <h2 class="art-title">訪問看護等3<wbr>サービスの<wbr>処遇改善加算｜<wbr>2026年<wbr>6月新設</h2>
           <p class="art-excerpt">2026年6月に<wbr>訪問看護、<wbr>訪問<wbr>リハビリテーション、<wbr>居宅介護支援・<wbr>介護予防支援へ<wbr>新設された<wbr>処遇改善加算を<wbr>解説。<wbr>加算率1.8％・<wbr>1.5％・2.1％の<wbr>違いと<wbr>取得ルート、<wbr>6月の<wbr>特例期限を<wbr>過ぎた<wbr>場合の<wbr>年度途中の<wbr>届出を<wbr>整理します。</p>
         </div>
         <span class="art-read">読む →</span>
@@ -289,7 +313,7 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="16" width="124" height="56" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><path d="M18 57 38 35l16 16 21-27 26 33z" fill="#D4EDE0"/><rect x="78" y="39" width="35" height="23" rx="3" fill="#fff" stroke="#123F30"/><path d="m75 42 20-15 21 15" fill="none" stroke="#123F30" stroke-width="2"/><text x="47" y="68" text-anchor="middle" font-size="6.5" font-weight="700" fill="#123F30">人口減少地域</text><text x="96" y="54" text-anchor="middle" font-size="6.5" font-weight="700" fill="#006E3C">新制度</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">法改正情報</span>
-          <h2 class="art-title">特定地域居宅<wbr>サービスとは<wbr>｜2027年の<wbr>確定事項と<wbr>未確定事項</h2>
+          <h2 class="art-title">特定地域居宅<wbr>サービスとは｜<wbr>2027年の<wbr>確定事項と<wbr>未確定事項</h2>
           <p class="art-excerpt">2027年施行予定の<wbr>特定地域居宅<wbr>サービスについて、<wbr>法律で<wbr>決まった<wbr>枠組みと<wbr>今後決まる<wbr>人員配置・包括評価を<wbr>区別して<wbr>解説。<wbr>中山間地域の<wbr>介護事業者が<wbr>今から<wbr>確認する<wbr>労務課題も<wbr>整理します。</p>
         </div>
         <span class="art-read">読む →</span>
@@ -299,7 +323,7 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="16" width="124" height="56" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="17" y="25" width="43" height="31" rx="5" fill="#123F30"/><rect x="22" y="30" width="33" height="21" rx="2" fill="#E4F4EA"/><path d="M29 61h19" stroke="#123F30" stroke-width="3"/><path d="M66 43h13" stroke="#3DAA6A" stroke-width="2"/><rect x="80" y="25" width="42" height="38" rx="6" fill="#EEF8F2"/><path d="M88 52h7l5-17 6 22 5-12h5" fill="none" stroke="#006E3C" stroke-width="2"/><text x="101" y="69" text-anchor="middle" font-size="5.8" font-weight="700" fill="#123F30">導入前後を測る</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">システム導入</span>
-          <h2 class="art-title">介護テクノロジーで<wbr>人員基準は<wbr>変わる？<wbr>｜勤務表と<wbr>効果測定の<wbr>準備</h2>
+          <h2 class="art-title">介護テクノロジーで<wbr>人員基準は<wbr>変わる？｜<wbr>勤務表と<wbr>効果測定の<wbr>準備</h2>
           <p class="art-excerpt">介護記録ソフトや<wbr>見守り機器を<wbr>導入しても、<wbr>人員基準が<wbr>自動で<wbr>緩和される<wbr>わけではありません。<wbr>2027年度改定の<wbr>審議状況と、<wbr>勤務表・残業・<wbr>研修時間を<wbr>測る<wbr>導入前後の<wbr>実務を<wbr>整理します。</p>
         </div>
         <span class="art-read">読む →</span>
@@ -309,7 +333,7 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="16" width="124" height="56" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><circle cx="28" cy="36" r="9" fill="#123F30"/><circle cx="51" cy="36" r="9" fill="#3DAA6A"/><circle cx="74" cy="36" r="9" fill="#A8D8B8"/><circle cx="97" cy="36" r="9" fill="#E4F4EA" stroke="#3DAA6A"/><path d="M22 58h81" stroke="#123F30" stroke-width="2"/><path d="m97 53 8 5-8 5" fill="none" stroke="#123F30" stroke-width="2"/><text x="66" y="70" text-anchor="middle" font-size="6.5" font-weight="700" fill="#123F30">対象・配分・記録</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">経営・採用</span>
-          <h2 class="art-title">介護の<wbr>処遇改善加算は<wbr>誰に<wbr>配分できる？<wbr>｜職種・<wbr>賃金項目・記録の<wbr>実務</h2>
+          <h2 class="art-title">介護の<wbr>処遇改善加算は<wbr>誰に<wbr>配分できる？｜<wbr>職種・<wbr>賃金項目・記録の<wbr>実務</h2>
           <p class="art-excerpt">介護職員等処遇改善<wbr>加算<wbr>の<wbr>配分対象を、<wbr>看護師・<wbr>ケアマネ・<wbr>事務職・派遣職員まで<wbr>整理。<wbr>加算額以上の<wbr>賃金改善と<wbr>いう<wbr>前提、<wbr>基本給・<wbr>手当・賞与・<wbr>法定福利費の<wbr>扱い、<wbr>著しい<wbr>偏りを<wbr>避ける<wbr>説明と<wbr>記録の<wbr>残し方を<wbr>解説します。</p>
         </div>
         <span class="art-read">読む →</span>
@@ -339,7 +363,7 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="16" width="124" height="56" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="19" y="51" width="16" height="11" rx="2" fill="#D4EDE0"/><rect x="43" y="41" width="16" height="21" rx="2" fill="#A8D8B8"/><rect x="67" y="30" width="16" height="32" rx="2" fill="#3DAA6A"/><rect x="91" y="22" width="16" height="40" rx="2" fill="#123F30"/><text x="63" y="72" text-anchor="middle" font-size="6.3" font-weight="700" fill="#123F30">職種で倍率が違う</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">経営・採用</span>
-          <h2 class="art-title">富山県で<wbr>採用が<wbr>難しい<wbr>職種は？<wbr>｜2026年5月の<wbr>職種別求人倍率</h2>
+          <h2 class="art-title">富山県で<wbr>採用が<wbr>難しい<wbr>職種は？｜<wbr>2026年5月の<wbr>職種別求人倍率</h2>
           <p class="art-excerpt">2026年5月の<wbr>富山県の<wbr>職種別求人倍率を<wbr>もとに、<wbr>建設・介護・販売・<wbr>事務などの<wbr>採用難易度を<wbr>比較。<wbr>統計の<wbr>読み方と、<wbr>募集要件・育成・<wbr>業務分担を<wbr>見直す<wbr>手順を<wbr>解説します。</p>
         </div>
         <span class="art-read">読む →</span>
@@ -369,7 +393,7 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="16" width="124" height="56" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="14" y="24" width="34" height="38" rx="6" fill="#123F30"/><text x="31" y="46" text-anchor="middle" font-size="7.5" font-weight="700" fill="#fff">2.7％</text><path d="M53 43h8" stroke="#3DAA6A" stroke-width="1.5"/><rect x="62" y="25" width="30" height="16" rx="5" fill="#EEF8F2"/><text x="77" y="35.5" text-anchor="middle" font-size="6.2" font-weight="700" fill="#123F30">37.5人</text><rect x="62" y="47" width="62" height="16" rx="5" fill="#E4F4EA"/><text x="93" y="57.5" text-anchor="middle" font-size="6.2" font-weight="700" fill="#123F30">受入れ準備</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">法改正情報</span>
-          <h2 class="art-title">障害者の<wbr>法定雇用率が<wbr>2.7％へ<wbr>｜2026年7月の<wbr>対象企業と<wbr>準備</h2>
+          <h2 class="art-title">障害者の<wbr>法定雇用率が<wbr>2.7％へ｜<wbr>2026年7月の<wbr>対象企業と<wbr>準備</h2>
           <p class="art-excerpt">2026年7月<wbr>1日から<wbr>民間企業の<wbr>法定雇用率は<wbr>2.7％、<wbr>対象範囲は<wbr>従業員37.5人以上<wbr>へ。<wbr>人数の<wbr>数え方、<wbr>2026年<wbr>6月報告との<wbr>違い、<wbr>採用・定着に<wbr>向けた<wbr>準備を<wbr>整理します。</p>
         </div>
         <span class="art-read">読む →</span>
@@ -379,7 +403,7 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="16" width="124" height="56" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="14" y="24" width="34" height="38" rx="6" fill="#123F30"/><text x="31" y="46" text-anchor="middle" font-size="7.5" font-weight="700" fill="#fff">0.23％</text><path d="M53 43h8" stroke="#3DAA6A" stroke-width="1.5"/><rect x="62" y="25" width="30" height="16" rx="5" fill="#EEF8F2"/><text x="77" y="35.5" text-anchor="middle" font-size="6.2" font-weight="700" fill="#123F30">労使折半</text><rect x="62" y="47" width="62" height="16" rx="5" fill="#E4F4EA"/><text x="93" y="57.5" text-anchor="middle" font-size="6.2" font-weight="700" fill="#123F30">給与・賞与</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">社会保険</span>
-          <h2 class="art-title">子ども・子育て<wbr>支援金とは<wbr>｜2026年度の<wbr>給与計算と<wbr>0.23％</h2>
+          <h2 class="art-title">子ども・子育て<wbr>支援金とは｜<wbr>2026年度の<wbr>給与計算と<wbr>0.23％</h2>
           <p class="art-excerpt">2026年度から<wbr>始まった<wbr>子ども・子育て<wbr>支援金を<wbr>給与担当者向けに<wbr>整理。<wbr>支援金率0.23％の<wbr>計算と<wbr>労使折半、<wbr>標準賞与額も<wbr>対象に<wbr>なる点、<wbr>産休・育休中の<wbr>扱い、<wbr>控除開始月の<wbr>確認方法を<wbr>解説します。</p>
         </div>
         <span class="art-read">読む →</span>
@@ -409,7 +433,7 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="16" width="124" height="56" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="14" y="24" width="34" height="38" rx="6" fill="#123F30"/><text x="31" y="46" text-anchor="middle" font-size="7.5" font-weight="700" fill="#fff">60歳</text><path d="M53 43h8" stroke="#3DAA6A" stroke-width="1.5"/><rect x="62" y="25" width="30" height="16" rx="5" fill="#EEF8F2"/><text x="77" y="35.5" text-anchor="middle" font-size="6.2" font-weight="700" fill="#123F30">75％未満</text><rect x="62" y="47" width="62" height="16" rx="5" fill="#E4F4EA"/><text x="93" y="57.5" text-anchor="middle" font-size="6.2" font-weight="700" fill="#123F30">最大10％</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">法改正情報</span>
-          <h2 class="art-title">高年齢雇用継続給付は<wbr>最大10％へ<wbr>｜60歳到達日等で<wbr>変わる<wbr>支給率</h2>
+          <h2 class="art-title">高年齢雇用継続給付は<wbr>最大10％へ｜<wbr>60歳到達日等で<wbr>変わる<wbr>支給率</h2>
           <p class="art-excerpt">60歳到達日等が<wbr>2025年4月<wbr>1日以後<wbr>なら、<wbr>高年齢雇用継続給付の<wbr>上限支給率は<wbr>10％です。<wbr>60歳以上<wbr>65歳未満・<wbr>被保険者期間<wbr>5年以上・<wbr>賃金75％未満と<wbr>いう<wbr>要件と、<wbr>会社が<wbr>確認する賃金台帳や<wbr>申請期限を<wbr>整理します。</p>
         </div>
         <span class="art-read">読む →</span>
@@ -439,7 +463,7 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g font-family="'Noto Sans JP',sans-serif"><rect x="8" y="16" width="124" height="56" rx="8" fill="#F7FBF8" stroke="#A8D8B8"/><rect x="14" y="24" width="34" height="38" rx="6" fill="#123F30"/><text x="31" y="46" text-anchor="middle" font-size="7.5" font-weight="700" fill="#fff">年5日</text><path d="M53 43h8" stroke="#3DAA6A" stroke-width="1.5"/><rect x="62" y="25" width="30" height="16" rx="5" fill="#EEF8F2"/><text x="77" y="35.5" text-anchor="middle" font-size="6.2" font-weight="700" fill="#123F30">基準日</text><rect x="62" y="47" width="62" height="16" rx="5" fill="#E4F4EA"/><text x="93" y="57.5" text-anchor="middle" font-size="6.2" font-weight="700" fill="#123F30">管理簿</text></g></svg></div>
         <div class="art-body">
           <span class="art-cat-badge">就業規則</span>
-          <h2 class="art-title">年次有給休暇の<wbr>年5日取得義務<wbr>｜対象者・<wbr>数え方と<wbr>年休管理簿</h2>
+          <h2 class="art-title">年次有給休暇の<wbr>年5日取得義務｜<wbr>対象者・<wbr>数え方と<wbr>年休管理簿</h2>
           <p class="art-excerpt">年次有給休暇の<wbr>年<wbr>5日取得義務<wbr>について、<wbr>対象者・<wbr>数え方・時季指定の<wbr>進め方を<wbr>整理。<wbr>年休管理簿の<wbr>記載事項と<wbr>保存期間、<wbr>半日・<wbr>時間単位年休の<wbr>扱い、<wbr>基準日管理の<wbr>注意点も<wbr>解説します。</p>
         </div>
         <span class="art-read">読む →</span>
@@ -590,7 +614,7 @@
         <div class="art-thumb"><svg viewBox="0 0 140 88" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <!-- Gantt-style bars --> <g font-family="'Noto Sans JP',sans-serif"> <text x="70" y="12" text-anchor="middle" font-size="8" font-weight="700" fill="#3a3d45">出産日から逆算</text> <line x1="68" y1="20" x2="68" y2="78" stroke="#A8442E" stroke-width=".8" stroke-dasharray="2,1.5"/> <text x="68" y="84" text-anchor="middle" font-size="5" fill="#A8442E" font-weight="700">出産</text> <rect x="14" y="24" width="40" height="7" rx="1.5" fill="#006E3C"/> <text x="34" y="29.5" text-anchor="middle" font-size="5" fill="#fff" font-weight="700">①制度</text> <rect x="38" y="34" width="40" height="7" rx="1.5" fill="#3DAA6A"/> <text x="58" y="39.5" text-anchor="middle" font-size="5" fill="#fff" font-weight="700">②周知</text> <rect x="68" y="44" width="32" height="7" rx="1.5" fill="#A8442E"/> <text x="84" y="49.5" text-anchor="middle" font-size="5" fill="#fff" font-weight="700">③育休</text> <rect x="104" y="54" width="20" height="7" rx="1.5" fill="#3a3d45"/> <text x="114" y="59.5" text-anchor="middle" font-size="5" fill="#fff" font-weight="700">④申請</text> <circle cx="124" cy="68" r="4" fill="#006E3C"/> <text x="124" y="70" text-anchor="middle" font-size="5" fill="#fff" font-weight="800">★</text> </g> </svg></div>
         <div class="art-body">
           <span class="art-cat-badge">助成金</span>
-          <h2 class="art-title">両立支援等助成金<wbr>｜男性育休の<wbr>取得を<wbr>助成金に<wbr>つな<wbr>げるには</h2>
+          <h2 class="art-title">両立支援等助成金｜<wbr>男性育休の<wbr>取得を<wbr>助成金に<wbr>つな<wbr>げるには</h2>
           <p class="art-excerpt">男性労働者の<wbr>育児休業取得を<wbr>支援する<wbr>両立支援等助成金を<wbr>解説。<wbr>1・2・3人目で<wbr>5日・<wbr>10日・14日と<wbr>異なる<wbr>取得日数、<wbr>休業開始前に<wbr>整える<wbr>雇用環境整備と<wbr>育児休業規程、<wbr>育児休業終了日の<wbr>翌日から<wbr>2か月以内の<wbr>申請期限を<wbr>整理。</p>
         </div>
         <span class="art-read">読む →</span>
