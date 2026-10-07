@@ -362,8 +362,15 @@ def is_wide(f):
     return any(len(x) >= 12 for x in labels)
 
 
+ADDR_LABELS = ("事業所所在地", "所在地")
+REP_LABELS = ("事業主氏名", "代表者氏名")
+
+
 def fields_html(rows, ed, wide=False):
     h = ['<table class="f">']
+    company_rows = any(
+        ((r["label"], r["value"]) if isinstance(r, dict) else r)[1] == CO for r in rows
+    )
     for r in rows:
         lab, val = (r["label"], r["value"]) if isinstance(r, dict) else r
         hm = re.search(r"\{h(\d+)\}", val)
@@ -393,6 +400,20 @@ def fields_html(rows, ed, wide=False):
                 f'<span class="bl" style="min-width:28mm"{ce}>',
                 f'<span class="bl co-tel" style="min-width:28mm"{ce}>',
             )
+        # 証明書の事業所欄（事業所名称が【会社名】の表）は、所在地と代表者も会社設定から差し込む。
+        if ed and val == "" and company_rows and lab in ADDR_LABELS:
+            h.append(
+                f'<tr><th class="{"w" if wide else ""}"><span class="t"{ce}>{esc(lab)}</span></th>'
+                f'<td class="t co-addr"{tall} contenteditable="true"></td></tr>'
+            )
+            continue
+        if ed and val == "" and company_rows and lab in REP_LABELS:
+            h.append(
+                f'<tr><th class="{"w" if wide else ""}"><span class="t"{ce}>{esc(lab)}</span></th>'
+                f'<td{tall}><span class="t co-title"{ce}>代表取締役</span>'
+                f'<span class="bl co-rep" style="min-width:40mm"{ce}></span></td></tr>'
+            )
+            continue
         h.append(
             f'<tr><th class="{"w" if wide else ""}"><span class="t"{' contenteditable="true"' if ed else ""}>{esc(lab)}</span></th>'
             + (
