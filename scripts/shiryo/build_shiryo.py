@@ -310,8 +310,8 @@ def blk_cta(b, ctx):
       <div class="t">{esc(b.get("title", "対象になるか、まずご確認ください。"))}</div>
       <div class="d">{esc(b.get("text", "ご相談は無料です。"))}</div>
       <div class="tel">{esc(o["tel"])}</div>
-      <div class="sub">{esc(o["telNote"])}　／　{esc(o["mail"])}　／　{esc(o["url"])}<br>
-      {esc(o["name"])}　{esc(o["person"])}　{esc(o["belong"])}<br>{esc(o["address"])}</div>
+      <div class="sub">{esc(o["mail"])}　／　{esc(o["url"])}<br>
+      {esc(o["name"])}　{esc(o["belong"])}<br>{esc(o["address"])}</div>
     </div>
     <div class="qrbox">{ctx["qr"]["svg"]}<div class="ql">{esc(ctx["qr"]["label"])}</div></div>
   </div>"""
