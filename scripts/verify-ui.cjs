@@ -429,6 +429,7 @@ function recordConsoleError(target) {
       return {
         eyebrow: document.querySelector('.rep-eyebrow')?.textContent.trim() || '',
         heading: document.querySelector('.rep-h')?.textContent.trim() || '',
+        sectionHeading: document.querySelector('#about .sec-h')?.textContent.trim() || '',
         paragraphs: [...document.querySelectorAll('.rep-text')].map(paragraph => paragraph.textContent.replace(/\s+/g, ' ').trim()),
         photoCount: document.querySelectorAll('.rep-photo, #rep-portrait, .rep-block image-slot').length,
         signature: sign?.textContent.replace(/\s+/g, ' ').trim() || '',
@@ -443,7 +444,9 @@ function recordConsoleError(target) {
     });
     const founderMessageOk =
       founderState.eyebrow === '代表挨拶 / Message from the founder' &&
-      founderState.heading === '経営者と、同じ視点で。' &&
+      // 直前の節見出し（h2）と同じ文言が続くため、代表挨拶の h3 は置かない（2026-10-08）。
+      founderState.heading === '' &&
+      founderState.sectionHeading === '経営者と、同じ視点で。' &&
       JSON.stringify(founderState.paragraphs) === JSON.stringify(expectedFounderParagraphs) &&
       founderState.photoCount === 0 &&
       /事務所\s*みなの社会保険労務士事務所\s*所属\s*富山県社会保険労務士会/.test(founderState.signature) &&

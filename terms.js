@@ -185,6 +185,7 @@
     '[aria-hidden="true"]'
   ].join(',');
 
+  const TRAILING_PUNCT = /[、。，．,.）」』】〕：；！？]/;
   const VIEWPORT_GUTTER = 12;
   const POP_GAP = 10;
   let controller = null;
@@ -241,6 +242,7 @@
     const abortController = new AbortController();
     const signal = abortController.signal;
     const markers = [];
+    const wrappers = [];
     const popovers = [];
     const pairs = new Map();
     const usedTerms = new Set();
@@ -343,6 +345,14 @@
       });
     }
 
+    function wrap(marker) {
+      const box = document.createElement('span');
+      box.style.whiteSpace = 'nowrap';
+      box.appendChild(marker);
+      wrappers.push(box);
+      return box;
+    }
+
     function addMarker(term, markerIndex) {
       const marker = document.createElement('span');
       const popover = document.createElement('span');
@@ -381,6 +391,8 @@
       textNodes.forEach(function (node) {
         if (!node.isConnected || !node.parentElement || node.parentElement.closest(EXCLUDED_SELECTOR)) return;
         const text = node.nodeValue;
+        // 用語＋バッジ＋句読点1字は折らない（表のセルは除く）
+        const keepTogether = !node.parentElement.closest('td,th');
         const fragment = document.createDocumentFragment();
         let cursor = 0;
         let match = nextMatch(text, cursor, usedTerms);
@@ -389,9 +401,14 @@
         while (match) {
           if (match.index > cursor) fragment.appendChild(document.createTextNode(text.slice(cursor, match.index)));
           markerIndex += 1;
-          fragment.appendChild(addMarker(match.term, markerIndex));
+          let box = addMarker(match.term, markerIndex);
           usedTerms.add(match.term.key);
           cursor = match.index + match.term.key.length;
+          if (keepTogether) {
+            box = wrap(box);
+            if (TRAILING_PUNCT.test(text.charAt(cursor))) box.append(text.charAt(cursor++));
+          }
+          fragment.appendChild(box);
           match = nextMatch(text, cursor, usedTerms);
         }
         if (cursor < text.length) fragment.appendChild(document.createTextNode(text.slice(cursor)));
@@ -475,6 +492,9 @@
         });
         markers.forEach(function (marker) {
           if (marker.parentNode) marker.replaceWith(document.createTextNode(marker.dataset.termKey || marker.textContent));
+        });
+        wrappers.forEach(function (box) {
+          if (box.parentNode) box.replaceWith.apply(box, Array.from(box.childNodes));
         });
         if (body.dataset.mnTermsReady === 'true') delete body.dataset.mnTermsReady;
       }

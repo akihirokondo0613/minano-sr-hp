@@ -171,6 +171,8 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
 .line-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-bottom:none}
 .line-cell{padding:28px 26px 30px;border-bottom:1px solid var(--line);border-right:1px solid var(--line)}
 .line-cell:nth-child(3n){border-right:none}
+/* 3列で最後の行が埋まらないと、外枠の中に空きマスが残る。最後のセルを残りの列まで伸ばす（1列になる768px以下は対象外） */
+@media(min-width:769px){.line-cell:last-child:nth-child(3n+2){grid-column:span 2;border-right:none}.line-cell:last-child:nth-child(3n+1){grid-column:span 3;border-right:none}}
 .line-cell-h{display:flex;align-items:center;gap:11px;font-size:15.5px;font-weight:700;color:var(--ink);margin-bottom:16px;letter-spacing:.02em}
 .line-cell-h svg{width:22px;height:22px;color:var(--g600);flex-shrink:0;stroke-width:1.6}
 .line-cell ul{list-style:none;display:flex;flex-direction:column;gap:9px}
@@ -265,7 +267,8 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
 .svc-faq>dd{margin:0;padding:0 0 18px 1.8em;border-bottom:1px solid var(--line2);font-size:14.5px;color:var(--ink2);line-height:1.95;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase;position:relative}
 .svc-faq>dd::before{content:'A';position:absolute;left:0;top:0;color:var(--g400);font-family:var(--serif);font-weight:700}
 .svc-faq>dd:last-child{border-bottom:none}
-.svc-faq a,.svc-prose a{color:var(--g700);font-weight:700;text-decoration:underline;text-underline-offset:4px;word-break:normal}
+/* ボタン類（class に btn を含む）は除外し、各ボタンの色・下線なしを保つ */
+.svc-faq a:not([class*="btn"]),.svc-prose a:not([class*="btn"]){color:var(--g700);font-weight:700;text-decoration:underline;text-underline-offset:4px;word-break:normal}
 @media(max-width:560px){.svc-steps>li{padding:16px 16px 16px 54px}.svc-steps>li::before{left:14px;top:16px}}
 /* ---------- 給与計算の範囲対比と人数別単価（sync-service-prices.mjs が生成） ---------- */
 .kyu-cmp{margin-top:clamp(20px,3vw,28px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
