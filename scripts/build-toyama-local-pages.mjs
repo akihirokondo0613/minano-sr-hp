@@ -6,7 +6,7 @@
  *   node scripts/build-toyama-local-pages.mjs           生成
  *   node scripts/build-toyama-local-pages.mjs --check    差分があれば失敗（公開前チェック用）
  *
- *   - uploads/toyama-saitei-chingin.html      富山県の最低賃金（いまの額と次の額）
+ *   - uploads/toyama-saitei-chingin.html      富山県の最低賃金（いまの額と推移）
  *   - uploads/toyama-chinage-oen-hojokin.html 富山県賃上げ応援補助金（社労士報酬の補助）
  *
  * なぜ作るのか:
@@ -203,7 +203,7 @@ function buildSaiteiMain(ctx) {
       </nav>
       <span class="sec-kicker">富山の数字</span>
       <h1>富山県の最低賃金。<br>令和8年10月1日から1,119円。</h1>
-      <p class="lead">富山県の最低賃金は、令和8年10月1日から時間額1,119円（＋57円）です。9月30日までの下限は1,062円。特定（産業別）最低賃金3件は令和8年度も改正がなく、いずれも地域別の額を下回るため、実務では1,119円で見ます。過去の推移と問い合わせ先をまとめ、給与計算の直し方は<a href="../blog/saitei-chingin-kyuyo-keisan-2026.html">1,119円で給与計算のどこを直すか</a>に分けました。</p>
+      <p class="lead">富山県の最低賃金は、令和8年10月1日から時間額1,119円（＋57円）です。9月30日までは1,062円でした。特定（産業別）最低賃金3件は令和8年度も改正がなく、いずれも地域別の額を下回るため、実務では1,119円で見ます。過去の推移と問い合わせ先をまとめ、給与計算の直し方は<a href="../blog/saitei-chingin-kyuyo-keisan-2026.html">1,119円で給与計算のどこを直すか</a>に分けました。</p>
     </div>
   </header>
 
@@ -211,7 +211,7 @@ function buildSaiteiMain(ctx) {
     <div class="w">
       <div class="sec-head rv">
         <div class="sec-head-body">
-          <h2 class="sec-h">令和8年度の額と、9月30日までの額</h2>
+          <h2 class="sec-h">いまの額と、9月30日までの額</h2>
           <p class="sec-sub">この2つは別のものです。支払いの下限は、その日に発効している額のほうで見ます。</p>
         </div>
       </div>
@@ -493,8 +493,9 @@ const PAGES = [
     build: (url) => buildSaiteiMain({
       // 額と出典は給与計算ページと共通の正本。注記だけは「○月○日時点」を含まない文にこのページで差し替える。
       numbers: [
-        { ...numberByLabel('富山県最低賃金（令和8年9月30日まで）'), label: '令和8年9月30日までの額', note: saitei.numbersNote.ima },
+        // 令和8年10月1日の発効後は、いまの額を先に置く。
         { ...numberByLabel('富山県最低賃金（令和8年10月1日から）'), note: saitei.numbersNote.tsugi },
+        { ...numberByLabel('富山県最低賃金（令和8年9月30日まで）'), label: '令和8年9月30日までの額', note: saitei.numbersNote.ima },
       ],
       suii: saitei.suii,
       tl: saitei.timeline,
