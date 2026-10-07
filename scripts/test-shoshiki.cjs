@@ -583,32 +583,22 @@ async function checkTableNameTypography(page, engine, width) {
 }
 
 async function checkCategoryTableScroll(page, engine, width) {
+  // スマホ幅では表を1書式1行のカード状に組み替え、横スクロールなしで全列を読める。
+  // 各カテゴリ表の最終行の「記入する →」が、表・画面内で44px以上の高さで押せることを確かめる。
   const wrappers = page.locator('.sh-tblwrap');
   const count = await wrappers.count();
   check(count === EXPECTED_TABLE_CATEGORIES,
-    `${engine}:shoshiki@${width}px:スクロール検査のカテゴリ数 ${count} ≠ ${EXPECTED_TABLE_CATEGORIES}`);
+    `${engine}:shoshiki@${width}px:表の検査カテゴリ数 ${count} ≠ ${EXPECTED_TABLE_CATEGORIES}`);
   for (let index = 0; index < count; index += 1) {
     const label = `${engine}:shoshiki@${width}px:table${index + 1}`;
     const wrapper = wrappers.nth(index);
     let result = { engine, width, categoryIndex: index + 1 };
-    let initialScrollLeft;
     try {
-      initialScrollLeft = await wrapper.evaluate((element) => element.scrollLeft);
-      await wrapper.scrollIntoViewIfNeeded();
       const lastCTA = wrapper.locator('tbody tr:last-child td.go a').last();
       check(await lastCTA.count() === 1, `${label}:最終行の記入CTAがありません`);
-      // 行数の多い表でも最後のCTAが縦方向に見える位置へ移動する。
-      // 横位置はその後明示的に0→最右端へ動かして移動量を測る。
       await lastCTA.evaluate((element) => element.scrollIntoView({
         block: 'center', inline: 'nearest', behavior: 'instant',
       }));
-      await wrapper.evaluate((element) => { element.scrollLeft = 0; });
-      await settle(page);
-      const before = await wrapper.evaluate((element) => ({
-        scrollLeft: element.scrollLeft, scrollWidth: element.scrollWidth,
-        clientWidth: element.clientWidth, maxScrollLeft: element.scrollWidth - element.clientWidth,
-      }));
-      await wrapper.evaluate((element) => { element.scrollLeft = element.scrollWidth - element.clientWidth; });
       await settle(page);
       const after = await wrapper.evaluate((element) => {
         const cta = element.querySelector('tbody tr:last-child td.go a');
@@ -618,40 +608,34 @@ async function checkCategoryTableScroll(page, engine, width) {
         const hit = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
         const rectOf = (r) => ({ left: r.left, right: r.right, top: r.top, bottom: r.bottom,
           width: r.width, height: r.height });
+        const use = element.querySelector('tbody tr:last-child td.use')?.getBoundingClientRect();
         return {
           category: element.closest('.sh-cat')?.querySelector('h3')?.textContent ?? '',
-          scrollLeft: element.scrollLeft, scrollWidth: element.scrollWidth,
-          clientWidth: element.clientWidth, maxScrollLeft: element.scrollWidth - element.clientWidth,
+          scrollWidth: element.scrollWidth, clientWidth: element.clientWidth,
           viewportWidth: document.documentElement.clientWidth,
           viewportHeight: document.documentElement.clientHeight,
-          wrapper: rectOf(wrapperRect), cta: { text: cta.textContent.trim(), href: cta.getAttribute('href'),
+          wrapper: rectOf(wrapperRect), use: use ? rectOf(use) : null,
+          cta: { text: cta.textContent.trim(), href: cta.getAttribute('href'),
             ...rectOf(rect), hit: Boolean(hit && (hit === cta || cta.contains(hit))) },
         };
       });
-      const moved = after.scrollLeft - before.scrollLeft;
-      result = { ...result, before, after, moved };
-      check(before.maxScrollLeft > EPSILON && before.clientWidth > 0 && before.scrollWidth > 0
-        && Math.abs(before.scrollLeft) <= EPSILON && moved > EPSILON
-        && Math.abs(after.scrollLeft - after.maxScrollLeft) <= EPSILON,
-      `${label}:横スクロールの幅/最右端への移動が実測できません ${JSON.stringify({ before, after: after.scrollLeft, moved })}`);
+      result = { ...result, after };
+      check(after.scrollWidth <= after.clientWidth + EPSILON
+        && after.wrapper.left >= -EPSILON && after.wrapper.right <= after.viewportWidth + EPSILON,
+      `${label}:表が横スクロールを必要とします ${JSON.stringify({ scrollWidth: after.scrollWidth, clientWidth: after.clientWidth, wrapper: after.wrapper })}`);
+      check(after.use && after.use.width > 0 && after.use.right <= after.wrapper.right + EPSILON,
+        `${label}:用途の列が表の中で読めません ${JSON.stringify(after.use)}`);
       check(/^記入する/.test(after.cta.text) && after.wrapper.width > 0 && after.wrapper.height > 0
-        && after.cta.width > 0 && after.cta.height > 0
+        && after.cta.width > 0 && after.cta.height >= 44 - EPSILON
         && after.cta.left >= after.wrapper.left - EPSILON && after.cta.right <= after.wrapper.right + EPSILON
         && after.cta.left >= -EPSILON && after.cta.right <= after.viewportWidth + EPSILON
         && after.cta.top >= -EPSILON && after.cta.bottom <= after.viewportHeight + EPSILON && after.cta.hit,
-      `${label}:右端CTAが表/画面内で操作できません ${JSON.stringify(after.cta)}`);
-      if (index === count - 1) await screenshot(page, `${engine}-list-${width}-table-right`, false);
+      `${label}:記入CTAが表/画面内で操作できません ${JSON.stringify(after.cta)}`);
+      if (index === count - 1) await screenshot(page, `${engine}-list-${width}-table-cards`, false);
     } catch (error) {
       result.error = error.message;
       failures.push(`${label}: ${error.message}`);
     } finally {
-      if (initialScrollLeft !== undefined) {
-        await wrapper.evaluate((element, initial) => { element.scrollLeft = initial; }, initialScrollLeft);
-        await settle(page);
-        result.restoredScrollLeft = await wrapper.evaluate((element) => element.scrollLeft);
-        check(Math.abs(result.restoredScrollLeft - initialScrollLeft) <= EPSILON,
-          `${label}:横スクロールを元に戻せません`);
-      }
       tableScrollResults.push(result);
     }
   }
@@ -1544,7 +1528,7 @@ async function runEngine(browser, engine, forms) {
   check(mobileResults.length === ENGINES.length * 4, `実スマホ390pxの検査数 ${mobileResults.length} ≠ ${ENGINES.length * 4}`);
   const expectedTableScrollResults = ENGINES.length * 2 * EXPECTED_TABLE_CATEGORIES;
   check(tableScrollResults.length === expectedTableScrollResults,
-    `一覧表横スクロール検査数 ${tableScrollResults.length} ≠ ${expectedTableScrollResults}`);
+    `一覧表スマホ表示検査数 ${tableScrollResults.length} ≠ ${expectedTableScrollResults}`);
   const expectedTableNameResults = ENGINES.length * WIDTHS.length * EXPECTED_FORM_COUNT;
   check(tableNameResults.length === expectedTableNameResults,
     `書式名称の文字検査数 ${tableNameResults.length} ≠ ${expectedTableNameResults}`);
