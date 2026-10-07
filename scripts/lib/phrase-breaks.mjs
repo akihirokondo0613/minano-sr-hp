@@ -181,8 +181,11 @@ function atomize(inner) {
  * ここで置かないよう自分で外す。BudouXは「合わせる｜：」のように
  * 行頭に置けない記号の前へ切れ目を返すことがある。
  */
-/** 行頭に置けない字（この前では折らない） */
-const NO_LINE_START = /[)\]｝〕〉》」』】〙〗〟'"｠»、。，．：；？！‼⁇⁈⁉・ー゠–—々〻ぁぃぅぇぉっゃゅょゎゕゖァィゥェォッャュョヮヵヶ℃%‰°′″…‥〜゛゜ゝゞヽヾ]/;
+/**
+ * 行頭に置けない字（この前では折らない）
+ * 「｜」は記事タイトルの区切り。前で折ると次の行が「｜締切…」で始まるので、後ろで折る。
+ */
+const NO_LINE_START = /[)\]｝｜〕〉》」』】〙〗〟'"｠»、。，．：；？！‼⁇⁈⁉・ー゠–—々〻ぁぃぅぇぉっゃゅょゎゕゖァィゥェォッャュョヮヵヶ℃%‰°′″…‥〜゛゜ゝゞヽヾ]/;
 /** 行末に置けない字（この後では折らない） */
 const NO_LINE_END = /[([｛〔〈《「『【〘〖〝'"｟«¥$￥＄£€#＃]/;
 
@@ -377,7 +380,13 @@ function rebuild(inner, ownerTag) {
   }
 
   const chosen = [];
-  for (let b = 1; b < sentence.length; b += 1) if (scores[b] > 0 && canBreakAt(b)) chosen.push(b);
+  for (let b = 1; b < sentence.length; b += 1) {
+    if (!(scores[b] > 0)) continue;
+    if (canBreakAt(b)) chosen.push(b);
+    // 区切りの「｜」の前は行頭禁則で折れない。切れ目を捨てると塊が長くなり、
+    // 長すぎる塊の割り足しが「支援金と｜は」のような場所を選ぶので、直後へ移す。
+    else if (sentence[b] === '｜' && canBreakAt(b + 1)) chosen.push(b + 1);
+  }
 
   // 文節が長すぎると、器に収まらず overflow-wrap:anywhere が禁則を無視して折る。
   // 「…なっています／。」のように句点だけが次の行へ落ちるのはこれ。
