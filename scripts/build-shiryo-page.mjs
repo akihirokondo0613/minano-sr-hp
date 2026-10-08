@@ -235,12 +235,13 @@ ${cards.join('\n')}
 
   return `<main id="main" class="hub-page">
 
-<header class="page-hero">
+<header class="page-hero has-ill">
   <div class="page-hero-inner">
     <nav class="breadcrumb"><a href="/">ホーム</a><span class="sep">›</span><span>資料室</span></nav>
     <div class="page-label">資料室</div>
     <h1 class="page-h">富山の助成金・補助金を、<strong>持ち帰れる形に。</strong></h1>
     <p class="page-sub">制度ごとに要点をまとめたPDFです。登録は不要で、そのまま保存・印刷いただけます。くわしい要件や様式は、各資料のWeb版に載せています。</p>
+    <figure class="ph-ill"><img src="assets/illustrations/20_documents_original.webp" width="1086" height="1448" alt="" decoding="async"></figure>
   </div>
 </header>
 

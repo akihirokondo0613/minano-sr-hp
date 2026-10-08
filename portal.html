@@ -67,7 +67,7 @@
 /* 入口カード・注意枠・見出しの左端を本文列（.content の内側）にそろえ、説明文との間を空ける。
    このstyleは skin-v2.css より前にあるので、skin側と同じ規則は親クラスを足して上書きする */
 .page-hero .page-hero-inner{max-width:1000px}
-.page-hero .notice{width:calc(min(100%,1000px) - 2 * clamp(20px,4.5vw,48px));margin-inline:auto}
+.content .notice{margin:clamp(20px,2.6vw,28px) 0 0;text-align:left}
 .hub{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:calc(min(100%,1000px) - 2 * clamp(20px,4.5vw,48px));margin:clamp(24px,3.4vw,40px) auto 0}
 @media(max-width:760px){.hub{grid-template-columns:minmax(0,1fr);gap:10px}}
 .hub-card{display:flex;flex-direction:column;gap:6px;min-width:0;background:var(--shiro);border:1.5px solid var(--line);border-radius:16px;padding:18px 20px 16px;text-decoration:none;color:var(--iwa);transition:border-color .34s cubic-bezier(.22,.61,.36,1),transform .34s cubic-bezier(.22,.61,.36,1),box-shadow .34s cubic-bezier(.22,.61,.36,1)}
@@ -110,6 +110,14 @@
 .qk i{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--ink4)}
 .qk:hover{border-color:var(--moegi-t);transform:translateY(-2px);color:var(--sugi)}
 .qk-note{margin-top:14px;font-size:12px;color:var(--ink4);line-height:1.9}
+/* スマホの届出チップは、折り返したピルの塊だと探しにくいので、両端揃えの行リストにする */
+@media(max-width:640px){
+  .qk-list{flex-direction:column;gap:0;border-top:1px solid var(--line)}
+  .qk{justify-content:space-between;gap:12px;min-height:48px;padding:12px 4px;background:none;border:0;border-bottom:1px solid var(--line);border-radius:0;text-align:left}
+  .qk::before{display:none}
+  .qk i{flex-shrink:0}
+  .qk:hover{transform:none}
+}
 @media(max-width:360px){.bottom-cta-card .bcc-btn{max-width:100%;box-sizing:border-box;text-align:center;white-space:normal}}
 </style>
 <link rel="stylesheet" href="skin-v2.css?v=20261008-plans1">
@@ -154,12 +162,13 @@
 </div>
 
 <!-- PAGE HERO -->
-<header class="page-hero">
+<header class="page-hero has-ill">
   <div class="page-hero-inner">
     <nav class="breadcrumb"><a href="/">ホーム</a><span class="sep">›</span><span>書式・窓口</span></nav>
     <div class="page-label">Forms &amp; Official Links</div>
     <h1 class="page-h portal-title">公的窓口・提出先と、<wbr>社内書式。<br><strong><span class="nw">探す手間を</span><wbr><span class="nw">先に減らす。</span></strong></h1>
     <p class="page-sub">行政の<wbr>公式窓口・提出先と、<wbr>社内書式の<wbr>ひな形。<wbr>どちらも<wbr>無料で、<wbr>登録なしで<wbr>使えます。<wbr>「どの<wbr>手続きを<wbr>いつまでに<wbr>出すか」の<wbr>一覧は、<wbr><a href="uploads/service-shakai-hoken.html#ichiran">労務手続きの<wbr>一覧と<wbr>期限</a>の<wbr>ページに<wbr>まとめています。</p>
+    <figure class="ph-ill"><img src="assets/illustrations/17_admin_work_female-960.webp" width="960" height="541" alt="" decoding="async"></figure>
   </div>
 
   <!-- 入口：社内書式か公式窓口かを選ぶ -->
@@ -177,13 +186,6 @@
       <span class="hub-go">このページの下へ ↓</span>
     </a>
   </section>
-
-  <div class="notice">
-    <span class="notice-icon">!</span>
-    <div>
-      <b>ご利用にあたって</b>リンク先はいずれも公的機関の公式サイトです（外部サイトが開きます）。「どの窓口に出せばよいか分からない」「様式の書き方に迷う」ときは、探し回る前に担当者へお気軽にご連絡ください。手続きそのものの代行も承ります。
-    </div>
-  </div>
 </header>
 
 <!-- CONTENT -->
@@ -206,6 +208,12 @@
       <a class="qk" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/rousai/index.html" target="_blank" rel="noopener noreferrer">労災の手続き <i>厚労省↗</i></a>
       <a class="qk" href="https://www.nenkin.go.jp/service/kounen/tekiyo/hihokensha1/20141202.html" target="_blank" rel="noopener noreferrer">健康保険の扶養（被扶養者） <i>年金機構↗</i></a>
       <a class="qk" href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1180.htm" target="_blank" rel="noopener noreferrer">税金の扶養（扶養控除） <i>国税庁↗</i></a>
+    </div>
+    <div class="notice">
+      <span class="notice-icon">!</span>
+      <div>
+        <b>ご利用にあたって</b>リンク先はいずれも公的機関の公式サイトです（外部サイトが開きます）。「どの窓口に出せばよいか分からない」「様式の書き方に迷う」ときは、探し回る前に担当者へお気軽にご連絡ください。手続きそのものの代行も承ります。
+      </div>
     </div>
     <p class="qk-note">※ 掲載先の<wbr>ページ構成は<wbr>各機関の<wbr>都合で<wbr>変わる<wbr>ことがあります。<wbr>リンク切れに<wbr>気づかれた<wbr>際は<wbr>お知らせ<wbr>ください。<wbr>手続き<wbr>その<wbr>ものの<wbr>代行も<wbr>承ります。<wbr>手続きごとの<wbr>期限と<wbr>必要書類は、<wbr><a href="uploads/service-shakai-hoken.html#ichiran">労務手続きの<wbr>一覧と<wbr>期限</a>の<wbr>ページへ。</p>
   </section>

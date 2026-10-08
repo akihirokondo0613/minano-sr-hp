@@ -159,6 +159,9 @@
 .pt-dl a:hover{background:var(--sugi-7,#0d2f24)}
 .pt-dl a.ghost{background:var(--shiro);color:var(--sugi);border:1px solid var(--moegi)}
 .pt-dl a.ghost:hover{background:var(--moegi-l)}
+/* 冒頭のボタン（資料の節の .pt-dl と同じ形）と、冒頭の直後に置く紹介の成功報酬の箱 */
+.pt-hero-cta{margin-top:24px}
+.pt-fee-sec{padding-bottom:0}
 
 .pt-contact{background:var(--moegi-l);border-radius:var(--r-lg);padding:clamp(24px,3.2vw,40px);text-align:center}
 .pt-contact .tel{font-family:var(--mono);font-size:clamp(24px,3.4vw,34px);font-weight:700;color:var(--sugi);letter-spacing:.01em;display:inline-block;margin-top:10px}
@@ -175,14 +178,29 @@
 </style>
 <main id="main" class="hub-page">
 
-<header class="page-hero">
+<header class="page-hero has-ill">
   <div class="page-hero-inner">
     <nav class="breadcrumb"><a href="/">ホーム</a><span class="sep">›</span><span>士業・パートナーの方へ</span></nav>
     <div class="page-label">士業・パートナーの方へ</div>
     <h1 class="page-h">顧問先へ、<wbr><strong>助成金と<wbr>いう<wbr>手土産を。</strong></h1>
     <p class="page-sub">税理士の<wbr>先生方へ。<wbr>決算や<wbr>月次の<wbr>数字から、<wbr>顧問先で<wbr>使える<wbr>雇用関係助成金の<wbr>芽を<wbr>お探しします。<wbr>先生から<wbr>ご紹介いただいた<wbr>場合、<wbr>成功報酬は<wbr>顧問先と<wbr>同じ<wbr>15％で<wbr>お引き<wbr>受けします。<wbr>労務の<wbr>実務も、<wbr>社会保険労務士の<wbr>業務範囲を<wbr>守って<wbr>お預かりします。</p>
+    <div class="pt-dl pt-hero-cta">
+      <a href="#contact">相談フォームへ<span aria-hidden="true">↓</span></a>
+      <a class="ghost" href="shiryo.html">資料室を見る<span aria-hidden="true">→</span></a>
+    </div>
+    <figure class="ph-ill"><img src="assets/illustrations/about-practical-support.webp" width="960" height="720" alt="" decoding="async"></figure>
   </div>
 </header>
+
+<section class="sec pt-fee-sec">
+  <div class="w">
+    <div class="pt-fee rv">
+      <h3>ご紹介いただいた<wbr>顧問先は、<br>成功報酬<span class="em">15％</span>で<wbr>お引き<wbr>受けします。</h3>
+      <p>雇用関係助成金の<wbr>当事務所の<wbr>報酬は、<wbr>通常は<wbr>受給額の<wbr>20％<wbr>（税抜）です。<wbr><span class="em">先生から<wbr>ご紹介いただいた<wbr>顧問先は、<wbr>当事務所の<wbr>顧問先と<wbr>同じ<wbr>15％</span>で<wbr>お引き<wbr>受けします。<wbr>着手金は<wbr>0円で、<wbr>受給に<wbr>至らなかった<wbr>場合、<wbr>申請に<wbr>かかる<wbr>報酬は<wbr>いただきません。<br>
+      助成金<wbr>は<wbr>要件を<wbr>満たしても<wbr>審査が<wbr>あり、<wbr>受給を<wbr>お約束する<wbr>ものではありません。<wbr>対象に<wbr>なるかどうかの<wbr>確認までは、<wbr>費用は<wbr>かかりません。</p>
+    </div>
+  </div>
+</section>
 
 <section class="sec">
   <div class="w">
@@ -257,16 +275,6 @@
 
 <section class="sec">
   <div class="w">
-    <div class="pt-fee rv">
-      <h3>ご紹介いただいた<wbr>顧問先は、<br>成功報酬<span class="em">15％</span>で<wbr>お引き<wbr>受けします。</h3>
-      <p>雇用関係助成金の<wbr>当事務所の<wbr>報酬は、<wbr>通常は<wbr>受給額の<wbr>20％<wbr>（税抜）です。<wbr><span class="em">先生から<wbr>ご紹介いただいた<wbr>顧問先は、<wbr>当事務所の<wbr>顧問先と<wbr>同じ<wbr>15％</span>で<wbr>お引き<wbr>受けします。<wbr>着手金は<wbr>0円で、<wbr>受給に<wbr>至らなかった<wbr>場合、<wbr>申請に<wbr>かかる<wbr>報酬は<wbr>いただきません。<br>
-      助成金<wbr>は<wbr>要件を<wbr>満たしても<wbr>審査が<wbr>あり、<wbr>受給を<wbr>お約束する<wbr>ものではありません。<wbr>対象に<wbr>なるかどうかの<wbr>確認までは、<wbr>費用は<wbr>かかりません。</p>
-    </div>
-  </div>
-</section>
-
-<section class="sec">
-  <div class="w">
     <div class="sec-head rv">
       <div class="sec-head-idx"><span class="idx-lat">FLOW</span><span class="idx-jp">ご紹介の流れ</span></div>
       <div class="sec-head-body">
@@ -333,7 +341,7 @@
   </div>
 </section>
 
-<section class="sec sec-alt">
+<section class="sec sec-alt" id="contact">
   <div class="w">
     <div class="pt-contact rv">
       <div class="page-label" style="justify-content:center">お問い合わせ</div>

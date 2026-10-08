@@ -834,13 +834,18 @@ def build_index():
         count=1,
         flags=re.S,
     )
-    s = re.sub(
-        r"<b>ご利用にあたって</b>.*?</div>\s*</div>\s*</header>",
-        "<b>ご利用にあたって</b>書式は一般的な内容です。法令に反しない範囲で、自社の就業規則・労使協定と実情に合わせて修正してください。HTML書式用に入力した会社情報は<span class=\"nw\">ブラウザ</span>内にだけ保存され、当事務所には送信されません。\n    </div>\n  </div>\n</header>",
-        s,
-        count=1,
-        flags=re.S,
+    # portal.html は冒頭にイラスト（has-ill）を置き、注意書きを本文へ移した（2026-10-08）。
+    # このページは書式の一覧が主役なので冒頭は文字だけのまま、注意書きも冒頭の下に置く。
+    s = s.replace('<header class="page-hero has-ill">', '<header class="page-hero">', 1)
+    s = re.sub(r'\n    <figure class="ph-ill">.*?</figure>', "", s, count=1, flags=re.S)
+    notice = (
+        '\n\n  <div class="notice">\n    <span class="notice-icon">!</span>\n    <div>\n'
+        "      <b>ご利用にあたって</b>書式は一般的な内容です。法令に反しない範囲で、自社の就業規則・労使協定と実情に合わせて修正してください。HTML書式用に入力した会社情報は<span class=\"nw\">ブラウザ</span>内にだけ保存され、当事務所には送信されません。\n"
+        "    </div>\n  </div>\n</header>"
     )
+    s, n = re.subn(r"\n</header>", lambda _: notice, s, count=1)
+    if n != 1:
+        raise SystemExit("portal.html の冒頭（</header>）が見つかりません")
     # main
     s = re.sub(
         r'<main id="main" class="content">.*?</main>',

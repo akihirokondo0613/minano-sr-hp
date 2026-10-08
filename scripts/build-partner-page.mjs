@@ -141,6 +141,9 @@ const STYLE = `<style id="partner">
 .pt-dl a:hover{background:var(--sugi-7,#0d2f24)}
 .pt-dl a.ghost{background:var(--shiro);color:var(--sugi);border:1px solid var(--moegi)}
 .pt-dl a.ghost:hover{background:var(--moegi-l)}
+/* 冒頭のボタン（資料の節の .pt-dl と同じ形）と、冒頭の直後に置く紹介の成功報酬の箱 */
+.pt-hero-cta{margin-top:24px}
+.pt-fee-sec{padding-bottom:0}
 
 .pt-contact{background:var(--moegi-l);border-radius:var(--r-lg);padding:clamp(24px,3.2vw,40px);text-align:center}
 .pt-contact .tel{font-family:var(--mono);font-size:clamp(24px,3.4vw,34px);font-weight:700;color:var(--sugi);letter-spacing:.01em;display:inline-block;margin-top:10px}
@@ -159,14 +162,29 @@ const STYLE = `<style id="partner">
 function buildMain() {
   return `<main id="main" class="hub-page">
 
-<header class="page-hero">
+<header class="page-hero has-ill">
   <div class="page-hero-inner">
     <nav class="breadcrumb"><a href="/">ホーム</a><span class="sep">›</span><span>士業・パートナーの方へ</span></nav>
     <div class="page-label">士業・パートナーの方へ</div>
     <h1 class="page-h">顧問先へ、<strong>助成金という手土産を。</strong></h1>
     <p class="page-sub">税理士の先生方へ。決算や月次の数字から、顧問先で使える雇用関係助成金の芽をお探しします。先生からご紹介いただいた場合、成功報酬は顧問先と同じ15％でお引き受けします。労務の実務も、社会保険労務士の業務範囲を守ってお預かりします。</p>
+    <div class="pt-dl pt-hero-cta">
+      <a href="#contact">相談フォームへ<span aria-hidden="true">↓</span></a>
+      <a class="ghost" href="shiryo.html">資料室を見る<span aria-hidden="true">→</span></a>
+    </div>
+    <figure class="ph-ill"><img src="assets/illustrations/about-practical-support.webp" width="960" height="720" alt="" decoding="async"></figure>
   </div>
 </header>
+
+<section class="sec pt-fee-sec">
+  <div class="w">
+    <div class="pt-fee rv">
+      <h3>ご紹介いただいた顧問先は、<br>成功報酬<span class="em">15％</span>でお引き受けします。</h3>
+      <p>雇用関係助成金の当事務所の報酬は、通常は受給額の20％（税抜）です。<span class="em">先生からご紹介いただいた顧問先は、当事務所の顧問先と同じ15％</span>でお引き受けします。着手金は0円で、受給に至らなかった場合、申請にかかる報酬はいただきません。<br>
+      助成金は要件を満たしても審査があり、受給をお約束するものではありません。対象になるかどうかの確認までは、費用はかかりません。</p>
+    </div>
+  </div>
+</section>
 
 <section class="sec">
   <div class="w">
@@ -241,16 +259,6 @@ function buildMain() {
 
 <section class="sec">
   <div class="w">
-    <div class="pt-fee rv">
-      <h3>ご紹介いただいた顧問先は、<br>成功報酬<span class="em">15％</span>でお引き受けします。</h3>
-      <p>雇用関係助成金の当事務所の報酬は、通常は受給額の20％（税抜）です。<span class="em">先生からご紹介いただいた顧問先は、当事務所の顧問先と同じ15％</span>でお引き受けします。着手金は0円で、受給に至らなかった場合、申請にかかる報酬はいただきません。<br>
-      助成金は要件を満たしても審査があり、受給をお約束するものではありません。対象になるかどうかの確認までは、費用はかかりません。</p>
-    </div>
-  </div>
-</section>
-
-<section class="sec">
-  <div class="w">
     <div class="sec-head rv">
       <div class="sec-head-idx"><span class="idx-lat">FLOW</span><span class="idx-jp">ご紹介の流れ</span></div>
       <div class="sec-head-body">
@@ -317,7 +325,7 @@ function buildMain() {
   </div>
 </section>
 
-<section class="sec sec-alt">
+<section class="sec sec-alt" id="contact">
   <div class="w">
     <div class="pt-contact rv">
       <div class="page-label" style="justify-content:center">お問い合わせ</div>

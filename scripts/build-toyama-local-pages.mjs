@@ -194,16 +194,21 @@ function buildSaiteiMain(ctx) {
   ].join('\n')).join('\n');
 
   return `<main id="main">
-  <header class="page-hero">
-    <div class="w">
+  <header class="page-hero has-ill">
+    <div class="page-hero-inner">
       <nav class="breadcrumb" aria-label="現在の位置">
         <a href="../">ホーム</a><span aria-hidden="true">›</span>
         <a href="../support.html">支援の進め方</a><span aria-hidden="true">›</span>
         <span aria-current="page">富山県の最低賃金</span>
       </nav>
       <span class="sec-kicker">富山の数字</span>
-      <h1>富山県の最低賃金。<br>令和8年10月1日から1,119円。</h1>
+      <h1>富山県の最低賃金。<br>令和8年10月1日から<strong>1,119円</strong>。</h1>
       <p class="lead">富山県の最低賃金は、令和8年10月1日から時間額1,119円（＋57円）です。9月30日までは1,062円でした。特定（産業別）最低賃金3件は令和8年度も改正がなく、いずれも地域別の額を下回るため、実務では1,119円で見ます。過去の推移と問い合わせ先をまとめ、給与計算の直し方は<a href="../blog/saitei-chingin-kyuyo-keisan-2026.html">1,119円で給与計算のどこを直すか</a>に分けました。</p>
+      <div class="page-hero-cta">
+        <a href="contact.html?from=saitei-chingin" class="btn-primary">最低賃金の確認と給与計算について相談する →</a>
+        <a href="service-kyuyo-keisan.html" class="btn-secondary">給与計算代行を見る</a>
+      </div>
+      <figure class="ph-ill"><img src="../assets/illustrations/grant-overview.webp" width="960" height="720" alt="" decoding="async"></figure>
     </div>
   </header>
 
@@ -336,6 +341,13 @@ const CHINAGE_STYLE = `<style id="chinage-oen">
 .cho-seido td a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--g300);font-weight:700}
 .cho-seido td a:hover{color:var(--g700);border-bottom-color:var(--g700)}
 .cho-tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media(max-width:560px){
+  .cho-seido,.cho-seido tbody,.cho-seido tr,.cho-seido td{display:block}
+  .cho-seido thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .cho-seido tr{border-bottom:1px solid var(--line);padding:12px 0}
+  .cho-seido td{border:0;padding:0}
+  .cho-seido td+td{margin-top:4px;font-size:14px;color:var(--ink2)}
+}
 .cho-flow{list-style:none;margin:0;padding:0;display:grid;gap:12px;counter-reset:cho}
 .cho-flow li{position:relative;border:1px solid var(--line);border-radius:12px;padding:16px 18px 16px 56px;background:#fff;counter-increment:cho}
 .cho-flow li::before{content:counter(cho);position:absolute;left:18px;top:16px;width:26px;height:26px;border-radius:50%;background:var(--g500);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
@@ -366,16 +378,21 @@ function buildChinageMain(ctx) {
   ].join('\n')).join('\n');
 
   return `<main id="main">
-  <header class="page-hero">
-    <div class="w">
+  <header class="page-hero has-ill">
+    <div class="page-hero-inner">
       <nav class="breadcrumb" aria-label="現在の位置">
         <a href="../">ホーム</a><span aria-hidden="true">›</span>
         <a href="../joseikin.html">助成金</a><span aria-hidden="true">›</span>
         <span aria-current="page">富山県賃上げ応援補助金</span>
       </nav>
       <span class="sec-kicker">富山県の制度</span>
-      <h1>富山県賃上げ応援補助金。<br>社労士費用の一部が、補助対象です。</h1>
+      <h1>富山県賃上げ応援補助金。<br><strong>社労士費用の一部</strong>が、補助対象です。</h1>
       <p class="lead">国の助成金の申請手続きや就業規則の整備を社会保険労務士等へ依頼したとき、その報酬費用の一部を富山県が補助する制度です。中小企業は2分の1、小規模事業者は3分の2、いずれも上限10万円。${fmtDate(checkedAt)}時点の県の公式ページで内容を確認しています。</p>
+      <div class="page-hero-cta">
+        <a href="contact.html?from=chinage-oen" class="btn-primary">無料で相談する →</a>
+        <a href="service-joseikin.html" class="btn-secondary">助成金の申請代行を見る</a>
+      </div>
+      <figure class="ph-ill"><img src="../assets/illustrations/22_subsidy_growth_profile_left.webp" width="1672" height="941" alt="" decoding="async"></figure>
     </div>
   </header>
 

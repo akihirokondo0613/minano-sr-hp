@@ -184,3 +184,45 @@ figcaption a:has(wbr), blockquote a:has(wbr), .page-hero .lead a:has(wbr) {
 main :is(p,li,dd) > a:not([class]):not(:has(wbr)){display:inline-block;max-width:100%;vertical-align:baseline}
 main a.jl{white-space:nowrap}
 main :is(.btn-primary,.btn-white,.btn-ghost,.startup-primary,.startup-secondary){max-width:100%;white-space:normal;text-wrap:balance;overflow-wrap:break-word}
+
+/* ── 2026-10-08 冒頭の型をルート系とそろえる（skin-v2.css の .page-hero.has-ill と同じ規則）──
+   uploads 系は淡い背景＋下端の稜線だけで、PCでは右半分が空いていた。本文左／イラスト右の2列にし、
+   スマホは本文を優先してイラストを出さない。稜線（::after）は角丸と重なるので消す。 */
+.page-hero.has-ill{background:#EDF5F0;border-bottom:0;border-radius:0 0 40px 40px}
+.page-hero.has-ill::after{content:none}
+@media(min-width:641px){
+  .page-hero.has-ill .page-hero-inner{display:grid;grid-template-columns:minmax(0,1fr) clamp(220px,24vw,340px);column-gap:clamp(24px,4vw,56px);align-items:center}
+  .page-hero.has-ill .page-hero-inner>:not(.ph-ill){grid-column:1}
+  .page-hero.has-ill .page-kicker,.page-hero.has-ill .sec-kicker{justify-self:start}
+  .page-hero.has-ill .ph-ill{grid-column:2;grid-row:1/span 12;align-self:center;margin:0;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:#fff;border:1px solid var(--line2)}
+  .page-hero.has-ill .ph-ill img{display:block;width:100%;height:100%;object-fit:contain}
+}
+@media(max-width:640px){.page-hero.has-ill .ph-ill{display:none}}
+/* 冒頭へ移したイラストの元の節は、本文だけの1列にする（行が長くなりすぎない幅で止める）。 */
+.sec-solo{max-width:46em}
+/* 事例ページの業種タグは、ボタンの下に置く。 */
+.page-hero-cta+.case-tags{margin:22px 0 0}
+
+/* 事例ページ末尾「ほかの業種の進め方」：スマホで1列だと4枚で画面3つ分になるため2列にする。 */
+@media(max-width:640px){
+  .xcase{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .xcase-card{padding:16px 14px;gap:7px}
+}
+
+/* 料金の注記：箱は左に寄るので、中身も左揃えにそろえる（中央揃えの段落が左寄せの箱の中で浮いていた）。 */
+.price-note{text-align:left}
+.price-note .btn-row{justify-content:flex-start}
+
+/* 手続き一覧などの表（.svc-prose 内。「〜する場合」のように長いラベルの比較表は従来どおり縦積み）：スマホではラベルと値を横に並べて縦の長さを詰める。
+   セルを display:table にすると、::before（ラベル）と残りの中身（文字・リンク・注記の混在）が
+   それぞれ1つの列になる（grid だと文字とリンクが別々のマスに割れる）。 */
+@media(max-width:560px){
+  .svc-prose .svct-table td[data-label]:not([data-label$="場合"]){display:table;width:100%;border-collapse:separate;border-spacing:0;padding:6px 0 0}
+  .svc-prose .svct-table td[data-label]:not([data-label$="場合"])::before{display:table-cell;width:calc(5.5em + 10px);padding-right:10px;margin:0;vertical-align:top;line-height:1.9}
+}
+/* 一覧の分類へのページ内リンク */
+.svct-jump{display:flex;flex-wrap:wrap;gap:8px;margin:clamp(18px,2.4vw,26px) 0 0}
+.svct-jump a{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 14px;border:1px solid var(--g200);border-radius:999px;background:#fff;color:var(--g700);font-size:13px;font-weight:700;line-height:1.4;text-decoration:none;transition:border-color .2s,background-color .2s}
+.svct-jump a::after{content:'\2193';font-size:12px;color:var(--g500)}
+@media(hover:hover){.svct-jump a:hover{border-color:var(--g400);background:var(--g50)}}
+.svct-jump a:focus-visible{outline:2px solid var(--g600);outline-offset:2px}
