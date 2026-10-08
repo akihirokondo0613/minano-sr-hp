@@ -281,7 +281,7 @@ main :is(.btn-primary,.btn-secondary,.btn-white,.btn-ghost,.startup-primary,.sta
 
 /* ── ページ冒頭の見出し・節見出し：ルートと同じ書体（ヒラギノ）・太さ・大きさ ── */
 h1,h2,h3,.sec-h,.final-cta h2,.flow-c h3,.page-h,.art-title,.card-title,.post-title,.art-h,.blog-title{font-family:var(--disp)}
-.page-hero h1{font-family:var(--disp);font-size:calc(clamp(27px, 4.2vw, 44px) * var(--uzi));font-weight:900;letter-spacing:.015em;line-height:1.45;color:var(--iwa)}
+.page-hero h1{font-family:var(--disp);font-size:calc(clamp(26px, 3.4vw, 40px) * var(--uzi));font-weight:900;letter-spacing:.015em;line-height:1.45;color:var(--iwa)}
 .sec-h{font-family:var(--disp);font-size:calc(clamp(24px, 3.3vw, 40px) * var(--uzi));font-weight:800;letter-spacing:.015em;line-height:1.5;color:var(--iwa)}
 .final-cta h2{font-family:var(--disp);font-size:calc(clamp(22px, 3.2vw, 34px) * var(--uzi));font-weight:900;line-height:1.6}
 
