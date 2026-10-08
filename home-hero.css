@@ -84,3 +84,17 @@
  #top .hero-poses{animation:none!important;transform:none!important;opacity:1!important}
  #top .actor-after{visibility:hidden!important}
 }
+/* 2026-10-08 空と地面：街の絵（hero-toyama-sky-*）の空・地面の色を絵の外まで延ばし、
+   白い紙に絵が浮いて見える状態をなくす。色は絵の実測値（空 #E1F2F5・地面 #D6EBC7）。 */
+#top{--hero-sky:#e1f2f5;--hero-ground:#d6ebc7}
+#top .hero-stage::before{content:"";grid-column:1;grid-row:1/3;background:var(--hero-sky);pointer-events:none}
+#top .hero-town{isolation:isolate}
+/* 絵の中で地面が始まる高さ（PC 79.3%・SP 78.4%）から、人物の足元と書式セクションの手前（36px）まで地面を敷く */
+#top .hero-town::after{content:"";position:absolute;z-index:-1;left:calc(50% - 50vw);right:calc(50% - 50vw);top:78.4%;height:calc(100% + 36px);background:var(--hero-ground);pointer-events:none}
+/* PCの絵は上下15.6%ずつ切り取って表示するので、表示上の地面は 92.6% から始まる */
+#top .hero-canvas-pc .hero-town::after{top:92.6%}
+/* 絵の幅（最大1600px）より広い画面では、左右の端を空と地面になじませる */
+/* 1601px以上は絵の枠（.hero-scene、横方向は切り取り）が1600pxで止まるので、外側の .hero-stage に同じ高さの地面を敷く。
+   絵の上端から地面まで 8+339.8px、地面から書式セクションまで 194px（1600px幅で固定の実測値） */
+@media(min-width:1601px){#top .hero-stage::after{content:"";grid-column:1;grid-row:2;align-self:start;margin-top:347.8px;margin-bottom:-36px;height:194px;background:var(--hero-ground);pointer-events:none}}
+@media(min-width:1601px){#top .hero-town img{-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}}
