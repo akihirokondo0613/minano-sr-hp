@@ -1643,3 +1643,15 @@ main :is(.btn-primary,.btn-white,.btn-ghost,.startup-primary,.startup-secondary)
   body:has(.page-hero) :is(.sec-sub, .final-p, .mdg-cta-d) { text-align: left; }
   body:has(.page-hero) .sec-sub { margin-inline: 0; }
 }
+
+/* 2026-10-08 下層ページの冒頭にイラストを添える（助成金ページと同じ型）。
+   文字だけでPCの右半分が空き、トップと同じく「白くて寂しい」見え方だったため。スマホは本文を優先して出さない。 */
+.page-hero.has-ill { background: #EDF5F0; border-radius: 0 0 40px 40px; }
+@media (min-width: 641px) {
+  .page-hero.has-ill .page-hero-inner { display: grid; grid-template-columns: minmax(0, 1fr) clamp(220px, 24vw, 340px); column-gap: clamp(24px, 4vw, 56px); align-items: center; }
+  .page-hero.has-ill .page-hero-inner > :not(.ph-ill) { grid-column: 1; }
+  .page-hero.has-ill .pub-board { justify-self: start; }
+  .page-hero.has-ill .ph-ill { grid-column: 2; grid-row: 1 / span 12; align-self: center; margin: 0; aspect-ratio: 4 / 3; border-radius: var(--r-lg); overflow: hidden; background: var(--shiro); border: 1px solid var(--line2); }
+  .page-hero.has-ill .ph-ill img { display: block; width: 100%; height: 100%; object-fit: contain; }
+}
+@media (max-width: 640px) { .page-hero.has-ill .ph-ill { display: none; } }
