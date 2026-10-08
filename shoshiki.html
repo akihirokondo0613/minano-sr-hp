@@ -186,6 +186,17 @@
   .content .cat-head{text-align:left}
   .content .cat-head>*{margin-inline:0}
 }
+/* スマホ：入社書類セット・手続き連絡票の見本（260×368px）を、基本書式と同じく
+   左に小さな見本（96px）・右に説明の一覧型にして縦の長さを抑える。
+   見本の説明文（figcaption）は画像の alt とリンク名で伝える */
+@media(max-width:640px){
+  .sh-pdf>div:first-child:has(>.sh-kit-preview){display:grid;grid-template-columns:96px minmax(0,1fr);column-gap:14px;align-items:start}
+  .sh-pdf>div:first-child:has(>.sh-kit-preview)>*{grid-column:2;min-width:0}
+  .sh-pdf>div:first-child>.sh-kit-preview{grid-column:1;grid-row:1/span 3;max-width:none;margin:2px 0 0}
+  .sh-kit-preview figcaption{display:none}
+  /* ヒーローの説明は3行を超えるので左揃え（見出しは中央のまま） */
+  .page-hero .page-sub{text-align:left}
+}
 </style>
 <link rel="stylesheet" href="skin-v2.css?v=20261008-critical1">
 </head>
