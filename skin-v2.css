@@ -1655,3 +1655,11 @@ main :is(.btn-primary,.btn-white,.btn-ghost,.startup-primary,.startup-secondary)
   .page-hero.has-ill .ph-ill img { display: block; width: 100%; height: 100%; object-fit: contain; }
 }
 @media (max-width: 640px) { .page-hero.has-ill .ph-ill { display: none; } }
+
+/* 2026-10-08 月額プランのカード：3枚の高さをそろえると、BASICの全項目（13項目）に合わせて
+   スタンダード・カスタムに約600pxの空白ができていた。項目は隠さず、各カードを内容の長さで終え、
+   PCでは短い2枚を画面に付いてこさせて、BASICを読み進めながら比べられるようにする。 */
+@media (min-width: 981px) {
+  .price-grid { align-items: start; }
+  .price-grid > .plan:not(#plan-basic) { position: sticky; top: 96px; }
+}
