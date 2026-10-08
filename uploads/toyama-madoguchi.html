@@ -80,6 +80,10 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
 .mdg-group{margin-top:clamp(30px,4vw,48px);scroll-margin-top:96px}
 .mdg-group-lead{font-size:16px;color:var(--ink2);line-height:1.95;letter-spacing:.02em;margin:0 0 20px;max-width:44em;text-wrap:pretty;word-break:auto-phrase}
 .mdg-list{display:grid;gap:14px}
+@media(min-width:900px){.mdg-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.mdg-common{margin:0 0 20px;padding:16px 20px;border:1px solid var(--line);border-radius:var(--r);background:#fff}
+.mdg-common-t{margin:0 0 8px;font-size:13.5px;font-weight:700;color:var(--ink3);letter-spacing:.04em}
+.mdg-jump{margin-top:4px}
 .mdg-office{border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;background:#fff;scroll-margin-top:96px}
 .mdg-office-n{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 10px;line-height:1.6;text-wrap:pretty;word-break:auto-phrase}
 .mdg-dl{display:grid;grid-template-columns:76px minmax(0,1fr);gap:6px 16px;margin:0 0 12px}
@@ -189,12 +193,23 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
         <div class="sec-head-body">
           <h2 class="sec-h">窓口から探す</h2>
           <p class="sec-sub">事業場の<wbr>所在地で<wbr>管轄が<wbr>決まります。<wbr>複数の<wbr>事業場が<wbr>ある<wbr>会社は、<wbr>事業場ごとに<wbr>提出先が<wbr>変わります。</p>
+          <nav class="page-jump mdg-jump" aria-label="窓口の種類"><a href="#mdg-g-roukisho">労働基準監督署</a><a href="#mdg-g-nenkin">年金事務所</a><a href="#mdg-g-hellowork">ハローワーク</a><a href="#mdg-g-roudoukyoku">富山労働局</a><a href="#mdg-g-ken">富山県</a><a href="#mdg-g-other">そのほか</a></nav>
         </div>
       </div>
 
     <div class="mdg-group rv" id="mdg-g-roukisho">
       <h3 class="sec-h" style="font-size:clamp(20px,2.6vw,27px)">労働基準監督署</h3>
       <p class="mdg-group-lead">就業規則と36協定の<wbr>届出、<wbr>労災の<wbr>請求先です。<wbr>事業場の<wbr>所在地で<wbr>管轄が<wbr>決まります。</p>
+      <div class="mdg-common">
+        <p class="mdg-common-t">多くの<wbr>窓口<wbr>（2か所）で<wbr>扱う主な<wbr>手続き。<wbr>ほかの<wbr>窓口は<wbr>カードに<wbr>記載しています</p>
+        <ul class="mdg-tasks">
+          <li>就業規則の<wbr>届出<wbr>（常時<wbr>10人以上使用する<wbr>事業場）</li>
+          <li>時間外・<wbr>休日労働に関する<wbr>協定届<wbr>（36協定）の<wbr>届出</li>
+          <li>労働災害発生時の<wbr>届出・労災保険給付の<wbr>請求手続き</li>
+          <li>賃金・解雇・<wbr>ハラスメント等の<wbr>労働相談</li>
+          <li>安全衛生に関する<wbr>計画届・相談</li>
+        </ul>
+      </div>
       <div class="mdg-list">
         <div class="mdg-office" id="mdg-roukisho-toyama">
           <p class="mdg-office-n">富山労働基準監督署</p>
@@ -237,13 +252,6 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
             <dt>電話</dt><dd>0765-22-0579</dd>
             <dt>管轄</dt><dd>魚津市、<wbr>黒部市、<wbr>滑川市、<wbr>中新川郡、<wbr>下新川郡</dd>
           </dl>
-          <ul class="mdg-tasks">
-            <li>就業規則の<wbr>届出<wbr>（常時<wbr>10人以上使用する<wbr>事業場）</li>
-            <li>時間外・<wbr>休日労働に関する<wbr>協定届<wbr>（36協定）の<wbr>届出</li>
-            <li>労働災害発生時の<wbr>届出・労災保険給付の<wbr>請求手続き</li>
-            <li>賃金・解雇・<wbr>ハラスメント等の<wbr>労働相談</li>
-            <li>安全衛生に関する<wbr>計画届・相談</li>
-          </ul>
           <p class="mdg-note">FAXは<wbr>0765-22-1668<wbr>で<wbr>す。<wbr>公式の<wbr>一覧に<wbr>課別の<wbr>直通番号の<wbr>記載は<wbr>ありません。<wbr>開庁時間は<wbr>平日8:30〜<wbr>17:15<wbr>（土日祝・<wbr>年末年始休み）です。<wbr>同じ<wbr>建物に<wbr>ハローワーク魚津も<wbr>あります。</p>
           <p class="mdg-src">出<wbr>典 <a href="https://jsite.mhlw.go.jp/toyama-roudoukyoku/kantoku/kijun.html" target="_blank" rel="noopener">jsite.mhlw.go.jp</a></p>
         </div>
@@ -254,13 +262,6 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
             <dt>電話</dt><dd>0763-32-3323</dd>
             <dt>管轄</dt><dd>砺波市、<wbr>小矢部市、<wbr>南砺市</dd>
           </dl>
-          <ul class="mdg-tasks">
-            <li>就業規則の<wbr>届出<wbr>（常時<wbr>10人以上使用する<wbr>事業場）</li>
-            <li>時間外・<wbr>休日労働に関する<wbr>協定届<wbr>（36協定）の<wbr>届出</li>
-            <li>労働災害発生時の<wbr>届出・労災保険給付の<wbr>請求手続き</li>
-            <li>賃金・解雇・<wbr>ハラスメント等の<wbr>労働相談</li>
-            <li>安全衛生に関する<wbr>計画届・相談</li>
-          </ul>
           <p class="mdg-note">FAXは<wbr>0763-32-3335<wbr>で<wbr>す。<wbr>公式の<wbr>一覧に<wbr>課別の<wbr>直通番号の<wbr>記載は<wbr>ありません。<wbr>開庁時間は<wbr>平日8:30〜<wbr>17:15<wbr>（土日祝・<wbr>年末年始休み）です。</p>
           <p class="mdg-src">出<wbr>典 <a href="https://jsite.mhlw.go.jp/toyama-roudoukyoku/kantoku/kijun.html" target="_blank" rel="noopener">jsite.mhlw.go.jp</a></p>
         </div>
@@ -270,6 +271,17 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
     <div class="mdg-group rv" id="mdg-g-nenkin">
       <h3 class="sec-h" style="font-size:clamp(20px,2.6vw,27px)">年金事務所</h3>
       <p class="mdg-group-lead">健康保険・厚生年金の<wbr>手続き<wbr>先で<wbr>す。算定基礎届と月額変更届も<wbr>ここへ<wbr>出します。</p>
+      <div class="mdg-common">
+        <p class="mdg-common-t">どの<wbr>窓口でも<wbr>扱う<wbr>主な<wbr>手続き</p>
+        <ul class="mdg-tasks">
+          <li>社会保険<wbr>（健康保険・<wbr>厚生年金保険）の<wbr>新規適用届</li>
+          <li>被保険者資格取得・<wbr>喪失届</li>
+          <li>算定基礎届（定時決定）</li>
+          <li>月額変更届（随時改定）</li>
+          <li>賞与支払届</li>
+          <li>被扶養者（異動）届</li>
+        </ul>
+      </div>
       <div class="mdg-list">
         <div class="mdg-office" id="mdg-nenkin-toyama">
           <p class="mdg-office-n">富山<wbr>（と<wbr>やま）<wbr>年金事務所</p>
@@ -278,14 +290,6 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
             <dt>電話</dt><dd>076-441-3926</dd>
             <dt>管轄</dt><dd>富山市</dd>
           </dl>
-          <ul class="mdg-tasks">
-            <li>社会保険<wbr>（健康保険・<wbr>厚生年金保険）の<wbr>新規適用届</li>
-            <li>被保険者資格取得・<wbr>喪失届</li>
-            <li>算定基礎届（定時決定）</li>
-            <li>月額変更届（随時改定）</li>
-            <li>賞与支払届</li>
-            <li>被扶養者（異動）届</li>
-          </ul>
           <p class="mdg-src">出<wbr>典 <a href="https://www.nenkin.go.jp/section/soudan/toyama/toyama.html" target="_blank" rel="noopener">www.nenkin.go.jp</a></p>
         </div>
         <div class="mdg-office" id="mdg-nenkin-takaoka">
@@ -295,14 +299,6 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
             <dt>電話</dt><dd>0766-21-4180</dd>
             <dt>管轄</dt><dd>高岡市、氷見市、射水市</dd>
           </dl>
-          <ul class="mdg-tasks">
-            <li>社会保険<wbr>（健康保険・<wbr>厚生年金保険）の<wbr>新規適用届</li>
-            <li>被保険者資格取得・<wbr>喪失届</li>
-            <li>算定基礎届（定時決定）</li>
-            <li>月額変更届（随時改定）</li>
-            <li>賞与支払届</li>
-            <li>被扶養者（異動）届</li>
-          </ul>
           <p class="mdg-src">出<wbr>典 <a href="https://www.nenkin.go.jp/section/soudan/toyama/takaoka.html" target="_blank" rel="noopener">www.nenkin.go.jp</a></p>
         </div>
         <div class="mdg-office" id="mdg-nenkin-uozu">
@@ -312,14 +308,6 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
             <dt>電話</dt><dd>0765-24-5153</dd>
             <dt>管轄</dt><dd>魚津市、<wbr>滑川市、<wbr>黒部市、<wbr>中新川郡、<wbr>下新川郡</dd>
           </dl>
-          <ul class="mdg-tasks">
-            <li>社会保険<wbr>（健康保険・<wbr>厚生年金保険）の<wbr>新規適用届</li>
-            <li>被保険者資格取得・<wbr>喪失届</li>
-            <li>算定基礎届（定時決定）</li>
-            <li>月額変更届（随時改定）</li>
-            <li>賞与支払届</li>
-            <li>被扶養者（異動）届</li>
-          </ul>
           <p class="mdg-src">出<wbr>典 <a href="https://www.nenkin.go.jp/section/soudan/toyama/uozu.html" target="_blank" rel="noopener">www.nenkin.go.jp</a></p>
         </div>
         <div class="mdg-office" id="mdg-nenkin-tonami">
@@ -329,14 +317,6 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
             <dt>電話</dt><dd>0763-33-1725</dd>
             <dt>管轄</dt><dd>砺波市、<wbr>小矢部市、<wbr>南砺市</dd>
           </dl>
-          <ul class="mdg-tasks">
-            <li>社会保険<wbr>（健康保険・<wbr>厚生年金保険）の<wbr>新規適用届</li>
-            <li>被保険者資格取得・<wbr>喪失届</li>
-            <li>算定基礎届（定時決定）</li>
-            <li>月額変更届（随時改定）</li>
-            <li>賞与支払届</li>
-            <li>被扶養者（異動）届</li>
-          </ul>
           <p class="mdg-src">出<wbr>典 <a href="https://www.nenkin.go.jp/section/soudan/toyama/tonami.html" target="_blank" rel="noopener">www.nenkin.go.jp</a></p>
         </div>
       </div>
@@ -345,6 +325,15 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
     <div class="mdg-group rv" id="mdg-g-hellowork">
       <h3 class="sec-h" style="font-size:clamp(20px,2.6vw,27px)">ハローワーク<wbr>（公共職業安定所）</h3>
       <p class="mdg-group-lead">雇用保険の<wbr>手続きと<wbr>求人の<wbr>申込み<wbr>先です。離職票も<wbr>ここへ<wbr>出します。</p>
+      <div class="mdg-common">
+        <p class="mdg-common-t">多くの<wbr>窓口<wbr>（6か所）で<wbr>扱う主な<wbr>手続き。<wbr>ほかの<wbr>窓口は<wbr>カードに<wbr>記載しています</p>
+        <ul class="mdg-tasks">
+          <li>雇用保険の<wbr>資格取得・喪失手続き</li>
+          <li>離職証明書<wbr>（離職票）の<wbr>提出</li>
+          <li>求人の<wbr>申込み<wbr>（求人票の<wbr>提出）</li>
+          <li>トライアル雇用求人の<wbr>申込み</li>
+        </ul>
+      </div>
       <div class="mdg-list">
         <div class="mdg-office" id="mdg-hw-toyama">
           <p class="mdg-office-n">ハローワーク富山<wbr>（富山公共職業<wbr>安定所）</p>
@@ -353,12 +342,6 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
             <dt>電話</dt><dd>076-431-8609</dd>
             <dt>管轄</dt><dd>富山市</dd>
           </dl>
-          <ul class="mdg-tasks">
-            <li>雇用保険の<wbr>資格取得・喪失手続き</li>
-            <li>離職証明書<wbr>（離職票）の<wbr>提出</li>
-            <li>求人の<wbr>申込み<wbr>（求人票の<wbr>提出）</li>
-            <li>トライアル雇用求人の<wbr>申込み</li>
-          </ul>
           <p class="mdg-src">出<wbr>典 <a href="https://jsite.mhlw.go.jp/toyama-roudoukyoku/hw/hello.html" target="_blank" rel="noopener">jsite.mhlw.go.jp</a></p>
         </div>
         <div class="mdg-office" id="mdg-hw-takaoka">
@@ -368,12 +351,6 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
             <dt>電話</dt><dd>0766-21-1515</dd>
             <dt>管轄</dt><dd>高岡市、射水市</dd>
           </dl>
-          <ul class="mdg-tasks">
-            <li>雇用保険の<wbr>資格取得・喪失手続き</li>
-            <li>離職証明書<wbr>（離職票）の<wbr>提出</li>
-            <li>求人の<wbr>申込み<wbr>（求人票の<wbr>提出）</li>
-            <li>トライアル雇用求人の<wbr>申込み</li>
-          </ul>
           <p class="mdg-src">出<wbr>典 <a href="https://jsite.mhlw.go.jp/toyama-roudoukyoku/hw/hello.html" target="_blank" rel="noopener">jsite.mhlw.go.jp</a></p>
         </div>
         <div class="mdg-office" id="mdg-hw-uozu">
@@ -383,12 +360,6 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
             <dt>電話</dt><dd>0765-24-0365</dd>
             <dt>管轄</dt><dd>魚津市、<wbr>黒部市、<wbr>下新川郡</dd>
           </dl>
-          <ul class="mdg-tasks">
-            <li>雇用保険の<wbr>資格取得・喪失手続き</li>
-            <li>離職証明書<wbr>（離職票）の<wbr>提出</li>
-            <li>求人の<wbr>申込み<wbr>（求人票の<wbr>提出）</li>
-            <li>トライアル雇用求人の<wbr>申込み</li>
-          </ul>
           <p class="mdg-src">出<wbr>典 <a href="https://jsite.mhlw.go.jp/toyama-roudoukyoku/hw/hello.html" target="_blank" rel="noopener">jsite.mhlw.go.jp</a></p>
         </div>
         <div class="mdg-office" id="mdg-hw-tonami">
@@ -398,12 +369,6 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
             <dt>電話</dt><dd>0763-32-2914</dd>
             <dt>管轄</dt><dd>砺波市、<wbr>南砺市、<wbr>小矢部市</dd>
           </dl>
-          <ul class="mdg-tasks">
-            <li>雇用保険の<wbr>資格取得・喪失手続き</li>
-            <li>離職証明書<wbr>（離職票）の<wbr>提出</li>
-            <li>求人の<wbr>申込み<wbr>（求人票の<wbr>提出）</li>
-            <li>トライアル雇用求人の<wbr>申込み</li>
-          </ul>
           <p class="mdg-src">出<wbr>典 <a href="https://jsite.mhlw.go.jp/toyama-roudoukyoku/hw/hello.html" target="_blank" rel="noopener">jsite.mhlw.go.jp</a></p>
         </div>
         <div class="mdg-office" id="mdg-hw-oyabe">
@@ -425,12 +390,6 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
             <dt>電話</dt><dd>0766-74-0445</dd>
             <dt>管轄</dt><dd>氷見市</dd>
           </dl>
-          <ul class="mdg-tasks">
-            <li>雇用保険の<wbr>資格取得・喪失手続き</li>
-            <li>離職証明書<wbr>（離職票）の<wbr>提出</li>
-            <li>求人の<wbr>申込み<wbr>（求人票の<wbr>提出）</li>
-            <li>トライアル雇用求人の<wbr>申込み</li>
-          </ul>
           <p class="mdg-src">出<wbr>典 <a href="https://jsite.mhlw.go.jp/toyama-roudoukyoku/hw/hello.html" target="_blank" rel="noopener">jsite.mhlw.go.jp</a></p>
         </div>
         <div class="mdg-office" id="mdg-hw-namerikawa">
@@ -440,12 +399,6 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
             <dt>電話</dt><dd>076-475-0324</dd>
             <dt>管轄</dt><dd>滑川市、中新川郡</dd>
           </dl>
-          <ul class="mdg-tasks">
-            <li>雇用保険の<wbr>資格取得・喪失手続き</li>
-            <li>離職証明書<wbr>（離職票）の<wbr>提出</li>
-            <li>求人の<wbr>申込み<wbr>（求人票の<wbr>提出）</li>
-            <li>トライアル雇用求人の<wbr>申込み</li>
-          </ul>
           <p class="mdg-src">出<wbr>典 <a href="https://jsite.mhlw.go.jp/toyama-roudoukyoku/hw/hello.html" target="_blank" rel="noopener">jsite.mhlw.go.jp</a></p>
         </div>
       </div>
