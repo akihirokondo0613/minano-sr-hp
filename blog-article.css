@@ -573,3 +573,37 @@ article.post table:not(:has([rowspan], [colspan])) :is(td, th) { word-break: aut
     color: var(--iwa);
   }
 }
+
+/* ---------- 記事冒頭（パンくず・h1）の左端を本文列にそろえる（1120px以上） ----------
+   .post-hero-inner は820pxの箱を画面中央に置くため、1280pxでパンくず・h1が x=270、
+   本文・h2 が x=154 と116pxずれていた（1440pxは350/154、1920pxは590/394）。
+   記事下部（上の「記事下部…本文列にそろえる」）と同じ式で幅と左端を決める。
+   .post-toc-layout が無い（JSが動かない）ときは従来どおり中央で、本文とも一致する。 */
+@media (min-width: 1120px) {
+  .post-hero:has(~ .post-toc-layout) .post-hero-inner {
+    width: 740px;
+    max-width: none;
+    margin-left: calc((100% - min(100% - 32px, 1052px)) / 2 + 40px);
+    margin-right: 0;
+    padding-inline: 0;
+  }
+}
+@media (min-width: 1400px) {
+  .post-hero:has(~ .post-toc-layout) .post-hero-inner {
+    width: 900px;
+    margin-left: calc((100% - min(100% - 32px, 1212px)) / 2 + 40px);
+  }
+}
+
+/* ---------- スマホの「この記事が役立つ方」を詰める ----------
+   390pxで3項目を縦に積んだ箱が約390pxあり、目次の前に「この記事のポイント」と続いて
+   本文の入口が遠かった。項目名を文頭に置いた1〜2行の行にする（内容は変えない）。 */
+@media (max-width: 620px) {
+  article.post .post-reader { margin-bottom: 1.4em; padding: 12px 14px; border-top-width: 3px; }
+  article.post .post-reader-kicker { margin-bottom: 6px; font-size: 11px; }
+  article.post .post-reader-grid { display: block; overflow: visible; border: 0; border-radius: 0; background: none; }
+  article.post .post-reader-item { padding: 4px 0; background: none; line-height: 1.65; }
+  article.post .post-reader-item + .post-reader-item { border-top: 1px dashed var(--line); }
+  article.post .post-reader-label { display: inline; margin: 0 .6em 0 0; font-size: 11px; }
+  article.post .post-reader-item strong { display: inline; font-size: 13px; line-height: 1.65; }
+}

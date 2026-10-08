@@ -107,6 +107,7 @@ html.nav-menu-open{overflow:hidden}
 .page-h{font-size:clamp(28px,3.5vw,42px);font-weight:300;color:var(--ink);line-height:1.35;letter-spacing:-.01em;margin-bottom:14px}
 .page-h strong{font-weight:700;color:var(--g700)}
 .page-sub{font-size:16px;color:var(--ink3);line-height:1.9;margin-top:14px;font-weight:300;max-width:580px}
+.page-sub-more{margin-top:8px;font-size:14px}
 .sec{padding:72px 28px}
 .w{max-width:var(--max);margin:0 auto}
 .footer{background:#0f1f14;color:rgba(255,255,255,.55);padding:60px 28px 28px}
@@ -150,6 +151,13 @@ html.nav-menu-open{overflow:hidden}
 .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
 .form-grid{display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:flex-start}
 .form-wrap{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:40px 32px}
+.form-req-note{margin-bottom:28px;font-size:14px;color:var(--ink3)}
+.form-req-note b{color:var(--g700)}
+/* 必須・任意は同じ形の小ラベルで示す（「*」と「（任意）」の混在をやめる） */
+.req,.opt,.multi{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:4px;font-size:11px;font-weight:700;line-height:1.6;letter-spacing:.04em;vertical-align:1px;white-space:nowrap}
+.form-label span.req,.privacy-consent span.req,.form-label small.req{background:var(--g600);color:#fff!important}
+.form-label small.opt,.contact-preferences-title small.opt{background:var(--g25);border:1px solid var(--line);color:var(--ink3)!important;font-weight:700}
+.form-label small.multi{margin-left:4px;padding:0;font-weight:400;color:var(--ink3)!important}
 .form-group{margin-bottom:20px}
 .form-label{display:block;font-size:13px;font-weight:700;color:var(--ink2);margin-bottom:8px}
 .form-label span{color:var(--g600)}
@@ -233,7 +241,9 @@ body:has(#contactForm) .floating .fl-primary{display:none}
   .footer-ul a[href^="tel:"],.footer-ul a[href^="mailto:"]{font-size:12px}
   .footer-contact-address{white-space:normal}
   .grid-2{grid-template-columns:1fr;row-gap:0}/* 縦積みでは各項目の margin-bottom で間隔をとる（gap と二重にしない） */
-  .form-wrap{padding:28px 20px}
+  /* スマホは外枠と内側の余白をなくし、入力欄を画面幅いっぱい（約358px＠390px）に使う */
+  main > .sec{padding:32px 16px 56px}
+  .form-wrap{padding:0;border:0;background:transparent;border-radius:0}
   .optional-details summary{grid-template-columns:1fr;gap:13px;padding:17px 16px}
   .optional-details-state{width:100%}
   .optional-details-body{padding:20px 14px 2px}
@@ -375,7 +385,8 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
   <div class="page-hero-inner">
     <div class="live-chip"><i aria-hidden="true"></i>24時間受付中</div>
     <h1 class="page-h"><strong>無料でご相談ください</strong></h1>
-    <p class="page-sub">中小企業の<wbr>労務課題を、<wbr>社会保険労務士が<wbr>丁寧に<wbr>ヒアリングします。<wbr>具体的な<wbr>進め方と<wbr>情報の<wbr>受け渡し方法は、<wbr>業務内容や<wbr>情報管理体制に<wbr>合わせて<wbr>調整します。<wbr>来所・<wbr>訪問・オンラインに<wbr>対応。<wbr>全国から<wbr>ご相談いただけます。</p>
+    <p class="page-sub">初回相談は、<wbr>下の<wbr>フォームから<wbr>お申し込みください。<wbr>ご相談内容を<wbr>確認し、<wbr>日時を<wbr>調整します。<wbr>相談内容が<wbr>まと<wbr>まっていなくても、<wbr>お気軽に<wbr>お送りください。</p>
+    <p class="page-sub page-sub-more">中小企業の<wbr>労務課題を、<wbr>社会保険労務士が<wbr>丁寧に<wbr>ヒアリングします。<wbr>具体的な<wbr>進め方と<wbr>情報の<wbr>受け渡し方法は、<wbr>業務内容や<wbr>情報管理体制に<wbr>合わせて<wbr>調整します。<wbr>来所・<wbr>訪問・オンラインに<wbr>対応。<wbr>全国から<wbr>ご相談いただけます。</p>
   </div>
 </div>
 
@@ -384,9 +395,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
     <div class="form-grid">
       <div class="form-wrap">
         <h2 style="font-size:20px; font-weight:700; color:var(--ink); margin-bottom:8px;">無料相談フォーム</h2>
-        <p style="font-size:16px; color:var(--ink); margin-bottom:12px;"><strong>初回相談は、<wbr>フォームから<wbr>お申し込みください。</strong></p>
-        <p style="font-size:14px; color:var(--ink3); margin-bottom:20px;">ご相談内容を<wbr>確認し、<wbr>日時を<wbr>調整します。<wbr>相談内容が<wbr>まと<wbr>まっていなくても、<wbr>お気軽に<wbr>お送りください。</p>
-        <p style="font-size:14px; color:var(--ink3); margin-bottom:32px;">基本の<wbr>必須は<wbr><b style="color:var(--g700)">3項目</b>です。<wbr>電話での<wbr>ご連絡を<wbr>希望する<wbr>場合は、<wbr>電話番号も<wbr>入力してください。<wbr>担当者より<wbr>ご連絡します。</p>
+        <p class="form-req-note">基本の<wbr>必須は<wbr><b>3項目</b>です。</p>
 
         <div id="formSuccess" style="display:none; text-align:center; padding:46px 20px 42px; position:relative; overflow:hidden;">
             <div id="confetti" aria-hidden="true" style="position:absolute; inset:0; pointer-events:none; overflow:hidden;"></div>
@@ -405,27 +414,27 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
         <form id="contactForm" onsubmit="handleSubmit(event)">
             <div class="grid-2">
               <div class="form-group">
-                <label class="form-label" for="name">お名前 <span>*</span></label>
+                <label class="form-label" for="name">お名前 <span class="req">必須</span></label>
                 <input type="text" id="name" class="form-input" placeholder="山田 太郎" required>
               </div>
               <div class="form-group">
-                <label class="form-label" for="company">会社名・屋号</label>
+                <label class="form-label" for="company">会社名・屋号 <small class="opt">任意</small></label>
                 <input type="text" id="company" class="form-input" placeholder="株式会社〇〇">
               </div>
             </div>
             <div class="grid-2">
               <div class="form-group">
-                <label class="form-label" for="email">メールアドレス <span>*</span></label>
+                <label class="form-label" for="email">メールアドレス <span class="req">必須</span></label>
                 <input type="email" id="email" class="form-input" placeholder="info@company.co.jp" required>
               </div>
               <div class="form-group">
-                <label class="form-label" for="tel">電話番号 <small id="telRequirement" style="color:var(--ink4);font-weight:400">（任意）</small></label>
+                <label class="form-label" for="tel">電話番号 <small id="telRequirement" class="opt">任意</small></label>
                 <input type="tel" id="tel" class="form-input" placeholder="090-1234-5678" aria-describedby="telHelp" autocomplete="tel">
                 <small id="telHelp" class="form-help">電話でのご連絡を希望する場合は入力してください。</small>
               </div>
             </div>
             <div class="form-group">
-              <label class="form-label" for="message">まず、ご相談の概要を教えてください <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
+              <label class="form-label" for="message">まず、ご相談の概要を教えてください <small class="opt">任意</small></label>
               <textarea id="message" class="form-input" aria-describedby="messageHelp" placeholder="1〜2行でも構いません。&#10;例）就業規則を見直したい、助成金が使えるか知りたい など"></textarea>
               <small class="form-help" id="messageHelp">詳しい事情や、連絡時に伝えておきたいことは、フォーム最後の「補足・連絡事項」に書き足せます。</small>
             </div>
@@ -447,7 +456,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
 
                 <h3 class="optional-step-heading"><span>STEP 01</span>会社の<wbr>基本情報</h3>
                 <div class="form-group">
-                  <label class="form-label">事業所の業種 <small style="color:var(--ink4);font-weight:400">（複数選択可）</small></label>
+                  <label class="form-label">事業所の業種 <small class="opt">任意</small><small class="multi">複数選択可</small></label>
                   <div class="checkbox-group" id="industryCheckboxes">
                     <label class="checkbox-label"><input type="checkbox" value="製造業"> 製造業</label>
                     <label class="checkbox-label"><input type="checkbox" value="建設業"> 建設業</label>
@@ -464,7 +473,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
                 <div id="stageRest">
 
             <div class="form-group">
-              <label class="form-label">従業員数 <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
+              <label class="form-label">従業員数 <small class="opt">任意</small></label>
               <div class="checkbox-group" id="sizeCheckboxes">
                 <label class="checkbox-label"><input type="radio" name="size" value="1〜5名"> 1〜5名</label>
                 <label class="checkbox-label"><input type="radio" name="size" value="6〜10名"> 6〜10名</label>
@@ -476,7 +485,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
 
             <h3 class="optional-step-heading"><span>STEP 02</span>現在の<wbr>労務管理</h3>
             <div class="form-group">
-              <label class="form-label">現在、顧問の社会保険労務士はいますか？ <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
+              <label class="form-label">現在、顧問の社会保険労務士はいますか？ <small class="opt">任意</small></label>
               <div class="checkbox-group" id="advKomon">
                 <label class="checkbox-label"><input type="radio" name="adv_komon" value="いる"> いる</label>
                 <label class="checkbox-label"><input type="radio" name="adv_komon" value="いない"> いない</label>
@@ -486,7 +495,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
             </div>
 
             <div class="form-group">
-              <label class="form-label">入退社などの手続きは、どのように処理していますか？ <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
+              <label class="form-label">入退社などの手続きは、どのように処理していますか？ <small class="opt">任意</small></label>
               <div class="checkbox-group" id="ctxTetsuduki">
                 <label class="checkbox-label"><input type="radio" name="ctx_tetsuduki" value="自社で窓口・郵送"> 自社で窓口・郵送</label>
                 <label class="checkbox-label"><input type="radio" name="ctx_tetsuduki" value="自社で電子申請"> 自社で電子申請</label>
@@ -497,7 +506,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
             </div>
 
             <div class="form-group">
-              <label class="form-label">給与計算・勤怠の管理方法は？ <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
+              <label class="form-label">給与計算・勤怠の管理方法は？ <small class="opt">任意</small></label>
               <div class="checkbox-group" id="advKyuyoKanri">
                 <label class="checkbox-label"><input type="radio" name="adv_kyuyo_kanri" value="手計算・手書き"> 手計算・手書き</label>
                 <label class="checkbox-label"><input type="radio" name="adv_kyuyo_kanri" value="Excel"> Excel</label>
@@ -508,7 +517,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
             </div>
 
             <div class="form-group">
-              <label class="form-label">使っているソフト・サービスは？ <small style="color:var(--ink4);font-weight:400">（任意・複数選択可）</small></label>
+              <label class="form-label">使っているソフト・サービスは？ <small class="opt">任意</small><small class="multi">複数選択可</small></label>
               <div class="checkbox-group" id="softCheckboxes">
                 <label class="checkbox-label"><input type="checkbox" value="freee"> freee</label>
                 <label class="checkbox-label"><input type="checkbox" value="マネーフォワード"> マネーフォワード</label>
@@ -538,7 +547,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
             </div>
 
             <div class="form-group">
-              <label class="form-label">給与・勤怠・手続きなどの事務作業に、毎月どのくらい時間をかけていますか？ <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
+              <label class="form-label">給与・勤怠・手続きなどの事務作業に、毎月どのくらい時間をかけていますか？ <small class="opt">任意</small></label>
               <div class="checkbox-group" id="ctxWorkload">
                 <label class="checkbox-label"><input type="radio" name="ctx_workload" value="1日程度"> 1日程度</label>
                 <label class="checkbox-label"><input type="radio" name="ctx_workload" value="数日"> 数日</label>
@@ -549,7 +558,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
 
             <h3 class="optional-step-heading"><span>STEP 03</span>ご<wbr>相談の<wbr>背景と<wbr>内容</h3>
             <div class="form-group">
-              <label class="form-label">今回ご相談しようと思ったきっかけに近いものは？ <small style="color:var(--ink4);font-weight:400">（任意・複数選択可）</small></label>
+              <label class="form-label">今回ご相談しようと思ったきっかけに近いものは？ <small class="opt">任意</small><small class="multi">複数選択可</small></label>
               <div class="checkbox-group" id="ctxTrigger">
                 <label class="checkbox-label"><input type="checkbox" value="人を雇う予定がある"> 人を雇う予定がある</label>
                 <label class="checkbox-label"><input type="checkbox" value="退職・トラブルがあった"> 退職・トラブルがあった</label>
@@ -561,7 +570,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
               </div>
             </div>
             <div class="form-group">
-              <label class="form-label">ご相談の内容 <small style="color:var(--ink4);font-weight:400">（任意・複数選択可）</small></label>
+              <label class="form-label">ご相談の内容 <small class="opt">任意</small><small class="multi">複数選択可</small></label>
               <div class="checkbox-group" id="serviceCheckboxes">
                 <label class="checkbox-label"><input type="checkbox" value="就業規則の作成・改定" data-branch="kisoku"> 就業規則</label>
                 <label class="checkbox-label"><input type="checkbox" value="助成金申請" data-branch="joseikin"> 助成金</label>
@@ -578,7 +587,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
                 <div class="branch-inner">
                   <p class="branch-head">助成金について、<wbr>もう<wbr>少しだけ</p>
                   <div class="branch-q">
-                    <label class="form-label">今後1年で、賃金を上げる予定はありますか？ <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
+                    <label class="form-label">今後1年で、賃金を上げる予定はありますか？ <small class="opt">任意</small></label>
                     <div class="checkbox-group">
                       <label class="checkbox-label"><input type="radio" name="br_jose_chinage" value="ある"> ある</label>
                       <label class="checkbox-label"><input type="radio" name="br_jose_chinage" value="検討中"> 検討中</label>
@@ -586,7 +595,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
                     </div>
                   </div>
                   <div class="branch-q">
-                    <label class="form-label">導入を考えている設備・システムはありますか？ <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
+                    <label class="form-label">導入を考えている設備・システムはありますか？ <small class="opt">任意</small></label>
                     <div class="checkbox-group">
                       <label class="checkbox-label"><input type="radio" name="br_jose_setsubi" value="ある"> ある</label>
                       <label class="checkbox-label"><input type="radio" name="br_jose_setsubi" value="特にない"> 特にない</label>
@@ -598,7 +607,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
               <div class="branch-block" data-branch="kisoku" style="display:none">
                 <div class="branch-inner">
                   <p class="branch-head">就業規則について、<wbr>もう<wbr>少しだけ</p>
-                  <label class="form-label">就業規則はありますか？ <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
+                  <label class="form-label">就業規則はありますか？ <small class="opt">任意</small></label>
                   <div class="checkbox-group">
                     <label class="checkbox-label"><input type="radio" name="br_kisoku_umu" value="ある"> ある</label>
                     <label class="checkbox-label"><input type="radio" name="br_kisoku_umu" value="ない"> ない</label>
@@ -610,7 +619,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
               <div class="branch-block" data-branch="kyuyo" style="display:none">
                 <div class="branch-inner">
                   <p class="branch-head">給与計算について、<wbr>もう<wbr>少しだけ</p>
-                  <label class="form-label">主に担当しているのはどなたですか？ <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
+                  <label class="form-label">主に担当しているのはどなたですか？ <small class="opt">任意</small></label>
                   <div class="checkbox-group">
                     <label class="checkbox-label"><input type="radio" name="br_kyuyo_tantou" value="経営者本人"> 経営者本人</label>
                     <label class="checkbox-label"><input type="radio" name="br_kyuyo_tantou" value="ご家族"> ご家族</label>
@@ -623,7 +632,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
                 <div class="branch-inner">
                   <p class="branch-head">社会保険の<wbr>手続きについて、<wbr>もう<wbr>少しだけ</p>
                   <div class="branch-q">
-                    <label class="form-label">従業員の入退社は、年にどのくらいありますか？ <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
+                    <label class="form-label">従業員の入退社は、年にどのくらいありますか？ <small class="opt">任意</small></label>
                     <div class="checkbox-group">
                       <label class="checkbox-label"><input type="radio" name="br_shaho_hindo" value="ほとんどない"> ほとんどない</label>
                       <label class="checkbox-label"><input type="radio" name="br_shaho_hindo" value="年1〜3回"> 年1〜3回</label>
@@ -632,7 +641,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
                     </div>
                   </div>
                   <div class="branch-q">
-                    <label class="form-label">手間に感じている手続きは？ <small style="color:var(--ink4);font-weight:400">（任意・複数選択可）</small></label>
+                    <label class="form-label">手間に感じている手続きは？ <small class="opt">任意</small><small class="multi">複数選択可</small></label>
                     <div class="checkbox-group" id="brShahoTema">
                       <label class="checkbox-label"><input type="checkbox" value="入社・退社の手続き"> 入社・退社</label>
                       <label class="checkbox-label"><input type="checkbox" value="扶養・住所などの変更"> 扶養・住所などの変更</label>
@@ -648,7 +657,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
               <div class="branch-block" data-branch="romu" style="display:none">
                 <div class="branch-inner">
                   <p class="branch-head">労務相談について、<wbr>もう<wbr>少しだけ</p>
-                  <label class="form-label">いま気になっていることは？ <small style="color:var(--ink4);font-weight:400">（任意・複数選択可）</small></label>
+                  <label class="form-label">いま気になっていることは？ <small class="opt">任意</small><small class="multi">複数選択可</small></label>
                   <div class="checkbox-group" id="brRomuKanshin">
                     <label class="checkbox-label"><input type="checkbox" value="残業・労働時間"> 残業・労働時間</label>
                     <label class="checkbox-label"><input type="checkbox" value="休職・メンタル"> 休職・メンタル</label>
@@ -662,7 +671,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
               <div class="branch-block" data-branch="komon" style="display:none">
                 <div class="branch-inner">
                   <p class="branch-head">顧問契約について、<wbr>もう<wbr>少しだけ</p>
-                  <label class="form-label">ご検討の背景に近いものは？ <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
+                  <label class="form-label">ご検討の背景に近いものは？ <small class="opt">任意</small></label>
                   <div class="checkbox-group">
                     <label class="checkbox-label"><input type="radio" name="br_komon_haikei" value="今いない"> 今いない</label>
                     <label class="checkbox-label"><input type="radio" name="br_komon_haikei" value="今の体制で手が回らない"> 今の体制で手が回らない</label>
@@ -678,7 +687,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
 
             <div class="contact-preferences" aria-labelledby="contactPreferencesTitle">
               <div class="contact-preferences-head">
-                <span class="contact-preferences-title" id="contactPreferencesTitle">ご連絡方法の希望 <small style="color:var(--ink4);font-weight:400">（任意）</small></span>
+                <span class="contact-preferences-title" id="contactPreferencesTitle">ご連絡方法の希望 <small class="opt">任意</small></span>
                 <span class="contact-preferences-lead">「電話」または「どちらでもよい」を選ぶと、時間帯を指定できます。</span>
               </div>
               <fieldset class="choice-fieldset">
@@ -715,14 +724,14 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
             </div>
 
             <div class="form-group contact-note">
-              <label class="form-label" for="contactNote">補足・連絡事項 <small style="color:var(--ink4);font-weight:400">（任意）</small></label>
+              <label class="form-label" for="contactNote">補足・連絡事項 <small class="opt">任意</small></label>
               <textarea id="contactNote" class="form-input" placeholder="書ききれなかったご事情、期限、資料の有無、電話に出られない時間などがあればご記入ください。"></textarea>
             </div>
 
             <div class="form-group privacy-consent">
               <input type="checkbox" id="privacy" required>
               <label for="privacy">
-                <a href="../privacy-policy.html" style="color:var(--g600); text-decoration:underline;">プライバシーポリシー</a>に同意します <span style="color:var(--g600)">*</span>
+                <a href="../privacy-policy.html" style="color:var(--g600); text-decoration:underline;">プライバシーポリシー</a>に同意します <span class="req">必須</span>
               </label>
             </div>
             <button type="submit" class="form-submit">無料相談を申し込む</button>
@@ -954,7 +963,10 @@ function updateContactTimeVisibility() {
   var tel = document.getElementById('tel');
   var requirement = document.getElementById('telRequirement');
   if (tel) tel.required = method === '電話';
-  if (requirement) requirement.textContent = method === '電話' ? '（必須）' : '（任意）';
+  if (requirement) {
+    requirement.textContent = method === '電話' ? '必須' : '任意';
+    requirement.className = method === '電話' ? 'req' : 'opt';
+  }
   if (!field) return;
   field.hidden = !show;
   if (!show) {

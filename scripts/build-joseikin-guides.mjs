@@ -259,7 +259,8 @@ function buildMain(guide, meta, guides) {
 const STYLE = `<style id="joseikin-guide">
 /* 制度解説ページ専用。順序の境目（壁）と手順を、図形でなく文字と色で示す。 */
 .jgd-guide .nw{white-space:nowrap}
-.jgd-guide .sec-head-c .sec-sub,.jgd-rule{max-width:52rem;margin-inline:auto;text-align:center}
+/* 見出しは service.css で左揃え・左端固定（641px以上）。導入文と鉄則も同じ左端から左揃えで読ませる */
+.jgd-guide .sec-head-c .sec-sub,.jgd-rule{max-width:52rem;margin-inline:0;text-align:left}
 .jgd-rule{margin-top:24px;font-size:clamp(15px,1.6vw,16.5px);line-height:2;color:var(--ink2)}
 .jgd-rule p,.jgd-source-note p{margin:0}
 .jgd-source-note p+p{margin-top:.45em}
