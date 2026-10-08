@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="page-enter.js?v=20261008-floating1"></script>
+<script defer src="page-enter.js?v=20261008-flow1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>社労士とは？何を相談できる？｜富山の社労士がやさしく解説</title>
@@ -162,7 +162,7 @@
   .fn-grid{grid-template-columns:1fr}
 }
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20261008-plans1">
+<link rel="stylesheet" href="skin-v2.css?v=20261008-flow1">
 <style id="ig-value">
 /* ===== 価値を見せるリデザイン ===== */
 .head-center{text-align:center;max-width:640px;margin-left:auto;margin-right:auto}
@@ -252,7 +252,7 @@
 .ig-toc-links a{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--ink2);background:var(--g25);border:1px solid var(--g100);border-radius:999px;padding:5px 14px 5px 6px;white-space:nowrap;transition:transform var(--tr),box-shadow var(--tr),border-color var(--tr),background-color var(--tr)}
 .ig-toc-links a b{width:20px;height:20px;border-radius:50%;background:var(--g600);color:#fff;font-size:10.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;font-family:var(--disp)}
 .ig-toc-links a:hover{transform:translateY(-2px);box-shadow:var(--sh-sm);border-color:var(--g300);background:#fff}
-#position,#values,#services,#flow,#change,#cost,#check{scroll-margin-top:calc(var(--nav-h) + 20px)}
+#position,#values,#services,#flow,#change,#cost,#check{scroll-margin-top:6px}
 
 /* ── 番号つきセクション見出し ── */
 .sec-kicker.kn::before{display:none}
@@ -993,7 +993,7 @@ html,body{overflow-x:clip}
   window.addEventListener('scroll',window.__pgScroll,{passive:true});
   window.toggleNav=function(){document.getElementById('mobNav').classList.toggle('open')};
   window.closeNav=function(){document.getElementById('mobNav').classList.remove('open')};
-  var ro=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target)}})},{threshold:.12});
+  var ro=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target)}})},{threshold:0,rootMargin:'0px 0px -10% 0px'});
   document.querySelectorAll('.rv').forEach(function(el){ro.observe(el)});
   requestAnimationFrame(function(){document.querySelectorAll('.rv').forEach(function(el){if(el.getBoundingClientRect().top<innerHeight*0.94){el.classList.add('on');ro.unobserve(el);}});});
   setTimeout(function(){document.querySelectorAll('.rv').forEach(function(el){el.classList.add('on');});},2600);

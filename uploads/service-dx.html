@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="../page-enter.js?v=20261008-floating1"></script>
+<script defer src="../page-enter.js?v=20261008-flow1"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>勤怠システム導入の手順8段階と社労士の支援範囲｜富山の社労士みなの</title>
 <meta name="description" content="勤怠システム導入の手順を、現状確認から就業ルール整理・選定・初期設定・テスト運用・給与連携・本稼働まで8段階で整理。就業規則や36協定との整合、割増賃金や端数処理の設定など、システム会社では扱わない部分を社労士が担います。導入支援は5名まで100,000円（税抜）。">
@@ -707,7 +707,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
   window.addEventListener('scroll',window.__pgScroll,{passive:true});
   window.toggleNav=function(){document.getElementById('mobNav').classList.toggle('open')};
   window.closeNav=function(){document.getElementById('mobNav').classList.remove('open')};
-  var ro=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target)}})},{threshold:.12});
+  var ro=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target)}})},{threshold:0,rootMargin:'0px 0px -10% 0px'});
   document.querySelectorAll('.rv').forEach(function(el){ro.observe(el)});
 })();
 </script>

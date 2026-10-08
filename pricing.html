@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="page-enter.js?v=20261008-floating1"></script>
+<script defer src="page-enter.js?v=20261008-flow1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <style>
 .spot-entry{background:var(--shiro);border:1.5px solid var(--moegi);border-radius:var(--r-lg);padding:20px 22px;margin:0 0 14px}
@@ -69,7 +69,7 @@ h2.sf-group-t{margin:34px 0 10px}
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="skin-v2.css?v=20261008-plans1">
+<link rel="stylesheet" href="skin-v2.css?v=20261008-flow1">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"社労士の顧問料と料金表 月35,000円〜｜含む業務と別料金の線引き｜富山","description":"社労士の顧問料は従業員数と含む業務で決まります。富山の社会保険労務士事務所みなのは、スタート顧問 月35,000円から、給与計算まで含むスタンダード 月55,000円からを固定額で公開。顧問料に含む業務と別料金の線引き、スポット料金、助成金の成功報酬まで載せています。","url":"https://minano-sr.com/pricing.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://minano-sr.com/"},{"@type":"ListItem","position":2,"name":"料金・顧問プラン","item":"https://minano-sr.com/pricing.html"}]}]}
 </script>
@@ -238,14 +238,15 @@ h2.sf-group-t{margin:34px 0 10px}
         <div class="sf-bridge">スポットご利用後3ヶ月以内に顧問契約をいただいた場合、お支払いいただいたスポット料金（上限 ¥30,000）を初月の顧問料に充当します。</div>
         <p class="sf-note">※ 上記は<wbr>記載した<wbr>標準業務範囲の<wbr>固定料金<wbr>（税抜）です。</p>
         <p class="sf-note">手続きごとの<wbr>期限は<wbr><a href="uploads/service-shakai-hoken.html#ichiran">手続きごとの<wbr>期限一覧</a>に<wbr>まとめています。</p>
-        <a class="plan-btn plan-btn-main spot-entry-btn" href="uploads/contact.html">単発のご依頼を相談する →</a>
+        <a class="plan-btn plan-btn-main spot-entry-btn" href="uploads/contact.html?from=once-list">単発のご依頼を相談する →</a>
       </div>
     </details>
     <script id="spot-fees-mobile">
-    // 640px以下では長い料金表を閉じて始める（PCは開いたまま）。ページ内リンクで来たときは開く。
+    // 長い料金表は全幅で閉じて始める（開いたままだとPCでも月額プランが画面のはるか下になる）。
+    // ページ内リンク・他ページからの pricing.html#spot-fees で来たときは開く。JSが無い環境では開いたまま読める。
     (function(){
       var d=document.getElementById('spot-fees');
-      if(!d||!window.matchMedia||!window.matchMedia('(max-width: 640px)').matches)return;
+      if(!d)return;
       var h=location.hash.slice(1),t=h&&document.getElementById(decodeURIComponent(h));
       if(t&&(t===d||d.contains(t)))return;
       d.open=false;

@@ -1118,7 +1118,7 @@ article.post .post-toc li { font-size: 14.5px; line-height: 1.7; color: var(--in
 article.post .post-toc a { padding-block: 4px; color: var(--sugi); border-bottom: 0; text-decoration: underline; text-decoration-color: var(--g300); text-underline-offset: 3px; transition: text-decoration-color .3s; }
 article.post .post-toc a:hover { text-decoration-color: var(--moegi); }
 /* 追従ヘッダーに見出しが隠れないようにする */
-article.post h2[id] { scroll-margin-top: 96px; }
+article.post h2[id] { scroll-margin-top: 8px; } /* html の88pxと合わせて96px */
 article.post .case-box { background: var(--yuki); border: 1px solid var(--line); border-radius: var(--r); padding: 20px 24px; margin: 0 0 1.6em; }
 article.post .case-box .cb-t { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .1em; color: #fff; background: var(--sugi); border-radius: 999px; padding: 3px 12px; margin: 0 0 12px; }
 article.post .case-box p { font-size: 14.5px; line-height: 1.95; margin-bottom: .7em; }
@@ -1509,8 +1509,9 @@ article.post .note { font-size: 12.5px; color: var(--ink3); margin-top: -1em; ma
 .service-catalog .svc-num::before { content: 'SERVICE'; display: block; color: var(--moegi-t); -webkit-text-stroke: 0; font-size: 8px; font-weight: 600; letter-spacing: .12em; margin-bottom: 2px; }
 .service-catalog .svc-num { line-height: 1.1; }
 .hub-page .proc-dot { width: auto; min-width: 60px; padding-inline: 6px; border-radius: 999px; }
+/* ページ内リンク・scrollIntoView の着地は html の scroll-padding（固定ヘッダー --nav-h ＋14px）だけで決める。
+   以前は [id] にも同じ88pxの scroll-margin があり、足し算で176px空いていた。要素側に足すのは差分だけにする。 */
 html { scroll-padding-top: 88px; }
-[id] { scroll-margin-top: 88px; }
 .hub-page .price-sec,
 .hub-page .case-sec,
 .hub-page .voice-sec,
@@ -1584,6 +1585,8 @@ html { scroll-padding-top: 88px; }
 @media (max-width: 640px) {
   .plan { text-align: center; }
   .plan-btn { margin-inline: auto; }
+  /* 3枚のプランのボタンは文言の長さで幅がばらつくので、カード幅にそろえる */
+  .plan .plan-btn { width: 100%; }
   .plan-features li, .plan-feature-sub { text-align: left; }
   .plan-badge, .plan-name, .plan-tagline, .plan-price, .plan-unit, .plan-founder, .plan-section, .plan-note, .plan-inherit { text-align: center; }
   .plan-price { justify-content: center; }
