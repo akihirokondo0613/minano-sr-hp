@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="../page-enter.js?v=20261008-floating1"></script>
+<script defer src="../page-enter.js?v=20261008-flow1"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>無料相談・お問い合わせ｜みなの社会保険労務士事務所</title>
 <meta name="description" content="富山県富山市に所在する、みなの社会保険労務士事務所の無料相談・お問い合わせページ。来所・訪問・オンラインに対応し、全国からご相談いただけます。">
@@ -152,6 +152,7 @@ html.nav-menu-open{overflow:hidden}
 .form-grid{display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:flex-start}
 .form-wrap{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:40px 32px}
 .form-req-note{margin-bottom:28px;font-size:14px;color:var(--ink3)}
+.form-from-note{margin:-2px 0 8px;font-size:13px;line-height:1.6;color:var(--ink3)}
 .form-req-note b{color:var(--g700)}
 /* 必須・任意は同じ形の小ラベルで示す（「*」と「（任意）」の混在をやめる） */
 .req,.opt,.multi{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:4px;font-size:11px;font-weight:700;line-height:1.6;letter-spacing:.04em;vertical-align:1px;white-space:nowrap}
@@ -814,6 +815,17 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
         </ul>
       </div>
       <div>
+        <p class="footer-h">支援の進め方</p>
+        <ul class="footer-ul">
+          <li><a href="../support.html">支援全体を見る</a></li>
+          <li><a href="case-seizogyo.html">製造業</a></li>
+          <li><a href="case-inshoku.html">飲食業</a></li>
+          <li><a href="case-kaigo.html">介護業</a></li>
+          <li><a href="case-kensetsu.html">建設業</a></li>
+          <li><a href="case-shika.html">歯科・クリニック</a></li>
+        </ul>
+      </div>
+      <div>
         <p class="footer-h">コンテンツ</p>
         <ul class="footer-ul">
           <li><a href="../pricing.html">料金・顧問プラン</a></li>
@@ -821,11 +833,10 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
           <li><a href="../blog.html">コラム・ブログ</a></li>
           <li><a href="../joseikin.html">令和8年度 助成金5選</a></li>
           <li><a href="../infographic.html">社労士とは？</a></li>
-          <li><a href="case-seizogyo.html">支援例：製造業</a></li>
-          <li><a href="case-inshoku.html">支援例：飲食業</a></li>
-          <li><a href="case-kaigo.html">支援例：介護業</a></li>
-          <li><a href="case-kensetsu.html">支援例：建設業</a></li>
-          <li><a href="case-shika.html">支援例：歯科・<wbr>クリニック</a></li>
+          <li><a href="../shiryo.html">資料室</a></li>
+          <li><a href="../shoshiki.html">社内書式のひな形</a></li>
+          <li><a href="../partner.html">士業の方へ</a></li>
+          <li><a href="../portal.html">書式・窓口</a></li>
         </ul>
       </div>
       <div>
@@ -834,7 +845,6 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
           <li><a href="contact.html">無料相談フォーム</a></li>
           <li><span>電話<wbr>: 076-460-2562</span></li>
           <li><a href="mailto:contact@minano-sr.com">contact@minano-sr.com</a></li>
-          <li><a href="../portal.html">書式・窓口</a></li>
           <li><a href="../privacy-policy.html">プライバシーポリシー</a></li>
         </ul>
       </div>
@@ -1240,6 +1250,15 @@ if (fromPlan) {
     standard: ["スタンダードプランについて詳しく知りたいです。", "顧問契約について"],
     custom:   ["31名以上プランについて、従業員数に応じた顧問料と業務範囲を相談したいです。", "顧問契約について"],
     sim:      ["料金シミュレーターの結果をもとに、顧問プランを相談したいです。", "顧問契約について"],
+    // 料金ページの単発の依頼（?from=once／表の下の ?from=once-list）
+    once:     ["単発のご依頼について相談したいです。", ""],
+    // 支援の進め方ページ（support.html）の段階別ボタンと最終CTA（?from=support-final）
+    "support-phase1": ["創業期の支援について相談したいです。", ""],
+    "support-phase2": ["拡大期の支援について相談したいです。", ""],
+    "support-phase3": ["組織強化期の支援について相談したいです。", ""],
+    support:  ["自社の段階に合う支援について相談したいです。", ""],
+    // 士業連携ページ（partner.html）
+    partner:  ["士業としての連携について相談したいです。", ""],
     "startup-payroll": ["労務の顧問について、任せられる範囲と料金を確認したいです。", "顧問契約について"],
     joseikin: ["助成金の申請サポートについて相談したいです。", "助成金申請"],
     // 制度別ガイド（uploads/joseikin-*.html）からの遷移。キーが無いとプリフィルが効かず、
@@ -1271,6 +1290,23 @@ if (fromPlan) {
   }[fromBase];
   if (entry) {
     let body = entry[0];
+    // どの入口から来たかを、フォーム見出しの直下に小さく示す（文面の「〇〇について」から取る）
+    const topic = {
+      sim: '料金シミュレーターの結果',
+      'about-strengths': '事務所の支援内容と依頼方法',
+      'shugyo-tenken': '就業規則の点検',
+    }[fromBase] || ((body.match(/^(.+?)について/) || [])[1] || '');
+    const formHead = document.querySelector('.form-wrap > h2');
+    if (topic && formHead) {
+      let fromNote = document.getElementById('formFromNote');
+      if (!fromNote) {
+        fromNote = document.createElement('p');
+        fromNote.id = 'formFromNote';
+        fromNote.className = 'form-from-note';
+        formHead.insertAdjacentElement('afterend', fromNote);
+      }
+      fromNote.textContent = topic + 'についてのご相談';
+    }
     // 助成金ページの対象チェックで選んだ候補を引き継ぐ（同じタブの中だけ・URLには載せない）
     if (fromBase === 'joseikin') {
       try {

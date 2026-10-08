@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="../page-enter.js?v=20261008-floating1"></script>
+<script defer src="../page-enter.js?v=20261008-flow1"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>富山の給与計算代行｜料金・外注の範囲・引継ぎ｜みなの社労士</title>
 <meta name="description" content="富山の給与計算代行。毎月の給与・賞与計算と社会保険手続きをまとめて外注する顧問プラン、給与計算だけの単発依頼に対応。人数別の料金、勤怠集計との分担、担当者の退職や委託先変更時の引継ぎを案内します。初回相談無料。">
@@ -547,7 +547,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
   window.addEventListener('scroll',window.__pgScroll,{passive:true});
   window.toggleNav=function(){document.getElementById('mobNav').classList.toggle('open')};
   window.closeNav=function(){document.getElementById('mobNav').classList.remove('open')};
-  var ro=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target)}})},{threshold:.12});
+  var ro=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target)}})},{threshold:0,rootMargin:'0px 0px -10% 0px'});
   document.querySelectorAll('.rv').forEach(function(el){ro.observe(el)});
 })();
 </script>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="../page-enter.js?v=20261008-floating1"></script>
+<script defer src="../page-enter.js?v=20261008-flow1"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>介護事業所の労務管理・処遇改善加算｜人員配置・夜勤・変形労働時間制｜富山の社労士</title>
 <meta name="description" content="介護事業所の労務管理を、処遇改善加算と賃金規程・就業規則の整合、人員配置と勤務表・勤怠の一致、夜勤と1か月単位の変形労働時間制、助成金の活用まで一体で整える進め方。従業員10〜50名規模の介護事業所でよくある状況をもとにした支援の一例です。">
@@ -557,7 +557,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.page-h,.art-title,.card-title,.post-title,.art-h,
   window.addEventListener('scroll',window.__pgScroll,{passive:true});
   window.toggleNav=function(){document.getElementById('mobNav').classList.toggle('open')};
   window.closeNav=function(){document.getElementById('mobNav').classList.remove('open')};
-  var ro=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target)}})},{threshold:.12});
+  var ro=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target)}})},{threshold:0,rootMargin:'0px 0px -10% 0px'});
   document.querySelectorAll('.rv').forEach(function(el){ro.observe(el)});
 })();
 </script>

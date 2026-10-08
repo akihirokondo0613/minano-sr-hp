@@ -13,6 +13,11 @@
 // 2・3で補った分には data-auto を付け、次回は選び直す（記事が増えても固定されない）。
 // 下書き表示（draft-placeholder）が残るブロックは触らない（audit-blog.mjs が止める）。
 //
+// 記事末の並びもここでそろえる（2026-10-08）。本文末の「当事務所のサポート」の直後に
+// 相談・関連サービス・料金の3枚（section.next-steps）を置き、そのあとに参考情報 →
+// あわせて読みたい → 著者欄の順にする。以前は著者欄の下に3枚があり、相談の入口が
+// 参考情報と関連記事に押し下げられていた。
+//
 // 使い方:
 //   node scripts/sync-related-posts.mjs           反映する
 //   node scripts/sync-related-posts.mjs --check   差分があれば異常終了（CI用）
@@ -105,6 +110,21 @@ function renderSection(current, curated) {
   ].join('\n')).html;
 }
 
+const NEXT_STEPS_BLOCK = /\n*<section class="next-steps">[\s\S]*?<\/section>\n*/;
+
+// 3枚の案内を </article> の直後（参考情報より前）へ移す。すでにその位置なら何もしない。
+function placeNextSteps(html, relativePath) {
+  const block = html.match(NEXT_STEPS_BLOCK)?.[0];
+  if (!block) return html;
+  const articleEnd = html.indexOf('</article>');
+  if (articleEnd < 0) throw new Error(`${relativePath}: </article> がありません`);
+  const section = block.trim();
+  const without = html.replace(NEXT_STEPS_BLOCK, '\n\n');
+  const end = without.indexOf('</article>') + '</article>'.length;
+  const rest = without.slice(end).replace(/^\n+/, '');
+  return `${without.slice(0, end)}\n\n${section}\n\n${rest}`;
+}
+
 let changed = 0;
 for (const article of articles) {
   const relativePath = `blog/${article.slug}.html`;
@@ -121,12 +141,13 @@ for (const article of articles) {
     const section = renderSection(article, curatedSlugs(existing, article));
     next = next.replace(RELATED_BLOCK, () => section);
   } else {
-    // 管理画面の下書き等でブロックが無い記事は、著者欄（無ければ次のステップ）の直前へ入れる。
-    const anchor = ['<aside class="author-card">', '<section class="next-steps">'].find((a) => next.includes(a));
-    if (!anchor) throw new Error(`${relativePath}: author-card も next-steps もありません`);
+    // 管理画面の下書き等でブロックが無い記事は、著者欄（無ければ一覧へ戻るリンク）の直前へ入れる。
+    const anchor = ['<aside class="author-card">', '<div class="back-link">'].find((a) => next.includes(a));
+    if (!anchor) throw new Error(`${relativePath}: author-card も back-link もありません`);
     const section = renderSection(article, []);
     next = next.replace(anchor, () => `${section}\n${anchor}`);
   }
+  next = placeNextSteps(next, relativePath);
   const blocks = (next.match(/<section class="post-related"/g) || []).length;
   if (blocks !== 1) throw new Error(`${relativePath}: あわせて読みたいが${blocks}個あります`);
 

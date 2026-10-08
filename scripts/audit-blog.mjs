@@ -238,7 +238,8 @@ function inspect(article) {
     dx: 'service-dx.html',
   }[article.service];
   const nextSteps = source.match(/<section class="next-steps"[\s\S]*?<\/section>/)?.[0] ?? '';
-  const nextStepHrefs = [...nextSteps.matchAll(/href=["']([^"']+)["']/g)].map((match) => match[1]);
+  // 料金カードは service-xxx.html#fee へ着地させるので、照合は # より前で行う。
+  const nextStepHrefs = [...nextSteps.matchAll(/href=["']([^"']+)["']/g)].map((match) => match[1].replace(/#.*$/, ''));
   const reader = readerValues(body);
   const action = firstBlockWithClass(body, 'post-action');
   const actionItems = (action.match(/<li\b[^>]*>/g) ?? []).length;

@@ -57,6 +57,16 @@ function mnIsHomePath(p) { return /(^|\/)(index\.html)?$/.test(p || ''); }
     }
   }
 
+  // 本文内の相談ボタン。これが画面に入っている間は追従ボタンを出さない（同じ行き先のボタンが2つ重ならないように）。
+  // ヘッダー・スマホメニュー・追従ボタン自身・フッターの中にある相談リンクは数えない。
+  var CONSULT_SEL = 'a[href*="contact.html"]:is(.btn-primary,.btn-secondary,.plan-btn,.ks-cta,.ns-primary,.startup-primary,.ig-btn-p)';
+  var CONSULT_SKIP = '.floating, .nav, nav, .mob-nav, #mobNav, .footer, footer';
+  function consultButtons() {
+    return Array.prototype.filter.call(document.querySelectorAll(CONSULT_SEL), function (a) {
+      return !(a.closest && a.closest(CONSULT_SKIP));
+    });
+  }
+
   function init() {
     cleanup();
     var html = document.documentElement;
@@ -65,28 +75,31 @@ function mnIsHomePath(p) { return /(^|\/)(index\.html)?$/.test(p || ''); }
     var hero = document.querySelector('.hero-overlay') || document.querySelector('.hero, .page-hero');
     var finalArea = document.querySelector('.final-sec, .final-cta');
     var footer = document.querySelector('.footer');
+    var consult = consultButtons();
     var state = {
       hero: isInViewport(hero),
       finalArea: isInViewport(finalArea),
-      footer: isInViewport(footer)
+      footer: isInViewport(footer),
+      consult: consult.filter(isInViewport)
     };
 
     function render() {
       var footerSide = state.finalArea || state.footer;
-      var fixedHidden = state.hero || footerSide;
+      var fixedHidden = state.hero || footerSide || state.consult.length > 0;
       var floating = document.querySelector('.floating');
       html.classList.toggle('mn-fixed-ui-hidden', fixedHidden);
       if (floating) floating.classList.toggle('hidden', fixedHidden);
     }
     render();
 
-    var targets = [hero, finalArea, footer].filter(Boolean);
+    var targets = [hero, finalArea, footer].filter(Boolean).concat(consult);
     if (!targets.length) return;
     if (!('IntersectionObserver' in window)) {
       window.__footerUiFallback = function () {
         state.hero = isInViewport(hero);
         state.finalArea = isInViewport(finalArea);
         state.footer = isInViewport(footer);
+        state.consult = consult.filter(isInViewport);
         render();
       };
       window.addEventListener('scroll', window.__footerUiFallback, { passive: true });
@@ -99,6 +112,11 @@ function mnIsHomePath(p) { return /(^|\/)(index\.html)?$/.test(p || ''); }
         if (entry.target === hero) state.hero = entry.isIntersecting;
         if (entry.target === finalArea) state.finalArea = entry.isIntersecting;
         if (entry.target === footer) state.footer = entry.isIntersecting;
+        if (consult.indexOf(entry.target) >= 0) {
+          var at = state.consult.indexOf(entry.target);
+          if (entry.isIntersecting && at < 0) state.consult.push(entry.target);
+          if (!entry.isIntersecting && at >= 0) state.consult.splice(at, 1);
+        }
       });
       render();
     }, { threshold: 0 });
@@ -300,6 +318,7 @@ function mnSplitLabel(el, text) {
   var KEEP_HEAD_IDS = {
     'pg-veil-style': 1,
     'mn-footer-ui-style': 1,
+    'mn-scroll-restore-style': 1,
     'hm-css': 1,
     'mn-image-slot-public-style': 1,
     '__om-edit-overrides': 1
@@ -479,6 +498,53 @@ function mnSplitLabel(el, text) {
     return Promise.all(ps);
   }
 
+  // アンカーの着地位置。CSS の scroll-margin-top / scroll-padding-top（固定ヘッダーぶん）をそのまま使い、
+  // ネイティブのページ内移動とSPA遷移で着地がずれないようにする。どちらも無いときだけ 76px。
+  function anchorY(el) {
+    var off = 0;
+    try {
+      off = (parseFloat(getComputedStyle(el).scrollMarginTop) || 0) + (parseFloat(getComputedStyle(de).scrollPaddingTop) || 0);
+    } catch (e) {}
+    return Math.max(0, el.getBoundingClientRect().top + (window.scrollY || 0) - (off || 76));
+  }
+
+  // 戻る／進むの記憶位置へ合わせ続ける（最大2.5秒）。差し替え直後や読み込み直後は、画像・開閉・
+  // content-visibility の描画で高さが後から伸び、1回の scrollTo では短いページの末尾で止まって
+  // 記憶位置からずれる（WebKitで顕著）。利用者が自分で動かしたらすぐやめる。
+  // content-visibility:auto の節は画面外だと仮の高さ（860〜900px）のまま描画されない。記憶位置が
+  // その節の中だと、ページが短いまま末尾で止まり、節も画面に入らず伸びない（WebKitの料金ページで再現）。
+  // 合わせている間だけ全節を描画させ、実際の高さで位置を決める。終われば元の省略に戻る（auto で実寸を記憶）。
+  var holdTimer = null, userMoved = false;
+  if (!document.getElementById('mn-scroll-restore-style')) {
+    var restoreStyle = document.createElement('style');
+    restoreStyle.id = 'mn-scroll-restore-style';
+    restoreStyle.textContent = 'html.mn-scroll-restore main>section,html.mn-scroll-restore .hub-page>section{content-visibility:visible!important}';
+    document.head.appendChild(restoreStyle);
+  }
+  function stopHold() {
+    if (holdTimer) { clearInterval(holdTimer); holdTimer = null; }
+    de.classList.remove('mn-scroll-restore');
+  }
+  ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (t) {
+    window.addEventListener(t, function () { userMoved = true; stopHold(); }, { passive: true });
+  });
+  function holdScroll(y) {
+    stopHold();
+    userMoved = false;
+    if (!y) return;
+    de.classList.add('mn-scroll-restore');
+    var until = Date.now() + 2500;
+    function step() {
+      if (userMoved || Date.now() > until) { stopHold(); return; }
+      if (Math.abs((window.scrollY || 0) - y) <= 4) return;
+      de.style.scrollBehavior = 'auto';
+      window.scrollTo(0, y);
+      requestAnimationFrame(function () { de.style.scrollBehavior = ''; });
+    }
+    step();
+    holdTimer = setInterval(step, 100);
+  }
+
   /* ---- 遷移本体：文字を読む時間とページの準備がそろってから開く ---- */
   var busy = false;
   function hardGo(url) { try { location.href = url; } catch (e) {} }
@@ -496,7 +562,11 @@ function mnSplitLabel(el, text) {
       if (swapped) { doLift(); }   // 新DOMは差し替え済み → カーテンだけめくって続行（再読込しない）
       else { hardGo(url); }        // fetch/parse段階で停止 → 従来どおり素の遷移
     }, 8000);
-    try { history.replaceState({ mn: 1, y: window.scrollY || 0 }, '', location.href); } catch (e) {}
+    // 離れるページの位置を、そのページの履歴項目へ残す。戻る／進む（push:false）では
+    // location が既に行き先を指しているので書かない（書くと行き先の記憶位置を今の位置で上書きする）。
+    if (opts.push !== false) {
+      try { history.replaceState({ mn: 1, y: window.scrollY || 0 }, '', location.href); } catch (e) {}
+    }
 
     // 遷移文言は必ず非空にする（空だと「文字なしのアンダーライン」になる）。
     var label = resolveLabel(destinationName(url) || opts.label);
@@ -585,12 +655,13 @@ function mnSplitLabel(el, text) {
           var y = opts.scrollY || 0;
           if (hash) {
             var tg = document.getElementById(decodeURIComponent(hash.slice(1)));
-            if (tg) y = Math.max(0, tg.getBoundingClientRect().top + (window.scrollY || 0) - 76);
+            if (tg) y = anchorY(tg);
           }
           // scroll-behavior:smooth だと位置リセットがめくり後まで続く「見えるスクロール」になる。裏で即時に。
           de.style.scrollBehavior = 'auto';
           window.scrollTo(0, y);
           requestAnimationFrame(function () { de.style.scrollBehavior = ''; });
+          if (!hash && opts.scrollY) holdScroll(opts.scrollY);   // 戻る／進む：高さが伸びきるまで記憶位置に合わせ続ける
           return readiness().then(function () {
             // バグ修正（サービス詳細→トップ#services 等）：トップのヒーロー画像のcap3.5s遅延読み込みで、
             // readiness()待機中にレイアウトが伸びて hash ターゲットの絶対位置がズレる（最悪フッター付近までズレる）。
@@ -598,7 +669,7 @@ function mnSplitLabel(el, text) {
             if (hash) {
               var tg2 = document.getElementById(decodeURIComponent(hash.slice(1)));
               if (tg2) {
-                var y2 = Math.max(0, tg2.getBoundingClientRect().top + (window.scrollY || 0) - 76);
+                var y2 = anchorY(tg2);
                 if (Math.abs(y2 - window.scrollY) > 4) {
                   de.style.scrollBehavior = 'auto';
                   window.scrollTo(0, y2);
@@ -744,7 +815,7 @@ function mnSplitLabel(el, text) {
       var h = url.hash;
       if (h) {
         var el = document.getElementById(decodeURIComponent(h.slice(1)));
-        if (el) { de.style.scrollBehavior = 'auto'; window.scrollTo(0, Math.max(0, el.getBoundingClientRect().top + (window.scrollY || 0) - 76)); requestAnimationFrame(function () { de.style.scrollBehavior = ''; }); }
+        if (el) { de.style.scrollBehavior = 'auto'; window.scrollTo(0, anchorY(el)); requestAnimationFrame(function () { de.style.scrollBehavior = ''; }); }
       } else {
         window.scrollTo(0, (ev.state && ev.state.y) || 0);
       }
@@ -764,7 +835,50 @@ function mnSplitLabel(el, text) {
       scrollY: (ev.state && ev.state.y) || 0
     });
   });
-  try { history.replaceState({ mn: 1, y: window.scrollY || 0 }, '', location.href); } catch (e) {}
+  // 通常の読み込み。scrollRestoration を manual にしているので、ブラウザは戻ったときに位置を戻さない。
+  // ①読んでいる位置を履歴項目へ残し続け（スクロールが止まって0.3秒後・離れるとき）、
+  // ②戻る／進むで読み込まれたら、その位置へ戻す。
+  // 以前は読み込みのたびに y=0 で上書きしていたため、通常遷移から戻ると先頭や別の位置に着いていた。
+  // WebKit は別文書から戻ったとき history.state を空で返すことがあるため、同じタブの
+  // sessionStorage にもURLごとに残す（位置の数値だけ。個人情報は入れない）。
+  var Y_KEY = 'mn:scroll-y:';
+  function saveY() {
+    if (busy || holdTimer) return;   // 遷移中・位置合わせ中の途中位置は記憶しない
+    var y = Math.round(window.scrollY || 0);
+    try {
+      var st = history.state;
+      if (!st || !st.mn || st.y !== y) history.replaceState({ mn: 1, y: y }, '', location.href);
+    } catch (e) {}
+    try { sessionStorage.setItem(Y_KEY + location.pathname + location.search, String(y)); } catch (e) {}
+  }
+  (function () {
+    var navType = '';
+    try { navType = (performance.getEntriesByType('navigation')[0] || {}).type || ''; } catch (e) {}
+    try { if (!navType && performance.navigation && performance.navigation.type === 2) navType = 'back_forward'; } catch (e) {}
+    var st = history.state;
+    var savedY = 0;
+    if (navType === 'back_forward' && !location.hash) {
+      if (st && st.mn && st.y > 0) savedY = st.y;
+      else { try { savedY = parseInt(sessionStorage.getItem(Y_KEY + location.pathname + location.search), 10) || 0; } catch (e) {} }
+    }
+    if (savedY) {
+      try { history.replaceState({ mn: 1, y: savedY }, '', location.href); } catch (e) {}
+      holdScroll(savedY);
+      if (document.readyState !== 'complete') {
+        window.addEventListener('load', function () { if (!userMoved) holdScroll(savedY); }, { once: true });
+      }
+    } else {
+      try { history.replaceState({ mn: 1, y: window.scrollY || 0 }, '', location.href); } catch (e) {}
+    }
+    var saveTimer = null;
+    if (window.__mnHistScroll) window.removeEventListener('scroll', window.__mnHistScroll);
+    window.__mnHistScroll = function () {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveY, 300);
+    };
+    window.addEventListener('scroll', window.__mnHistScroll, { passive: true });
+    window.addEventListener('pagehide', saveY);
+  })();
 
   // デバッグ・検証用フック（v7：社内書式 shoshiki を演出対象外に。v6：ページCSSの html zoom 変更からカーテンを分離）
   window.__mnSpa = { navigate: navigate, v: 10, isArticleDest: isArticleDest, isFormDest: isFormDest, isSpotDest: isSpotDest };
