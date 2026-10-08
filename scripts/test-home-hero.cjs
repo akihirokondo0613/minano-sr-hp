@@ -198,6 +198,12 @@ async function measure(page) {
         if (rail && rail !== element && ['auto', 'scroll'].includes(getComputedStyle(rail).overflowX)) {
           return false;
         }
+        // スマホの書式名一覧もグループごとの横送り。列（ul）自身ははみ出し検査を続ける。
+        const pickerRow = element.closest('#tools .fg-picker-group ul');
+        if (pickerRow && pickerRow !== element
+          && ['auto', 'scroll'].includes(getComputedStyle(pickerRow).overflowX)) {
+          return false;
+        }
         const style = getComputedStyle(element);
         if (style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity) === 0) {
           return false;
@@ -264,10 +270,21 @@ async function measure(page) {
         pickerLinks: pickerLinks.map((link) => {
           const style = getComputedStyle(link);
           const rect = link.getBoundingClientRect();
+          // スマホではグループごとの横スクロール1行になる。スクロール列の中の書式名は、
+          // 列そのものが画面内にあり、列のスクロール範囲の中に収まっていれば届く。
+          const list = link.closest('ul');
+          const listStyle = list ? getComputedStyle(list) : null;
+          const scroller = list && /^(auto|scroll)$/.test(listStyle.overflowX)
+            && list.scrollWidth > list.clientWidth + 1 ? list : null;
+          const listRect = scroller ? scroller.getBoundingClientRect() : null;
+          const offsetLeft = scroller ? rect.left - listRect.left + scroller.scrollLeft : null;
           return { key: link.dataset.fgSelect, href: link.getAttribute('href'),
             text: link.textContent, visible: style.display !== 'none'
               && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0,
-            left: rect.left, right: rect.right, width: rect.width, height: rect.height };
+            left: scroller ? listRect.left : rect.left, right: scroller ? listRect.right : rect.right,
+            width: rect.width, height: rect.height,
+            inScroller: scroller ? offsetLeft >= -0.5
+              && offsetLeft + rect.width <= scroller.scrollWidth + 0.5 : null };
         }),
         cloneIdCount: galleryRail?.querySelectorAll('.fg-copy[id], .fg-copy [id]').length,
         cloneFocusableCount: [...(galleryRail?.querySelectorAll('.fg-copy a') || [])]
@@ -799,7 +816,7 @@ async function checkReducedMotion(browser, engine, width, failures) {
           || gallery.pickerGroups.join('/') !== '入社/勤務・休暇/休職・退職/証明・その他'
           || gallery.pickerLinks.some((link) => !FORM_GALLERY_KEYS.includes(link.key)
             || link.href !== `#fg-preview-${link.key}` || !link.visible || !link.text
-            || link.height < 24 - EPSILON || link.left < -EPSILON
+            || link.height < 24 - EPSILON || link.inScroller === false || link.left < -EPSILON
             || link.right > result.viewportWidth + EPSILON)
           || new Set(gallery.pickerLinks.map((link) => link.key)).size !== FORM_GALLERY_KEYS.length
           || gallery.cloneIdCount !== 0 || gallery.cloneFocusableCount !== 0) {

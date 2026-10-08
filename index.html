@@ -5,7 +5,7 @@
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta name="msvalidate.01" content="77FD18A4932A50E35E3C40CFA2EA7804">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="page-enter.js?v=20260921-pace1"></script>
+<script defer src="page-enter.js?v=20261008-floating1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="preload" as="image" type="image/avif" imagesrcset="assets/illustrations/hero-toyama-sky-portrait-540.avif 540w, assets/illustrations/hero-toyama-sky-portrait-1080.avif 1080w" imagesizes="120vw" media="(max-width:540px)" fetchpriority="high">
@@ -461,9 +461,7 @@ main > section:not(.hero) {
   .hero-btns { justify-content: center; width: 100%; }
   .why-label.hero-label { display: flex; width: fit-content; margin-inline: auto; }
   .hero-trust { justify-content: center; }
-  .page-hero-inner { text-align: center; }
-  .page-hero-inner .breadcrumb { justify-content: center; }
-  .page-sub, .page-hero .lead { margin-inline: auto; }
+  /* 下層ページのヒーローは長文のリード文を持つため、パンくず・見出しごと左揃えにする（2026-10-08） */
   .page-hero .pub-board, .page-hero .hub-snapshot { text-align: left; }
   .faq-aside { text-align: center; }
   .jk-sec-head, .startup-hero-copy, .cat-head { text-align: center; }
@@ -488,17 +486,17 @@ main > section:not(.hero) {
 .home-once{margin:0 0 clamp(22px,3vw,30px);padding:clamp(18px,2.4vw,26px) clamp(18px,2.6vw,28px);background:var(--shiro);border:1.5px solid var(--moegi);border-radius:var(--r-lg)}
 .home-once-h{font-family:var(--disp);font-size:clamp(17px,1.9vw,21px);font-weight:800;color:var(--iwa);margin:0}
 .home-once-h strong{color:var(--sugi)}
-.home-once-sub{font-size:13px;line-height:1.9;color:var(--ink3);margin:6px 0 0}
+.home-once-sub{font-size:13px;line-height:1.9;color:var(--ink3);margin:6px 0 0;max-width:44em}
 .home-once-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px 14px;margin:16px 0 0;padding:0;list-style:none}
 .home-once-grid li{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--yuki)}
 .home-once-name{display:block;font-size:13.5px;font-weight:700;color:var(--iwa)}
 .home-once-price{display:block;margin-top:3px;font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--sugi)}
 .home-once-days{display:block;margin-top:3px;font-size:11.5px;line-height:1.6;color:var(--ink3)}
 .home-once-actions{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:16px}
-.home-once-note{font-size:11.5px;color:var(--ink3);margin:10px 0 0;line-height:1.7}
+.home-once-note{font-size:11.5px;color:var(--ink3);margin:10px 0 0;line-height:1.7;max-width:44em}
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20261008-critical1" media="print" data-async-style onload="this.media='all';this.onload=null">
-<noscript><link rel="stylesheet" href="skin-v2.css?v=20261008-critical1"></noscript>
+<link rel="stylesheet" href="skin-v2.css?v=20261008-layout1" media="print" data-async-style onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="skin-v2.css?v=20261008-layout1"></noscript>
 <style id="home-scroll-rhythm">
 /* トップの配色：白/雪白を土台、淡緑を区切り、深杉を文字と導線に使う。
    分野の識別色は記事一覧だけに残し、追従の有無で別のデザインにしない。 */
@@ -703,7 +701,7 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 .fg-paper img{display:block;width:100%;height:auto}
 .fg-paper img:not([src]){display:none}
 </style>
-<link rel="stylesheet" href="home-form-gallery.css?v=20261005-basic-previews1">
+<link rel="stylesheet" href="home-form-gallery.css?v=20261008-picker-row1">
 <style id="home-topics-marquee">
 /* 06 TOPICS ― 記事カードの横送りレール。
    自動では動かさず、スワイプと前後ボタンで送る。中身はCSSのスクロールスナップで、
@@ -893,6 +891,8 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
  #services .svc-row{grid-template-columns:72px minmax(0,1fr) 18px;gap:14px;padding:24px 0}
  #services .svc-ill{width:72px}
  #services .svc-info-desc{font-size:13px}
+ /* アイコンが左にあるので、名前と説明も左揃えにし、文の量に合わせた高さにする */
+ #services .svc-row>span:nth-of-type(3){min-height:auto;text-align:left}
  #services .home-section-more{text-align:center}
  #faq .faq-btn{padding:22px 0;gap:12px}
  #faq .faq-a-in{padding:0 0 24px 28px}
@@ -1875,7 +1875,7 @@ ABOUT ― 代表メッセージ・事務所・地域
     if(css&&css.sheet){afterStyle();return;}
     if(!css){
       css=document.createElement('link');css.id='home-form-gallery-style';css.rel='stylesheet';
-      css.href='home-form-gallery.css?v=20261005-basic-previews1';
+      css.href='home-form-gallery.css?v=20261008-picker-row1';
     }
     css.addEventListener('load',afterStyle,{once:true});
     css.addEventListener('error',afterStyle,{once:true});
@@ -1893,17 +1893,9 @@ ABOUT ― 代表メッセージ・事務所・地域
 // Open modal handlers removed — 詳細モーダルは未使用のため削除済み
 
 
-// 固定相談ボタンはスクロールごとの位置計測を避け、ヒーローCTAの交差状態だけで切り替える。
-if(window.__heroCtaObserver)window.__heroCtaObserver.disconnect();
-(function(){
-  var fl=document.getElementById('fl'),heroCta=document.querySelector('.hero-btns');
-  if(!fl)return;
-  if(!heroCta||!('IntersectionObserver' in window)){fl.classList.toggle('hidden',scrollY<300);return;}
-  window.__heroCtaObserver=new IntersectionObserver(function(entries){
-    var e=entries[0];if(e)fl.classList.toggle('hidden',e.isIntersecting);
-  },{threshold:0});
-  window.__heroCtaObserver.observe(heroCta);
-})();
+// 固定相談ボタンの表示判定は page-enter.js（見出し .hero-overlay 基準）に一本化した。
+// 旧版の監視がSPAで残っていれば止める。
+if(window.__heroCtaObserver){window.__heroCtaObserver.disconnect();window.__heroCtaObserver=null;}
 var ticking=false;
 if(window.__pgScroll)window.removeEventListener('scroll',window.__pgScroll);
 window.__pgScroll=function(){
