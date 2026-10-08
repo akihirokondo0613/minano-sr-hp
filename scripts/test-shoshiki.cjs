@@ -53,10 +53,10 @@ const ONBOARDING_KIT_FILES = [
 const DOCUMENT_PREVIEWS = [
   ['guide.pdf', 'assets/previews/onboarding-guide-preview.webp', 'assets/download/onboarding-kit/guide.pdf'],
   ['labor-notice.xlsx', 'assets/previews/labor-notice-sample.webp', null],
-  ['personal.pdf', 'assets/previews/onboarding-personal-sample.webp', 'assets/download/onboarding-kit/personal.pdf'],
+  ['personal.pdf', 'assets/previews/onboarding-personal-sample-v2.webp', 'assets/download/onboarding-kit/personal.pdf'],
   ['bank.pdf', 'assets/previews/onboarding-bank-sample.webp', 'assets/download/onboarding-kit/bank.pdf'],
   ['commute.pdf', 'assets/previews/onboarding-commute-sample.webp', 'assets/download/onboarding-kit/commute.pdf'],
-  ['emergency.pdf', 'assets/previews/onboarding-emergency-sample.webp', 'assets/download/onboarding-kit/emergency.pdf'],
+  ['emergency.pdf', 'assets/previews/onboarding-emergency-sample-v2.webp', 'assets/download/onboarding-kit/emergency.pdf'],
   ['establishment', 'assets/previews/procedure-establishment-sample.webp', 'assets/download/procedure-establishment.pdf'],
   ['onboarding', 'assets/previews/procedure-onboarding-sample.webp', 'assets/download/procedure-onboarding.pdf'],
   ['retirement', 'assets/previews/procedure-retirement-sample.webp', 'assets/download/procedure-retirement.pdf'],

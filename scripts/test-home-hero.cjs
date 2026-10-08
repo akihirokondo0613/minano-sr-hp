@@ -39,10 +39,10 @@ const FORM_GALLERY_PREVIEWS = [
   'assets/previews/procedure-retirement-sample.webp',
   'assets/previews/procedure-leave-sample.webp',
   'assets/previews/onboarding-guide-preview.webp',
-  'assets/previews/onboarding-personal-sample.webp',
+  'assets/previews/onboarding-personal-sample-v2.webp',
   'assets/previews/onboarding-bank-sample.webp',
   'assets/previews/onboarding-commute-sample.webp',
-  'assets/previews/onboarding-emergency-sample.webp',
+  'assets/previews/onboarding-emergency-sample-v2.webp',
   'assets/previews/procedure-establishment-sample.webp',
   ...COMMON_FORM_PREVIEWS.map((form) => form.preview),
 ];
