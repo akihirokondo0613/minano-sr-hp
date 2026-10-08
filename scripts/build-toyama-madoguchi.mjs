@@ -117,6 +117,10 @@ const STYLE = `<style id="madoguchi">
 .mdg-group{margin-top:clamp(30px,4vw,48px);scroll-margin-top:96px}
 .mdg-group-lead{font-size:16px;color:var(--ink2);line-height:1.95;letter-spacing:.02em;margin:0 0 20px;max-width:44em;text-wrap:pretty;word-break:auto-phrase}
 .mdg-list{display:grid;gap:14px}
+@media(min-width:900px){.mdg-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.mdg-common{margin:0 0 20px;padding:16px 20px;border:1px solid var(--line);border-radius:var(--r);background:#fff}
+.mdg-common-t{margin:0 0 8px;font-size:13.5px;font-weight:700;color:var(--ink3);letter-spacing:.04em}
+.mdg-jump{margin-top:4px}
 .mdg-office{border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;background:#fff;scroll-margin-top:96px}
 .mdg-office-n{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 10px;line-height:1.6;text-wrap:pretty;word-break:auto-phrase}
 .mdg-dl{display:grid;grid-template-columns:76px minmax(0,1fr);gap:6px 16px;margin:0 0 12px}
@@ -141,7 +145,7 @@ function hostOf(source) {
   try { return new URL(source).host; } catch { return source; }
 }
 
-function officeBlock(office) {
+function officeBlock(office, commonKey) {
   const rows = [
     office.address ? ['所在地', esc(office.address)] : null,
     ['電話', esc(office.tel)],
@@ -153,7 +157,7 @@ function officeBlock(office) {
     '          <dl class="mdg-dl">',
     ...rows.map(([k, v]) => `            <dt>${k}</dt><dd>${v}</dd>`),
     '          </dl>',
-    office.tasks?.length
+    office.tasks?.length && tasksKey(office) !== commonKey
       ? `          <ul class="mdg-tasks">\n${office.tasks.map((t) => `            <li>${esc(t)}</li>`).join('\n')}\n          </ul>`
       : '',
     office.notes ? `          <p class="mdg-note">${esc(office.notes)}</p>` : '',
@@ -164,19 +168,56 @@ function officeBlock(office) {
   ].filter(Boolean).join('\n');
 }
 
+/** 手続き一覧の同一判定用のキー */
+function tasksKey(office) {
+  return JSON.stringify(office.tasks || []);
+}
+
+/**
+ * 2か所以上の窓口がまったく同じ手続き一覧を持つとき、その一覧を「共通の手続き」として系統の先頭に1回だけ出す。
+ * 同じ一覧の窓口のカードには所在地・電話・管轄・注記だけを残し、一覧が違う窓口は従来どおり全件を出す
+ * （意味を変えずに、スマホで同じ一覧が何度も続く長さを減らすため。2026-10-08）。
+ */
+function commonTasks(offices) {
+  const counts = new Map();
+  for (const o of offices) {
+    if (!o.tasks?.length) continue;
+    const k = tasksKey(o);
+    counts.set(k, (counts.get(k) || 0) + 1);
+  }
+  let best = null;
+  for (const [k, n] of counts) if (n >= 2 && (!best || n > best.n)) best = { k, n };
+  if (!best) return null;
+  return { key: best.k, count: best.n, tasks: JSON.parse(best.k), all: best.n === offices.length };
+}
+
 function buildMain(data) {
   const quick = data.quickTable
     .map((r) => `          <tr><th>${esc(r.task)}</th><td>${esc(r.to)}</td></tr>`)
     .join('\n');
 
-  const groups = data.groups.map((g) => `
+  const groups = data.groups.map((g) => {
+    const common = commonTasks(g.offices);
+    const commonBlock = common
+      ? `      <div class="mdg-common">
+        <p class="mdg-common-t">${common.all ? 'どの窓口でも扱う主な手続き' : `多くの窓口（${common.count}か所）で扱う主な手続き。ほかの窓口はカードに記載しています`}</p>
+        <ul class="mdg-tasks">
+${common.tasks.map((t) => `          <li>${esc(t)}</li>`).join('\n')}
+        </ul>
+      </div>\n`
+      : '';
+    return `
     <div class="mdg-group rv" id="mdg-g-${esc(g.key)}">
       <h3 class="sec-h" style="font-size:clamp(20px,2.6vw,27px)">${esc(g.title)}</h3>
       <p class="mdg-group-lead">${esc(g.lead)}</p>
-      <div class="mdg-list">
-${g.offices.map(officeBlock).join('\n')}
+${commonBlock}      <div class="mdg-list">
+${g.offices.map((o) => officeBlock(o, common?.key)).join('\n')}
       </div>
-    </div>`).join('\n');
+    </div>`;
+  }).join('\n');
+  const jump = data.groups
+    .map((g) => `<a href="#mdg-g-${esc(g.key)}">${esc(g.title.replace(/（.*?）/, ''))}</a>`)
+    .join('');
 
   return `<main id="main">
   <header class="page-hero has-ill">
@@ -221,6 +262,7 @@ ${quick}
         <div class="sec-head-body">
           <h2 class="sec-h">窓口から探す</h2>
           <p class="sec-sub">事業場の所在地で管轄が決まります。複数の事業場がある会社は、事業場ごとに提出先が変わります。</p>
+          <nav class="page-jump mdg-jump" aria-label="窓口の種類">${jump}</nav>
         </div>
       </div>
 ${groups}
