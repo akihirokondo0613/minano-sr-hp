@@ -423,9 +423,7 @@ main > section:not(.hero) {
   .hero-btns { justify-content: center; width: 100%; }
   .why-label.hero-label { display: flex; width: fit-content; margin-inline: auto; }
   .hero-trust { justify-content: center; }
-  .page-hero-inner { text-align: center; }
-  .page-hero-inner .breadcrumb { justify-content: center; }
-  .page-sub, .page-hero .lead { margin-inline: auto; }
+  /* 下層ページのヒーローは長文のリード文を持つため、パンくず・見出しごと左揃えにする（2026-10-08） */
   .page-hero .pub-board, .page-hero .hub-snapshot { text-align: left; }
   .faq-aside { text-align: center; }
   .jk-sec-head, .startup-hero-copy, .cat-head { text-align: center; }
@@ -503,12 +501,12 @@ main > section:not(.hero) {
 .tflow-step span { font-size: 11.5px; color: var(--ink3); line-height: 1.7; display: block; }
 .tflow-arr { display: flex; align-items: center; color: var(--moegi); flex-shrink: 0; }
 .tflow-arr svg { width: 15px; height: 15px; }
-.tflow-note { text-align: center; font-size: 12.5px; color: var(--ink3); margin-top: 18px; }
+.tflow-note { text-align: center; font-size: 12.5px; color: var(--ink3); margin-top: 18px; max-width: 44em; margin-inline: auto; }
 .tools-benefits { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: clamp(26px, 3.5vw, 38px); padding-inline: 20px; }
 .tools-benefit { font-size: 12.5px; font-weight: 700; letter-spacing: .04em; color: var(--sugi); background: var(--moegi-l); padding: 8px 20px; border-radius: 999px; }
-.tools-note { text-align: center; font-size: 13px; color: var(--ink3); margin-top: 22px; padding-inline: 20px; }
+.tools-note { text-align: center; font-size: 13px; color: var(--ink3); margin-top: 22px; padding-inline: 20px; max-width: 44em; margin-inline: auto; box-sizing: content-box; }
 .tools-note a { color: var(--sugi); font-weight: 700; border-bottom: 2px solid var(--moegi); padding-bottom: 1px; }
-@media (max-width: 760px) { .tflow-line { flex-direction: column; } .tflow-arr { transform: rotate(90deg); align-self: center; } .tflow-h, .tflow-note, .tools-note { text-align: left; } .tflow-step { text-align: left; } .tools-benefits { justify-content: flex-start; } }
+@media (max-width: 760px) { .tflow-line { flex-direction: column; } .tflow-arr { transform: rotate(90deg); align-self: center; } .tflow-h, .tflow-note, .tools-note { text-align: left; } .tflow-note, .tools-note { margin-inline: 0; } .tflow-step { text-align: left; } .tools-benefits { justify-content: flex-start; } }
 
 /* ---------- サービス一覧 ---------- */
 .svc-sec { background: var(--shiro); }
@@ -629,6 +627,17 @@ main > section:not(.hero) {
 .hx-card b { font-family: var(--disp); font-size: 15px; font-weight: 800; color: var(--iwa); }
 .hx-card span { font-size: 12px; color: var(--ink3); line-height: 1.8; }
 .hx-go { margin-top: auto; padding-top: 6px; font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--sugi); }
+/* 業種の章の見出しは他の章と同じ大見出しにする。狭い画面ではカードを横長の1行（アイコン左・名前と説明右）にして章を短くする */
+.home-xcase-head .sec-h { margin-bottom: 12px; }
+@media (max-width: 520px) {
+  .hx-grid { gap: 10px; }
+  .hx-card { display: grid; grid-template-columns: 30px minmax(0, 1fr) 16px; column-gap: 14px; row-gap: 2px; align-items: center; padding: 14px 16px; }
+  .hx-card-ic { grid-column: 1; grid-row: 1 / span 2; align-self: center; }
+  .hx-card b, .hx-card > span:not(.hx-go) { grid-column: 2; }
+  .hx-card > span:not(.hx-go) { line-height: 1.7; }
+  .hx-card .hx-go { grid-column: 3; grid-row: 1 / span 2; margin: 0; padding: 0; font-size: 0; }
+  .hx-card .hx-go::after { content: '\2192'; font-size: 14px; color: var(--sugi); }
+}
 
 /* ---------- PRICING ---------- */
 .price-sec { background: var(--shiro); }
@@ -691,6 +700,12 @@ main > section:not(.hero) {
 .sf-group-t { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .16em; color: var(--moegi-t); margin: 24px 0 2px; }
 .sf-bridge { margin-top: 22px; background: var(--moegi-l); border: 1px solid var(--moegi); border-radius: var(--r); padding: 14px 18px; font-size: 12.5px; font-weight: 700; line-height: 1.9; color: var(--iwa); }
 @media (max-width: 640px) { .sf-row { grid-template-columns: 1fr; } .sf-price { justify-self: start; } }
+/* PCでは項目名の列幅を決めて金額を項目名に寄せ、説明・注記の1行を短くする */
+@media (min-width: 901px) {
+  .sf-row { grid-template-columns: minmax(0, 340px) minmax(0, 1fr); }
+  .sf-price { justify-self: start; }
+  .sf-desc, .sf-note { max-width: 44em; }
+}
 
 /* ---------- PROMISE ---------- */
 .voice-sec { background: var(--yuki); }
@@ -1434,7 +1449,7 @@ article.post .note { font-size: 12.5px; color: var(--ink3); margin-top: -1em; ma
 .home-plan-list li { position: relative; padding-left: 17px; color: var(--ink2); font-size: 12px; line-height: 1.7; }
 .home-plan-list li::before { content: ''; position: absolute; left: 0; top: .62em; width: 7px; height: 4px; border-left: 2px solid var(--moegi); border-bottom: 2px solid var(--moegi); transform: rotate(-45deg); }
 .home-plan-link { align-self: flex-start; margin-top: auto; padding-top: 20px; color: var(--sugi); border-bottom: 2px solid var(--moegi); font-size: 12px; font-weight: 700; }
-.home-plan-note { margin-top: clamp(22px, 3vw, 30px); color: var(--ink3); font-size: 12.5px; line-height: 1.9; }
+.home-plan-note { margin-top: clamp(22px, 3vw, 30px); color: var(--ink3); font-size: 12.5px; line-height: 1.9; max-width: 44em; }
 
 .home-about-card { display: grid; grid-template-columns: minmax(220px, .7fr) minmax(0, 1.3fr); grid-template-areas: "photo copy"; gap: clamp(26px, 5vw, 58px); align-items: center; }
 .home-about-photo { grid-area: photo; aspect-ratio: 4 / 3; border-radius: var(--r-lg); overflow: hidden; background: #fefefe; }
@@ -1612,3 +1627,19 @@ figcaption a:has(wbr), blockquote a:has(wbr), .page-hero .lead a:has(wbr) {
 main :is(p,li,dd) > a:not([class]):not(:has(wbr)){display:inline-block;max-width:100%;vertical-align:baseline}
 main a.jl{white-space:nowrap}
 main :is(.btn-primary,.btn-white,.btn-ghost,.startup-primary,.startup-secondary){max-width:100%;white-space:normal;text-wrap:balance;overflow-wrap:break-word}
+
+/* ---------- 下層ページのページ内リンク（料金・支援の進め方のヒーロー下） ---------- */
+.page-jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.page-jump a { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 6px 14px; color: var(--sugi); background: var(--shiro); border: 1px solid var(--line); border-radius: 999px; font-size: 13px; font-weight: 700; line-height: 1.4; transition: border-color .2s, background-color .2s; }
+.page-jump a::after { content: '\2193'; font-family: var(--mono); font-size: 12px; color: var(--moegi-t); }
+.page-jump a:hover { border-color: var(--moegi); background: var(--moegi-l); }
+.page-jump a:focus-visible { outline: 2px solid var(--sugi); outline-offset: 2px; }
+
+/* 文中の小さなリンクは、行の高さを変えずに押せる範囲だけ上下へ広げる（インラインは余白が行に影響せず、inline-blockは負のマージンで相殺） */
+.stg-props a, .plan-features a, .page-hero .lead a { padding-block: 8px; margin-block: -8px; }
+
+/* スマホの下層ページは、長い説明文を中央揃えにしない（短い見出し・ボタンは中央のまま） */
+@media (max-width: 640px) {
+  body:has(.page-hero) :is(.sec-sub, .final-p, .mdg-cta-d) { text-align: left; }
+  body:has(.page-hero) .sec-sub { margin-inline: 0; }
+}
