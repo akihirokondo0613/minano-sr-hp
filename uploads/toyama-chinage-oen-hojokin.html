@@ -29,7 +29,7 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
 .logo-text b{font-family:"Zen Maru Gothic","Zen Maru Fallback","BIZ UDPGothic","Hiragino Kaku Gothic ProN",sans-serif}
 .logo-mark{border-radius:8px}
 </style>
-<link rel="stylesheet" href="../wave-skin.css?v=20261008-design1">
+<link rel="stylesheet" href="../wave-skin.css?v=20261008-heroill1">
 <meta name="theme-color" content="#123F30">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3E%E3%81%BF%3C/text%3E%3C/svg%3E">
 <link rel="icon" href="../favicon.ico" sizes="any">
@@ -82,6 +82,13 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
 .cho-seido td a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--g300);font-weight:700}
 .cho-seido td a:hover{color:var(--g700);border-bottom-color:var(--g700)}
 .cho-tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media(max-width:560px){
+  .cho-seido,.cho-seido tbody,.cho-seido tr,.cho-seido td{display:block}
+  .cho-seido thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .cho-seido tr{border-bottom:1px solid var(--line);padding:12px 0}
+  .cho-seido td{border:0;padding:0}
+  .cho-seido td+td{margin-top:4px;font-size:14px;color:var(--ink2)}
+}
 .cho-flow{list-style:none;margin:0;padding:0;display:grid;gap:12px;counter-reset:cho}
 .cho-flow li{position:relative;border:1px solid var(--line);border-radius:12px;padding:16px 18px 16px 56px;background:#fff;counter-increment:cho}
 .cho-flow li::before{content:counter(cho);position:absolute;left:18px;top:16px;width:26px;height:26px;border-radius:50%;background:var(--g500);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
@@ -126,16 +133,21 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
   <a href="../uploads/contact.html" class="mob-cta">→ 無料相談を申し込む</a>
 </div>
 <main id="main">
-  <header class="page-hero">
-    <div class="w">
+  <header class="page-hero has-ill">
+    <div class="page-hero-inner">
       <nav class="breadcrumb" aria-label="現在の位置">
         <a href="../">ホーム</a><span aria-hidden="true">›</span>
         <a href="../joseikin.html">助成金</a><span aria-hidden="true">›</span>
         <span aria-current="page">富山県賃上げ応援補助金</span>
       </nav>
       <span class="sec-kicker">富山県の制度</span>
-      <h1>富山県賃上げ<wbr>応援補助金。<br>社労士費用の<wbr>一部が、<wbr>補助対象です。</h1>
+      <h1>富山県賃上げ<wbr>応援補助金。<br><strong>社労士費用の<wbr>一部</strong>が、<wbr>補助対象です。</h1>
       <p class="lead">国の<wbr>助成金の<wbr>申請手続きや<wbr>就業規則の<wbr>整備を<wbr>社会保険労務士等へ<wbr>依頼した<wbr>とき、<wbr>その<wbr>報酬費用の<wbr>一部を<wbr>富山県が<wbr>補助する<wbr>制度です。<wbr>中小企業は<wbr>2分の<wbr>1、<wbr>小規模事業者は<wbr>3分の<wbr>2、<wbr>いずれも<wbr>上限10万円。<wbr>2026年<wbr>9月19日時点の<wbr>県の<wbr>公式ページで<wbr>内容を<wbr>確認しています。</p>
+      <div class="page-hero-cta">
+        <a href="contact.html?from=chinage-oen" class="btn-primary">無料で相談する →</a>
+        <a href="service-joseikin.html" class="btn-secondary">助成金の申請代行を見る</a>
+      </div>
+      <figure class="ph-ill"><img src="../assets/illustrations/22_subsidy_growth_profile_left.webp" width="1672" height="941" alt="" decoding="async"></figure>
     </div>
   </header>
 

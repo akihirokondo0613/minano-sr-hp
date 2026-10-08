@@ -136,8 +136,27 @@ function buildMain(guide, meta, guides) {
       : '',
   ].filter(Boolean).join('\n          ');
 
+  // 冒頭のイラスト（ルート系の .page-hero.has-ill と同じ型）。制度の場面に近い絵を選ぶ。
+  const heroIll = {
+    'career-up': 'grant-career-up',
+    'ryoritsu': 'grant-parental-leave',
+    'jinzai-kaihatsu': 'grant-training',
+    'jinzai-kakuho': 'grant-overview',
+    'koyou-kaihatsu': 'grant-trial-employment',
+    '65sai-cho': 'grant-productivity',
+    'hatarakikata': 'grant-training',
+    'koyou-chosei': 'grant-overview',
+  }[guide.slug];
+  if (!heroIll) throw new Error('冒頭のイラストを決めてください: ' + guide.slug);
+  // 見出しは文言を変えず、制度を見分ける語（「助成金」の前）だけを強調する。
+  const heroTitle = guide.name.split('・')
+    .map((part) => {
+      const m = part.match(/^(.+?)(助成金)$/);
+      return m ? `<strong>${esc(m[1])}</strong>${m[2]}` : esc(part);
+    }).join('・');
+
   return `<main id="main" class="jgd-guide">
-  <header class="page-hero">
+  <header class="page-hero has-ill">
     <div class="page-hero-inner">
       <nav class="breadcrumb">
         <a href="../">ホーム</a><span>›</span>
@@ -145,12 +164,13 @@ function buildMain(guide, meta, guides) {
         <span>${esc(guide.name)}</span>
       </nav>
       <span class="page-kicker">制度の解説</span>
-      <h1>${esc(guide.name)}</h1>
+      <h1>${heroTitle}</h1>
       <p class="lead">${esc(guide.lead)}${guide.leadLink ? `<a href="${esc(guide.leadLink.href)}">${esc(guide.leadLink.text)}</a>${esc(guide.leadLink.after ?? '')}` : ''}</p>
       <div class="page-hero-cta">
         <a href="contact.html?from=joseikin-${esc(guide.slug)}" class="btn-primary">対象になるか無料で相談する →</a>
         <a href="../joseikin.html#check" class="btn-secondary">ほかの制度も見る</a>
       </div>
+      <figure class="ph-ill"><img src="../assets/illustrations/${heroIll}.webp" width="960" height="720" alt="" decoding="async"></figure>
     </div>
   </header>
 
