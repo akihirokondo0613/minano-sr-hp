@@ -41,7 +41,8 @@
   column-gap: 0;
   align-items: stretch;
 }
-.rep-block--text-only .rep-text { max-width: none; }
+/* 代表挨拶はPCで1行約70字まで伸びていたので、読みやすい40字前後で折り返す */
+.rep-block--text-only .rep-text { max-width: 40em; }
 .rep-offer-rail {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

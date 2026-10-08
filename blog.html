@@ -63,10 +63,26 @@
     margin-top: 2px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
     overflow: hidden;
   }
+}
+/* PC：抜粋の1行が約60字まで伸びていたので、読みやすい長さで折り返す */
+.art-excerpt { max-width: 38em; }
+/* スマホ：390pxで最初の記事が y=826（画面外）だった。説明は左揃え、
+   統計は小さな1行の札にし、検索欄まわりの余白を詰めて一覧を画面内に入れる */
+@media (max-width: 640px) {
+  .page-hero .page-sub { text-align: left; margin-top: 12px; line-height: 1.95; }
+  .page-hero .pub-board { margin-top: 14px; padding: 6px 16px; border-radius: 999px; }
+  .page-hero .pub-stats { gap: 18px; width: auto; }
+  .page-hero .pub-stat { display: flex; align-items: baseline; gap: 6px; }
+  .page-hero .pub-stat b { font-size: 18px; }
+  .page-hero .pub-stat > span { margin-top: 0; font-size: 10.5px; }
+  .blog-search label { margin-bottom: 5px; }
+  .blog-search p { margin-top: 4px; }
+  .blog-search-row { margin-bottom: 12px; }
+  .blog-search-row .list-head { padding-top: 4px; }
 }
 </style>
 <style id="ask-ai-style">

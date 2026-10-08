@@ -98,8 +98,8 @@
 
 /* 共通の鉄則 */
 .jk-rule{margin-top:clamp(30px,4.5vw,48px);background:var(--sugi);border-radius:var(--r-lg);padding:clamp(26px,3.6vw,40px) clamp(22px,3.6vw,40px);color:#fff}
-.jk-rule h2{font-family:var(--disp);font-size:clamp(18px,2.4vw,22px);font-weight:800;letter-spacing:.04em;margin:0 0 14px;display:flex;align-items:center;gap:12px}
-.jk-rule h2::before{content:'';width:26px;height:3px;background:var(--moegi-b);border-radius:2px;flex-shrink:0}
+.jk-rule h3{font-family:var(--disp);font-size:clamp(18px,2.4vw,22px);font-weight:800;letter-spacing:.04em;margin:0 0 14px;display:flex;align-items:center;gap:12px}
+.jk-rule h3::before{content:'';width:26px;height:3px;background:var(--moegi-b);border-radius:2px;flex-shrink:0}
 .jk-rule p{margin:0;font-size:14.5px;line-height:2.05;letter-spacing:.02em;color:rgba(255,255,255,.92);max-width:44em;text-wrap:pretty}
 
 /* 制度セクション（カード交互でメリハリ） */
@@ -107,15 +107,15 @@
 .jg:nth-of-type(even){background:var(--yuki)}
 .jg:nth-of-type(even) .jg-block{background:var(--shiro)}
 .jg:first-of-type{margin-top:clamp(30px,4.5vw,48px)}
-.jg-head{display:grid;grid-template-columns:auto 1fr;gap:clamp(16px,2.4vw,26px);align-items:start;margin-bottom:clamp(20px,3vw,28px);padding-bottom:clamp(16px,2.4vw,22px);border-bottom:2.5px solid var(--sugi)}
-.jg-num{font-family:var(--mono);font-size:clamp(40px,5.5vw,56px);font-weight:500;line-height:1;color:transparent;-webkit-text-stroke:1.3px var(--moegi-t);letter-spacing:.02em;padding-top:2px}
-@supports not (-webkit-text-stroke:1px black){.jg-num{color:var(--sugi)}}
-.jg-head h2{font-family:var(--disp);font-size:clamp(21px,3vw,28px);font-weight:900;line-height:1.5;letter-spacing:.015em;color:var(--iwa);margin:0;text-wrap:pretty;word-break:auto-phrase}
+.jg-head{margin-bottom:clamp(20px,3vw,28px);padding-bottom:clamp(16px,2.4vw,22px);border-bottom:2.5px solid var(--sugi)}
+/* 制度番号は章番号（06）より小さい補助表示。番号の親子が逆転しないようにする */
+.jg-num{display:block;margin:0 0 6px;font-family:var(--mono);font-size:12.5px;font-weight:700;line-height:1.5;letter-spacing:.08em;color:var(--moegi-t)}
+.jg-head h3{font-family:var(--disp);font-size:clamp(21px,3vw,28px);font-weight:900;line-height:1.5;letter-spacing:.015em;color:var(--iwa);margin:0;text-wrap:pretty;word-break:auto-phrase}
 .jg-catch{margin:10px 0 0;width:fit-content;word-break:auto-phrase;font-size:clamp(15px,2.1vw,18.5px);font-weight:800;font-family:var(--disp);letter-spacing:.02em;color:var(--sugi);line-height:1.7;text-wrap:pretty;background:linear-gradient(color-mix(in srgb,var(--moegi) 34%,transparent),color-mix(in srgb,var(--moegi) 34%,transparent)) no-repeat left 90% / 100% 30%;padding:0 3px}
 .jg-lead{font-size:14.5px;color:var(--ink2);line-height:2.05;letter-spacing:.02em;max-width:44em;margin:0 0 clamp(22px,3vw,30px);text-wrap:pretty;word-break:auto-phrase}
 
-.jg h3{font-family:var(--disp);font-size:15px;font-weight:800;letter-spacing:.05em;color:var(--sugi);margin:0 0 14px;display:flex;align-items:center;gap:10px}
-.jg h3::before{content:'';width:18px;height:3px;background:var(--moegi);border-radius:2px;flex-shrink:0}
+.jg h4{font-family:var(--disp);font-size:15px;font-weight:800;letter-spacing:.05em;color:var(--sugi);margin:0 0 14px;display:flex;align-items:center;gap:10px}
+.jg h4::before{content:'';width:18px;height:3px;background:var(--moegi);border-radius:2px;flex-shrink:0}
 
 /* こんな会社に × いくら */
 .jg-ill{margin:0 0 16px;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:var(--yuki);border:1px solid var(--line2)}
@@ -145,9 +145,23 @@
 .jg-flow li:last-child::after{display:none}
 .jg-flow li span{font-size:13.5px;color:var(--ink2);line-height:1.9;padding-top:4px;text-wrap:pretty}
 
+/* 申請の流れ・ここに注意：スマホ（560px以下）だけ最初は閉じる。開閉はページ末尾のスクリプトが幅に応じて切り替える。
+   PCは常に開いたまま（見出しはクリックしても閉じない）。JSが動かなければ開いたまま読める。 */
+.jg-fold>summary{display:block;list-style:none}
+.jg-fold>summary::-webkit-details-marker{display:none}
+@media(min-width:561px){.jg-fold>summary{pointer-events:none}}
+@media(max-width:560px){
+  .jg-fold>summary{display:flex;align-items:center;gap:12px;min-height:44px;margin:-8px 0;cursor:pointer}
+  .jg-fold>summary h4{flex:1;min-width:0;margin:0}
+  .jg-fold>summary::after{content:'＋';flex-shrink:0;inline-size:28px;block-size:28px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:var(--shiro);color:var(--sugi);font-size:15px;line-height:1}
+  .jg-fold[open]>summary{margin-bottom:6px}
+  .jg-fold[open]>summary::after{content:'－'}
+  .jg-fold>summary:focus-visible{outline:2px solid var(--sugi);outline-offset:4px;border-radius:6px}
+}
+
 /* ここに注意 */
 .jg-care{border-color:color-mix(in srgb,var(--asahi) 42%,var(--line));background:color-mix(in srgb,var(--asahi) 7%,var(--shiro))}
-.jg-care h3::before{background:var(--asahi)}
+.jg-care h4::before{background:var(--asahi)}
 .jg-care ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 .jg-care li{position:relative;padding-left:26px;font-size:13.5px;color:var(--ink2);line-height:1.9}
 .jg-care li::before{content:'!';position:absolute;left:0;top:4px;width:17px;height:17px;border-radius:5px;background:var(--asahi);color:var(--iwa);font-size:11.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
@@ -155,7 +169,7 @@
 /* 社労士からひとこと */
 .jg-voice{margin-top:clamp(18px,2.6vw,24px);background:var(--moegi-l);border-radius:var(--r-lg);padding:clamp(20px,2.8vw,26px);display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start}
 .jg-voice .av{width:42px;height:42px;border-radius:11px;background:var(--sugi);display:grid;place-items:center;font-family:var(--disp);font-size:20px;font-weight:900;color:#fff}
-.jg-voice h3{margin-bottom:8px}
+.jg-voice h4{margin-bottom:8px}
 .jg-voice p{margin:0;font-size:13.5px;color:var(--ink2);line-height:2;text-wrap:pretty}
 
 /* 公式リンク */
@@ -175,15 +189,13 @@
   .jg-grid{grid-template-columns:1fr}
   /* 共通仕様：狭い幅ではイラストスロットをタイトルの右側に回す */
   .jg-fit{display:grid;grid-template-columns:minmax(0,1fr) clamp(110px,28vw,190px);column-gap:14px;align-items:start}
-  .jg-fit h3{grid-column:1}
+  .jg-fit h4{grid-column:1}
   .jg-fit .jg-ill{grid-column:2;grid-row:1/span 2;margin:0;align-self:center}
   .jg-fit ul{grid-column:1}
 }
 @media(max-width:560px){
   .jg{padding:20px 16px}
-  .jg-head{grid-template-columns:auto 1fr;gap:12px}
-  .jg-num{font-size:30px;padding-top:4px}
-  .jg-head h2{font-size:18px}
+  .jg-head h3{font-size:18px}
   .jg-catch{font-size:14px;margin-top:6px}
   /* スマホはアイコンの列を残さない。本文が細い柱になって読みにくいため */
   .jg-voice{grid-template-columns:1fr;gap:10px}
@@ -362,8 +374,7 @@
 .jk-steps li{border:0;border-top:1px solid #B8CEC1;border-radius:0;padding:18px 0;background:transparent}
 .jk-steps li::before{background:#DCEDE2;color:var(--sugi);width:36px;height:36px;font-size:15px}
 .jg,.jg:nth-of-type(even){border:0;border-top:1px solid #B8CEC1;border-radius:0;background:transparent;padding:clamp(28px,4vw,44px) 0}
-.jg-head{border-bottom:0;gap:20px}
-.jg-num{font-size:32px;color:var(--sugi);-webkit-text-stroke:0}
+.jg-head{border-bottom:0}
 .jg-block.jg-fit,.jg:nth-of-type(even) .jg-block.jg-fit{background:transparent;border:0;padding:0}
 .jg-ill{border-radius:24px;overflow:hidden}
 .jk-guides{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px}
@@ -376,7 +387,7 @@
 .jk-qa details[open]{background:#F1F6F2}
 @media(max-width:900px){.jk-hero-inner{grid-template-columns:minmax(0,1fr) 220px}.jk-hero-txt h1{font-size:clamp(26px,3.7vw,36px)}}
 @media(max-width:760px){.jk-hero-inner{grid-template-columns:minmax(0,1fr)}.jk-hero-ill{width:min(64vw,280px)}.jk-section-nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}.jk-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:560px){.page-hero{border-radius:0 0 24px 24px}.jk-hero-txt .lead{font-size:14px}.jk-now-card{grid-template-columns:minmax(0,1fr);gap:10px}.jk-now-card p,.jk-now-card .arr,.jk-now-card h3,.jk-now-card .jk-now-tag{grid-column:1;grid-row:auto}.jk-guides{grid-template-columns:minmax(0,1fr)}.jk-steps{grid-template-columns:minmax(0,1fr);gap:0}.jk-steps li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:4px 14px}.jk-steps li::before{grid-column:1;grid-row:1/span 2}.jk-steps b,.jk-steps span{grid-column:2}.jk-section-nav a{font-size:13px}.jg-fit{grid-template-columns:minmax(0,1fr)}.jg-fit .jg-ill{grid-column:1;grid-row:auto;width:min(100%,260px);margin:12px auto}.jg-fit ul{grid-column:1}}
+@media(max-width:560px){.page-hero{border-radius:0 0 24px 24px}.jk-hero-txt .lead{font-size:14px}.jk-now-card{grid-template-columns:minmax(0,1fr);gap:10px}.jk-now-card p,.jk-now-card .arr,.jk-now-card h3,.jk-now-card .jk-now-tag{grid-column:1;grid-row:auto}.jk-guides{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px}.jk-guides a{padding:14px 0}.jk-guide-n{font-size:14px}.jk-steps{grid-template-columns:minmax(0,1fr);gap:0}.jk-steps li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:4px 14px}.jk-steps li::before{grid-column:1;grid-row:1/span 2}.jk-steps b,.jk-steps span{grid-column:2}.jk-section-nav a{font-size:13px}.jg-fit{grid-template-columns:minmax(0,1fr)}.jg-fit .jg-ill{grid-column:1;grid-row:auto;width:min(100%,260px);margin:12px auto}.jg-fit ul{grid-column:1}}
 @media(max-width:640px){
   /* 共通CSSの子要素へのauto余白で、番号と見出しが離れないようにする。 */
   .jk-sec-head{text-align:left}
@@ -386,6 +397,8 @@
   .jk-chip::before{margin-top:.55em}
 }
 @media(max-width:360px){.jk-chips{grid-template-columns:minmax(0,1fr)}}
+/* スマホのヒーロー説明は3行を超えるので左揃え（見出し・キッカー・ボタンは中央のまま） */
+@media(max-width:640px){.jk-hero-txt .lead{text-align:left}}
 @media(prefers-reduced-motion:reduce){.jk-section-nav a span{transition:none}.jk-section-nav a:hover span{transform:none}}
 </style>
 <body>
@@ -645,23 +658,23 @@
       <p class="jk-sec-lead">業種を<wbr>問わず<wbr>使う<wbr>場面が<wbr>多い<wbr>5つを、<wbr>「どんな<wbr>会社に<wbr>向くか・いくら・何に<wbr>注意するか」に<wbr>絞って<wbr>まとめました。</p>
     </section>
     <section class="jk-rule" data-screen-label="共通の鉄則">
-      <h2>共通の鉄則</h2>
+      <h3>共通の鉄則</h3>
       <p>5つすべてに<wbr>共通：<wbr>『実施してから』では<wbr>間に<wbr>合いません。<wbr>計画の<wbr>提出や<wbr>社内体制の<wbr>整備を<wbr>取組の<wbr>前に<wbr>済ませる<wbr>ことが<wbr>要件に<wbr>なっています。<wbr>迷ったら、<wbr>動く<wbr>前に<wbr>ご相談ください。</p>
     </section>
 
     <!-- ═══ 01 キャリアアップ ═══ -->
     <section class="jg" id="career-up" data-screen-label="01 キャリアアップ助成金">
       <div class="jg-head">
-        <span class="jg-num">01</span>
+        <span class="jg-num">制度 1/5</span>
         <div>
-          <h2>キャリアアップ助成金<wbr>（正社員化コース）</h2>
+          <h3>キャリアアップ助成金<wbr>（正社員化コース）</h3>
           <p class="jg-catch">パート・契約社員の<wbr>正社員化で、<wbr>1人最大80万円</p>
         </div>
       </div>
       <p class="jg-lead">パートや<wbr>契約社員などを<wbr>正社員に<wbr>切り替えた<wbr>会社が、<wbr>一定の<wbr>要件を<wbr>満たすと<wbr>国から<wbr>受け取れる<wbr>助成金です。<wbr>数ある<wbr>助成金の<wbr>中でも<wbr>特に<wbr>利用が<wbr>多い<wbr>定番で、<wbr>はじめて<wbr>助成金に<wbr>取り組む会社にも<wbr>向いています。</p>
       <div class="jg-grid">
         <div class="jg-block jg-fit">
-          <h3>こんな会社に</h3>
+          <h4>こんな会社に</h4>
           <div class="jg-ill"><image-slot id="jk-ill-career" src="assets/illustrations/grant-career-up.webp" fit="contain" placeholder="イラスト：パートから正社員へのステップアップ（推奨 4:3）"></image-slot></div>
           <ul>
             <li>パートや<wbr>契約社員を<wbr>長く<wbr>雇っている<wbr>会社</li>
@@ -670,7 +683,7 @@
           </ul>
         </div>
         <div class="jg-block jg-money">
-          <h3>いくら</h3>
+          <h4>いくら</h4>
           <p class="jg-amount"><span class="jg-amount-l">正社員化コース</span>1人<wbr>あたり<wbr>最大80万円<wbr>（中小企業・<wbr>令和8年度）</p>
           <ul>
             <li>パート・<wbr>契約社員などから<wbr>正社員へ<wbr>: 1人最大80万円<wbr>（40万円×2回に<wbr>分けて<wbr>支給）</li>
@@ -680,8 +693,8 @@
           </ul>
         </div>
       </div>
-      <div class="jg-block jg-flowbox">
-        <h3>申請の流れ</h3>
+      <details class="jg-block jg-flowbox jg-fold" open>
+        <summary><h4>申請の流れ</h4></summary>
         <ol class="jg-flow">
           <li><span>キャリアアップ<wbr>計画書を<wbr>労働局に<wbr>提出</span></li>
           <li><span>就業規則に<wbr>正社員転換の<wbr>ルールを<wbr>規定</span></li>
@@ -689,19 +702,19 @@
           <li><span>転換後6か月分の<wbr>賃金を<wbr>支払う</span></li>
           <li><span>6か月目の<wbr>賃金の<wbr>支払日の<wbr>翌日から<wbr>2か月以内に<wbr>支給申請</span></li>
         </ol>
-      </div>
-      <div class="jg-block jg-care">
-        <h3>ここに注意</h3>
+      </details>
+      <details class="jg-block jg-care jg-fold" open>
+        <summary><h4>ここに注意</h4></summary>
         <ul>
           <li>転換の<wbr>前に<wbr>計画書の<wbr>提出が<wbr>必要です。<wbr>転換してからの<wbr>後付け申請は<wbr>できません</li>
           <li>賃金3%アップの<wbr>計算に<wbr>使う<wbr>手当は、<wbr>就業規則に<wbr>載っていないと<wbr>算入できません</li>
           <li>支給には<wbr>審査が<wbr>あり、<wbr>要件や<wbr>書類に<wbr>不備が<wbr>あると<wbr>受給できない<wbr>ことがあります</li>
         </ul>
-      </div>
+      </details>
       <aside class="jg-voice">
         <span class="av" aria-hidden="true">み</span>
         <div>
-          <h3>社労士からひとこと</h3>
+          <h4>社労士からひとこと</h4>
           <p>「先に<wbr>転換してしまってから<wbr>相談に<wbr>来られる」<wbr>ケースが<wbr>本当に<wbr>多い<wbr>制度です。<wbr>正社員に<wbr>したい<wbr>人が<wbr>決まった<wbr>段階、<wbr>できれば<wbr>転換の<wbr>2〜3か月前に<wbr>ご相談いただければ、<wbr>計画書の<wbr>提出から<wbr>順序よく<wbr>準備できます。</p>
         </div>
       </aside>
@@ -712,16 +725,16 @@
     <!-- ═══ 02 業務改善 ═══ -->
     <section class="jg" id="gyomu-kaizen" data-screen-label="02 業務改善助成金">
       <div class="jg-head">
-        <span class="jg-num">02</span>
+        <span class="jg-num">制度 2/5</span>
         <div>
-          <h2>業務改善助成金</h2>
+          <h3>業務改善助成金</h3>
           <p class="jg-catch">賃上げと<wbr>設備投資、<wbr>セットで<wbr>最大600万円</p>
         </div>
       </div>
       <p class="jg-lead">社内で<wbr>いちばん低い<wbr>時給を<wbr>50円以上引き上げ、<wbr>あわせて<wbr>仕事の<wbr>効率を<wbr>上げる<wbr>機械や<wbr>システムを<wbr>導入すると、<wbr>その<wbr>費用の<wbr>一部を<wbr>国が<wbr>助成する、<wbr>中小企業・<wbr>小規模事業者向けの<wbr>制度です<wbr>（令和8年度）。</p>
       <div class="jg-grid">
         <div class="jg-block jg-fit">
-          <h3>こんな会社に</h3>
+          <h4>こんな会社に</h4>
           <div class="jg-ill"><image-slot id="jk-ill-gyomu" src="assets/illustrations/grant-productivity.webp" fit="contain" placeholder="イラスト：賃上げと生産性向上（推奨 4:3）"></image-slot></div>
           <ul>
             <li>パートや<wbr>社員の<wbr>時給を<wbr>上げたいと<wbr>考えている<wbr>会社</li>
@@ -730,7 +743,7 @@
           </ul>
         </div>
         <div class="jg-block jg-money">
-          <h3>いくら</h3>
+          <h4>いくら</h4>
           <p class="jg-amount">30万円〜<wbr>最大600万円<wbr>（令和8年度）</p>
           <ul>
             <li>引上げ額<wbr>（50円・<wbr>70円・90円）と<wbr>人数、<wbr>会社の<wbr>規模で<wbr>上限額が<wbr>決まります。<wbr>最大600万円は、<wbr>10人以上の<wbr>時給を<wbr>90円引き上げ、<wbr>物価高騰の<wbr>影響など<wbr>一定の<wbr>要件を<wbr>満たす<wbr>場合に<wbr>限られます</li>
@@ -740,8 +753,8 @@
           </ul>
         </div>
       </div>
-      <div class="jg-block jg-flowbox">
-        <h3>申請の流れ</h3>
+      <details class="jg-block jg-flowbox jg-fold" open>
+        <summary><h4>申請の流れ</h4></summary>
         <ol class="jg-flow">
           <li><span>導入したい<wbr>設備と<wbr>賃上げの<wbr>計画を<wbr>立てる</span></li>
           <li><span>労働局に<wbr>交付申請書を<wbr>提出</span></li>
@@ -749,19 +762,19 @@
           <li><span>交付決定後に<wbr>設備を<wbr>発注・<wbr>導入</span></li>
           <li><span>実績報告書を<wbr>提出し、<wbr>審査を<wbr>経て<wbr>支給</span></li>
         </ol>
-      </div>
-      <div class="jg-block jg-care">
-        <h3>ここに注意</h3>
+      </details>
+      <details class="jg-block jg-care jg-fold" open>
+        <summary><h4>ここに注意</h4></summary>
         <ul>
           <li>設備の<wbr>発注は<wbr>交付決定の<wbr>前に<wbr>行うと<wbr>対象外。<wbr>時給の<wbr>引上げも<wbr>申請前に<wbr>行うと<wbr>対象外です<wbr>（引上げは<wbr>申請後であれば、<wbr>交付決定を<wbr>待たずに<wbr>実施できます）</li>
           <li>令和8年度の<wbr>申請受付は<wbr>令和8年9月<wbr>1日から、<wbr>期限は<wbr>都道府県ごとに<wbr>新しい<wbr>最低賃金が<wbr>始まる<wbr>日の<wbr>前日か<wbr>令和<wbr>8年11月30日の<wbr>早い方でした<wbr>（富山県は<wbr>9月30日必着で<wbr>終了）。<wbr>受付期間が<wbr>短いため、<wbr>次年度も<wbr>募集条件の<wbr>公表前から<wbr>準備を</li>
           <li>審査が<wbr>あり、<wbr>解雇など<wbr>不交付と<wbr>なる<wbr>事由に<wbr>当ては<wbr>まると<wbr>受給できません</li>
         </ul>
-      </div>
+      </details>
       <aside class="jg-voice">
         <span class="av" aria-hidden="true">み</span>
         <div>
-          <h3>社労士からひとこと</h3>
+          <h4>社労士からひとこと</h4>
           <p>毎年の<wbr>最低賃金引上げは<wbr>避けられません。<wbr>どうせ上げるなら、<wbr>この<wbr>助成金で<wbr>設備投資と<wbr>組み合わせるのが<wbr>得策です。<wbr>ただし交付決定前の<wbr>発注は<wbr>よく<wbr>ある<wbr>失敗例。<wbr>導入を<wbr>思い<wbr>立ったら、<wbr>まず<wbr>ご相談ください。</p>
         </div>
       </aside>
@@ -772,16 +785,16 @@
     <!-- ═══ 03 両立支援 ═══ -->
     <section class="jg" id="ryoritsu" data-screen-label="03 両立支援等助成金">
       <div class="jg-head">
-        <span class="jg-num">03</span>
+        <span class="jg-num">制度 3/5</span>
         <div>
-          <h2>両立支援等助成金<wbr>（育児休業の<wbr>支援）</h2>
+          <h3>両立支援等助成金<wbr>（育児休業の<wbr>支援）</h3>
           <p class="jg-catch">「育休で<wbr>人が<wbr>抜けたら<wbr>回らない」に、<wbr>国の<wbr>支援が<wbr>あります</p>
         </div>
       </div>
       <p class="jg-lead">社員が<wbr>育休を<wbr>取る<wbr>とき、<wbr>社内の<wbr>準備から<wbr>休んでいる間の<wbr>仕事の<wbr>カバーまで、<wbr>会社の<wbr>負担を<wbr>国が<wbr>支える<wbr>助成金です。<wbr>男性の<wbr>育休や、<wbr>代わりに<wbr>働く<wbr>社員への<wbr>手当など<wbr>コースが<wbr>分かれています。</p>
       <div class="jg-grid">
         <div class="jg-block jg-fit">
-          <h3>こんな会社に</h3>
+          <h4>こんな会社に</h4>
           <div class="jg-ill"><image-slot id="jk-ill-ryoritsu" src="assets/illustrations/grant-parental-leave.webp" fit="contain" placeholder="イラスト：男性の育児休業（推奨 4:3）"></image-slot></div>
           <ul>
             <li>男性社員に<wbr>初めて<wbr>育休を<wbr>取って<wbr>もらう<wbr>会社</li>
@@ -790,7 +803,7 @@
           </ul>
         </div>
         <div class="jg-block jg-money">
-          <h3>いくら</h3>
+          <h4>いくら</h4>
           <p class="jg-amount"><span class="jg-amount-l">育休中等業務代替支援コース</span>育<wbr>休<wbr>1件<wbr>あたり<wbr>最大240万円<wbr>（令和8年度）</p>
           <ul>
             <li>男性の<wbr>育休：<wbr>1人目20万円、<wbr>2・<wbr>3人目各10万円。<wbr>取得率が<wbr>30ポイント以上<wbr>（例：<wbr>20%→50%）<wbr>上がった<wbr>場合等は<wbr>60万円<wbr>（1社1回）</li>
@@ -800,8 +813,8 @@
           </ul>
         </div>
       </div>
-      <div class="jg-block jg-flowbox">
-        <h3>申請の流れ</h3>
+      <details class="jg-block jg-flowbox jg-fold" open>
+        <summary><h4>申請の流れ</h4></summary>
         <ol class="jg-flow">
           <li><span>妊娠・出産の<wbr>報告を<wbr>受けたら<wbr>準備を<wbr>始める</span></li>
           <li><span>研修・相談窓口など<wbr>社内の<wbr>環境を<wbr>整える</span></li>
@@ -809,19 +822,19 @@
           <li><span>育休を<wbr>取得し、<wbr>職場に<wbr>復帰する</span></li>
           <li><span>期限内に<wbr>労働局へ<wbr>申請する</span></li>
         </ol>
-      </div>
-      <div class="jg-block jg-care">
-        <h3>ここに注意</h3>
+      </details>
+      <details class="jg-block jg-care jg-fold" open>
+        <summary><h4>ここに注意</h4></summary>
         <ul>
           <li>準備は<wbr>育休が<wbr>始まる<wbr>「前」が<wbr>鉄則。<wbr>育休後に<wbr>プランや<wbr>面談を<wbr>後付けする<wbr>ことは<wbr>できません</li>
           <li>支給には<wbr>審査が<wbr>あります。<wbr>育休規程の<wbr>整備・<wbr>周知が<wbr>前提で、<wbr>未整備の<wbr>ままでは<wbr>申請できません</li>
           <li>申請期限は<wbr>コースごとに<wbr>違います。<wbr>男性育休は<wbr>育休終了の<wbr>翌日から<wbr>2か月以内が<wbr>目安です</li>
         </ul>
-      </div>
+      </details>
       <aside class="jg-voice">
         <span class="av" aria-hidden="true">み</span>
         <div>
-          <h3>社労士からひとこと</h3>
+          <h4>社労士からひとこと</h4>
           <p>この<wbr>助成金は、<wbr>妊娠・出産の<wbr>報告を<wbr>受けた<wbr>時点で<wbr>動けるかが<wbr>分かれ目です。<wbr>育休に<wbr>入ってからでは間に<wbr>合わない<wbr>ことが<wbr>多いので、<wbr>対象に<wbr>なりそうな<wbr>社員が<wbr>いたら<wbr>早めに<wbr>ご相談ください。</p>
         </div>
       </aside>
@@ -832,16 +845,16 @@
     <!-- ═══ 04 人材開発 ═══ -->
     <section class="jg" id="jinzai" data-screen-label="04 人材開発支援助成金">
       <div class="jg-head">
-        <span class="jg-num">04</span>
+        <span class="jg-num">制度 4/5</span>
         <div>
-          <h2>人材開発支援助成金<wbr>（人材育成支援<wbr>コース）</h2>
+          <h3>人材開発支援助成金<wbr>（人材育成支援<wbr>コース）</h3>
           <p class="jg-catch">社員研修の<wbr>費用と<wbr>研修中の<wbr>賃金、<wbr>その<wbr>一部を<wbr>助成</p>
         </div>
       </div>
       <p class="jg-lead">従業員に<wbr>仕事に<wbr>関わる<wbr>研修<wbr>（10時間以上）を<wbr>受けさせた<wbr>会社に、<wbr>研修費用の<wbr>一部と<wbr>研修中の<wbr>賃金の<wbr>一部を<wbr>国が<wbr>助成する<wbr>制度です。<wbr>外部講座の<wbr>ほか、<wbr>講師を<wbr>招いた<wbr>社内研修も<wbr>対象に<wbr>なり得ます。</p>
       <div class="jg-grid">
         <div class="jg-block jg-fit">
-          <h3>こんな会社に</h3>
+          <h4>こんな会社に</h4>
           <div class="jg-ill"><image-slot id="jk-ill-jinzai" src="assets/illustrations/grant-training.webp" fit="contain" placeholder="イラスト：研修・人材育成（推奨 4:3）"></image-slot></div>
           <ul>
             <li>社員を<wbr>外部の<wbr>研修や<wbr>講習に<wbr>行かせている<wbr>会社</li>
@@ -850,7 +863,7 @@
           </ul>
         </div>
         <div class="jg-block jg-money">
-          <h3>いくら</h3>
+          <h4>いくら</h4>
           <p class="jg-amount"><span class="jg-amount-l">人材育成支援コース</span>研<wbr>修費用<wbr>の<wbr>45〜<wbr>70％＋賃金1人<wbr>1時間<wbr>800円<wbr>（中小企業・<wbr>令和8年度）</p>
           <ul>
             <li>経費助成率は<wbr>正社員の<wbr>研修で<wbr>45％、<wbr>パートなど<wbr>非正規社員の<wbr>研修は<wbr>70％<wbr>（中小企業）</li>
@@ -860,8 +873,8 @@
           </ul>
         </div>
       </div>
-      <div class="jg-block jg-flowbox">
-        <h3>申請の流れ</h3>
+      <details class="jg-block jg-flowbox jg-fold" open>
+        <summary><h4>申請の流れ</h4></summary>
         <ol class="jg-flow">
           <li><span>研修の<wbr>内容・<wbr>日程・対象者を<wbr>決める</span></li>
           <li><span>訓練開始日の<wbr>6か月前〜1か月前の<wbr>間に<wbr>計画届を<wbr>労働局へ<wbr>提出</span></li>
@@ -869,19 +882,19 @@
           <li><span>研修終了の<wbr>翌日から<wbr>2か月以内に<wbr>支給申請</span></li>
           <li><span>労働局の<wbr>審査を<wbr>経て<wbr>支給決定</span></li>
         </ol>
-      </div>
-      <div class="jg-block jg-care">
-        <h3>ここに注意</h3>
+      </details>
+      <details class="jg-block jg-care jg-fold" open>
+        <summary><h4>ここに注意</h4></summary>
         <ul>
           <li>計画届を<wbr>出す前に<wbr>始めた<wbr>研修は<wbr>対象外。<wbr>提出できるのは<wbr>開始日の<wbr>6か月前から<wbr>1か月前までの間です</li>
           <li>出席簿や<wbr>カリキュラムなどの<wbr>実施記録に<wbr>不備が<wbr>あると、<wbr>支給されない<wbr>ことがあります</li>
           <li>経費の<wbr>申請には、<wbr>受講料が<wbr>適正な<wbr>価格である<wbr>ことを<wbr>説明する<wbr>書類<wbr>（疎明書・<wbr>様式第28号）など、<wbr>見積書とは<wbr>別の<wbr>書類の<wbr>準備が<wbr>必要</li>
         </ul>
-      </div>
+      </details>
       <aside class="jg-voice">
         <span class="av" aria-hidden="true">み</span>
         <div>
-          <h3>社労士からひとこと</h3>
+          <h4>社労士からひとこと</h4>
           <p>この<wbr>助成金は<wbr>「先に<wbr>計画届、<wbr>あとから<wbr>研修」の<wbr>順番が<wbr>すべてです。<wbr>研修の<wbr>話が<wbr>出た<wbr>段階で<wbr>ご相談いただければ、<wbr>提出期限から<wbr>逆算した<wbr>段取りを<wbr>ご提案できます。<wbr>社内研修や<wbr>資格取得の<wbr>講座も<wbr>対象に<wbr>なり得ます。</p>
         </div>
       </aside>
@@ -892,16 +905,16 @@
     <!-- ═══ 05 トライアル雇用 ═══ -->
     <section class="jg" id="trial" data-screen-label="05 トライアル雇用助成金">
       <div class="jg-head">
-        <span class="jg-num">05</span>
+        <span class="jg-num">制度 5/5</span>
         <div>
-          <h2>トライアル雇用助成金<wbr>（一般<wbr>トライアルコース）</h2>
+          <h3>トライアル雇用助成金<wbr>（一般<wbr>トライアルコース）</h3>
           <p class="jg-catch">3か月の<wbr>「お試し雇用」で、<wbr>採用の<wbr>ミスマッチを<wbr>防ぐ</p>
         </div>
       </div>
       <p class="jg-lead">職業経験の<wbr>少な<wbr>さなどから<wbr>就職が<wbr>難しい<wbr>方を、<wbr>ハローワークなどの<wbr>紹介で、<wbr>その後の<wbr>正式採用を<wbr>前提に<wbr>原則3か月間<wbr>お試しで<wbr>雇い<wbr>入れた<wbr>場合、<wbr>要件を<wbr>満たすと<wbr>国から<wbr>助成金を<wbr>受けられる<wbr>制度です。</p>
       <div class="jg-grid">
         <div class="jg-block jg-fit">
-          <h3>こんな会社に</h3>
+          <h4>こんな会社に</h4>
           <div class="jg-ill"><image-slot id="jk-ill-trial" src="assets/illustrations/grant-trial-employment.webp" fit="contain" placeholder="イラスト：トライアル雇用からの採用（推奨 4:3）"></image-slot></div>
           <ul>
             <li>未経験者を<wbr>採用したいが<wbr>定着が<wbr>不安な<wbr>会社</li>
@@ -910,7 +923,7 @@
           </ul>
         </div>
         <div class="jg-block jg-money">
-          <h3>いくら</h3>
+          <h4>いくら</h4>
           <p class="jg-amount">1人<wbr>あたり<wbr>月額最大4万円×<wbr>最長3か月<wbr>（令和8年度）</p>
           <ul>
             <li>3か月フルに<wbr>受給できれば<wbr>1人<wbr>あたり<wbr>合計最大12万円</li>
@@ -919,8 +932,8 @@
           </ul>
         </div>
       </div>
-      <div class="jg-block jg-flowbox">
-        <h3>申請の流れ</h3>
+      <details class="jg-block jg-flowbox jg-fold" open>
+        <summary><h4>申請の流れ</h4></summary>
         <ol class="jg-flow">
           <li><span>ハローワークに<wbr>トライアル雇用求人を<wbr>出す</span></li>
           <li><span>紹介を<wbr>受けて<wbr>面接・雇入れ<wbr>（原則3か月）</span></li>
@@ -928,19 +941,19 @@
           <li><span>終了翌日から<wbr>2か月以内に<wbr>支給申請</span></li>
           <li><span>審査のうえ支給決定</span></li>
         </ol>
-      </div>
-      <div class="jg-block jg-care">
-        <h3>ここに注意</h3>
+      </details>
+      <details class="jg-block jg-care jg-fold" open>
+        <summary><h4>ここに注意</h4></summary>
         <ul>
           <li>先に<wbr>自社で<wbr>選考・採用を<wbr>進めた<wbr>後からの<wbr>利用は<wbr>できません<wbr>（ハローワークの<wbr>紹介が<wbr>先）</li>
           <li>開始から<wbr>2週間以内の<wbr>実施計画書の<wbr>提出を<wbr>忘れると<wbr>支給されない<wbr>おそれが<wbr>あります</li>
           <li>対象と<wbr>なる<wbr>求職者に<wbr>条件が<wbr>あり、<wbr>審査の<wbr>うえ支給が<wbr>決まります</li>
         </ul>
-      </div>
+      </details>
       <aside class="jg-voice">
         <span class="av" aria-hidden="true">み</span>
         <div>
-          <h3>社労士からひとこと</h3>
+          <h4>社労士からひとこと</h4>
           <p>順番を<wbr>間違えると<wbr>使えなくなる<wbr>助成金です。<wbr>「いい<wbr>人が<wbr>いたのでも<wbr>う<wbr>決めた」では<wbr>手遅れなので、<wbr>採用を<wbr>考え始めた<wbr>段階で、<wbr>ハローワークに<wbr>求人を<wbr>出す前に<wbr>ご相談いただくのが<wbr>安心です。</p>
         </div>
       </aside>
@@ -1163,6 +1176,36 @@
 <script defer src="terms.js?v=20261008-design1"></script>
 <script id="pf-hover">(function(){var d={};function pf(u){if(d[u])return;d[u]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u;document.head.appendChild(l);}function h(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var hr=a.getAttribute("href");if(!hr||hr[0]==="#"||/^(mailto:|tel:|https?:)/.test(hr))return;if(a.target==="_blank")return;pf(a.href);}document.addEventListener("mouseover",h,{passive:true});document.addEventListener("touchstart",h,{passive:true});})();</script>
 <script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/joseikin.html"}' async src="//gc.zgo.at/count.js"></script>
+<script>
+// 06 制度の詳細：「申請の流れ」「ここに注意」はスマホ（560px以下）だけ最初は閉じる。
+// HTMLは open 付き（JSが無くても読める）。PCでは常に開き、見出しのクリック・Tabでは閉じない。
+// SPAのbody差し替えで再実行されるため、前回のリスナーを外してから張り直す（冪等）。
+(function(){
+  if(!window.matchMedia)return;
+  var prev=window.__jgFold;
+  if(prev){
+    prev.mq.removeEventListener?prev.mq.removeEventListener('change',prev.sync):prev.mq.removeListener(prev.sync);
+    document.removeEventListener('click',prev.block,true);
+  }
+  var mq=window.matchMedia('(max-width:560px)');
+  function sync(){
+    var narrow=mq.matches;
+    Array.prototype.forEach.call(document.querySelectorAll('.jg-fold'),function(d){
+      d.open=!narrow;
+      var s=d.querySelector('summary');
+      if(!s)return;
+      if(narrow)s.removeAttribute('tabindex');else s.setAttribute('tabindex','-1');
+    });
+  }
+  function block(e){
+    if(!mq.matches&&e.target.closest&&e.target.closest('.jg-fold>summary'))e.preventDefault();
+  }
+  mq.addEventListener?mq.addEventListener('change',sync):mq.addListener(sync);
+  document.addEventListener('click',block,true);
+  window.__jgFold={mq:mq,sync:sync,block:block};
+  sync();
+})();
+</script>
 <script>
 // 対象チェック。入力はどこにも送らず、この場で候補を出すだけ。
 // カードは生成済みのHTML（jk-check-cards）にあり、ここは hidden を外すだけにする。

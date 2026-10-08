@@ -435,6 +435,13 @@ function recordConsoleError(target) {
         signature: sign?.textContent.replace(/\s+/g, ' ').trim() || '',
         bodyWidthRatio: contentWidth ? (bodyRect?.width || 0) / contentWidth : 0,
         textWidthRatio: bodyRect?.width ? (textRect?.width || 0) / bodyRect.width : 0,
+        // 本文は1行40字前後（max-width:40em）で折り返す（2026-10-08）。器が狭い幅では器いっぱい。
+        textMeasureOk: (() => {
+          const text = document.querySelector('.rep-text');
+          if (!text || !bodyRect?.width || !textRect) return false;
+          const measure = Number.parseFloat(getComputedStyle(text).fontSize) * 40;
+          return Math.abs(textRect.width - Math.min(bodyRect.width, measure)) <= 2;
+        })(),
         signBelowBody: !!(bodyRect && signRect && signRect.top >= bodyRect.bottom - 1),
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
         legacyCopyCount: ['運用しやすい形に', 'いつもの会話のなかで', '北陸の地で']
@@ -451,7 +458,7 @@ function recordConsoleError(target) {
       founderState.photoCount === 0 &&
       /事務所\s*みなの社会保険労務士事務所\s*所属\s*富山県社会保険労務士会/.test(founderState.signature) &&
       founderState.bodyWidthRatio >= 0.98 &&
-      founderState.textWidthRatio >= 0.98 &&
+      founderState.textMeasureOk &&
       founderState.signBelowBody &&
       founderState.overflow <= 1 &&
       founderState.legacyCopyCount === 0 &&

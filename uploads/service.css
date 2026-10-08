@@ -148,7 +148,7 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
 .w{max-width:var(--max);margin:0 auto}
 .sec-kicker{display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:.16em;color:var(--g600);text-transform:uppercase;margin-bottom:18px}
 .sec-kicker::before{content:'';width:26px;height:2px;background:var(--g600)}
-.sec-h{font-size:clamp(25px,3.2vw,38px);font-weight:500;color:var(--ink);line-height:1.5;letter-spacing:.01em;font-family:var(--serif);text-wrap:balance;word-break:auto-phrase}
+.sec-h{font-size:clamp(25px,3.2vw,38px);font-weight:700;color:var(--ink);line-height:1.5;letter-spacing:.01em;font-family:var(--serif);text-wrap:balance;word-break:auto-phrase}
 .sec-h strong{font-weight:700;color:var(--g700)}
 .sec-sub{font-size:clamp(15px,1.6vw,16.5px);color:var(--ink2);line-height:2;margin-top:18px;max-width:680px;text-wrap:pretty;word-break:auto-phrase}
 .sec-head-c{text-align:center;margin-bottom:clamp(40px,5vw,56px)}
@@ -572,7 +572,9 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
   .line-cell { text-align: center; }
   .line-cell-h { justify-content: center; }
   .line-cell ul, .line-cell ol, .line-cell li { text-align: left; }
-  .svct-lead, .svct-note, .svct-cta { text-align: center; }
+  .svct-cta { text-align: center; }
+  /* 3行を超える説明文は中央揃えだと行頭が毎行ずれて読みにくい。見出し・キッカー・数値・ボタンは中央のまま、段落だけ左揃えにする */
+  .lead, .sec-sub, .svct-lead, .svct-note, .price-note p, .final-cta-inner p, .diag-meta { text-align: left; }
   .svct-nums-c, .svct-num { text-align: center; }
   .svc-fee-row { text-align: center; }
   .svc-fee-cta { justify-content: center; }
@@ -589,6 +591,23 @@ section:has(.svct) .sec-head,
 section:has(.svc-fee) .sec-head { max-width: 880px; margin-inline: auto; }
 section:has(.svct) .sec-head .sec-sub,
 section:has(.svc-fee) .sec-head .sec-sub { max-width: none; }
+
+/* PC・タブレット（641px以上）：同じページの中で見出しが「中央揃え（.sec-head-c）」「左揃え・左端154px」
+   「880px列の左端244px」と交互に入れ替わっていた（1280pxで実測）。見出しはすべて左揃えにし、
+   左端を .w の左端に固定する。本文880pxの節（.svct・料金抜粋）も左端を .w にそろえる。
+   スマホ（640px以下）は従来どおり見出しを中央に置く。 */
+@media (min-width: 641px) {
+  .sec-head-c { text-align: left; }
+  .sec-head-c .sec-kicker { justify-content: flex-start; }
+  .sec-head-c .sec-kicker::before { display: block; }
+  .sec-head-c .sec-sub { margin-left: 0; margin-right: 0; }
+  .svct, .svc-fee,
+  section:has(.svct) .sec-head,
+  section:has(.svc-fee) .sec-head { margin-inline: 0; }
+  /* 見出しの下の本文列（702〜880pxで中央寄せの箱）も、見出しと同じ左端から始める */
+  main .sec > .w > *, main .sec > .w > .rv > * { margin-left: 0; }
+  .sched-table { margin-left: 0; }
+}
 
 /* スマホ: FLOWのSTEPラベル列を残さない。本文が半分の幅に潰れるため */
 @media (max-width: 640px){
