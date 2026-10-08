@@ -109,8 +109,10 @@ jobs:
           python3 --version
 
       - name: ローカル公開サーバーを起動
+        # 本番（XServer）と同じく HTML・CSS・JS を圧縮して配信する。非圧縮の http.server では
+        # 性能点が本番（0.99）より大きく低く出て、合否ラインを揺れていた（2026-10-08、本人承認で変更）。
         run: |
-          python3 -m http.server 8765 >/tmp/minano-http.log 2>&1 &
+          node scripts/serve-compressed.mjs 8765 >/tmp/minano-http.log 2>&1 &
           for i in {1..20}; do
             if curl --fail --silent http://127.0.0.1:8765/ >/dev/null; then break; fi
             sleep 0.25
