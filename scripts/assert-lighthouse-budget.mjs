@@ -20,9 +20,11 @@ const profiles = {
   // 0.91は中央値判定での実測分布の上端に張り付いていた（10runの中央値は87〜94の7ポイント幅で、
   // 4回に1回落ちる）。performanceを最良値判定に変えると分布は91〜95の4ポイント幅に締まるので、
   // その下限91に1ポイントの余裕を見て0.90とする。
-  "ci-mobile": { performance: 0.90, cls: 0.1, bytes: 600 * 1024 },
-  // ヘッダー改善後の完全読込は約705KiB。画像品質を落とさず、15KiBの変動余地を確保する。
-  "ci-desktop": { performance: 0.99, cls: 0.1, bytes: 720 * 1024 },
+  // 2026-10-08 検証サーバーを本番と同じ圧縮配信（scripts/serve-compressed.mjs）に変更。
+  // 圧縮後の実測はモバイル 217KiB・PC 301KiB（性能はモバイル0.99・PC1.00）。
+  // 転送量は実測に約4割の余地を見て、増え方に気づける値にする（旧基準は非圧縮の600/720KiB）。
+  "ci-mobile": { performance: 0.90, cls: 0.1, bytes: 300 * 1024 },
+  "ci-desktop": { performance: 0.99, cls: 0.1, bytes: 420 * 1024 },
 };
 
 const [profileName, ...reportPaths] = process.argv.slice(2);
