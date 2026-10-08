@@ -60,7 +60,9 @@ function mnIsHomePath(p) { return /(^|\/)(index\.html)?$/.test(p || ''); }
   function init() {
     cleanup();
     var html = document.documentElement;
-    var hero = document.querySelector('.hero, .page-hero');
+    // トップの .hero は書式一覧（#tools）まで含み長いので、見出し（.hero-overlay）を過ぎたら出す。
+    // 固定相談ボタンの表示判定はここだけで行う（ページ側で同じ hidden を切り替えない）。
+    var hero = document.querySelector('.hero-overlay') || document.querySelector('.hero, .page-hero');
     var finalArea = document.querySelector('.final-sec, .final-cta');
     var footer = document.querySelector('.footer');
     var state = {

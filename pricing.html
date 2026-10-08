@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="page-enter.js?v=20260921-pace1"></script>
+<script defer src="page-enter.js?v=20261008-floating1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <style>
 .spot-entry{background:var(--shiro);border:1.5px solid var(--moegi);border-radius:var(--r-lg);padding:20px 22px;margin:0 0 14px}
@@ -17,11 +17,14 @@
 /* 見出しをh2にしたぶんのUA余白を打ち消す（summary内のh2・料金の含む/含まないの見出し） */
 .spot-fees h2.sf-t,h2.price-incl-h,h2.sf-group-t{margin:0;text-wrap:balance}
 h2.sf-group-t{margin:34px 0 10px}
+/* 月額プランの章見出し。スポット料金表のあとに章として区切る */
+.pricing-monthly-head{margin-top:clamp(64px,9vw,112px)}
+.sec-h .sec-h-note{display:block;margin-top:4px;font-size:.5em;font-weight:700;letter-spacing:.04em;color:var(--ink3)}
 .price-faq{margin:0;display:grid;gap:14px}
 .price-faq dt{font-family:var(--disp);font-size:15px;font-weight:800;color:var(--iwa)}
 .price-faq dd{margin:4px 0 0;font-size:14px;line-height:1.9;color:var(--ink2)}
 .plan-features a,.price-faq a,.sf-note a{color:inherit;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--moegi)}
-.home-once-sub{font-size:13px;line-height:1.9;color:var(--ink3);margin:6px 0 0}
+.home-once-sub{font-size:13px;line-height:1.9;color:var(--ink3);margin:6px 0 0;max-width:44em}
 .home-once-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px 14px;margin:16px 0 0;padding:0;list-style:none}
 .home-once-grid li{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--yuki)}
 .home-once-name{display:block;font-size:13.5px;font-weight:700;color:var(--iwa)}
@@ -29,7 +32,7 @@ h2.sf-group-t{margin:34px 0 10px}
 .home-once-days{display:block;margin-top:3px;font-size:11.5px;line-height:1.6;color:var(--ink3)}
 .home-once-actions{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:16px}
 .home-once-actions .spot-entry-btn{margin-top:0}
-.home-once-note{font-size:11.5px;color:var(--ink3);margin:10px 0 0;line-height:1.7}
+.home-once-note{font-size:11.5px;color:var(--ink3);margin:10px 0 0;line-height:1.7;max-width:44em}
 .spot-fees .sf-note{color:var(--ink3)}
 .page-hero .breadcrumb span{color:var(--ink3)!important}
 .spot-fees summary{transition:background .2s,color .2s}
@@ -66,7 +69,7 @@ h2.sf-group-t{margin:34px 0 10px}
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3Eみ%3C/text%3E%3C/svg%3E">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="skin-v2.css?v=20261008-critical1">
+<link rel="stylesheet" href="skin-v2.css?v=20261008-layout1">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"社労士の顧問料と料金表 月35,000円〜｜含む業務と別料金の線引き｜富山","description":"社労士の顧問料は従業員数と含む業務で決まります。富山の社会保険労務士事務所みなのは、スタート顧問 月35,000円から、給与計算まで含むスタンダード 月55,000円からを固定額で公開。顧問料に含む業務と別料金の線引き、スポット料金、助成金の成功報酬まで載せています。","url":"https://minano-sr.com/pricing.html"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://minano-sr.com/"},{"@type":"ListItem","position":2,"name":"料金・顧問プラン","item":"https://minano-sr.com/pricing.html"}]}]}
 </script>
@@ -146,6 +149,7 @@ h2.sf-group-t{margin:34px 0 10px}
       <span class="page-kicker">Pricing</span>
       <h1>社労士の<wbr>顧問料と<wbr>料金表。<br>含む業務も、<wbr>別料金も、<wbr>固定額で。</h1>
       <p class="lead">顧問料は<wbr>従業員数と、<wbr>給与計算を<wbr>含むか<wbr>どうかで<wbr>決まります。<wbr>スタート<wbr>顧問 月<wbr>¥35,000<wbr>（5名まで）、<wbr>給与計算を<wbr>含む<wbr>スタンダード 月<wbr>¥55,000<wbr>（10名まで）。<wbr>顧問料に<wbr>含む業務、<wbr>顧問先の<wbr>別料金、<wbr>1件ずつ<wbr>頼める<wbr>スポット料金を、<wbr>すべて<wbr>税抜の<wbr>固定額で<wbr>載せています。</p>
+      <nav class="page-jump" aria-label="このページの内容"><a href="#spot-entry">スポット料金</a><a href="#monthly-plans">月額プラン</a><a href="#price-incl">含まれる業務</a><a href="#simulator">かんたん計算</a><a href="#price-faq">よくある質問</a></nav>
     </div>
   </header>
 
@@ -236,7 +240,41 @@ h2.sf-group-t{margin:34px 0 10px}
         <a class="plan-btn plan-btn-main spot-entry-btn" href="uploads/contact.html">単発のご依頼を相談する →</a>
       </div>
     </details>
-    <h2 class="sf-group-t" style="margin:34px 0 10px">顧問契約の<wbr>月額プラン<wbr>（スタート・<wbr>スタンダード・<wbr>カスタム）</h2>
+    <script id="spot-fees-mobile">
+    // 640px以下では長い料金表を閉じて始める（PCは開いたまま）。ページ内リンクで来たときは開く。
+    (function(){
+      var d=document.getElementById('spot-fees');
+      if(!d||!window.matchMedia||!window.matchMedia('(max-width: 640px)').matches)return;
+      var h=location.hash.slice(1),t=h&&document.getElementById(decodeURIComponent(h));
+      if(t&&(t===d||d.contains(t)))return;
+      d.open=false;
+    })();
+    // ページ内リンクの行き先が閉じた details の中なら、開いてから移動する（料金表・かんたん計算）。
+    // SPAで再実行されても重ならないよう、固定キーの旧リスナーを外してから登録する。
+    (function(){
+      function openFor(hash){
+        if(!hash||hash.length<2)return;
+        var t=null;try{t=document.getElementById(decodeURIComponent(hash.slice(1)));}catch(e){}
+        for(var el=t;el;el=el.parentElement){if(el.tagName==='DETAILS'&&!el.open)el.open=true;}
+      }
+      if(window.__mnPricingAnchor)document.removeEventListener('click',window.__mnPricingAnchor);
+      if(window.__mnPricingHash)window.removeEventListener('hashchange',window.__mnPricingHash);
+      window.__mnPricingAnchor=function(e){
+        if(!document.getElementById('spot-fees'))return;
+        var a=e.target&&e.target.closest&&e.target.closest('a[href^="#"]');
+        if(a)openFor(a.getAttribute('href'));
+      };
+      window.__mnPricingHash=function(){if(document.getElementById('spot-fees'))openFor(location.hash);};
+      document.addEventListener('click',window.__mnPricingAnchor);
+      window.addEventListener('hashchange',window.__mnPricingHash);
+    })();
+    </script>
+    <div class="sec-head rv pricing-monthly-head" id="monthly-plans">
+      <div class="sec-head-idx"><span class="idx-lat">MONTHLY</span><span class="idx-jp">月額プラン</span></div>
+      <div class="sec-head-body">
+        <h2 class="sec-h">顧問契約の<wbr><strong>月額<wbr>プラン</strong><span class="sec-h-note">（スタート・<wbr>スタンダード・<wbr>カスタム）</span></h2>
+      </div>
+    </div>
     <div class="startup-card rv" style="margin:0 0 26px">
       <span class="startup-badge">STARTUP</span>
       <div class="startup-body">
@@ -311,7 +349,7 @@ h2.sf-group-t{margin:34px 0 10px}
         <p class="plan-note">初回相談は無料</p>
       </div>
     </div>
-    <div class="price-incl rv">
+    <div class="price-incl rv" id="price-incl">
       <div class="price-incl-img ph-frame">
         <image-slot id="price-incl-photo" src="assets/illustrations/18_payroll_calculation.webp" crop-scale="1.061789" crop-x="0.217238" crop-y="-1.837216" placeholder="書類・手続きのイメージ写真（推奨 4:3）"></image-slot>
       </div>

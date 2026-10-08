@@ -63,6 +63,13 @@
 @media(max-width:640px){
   .fg-picker{padding:14px;margin-bottom:20px}
   .fg-picker-grid{grid-template-columns:minmax(0,1fr);gap:14px}
+  /* 書式名はグループごとの横スクロール1行。右端をぼかして続きを示し、末尾は余白でぼかしの外まで送れる */
+  .fg-picker-group ul{flex-wrap:nowrap;gap:8px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;padding-block:2px;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
+  .fg-picker-group ul::-webkit-scrollbar{display:none}
+  .fg-picker-group ul::after{content:'';flex:0 0 28px}
+  .fg-picker-group li{flex:0 0 auto;max-width:none;scroll-snap-align:start}
+  .fg-picker-group a{display:flex;align-items:center;min-height:36px;padding:6px 11px;overflow-wrap:normal}
+  .fg-picker-group a:focus-visible{outline-offset:-3px}
   .fg-picker-title{font-size:13px;margin-bottom:12px}
   .fg-picker-title span{font-size:11px}
   .fg-bar{align-items:flex-start;gap:8px}

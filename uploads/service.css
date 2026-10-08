@@ -563,14 +563,11 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
 .rp-read { font-size: 11px; color: var(--ink4); letter-spacing: .04em; margin-top: auto; }
 @media (prefers-reduced-motion: reduce) { .rp-card { transition: none; } }
 
-/* スマホ: 左右対称に。見出し・タイトル・数値を中央へ寄せ、箇条書きと表は左のまま */
+/* スマホ: 左右対称に。見出し・タイトル・数値を中央へ寄せ、箇条書きと表は左のまま。
+   ページ冒頭（パンくず・見出し・リード文）と長い説明文は左揃え（2026-10-08、ルート系と同じ） */
 @media (max-width: 640px) {
-  .page-hero-inner { text-align: center; }
-  .page-hero-inner .breadcrumb { justify-content: center; }
-  .page-hero-cta { justify-content: center; }
-  .page-kicker { justify-content: center; margin-inline: auto; }
-  .lead, .sec-sub { margin-inline: auto; }
   .sec-head, .sec-head-body, .sec-head-c { text-align: center; }
+  .sec-sub, .final-cta p { text-align: left; }
   .sec-kicker { justify-content: center; margin-inline: auto; }
   .line-cell { text-align: center; }
   .line-cell-h { justify-content: center; }
