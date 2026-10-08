@@ -835,7 +835,6 @@ window.__pgScroll=function(){
     var p=scrollY/(document.documentElement.scrollHeight-innerHeight||1);
     if(prog)prog.style.width=(p*100)+'%';
     if(nav)nav.classList.toggle('solid',scrollY>60);
-    if(fl)fl.classList.toggle('hidden',scrollY<300);
     ticking=false;
   });
 };
