@@ -38,14 +38,20 @@ body{min-width:320px}
   pointer-events:none;z-index:3;
 }
 
-/* 強調部分のマーカー（index と同じ描画演出・CSSのみ） */
+/* 強調部分のマーカー（ルート系 skin-v2.css と同じ色・太さ。描画演出はCSSのみ） */
 .sec-h strong,.page-hero h1 strong{
-  background-image:linear-gradient(0deg,var(--g100,#D6EBDD),var(--g100,#D6EBDD));
+  color:#123F30;font-weight:900;
+  background-image:linear-gradient(color-mix(in srgb,#2E9E63 42%,transparent),color-mix(in srgb,#2E9E63 42%,transparent));
   background-repeat:no-repeat;
-  background-size:100% 40%;
+  background-size:100% 30%;
   background-position:0 88%;
 }
-@keyframes mk-draw{from{background-size:0% 40%}to{background-size:100% 40%}}
+.page-hero h1 strong{
+  background-image:linear-gradient(color-mix(in srgb,#2E9E63 38%,transparent),color-mix(in srgb,#2E9E63 38%,transparent));
+  background-size:100% 26%;
+  background-position:0 90%;
+}
+@keyframes mk-draw{from{background-size:0% 30%}to{background-size:100% 30%}}
 @supports (animation-timeline: view()){
   @media (prefers-reduced-motion: no-preference){
     .sec-h strong{
@@ -55,15 +61,10 @@ body{min-width:320px}
     }
   }
 }
-@media print{.sec-h strong,.page-hero h1 strong{animation:none;background-size:100% 40%}}
+@media print{.sec-h strong{animation:none;background-size:100% 30%}}
 
 /* 強調が長いときは文節で折り、狭い画面でも欠けないようにする。 */
 .sec-h strong,.page-hero h1 strong{white-space:normal;overflow-wrap:break-word;box-decoration-break:clone;-webkit-box-decoration-break:clone}
-/* モバイルの見出しサイズ */
-@media(max-width:640px){
-  .page-hero h1{font-size:clamp(24px,6.6vw,30px)}
-  .sec-h{font-size:clamp(20px,5.6vw,25px)}
-}
 
 /* やわらかい角丸・ホバー（index と統一） */
 .faq-item,.line-cell,.dl-card,.post-card,.art-card{border-radius:12px}
@@ -84,15 +85,9 @@ body{min-width:320px}
 @media(prefers-reduced-motion:reduce){.fl-primary::after{animation:none;opacity:0}}
 
 
-/* ═══ 2026-07 大画面プレゼンス層（全下層共通）… 1559px以下の見え方は変えない ═══ */
-/* ブログ記事（article.post）は本文の読みやすい行長（--max:760px）を維持するため除外 */
-@media(min-width:1560px){
-  :root:not(:has(article.post)){--max:1240px}
-}
-@media(min-width:1900px){
-  :root:not(:has(article.post)){--max:1320px}
-}
-/* 27インチ級：さらに一段拡大（index.html と同じ値。下層は svh 補正がないのでこれだけでよい） */
+/* ═══ 2026-07 大画面プレゼンス層 ═══
+   本文の最大幅は 2026-10-08 からルート系と同じ（下の「ルート系と同じ枠」の --max）。
+   27インチ級：さらに一段拡大（index.html と同じ値。下層は svh 補正がないのでこれだけでよい） */
 @media(min-width:2000px){
   html{zoom:1.15}
 }
@@ -183,7 +178,7 @@ figcaption a:has(wbr), blockquote a:has(wbr), .page-hero .lead a:has(wbr) {
 /* 短い本文リンクを行末の残り幅で分断せず、長いリンクは器の中で折る。 */
 main :is(p,li,dd) > a:not([class]):not(:has(wbr)){display:inline-block;max-width:100%;vertical-align:baseline}
 main a.jl{white-space:nowrap}
-main :is(.btn-primary,.btn-white,.btn-ghost,.startup-primary,.startup-secondary){max-width:100%;white-space:normal;text-wrap:balance;overflow-wrap:break-word}
+main :is(.btn-primary,.btn-secondary,.btn-white,.btn-ghost,.startup-primary,.startup-secondary){max-width:100%;white-space:normal;text-wrap:balance;overflow-wrap:break-word}
 
 /* ── 2026-10-08 冒頭の型をルート系とそろえる（skin-v2.css の .page-hero.has-ill と同じ規則）──
    uploads 系は淡い背景＋下端の稜線だけで、PCでは右半分が空いていた。本文左／イラスト右の2列にし、
@@ -226,3 +221,117 @@ main :is(.btn-primary,.btn-white,.btn-ghost,.startup-primary,.startup-secondary)
 .svct-jump a::after{content:'\2193';font-size:12px;color:var(--g500)}
 @media(hover:hover){.svct-jump a:hover{border-color:var(--g400);background:var(--g50)}}
 .svct-jump a:focus-visible{outline:2px solid var(--g600);outline-offset:2px}
+
+/* ══ 2026-10-08 ルート系（skin-v2.css）と同じ枠・見出し・ボタン・フッター ══════════════════
+   uploads 系は html{zoom:.9}（2000px以上は1.15）で描くため、同じ数値を書くと画面上は0.9倍になり、
+   ヘッダーが低く、ロゴと本文の左端が内側へずれていた（1280pxでヘッダー58px・本文左端154px、ルートは79px・88px）。
+   --uzi はその倍率の逆数。ルートの数値に掛けると、画面上でルートと同じ大きさになる
+   （vw・vh も html の zoom で縮むので、clamp() ごと掛けてよい。Chromium／WebKit で実測）。
+   ヘッダーとフッターは中身ごとルートと同じにするため、要素自体の zoom で倍率を打ち消し、ルートの値をそのまま使う。 */
+:root{
+  --uzi:1.1111111;
+  --max:calc(1104px * var(--uzi));            /* ルートの .w（1200px − 左右48px）の中身の幅 */
+  --nav-h:calc(79px * var(--uzi));            /* ルートのヘッダーの高さ（スクロール位置の余白・冒頭の上余白に使う） */
+  --gutter:calc(clamp(20px, 4.5vw, 48px) * var(--uzi));
+  --sugi:#123F30;--sugi-7:#1C5842;--sugi-9:#0B2A1F;
+  --moegi:#2E9E63;--moegi-t:#1E7A4B;--moegi-b:#43C17E;--moegi-l:#E3F2E9;
+  --iwa:#1E2721;--yuki:#F9FAF7;
+  --disp:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",YuGothic,Meiryo,sans-serif;
+  --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --font-body:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",YuGothic,Meiryo,sans-serif;
+}
+@media(min-width:2000px){:root{--uzi:.8695652}}
+@media(max-width:700px){:root{--nav-h:calc(69px * var(--uzi))}}
+
+/* ── 本文の左端：ルートの .w と同じ式（左右余白 clamp(20px,4.5vw,48px)・中身1104px）── */
+.sec,.page-hero{padding-left:var(--gutter);padding-right:var(--gutter)}
+.page-hero{padding-top:calc(clamp(120px, 16vh, 168px) * var(--uzi))}
+.related-posts-inner{max-width:calc(var(--max) + var(--gutter) * 2);padding-inline:var(--gutter)}
+
+/* ── ヘッダー ── */
+.nav{zoom:var(--uzi);height:auto;display:block;font-family:var(--font-body);font-size:15.5px;line-height:1.9;z-index:9000;background:color-mix(in srgb,var(--yuki) 97%,transparent);border-bottom:1px solid color-mix(in srgb,var(--sugi) 16%,#E0E4DE)}
+.nav.nav.solid{height:auto;background:color-mix(in srgb,var(--yuki) 99%,transparent)}
+.nav-inner{max-width:1280px;min-height:78px;margin-inline:auto;display:flex;align-items:center;gap:clamp(14px,1.6vw,22px);padding:12px clamp(18px,3.5vw,40px);transition:padding .35s var(--ease-soft)}
+.nav.shrink .nav-inner{padding-block:9px}
+.logo{display:flex;flex:0 0 auto;align-items:center;gap:11px;min-width:0}
+.logo-mark{width:44px;height:44px;flex-shrink:0;background:var(--sugi);border-radius:12px;display:grid;place-items:center;box-shadow:0 4px 12px rgba(18,63,48,.16)}
+.logo-mark span{font-family:var(--disp);font-size:21px;font-weight:900;color:#fff;letter-spacing:0}
+.logo-text{display:block}
+.logo-text b{display:block;font-family:var(--disp);font-size:16px;font-weight:800;letter-spacing:.015em;color:var(--iwa);line-height:1.3;white-space:nowrap}
+.logo-text small{display:block;font-family:var(--mono);font-size:9.5px;font-weight:400;letter-spacing:.18em;color:var(--ink3);margin-top:2px}
+.nav-links{gap:clamp(4px,.7vw,10px)}
+.nav-links li:nth-child(5){margin-left:0;padding-left:0;border-left:0}
+.nav-links li:nth-child(6){margin-left:6px;padding-left:18px;border-left:1px solid color-mix(in srgb,#E0E4DE 84%,transparent)}
+.nav-links a{min-height:50px;font-size:14.5px;font-weight:700;letter-spacing:.02em;color:var(--ink2);padding:8px;background-image:linear-gradient(var(--moegi),var(--moegi));background-size:0% 3px;background-position:8px 100%;background-repeat:no-repeat}
+@media(hover:hover){.nav-links a:hover{color:var(--sugi);background-color:color-mix(in srgb,var(--moegi) 7%,transparent);background-size:calc(100% - 16px) 3px}}
+.nav-links a.active,.nav-links a[aria-current]{color:var(--sugi);font-weight:800;background-color:color-mix(in srgb,var(--moegi) 11%,transparent);background-size:calc(100% - 16px) 3px}
+.nav-cta{min-height:50px;gap:0;background:var(--sugi);color:#fff;font-size:14.5px;font-weight:700;letter-spacing:.03em;padding:10px 22px;border-radius:8px;box-shadow:0 5px 15px rgba(18,63,48,.18)}
+@media(hover:hover){.nav-cta:hover{background:var(--sugi-7);box-shadow:0 8px 20px rgba(18,63,48,.24);transform:none}}
+.nav-burger{width:50px;height:50px;flex:0 0 50px;border-radius:8px;color:var(--iwa);background:#fff;border:1px solid color-mix(in srgb,var(--sugi) 18%,#E0E4DE)}
+@media(min-width:941px) and (max-width:1199px){.nav-links{gap:clamp(2px,.5vw,8px)}}
+@media(max-width:700px){
+  .nav-inner{min-height:68px;gap:10px;padding:10px 16px}
+  .nav-cta{display:none}
+  .logo{gap:9px}
+  .logo-mark{width:40px;height:40px;border-radius:10px}
+  .logo-text b{font-size:clamp(12px,3.7vw,14px);letter-spacing:0}
+  .logo-text small{font-size:8.5px;letter-spacing:.1em}
+  .nav-burger{margin-left:auto;width:44px;height:44px;flex-basis:44px}
+}
+
+/* ── ページ冒頭の見出し・節見出し：ルートと同じ書体（ヒラギノ）・太さ・大きさ ── */
+h1,h2,h3,.sec-h,.final-cta h2,.flow-c h3,.page-h,.art-title,.card-title,.post-title,.art-h,.blog-title{font-family:var(--disp)}
+.page-hero h1{font-family:var(--disp);font-size:calc(clamp(27px, 4.2vw, 44px) * var(--uzi));font-weight:900;letter-spacing:.015em;line-height:1.45;color:var(--iwa)}
+.sec-h{font-family:var(--disp);font-size:calc(clamp(24px, 3.3vw, 40px) * var(--uzi));font-weight:800;letter-spacing:.015em;line-height:1.5;color:var(--iwa)}
+.final-cta h2{font-family:var(--disp);font-size:calc(clamp(22px, 3.2vw, 34px) * var(--uzi));font-weight:900;line-height:1.6}
+
+/* ── ボタン：ルートと同じ角丸8px・深杉・高さ ── */
+.btn-primary{background:var(--sugi);color:#fff;font-size:calc(15.5px * var(--uzi));font-weight:700;letter-spacing:.08em;line-height:1.9;padding:calc(18px * var(--uzi)) calc(44px * var(--uzi));border-radius:calc(8px * var(--uzi));box-shadow:0 8px 24px rgba(18,63,48,.22)}
+@media(hover:hover){.btn-primary:hover{background:var(--sugi-7);color:#fff}}
+.btn-secondary{background:transparent;border:1.5px solid var(--sugi);color:var(--sugi);font-size:calc(14.5px * var(--uzi));font-weight:700;letter-spacing:.04em;line-height:1.9;padding:calc(16px * var(--uzi)) calc(30px * var(--uzi));border-radius:calc(8px * var(--uzi))}
+@media(hover:hover){.btn-secondary:hover{background:var(--sugi);border-color:var(--sugi);color:#fff}}
+.final-cta .btn-secondary{border-color:rgba(255,255,255,.5);color:#fff}
+.btn-white{background:#fff;color:var(--sugi);font-size:calc(15px * var(--uzi));font-weight:700;letter-spacing:.06em;line-height:1.9;padding:calc(18px * var(--uzi)) calc(42px * var(--uzi));border-radius:calc(8px * var(--uzi));box-shadow:0 10px 30px rgba(0,0,0,.3)}
+@media(hover:hover){.btn-white:hover{background:var(--moegi-l);color:var(--sugi)}}
+@media(max-width:480px){.page-hero-cta .btn-primary,.page-hero-cta .btn-secondary,.page-hero-cta .btn-white{padding-inline:calc(24px * var(--uzi))}}
+.fl-primary{background:var(--sugi);padding:calc(15px * var(--uzi)) calc(24px * var(--uzi));border-radius:999px;box-shadow:0 12px 32px rgba(11,42,31,.35)}
+@media(hover:hover){.fl-primary:hover{background:var(--sugi-7)}}
+.fl-primary-main{font-size:calc(14px * var(--uzi));letter-spacing:.05em}
+.fl-primary-sub{font-size:calc(10px * var(--uzi));opacity:.8}
+
+/* ── フッター：ルートと同じ5列（事務所／サービス／支援の進め方／コンテンツ／お問い合わせ）── */
+.footer{zoom:var(--uzi);font-family:var(--font-body);font-size:15.5px;line-height:1.9;letter-spacing:.02em;background:var(--sugi-9);color:rgba(255,255,255,.8);padding:clamp(52px,7vw,84px) 0 34px;border-top:1px solid rgba(255,255,255,.1)}
+.footer-inner{max-width:1200px;margin-inline:auto;padding-inline:clamp(20px,4.5vw,48px)}
+.footer-grid{grid-template-columns:1.9fr repeat(4,1fr);gap:clamp(24px,3.4vw,44px);padding-bottom:clamp(36px,5vw,52px);margin-bottom:0;border-bottom:1px solid rgba(255,255,255,.12)}
+.footer-logo{gap:11px;margin-bottom:18px}
+.footer-logo .logo-mark{background:rgba(255,255,255,.12)}
+.footer-logo .logo-text b{color:#fff;font-family:var(--disp);font-size:15px;font-weight:800;line-height:1.4}
+.footer-logo .logo-text small{color:rgba(255,255,255,.5);font-family:var(--mono);font-size:9.5px;letter-spacing:.16em}
+.footer-desc{font-size:12.5px;line-height:2.1;color:rgba(255,255,255,.62);max-width:30em;margin-bottom:0;letter-spacing:.02em}
+.footer-contact{font-size:12px;color:rgba(255,255,255,.64);letter-spacing:.02em}
+.footer-contact a{min-height:24px}
+.footer-h{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.22em;color:var(--moegi-b);margin-bottom:16px;text-transform:none}
+.footer-ul{display:block;gap:0}
+.footer-ul li{margin-bottom:10px}
+.footer-ul a{display:inline;min-height:0;padding-block:5px;font-size:12.5px;color:rgba(255,255,255,.66);letter-spacing:.02em}
+.footer-ul a[href^="tel:"],.footer-ul a[href^="mailto:"]{font-size:12.5px}
+.footer-ul li>span{font-size:12.5px;color:rgba(255,255,255,.66)}
+@media(hover:hover){.footer-ul a:hover{color:#fff}}
+.footer-bottom{gap:14px;padding-top:26px}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.62);letter-spacing:.02em}
+.footer-badges{gap:10px}
+.footer-badge{font-size:10.5px;color:rgba(255,255,255,.66);background:transparent;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:5px 14px}
+@media(max-width:900px){
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .footer-grid>div:first-child{grid-column:1/-1}
+  .footer-contact{font-size:13px}
+  .footer-contact-row>*,.footer-contact-address{white-space:normal}
+  .footer-contact a{min-height:32px;overflow-wrap:anywhere}
+  .footer-ul li{margin-bottom:2px}
+  .footer-ul a{display:flex;align-items:center;min-height:32px;font-size:13.5px;line-height:1.45}
+  .footer-ul a[href^="tel:"],.footer-ul a[href^="mailto:"]{font-size:13.5px;white-space:normal;overflow-wrap:anywhere}
+  .footer-ul li>span{display:block;padding-block:6px;font-size:13.5px;line-height:1.45}
+}
+@media(max-width:480px){.footer-grid{gap:28px 16px}}
+/* 冒頭の目玉バッジ・チップは2列のグリッドでも文字幅で止める（列幅いっぱいに伸びていた） */
+.page-hero.has-ill .page-hero-inner>:is(.flag-badge,.diag-badge,.live-chip){justify-self:start}
