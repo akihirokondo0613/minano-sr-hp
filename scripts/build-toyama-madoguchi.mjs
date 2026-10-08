@@ -179,18 +179,23 @@ ${g.offices.map(officeBlock).join('\n')}
     </div>`).join('\n');
 
   return `<main id="main">
-  <header class="page-hero">
-    <div class="w">
+  <header class="page-hero has-ill">
+    <div class="page-hero-inner">
       <nav class="breadcrumb" aria-label="現在の位置">
         <a href="../">ホーム</a><span aria-hidden="true">›</span>
         <a href="../support.html">支援の進め方</a><span aria-hidden="true">›</span>
         <span aria-current="page">富山の窓口一覧</span>
       </nav>
       <span class="sec-kicker">富山の窓口</span>
-      <h1>どこに何を出すか。<br>富山の労働基準監督署・年金事務所・ハローワーク 窓口一覧</h1>
+      <h1>どこに何を出すか。<br>富山の労働基準監督署・年金事務所・ハローワーク <strong>窓口一覧</strong></h1>
       <p class="lead">就業規則は労働基準監督署、社会保険は年金事務所、離職票はハローワーク。
         助成金は制度によって申請先が分かれます。富山県内の窓口を、手続きごとにまとめました。
         所在地・電話・管轄は公式サイトで確認しています。「どの手続きをいつまでに出すか」は<a href="service-shakai-hoken.html#ichiran">労務手続きの一覧と期限</a>のページにまとめています。</p>
+      <div class="page-hero-cta">
+        <a href="contact.html?from=toyama-madoguchi" class="btn-primary">無料で相談する →</a>
+        <a href="service-shakai-hoken.html" class="btn-secondary">手続き代行を見る</a>
+      </div>
+      <figure class="ph-ill"><img src="../assets/illustrations/about-toyama-local-support.webp" width="960" height="720" alt="" decoding="async"></figure>
     </div>
   </header>
 

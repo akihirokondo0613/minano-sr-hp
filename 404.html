@@ -9,19 +9,24 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23123F30'/%3E%3Ctext x='16' y='22' font-family='sans-serif' font-size='17' font-weight='700' fill='white' text-anchor='middle'%3E%E3%81%BF%3C/text%3E%3C/svg%3E">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:"BIZ UDPGothic","Hiragino Kaku Gothic ProN",sans-serif;background:#F6F5EE;color:#1E3A2F;min-height:100svh;display:flex;align-items:center;justify-content:center;padding:24px}
+body{font-family:"BIZ UDPGothic","Hiragino Kaku Gothic ProN",sans-serif;background:#F6F5EE;color:#1E3A2F;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px}
+.logo{display:inline-flex;align-items:center;gap:10px;min-height:44px;color:#123F30;text-decoration:none;font-size:14px;font-weight:700;letter-spacing:.02em}
+.logo-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:9px;background:#123F30;color:#fff;font-size:17px;font-weight:700}
 .card{max-width:520px;width:100%;background:#fff;border:1px solid #E3E0D1;border-radius:16px;padding:clamp(32px,6vw,52px) clamp(24px,5vw,48px);text-align:center}
 .code{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;letter-spacing:.22em;color:#5E8F6F;margin-bottom:14px}
-h1{font-size:clamp(19px,4.5vw,23px);font-weight:700;color:#123F30;letter-spacing:.02em;margin-bottom:14px;text-wrap:balance}
+h1{font-size:clamp(19px,4.5vw,23px);font-weight:700;color:#123F30;letter-spacing:.02em;margin-bottom:14px;text-wrap:balance;word-break:keep-all;overflow-wrap:break-word}
 p{font-size:13.5px;line-height:2;color:#5A6B5F;margin-bottom:28px;text-wrap:pretty}
 .btns{display:flex;flex-direction:column;gap:10px}
 a.btn{display:block;padding:13px 18px;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;letter-spacing:.04em}
 a.main{background:#123F30;color:#fff}
 a.sub{background:#EDF3EC;color:#123F30}
 a.btn:hover{opacity:.88}
+.more{display:flex;flex-wrap:wrap;justify-content:center;gap:0 6px;margin-top:18px}
+.more a{display:inline-flex;align-items:center;min-height:44px;padding:0 10px;font-size:13.5px;font-weight:700;color:#1C5842;text-decoration:underline;text-underline-offset:4px}
 </style>
 </head>
 <body>
+<a class="logo" href="/"><span class="logo-mark" aria-hidden="true">み</span>みなの社会保険労務士事務所</a>
 <div class="card">
   <div class="code">404 NOT FOUND</div>
   <h1>お探しの<wbr>ページが<wbr>見つかりませんでした</h1>
@@ -30,6 +35,12 @@ a.btn:hover{opacity:.88}
     <a class="btn main" href="/">ホームへ戻る</a>
     <a class="btn sub" href="/uploads/contact.html">お問い合わせ・無料相談</a>
   </div>
+  <nav class="more" aria-label="おもなページ">
+    <a href="/services.html">サービス</a>
+    <a href="/pricing.html">料金</a>
+    <a href="/joseikin.html">助成金</a>
+    <a href="/portal.html">書式・窓口</a>
+  </nav>
 </div>
 </body>
 </html>
