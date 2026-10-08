@@ -458,15 +458,6 @@
 
 // 固定相談ボタンはスクロールごとの位置計測を避け、ヒーローCTAの交差状態だけで切り替える。
 if(window.__heroCtaObserver)window.__heroCtaObserver.disconnect();
-(function(){
-  var fl=document.getElementById('fl'),heroCta=document.querySelector('.hero-btns');
-  if(!fl)return;
-  if(!heroCta||!('IntersectionObserver' in window)){fl.classList.toggle('hidden',scrollY<300);return;}
-  window.__heroCtaObserver=new IntersectionObserver(function(entries){
-    var e=entries[0];if(e)fl.classList.toggle('hidden',e.isIntersecting);
-  },{threshold:0});
-  window.__heroCtaObserver.observe(heroCta);
-})();
 var ticking=false;
 if(window.__pgScroll)window.removeEventListener('scroll',window.__pgScroll);
 window.__pgScroll=function(){

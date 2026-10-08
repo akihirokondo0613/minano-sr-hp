@@ -343,7 +343,6 @@ h1,h2,h3,.sec-h,.page-hero h1,.final-cta h2,.flow-c h3{font-family:"Zen Maru Got
     var p=scrollY/(document.documentElement.scrollHeight-innerHeight||1);
     if(prog)prog.style.width=(p*100)+'%';
     if(nav)nav.classList.toggle('solid',scrollY>60);
-    if(fl)fl.classList.toggle('hidden',scrollY<300);
   };
   window.addEventListener('scroll',window.__pgScroll,{passive:true});
   window.toggleNav=function(){document.getElementById('mobNav').classList.toggle('open')};
