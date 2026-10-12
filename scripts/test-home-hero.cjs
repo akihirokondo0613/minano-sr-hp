@@ -502,11 +502,20 @@ async function checkHeroKeyboard(page, engine, width, failures) {
   await actions.nth(0).focus();
   const consultationFocused = await actions.nth(0).evaluate((link) => document.activeElement === link);
   await page.keyboard.press('Tab');
-  const pricingFocused = await actions.nth(1).evaluate((link) => document.activeElement === link);
+  let key = 'Tab';
+  let pricingFocused = await actions.nth(1).evaluate((link) => document.activeElement === link);
+  // Safariの標準設定ではリンク移動はOption-Tab。Tabで移動できる設定も先に確認する。
+  // https://support.apple.com/guide/safari/cpsh003/mac
+  if (!pricingFocused && engine === 'webkit') {
+    await actions.nth(0).focus();
+    key = 'Alt+Tab';
+    await page.keyboard.press(key);
+    pricingFocused = await actions.nth(1).evaluate((link) => document.activeElement === link);
+  }
   if (!consultationFocused || !pricingFocused) {
     failures.push(`${engine}@${width}px: 無料相談から料金へキーボードで進めません`);
   }
-  return { consultationFocused, pricingFocused };
+  return { consultationFocused, pricingFocused, key };
 }
 
 async function checkFormGallery(page, engine, width, failures) {
