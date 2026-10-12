@@ -234,9 +234,22 @@ async function measure(page) {
       .map((actor) => ({ actor: actor.dataset.actor, ...boxOf(actor) }))
       .sort((a, b) => a.left - b.left);
     const canvasBox = boxOf(canvas);
-    const titleBox = boxOf(document.querySelector('.hero-h1'));
     const stage = document.querySelector('#top .hero-stage');
     const overlay = document.querySelector('#top .hero-overlay');
+    const overlayBox = boxOf(overlay);
+    const heroActions = [...document.querySelectorAll('#top .hero-btns a')].map((link) => {
+      const style = getComputedStyle(link);
+      const rect = boxOf(link);
+      return {
+        href: link.getAttribute('href'), text: link.textContent.trim(), ...rect,
+        inOverlay: overlay.contains(link), tabIndex: link.tabIndex,
+        disabled: link.getAttribute('aria-disabled') === 'true',
+        visible: style.display !== 'none' && style.visibility !== 'hidden'
+          && Number(style.opacity) > 0 && rect.width > 0 && rect.height > 0,
+        clickable: document.elementFromPoint(rect.left + rect.width / 2,
+          rect.top + rect.height / 2)?.closest('a') === link,
+      };
+    });
     const intro = document.querySelector('#top .hero-intro');
     const updates = document.querySelector('#top .hero-updates');
     const tools = document.querySelector('#tools');
@@ -251,7 +264,9 @@ async function measure(page) {
 
     return {
       viewportWidth,
+      viewportHeight: innerHeight,
       documentScrollWidth: document.documentElement.scrollWidth,
+      heroActions,
       formGallery: {
         oldEntryCount: document.querySelectorAll('.hero-onboarding-link').length,
         sectionCount: document.querySelectorAll('#tools').length,
@@ -314,13 +329,13 @@ async function measure(page) {
         downloadAttribute: kitDownload?.getAttribute('download'),
       },
       titleFonts: {
-        primary: parseFloat(getComputedStyle(document.querySelector('.hero-services')).fontSize),
-        secondary: parseFloat(getComputedStyle(document.querySelector('.hero-h1 strong')).fontSize),
+        services: parseFloat(getComputedStyle(document.querySelector('.hero-services')).fontSize),
+        value: parseFloat(getComputedStyle(document.querySelector('.hero-h1 strong')).fontSize),
       },
       composition: {
         canvas: canvasBox, actors: actorBoxes,
         gaps: actorBoxes.slice(1).map((actor, index) => actor.left - actorBoxes[index].right),
-        titleGap: Math.min(...actorBoxes.map((actor) => actor.top)) - titleBox.bottom,
+        titleGap: canvasBox.top - overlayBox.bottom,
         galleryGap: toolsBox ? toolsBox.top - canvasBox.bottom : null,
         introGap: toolsBox ? boxOf(intro).top - toolsBox.bottom : null,
         backgroundOpacity: Number(getComputedStyle(canvas.querySelector('.hero-town')).opacity),
@@ -373,9 +388,8 @@ async function readMotion(page, label) {
       label, now: performance.now(), classes: [...stage.classList],
       reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
       canvas: canvas.classList.contains('hero-canvas-sp') ? 'sp' : 'pc', actors,
-      titleGap: Math.min(...[...canvas.querySelectorAll('.hero-poses')]
-        .map((pose) => pose.getBoundingClientRect().top))
-        - document.querySelector('.hero-h1').getBoundingClientRect().bottom,
+      titleGap: canvas.getBoundingClientRect().top
+        - document.querySelector('#top .hero-overlay').getBoundingClientRect().bottom,
       overflow: [document.querySelector('#top'), canvas].map((element) => ({
         x: getComputedStyle(element).overflowX, y: getComputedStyle(element).overflowY,
       })),
@@ -441,7 +455,7 @@ function restingConditions(state) {
       && !state.classes.includes('hero-pending') && !state.classes.includes('hero-entering'),
     actors: state.actors.every((actor) => Math.abs(actor.y) < 0.01
       && Math.abs(actor.angle) < 0.01 && Math.abs(actor.opacity - 1) < 0.001),
-    gap: state.titleGap >= 8,
+    gap: Math.abs(state.titleGap - 8) <= EPSILON,
   };
 }
 
@@ -455,7 +469,7 @@ function checkResting(state, check) {
   `${state.label}: 終端クラスが一致しません (${state.classes.join(' ')})`);
   check(resting.actors,
   `${state.label}: 定位置・角度0・不透明度1へ戻っていません`);
-  check(resting.gap, `${state.label}: タイトルと着地後の人物の間隔が不足 (${state.titleGap}px)`);
+  check(resting.gap, `${state.label}: 見出し・相談導線と人物帯の間隔が不正 (${state.titleGap}px)`);
 }
 
 async function motionScreenshot(page, engine, width, phase, screenshots) {
@@ -479,6 +493,20 @@ async function entryScreenshots(page, engine, width) {
     screenshots.push({ name, path: target });
   }
   return screenshots;
+}
+
+async function checkHeroKeyboard(page, engine, width, failures) {
+  const actions = page.locator('#top .hero-overlay .hero-btns a');
+  if (await actions.count() !== 2) return { consultationFocused: false, pricingFocused: false };
+  // 外部送信や画面遷移をせず、相談から料金へキーボードで進めることを確認する。
+  await actions.nth(0).focus();
+  const consultationFocused = await actions.nth(0).evaluate((link) => document.activeElement === link);
+  await page.keyboard.press('Tab');
+  const pricingFocused = await actions.nth(1).evaluate((link) => document.activeElement === link);
+  if (!consultationFocused || !pricingFocused) {
+    failures.push(`${engine}@${width}px: 無料相談から料金へキーボードで進めません`);
+  }
+  return { consultationFocused, pricingFocused };
 }
 
 async function checkFormGallery(page, engine, width, failures) {
@@ -780,7 +808,7 @@ async function checkReducedMotion(browser, engine, width, failures) {
     try {
       for (const width of WIDTHS) {
         const page = await browser.newPage({
-          viewport: { width, height: 900 },
+          viewport: { width, height: width <= 767 ? 844 : width >= 1600 ? 960 : 900 },
           deviceScaleFactor: 3,
           isMobile: true,
           hasTouch: true,
@@ -794,6 +822,7 @@ async function checkReducedMotion(browser, engine, width, failures) {
         await page.evaluate(() => document.fonts.ready);
         const result = await measure(page);
         const report = { engine: engineName, width, errors, ...result,
+          heroKeyboard: await checkHeroKeyboard(page, engineName, width, failures),
           entryScreenshots: await entryScreenshots(page, engineName, width) };
         results.push(report);
 
@@ -803,7 +832,7 @@ async function checkReducedMotion(browser, engine, width, failures) {
           || gallery.galleryCount !== 1 || gallery.railCount !== 1
           || !gallery.inStage || !gallery.followsOverlay || !gallery.precedesIntro
           || gallery.rows.join('/') !== '2/3/4/5') {
-          failures.push(`${engineName}@${width}px: タイトル・イラスト→書式見本→説明/CTAの配置が一致しません`
+          failures.push(`${engineName}@${width}px: タイトル・相談導線・イラスト→書式見本→説明の配置が一致しません`
             + ` (${JSON.stringify(gallery)})`);
         }
         if (gallery.cardCount !== FORM_GALLERY_PREVIEWS.length
@@ -869,8 +898,8 @@ async function checkReducedMotion(browser, engine, width, failures) {
         if (composition.actors.length !== expectedActors || composition.gaps.length !== expectedActors - 1) {
           failures.push(`${engineName}@${width}px: 人物の配置数・間隔を測定できません`);
         }
-        // Restored layered crowd intentionally overlaps horizontally; text must stay clear.
-        if (composition.titleGap < 8 || composition.titleGap > 80
+        // CTAを含む見出し全体と人物帯を分ける。h1だけでは下の相談ボタンとの重なりを拾えない。
+        if (Math.abs(composition.titleGap - 8) > EPSILON
           || !gallery.box || gallery.box.width <= 0 || gallery.box.height <= 0
           || composition.galleryGap === null || Math.abs(composition.galleryGap - 36) > EPSILON
           || composition.introGap === null || Math.abs(composition.introGap - 32) > EPSILON) {
@@ -887,12 +916,28 @@ async function checkReducedMotion(browser, engine, width, failures) {
           failures.push(`${engineName}@${width}px: 料金案内の文節・スタート顧問・金額が途中で割れています`);
         }
 
-        if (width === 390 || width === 1280) {
-          const minimum = width === 390 ? { primary: 34, secondary: 28 } : { primary: 72, secondary: 50 };
-          if (result.titleFonts.primary < minimum.primary || result.titleFonts.secondary < minimum.secondary) {
-            failures.push(`${engineName}@${width}px: タイトルが指定した大きさへ拡大されていません`
-              + ` (primary=${result.titleFonts.primary}, secondary=${result.titleFonts.secondary})`);
-          }
+        // サービス列の拡大より「任せられる」という価値を主役にし、読める大きさを保つ。
+        const { services, value } = result.titleFonts;
+        if (!Number.isFinite(services) || !Number.isFinite(value) || services < 16
+          || value < (width <= 767 ? 26 : 40) || value < services * 1.3) {
+          failures.push(`${engineName}@${width}px: 読める文字サイズ・価値コピーを主役にした階層が保たれていません`
+            + ` (services=${services}, value=${value})`);
+        }
+        // スクロール前に相談と料金の両方が見え、実際のクリック位置とTab移動対象が使える。
+        const expectedActions = [
+          { href: 'uploads/contact.html', text: '無料で相談する' },
+          { href: 'pricing.html', text: '料金と業務範囲を見る' },
+        ];
+        if (result.heroActions.length !== expectedActions.length
+          || result.heroActions.some((link, index) => link.href !== expectedActions[index]?.href
+            || !link.text.replace(/\s+/g, '').includes(expectedActions[index]?.text)
+            || !link.inOverlay || !link.visible
+            || !link.clickable || link.disabled || link.tabIndex < 0
+            || link.width < 44 - EPSILON || link.height < 44 - EPSILON
+            || link.left < -EPSILON || link.right > result.viewportWidth + EPSILON
+            || link.top < -EPSILON || link.bottom > result.viewportHeight + EPSILON)) {
+          failures.push(`${engineName}@${width}px: 初期画面の無料相談・料金導線が表示または操作できません`
+            + ` (${JSON.stringify(result.heroActions)})`);
         }
 
         if (result.offenders.length) {
@@ -993,7 +1038,7 @@ async function checkReducedMotion(browser, engine, width, failures) {
       }
       const beforePC = results.find((item) => item.engine === engineName && item.width === 767);
       const afterPC = results.find((item) => item.engine === engineName && item.width === 768);
-      if (afterPC.titleFonts.secondary < beforePC.titleFonts.secondary - EPSILON) {
+      if (afterPC.titleFonts.value < beforePC.titleFonts.value - EPSILON) {
         failures.push(`${engineName}@767/768px: 画面を広げると緑の見出しが小さくなっています`);
       }
       // A classic scrollbar can make the stage narrower than 100vw. Exercise
