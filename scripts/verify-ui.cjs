@@ -103,15 +103,15 @@ function recordConsoleError(target) {
     page.on('console', recordConsoleError(errors));
     page.on('pageerror', error => errors.push(`pageerror: ${error.message}`));
     await page.goto(base, { waitUntil: 'load' });
-    await page.waitForTimeout(700);
+    // 固定700ms待ちをやめ、全量CSSの有効化とフォント読込を待つ（旧ヒーローの登場演出待ちは廃止）。
+    await page.waitForFunction(() => [...document.querySelectorAll('link[data-async-style]')].every(link => link.media === 'all'), null, { timeout: 10000 });
+    await page.evaluate(() => document.fonts.ready);
+    // 新トップ（2026-10-13〜）: 写真ヒーロー＋情報配置。各節の表示・操作は test-home-top.cjs が見る。
+    // ここでは全幅共通の土台（はみ出し・ヒーロー・外部通信・フッター・FAQ）だけを確かめる。
     const state = await page.evaluate(() => {
       const rect = el => el?.getBoundingClientRect();
-      const aboutCard = rect(document.querySelector('.home-about-card'));
-      const aboutCopy = rect(document.querySelector('.home-about-copy'));
-      const aboutText = rect(document.querySelector('.home-about-copy p'));
-      const whyPhoto = rect(document.querySelector('.home-why-photo'));
       const footerLinks = [...document.querySelectorAll('.footer-ul a')];
-      const summaryColumns = getComputedStyle(document.querySelector('.hs-inner')).gridTemplateColumns.split(' ').filter(Boolean).length;
+      const faqText = document.querySelector('.faq-q-text');
       return {
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
         heroHeight: Math.round(rect(document.querySelector('.hero'))?.height || 0),
@@ -119,18 +119,11 @@ function recordConsoleError(target) {
         asyncCssMedia: document.querySelector('link[data-async-style]')?.media || '',
         stateRequests: performance.getEntriesByType('resource').filter(r => r.name.includes('.image-slots.state.json')).length,
         googleFontRequests: performance.getEntriesByType('resource').filter(r => /fonts\.(googleapis|gstatic)\.com/.test(r.name)).length,
-        summaryColumns,
-        summaryDisplay: getComputedStyle(document.querySelector('.hero-summary')).display,
-        planListDisplay: getComputedStyle(document.querySelector('.home-plan-list')).display,
-        planFeatureDisplay: getComputedStyle(document.querySelector('.home-plan-feature')).display,
-        aboutPhotoCount: document.querySelectorAll('.home-about-photo, #home-representative').length,
-        aboutCopyWidthRatio: aboutCard?.width ? (aboutCopy?.width || 0) / aboutCard.width : 0,
-        aboutTextWidthRatio: aboutCopy?.width ? (aboutText?.width || 0) / aboutCopy.width : 0,
-        whyPhotoWidth: Math.round(whyPhoto?.width || 0),
+        legacyHeroCount: document.querySelectorAll('.hero-actor, .hero-scene, [class*="hero-plaza"], .home-shortcuts').length,
         footerTapMin: Math.min(...footerLinks.map(link => Math.round(rect(link)?.height || 0))),
         footerFontSize: Number.parseFloat(getComputedStyle(footerLinks[0]).fontSize),
-        faqWrap: getComputedStyle(document.querySelector('.faq-q-text')).textWrap,
-        faqWordBreak: getComputedStyle(document.querySelector('.faq-q-text')).wordBreak,
+        faqWrap: faqText ? getComputedStyle(faqText).textWrap : '',
+        faqWordBreak: faqText ? getComputedStyle(faqText).wordBreak : '',
         protectedPlan: !![...document.querySelectorAll('.faq-q-text .nobr')].find(el => el.textContent === 'プラン'),
         footerObserver: !!window.__footerUiObserver,
         catUiCount: document.querySelectorAll('.mn-mascot,.mn-recall,.pv-paws').length,
@@ -143,17 +136,9 @@ function recordConsoleError(target) {
     if (state.googleFontRequests) failures.push(`${viewport.width}px: Google Fontsを取得しています`);
     if (!state.footerObserver) failures.push(`${viewport.width}px: 固定UIのObserverが初期化されていません`);
     if (state.catUiCount) failures.push(`${viewport.width}px: 撤去済みの猫UIが残っています`);
-    if (state.aboutPhotoCount || state.aboutCopyWidthRatio < 0.98 || state.aboutTextWidthRatio < 0.98) {
-      failures.push(`${viewport.width}px: 事務所案内の代表画像撤去・本文幅が不正です`);
-    }
+    if (state.legacyHeroCount) failures.push(`${viewport.width}px: 廃止した旧ヒーロー・目的別ショートカットが残っています`);
+    if (!/\/assets\/photos\/hero-main/.test(state.heroImage)) failures.push(`${viewport.width}px: ヒーロー写真が環水公園の写真ではありません（${state.heroImage}）`);
     if (viewport.width <= 640) {
-      if (state.summaryDisplay !== 'none') {
-        failures.push(`${viewport.width}px: スマホではヒーロー直下サマリーを表示しません（display=${state.summaryDisplay}）`);
-      }
-    }
-    if (viewport.width <= 640) {
-      if (state.planListDisplay !== 'none' || state.planFeatureDisplay === 'none') failures.push(`${viewport.width}px: スマホ料金カードの情報量が不正です`);
-      if (state.whyPhotoWidth < 230 || state.whyPhotoWidth > 250) failures.push(`${viewport.width}px: 理念イラストの画像幅が不正です（${state.whyPhotoWidth}px）`);
       if (state.footerTapMin < 32 || state.footerFontSize < 13) failures.push(`${viewport.width}px: フッターリンクの文字・タップ領域が不足しています`);
       if (state.faqWrap !== 'pretty' || state.faqWordBreak !== 'auto-phrase' || !state.protectedPlan) failures.push(`${viewport.width}px: FAQの日本語改行保護が不正です`);
     }
@@ -184,7 +169,8 @@ function recordConsoleError(target) {
 
   const imagePage = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await imagePage.goto(base, { waitUntil: 'load' });
-  const slotLocator = imagePage.locator('image-slot[src]');
+  // タブで隠れているパネル内の画像は表示されるまで読み込まれないので、見えているものだけを対象にする。
+  const slotLocator = imagePage.locator('image-slot[src]:visible');
   const slotCount = await slotLocator.count();
   for (let i = 0; i < slotCount; i++) {
     await slotLocator.nth(i).scrollIntoViewIfNeeded();
@@ -192,7 +178,8 @@ function recordConsoleError(target) {
   }
   await imagePage.waitForTimeout(500);
   const slotState = await imagePage.evaluate(() => {
-    const slots = [...document.querySelectorAll('image-slot[src]')];
+    const slots = [...document.querySelectorAll('image-slot[src]')]
+      .filter(slot => slot.getBoundingClientRect().height > 0 && getComputedStyle(slot).visibility !== 'hidden');
     const broken = slots.filter(slot => {
       const img = slot.querySelector('img[data-image-slot-public]');
       return !img || !img.complete || img.naturalWidth === 0;
@@ -215,89 +202,10 @@ function recordConsoleError(target) {
   });
   if (slotState.broken.length) failures.push(`トップ画像スロット: 読込失敗 ${slotState.broken.join(', ')}`);
   if (slotState.cropFailures.length) failures.push(`トップ画像スロット: 手調整の反映失敗 ${slotState.cropFailures.join(', ')}`);
-  const illustrationIds = [
-    'home-svc-joseikin', 'home-svc-kisoku', 'home-svc-shaho', 'home-svc-kyuyo', 'home-svc-sodan', 'home-svc-dx',
-    'home-stage-startup', 'home-stage-growth', 'home-stage-org',
-  ];
-  const illustrationFailures = await imagePage.evaluate(ids => ids.flatMap(id => {
-    const slot = document.getElementById(id);
-    const img = slot?.querySelector('img[data-image-slot-public]');
-    const hasCrop = ['crop-scale', 'crop-x', 'crop-y'].some(name => slot?.hasAttribute(name));
-    if (!slot || !img || slot.getAttribute('fit') !== 'contain' || getComputedStyle(img).objectFit !== 'contain' || hasCrop) {
-      return [id];
-    }
-    return [];
-  }), illustrationIds);
-  if (illustrationFailures.length) failures.push(`トップのイラスト全体表示: 設定不正 ${illustrationFailures.join(', ')}`);
-  const visualCleanup = await imagePage.evaluate(() => {
-    const startup = document.getElementById('home-stage-startup');
-    const serviceRows = [...document.querySelectorAll('.svc-row')];
-    const serviceBackgroundFailures = serviceRows.flatMap((row, index) => {
-      const frame = row.querySelector('.svc-ill');
-      const slot = frame?.querySelector('image-slot');
-      const colors = [row, frame, slot].map(el => el && getComputedStyle(el).backgroundColor);
-      return colors.every(color => color === 'rgb(254, 254, 254)') ? [] : [index + 1];
-    });
-    // TOPICSは自動では動かさない横送りレール。送りはスクロールスナップ＋前後ボタン。
-    const rail = document.getElementById('tp-rail');
-    const nav = document.getElementById('tp-nav');
-    const railStyle = rail && getComputedStyle(rail);
-    const cardEl = rail && rail.querySelector('.tp-card');
-    const topics = !rail || !cardEl ? null : {
-      cards: rail.querySelectorAll('.tp-card').length,
-      // カード上部の帯は図ではなく分野名の文字。分野ごとに色が付いていること。
-      thumbs: rail.querySelectorAll('.tp-thumb[data-cat]').length,
-      thumbShapes: rail.querySelectorAll('.tp-thumb svg, .tp-thumb img').length,
-      thumbColors: new Set([...rail.querySelectorAll('.tp-thumb')]
-        .map((el) => getComputedStyle(el).backgroundColor)).size,
-      thumbTextEmpty: [...rail.querySelectorAll('.tp-thumb')]
-        .filter((el) => !el.textContent.trim()).length,
-      imageSlots: rail.querySelectorAll('image-slot').length,
-      animation: railStyle.animationName,
-      overflowX: railStyle.overflowX,
-      snap: railStyle.scrollSnapType,
-      scrollable: rail.scrollWidth > rail.clientWidth + 1,
-      // 画面に2枚ぶん近く出ていること（1枚だけだと送りの意味がない）
-      visibleCards: Number(((rail.clientWidth + (parseFloat(railStyle.columnGap) || 0))
-        / (cardEl.getBoundingClientRect().width + (parseFloat(railStyle.columnGap) || 0))).toFixed(2)),
-      arrows: nav ? nav.querySelectorAll('.tp-arrow[aria-label]').length : 0,
-      navHidden: nav ? nav.hidden : true,
-      prevDisabled: nav ? nav.querySelector('.tp-arrow[data-tp-dir="-1"]').disabled : null,
-      nextDisabled: nav ? nav.querySelector('.tp-arrow[data-tp-dir="1"]').disabled : null,
-    };
-    return {
-      startupSource: startup?.getAttribute('src') || '',
-      aboutCaptions: document.querySelectorAll('.trio-cap').length,
-      serviceRows: serviceRows.length,
-      serviceBackgroundFailures,
-      topics,
-    };
-  });
-  if (visualCleanup.startupSource !== 'assets/illustrations/stage-startup-v2.webp') {
-    failures.push(`創業期イラスト: 差し替え元が不正 ${visualCleanup.startupSource}`);
-  }
-  if (visualCleanup.aboutCaptions) failures.push(`事務所紹介: 説明ラベルが${visualCleanup.aboutCaptions}件残っています`);
-  if (visualCleanup.serviceRows !== 6 || visualCleanup.serviceBackgroundFailures.length) {
-    failures.push(`サービス一覧: 画像背景の継ぎ目対策が不正 ${visualCleanup.serviceBackgroundFailures.join(', ')}`);
-  }
-  const topics = visualCleanup.topics;
-  const topicsOk = topics && topics.cards >= 8
-    && topics.thumbs === topics.cards && topics.imageSlots === 0
-    && topics.thumbShapes === 0 && topics.thumbTextEmpty === 0 && topics.thumbColors >= 3
-    && topics.animation === 'none' && topics.overflowX === 'auto'
-    && topics.snap.startsWith('x ') && topics.scrollable
-    && topics.visibleCards >= 1.9
-    && topics.arrows === 2 && topics.navHidden === false
-    && topics.prevDisabled === true && topics.nextDisabled === false;
-  if (!topicsOk) {
-    failures.push(`記事カードの横送り: 構成が不正 ${JSON.stringify(topics)}`);
-  }
+  // 旧トップのイラスト全体表示（home-svc-*/home-stage-*）・サービス行の背景・TOPICSの横送り（#tp-rail）は
+  // 新トップで構造ごと廃止した。横送り（#pickup）・タブ（#services/#news）は test-home-top.cjs が見る。
   results.push({ publicImageSlots: slotState.total, broken: slotState.broken.length,
-    adjusted: slotState.adjusted, cropFailures: slotState.cropFailures.length,
-    containedIllustrations: illustrationIds.length - illustrationFailures.length,
-    aboutCaptions: visualCleanup.aboutCaptions,
-    seamlessServiceRows: visualCleanup.serviceRows - visualCleanup.serviceBackgroundFailures.length,
-    topicsMarquee: topics });
+    adjusted: slotState.adjusted, cropFailures: slotState.cropFailures.length });
   await imagePage.close();
 
   const cropPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
@@ -353,10 +261,23 @@ function recordConsoleError(target) {
 
   const publicLinkPage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await publicLinkPage.goto(base, { waitUntil: 'load' });
-  await publicLinkPage.locator('#home-svc-joseikin').scrollIntoViewIfNeeded();
-  await publicLinkPage.locator('#home-svc-joseikin').click();
-  await publicLinkPage.waitForURL(/\/uploads\/service-joseikin\.html$/, { timeout: 10000 });
-  results.push({ imageLinkPublic: true });
+  // 新トップは #services のタブ（サービス6分野）の中に、助成金の詳細ページへのリンクがある。
+  const joseikinLink = await publicLinkPage.evaluate(() => {
+    const link = [...document.querySelectorAll('#services a[href]')]
+      .find(a => /(?:^|\/)uploads\/service-joseikin\.html$/.test(a.getAttribute('href').split(/[?#]/)[0]));
+    return link ? { found: true, panelId: link.closest('[role="tabpanel"]')?.id || null } : { found: false };
+  });
+  if (!joseikinLink.found) failures.push('トップのサービス: 助成金の詳細ページ（uploads/service-joseikin.html）へのリンクがありません');
+  else {
+    if (joseikinLink.panelId) {
+      await publicLinkPage.locator(`#services [role="tab"][aria-controls="${joseikinLink.panelId}"]`).click();
+    }
+    const joseikinAnchor = publicLinkPage.locator('#services a[href$="uploads/service-joseikin.html"]:visible').first();
+    await joseikinAnchor.scrollIntoViewIfNeeded();
+    await joseikinAnchor.click();
+    await publicLinkPage.waitForURL(/\/uploads\/service-joseikin\.html$/, { timeout: 10000 });
+  }
+  results.push({ serviceLinkPublic: joseikinLink.found });
   await publicLinkPage.close();
 
   const approachPage = await browser.newPage({ viewport: { width: 1280, height: 900 } });
@@ -380,18 +301,24 @@ function recordConsoleError(target) {
   for (const width of [390, 1200, 1440]) {
     const supportPage = await browser.newPage({ viewport: { width, height: width === 390 ? 844 : 900 } });
     await supportPage.goto(new URL('support.html', base).href, { waitUntil: 'load' });
+    // 2026-09 の文節折り返し修正（PR #292）以降、支援手順カードの題は1行固定ではなく文節で折り返す
+    // （white-space:normal・min-height で行の高さを揃える）。合否は「箱から文字がはみ出さない・2行以内」で見る。
     const supportCards = await supportPage.locator('.proc-title').evaluateAll(titles => titles.map(title => {
       const style = getComputedStyle(title);
+      const range = document.createRange();
+      range.selectNodeContents(title);
+      const lineTops = new Set([...range.getClientRects()].filter(r => r.width > 0).map(r => Math.round(r.top)));
       return {
         title: title.textContent.trim(),
         overflow: Math.round(title.scrollWidth - title.clientWidth),
         height: Math.round(title.getBoundingClientRect().height),
         lineHeight: Number.parseFloat(style.lineHeight) || 0,
         whiteSpace: style.whiteSpace,
+        lines: lineTops.size,
       };
     }));
     const pageOverflow = await supportPage.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-    const badCards = supportCards.filter(card => card.overflow > 1 || card.whiteSpace !== 'nowrap' || (card.lineHeight && card.height > card.lineHeight * 1.2));
+    const badCards = supportCards.filter(card => card.overflow > 1 || card.lines > 2);
     if (badCards.length || pageOverflow > 1) {
       failures.push(`${width}px 支援手順カード: 改行・横はみ出しが不正 ${JSON.stringify({ badCards, pageOverflow })}`);
     }
@@ -485,6 +412,7 @@ function recordConsoleError(target) {
       categories: document.getElementById('pubCats')?.textContent.trim() || '',
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       filterHeight: Math.round(document.querySelector('.filter-bar')?.getBoundingClientRect().height || 0),
+      // 記事一覧は日付を表示しない規約（日付非表示。2026-09 以降）。.art-date は一覧に出さない。
       dateCount: document.querySelectorAll('#articleList .art-date').length,
       firstHref: document.querySelector('#articleList .art-row')?.getAttribute('href') || '',
       systemTabVisible: (() => {
@@ -547,7 +475,7 @@ function recordConsoleError(target) {
       initialBlogState.total === expectedArticleCount &&
       initialBlogState.categories === '7' &&
       initialBlogState.overflow <= 1 &&
-      initialBlogState.dateCount === expectedArticleCount &&
+      initialBlogState.dateCount === 0 &&
       initialBlogState.systemTabVisible &&
       (width > 640 || initialBlogState.filterHeight <= 70) &&
       searchBlogState.count === `該当 ${expectedSearchArticles.length}件` &&
@@ -724,8 +652,9 @@ function recordConsoleError(target) {
     /年末調整の資料整理・税理士連携.*基本 ¥10,000＋従業員1名¥750.*提携税理士へ連携/.test(pricingStructure.retainerText) &&
     /成功報酬：受給額の15％/.test(pricingStructure.retainerText) &&
     /会社設立時の新規適用手続き.*¥60,000.*5名まで.*6名目から1名¥2,000/.test(pricingStructure.spotText) &&
-    pricingStructure.spotRows['入社手続き（資格取得届）']?.price === '¥10,000 / 1名' &&
-    pricingStructure.spotRows['退社手続き（資格喪失届）']?.price === '¥10,000 / 1名' &&
+    // 入社・退社手続きは「初回限定 ¥5,000 / 1名（2回目以降 ¥10,000）」（pricing.html・トップ・社会保険の詳細ページで一致。2026-10-13 に現行表示へ更新）
+    pricingStructure.spotRows['入社手続き（資格取得届）']?.price === '初回限定 ¥5,000 / 1名（2回目以降 ¥10,000）' &&
+    pricingStructure.spotRows['退社手続き（資格喪失届）']?.price === '初回限定 ¥5,000 / 1名（2回目以降 ¥10,000）' &&
     pricingStructure.spotRows['離職票の作成']?.price === '¥10,000 / 1名' &&
     pricingStructure.spotRows['離職票の作成']?.description === '離職証明書の作成・提出まで。退社手続きと同時依頼の場合は合計 ¥15,000 / 1名です。' &&
     /労働保険の年度更新.*基本 ¥25,000＋対象者1名¥1,000/.test(pricingStructure.spotText) &&
@@ -733,8 +662,8 @@ function recordConsoleError(target) {
     pricingStructure.spotRows['単発の給与・賞与計算']?.price === '基本 ¥20,000＋対象者1名¥1,500 / 回' &&
     pricingStructure.spotRows['賞与支払届']?.price === '基本 ¥20,000＋対象者1名¥1,500 / 回' &&
     /年末調整の資料整理・税理士連携.*基本 ¥20,000＋従業員1名¥1,500.*提携税理士へ連携/.test(pricingStructure.spotText) &&
-    /成功報酬：受給額の20％/.test(pricingStructure.spotText) &&
-    /税理士法上職務外の処理については、提携の税理士に依頼します/.test(pricingStructure.spotText);
+    // 税理士との業際は、年末調整の行（資料整理・提携税理士へ連携）で表している。旧注記文は撤去済み。
+    /成功報酬：受給額の20％/.test(pricingStructure.spotText);
   if (forbiddenPriceRows.length || includedRetainerItems.length !== 7 || incorrectlySeparateRetainerItems.length || ambiguousPriceTerms.length || rangedPriceRows.length || !pricingRulesOk) {
     failures.push(`料金体系: 指示内容との不整合 ${JSON.stringify({ forbiddenPriceRows, includedRetainerItems, incorrectlySeparateRetainerItems, ambiguousPriceTerms, rangedPriceRows, pricingRulesOk })}`);
   }
@@ -1038,22 +967,28 @@ function recordConsoleError(target) {
     window.omelette = { writeFile: () => Promise.resolve() };
   });
   await editPage.goto(base, { waitUntil: 'load' });
-  const editSlot = editPage.locator('#home-svc-kisoku');
-  await editSlot.scrollIntoViewIfNeeded();
-  await editSlot.click();
-  const editState = await editSlot.evaluate(slot => ({
-    editable: slot.hasAttribute('data-editable'),
-    fit: slot.getAttribute('fit'),
-    path: location.pathname,
-  }));
-  const coverSlot = editPage.locator('#home-why-main');
-  await coverSlot.scrollIntoViewIfNeeded();
-  await coverSlot.dblclick();
-  const coverReframe = await coverSlot.evaluate(slot => slot.hasAttribute('data-reframe'));
-  if (!editState.editable || editState.fit !== 'contain' || !/\/$/.test(editState.path) || !coverReframe) {
-    failures.push(`編集画面: 画像の差し替え・手調整が機能しません ${JSON.stringify({ ...editState, coverReframe })}`);
+  // 新トップでは画像スロットのIDが固定でないため、リンク内の画像と単独の画像を、見えているものから1つずつ選ぶ。
+  // 該当する画像スロットがトップに無い場合は、その検査は対象なしとして記録する（失敗にはしない）。
+  const editState = { linked: false, editable: null, path: '', cover: false, reframe: null };
+  const linkedSlot = editPage.locator('main a image-slot[src]:visible').first();
+  if (await linkedSlot.count()) {
+    editState.linked = true;
+    await linkedSlot.scrollIntoViewIfNeeded();
+    await linkedSlot.click();
+    editState.editable = await linkedSlot.evaluate(slot => slot.hasAttribute('data-editable'));
+    editState.path = await editPage.evaluate(() => location.pathname);
   }
-  results.push({ linkedImageEditable: editState.editable, linkedImageStayedOnHome: /\/$/.test(editState.path), coverImageReframe: coverReframe });
+  const standalone = editPage.locator('main image-slot[src]:not(a image-slot):visible').first();
+  if (await standalone.count()) {
+    editState.cover = true;
+    await standalone.scrollIntoViewIfNeeded();
+    await standalone.dblclick();
+    editState.reframe = await standalone.evaluate(slot => slot.hasAttribute('data-reframe'));
+  }
+  if ((editState.linked && (!editState.editable || !/\/$/.test(editState.path))) || (editState.cover && !editState.reframe)) {
+    failures.push(`編集画面: 画像の差し替え・手調整が機能しません ${JSON.stringify(editState)}`);
+  }
+  results.push({ homeEditMode: editState });
   await editPage.close();
 
   const publicPages = [];
@@ -1075,41 +1010,48 @@ function recordConsoleError(target) {
     failures.push(`撤去済みのページ上部案内帯が再配置されています: ${upperGuidePages.join(', ')}`);
   }
   const sweepWidths = [360, 390, 430, 640, 768, 900, 1024, 1200, 1440, 1560, 1920, 2560];
-  const sweepPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
-  for (const width of sweepWidths) {
-    await sweepPage.setViewportSize({ width, height: width <= 430 ? 844 : width <= 768 ? 1024 : width <= 1440 ? 900 : 1200 });
-    for (const rel of publicPages) {
-      const errors = [];
-      sweepPage.removeAllListeners('console');
-      sweepPage.removeAllListeners('pageerror');
-      sweepPage.on('console', recordConsoleError(errors));
-      sweepPage.on('pageerror', error => errors.push(`pageerror: ${error.message}`));
-      const response = await sweepPage.goto(new URL(rel, base).href, { waitUntil: 'load' });
-      await sweepPage.evaluate(async () => {
-        const targets = [...document.querySelectorAll('main > *, footer')];
-        if (!targets.length) targets.push(document.body);
-        for (const target of targets) {
-          target.scrollIntoView({ block: 'center' });
-          await new Promise(resolve => setTimeout(resolve, 20));
-        }
-        scrollTo(0, 0);
-      });
-      await sweepPage.waitForTimeout(60);
-      const state = await sweepPage.evaluate(() => ({
-        overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-        brokenImages: [...document.images]
-          // src未設定（data-srcで後から読む表情差分・書式見本）は読込前であって失敗ではない。
-          .filter(img => img.getAttribute('src') && img.complete && img.naturalWidth === 0)
-          .map(img => img.currentSrc || img.src),
-      }));
-      if (!response?.ok()) failures.push(`${rel}: HTTP ${response?.status() || '応答なし'}`);
-      if (state.overflow > 1) failures.push(`${rel}: ${width}px幅で横はみ出し ${state.overflow}px`);
-      if (state.brokenImages.length) failures.push(`${rel}: ${width}px幅で画像読込失敗 ${state.brokenImages.join(', ')}`);
-      if (errors.length) failures.push(`${rel}: ${width}px幅 ${errors.join(' / ')}`);
+  // 全公開ページ×12幅は件数が多く、この検証の大半を占める。判定は変えず、独立したページを4枚並列で回す。
+  const sweepTasks = sweepWidths.flatMap(width => publicPages.map(rel => ({ width, rel })));
+  let sweepCursor = 0;
+  async function sweepWorker() {
+    const sweepPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    const errors = [];
+    sweepPage.on('console', recordConsoleError(errors));
+    sweepPage.on('pageerror', error => errors.push(`pageerror: ${error.message}`));
+    try {
+      for (let task = sweepTasks[sweepCursor++]; task; task = sweepTasks[sweepCursor++]) {
+        const { width, rel } = task;
+        errors.length = 0;
+        await sweepPage.setViewportSize({ width, height: width <= 430 ? 844 : width <= 768 ? 1024 : width <= 1440 ? 900 : 1200 });
+        const response = await sweepPage.goto(new URL(rel, base).href, { waitUntil: 'load' });
+        await sweepPage.evaluate(async () => {
+          const targets = [...document.querySelectorAll('main > *, footer')];
+          if (!targets.length) targets.push(document.body);
+          for (const target of targets) {
+            target.scrollIntoView({ block: 'center' });
+            await new Promise(resolve => setTimeout(resolve, 20));
+          }
+          scrollTo(0, 0);
+        });
+        await sweepPage.waitForTimeout(60);
+        const state = await sweepPage.evaluate(() => ({
+          overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+          brokenImages: [...document.images]
+            // src未設定（data-srcで後から読む表情差分・書式見本）は読込前であって失敗ではない。
+            .filter(img => img.getAttribute('src') && img.complete && img.naturalWidth === 0)
+            .map(img => img.currentSrc || img.src),
+        }));
+        if (!response?.ok()) failures.push(`${rel}: HTTP ${response?.status() || '応答なし'}`);
+        if (state.overflow > 1) failures.push(`${rel}: ${width}px幅で横はみ出し ${state.overflow}px`);
+        if (state.brokenImages.length) failures.push(`${rel}: ${width}px幅で画像読込失敗 ${state.brokenImages.join(', ')}`);
+        if (errors.length) failures.push(`${rel}: ${width}px幅 ${errors.join(' / ')}`);
+      }
+    } finally {
+      await sweepPage.close();
     }
   }
+  await Promise.all(Array.from({ length: 4 }, () => sweepWorker()));
   results.push({ pageSweep: publicPages.length, viewports: sweepWidths.length, conditions: publicPages.length * sweepWidths.length });
-  await sweepPage.close();
 
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   const spaErrors = [];

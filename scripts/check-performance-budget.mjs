@@ -161,6 +161,10 @@ for (const [pattern, message] of requiredHomePatterns) {
   if (!pattern.test(index)) fail(`index.html: ${message}`);
 }
 if (/id="mn-load"/.test(index)) fail('index.html: 初回ローダーが再導入されています');
+// 2026-10-13 に廃止した人物イラストのヒーロー（home-hero.css/js・hero-actor・hero-plaza）の再導入を止める。
+if (/home-hero\.(?:css|js)|hero-actor|hero-plaza|id="home-hero-init"/.test(index)) {
+  fail('index.html: 廃止した旧ヒーロー（home-hero・hero-actor・hero-plaza）の参照が残っています');
+}
 
 checkCriticalCss();
 

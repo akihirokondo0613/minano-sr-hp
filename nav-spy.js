@@ -78,6 +78,14 @@
       return a.section.compareDocumentPosition(b.section) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
     });
 
+    // ナビに無い章（お困りごと・書式・FAQなど）も区切りとして持つ。区切りが無いと、
+    // 対応する章を出たあとも直前のラベルが残り、別の章で「料金」等と出てしまう。
+    var mapped = Object.create(null);
+    items.forEach(function (item) { mapped[item.id] = true; });
+    var stops = Array.prototype.slice.call(document.querySelectorAll('main > section[id]'))
+      .filter(function (section) { return !mapped[section.id]; })
+      .map(function (section) { return { id: '', section: section }; });
+
     var observer = null;
     var frame = 0;
     var activeId = '';
@@ -112,8 +120,10 @@
       if (destroyed) return;
 
       markerY = Math.max(72, Math.round(window.innerHeight * 0.30));
-      items.forEach(function (item) {
-        if (item.section.getBoundingClientRect().top <= markerY + 1) nextId = item.id;
+      var passedTop = -Infinity;
+      items.concat(stops).forEach(function (item) {
+        var top = item.section.getBoundingClientRect().top;
+        if (top <= markerY + 1 && top > passedTop) { passedTop = top; nextId = item.id; }
       });
       setActive(nextId);
     }
@@ -129,7 +139,7 @@
         rootMargin: '-29% 0px -70% 0px',
         threshold: 0
       });
-      items.forEach(function (item) { observer.observe(item.section); });
+      items.concat(stops).forEach(function (item) { observer.observe(item.section); });
     }
     window.addEventListener('scroll', scheduleUpdate, { passive: true });
     window.addEventListener('resize', scheduleUpdate, { passive: true });

@@ -1,14 +1,12 @@
 #!/usr/bin/env node
 
 /**
- * トップページ 06 TOPICS の自動生成部分を blog/articles.json から同期する。
+ * トップページの記事一覧部分を blog/articles.json から同期する。
  *
- * 生成対象は次の2か所。手作業で書き換えず、記事を追加したらこのスクリプトを実行する。
- *   - 公開状況の数値（公開記事の本数・分野数・最新記事の日付）
- *   - 横送りのカード列（新しい順の記事カード）
- *
- * カードは 帯（分野名）→タイトル→概要→日付 の並びで統一する。帯は図ではなく分野名の文字で何の話かを示す。色は分野ごとに
- * index.html の .tp-thumb[data-cat] が持ち、ここは分野キーと表示名だけを出す。
+ * 生成対象は次の3か所。手作業で書き換えず、記事を追加したらこのスクリプトを実行する。
+ *   - home-notice-list … 「法改正・重要なお知らせ」（法改正情報の新しい順）
+ *   - home-topics-tabs … インフォメーションの分野別タブ（新着＋分野ごと）
+ *   - home-topics-stats … 公開状況の数値（公開記事の本数・分野数・最新記事の日付）
  *
  * --check を付けると差分の有無だけを判定し、ズレていれば失敗する（公開前チェック用）。
  */
@@ -17,14 +15,17 @@ import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
-import { markPhrases } from './lib/phrase-breaks.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const indexPath = path.join(root, 'index.html');
 const articlesPath = path.join(root, 'blog', 'articles.json');
 
-/** マーキーは1周の見た目を保つため件数を固定する。増減はここだけを変える。 */
-const CARD_COUNT = 14;
+/** 「法改正・重要なお知らせ」に出す件数と、インフォメーションの各タブに出す件数。増減はここだけを変える。 */
+const NOTICE_COUNT = 5;
+const TAB_COUNT = 6;
+/** タブの並び。先頭は分野をまたいだ新着。分野は articles.json の cat キーで、表示名は記事側の catLabel を使う。 */
+const TAB_ORDER = ['all', 'kaisei', 'hoken', 'joseikin', 'shugyo', 'trouble', 'keiei', 'system'];
+const NOTICE_CAT = 'kaisei';
 
 const checkOnly = process.argv.includes('--check');
 const unknownArgs = process.argv.slice(2).filter((arg) => arg !== '--check');
@@ -73,28 +74,52 @@ function normalizeArticles(raw) {
 function buildStats(articles) {
   const categories = new Set(articles.map((article) => article.cat));
   const latest = articles[0].date.replaceAll('-', '.');
-  return '<span class="pub-live-txt">'
-    + `公開記事 <b>${articles.length}</b>本 ／ <b>${categories.size}</b>分野`
-    + `<span class="pub-live-latest"> ／ 最新記事 <b>${latest}</b></span>`
-    + '</span>';
+  return `公開記事 <b>${articles.length}</b>本 ／ <b>${categories.size}</b>分野 ／ 最新記事 <b>${latest}</b>`;
 }
 
-function buildCards(articles) {
-  const lines = articles.slice(0, CARD_COUNT).map((article) => {
-    const href = `blog/${article.slug}.html`;
-    // カードは「タイトル→概要」の2段で統一する。記事タイトルの「｜」以降は
-    // 副題で概要と重複するため、カードでは主部だけを出す（記事ページは全文のまま）。
-    const title = article.title.split('｜')[0].trim();
-    return [
-      '        <li class="tp-item"><a class="tp-card" href="' + escapeHtml(href) + '">',
-      `          <span class="tp-thumb" data-cat="${escapeHtml(article.cat)}">${escapeHtml(article.catLabel)}</span>`,
-      `          <span class="tp-title">${escapeHtml(title)}</span>`,
-      `          <span class="tp-desc">${escapeHtml(article.description)}</span>`,
-      `          <time class="tp-date" datetime="${escapeHtml(article.date)}">${escapeHtml(article.date.replaceAll('-', '.'))}</time>`,
-      '        </a></li>',
-    ].join('\n');
+// 記事タイトルの「｜」以降は副題なので一覧では主部だけを出す（記事ページは全文のまま）。
+function shortTitle(article) {
+  return article.title.split('｜')[0].trim();
+}
+
+function dateText(article) {
+  return article.date.replaceAll('-', '.');
+}
+
+// 一覧は li ではなく div[role=listitem] で組む。li は文節印（<wbr>）の対象で、日付の数字と
+// 記事名がひと続きに解析されて「歯/科」のような不自然な位置に印が入るため。
+function buildNotice(articles) {
+  const picked = articles.filter((article) => article.cat === NOTICE_CAT).slice(0, NOTICE_COUNT);
+  if (picked.length < NOTICE_COUNT) {
+    throw new Error(`blog/articles.json: 「${NOTICE_CAT}」の記事が${NOTICE_COUNT}件に足りません（現在${picked.length}件）`);
+  }
+  const lines = picked.map((article) => `<div role="listitem"><time datetime="${escapeHtml(article.date)}">${dateText(article)}</time>`
+    + `<a href="blog/${escapeHtml(article.slug)}.html">${escapeHtml(shortTitle(article))}</a></div>`);
+  return `\n${lines.join('\n')}\n`;
+}
+
+function buildTabs(articles) {
+  const labels = new Map(articles.map((article) => [article.cat, article.catLabel]));
+  const unknown = [...labels.keys()].filter((cat) => !TAB_ORDER.includes(cat));
+  if (unknown.length) {
+    throw new Error(`scripts/sync-home-topics.mjs: TAB_ORDER に無い分野があります（${unknown.join(', ')}）`);
+  }
+  const tabs = TAB_ORDER.filter((key) => key === 'all' || labels.has(key));
+  const buttons = tabs.map((key, index) => {
+    const label = key === 'all' ? '新着' : labels.get(key);
+    return `<button class="nt-tab" type="button" role="tab" id="nt-tab-${key}" aria-controls="nt-${key}" aria-selected="${index === 0}">${escapeHtml(label)}</button>`;
   });
-  return `\n${lines.join('\n')}\n      `;
+  const panels = tabs.map((key) => {
+    const list = (key === 'all' ? articles : articles.filter((article) => article.cat === key)).slice(0, TAB_COUNT);
+    const label = key === 'all' ? '新着' : labels.get(key);
+    const items = list.map((article) => `<div role="listitem"><time datetime="${escapeHtml(article.date)}">${dateText(article)}</time>`
+      + `<span class="nt-cat">${escapeHtml(article.catLabel)}</span>`
+      + `<a href="blog/${escapeHtml(article.slug)}.html">${escapeHtml(shortTitle(article))}</a></div>`);
+    return `<div class="nt-panel" role="tabpanel" id="nt-${key}" aria-labelledby="nt-tab-${key}" tabindex="0">`
+      + `<h3 class="nt-panel-h">${escapeHtml(label)}</h3>\n<div class="nt-list" role="list">\n${items.join('\n')}\n</div></div>`;
+  });
+  return `\n<div class="nt-tabs" role="tablist" aria-label="お知らせ・コラムの分野">\n${buttons.join('\n')}\n</div>\n`
+    + `<div class="nt-panels">\n${panels.join('\n')}\n</div>\n`;
 }
 
 async function main() {
@@ -107,27 +132,25 @@ async function main() {
     readFile(articlesPath, 'utf8'),
   ]);
   const articles = normalizeArticles(JSON.parse(articlesSource));
-  if (articles.length < CARD_COUNT) {
-    throw new Error(`blog/articles.json: カードに必要な${CARD_COUNT}件に足りません（現在${articles.length}件）`);
-  }
 
   // 生成した見出しにも文節印（<wbr>）を入れておく。あとから
   // sync-phrase-breaks.mjs に差し込ませると、この生成器の --check が毎回落ちる。
-  let generated = replaceRegion(indexSource, 'home-topics-stats', markPhrases(buildStats(articles)).html);
-  generated = replaceRegion(generated, 'home-topics-cards', markPhrases(buildCards(articles)).html);
+  let generated = replaceRegion(indexSource, 'home-topics-stats', buildStats(articles));
+  generated = replaceRegion(generated, 'home-notice-list', buildNotice(articles));
+  generated = replaceRegion(generated, 'home-topics-tabs', buildTabs(articles));
 
   if (generated === indexSource) {
-    console.log('トップのTOPICSは最新です');
+    console.log('トップのお知らせ・インフォメーションは最新です');
     return;
   }
   if (checkOnly) {
-    console.error('index.html: 06 TOPICS が blog/articles.json と同期していません');
+    console.error('index.html: お知らせ・インフォメーションが blog/articles.json と同期していません');
     process.exitCode = 1;
     return;
   }
 
   await writeFile(indexPath, generated, 'utf8');
-  console.log(`更新: index.html の 06 TOPICS（カード${CARD_COUNT}件・公開記事${articles.length}本）`);
+  console.log(`更新: index.html のお知らせ${NOTICE_COUNT}件・インフォメーション各${TAB_COUNT}件（公開記事${articles.length}本）`);
 }
 
 main().catch((error) => {
