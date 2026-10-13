@@ -303,7 +303,8 @@
 
 /* ---------- 触り心地：押せる場所は軽く反応し、切り替えはふわっと。動きを減らす設定では止める ---------- */
 @keyframes home-panel-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-.js-tabs .svc-panel:not([hidden]), .js-tabs .nt-panel:not([hidden]) { animation: home-panel-in .32s var(--ease) both; }
+/* 切り替えた時だけ動かす（読み込み直後は演出しない） */
+.js-tabs.is-switched .svc-panel:not([hidden]), .js-tabs.is-switched .nt-panel:not([hidden]) { animation: home-panel-in .32s var(--ease) both; }
 .hp-link svg, .help-top svg { transition: transform .25s var(--ease); }
 .hp-link:hover svg { transform: translateY(-3px); }
 .hp-link:active, .svc-tab:active, .nt-tab:active, .pk-arrow:active:not(:disabled), .btn-arrow:active { transform: scale(.97); }
@@ -322,16 +323,17 @@
 .about-photos img { transition: transform .5s var(--ease); }
 .about-photos figure:hover img { transform: scale(1.03); }
 .notice-list a, .nt-list a, #help .help-links a { transition: color var(--tr), text-decoration-color var(--tr); }
-.pk-rail { scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
-.pk-rail.is-dragging { scroll-snap-type: none; scroll-behavior: auto; cursor: grabbing; }
+/* scroll-behavior:smooth は付けない。読み込み直後のスナップ調整が滑らかなスクロール扱いになり、ChromeがLCPを記録しなくなる（2026-10-13 CIで NO_LCP）。
+   矢印の送りは home.js が behavior:'smooth' を指定して滑らかに動かす。 */
+.pk-rail { -webkit-overflow-scrolling: touch; }
+.pk-rail.is-dragging { scroll-snap-type: none; cursor: grabbing; }
 .pk-rail.is-dragging .pk-card { pointer-events: none; }
 @media (hover: none) {
   .help-card:hover, .stage-card:hover, .pk-card:hover { transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .js-tabs .svc-panel:not([hidden]), .js-tabs .nt-panel:not([hidden]) { animation: none; }
+  .js-tabs.is-switched .svc-panel:not([hidden]), .js-tabs.is-switched .nt-panel:not([hidden]) { animation: none; }
   .hp-link:hover svg, .svc-tab:hover img, .help-card:hover, .help-card:hover .help-top svg, .stage-card:hover,
   .pk-card:hover .pk-img img, .about-photos figure:hover img,
   .stage-card:hover .stage-go::after, .btn-arrow:hover::after, .pk-card:hover .pk-more::after, #services .svc-p-links a:hover::after { transform: none; }
-  .pk-rail { scroll-behavior: auto; }
 }

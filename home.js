@@ -18,7 +18,7 @@
       if (focus) tabs[index].focus();
     }
     tabs.forEach(function (tab, i) {
-      tab.onclick = function () { select(i, false); };
+      tab.onclick = function () { root.classList.add('is-switched'); select(i, false); };
       tab.onkeydown = function (e) {
         var key = e.key, next = null;
         if (key === 'ArrowRight' || key === 'ArrowDown') next = (i + 1) % tabs.length;
@@ -27,6 +27,7 @@
         else if (key === 'End') next = tabs.length - 1;
         if (next === null) return;
         e.preventDefault();
+        root.classList.add('is-switched');
         select(next, true);
       };
     });
