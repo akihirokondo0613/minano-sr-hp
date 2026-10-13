@@ -15,6 +15,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import { markPhrases } from './lib/phrase-breaks.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const indexPath = path.join(root, 'index.html');
@@ -74,7 +75,8 @@ function normalizeArticles(raw) {
 function buildStats(articles) {
   const categories = new Set(articles.map((article) => article.cat));
   const latest = articles[0].date.replaceAll('-', '.');
-  return `公開記事 <b>${articles.length}</b>本 ／ <b>${categories.size}</b>分野 ／ 最新記事 <b>${latest}</b>`;
+  // 数値の並びは文節で割らない（nwの塊のあいだでだけ折る）。
+  return `<span class="nw">公開記事 <b>${articles.length}</b>本</span> ／ <span class="nw"><b>${categories.size}</b>分野</span> ／ <span class="nw">最新記事 <b>${latest}</b></span>`;
 }
 
 // 記事タイトルの「｜」以降は副題なので一覧では主部だけを出す（記事ページは全文のまま）。
@@ -136,8 +138,8 @@ async function main() {
   // 生成した見出しにも文節印（<wbr>）を入れておく。あとから
   // sync-phrase-breaks.mjs に差し込ませると、この生成器の --check が毎回落ちる。
   let generated = replaceRegion(indexSource, 'home-topics-stats', buildStats(articles));
-  generated = replaceRegion(generated, 'home-notice-list', buildNotice(articles));
-  generated = replaceRegion(generated, 'home-topics-tabs', buildTabs(articles));
+  generated = replaceRegion(generated, 'home-notice-list', markPhrases(buildNotice(articles)).html);
+  generated = replaceRegion(generated, 'home-topics-tabs', markPhrases(buildTabs(articles)).html);
 
   if (generated === indexSource) {
     console.log('トップのお知らせ・インフォメーションは最新です');
