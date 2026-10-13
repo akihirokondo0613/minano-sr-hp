@@ -184,6 +184,9 @@ main :is(.btn-primary,.btn-secondary,.btn-white,.btn-ghost,.startup-primary,.sta
    uploads 系は淡い背景＋下端の稜線だけで、PCでは右半分が空いていた。本文左／イラスト右の2列にし、
    スマホは本文を優先してイラストを出さない。稜線（::after）は角丸と重なるので消す。 */
 .page-hero.has-ill{background:#EDF5F0;border-bottom:0;border-radius:0 0 40px 40px}
+/* 2026-10-13 トップの写真の枠とそろえ、角丸の面として画面の端から少し離す（skin-v2.css と同じ規則） */
+.page-hero.has-ill{margin:calc(var(--nav-h) + 12px) max(clamp(12px,1.6vw,24px),calc((100% - 1680px) / 2)) 0;padding-top:clamp(40px,5vw,68px);border-radius:20px;background:linear-gradient(160deg,#EDF5F0 0%,#E6F0EA 60%,#E3EDF3 100%)}
+@media(max-width:640px){.page-hero.has-ill{margin:calc(var(--nav-h) + 4px) 10px 0;padding-top:30px;border-radius:16px}}
 .page-hero.has-ill::after{content:none}
 @media(min-width:641px){
   .page-hero.has-ill .page-hero-inner{display:grid;grid-template-columns:minmax(0,1fr) clamp(220px,24vw,340px);column-gap:clamp(24px,4vw,56px);align-items:center}

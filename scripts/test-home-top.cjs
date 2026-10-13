@@ -132,6 +132,8 @@ async function checkFormGallery(page, engine, width, failures) {
     if (await cards.count() !== FORM_GALLERY_PREVIEWS.length) return report;
     // 移動中の見本をスクロール測定しないよう、利用者向けの一時停止操作で止める。
     const pause = page.locator('#tools .fg-pause');
+    // 書式ギャラリーは近づいてから読み込む（IntersectionObserver）。料金の下にあるので先に寄せる。
+    await page.locator('#tools .fg-gallery').scrollIntoViewIfNeeded({ timeout: 10000 });
     await pause.waitFor({ state: 'visible', timeout: 10000 });
     if (await pause.getAttribute('aria-pressed') !== 'true') {
       await pause.click({ timeout: 10000 });
@@ -344,7 +346,7 @@ async function measureTop(page) {
         loading: image?.getAttribute('loading') || null,
         complete: !!image?.complete, naturalWidth: image?.naturalWidth || 0,
         currentSrc: image?.currentSrc || '', box: box(picture),
-        preloadHref: preload?.getAttribute('href') || null,
+        preloadHref: preload?.getAttribute('href') || preload?.getAttribute('imagesrcset') || null,
         preloadFetchpriority: preload?.getAttribute('fetchpriority') || null,
       },
       h1: { shown: isShown(h1), box: box(h1), text: textBox(h1), lines: lineCounts(h1) },
@@ -422,7 +424,7 @@ function judgeTop(label, state, failures) {
     let primary;
     try { primary = new URL(state.panel.primaryHref || '', base); } catch { primary = null; }
     if (!primary || !primary.pathname.endsWith('/uploads/contact.html')
-      || primary.searchParams.get('from') !== 'hero' || primary.searchParams.get('entry') !== 'home-hero') {
+      || primary.searchParams.get('from') !== 'hero' || primary.searchParams.get('entry') !== 'home-hero-panel') {
       fail(`無料相談ボタンのリンク先が契約と違います（${state.panel.primaryHref}）`);
     }
   }

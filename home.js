@@ -78,6 +78,34 @@
       };
     });
     rail.onscroll = sync;
+    // マウスでつかんで横に送る。少しでも動かしたらクリック扱いにしない（誤遷移を防ぐ）。
+    var drag = null;
+    rail.onpointerdown = function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      drag = { x: e.clientX, left: rail.scrollLeft, moved: false };
+    };
+    rail.onpointermove = function (e) {
+      if (!drag) return;
+      var dx = e.clientX - drag.x;
+      if (!drag.moved && Math.abs(dx) > 6) { drag.moved = true; rail.classList.add('is-dragging'); }
+      if (drag.moved) rail.scrollLeft = drag.left - dx;
+    };
+    rail.onpointerup = rail.onpointerleave = function () {
+      if (!drag) return;
+      var moved = drag.moved;
+      drag = null;
+      if (!moved) return;
+      // クリックは pointerup の直後に届く。カードを押せない状態のまま1拍待ち、つかんだ先へ遷移させない。
+      setTimeout(function () { rail.classList.remove('is-dragging'); }, 0);
+      // 指を離した位置から近いカードへ吸着させる
+      var first = rail.querySelector('.pk-item');
+      if (first) {
+        var gap = parseFloat(getComputedStyle(rail).columnGap) || 0;
+        var one = first.getBoundingClientRect().width + gap;
+        rail.scrollTo({ left: Math.round(rail.scrollLeft / one) * one, behavior: reduce ? 'auto' : 'smooth' });
+      }
+    };
+    rail.ondragstart = function (e) { e.preventDefault(); };
     window.__mnPkRail = { sync: sync };
     window.addEventListener('resize', sync, { passive: true });
     measure();
