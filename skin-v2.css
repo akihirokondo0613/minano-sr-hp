@@ -1650,6 +1650,17 @@ main :is(.btn-primary,.btn-white,.btn-ghost,.startup-primary,.startup-secondary)
 /* 2026-10-08 下層ページの冒頭にイラストを添える（助成金ページと同じ型）。
    文字だけでPCの右半分が空き、トップと同じく「白くて寂しい」見え方だったため。スマホは本文を優先して出さない。 */
 .page-hero.has-ill { background: #EDF5F0; border-radius: 0 0 40px 40px; }
+/* 2026-10-13 トップの写真の枠（角丸の囲み）とそろえ、下層の冒頭も画面の端から少し離した角丸の面にする。
+   上端はヘッダーの高さ＋12px で止め、旧来の「ヘッダーぶんの上余白」は面の外へ移す。 */
+.page-hero.has-ill {
+  margin: calc(var(--nav-h) + 12px) max(clamp(12px, 1.6vw, 24px), calc((100% - 1680px) / 2)) 0;
+  padding-top: clamp(40px, 5vw, 68px);
+  border-radius: 20px;
+  background: linear-gradient(160deg, #EDF5F0 0%, #E6F0EA 60%, #E3EDF3 100%);
+}
+@media (max-width: 640px) {
+  .page-hero.has-ill { margin: calc(var(--nav-h) + 4px) 10px 0; padding-top: 30px; border-radius: 16px; }
+}
 @media (min-width: 641px) {
   .page-hero.has-ill .page-hero-inner { display: grid; grid-template-columns: minmax(0, 1fr) clamp(220px, 24vw, 340px); column-gap: clamp(24px, 4vw, 56px); align-items: center; }
   .page-hero.has-ill .page-hero-inner > :not(.ph-ill) { grid-column: 1; }
@@ -1665,4 +1676,16 @@ main :is(.btn-primary,.btn-white,.btn-ghost,.startup-primary,.startup-secondary)
 @media (min-width: 981px) {
   .price-grid { align-items: start; }
   .price-grid > .plan:not(#plan-basic) { position: sticky; top: 96px; }
+}
+
+/* 2026-10-13 フッター下部の主要リンク（地域金融機関のトップを参考に、規程・アクセス等を一列で） */
+.footer-links { margin-top: 4px; padding: 14px 0 6px; }
+.footer-links ul { display: flex; flex-wrap: wrap; gap: 4px 0; margin: 0; padding: 0; list-style: none; }
+.footer-links li + li::before { content: ''; display: inline-block; width: 1px; height: 12px; margin: 0 14px; vertical-align: middle; background: rgba(255,255,255,.25); }
+.footer-links a { display: inline-block; padding: 6px 0; color: rgba(255,255,255,.82); font-size: 13px; text-decoration: none; transition: color .2s; }
+.footer-links a:hover { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 640px) {
+  .footer-links ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 12px; }
+  .footer-links li + li::before { content: none; }
+  .footer-links a { display: block; min-height: 40px; padding: 10px 0; }
 }

@@ -110,16 +110,41 @@ function selectBlogScope() {
     'header-motion.js',
     'ads.js',
   ]);
-  if (changedFiles.some((file) => sharedFiles.has(file) || file.startsWith('scripts/'))) {
+  // ブログ記事のページが読み込まない・ブログ検証が使わないファイル（トップ専用の資産と、トップ専用の検査）。
+  // これらだけの変更なら記事は代表2件で足りる。ブログ検証が使う scripts/lib・test-blog-articles・
+  // audit-line-breaks・run-layout-checks 自身などは含めない（変更があれば従来どおり全記事）。
+  const topOnlyFiles = new Set([
+    'index.html',
+    'home.css',
+    'home.js',
+    'home-form-gallery.css',
+    'home-form-gallery.js',
+    'scripts/test-home-top.cjs',
+    'scripts/sync-home-topics.mjs',
+    'scripts/verify-ui.cjs',
+    'scripts/check-performance-budget.mjs',
+  ]);
+  // 新規追加の画像・書類（assets/ 配下）は既存ページの表示を変えない。参照するHTMLの変更は上の判定が見る。
+  let addedAssets = [];
+  try {
+    addedAssets = gitOutput(['diff', '--name-only', '--diff-filter=A', `${baseRef}...HEAD`])
+      .split(/\r?\n/).filter((file) => file.startsWith('assets/'));
+  } catch {
+    // 取得できなければ追加扱いにしない（安全側）。
+  }
+  for (const file of addedAssets) topOnlyFiles.add(file);
+  if (changedFiles.some((file) => !topOnlyFiles.has(file)
+    && (sharedFiles.has(file) || file.startsWith('scripts/')))) {
     return selectAll('共通資産または検証基盤の変更', baseRef, changedFiles);
   }
 
-  const articleOnly = changedFiles.every((file) => /^blog\/[a-z0-9-]+\.html$/.test(file));
-  if (!articleOnly) {
-    return selectAll('記事HTML以外の変更を含むため安全側fallback', baseRef, changedFiles);
+  const isArticleHtml = (file) => /^blog\/[a-z0-9-]+\.html$/.test(file);
+  const articleOrTopOnly = changedFiles.every((file) => isArticleHtml(file) || topOnlyFiles.has(file));
+  if (!articleOrTopOnly) {
+    return selectAll('記事HTMLとトップ専用ファイル以外の変更を含むため安全側fallback', baseRef, changedFiles);
   }
 
-  const changedSlugs = changedFiles.map((file) => path.basename(file, '.html'));
+  const changedSlugs = changedFiles.filter(isArticleHtml).map((file) => path.basename(file, '.html'));
   if (changedSlugs.some((slug) => !allSlugs.includes(slug))) {
     return selectAll('articles.json外の記事変更を含むため安全側fallback', baseRef, changedFiles);
   }
@@ -130,7 +155,7 @@ function selectBlogScope() {
   const slugs = [...new Set([...changedSlugs, firstSlug, latestOther].filter(Boolean))];
   return {
     mode: 'shard',
-    reason: '記事HTMLだけの変更（変更記事＋代表2件）',
+    reason: '記事HTMLまたはトップ専用ファイルだけの変更（変更記事＋代表2件）',
     baseRef,
     changedFiles,
     slugs,
@@ -399,10 +424,11 @@ async function runTaskPool(tasks, limit = 2) {
         timeoutMs: 3 * 60 * 1000,
       },
       {
-        name: 'トップヒーロー',
+        name: '新トップ（写真ヒーロー・各節の操作・横はみ出し・書式見本）',
         command: process.execPath,
-        args: ['scripts/test-home-hero.cjs', base, '--json'],
-        output: 'home-hero.json',
+        args: ['scripts/test-home-top.cjs', base, '--json'],
+        output: 'home-top.json',
+        timeoutMs: 5 * 60 * 1000,
       },
       {
         name: 'モバイル見出し横はみ出し',

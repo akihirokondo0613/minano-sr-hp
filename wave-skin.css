@@ -184,6 +184,9 @@ main :is(.btn-primary,.btn-secondary,.btn-white,.btn-ghost,.startup-primary,.sta
    uploads 系は淡い背景＋下端の稜線だけで、PCでは右半分が空いていた。本文左／イラスト右の2列にし、
    スマホは本文を優先してイラストを出さない。稜線（::after）は角丸と重なるので消す。 */
 .page-hero.has-ill{background:#EDF5F0;border-bottom:0;border-radius:0 0 40px 40px}
+/* 2026-10-13 トップの写真の枠とそろえ、角丸の面として画面の端から少し離す（skin-v2.css と同じ規則） */
+.page-hero.has-ill{margin:calc(var(--nav-h) + 12px) max(clamp(12px,1.6vw,24px),calc((100% - 1680px) / 2)) 0;padding-top:clamp(40px,5vw,68px);border-radius:20px;background:linear-gradient(160deg,#EDF5F0 0%,#E6F0EA 60%,#E3EDF3 100%)}
+@media(max-width:640px){.page-hero.has-ill{margin:calc(var(--nav-h) + 4px) 10px 0;padding-top:30px;border-radius:16px}}
 .page-hero.has-ill::after{content:none}
 @media(min-width:641px){
   .page-hero.has-ill .page-hero-inner{display:grid;grid-template-columns:minmax(0,1fr) clamp(220px,24vw,340px);column-gap:clamp(24px,4vw,56px);align-items:center}
@@ -335,3 +338,11 @@ h1,h2,h3,.sec-h,.final-cta h2,.flow-c h3,.page-h,.art-title,.card-title,.post-ti
 @media(max-width:480px){.footer-grid{gap:28px 16px}}
 /* 冒頭の目玉バッジ・チップは2列のグリッドでも文字幅で止める（列幅いっぱいに伸びていた） */
 .page-hero.has-ill .page-hero-inner>:is(.flag-badge,.diag-badge,.live-chip){justify-self:start}
+
+/* 2026-10-13 フッター下部の主要リンク（skin-v2.css と同じ規則） */
+.footer-links{margin-top:4px;padding:14px 0 6px}
+.footer-links ul{display:flex;flex-wrap:wrap;gap:4px 0;margin:0;padding:0;list-style:none}
+.footer-links li+li::before{content:'';display:inline-block;width:1px;height:12px;margin:0 14px;vertical-align:middle;background:rgba(255,255,255,.25)}
+.footer-links a{display:inline-block;padding:6px 0;color:rgba(255,255,255,.82);font-size:13px;text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px}
+@media(max-width:640px){.footer-links ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}.footer-links li+li::before{content:none}.footer-links a{display:block;min-height:40px;padding:10px 0}}

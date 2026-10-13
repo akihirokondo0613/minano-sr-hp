@@ -119,7 +119,7 @@
       const style = document.createElement('style');
       style.id = 'mn-image-slot-public-style';
       style.textContent =
-        'image-slot{display:inline-block;position:relative;vertical-align:top;width:240px;height:160px;overflow:hidden;background:rgba(0,0,0,.04)}' +
+        'image-slot{display:inline-block;position:relative;vertical-align:top;width:240px;height:160px;overflow:hidden;background:#fff}' +
         'image-slot>img[data-image-slot-public]{display:block;width:100%;height:100%;max-width:none;-webkit-user-drag:none;user-select:none}';
       document.head.appendChild(style);
     }

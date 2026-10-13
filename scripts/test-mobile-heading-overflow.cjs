@@ -18,10 +18,13 @@ const asJson = args.includes('--json');
 const WIDTHS = [320, 360, 375, 390, 402, 430, 431, 450, 451, 459, 460, 461, 465, 466, 768];
 const PAGES = [
   {
+    // 新トップ（2026-10-13〜）は各節の見出しが .hs-head > h2.hs-h。節ごとの長い見出しを全部測る。
+    // 節数は今後増減しうるので「8件以上」を条件にし、見出しが消えたときだけ失敗させる。
     page: 'index.html',
-    selectors: '#why .sec-h',
-    expectedHeadingCount: 1,
-    expectedSelectorCounts: [{ selector: '#why .sec-h', count: 1 }],
+    selectors: '.hs-head .hs-h',
+    expectedHeadingCount: 8,
+    headingCountAtLeast: true,
+    expectedSelectorCounts: [{ selector: '.hs-head .hs-h', count: 8, atLeast: true }],
   },
   {
     page: 'services.html',
@@ -120,9 +123,10 @@ async function measure(page, selectors, expectedSelectorCounts) {
         && Number.parseFloat(style.opacity) !== 0 && rect.width > 0 && rect.height > 0;
     };
     const headings = [...document.querySelectorAll(selectors)].filter(isVisible);
-    const selectorCounts = expectedSelectorCounts.map(({ selector, count }) => ({
+    const selectorCounts = expectedSelectorCounts.map(({ selector, count, atLeast }) => ({
       selector,
       expected: count,
+      atLeast: !!atLeast,
       actual: [...document.querySelectorAll(selector)].filter(isVisible).length,
     }));
     const measured = headings.map((element) => {
@@ -240,7 +244,7 @@ async function measure(page, selectors, expectedSelectorCounts) {
       headings: measured,
       completed: headings.length > 0
         && measured.every((item) => item.measuredCharacters > 0 && item.lineCount > 0)
-        && selectorCounts.every((item) => item.actual === item.expected),
+        && selectorCounts.every((item) => (item.atLeast ? item.actual >= item.expected : item.actual === item.expected)),
     };
   }, {
     selectors,
@@ -264,15 +268,19 @@ async function measureUserHorizontalScroll(page, width) {
   return userScrollX;
 }
 
-function collectFailures(measurement, expectedHeadingCount, errors = []) {
+function headingCountMatches(actual, expected, atLeast) {
+  return atLeast ? actual >= expected : actual === expected;
+}
+
+function collectFailures(measurement, expectedHeadingCount, errors = [], atLeast = false) {
   const failures = [];
   if (!measurement.completed) failures.push('見出しの実測未完了');
-  if (measurement.headingCount !== expectedHeadingCount) {
-    failures.push(`見出し件数 ${measurement.headingCount}/${expectedHeadingCount}`);
+  if (!headingCountMatches(measurement.headingCount, expectedHeadingCount, atLeast)) {
+    failures.push(`見出し件数 ${measurement.headingCount}/${atLeast ? `${expectedHeadingCount}以上` : expectedHeadingCount}`);
   }
   for (const item of measurement.selectorCounts) {
-    if (item.actual !== item.expected) {
-      failures.push(`${item.selector} の件数 ${item.actual}/${item.expected}`);
+    if (!(item.atLeast ? item.actual >= item.expected : item.actual === item.expected)) {
+      failures.push(`${item.selector} の件数 ${item.actual}/${item.atLeast ? `${item.expected}以上` : item.expected}`);
     }
   }
   if (measurement.userScrollX !== 0) {
@@ -536,8 +544,8 @@ async function auditEngine(engine, browserType) {
           );
           measurement.userScrollX = await measureUserHorizontalScroll(page, width);
           measurement.completed = measurement.completed
-            && measurement.headingCount === target.expectedHeadingCount;
-          const failures = collectFailures(measurement, target.expectedHeadingCount, errors);
+            && headingCountMatches(measurement.headingCount, target.expectedHeadingCount, target.headingCountAtLeast);
+          const failures = collectFailures(measurement, target.expectedHeadingCount, errors, target.headingCountAtLeast);
           results.push({
             engine,
             page: target.page,

@@ -29,7 +29,7 @@
   - **`@supports not (word-break: auto-phrase)` で囲う。** Chromium系には当てない。`keep-all` は min-content 幅を最長の文節まで押し上げるので、列組みが数px〜15px広がる（`support.html` の320pxで実測）。auto-phrase が効くならそちらのほうが副作用が無い。
   - **逃げ道は `overflow-wrap: break-word`。** `anywhere` は min-content 幅を1文字まで下げるので、flex/grid の列がその幅まで潰れる（ブログの `li` で、右の説明が32pxまで縮んで2文字ずつ折れた）。
   - **印は文字の直後にだけ置く。** 開始タグの手前までは戻してよい（`…、<wbr><strong>…` にしないと `<strong>` が1行に居座って器から出る）が、**閉じタグの直後には置かない**。`<wbr>` は要素なので、flex/grid の箱の直下だと1個のアイテムとして数えられ、列がずれる。
-  - **人が置いた `<wbr>` は剥がさない。** 生成器が剥がすのは「文字と文字のあいだ」にある印だけ。`<span class="nw">…</span><wbr><span class="nw">…</span>` のような手置きの印を消すと `test-home-hero.cjs` が落ちる。
+  - **人が置いた `<wbr>` は剥がさない。** 生成器が剥がすのは「文字と文字のあいだ」にある印だけ。`<span class="nw">…</span><wbr><span class="nw">…</span>` のような手置きの印を消すと `test-phrase-breaks.cjs` が落ちる。
   - **用語（`terms.js`）は前後の境目も外す。** 実行時に `<span class="term">` で包まれるので、語の直前・直後の `<wbr>` が独立したアイテムになる。ただし、`terms.js` が除外している本文リンク内は用語の前後で折ってよい。
   - **漢字と漢字のあいだでは折らない。** BudouXは統計モデルで、「中／小企業」「人／材開発支援助成金」「随時／改定」のように熟語や制度名を割る。全78ページで356か所あり、ほぼ全部が誤りだった。
   - **禁則を自前で外す。** `<wbr>` は `line-break: strict` より強い明示の切れ目なので、「合わせる｜：」のように行頭に置けない字の前へ入れないよう生成器で弾く。
@@ -68,7 +68,7 @@
 
 ## 使用する検証器
 
-- トップヒーロー: `scripts/test-home-hero.cjs`
+- トップ（写真ヒーロー・各節の操作・横はみ出し）: `scripts/test-home-top.cjs`
 - 最終CTA: `scripts/test-final-copy.cjs`
 - ブログ全記事: `scripts/test-blog-articles.cjs`
 - 泣き別れ: `scripts/audit-line-breaks.cjs`

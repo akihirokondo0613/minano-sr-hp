@@ -374,6 +374,7 @@ CSS = """
 .sh-common-use{margin:0 0 14px;font-size:13px;line-height:1.85;color:var(--ink3)}
 .sh-common-card>.qk{align-self:flex-start;margin-top:auto;min-height:44px;border-color:var(--moegi-t);color:var(--sugi)}
 .sh-common-card>.qk:focus-visible,.sh-jump .qk:focus-visible{outline:2px solid var(--sugi);outline-offset:4px}
+@media(min-width:601px){.sh-common-card h4{min-height:3.2em}}
 @media(max-width:900px){.sh-common-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.sh-common-grid{grid-template-columns:minmax(0,1fr)}.sh-common-card{padding:16px}.sh-jump{padding:12px}}
 /* スマホは用紙を小さな見本にして横に並べ、1枚ごとの縦の長さを抑える */

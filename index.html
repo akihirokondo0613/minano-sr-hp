@@ -8,8 +8,7 @@
 <script defer src="page-enter.js?v=20261008-flow1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preload" as="image" type="image/avif" imagesrcset="assets/illustrations/hero-plaza-portrait-540.avif 540w, assets/illustrations/hero-plaza-portrait-1080.avif 1080w" imagesizes="120vw" media="(max-width:540px)" fetchpriority="high">
-<link rel="preload" as="image" type="image/avif" imagesrcset="assets/illustrations/hero-plaza.avif 1920w, assets/illustrations/hero-plaza-detail.avif 2172w" imagesizes="(max-width:767px) 100vw, (max-width:1100px) 129vw, 100vw" media="(min-width:541px)" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" imagesrcset="assets/photos/hero-main-720.avif 720w, assets/photos/hero-main-1200.avif 1200w, assets/photos/hero-main-1600.avif 1600w" imagesizes="(max-width:1680px) 100vw, 1680px" fetchpriority="high">
 <title>みなの社会保険労務士事務所｜富山市の社労士（助成金・給与計算・顧問）</title>
 <meta name="description" content="富山の社会保険労務士事務所。中小企業向けに助成金申請・就業規則作成・社会保険手続き・給与計算を支援します。来所・訪問・オンラインに対応し、全国からご相談いただけます。">
 
@@ -495,198 +494,10 @@ main > section:not(.hero) {
 .home-once-actions{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:16px}
 .home-once-note{font-size:11.5px;color:var(--ink3);margin:10px 0 0;line-height:1.7;max-width:44em}
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20261008-h1size1" media="print" data-async-style onload="this.media='all';this.onload=null">
-<noscript><link rel="stylesheet" href="skin-v2.css?v=20261008-h1size1"></noscript>
-<style id="home-scroll-rhythm">
-/* トップの配色：白/雪白を土台、淡緑を区切り、深杉を文字と導線に使う。
-   分野の識別色は記事一覧だけに残し、追従の有無で別のデザインにしない。 */
-.home-compact-section .sec-h{color:var(--sugi)}
-.home-compact-section .sec-h strong{background-image:linear-gradient(rgba(46,158,99,.24),rgba(46,158,99,.24))}
-#services .svc-num,#why .bc-num{color:var(--sugi-7);-webkit-text-stroke:0;font-weight:600}
-#services .svc-arr{color:var(--sugi-7)}
-.home-compact-section .idx-num{color:var(--sugi);-webkit-text-stroke:0;font-size:clamp(32px,4vw,52px);font-weight:600}
-#services{background:var(--g50);border-radius:40px 40px 0 0}
-#services .svc-row{background:transparent;border-radius:0;border:0;border-bottom:1px solid var(--line);box-shadow:none}
-#services .svc-row:hover,#services .svc-row:focus-within{background:rgba(255,255,255,.45);box-shadow:none;transform:none}
-#cases{background:var(--yuki);border-bottom:1px solid var(--line)}
-#cases .home-phase-card{background:transparent;border:0;border-radius:0;box-shadow:none}
-#cases .home-phase-label{color:var(--sugi)}
-#pricing{background:var(--shiro)}
-#faq{background:var(--g50);border-radius:40px 40px 0 0}
-#faq .faq-layout>*{min-width:0}
-#faq .faq-btn{padding:22px 0}
-#faq .faq-wrap{background:transparent;border-radius:0;padding:0;gap:0;border-top:1px solid var(--line)}
-#faq .faq-item,#faq .faq-item.open{background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0}
-#faq .faq-a-in{padding:0 0 22px 28px}
-#faq .faq-item.open .faq-a{max-height:none}
-#news{background:var(--yuki)}
-#tools{background:var(--shiro)}
-#about{background:var(--sugi);border-radius:40px 40px 0 0}
-#about .sec-h,#about .sec-h strong,#about .rep-h,#about .rep-h strong,#about .idx-num{color:var(--shiro)}
-#about .sec-sub,#about .home-about-copy p,#about .home-about-meta,#about .idx-jp{color:var(--line2)}
-#about .idx-lat{color:var(--moegi-l)}
-#about .sec-h strong{background-image:linear-gradient(rgba(255,255,255,.16),rgba(255,255,255,.16))}
-#about .link-more{color:var(--shiro)}
-#about .home-about-card{border-top:1px solid rgba(255,255,255,.25);padding-top:28px}
-#about .home-about-meta{padding-top:16px;border-top:1px solid rgba(255,255,255,.25)}
-#about a:focus-visible{outline-color:var(--shiro)}
-#about .sec-h strong{display:inline-block;max-width:100%}
-/* 直前の章の背景色を引き継ぎ、白い切れ目をつくらない。 */
-#about+.final-sec::before{background:var(--sugi)}
-/* 動きは既存の一度きりの表示に限定。読み始めるまでの待ち時間を短くする。 */
-.home-compact-section .rv,.home-compact-section .rvl{transition-duration:.55s}
-@media(min-width:1100px){
-  #services>.w{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);column-gap:clamp(40px,5vw,80px);align-items:start}
-  #services .sec-head{grid-column:1;grid-row:1;grid-template-columns:minmax(0,1fr);gap:24px;margin-bottom:0}
-  #services .sec-head-idx{flex-direction:row;align-items:baseline;gap:14px}
-  #services .sec-h{font-size:clamp(28px,2.8vw,40px)}
-  #services .home-service-list{grid-column:2;grid-row:1;grid-template-columns:minmax(0,1fr);gap:12px}
-  #services .svc-row{grid-template-columns:32px 80px minmax(0,1fr) 24px;padding:16px;gap:14px}
-  #services .svc-row>span:nth-of-type(3){min-height:88px}
-  #services .svc-ill{width:80px}
-  #services .svc-info-name{transform:none;transition:none;display:block;width:auto;max-width:100%;font-size:19px}
-  #services .home-section-more{grid-column:2;text-align:left}
-  #about .about-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:start}
-  #about .sec-head{grid-template-columns:minmax(0,1fr);gap:24px;margin:0}
-  #about .sec-head-idx{flex-direction:row;align-items:baseline;gap:14px}
-  #about .home-about-card{border-top:0;border-left:1px solid rgba(255,255,255,.25);padding:24px 0 24px 48px}
-}
+<link rel="stylesheet" href="skin-v2.css?v=20261013-footer2" media="print" data-async-style onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="skin-v2.css?v=20261013-footer2"></noscript>
 
-@media(max-width:700px){
-  #services,#faq,#about{border-radius:24px 24px 0 0}
-  #faq .faq-wrap{padding:0}
-  #services .svc-row{border-radius:0}
-  #about .home-about-card{padding-top:22px}
-}
-@media(prefers-reduced-motion:reduce){
-  .home-compact-section .rv,.home-compact-section .rvl{opacity:1;transform:none;transition:none}
-}
-</style>
 
-<style id="home-hero-legibility">
-@media(min-width:641px) and (max-width:900px){.home-plan-card:last-child{grid-column:1 / -1;width:calc(50% - 8px);justify-self:center}}
-</style>
-<style id="home-startup-offer-rail">
-.home-startup-offer{background:var(--yuki);padding:clamp(18px,2.6vw,30px) 0 clamp(24px,3.5vw,42px)}
-.home-startup-offer-rail{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:clamp(20px,3vw,40px);padding:clamp(18px,2.6vw,26px) 0 clamp(18px,2.6vw,26px) clamp(18px,2.6vw,28px);border-left:2px solid var(--moegi)}
-.home-startup-offer-eyebrow,.home-startup-offer-title,.home-startup-offer-text{display:block}
-.home-startup-offer-eyebrow{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.15em;color:var(--moegi-t)}
-.home-startup-offer-title{margin-top:8px;font-family:var(--disp);font-size:clamp(26px,2.8vw,40px);font-weight:900;line-height:1.35;color:var(--iwa)}
-.home-startup-offer-text{word-break:auto-phrase;overflow-wrap:break-word;text-wrap:pretty;margin-top:10px;color:var(--ink2);font-size:clamp(15px,1.3vw,18px);line-height:1.8}
-.home-startup-sentence{display:block}
-.home-startup-offer-meta{display:flex;flex-wrap:wrap;gap:5px 14px;margin-top:12px;color:var(--ink3);font-size:13px;line-height:1.65}
-.home-startup-offer-meta span{white-space:nowrap}
-.home-startup-offer-link{display:inline-flex;align-items:center;gap:10px;padding:10px 0;color:var(--sugi);border-bottom:1px solid var(--moegi);font-size:16px;font-weight:700;white-space:nowrap}
-.home-startup-offer-link:hover{color:var(--sugi-7);border-color:var(--sugi)}
-@media(max-width:700px){
-  .home-startup-offer-rail{grid-template-columns:1fr;gap:16px;padding:18px 0 18px 18px}
-  .home-startup-offer-text{font-size:15px}
-  .home-startup-offer-link{justify-self:start}
-}
-@media(max-width:640px){
-  /* スマホは左右対称に：縦罫を上罫へ移し、中身を中央へ */
-  .home-startup-offer-rail{padding:18px 4px;border-left:0;border-top:2px solid var(--moegi);text-align:center}
-  .home-startup-offer-link{justify-self:center}
-}
-</style>
-<style id="home-spot-card">
-/* ヒーローのスポット業務カード。写真の上に置くので、白い面と枠で本文から独立させる。
-   中身は期間限定。差し替え時期は index.html 側のコメントに書く。 */
-/* 2枚を同じ大きさで並べる。1枚のときより1回り小さくして、2枚でも視界に収まるようにする */
-.hero-spots{display:grid;gap:10px;margin-top:clamp(18px,2.4vw,26px);inline-size:fit-content;max-inline-size:100%}
-@media (min-width:701px){ .hero-spots{grid-template-columns:repeat(2,minmax(0,296px))} }
-.hero-spot{display:flex;flex-wrap:wrap;align-items:center;gap:5px 12px;inline-size:100%;max-inline-size:min(100%,560px);padding:11px clamp(13px,1.5vw,16px);background:rgba(255,255,255,.94);border:1px solid color-mix(in srgb,var(--sugi) 20%,var(--line));border-radius:var(--r-lg);box-shadow:0 6px 20px rgba(18,63,48,.09);transition:border-color .3s,transform .3s var(--ease),box-shadow .35s var(--ease)}
-.hero-spot:hover{border-color:var(--moegi);transform:translateY(-2px);box-shadow:0 12px 28px rgba(18,63,48,.14)}
-.hero-spot:focus-visible{outline:2px solid var(--sugi);outline-offset:3px}
-.hero-spot-badge{display:inline-flex;align-items:center;gap:7px;flex-shrink:0;order:1;align-self:center;margin-block-start:0;font-size:10.5px;font-weight:700;letter-spacing:.04em;color:var(--sugi);background:var(--moegi-l);padding:4px 10px;border-radius:999px;white-space:nowrap}
-.hero-spot-body{display:flex;flex-direction:column;gap:3px;min-inline-size:0;order:3;flex-basis:100%}
-.hero-spot-title{font-family:var(--disp);font-size:clamp(13.5px,1.25vw,15px);font-weight:800;line-height:1.5;color:var(--iwa)}
-.hero-spot-note{font-size:11.5px;line-height:1.7;color:var(--ink3)}
-.hero-spot-arr{flex-shrink:0;order:2;margin-inline-start:auto;align-self:center;color:var(--ink4);transition:color .3s,transform .3s var(--ease)}
-.hero-spot:hover .hero-spot-arr{color:var(--sugi);transform:translateX(4px)}
-@media (max-width:700px){
-  .hero-spots{margin-top:14px;inline-size:100%}
-  .hero-spot{max-inline-size:100%;padding:9px 13px}
-  .hero-spot-badge{font-size:10px;padding:4px 9px}
-  .hero-spot-title{font-size:13px}
-  .hero-spot-note{font-size:11px;line-height:1.62}
-}
-@media(max-width:640px){
-  /* カードが2枚になったので、1枚のときの「縦積み・中央揃え」はやめ、700px以下と同じ
-     横並び（1行目にバッジと矢印、2行目に本文）にそろえる。1枚あたり約40px縦が縮む。
-     skin-v2.css の @media(max-width:640px) が .hero-spot を中央寄せにするため、
-     ここは .hero-spots を前置した詳細度で打ち消す（読み込み順に依存させない）。 */
-  .hero-spots .hero-spot{inline-size:100%;text-align:left;padding:10px 13px 11px}
-  .hero-spots .hero-spot-badge{margin-inline:0}
-  .hero-spots .hero-spot-body{align-items:flex-start}
-}
-@media (prefers-reduced-motion:reduce){.hero-spot{transition:none}}
-</style>
-
-<style id="home-visual-story">
-/* 図版・流れ・実写真で章の役割を分け、囲みを増やさず読む順番をつくる。 */
-#why .home-why-head{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:24px clamp(32px,5vw,72px)}
-#why .sec-head-idx{grid-column:1/-1;flex-direction:row;align-items:baseline;gap:14px}
-#why .home-why-copy{grid-column:2;grid-row:2}
-#why .home-why-photo{grid-column:1;grid-row:2;width:100%;max-width:none;margin:0}
-#why .home-why-photo .ph-frame{border:0;border-radius:0;box-shadow:none;background:transparent}
-#why .home-why-copy .sec-h{font-size:clamp(28px,3vw,42px)}
-#why .belief-card{background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;box-shadow:none;padding:22px 0}
-#why .belief-card:hover{transform:none;box-shadow:none}
-#why .home-why-beliefs{gap:28px}
-#cases .home-phase-body{padding:18px 0 0}
-#cases .home-phase-media{background:transparent}
-#cases .home-phase-title{color:var(--sugi);font-size:clamp(19px,2vw,25px)}
-#about .about-inner{display:block}
-#about .sec-head{grid-template-columns:minmax(0,1fr);gap:22px;margin-bottom:40px}
-#about .sec-head-idx{flex-direction:row;align-items:baseline;gap:14px}
-#about .home-about-card{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);grid-template-areas:'photo copy';gap:clamp(32px,5vw,72px);padding:0;border:0}
-#about .home-office-photo{grid-area:photo;margin:0;min-width:0}
-#about .home-office-photo img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;border-radius:4px 40px 4px 4px}
-#about .home-office-photo figcaption{margin-top:12px;color:var(--line2);font-size:12px;letter-spacing:.04em}
-#about .home-about-meta{display:grid;gap:8px}
-@media(max-width:700px){
- #why .home-why-head{display:flex;flex-direction:column;align-items:stretch;gap:20px}
- #why .home-why-copy{display:contents}
- #why .home-why-copy .sec-h{font-size:27px}
- #why .home-why-photo{width:min(100%,240px);max-width:240px;margin:0 auto}
- #why .home-why-beliefs{gap:0}
- #why .belief-card{padding:16px 0;border-top:0}
- #about .sec-head{margin-bottom:28px}
- #about .home-about-card{grid-template-columns:minmax(0,1fr);grid-template-areas:'photo' 'copy';gap:28px}
- #about .home-office-photo img{border-top-right-radius:28px}
-}
-@media(max-width:760px){
- #cases .home-phase-grid{gap:0}
- #cases .home-phase-card{grid-template-columns:minmax(0,1fr) minmax(90px,32%);text-align:left;padding:8px 0 24px;gap:10px}
- #cases .home-phase-body{grid-column:1;grid-row:1;padding:0}
- #cases .home-phase-media{grid-column:2;grid-row:1;width:100%;padding:0}
- #cases .home-phase-title{font-size:18px}
-}
-</style>
-<style id="home-wayfinding">
-/* 目的地への近道と詳細リンクを、罫線と丸い矢印で揃える。 */
-.home-compact-section .idx-num{font-size:clamp(24px,2.4vw,34px)}
-/* ページ内移動中は省略描画を解除し、Safariでも着地点を安定させる。 */
-main:has(> .home-compact-section:target)>section{content-visibility:visible;contain-intrinsic-size:none}
-.home-shortcuts{background:var(--shiro);padding:24px 0 0}
-.home-shortcuts .w{display:grid;grid-template-columns:auto minmax(0,1fr);gap:32px;align-items:center}
-.home-shortcuts-label{font-size:14px;font-weight:700;color:var(--ink3)}
-.home-shortcuts-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
-.home-shortcuts a{white-space:nowrap;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:12px 0;border-bottom:1px solid var(--line);font-size:clamp(16px,1.45vw,20px);font-weight:700;color:var(--sugi);text-decoration:none}
-.home-shortcuts a span{font-size:20px;transition:transform .25s var(--ease)}
-.home-shortcuts a:hover span{transform:translateY(3px)}
-.home-shortcuts a:hover{border-color:var(--sugi)}
-a.home-detail-link{display:inline-flex;align-items:center;justify-content:space-between;gap:24px;min-height:56px;max-width:100%;padding:8px 0;margin-top:8px;border-bottom:0;font-family:var(--disp);font-size:14px;line-height:1.7;letter-spacing:.03em;text-decoration:none;opacity:1}
-a.home-detail-link .detail-arrow{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;border:1px solid var(--sugi);border-radius:50%;background:var(--sugi);color:var(--shiro);transition:transform .25s var(--ease),background .25s var(--ease)}
-a.home-detail-link:hover{opacity:1}
-a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(--sugi-7)}
-#about a.home-detail-link .detail-arrow{border-color:var(--line2);background:transparent;color:var(--shiro)}
-.home-shortcuts a:focus-visible,a.home-detail-link:focus-visible{outline:2px solid var(--moegi);outline-offset:5px;border-radius:3px}
-@media(max-width:1000px){.home-shortcuts .w{grid-template-columns:minmax(0,1fr);gap:10px}.home-shortcuts-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}}
-@media(max-width:700px){.home-shortcuts .w{grid-template-columns:minmax(0,1fr);gap:10px}.home-shortcuts-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}.home-shortcuts a{font-size:clamp(14px,3.8vw,16px);gap:8px}.home-compact-section a.home-detail-link{text-align:left;gap:18px}}
-@media(prefers-reduced-motion:reduce){.home-shortcuts a span,a.home-detail-link .detail-arrow{transition:none}.home-shortcuts a:hover span,a.home-detail-link:hover .detail-arrow{transform:none}}
-</style>
 <style id="home-form-gallery-base">
 #tools{background:var(--yuki)}
 /* 共通CSS（非同期）の到着前後で書式セクションが動かないよう、.home-compact-section の余白をここでも持つ */
@@ -702,76 +513,6 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 .fg-paper img:not([src]){display:none}
 </style>
 <link rel="stylesheet" href="home-form-gallery.css?v=20261008-picker-row1">
-<style id="home-topics-marquee">
-/* 06 TOPICS ― 記事カードの横送りレール。
-   自動では動かさず、スワイプと前後ボタンで送る。中身はCSSのスクロールスナップで、
-   ボタンは scrollBy() を呼ぶだけ。JSが無くても素の横スクロール列として使える。 */
-.tp-railwrap{--tp-card:clamp(168px,17vw,200px);--tp-pad:11px;--tp-rail-top:6px;
-  /* 矢印は帯の縦中心に置く。帯の高さは (カード幅 − 左右padding) × 7/16。 */
-  --tp-arrow-y:calc(var(--tp-rail-top) + var(--tp-pad) + (var(--tp-card) - var(--tp-pad) * 2) * 7 / 32);
-  position:relative}
-.tp-rail{--tp-gap:clamp(10px,1.1vw,14px);
-  display:flex;gap:var(--tp-gap);list-style:none;margin:0;padding:var(--tp-rail-top) 2px 12px;
-  overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;
-  scroll-snap-type:x mandatory;scroll-padding-inline-start:2px;scrollbar-width:none}
-.tp-rail::-webkit-scrollbar{display:none}
-.tp-rail:focus-visible{outline:2px solid var(--sugi);outline-offset:4px;border-radius:var(--r)}
-.tp-item{display:flex;flex:0 0 auto;scroll-snap-align:start}
-.tp-card{display:flex;flex-direction:column;gap:8px;inline-size:var(--tp-card);padding:var(--tp-pad) var(--tp-pad) 12px;background:#fefefe;border:1px solid var(--line);border-radius:var(--r-lg);transition:border-color .3s,transform .3s var(--ease),box-shadow .35s var(--ease)}
-.tp-card:hover{border-color:var(--moegi);transform:translateY(-3px);box-shadow:0 10px 24px rgba(18,63,48,.08)}
-.tp-card:focus-visible{border-color:var(--moegi);outline:2px solid var(--sugi);outline-offset:2px}
-/* カード上部の帯。図ではなく分野名の文字と色でテーマを示す。
-   地はすべて白文字で4.5:1以上（実測 5.02〜15.36）。色だけに頼らず分野名も読める。 */
-.tp-thumb{display:grid;place-items:center;aspect-ratio:16/7;border-radius:var(--r);padding:8px 10px;
-  background:var(--tp-c,var(--sugi));color:#fff;
-  font-family:var(--disp);font-size:clamp(12.5px,1.15vw,14.5px);font-weight:800;letter-spacing:.08em;
-  line-height:1.5;text-align:center;word-break:auto-phrase}
-.tp-thumb[data-cat="kaisei"]  {--tp-c:#123F30}  /* 法改正情報 ― 深杉 */
-.tp-thumb[data-cat="joseikin"]{--tp-c:#1E7A4B}  /* 助成金 ― 萌木の濃い側 */
-.tp-thumb[data-cat="hoken"]   {--tp-c:#3E6E88}  /* 社会保険 ― 山影 */
-.tp-thumb[data-cat="shugyo"]  {--tp-c:#55606B}  /* 就業規則 ― 石 */
-.tp-thumb[data-cat="keiei"]   {--tp-c:#94661F}  /* 経営・採用 ― 朝日の濃い側 */
-.tp-thumb[data-cat="trouble"] {--tp-c:#8C4A3C}  /* 労務トラブル ― 土 */
-.tp-thumb[data-cat="system"]  {--tp-c:#2A6E7A}  /* システム導入 ― 青緑 */
-.tp-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;font-size:12.5px;font-weight:700;line-height:1.65;color:var(--iwa)}
-.tp-desc{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;margin-top:-2px;font-size:11px;line-height:1.7;color:var(--ink3)}
-.tp-date{margin-top:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--ink4)}
-/* 前後ボタンはカード列の左右端、帯と同じ高さに置く。版面の余白側へ半分出して文字を隠さない。 */
-.tp-nav{position:absolute;inset:0;pointer-events:none}
-.tp-arrow{position:absolute;top:var(--tp-arrow-y);transform:translateY(-50%);z-index:2;pointer-events:auto;
-  inline-size:38px;block-size:38px;display:grid;place-items:center;
-  border:1px solid color-mix(in srgb,var(--sugi) 18%,var(--line));border-radius:50%;
-  background:var(--shiro);color:var(--sugi);cursor:pointer;padding:0;
-  box-shadow:0 3px 12px rgba(18,63,48,.16);
-  transition:border-color .3s,background .3s,color .3s,opacity .3s}
-.tp-arrow[data-tp-dir="-1"]{inset-inline-start:-16px}
-.tp-arrow[data-tp-dir="1"]{inset-inline-end:-16px}
-.tp-arrow:hover:not(:disabled){border-color:var(--moegi);background:var(--moegi-l)}
-.tp-arrow:focus-visible{outline:2px solid var(--sugi);outline-offset:2px}
-.tp-arrow:disabled{opacity:0;pointer-events:none}
-@media (max-width:760px){
-  .tp-railwrap{--tp-card:clamp(144px,43vw,168px);--tp-pad:9px;--tp-rail-top:4px}
-  .tp-rail{padding:var(--tp-rail-top) 2px 10px}
-  .tp-card{padding:var(--tp-pad) var(--tp-pad) 10px;gap:7px}
-  .tp-title{font-size:12px}
-  .tp-desc{font-size:10.5px}
-  .news-sec .pub-live{gap:8px 12px;padding:8px 10px 8px 16px;margin-bottom:14px}
-  .news-sec .pub-live-txt{font-size:11.5px}
-  .news-sec .news-more{margin-top:10px}
-  .news-sec .link-more{margin-top:14px}
-  .tp-arrow{inline-size:34px;block-size:34px}
-  .tp-arrow[data-tp-dir="-1"]{inset-inline-start:-13px}
-  .tp-arrow[data-tp-dir="1"]{inset-inline-end:-13px}
-}
-/* 狭い画面では「最新記事」を畳み、数値と前後ボタンを1行に収める。 */
-@media (max-width:560px){
-  .news-sec .pub-live-latest{display:none}
-}
-@media (prefers-reduced-motion:reduce){
-  .tp-card{transition:none}
-  .tp-rail{scroll-behavior:auto}
-}
-</style>
 <!-- Structured Data: LocalBusiness -->
 <script type="application/ld+json" data-schema="localbusiness">
 {
@@ -850,57 +591,8 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 }
 </style>
 
-<style id="home-illustration-hero">
-/* 下線は文字行の実寸に合わせて描画。ペン先と線の終点を一致させる。 */
-.pen-heading{position:relative;isolation:isolate}
-.pen-heading.pen-ready strong{background:none!important;box-shadow:none!important}
-.pen-layer{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:-1}
-.pen-tip{opacity:0}
-@media(prefers-reduced-motion:reduce){.pen-tip{display:none}}
-
-</style>
-<style id="home-warm-layout">
-/* 見出しを先に読み、サービスと質問を自然にたどる通常レイアウト。 */
-#services>.w{display:block}
-#services .sec-head{position:static;display:grid;grid-template-columns:160px minmax(0,1fr);gap:32px;margin-bottom:48px}
-#services .sec-head-idx{align-items:flex-start;flex-direction:column;gap:8px}
-#services .sec-h,#faq .sec-h{font-size:clamp(28px,3.3vw,48px);line-height:1.5}
-#services .home-service-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px;border-top:1px solid var(--line)}
-#services .svc-row{display:grid;grid-template-columns:84px minmax(0,1fr) 24px;gap:20px;padding:28px 0;text-align:left;align-items:center}
-#services .svc-num{display:none}
-#services .svc-ill{width:84px}
-#services .svc-row>span:nth-of-type(3){min-height:108px;display:grid;align-content:center;position:relative;text-align:center}
-#services .svc-info-name{transform:translateY(22px);transition:transform .35s var(--ease);display:block;width:auto;max-width:100%;font-size:clamp(18px,1.7vw,24px);font-weight:800;line-height:1.6}
-#services .svc-row:hover .svc-info-name,#services .svc-row:focus-within .svc-info-name{transform:translateY(0)}
-#services .svc-info-desc{opacity:0;transform:translateY(5px);display:block;max-height:none;overflow:visible;padding:0;margin-top:8px;font-size:14px;line-height:1.85;transition:opacity .25s ease,transform .3s var(--ease)}
-#services .svc-row:hover .svc-info-desc,#services .svc-row:focus-visible .svc-info-desc,#services .svc-row:focus-within .svc-info-desc{opacity:1;transform:none;max-height:none;padding:0}
-@media(hover:none){#services .svc-info-desc{opacity:1;transform:none}#services .svc-info-name{transform:none}}
-@media(prefers-reduced-motion:reduce){#services .svc-info-desc,#services .svc-info-name{transition:none}}
-#services .svc-arr{display:block}
-#services .home-section-more{text-align:right;margin-top:28px}
-#faq .faq-layout{display:block;max-width:1000px;margin-inline:auto}
-#faq .faq-aside{position:static;text-align:center;margin-bottom:40px}
-#faq .faq-aside .sec-head-idx{justify-content:center}
-#faq .faq-aside .sec-sub{max-width:38em;margin-inline:auto}
-#faq .faq-btn{padding:26px 8px;gap:20px}
-#faq .faq-a-in{padding:0 44px 26px;max-width:54em;line-height:1.9}
-@media(max-width:760px){
- #services .sec-head{grid-template-columns:1fr;gap:20px;margin-bottom:30px}
- #services .sec-head-idx{flex-direction:row;align-items:baseline;gap:12px}
- #services .home-service-list{grid-template-columns:1fr}
- #services .svc-row{grid-template-columns:72px minmax(0,1fr) 18px;gap:14px;padding:24px 0}
- #services .svc-ill{width:72px}
- #services .svc-info-desc{font-size:13px}
- /* アイコンが左にあるので、名前と説明も左揃えにし、文の量に合わせた高さにする */
- #services .svc-row>span:nth-of-type(3){min-height:auto;text-align:left}
- #services .home-section-more{text-align:center}
- #faq .faq-btn{padding:22px 0;gap:12px}
- #faq .faq-a-in{padding:0 0 24px 28px}
-}
-</style>
-<link rel="stylesheet" href="home-hero.css?v=20261012-entry1">
-<noscript><style>#top .hero-pending .hero-poses{opacity:1}</style></noscript>
 </head>
+<link rel="stylesheet" href="home.css?v=20261013-kansui2">
 <body data-nav="B">
 <a class="skip-link" href="#main">本文へスキップ</a>
 <div id="prog"></div>
@@ -940,53 +632,273 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
   <a href="uploads/contact.html" class="mob-cta">→ 無料相談を申し込む</a>
 </div>
 
-<!-- ════════════════════════════════
-     HERO ― WHAT (入口として)
-════════════════════════════════ -->
 <main id="main">
-<section class="hero" id="top">
-  <div class="hero-stage hero-pending">
-    <div class="hero-scene hero-canvas-pc" aria-hidden="true">
-      <picture class="hero-town"><source media="(max-width:540px)" type="image/avif" srcset="assets/illustrations/hero-plaza-portrait-540.avif 540w, assets/illustrations/hero-plaza-portrait-1080.avif 1080w" sizes="120vw"><source media="(max-width:540px)" type="image/webp" srcset="assets/illustrations/hero-plaza-portrait-540.webp 540w, assets/illustrations/hero-plaza-portrait-1080.webp 1080w" sizes="120vw"><source type="image/avif" srcset="assets/illustrations/hero-plaza.avif 1920w, assets/illustrations/hero-plaza-detail.avif 2172w" sizes="(max-width:767px) 100vw, (max-width:1100px) 129vw, 100vw"><img src="assets/illustrations/hero-plaza-detail.webp" srcset="assets/illustrations/hero-plaza.webp 1920w, assets/illustrations/hero-plaza-detail.webp 2172w" sizes="(max-width:767px) 100vw, (max-width:1100px) 129vw, 100vw" width="2172" height="676" alt="" decoding="async" loading="eager" fetchpriority="high"></picture>
-      <div class="hero-actor actor-cafe" data-actor="cafe" style="--person-ratio:516/960;--actor-x:0.5%;--actor-y:50%;--actor-width:12.8%;--actor-layer:3"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/cafe-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/cafe-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/cafe.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/cafe-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/cafe.webp" width="516" height="960" alt="" decoding="async" loading="lazy"></picture></div></div>
-      <div class="hero-actor actor-builder" data-actor="builder" style="--person-ratio:551/960;--actor-x:15%;--actor-y:45%;--actor-width:11%;--actor-layer:1"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/builder-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/builder-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/builder.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/builder-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/builder.webp" width="551" height="960" alt="" decoding="async" loading="lazy"></picture></div></div>
-      <div class="hero-actor actor-garden" data-actor="garden" style="--person-ratio:720/688;--actor-x:11%;--actor-y:70%;--actor-width:15.6%;--actor-layer:4"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/garden-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/garden-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/garden.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/garden-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/garden.webp" width="720" height="688" alt="" decoding="async" loading="lazy"></picture><picture class="hero-media actor-after"><source media="(max-width:499px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/garden-after-sm.avif"><source media="(max-width:1440px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/garden-after-md.avif"><source type="image/avif" data-srcset="assets/illustrations/hero-clean/garden-after.avif"><source media="(max-width:768px)" type="image/webp" data-srcset="assets/illustrations/hero-clean/garden-after-sm.webp"><img class="actor-sprite" data-src="assets/illustrations/hero-clean/garden-after.webp" width="720" height="688" alt="" decoding="async"></picture></div></div>
-      <div class="hero-actor actor-seated" data-actor="seated" style="--person-ratio:720/886;--actor-x:28.5%;--actor-y:65%;--actor-width:14%;--actor-layer:4"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/seated-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/seated-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/seated.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/seated-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/seated.webp" width="720" height="886" alt="" decoding="async" loading="lazy"></picture><picture class="hero-media actor-after"><source media="(max-width:499px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/seated-after-sm.avif"><source media="(max-width:1440px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/seated-after-md.avif"><source type="image/avif" data-srcset="assets/illustrations/hero-clean/seated-after.avif"><source media="(max-width:768px)" type="image/webp" data-srcset="assets/illustrations/hero-clean/seated-after-sm.webp"><img class="actor-sprite" data-src="assets/illustrations/hero-clean/seated-after.webp" width="720" height="886" alt="" decoding="async"></picture></div></div>
-      <div class="hero-actor actor-delivery" data-actor="delivery" style="--person-ratio:720/861;--actor-x:43%;--actor-y:61%;--actor-width:13.8%;--actor-layer:2"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/delivery-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/delivery-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/delivery.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/delivery-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/delivery.webp" width="720" height="861" alt="" decoding="async" loading="lazy"></picture></div></div>
-      <div class="hero-actor actor-kneel" data-actor="kneel" style="--person-ratio:720/792;--actor-x:49%;--actor-y:73%;--actor-width:12.2%;--actor-layer:5"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/kneel-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/kneel-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/kneel.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/kneel-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/kneel.webp" width="720" height="792" alt="" decoding="async" loading="lazy"></picture><picture class="hero-media actor-after"><source media="(max-width:499px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/kneel-after-sm.avif"><source media="(max-width:1440px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/kneel-after-md.avif"><source type="image/avif" data-srcset="assets/illustrations/hero-clean/kneel-after.avif"><source media="(max-width:768px)" type="image/webp" data-srcset="assets/illustrations/hero-clean/kneel-after-sm.webp"><img class="actor-sprite" data-src="assets/illustrations/hero-clean/kneel-after.webp" width="720" height="792" alt="" decoding="async"></picture></div></div>
-      <div class="hero-actor actor-florist" data-actor="florist" style="--person-ratio:586/960;--actor-x:63%;--actor-y:46%;--actor-width:12.5%;--actor-layer:2"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/florist-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/florist-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/florist.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/florist-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/florist.webp" width="586" height="960" alt="" decoding="async" loading="lazy"></picture></div></div>
-      <div class="hero-actor actor-baker" data-actor="baker" style="--person-ratio:480/960;--actor-x:73%;--actor-y:62%;--actor-width:9.4%;--actor-layer:4"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/baker-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/baker-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/baker.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/baker-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/baker.webp" width="480" height="960" alt="" decoding="async" loading="lazy"></picture></div></div>
-      <div class="hero-actor actor-wave" data-actor="wave" style="--person-ratio:631/960;--actor-x:82%;--actor-y:46%;--actor-width:13.1%;--actor-layer:1"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/wave-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/wave-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/wave.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/wave-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/wave.webp" width="631" height="960" alt="" decoding="async" loading="lazy"></picture><picture class="hero-media actor-after"><source media="(max-width:499px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/wave-after-sm.avif"><source media="(max-width:1440px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/wave-after-md.avif"><source type="image/avif" data-srcset="assets/illustrations/hero-clean/wave-after.avif"><source media="(max-width:768px)" type="image/webp" data-srcset="assets/illustrations/hero-clean/wave-after-sm.webp"><img class="actor-sprite" data-src="assets/illustrations/hero-clean/wave-after.webp" width="631" height="960" alt="" decoding="async"></picture></div></div>
-      <div class="hero-actor actor-mechanic" data-actor="mechanic" style="--person-ratio:439/960;--actor-x:90%;--actor-y:60%;--actor-width:9.3%;--actor-layer:4"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/mechanic-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/mechanic-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/mechanic.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/mechanic-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/mechanic.webp" width="439" height="960" alt="" decoding="async" loading="lazy"></picture></div></div>
-    </div>
-    <div class="hero-scene hero-canvas-sp" aria-hidden="true">
-      <picture class="hero-town"><source media="(max-width:540px)" type="image/avif" srcset="assets/illustrations/hero-plaza-portrait-540.avif 540w, assets/illustrations/hero-plaza-portrait-1080.avif 1080w" sizes="120vw"><source media="(max-width:540px)" type="image/webp" srcset="assets/illustrations/hero-plaza-portrait-540.webp 540w, assets/illustrations/hero-plaza-portrait-1080.webp 1080w" sizes="120vw"><source type="image/avif" srcset="assets/illustrations/hero-plaza.avif 1920w, assets/illustrations/hero-plaza-detail.avif 2172w" sizes="(max-width:767px) 100vw, (max-width:1100px) 129vw, 100vw"><img src="assets/illustrations/hero-plaza-detail.webp" srcset="assets/illustrations/hero-plaza.webp 1920w, assets/illustrations/hero-plaza-detail.webp 2172w" sizes="(max-width:767px) 100vw, (max-width:1100px) 129vw, 100vw" width="2172" height="676" alt="" decoding="async" loading="eager" fetchpriority="high"></picture>
-      <div class="hero-actor actor-cafe" data-actor="cafe" style="--person-ratio:516/960;--actor-x:1%;--actor-y:43%;--actor-width:25.5%;--actor-layer:2"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/cafe-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/cafe-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/cafe.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/cafe-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/cafe.webp" width="516" height="960" alt="" decoding="async" loading="lazy"></picture></div></div>
-      <div class="hero-actor actor-wave" data-actor="wave" style="--person-ratio:631/960;--actor-x:66%;--actor-y:42%;--actor-width:31%;--actor-layer:1"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/wave-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/wave-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/wave.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/wave-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/wave.webp" width="631" height="960" alt="" decoding="async" loading="lazy"></picture><picture class="hero-media actor-after"><source media="(max-width:499px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/wave-after-sm.avif"><source media="(max-width:1440px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/wave-after-md.avif"><source type="image/avif" data-srcset="assets/illustrations/hero-clean/wave-after.avif"><source media="(max-width:768px)" type="image/webp" data-srcset="assets/illustrations/hero-clean/wave-after-sm.webp"><img class="actor-sprite" data-src="assets/illustrations/hero-clean/wave-after-sm.webp" width="631" height="960" alt="" decoding="async"></picture></div></div>
-      <div class="hero-actor actor-garden" data-actor="garden" style="--person-ratio:720/688;--actor-x:0%;--actor-y:71%;--actor-width:33%;--actor-layer:4"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/garden-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/garden-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/garden.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/garden-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/garden.webp" width="720" height="688" alt="" decoding="async" loading="lazy"></picture><picture class="hero-media actor-after"><source media="(max-width:499px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/garden-after-sm.avif"><source media="(max-width:1440px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/garden-after-md.avif"><source type="image/avif" data-srcset="assets/illustrations/hero-clean/garden-after.avif"><source media="(max-width:768px)" type="image/webp" data-srcset="assets/illustrations/hero-clean/garden-after-sm.webp"><img class="actor-sprite" data-src="assets/illustrations/hero-clean/garden-after-sm.webp" width="720" height="688" alt="" decoding="async"></picture></div></div>
-      <div class="hero-actor actor-seated" data-actor="seated" style="--person-ratio:720/886;--actor-x:27%;--actor-y:64%;--actor-width:32%;--actor-layer:3"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/seated-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/seated-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/seated.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/seated-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/seated.webp" width="720" height="886" alt="" decoding="async" loading="lazy"></picture><picture class="hero-media actor-after"><source media="(max-width:499px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/seated-after-sm.avif"><source media="(max-width:1440px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/seated-after-md.avif"><source type="image/avif" data-srcset="assets/illustrations/hero-clean/seated-after.avif"><source media="(max-width:768px)" type="image/webp" data-srcset="assets/illustrations/hero-clean/seated-after-sm.webp"><img class="actor-sprite" data-src="assets/illustrations/hero-clean/seated-after-sm.webp" width="720" height="886" alt="" decoding="async"></picture></div></div>
-      <div class="hero-actor actor-kneel" data-actor="kneel" style="--person-ratio:720/792;--actor-x:55%;--actor-y:73%;--actor-width:31%;--actor-layer:5"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/kneel-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/kneel-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/kneel.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/kneel-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/kneel.webp" width="720" height="792" alt="" decoding="async" loading="lazy"></picture><picture class="hero-media actor-after"><source media="(max-width:499px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/kneel-after-sm.avif"><source media="(max-width:1440px)" type="image/avif" data-srcset="assets/illustrations/hero-clean/kneel-after-md.avif"><source type="image/avif" data-srcset="assets/illustrations/hero-clean/kneel-after.avif"><source media="(max-width:768px)" type="image/webp" data-srcset="assets/illustrations/hero-clean/kneel-after-sm.webp"><img class="actor-sprite" data-src="assets/illustrations/hero-clean/kneel-after-sm.webp" width="720" height="792" alt="" decoding="async"></picture></div></div>
-      <div class="hero-actor actor-baker" data-actor="baker" style="--person-ratio:480/960;--actor-x:76%;--actor-y:66%;--actor-width:23.5%;--actor-layer:4"><div class="hero-poses"><picture class="hero-media"><source media="(max-width:499px)" type="image/avif" srcset="assets/illustrations/hero-clean/baker-sm.avif"><source media="(max-width:1440px)" type="image/avif" srcset="assets/illustrations/hero-clean/baker-md.avif"><source type="image/avif" srcset="assets/illustrations/hero-clean/baker.avif"><source media="(max-width:768px)" type="image/webp" srcset="assets/illustrations/hero-clean/baker-sm.webp"><img class="actor-sprite" src="assets/illustrations/hero-clean/baker.webp" width="480" height="960" alt="" decoding="async" loading="lazy"></picture></div></div>
-    </div>
-    <div class="hero-overlay">
-      <p class="hero-location"><span>富山の<wbr>社会保険労務士事務所</span></p>
-      <h1 class="hero-h1"><span class="nw hero-services">手続き、</span><wbr><span class="nw hero-services">給与計算、</span><wbr><span class="nw hero-services">助成金も。</span><br><strong><span class="nw">会社の労務を、</span><wbr><span class="nw">まるごと任せられる。</span></strong></h1>
-      <p class="hero-reassurance"><span class="nw">初めてのご相談でも、</span><wbr><span class="nw">むずかしい言葉を使わずに</span><wbr><span class="nw">整理します。</span></p>
-      <div class="hero-btns">
-        <a href="uploads/contact.html" class="btn-primary">無料で相談する</a>
-        <a href="pricing.html" class="hero-sub-link">料金と業務範囲を見る <span aria-hidden="true">↗</span></a>
-      </div>
-    </div>
-<!-- イラストの次に、基本書式の名称一覧と実物プレビューを見せる。 -->
-<section class="tool-sec sec home-compact-section" id="tools">
+<!-- ════ 1. ヒーロー：富岩運河環水公園の写真＋ご用件から選ぶ ════ -->
+<section class="hero" id="top" aria-labelledby="hero-title">
+<div class="hero-stage">
+<picture class="hero-media"><source type="image/avif" srcset="assets/photos/hero-main-720.avif 720w, assets/photos/hero-main-1200.avif 1200w, assets/photos/hero-main-1600.avif 1600w" sizes="(max-width:1680px) 100vw, 1680px"><img src="assets/photos/hero-main-1600.webp" srcset="assets/photos/hero-main-720.webp 720w, assets/photos/hero-main-1200.webp 1200w, assets/photos/hero-main-1600.webp 1600w" sizes="(max-width:1680px) 100vw, 1680px" width="1600" height="1424" alt="富山市の富岩運河環水公園。青空の下、運河を観光船が進む" decoding="async" loading="eager" fetchpriority="high"></picture>
+<div class="hero-overlay">
+<p class="hero-label">富山の<wbr>社会保険労務士事務所</p>
+<h1 class="hero-h1" id="hero-title"><span class="hero-line">会社の<wbr>労務を、</span><br><span class="hero-line">まる<wbr>ごと任せられる。</span></h1>
+<p class="hero-sub">手続き・給与計算・<wbr>助成金まで、<wbr>一つの<wbr>窓口で。</p>
+</div>
+</div>
+<nav class="hero-panel" aria-label="ご用件から選ぶ">
+<p class="hp-title">ご用件から選ぶ</p>
+<div class="hp-groups">
+<div class="hp-group">
+<p class="hp-group-h">顧問をご検討の会社さま</p>
+<ul class="hp-links">
+<li><a class="hp-link" href="pricing.html"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="5" width="24" height="30" rx="2.5"/><path d="M13 12h14M13 18h14M13 24h8"/><circle cx="27" cy="27" r="5.5" fill="#fff"/><path d="M27 24.5v5M25 26h4M25 28.2h4"/></svg>料金・<br>顧問プラン</a></li>
+<li><a class="hp-link" href="services.html"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="22" y="6" width="12" height="12" rx="2"/><rect x="6" y="22" width="12" height="12" rx="2"/><rect x="22" y="22" width="12" height="12" rx="2"/></svg>サービス<br>一覧</a></li>
+<li><a class="hp-link" href="startup-payroll.html?entry=home-panel-startup"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 5c6 4 8 11 6 19h-12c-2-8 0-15 6-19z"/><circle cx="20" cy="15" r="2.6"/><path d="M14 24l-4 6 5-1M26 24l4 6-5-1M17 30l3 5 3-5"/></svg>創業3年<br>以内の方</a></li>
+</ul>
+</div>
+<div class="hp-group">
+<p class="hp-group-h">手続き・単発のご依頼</p>
+<ul class="hp-links">
+<li><a class="hp-link" href="pricing.html#spot-entry"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="15" cy="13" r="5"/><path d="M5 33c0-6 4.5-10 10-10s10 4 10 10"/><path d="M28 14h8M32 10v8M28 27h8"/></svg>入社・退社<br>の手続き</a></li>
+<li><a class="hp-link" href="joseikin.html#check"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="20" cy="20" r="14"/><path d="M14 13l6 8 6-8M13.5 21.5h13M13.5 26.5h13M20 21v10"/></svg>助成金の<br>対象チェック</a></li>
+<li><a class="hp-link" href="#tools"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5h14l7 7v23H10z"/><path d="M24 5v7h7M15 20h11M15 25h11M15 30h7"/></svg>書式の<br>ダウンロード</a></li>
+</ul>
+</div>
+</div>
+<div class="hp-cta">
+<a class="btn-primary" href="uploads/contact.html?from=hero&amp;entry=home-hero-panel">無料で相談する</a>
+<a class="hp-tel" href="tel:0764602562"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2.5h2.6l1.2 3-1.6 1.1a8 8 0 0 0 4.2 4.2l1.1-1.6 3 1.2V13a1.5 1.5 0 0 1-1.6 1.5A11.5 11.5 0 0 1 1.5 4.1 1.5 1.5 0 0 1 3 2.5z"/></svg>076-460-2562</a>
+</div>
+</nav>
+</section>
+
+<!-- ════ 2. 重要なお知らせ（法改正情報の新しい順。scripts/sync-home-topics.mjs が生成） ════ -->
+<section class="home-notice" id="notice" aria-labelledby="notice-title">
 <div class="w">
-<div class="sec-head rv">
-<div class="sec-head-idx"><span class="idx-num">書式</span><span class="idx-lat">FORMS</span><span class="idx-jp">会社で使う基本書式</span></div>
-<div class="sec-head-body">
-<h2 class="sec-h">入社から<wbr>日々の<wbr>労務まで。<br><strong>使える<wbr>基本書式を<wbr>一覧で。</strong></h2>
-<p class="sec-sub">よく<wbr>使う<wbr>32書式の<wbr>内容を<wbr>プレビュー。<wbr>PDF・Excelの<wbr>ダウンロードと、<wbr>画面で<wbr>記入・印刷できる<wbr>HTML書式を<wbr>用意しています。</p>
+<div class="notice-box">
+<div class="notice-label"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v6M12 16.5v.5"/></svg><b id="notice-title">法改正・<br>重要なお知らせ</b></span><a href="blog.html">一覧を見る</a></div>
+<div class="notice-list" role="list">
+<!-- home-notice-list:start -->
+<div role="listitem"><time datetime="2026-09-13">2026.09.13</time><a href="blog/shika-baseup-kitochu-2026.html">歯科<wbr>ベースアップ評価料は<wbr>今から<wbr>でも<wbr>届け出られる</a></div>
+<div role="listitem"><time datetime="2026-08-24">2026.08.24</time><a href="blog/saitei-chingin-kyuyo-keisan-2026.html">富山の<wbr>最低賃金<wbr>1,119円で<wbr>給与計算の<wbr>どこを<wbr>直すか</a></div>
+<div role="listitem"><time datetime="2026-08-09">2026.08.09</time><a href="blog/shika-gikoujo-shienryo-2026.html">【令和8年度】<wbr>歯科技工所<wbr>ベースアップ支援料</a></div>
+<div role="listitem"><time datetime="2026-08-08">2026.08.08</time><a href="blog/shika-baseup-hyokaryo-2026.html">歯科<wbr>ベースアップ評価料は<wbr>届出と<wbr>8月報告を<wbr>どう<wbr>進めるか</a></div>
+<div role="listitem"><time datetime="2026-07-28">2026.07.28</time><a href="blog/kaigo-hoshu-kaitei-2027.html">2027年度<wbr>介護報酬改定<wbr>は<wbr>どう<wbr>進む？</a></div>
+<!-- home-notice-list:end -->
 </div>
 </div>
+</div>
+</section>
+
+<!-- ════ 3. おすすめ情報 ════ -->
+<section class="home-sec" id="pickup" aria-labelledby="pickup-title">
+<div class="w">
+<div class="hs-head"><h2 class="hs-h" id="pickup-title">おすすめ情報</h2><p class="hs-en">Pick up</p></div>
+<ul class="pk-rail" id="pk-rail" aria-label="おすすめ情報">
+<li class="pk-item"><a class="pk-card" href="startup-payroll.html?entry=home-pickup-startup">
+<span class="pk-img"><img src="assets/illustrations/home/stage-startup-480.webp" srcset="assets/illustrations/home/stage-startup-480.webp 480w, assets/illustrations/home/stage-startup.webp 720w" sizes="(max-width:767px) 78vw, 300px" width="720" height="540" alt="" loading="lazy" decoding="async"><span class="pk-tag">創業3年以内</span></span>
+<span class="pk-title">労務顧問 月25,000円から</span>
+<span class="pk-desc">給与計算なし・従業員5名までのスタート顧問です。税抜、創業3周年まで・最低12か月間。割引終了後は月35,000円からです。</span>
+<span class="pk-more">詳しく見る</span></a></li>
+<li class="pk-item"><a class="pk-card" href="pricing.html#spot-entry">
+<span class="pk-img"><img src="assets/illustrations/home/svc-shaho-240.webp" srcset="assets/illustrations/home/svc-shaho-240.webp 240w, assets/illustrations/home/svc-shaho-480.webp 480w" sizes="(max-width:899px) 30vw, 150px" width="720" height="540" alt="" loading="lazy" decoding="async"><span class="pk-tag">顧問契約なし</span></span>
+<span class="pk-title">入社・退社の手続きを1件から</span>
+<span class="pk-desc">初回限定5,000円／1名、2回目以降は10,000円／1名（税抜）。目の前の1件だけを固定料金でお受けします。</span>
+<span class="pk-more">料金を見る</span></a></li>
+<li class="pk-item"><a class="pk-card" href="shoshiki.html#onboarding-kit">
+<span class="pk-img is-doc"><img src="assets/illustrations/home/onboarding-guide-420.webp" width="420" height="594" alt="" loading="lazy" decoding="async"><span class="pk-tag">無料・登録不要</span></span>
+<span class="pk-title">入社書類 8点セット</span>
+<span class="pk-desc">会社用・従業員用の入力PDFと、労働条件通知書のExcelをまとめてダウンロードできます。</span>
+<span class="pk-more">内容を見る</span></a></li>
+<li class="pk-item"><a class="pk-card" href="uploads/lp-kyujinhyo.html">
+<span class="pk-img"><img src="assets/illustrations/home/svc-kisoku-240.webp" srcset="assets/illustrations/home/svc-kisoku-240.webp 240w, assets/illustrations/home/svc-kisoku-480.webp 480w" sizes="(max-width:899px) 30vw, 150px" width="720" height="540" alt="" loading="lazy" decoding="async"><span class="pk-tag">無料点検 受付中</span></span>
+<span class="pk-title">ハローワーク求人票の無料点検</span>
+<span class="pk-desc">令和6年4月の改正に合っているかを見て、改定案をお出しします。</span>
+<span class="pk-more">詳しく見る</span></a></li>
+<li class="pk-item"><a class="pk-card" href="joseikin.html#check">
+<span class="pk-img"><img src="assets/illustrations/home/grant-480.webp" srcset="assets/illustrations/home/grant-480.webp 480w, assets/illustrations/home/grant.webp 720w" sizes="(max-width:767px) 78vw, 300px" width="720" height="540" alt="" loading="lazy" decoding="async"><span class="pk-tag">助成金</span></span>
+<span class="pk-title">うちは対象になる？助成金の対象チェック</span>
+<span class="pk-desc">当てはまるものを選ぶと、候補になりそうな制度と、いま先にやることがわかります。</span>
+<span class="pk-more">チェックする</span></a></li>
+<li class="pk-item"><a class="pk-card" href="blog/saitei-chingin-kyuyo-keisan-2026.html">
+<span class="pk-img"><img src="assets/illustrations/home/payroll-480.webp" srcset="assets/illustrations/home/payroll-480.webp 480w, assets/illustrations/home/payroll.webp 720w" sizes="(max-width:767px) 78vw, 300px" width="720" height="540" alt="" loading="lazy" decoding="async"><span class="pk-tag">法改正</span></span>
+<span class="pk-title">富山の最低賃金1,119円で、給与計算のどこを直すか</span>
+<span class="pk-desc">令和8年10月1日発効。対象者の洗い出しから月給者の時間額換算、割増単価まで整理しました。</span>
+<span class="pk-more">記事を読む</span></a></li>
+<li class="pk-item"><a class="pk-card" href="shoshiki.html">
+<span class="pk-img"><img src="assets/illustrations/home/office-480.webp" srcset="assets/illustrations/home/office-480.webp 480w, assets/illustrations/home/office.webp 720w" sizes="(max-width:767px) 78vw, 300px" width="720" height="540" alt="" loading="lazy" decoding="async"><span class="pk-tag">無料</span></span>
+<span class="pk-title">社内書式のひな形 50本</span>
+<span class="pk-desc">入社誓約書・休暇申請書など、画面で記入して印刷できる社内書式をまとめています。</span>
+<span class="pk-more">書式を見る</span></a></li>
+</ul>
+<div class="pk-bar">
+<div class="pk-progress" aria-hidden="true"><span></span></div>
+<div class="pk-nav" id="pk-nav">
+<button class="pk-arrow" type="button" data-pk-dir="-1" aria-label="前のおすすめ情報"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8H4M7 4.5 3.5 8 7 11.5"/></svg></button>
+<button class="pk-arrow" type="button" data-pk-dir="1" aria-label="次のおすすめ情報"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h8M9 4.5 12.5 8 9 11.5"/></svg></button>
+</div>
+<a class="pk-all" href="services.html">サービス一覧へ</a>
+</div>
+</div>
+</section>
+
+<!-- ════ 4. サービス（分野のタブ） ════ -->
+<section class="home-sec" id="services" aria-labelledby="services-title">
+<div class="w" data-tabs>
+<div class="hs-head"><h2 class="hs-h" id="services-title">サービス</h2><p class="hs-en">Service</p><p class="hs-lead">手続き・給与計算・<wbr>助成金・<wbr>規程整備・労務相談・<wbr>DXを、<wbr>会社の<wbr>状況に<wbr>合わせて<wbr>組み合わせます。</p></div>
+<div class="svc-tabs" role="tablist" aria-label="サービスの分野">
+<button class="svc-tab" type="button" role="tab" id="svc-tab-shaho" aria-controls="svc-shaho" aria-selected="true"><img src="assets/illustrations/home/svc-shaho-240.webp" srcset="assets/illustrations/home/svc-shaho-240.webp 240w, assets/illustrations/home/svc-shaho-480.webp 480w" sizes="(max-width:899px) 30vw, 150px" width="720" height="540" alt="" loading="lazy" decoding="async"><span>社会保険の手続き</span></button>
+<button class="svc-tab" type="button" role="tab" id="svc-tab-kyuyo" aria-controls="svc-kyuyo" aria-selected="false"><img src="assets/illustrations/home/svc-kyuyo-240.webp" srcset="assets/illustrations/home/svc-kyuyo-240.webp 240w, assets/illustrations/home/svc-kyuyo-480.webp 480w" sizes="(max-width:899px) 30vw, 150px" width="720" height="540" alt="" loading="lazy" decoding="async"><span>給与計算</span></button>
+<button class="svc-tab" type="button" role="tab" id="svc-tab-kisoku" aria-controls="svc-kisoku" aria-selected="false"><img src="assets/illustrations/home/svc-kisoku-240.webp" srcset="assets/illustrations/home/svc-kisoku-240.webp 240w, assets/illustrations/home/svc-kisoku-480.webp 480w" sizes="(max-width:899px) 30vw, 150px" width="720" height="540" alt="" loading="lazy" decoding="async"><span>就業規則</span></button>
+<button class="svc-tab" type="button" role="tab" id="svc-tab-joseikin" aria-controls="svc-joseikin" aria-selected="false"><img src="assets/illustrations/home/svc-joseikin-240.webp" srcset="assets/illustrations/home/svc-joseikin-240.webp 240w, assets/illustrations/home/svc-joseikin-480.webp 480w" sizes="(max-width:899px) 30vw, 150px" width="720" height="540" alt="" loading="lazy" decoding="async"><span>助成金</span></button>
+<button class="svc-tab" type="button" role="tab" id="svc-tab-sodan" aria-controls="svc-sodan" aria-selected="false"><img src="assets/illustrations/home/svc-sodan-240.webp" srcset="assets/illustrations/home/svc-sodan-240.webp 240w, assets/illustrations/home/svc-sodan-480.webp 480w" sizes="(max-width:899px) 30vw, 150px" width="720" height="540" alt="" loading="lazy" decoding="async"><span>労務相談</span></button>
+<button class="svc-tab" type="button" role="tab" id="svc-tab-dx" aria-controls="svc-dx" aria-selected="false"><img src="assets/illustrations/home/svc-dx-240.webp" srcset="assets/illustrations/home/svc-dx-240.webp 240w, assets/illustrations/home/svc-dx-480.webp 480w" sizes="(max-width:899px) 30vw, 150px" width="720" height="540" alt="" loading="lazy" decoding="async"><span>労務DX</span></button>
+</div>
+<div class="svc-stage"><div class="svc-panels">
+<div class="svc-panel" role="tabpanel" id="svc-shaho" aria-labelledby="svc-tab-shaho" tabindex="0">
+<div><span class="svc-p-num">01 / SOCIAL INSURANCE</span><h3 class="svc-p-h">社<wbr>会<wbr>保<wbr>険・労働保険 手続き<wbr>代行</h3><p class="svc-p-desc">入退社<wbr>や年度更新、算定基礎届な<wbr>どを<wbr>期限に<wbr>沿って<wbr>進めます。<wbr>顧問プランでは<wbr>年次の<wbr>手続きまで<wbr>顧問料に<wbr>含みます。</p><div class="svc-p-actions"><a class="btn-arrow" href="uploads/service-shakai-hoken.html">詳しく見る</a></div></div>
+<div><p class="svc-p-sub">主なご依頼</p><ul class="svc-p-links">
+<li><a href="uploads/service-shakai-hoken.html#ichiran">取り扱う手続きの一覧</a></li>
+<li><a href="pricing.html#spot-entry">入社・退社の<wbr>手続きを<wbr>1件だけ</a></li>
+<li><a href="pricing.html#plan-basic">スタート顧問プラン</a></li>
+<li><a href="blog/hitori-shacho-kenko-hoken.html">ひとり社長の社会保険</a></li>
+</ul></div>
+</div>
+<div class="svc-panel" role="tabpanel" id="svc-kyuyo" aria-labelledby="svc-tab-kyuyo" tabindex="0">
+<div><span class="svc-p-num">02 / PAYROLL</span><h3 class="svc-p-h">給与計算<wbr>アウトソーシング</h3><p class="svc-p-desc">毎月の<wbr>給与・賞与計算を、<wbr>従業員1名規模から<wbr>支援します。<wbr>勤怠の<wbr>記録・集計は<wbr>会社側で<wbr>行い、<wbr>受け取った<wbr>情報から<wbr>計算と<wbr>資料作成を<wbr>行います。</p><div class="svc-p-actions"><a class="btn-arrow" href="uploads/service-kyuyo-keisan.html">詳しく見る</a></div></div>
+<div><p class="svc-p-sub">主なご依頼</p><ul class="svc-p-links">
+<li><a href="pricing.html#plan-standard">給与計算込みの<wbr>スタンダードプラン</a></li>
+<li><a href="startup-payroll.html?entry=home-services-payroll">創業期の給与計算</a></li>
+<li><a href="uploads/toyama-saitei-chingin.html">富山県の最低賃金</a></li>
+<li><a href="blog/tsukin-teate-shakai-hoken.html">通勤手当と<wbr>社会保険の<wbr>計算</a></li>
+</ul></div>
+</div>
+<div class="svc-panel" role="tabpanel" id="svc-kisoku" aria-labelledby="svc-tab-kisoku" tabindex="0">
+<div><span class="svc-p-num">03 / WORK RULES</span><h3 class="svc-p-h">就業規則の作成・見直し</h3><p class="svc-p-desc">会社の<wbr>実態と<wbr>法改正に<wbr>合う、<wbr>運用しやすい<wbr>規程へ<wbr>整えます。<wbr>届出まで<wbr>含みます。</p><div class="svc-p-actions"><a class="btn-arrow" href="uploads/service-shugyo-kisoku.html">詳しく見る</a></div></div>
+<div><p class="svc-p-sub">主なご依頼</p><ul class="svc-p-links">
+<li><a href="pricing.html#spot-entry">就業規則・36協定の<wbr>料金</a></li>
+<li><a href="shoshiki.html">社内書式の<wbr>ひな形 50本</a></li>
+<li><a href="support.html#phase-growth">人が<wbr>増えてきた<wbr>会社の<wbr>規程整備</a></li>
+<li><a href="uploads/service-romu-sodan.html">規程の運用の相談</a></li>
+</ul></div>
+</div>
+<div class="svc-panel" role="tabpanel" id="svc-joseikin" aria-labelledby="svc-tab-joseikin" tabindex="0">
+<div><span class="svc-p-num">04 / SUBSIDY</span><h3 class="svc-p-h">助成金 申請サポート</h3><p class="svc-p-desc">対象制度の<wbr>確認から<wbr>申請まで、<wbr>要件と<wbr>期限を<wbr>整理して<wbr>伴走します。<wbr>多くの<wbr>制度は<wbr>取り組みの<wbr>前に<wbr>計画の<wbr>提出が<wbr>必要で、<wbr>受給を<wbr>保証する<wbr>ものではありません。</p><div class="svc-p-actions"><a class="btn-arrow" href="uploads/service-joseikin.html">詳しく見る</a></div></div>
+<div><p class="svc-p-sub">主なご依頼</p><ul class="svc-p-links">
+<li><a href="joseikin.html#check">助成金の対象チェック</a></li>
+<li><a href="joseikin.html#seido">主な制度の一覧</a></li>
+<li><a href="joseikin.html#fee">申請代行の報酬</a></li>
+<li><a href="uploads/toyama-chinage-oen-hojokin.html">富山県の<wbr>賃上げ応援補助金</a></li>
+</ul></div>
+</div>
+<div class="svc-panel" role="tabpanel" id="svc-sodan" aria-labelledby="svc-tab-sodan" tabindex="0">
+<div><span class="svc-p-num">05 / CONSULTATION</span><h3 class="svc-p-h">労務トラブルのご相談</h3><p class="svc-p-desc">退職・残業代・<wbr>ハラスメントへの<wbr>対応と<wbr>予防策を<wbr>整理します。<wbr>単発の<wbr>労務相談<wbr>（60分）は<wbr>初回無料です。</p><div class="svc-p-actions"><a class="btn-arrow" href="uploads/service-romu-sodan.html">詳しく見る</a></div></div>
+<div><p class="svc-p-sub">主なご依頼</p><ul class="svc-p-links">
+<li><a href="uploads/contact.html?from=sodan&amp;entry=home-services-sodan">労務相談を申し込む</a></li>
+<li><a href="blog/mudan-kekkin-taio.html">無断欠勤で<wbr>連絡が<wbr>取れない<wbr>社員</a></li>
+<li><a href="#faq">よくある質問</a></li>
+<li><a href="blog.html">労務のコラム一覧</a></li>
+</ul></div>
+</div>
+<div class="svc-panel" role="tabpanel" id="svc-dx" aria-labelledby="svc-tab-dx" tabindex="0">
+<div><span class="svc-p-num">06 / HR-DX</span><h3 class="svc-p-h">労務システム導入・<wbr>DX支援</h3><p class="svc-p-desc">勤怠・給与・<wbr>手続きの<wbr>情報を<wbr>つなぎ、<wbr>運用の<wbr>定着まで<wbr>支援します。</p><div class="svc-p-actions"><a class="btn-arrow" href="uploads/service-dx.html">詳しく見る</a></div></div>
+<div><p class="svc-p-sub">主なご依頼</p><ul class="svc-p-links">
+<li><a href="services.html#tools">対応しているシステム</a></li>
+<li><a href="support.html#phase-growth">勤怠・給与のつなぎ直し</a></li>
+<li><a href="uploads/service-shakai-hoken.html">電子申請での手続き</a></li>
+<li><a href="services.html">サービス全体を見る</a></li>
+</ul></div>
+</div>
+</div></div>
+</div>
+</section>
+
+<!-- ════ 5. 会社の段階別のご提案 ════ -->
+<section class="home-sec" id="cases" aria-labelledby="cases-title">
+<div class="w">
+<div class="hs-head is-left"><h2 class="hs-h" id="cases-title">会社の段階別のご提案</h2><p class="hs-en">Stage</p><p class="hs-lead">創業期・<wbr>拡大期・<wbr>組織強化期で、<wbr>先に<wbr>整えるべきものは<wbr>変わります。<wbr>会社の<wbr>段階に<wbr>合う<wbr>順番で、<wbr>労務を<wbr>整えます。</p></div>
+<ul class="stage-grid">
+<li><a class="stage-card" href="support.html#phase-startup"><span class="stage-img"><img src="assets/illustrations/home/stage-startup-480.webp" srcset="assets/illustrations/home/stage-startup-480.webp 480w, assets/illustrations/home/stage-startup.webp 720w" sizes="(max-width:767px) 78vw, 300px" width="720" height="540" alt="" loading="lazy" decoding="async"></span><span class="stage-body"><span class="stage-phase">PHASE 01</span><span class="stage-title">仕組みをつくる</span><span class="stage-size">従業員10名程度まで</span><span class="stage-desc">加入手続き、雇用契約、給与計算など、最初の土台を整えます。</span><span class="stage-go">詳細はこちら</span></span></a></li>
+<li><a class="stage-card" href="support.html#phase-growth"><span class="stage-img"><img src="assets/illustrations/home/stage-growth-480.webp" srcset="assets/illustrations/home/stage-growth-480.webp 480w, assets/illustrations/home/stage-growth.webp 720w" sizes="(max-width:767px) 78vw, 300px" width="720" height="540" alt="" loading="lazy" decoding="async"></span><span class="stage-body"><span class="stage-phase">PHASE 02</span><span class="stage-title">仕組みを整える</span><span class="stage-size">従業員10〜50名程度</span><span class="stage-desc">規程、勤怠、育児・介護対応を見直し、運用のずれを減らします。</span><span class="stage-go">詳細はこちら</span></span></a></li>
+<li><a class="stage-card" href="support.html#phase-org"><span class="stage-img"><img src="assets/illustrations/home/stage-organization-480.webp" srcset="assets/illustrations/home/stage-organization-480.webp 480w, assets/illustrations/home/stage-organization.webp 720w" sizes="(max-width:767px) 78vw, 300px" width="720" height="540" alt="" loading="lazy" decoding="async"></span><span class="stage-body"><span class="stage-phase">PHASE 03</span><span class="stage-title">仕組みを強くする</span><span class="stage-size">従業員50名以上</span><span class="stage-desc">評価、賃金、管理職育成まで、組織運営を支える制度へ広げます。</span><span class="stage-go">詳細はこちら</span></span></a></li>
+<li><a class="stage-card" href="support.html#industries"><span class="stage-img"><img src="assets/illustrations/home/industry-480.webp" srcset="assets/illustrations/home/industry-480.webp 480w, assets/illustrations/home/industry.webp 720w" sizes="(max-width:767px) 78vw, 300px" width="720" height="540" alt="" loading="lazy" decoding="async"></span><span class="stage-body"><span class="stage-phase">INDUSTRY</span><span class="stage-title">業種別のご支援</span><span class="stage-chips"><span>製造業</span><span>飲食業</span><span>介護</span><span>建設業</span><span>歯科・クリニック</span></span><span class="stage-desc">業種ごとに起きやすい労務の課題と、整える順番をまとめています。</span><span class="stage-go">詳細はこちら</span></span></a></li>
+</ul>
+</div>
+</section>
+
+<!-- ════ 6. お困りですか？ ════ -->
+<section class="home-sec" id="help" aria-labelledby="help-title">
+<div class="w">
+<div class="hs-head"><h2 class="hs-h" id="help-title">お困りですか？</h2><p class="hs-en">Help</p></div>
+<ul class="help-grid">
+<li class="help-card"><div class="help-top"><p class="help-q">従業員を<wbr><em>雇う・辞める</em>ときの<br>手続きを<wbr>知りたい</p><svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="21" cy="18" r="7"/><path d="M8 45c0-8 6-13 13-13s13 5 13 13"/><path d="M38 20h12M44 14v12M38 36h12"/></svg></div>
+<ul class="help-links"><li><a href="uploads/service-shakai-hoken.html#ichiran">手続きの一覧</a></li><li><a href="pricing.html#spot-entry">1件ずつ頼む料金</a></li></ul></li>
+<li class="help-card"><div class="help-top"><p class="help-q">毎月の<wbr><em>給与計算</em>を<br>任せたい</p><svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="12" y="7" width="32" height="42" rx="4"/><rect x="17" y="12" width="22" height="9" rx="1.5"/><path d="M19 28h2M27 28h2M35 28h2M19 35h2M27 35h2M35 35h2M19 42h2M27 42h10"/></svg></div>
+<ul class="help-links"><li><a href="uploads/service-kyuyo-keisan.html">給与計算の進め方</a></li><li><a href="pricing.html#monthly-plans">顧問プランの料金</a></li></ul></li>
+<li class="help-card"><div class="help-top"><p class="help-q"><em>就業規則</em>を<br>作りたい・<wbr>見直したい</p><svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8h22l10 10v30H12z"/><path d="M34 8v10h10M18 26h20M18 33h20M18 40h12"/><path d="M40 36l6 6-8 3 2-9z"/></svg></div>
+<ul class="help-links"><li><a href="uploads/service-shugyo-kisoku.html">就業規則の作成・見直し</a></li><li><a href="shoshiki.html">社内書式のひな形</a></li></ul></li>
+<li class="help-card"><div class="help-top"><p class="help-q">使える<wbr><em>助成金</em>が<wbr>あるか<br>知りたい</p><svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="28" cy="28" r="19"/><path d="M20 18l8 11 8-11M19 30h18M19 37h18M28 29v13"/></svg></div>
+<ul class="help-links"><li><a href="joseikin.html#check">助成金の対象チェック</a></li><li><a href="uploads/service-joseikin.html">申請サポートの内容</a></li></ul></li>
+<li class="help-card"><div class="help-top"><p class="help-q"><em>書式</em>や<wbr><em>届出の<wbr>窓口</em>を<br>探している</p><svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14h16l4 5h18v25H9z"/><circle cx="31" cy="31" r="6"/><path d="M35.5 35.5L41 41"/></svg></div>
+<ul class="help-links"><li><a href="#tools">基本書式のダウンロード</a></li><li><a href="portal.html">行政の公式窓口まとめ</a></li></ul></li>
+<li class="help-card"><div class="help-top"><p class="help-q">その<wbr>他、<wbr><em>疑問や<wbr>トラブル</em>を<br>相談したい</p><svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 12h30v20H22l-8 7v-7H8z"/><path d="M42 20h6v19h-5v6l-7-6H26v-5"/><path d="M19 18.5a4 4 0 1 1 5 3.9V25M23 28.5v.3"/></svg></div>
+<ul class="help-links"><li><a href="#faq">よくある質問</a></li><li><a href="uploads/contact.html?from=help&amp;entry=home-help">無料相談のお申し込み</a></li></ul></li>
+</ul>
+</div>
+</section>
+
+<section class="price-sec sec" id="pricing" aria-labelledby="pricing-title">
+<div class="w">
+<div class="hs-head"><h2 class="hs-h" id="pricing-title">料金</h2><p class="hs-en">Price</p><p class="hs-lead">手続き中心、<wbr>給与計算込み、<wbr>31名以上・<wbr>個別設計。<wbr>主な<wbr>業務範囲と<wbr>料金を<wbr>掲載しています。<wbr>表示価格は<wbr>すべて<wbr>税抜です。</p></div>
+<div class="home-once rv" id="once">
+<p class="home-once-h">顧問契約が<wbr>なくても、<wbr><strong>お受けします。</strong></p>
+<p class="home-once-sub">目の前の<wbr>1件だけを、<wbr>固定料金で<wbr>お受けします。<wbr>料金は<wbr>すべて<wbr>税抜です。</p>
+<ul class="home-once-grid">
+<li><span class="home-once-name">入社・退社の<wbr>手続き</span><span class="home-once-price"><span class="nw">初回限定</span> <span class="nw">¥5,000</span> / 1名</span><span class="home-once-days"><span class="nw">2回目以降は</span> <span class="nw">¥10,000</span> / 1名。<wbr>書類が<wbr>そろった<wbr>翌営業日から<wbr>3営業日以内に<wbr>申請</span></li>
+<li><span class="home-once-name">会社設立時の<wbr>新規適<wbr>用</span><span class="home-once-price"><span class="nw">¥60,000</span> / 事<wbr>業所<wbr>（5名ま<wbr>で）</span><span class="home-once-days">労働保険・<wbr>雇用保険・社会保険の<wbr>3保険一式</span></li>
+<li><span class="home-once-name">36協定の<wbr>作成・<wbr>届<wbr>出</span><span class="home-once-price"><span class="nw">¥20,000</span> / 事<wbr>業所</span><span class="home-once-days">協定書<wbr>の<wbr>作成から<wbr>労働基準監督署への<wbr>届出まで</span></li>
+<li><span class="home-once-name">就業規則の<wbr>作成・<wbr>改<wbr>定</span><span class="home-once-price"><span class="nw">¥90,000〜</span> / 事<wbr>業所</span><span class="home-once-days">全面<wbr>改<wbr>定 <span class="nw">¥90,000</span>、<wbr>新規<wbr>作<wbr>成 <span class="nw">¥180,000</span>。<wbr>届出まで<wbr>含みます</span></li>
+<li><span class="home-once-name">助成金の<wbr>申請代<wbr>行</span><span class="home-once-price">成功報酬 受給額<wbr>の<wbr>20％</span><span class="home-once-days">着手金0円。<wbr>受給できなければ<wbr>報酬は<wbr>いただきません</span></li>
+<li><span class="home-once-name">労務相談<wbr>（60分）</span><span class="home-once-price"><span class="nw">初回無料</span></span><span class="home-once-days"><span class="nw">2回目以降は</span> <span class="nw">¥10,000</span> / 回。<wbr>解雇・問題社員・<wbr>ハラスメント対応など</span></li>
+</ul>
+<div class="home-once-actions">
+<a href="uploads/contact.html?from=once" class="link-more">単発のご依頼を相談する →</a>
+<a href="pricing.html#spot-fees" class="link-more">単発の料金をすべて見る →</a>
+</div>
+<p class="home-once-note">単発の<wbr>給与計算<wbr>（基<wbr>本 <span class="nw">¥20,000</span>＋<wbr>1名 <span class="nw">¥1,500</span>）<wbr>や<wbr>給付の<wbr>申請も<wbr>承ります。<wbr>ご利用後3か月以内に<wbr>顧問契約を<wbr>いただいた<wbr>場合、<wbr>スポット料金<wbr>（上<wbr>限 <span class="nw">¥30,000</span>）<wbr>を<wbr>初月の<wbr>顧問料に<wbr>充当します。</p>
+</div>
+<div class="home-plan-grid">
+<article class="home-plan-card">
+<p class="home-plan-en">BASIC</p><h3 class="home-plan-name">スタート顧問プラン</h3>
+<p class="home-plan-price">¥35,000<small>／月<wbr>（税抜）</small></p><p class="home-plan-unit">従業員5名まで</p>
+<p class="home-plan-founder">創業<wbr>3年以内：<wbr>¥25,000／月<wbr>（創業3周年まで・<wbr>最低12か月間）</p>
+<p class="home-plan-feature">年次手続きまで<wbr>顧問料に<wbr>含みます</p>
+<ul class="home-plan-list"><li>入退社・<wbr>月額変更・<wbr>扶養届・労使協定</li><li>年度更新・算定基礎届・賞与支払届</li><li>出産・育児・介護・<wbr>高年齢の<wbr>給付申請</li></ul>
+<a href="pricing.html#plan-basic" class="home-plan-link">詳しい内容を見る →</a>
+</article>
+<article class="home-plan-card is-main">
+<span class="home-plan-recommend">おすすめ</span><p class="home-plan-en">STANDARD</p><h3 class="home-plan-name">スタンダードプラン</h3>
+<p class="home-plan-price">¥55,000<small>／月<wbr>（税抜）</small></p><p class="home-plan-unit">従業員10名まで</p>
+<p class="home-plan-founder">創業<wbr>3年以内：<wbr>¥45,000／月<wbr>（創業3周年まで・<wbr>最低12か月間）</p>
+<p class="home-plan-feature">手続きに<wbr>加えて<wbr>給与・賞与計算まで</p>
+<ul class="home-plan-list"><li>スタート顧問プランの<wbr>全業務</li><li>給与・賞与計算と<wbr>個別労務相談</li><li>就業規則の改定提案</li></ul>
+<a href="pricing.html#plan-standard" class="home-plan-link">詳しい内容を見る →</a>
+</article>
+<article class="home-plan-card">
+<p class="home-plan-en">CUSTOM</p><h3 class="home-plan-name">カスタムプラン</h3>
+<p class="home-plan-price is-estimate">お見積もり</p><p class="home-plan-unit">内容・<wbr>規模に<wbr>応じて<wbr>ご提示</p>
+<p class="home-plan-founder">月額契約は<wbr>創業割<wbr>（創業3周年まで・<wbr>最低12か月間）の<wbr>対象</p>
+<p class="home-plan-feature">人数・<wbr>体制に<wbr>合わせて<wbr>月額業務を<wbr>設計</p>
+<ul class="home-plan-list"><li>従業員31名以上・<wbr>複数拠点での<wbr>ご依頼</li><li>複数の<wbr>定例業務を<wbr>組み合わせたい<wbr>場合</li><li>社内の<wbr>担当範囲に<wbr>合わせた<wbr>業務分担</li></ul>
+<a href="pricing.html#plan-custom" class="home-plan-link">詳しい内容を見る →</a>
+</article>
+</div>
+<p class="home-plan-note">表示価格は<wbr>税抜で<wbr>す。年度更新・算定基礎届・賞与支払届は<wbr>顧問料に<wbr>含<wbr>まれ<wbr>ます。傷病手当金・<wbr>労災の<wbr>初回申請、<wbr>年末調整用<wbr>データ整備・<wbr>税理士連携、<wbr>助成金申請は<wbr>別料金です。<wbr>固定額は<wbr>料金ページで<wbr>確認できます。</p>
+<div class="home-section-more rv"><a href="pricing.html" class="link-more home-detail-link"><span>料金・顧問プランを詳しく見る</span><span class="detail-arrow" aria-hidden="true">→</span></a></div>
+</div>
+</section>
+
+<section class="tool-sec sec" id="tools" aria-labelledby="tools-title">
+<div class="w">
+<div class="hs-head"><h2 class="hs-h" id="tools-title">会社で使う基本書式</h2><p class="hs-en">Forms</p><p class="hs-lead">よく<wbr>使う<wbr>32書式の<wbr>内容を<wbr>プレビューできます。<wbr>PDF・Excelの<wbr>ダウンロードと、<wbr>画面で<wbr>記入・印刷できる<wbr>HTML書式を<wbr>用意しています<wbr>（無料・登録不要）。</p></div>
 <div class="fg-kit">
 <div class="fg-kit-copy"><h3>入社書類 8点セット</h3><p>会社用・従業員用の<wbr>入力<wbr>PDF<wbr>と、労働条件通知書の<wbr>Excelを<wbr>まとめて<wbr>準備。</p></div>
 <div class="fg-kit-actions"><a class="fg-kit-link" href="shoshiki.html#onboarding-kit">8点の内容・プレビューを見る <span aria-hidden="true">→</span></a><a class="fg-kit-download" href="assets/download/onboarding-kit.zip" download>まとめてダウンロード <span>ZIP・約40MB</span></a></div>
@@ -1081,7 +993,7 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 <li class="fg-item" id="fg-preview-guide" data-fg-key="guide">
 <a class="fg-card" href="assets/download/onboarding-kit/guide.pdf" target="_blank" rel="noopener" aria-label="入社書類の準備ガイド 準備ガイドの全2ページを見る（PDF・新しいタブで開きます）">
 <div class="fg-heading"><h3>入社書類の準備ガイド</h3><span>05 / 会社</span></div>
-<div class="fg-paper"><img data-src="assets/previews/onboarding-guide-preview.webp" width="840" height="1189" loading="lazy" decoding="async" alt="入社書類を用意する順番と提出先・期限の欄がある準備ガイドの1ページ目"><noscript><img src="assets/previews/onboarding-guide-preview.webp" width="840" height="1189" loading="lazy" alt="入社書類を用意する順番と提出先・期限の欄がある準備ガイドの1ページ目"></noscript></div>
+<div class="fg-paper"><img data-src="assets/previews/onboarding-guide-preview.webp" width="840" height="1189" loading="lazy" decoding="async" alt="入社書類を用意する順番と提出先・期限の欄がある準備ガイドの1ページ目"><noscript><img src="assets/illustrations/home/onboarding-guide-420.webp" width="420" height="594" loading="lazy" alt="入社書類を用意する順番と提出先・期限の欄がある準備ガイドの1ページ目"></noscript></div>
 <p class="fg-purpose">入社書類を<wbr>渡す前に。<wbr><span class="fg-fields">準備する<wbr>順番と、<wbr>提出先・期限を<br>会社から<wbr>案内。</span></p>
 <span class="fg-open"><span>準備ガイドの全2ページを見る</span><span aria-hidden="true">↗</span></span>
 </a>
@@ -1311,235 +1223,40 @@ a.home-detail-link:hover .detail-arrow{transform:translateX(4px);background:var(
 </div>
 </div>
 </section>
-<div class="hero-intro">
-<p class="hero-sub"><span class="nw why-label hero-label">富山の社会保険労務士事務所。</span><wbr><span class="nw">中小企業の経営者に向けて、</span><wbr><span class="nw">労務顧問・手続き・給与計算・</span><wbr><span class="nw">助成金・DXまで</span><wbr><span class="nw">実務に沿ってサポート。</span><br><span class="nw">初めてのご相談でも、</span><wbr><span class="nw">むずかしい言葉を使わずに</span><wbr><span class="nw">整理します。</span></p>
-</div>
-<div class="hero-updates">
-<!-- 求人票の無料点検は専用ページへの入口。告知を増やす場合は幅と本文の長さを確認する。 -->
-<div class="hero-spots">
-<a class="hero-spot" href="uploads/lp-kyujinhyo.html">
-<span class="hero-spot-badge"><i class="live-dot-w" aria-hidden="true"></i>無料点検 受付中</span>
-<span class="hero-spot-body">
-<span class="hero-spot-title"><span class="nw">ハローワーク</span><wbr><span class="nw">求人票の無料点検</span></span>
-<span class="hero-spot-note"><span class="nw">令和6年4月の改正に</span><wbr><span class="nw">合っているかを見て、</span><wbr><span class="nw">改定案をお出しします。</span></span>
-</span>
-<span class="hero-spot-arr" aria-hidden="true">→</span>
-</a>
-</div>
-<div class="hero-trust">
-<span class="trust-item trust-live"><i class="live-dot-w" aria-hidden="true"></i>ご相談 受付中</span>
-<span class="trust-item">無料相談・オンライン可</span>
-<span class="trust-item">助成金は成功報酬制</span>
-</div>
-</div>
-<span class="hero-scroll" aria-hidden="true">scroll</span>
-</div>
-</section>
 
-<!-- 3秒サマリー帯（ヒーロー直下：事業の要点を一目で） -->
-<div class="hero-summary">
-<div class="hs-inner">
-<span class="hs-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="1"/><path d="M7.5 9.5h9M7.5 13h6"/></svg>助成金・手続き・労務相談</span>
-<span class="hs-sep" aria-hidden="true"></span>
-<span class="hs-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.7 7-11a7 7 0 1 0-14 0c0 5.3 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>来所・訪問・オンラインに対応。<br>全国からご相談いただけます。</span></span>
-<span class="hs-sep" aria-hidden="true"></span>
-<span class="hs-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9.5" cy="8" r="3.2"/><path d="M3.5 19c0-3.2 2.7-5.2 6-5.2M16 7.6a2.8 2.8 0 0 1 0 5.3M20.5 19c0-2.2-1.3-3.9-3.2-4.7"/></svg>従業員1名から対応</span>
-<span class="hs-sep" aria-hidden="true"></span>
-<span class="hs-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20.5h16M5 17.5h14"/><path d="M6.5 17.5v-7M10.3 17.5v-7M13.7 17.5v-7M17.5 17.5v-7"/><path d="M4 10.5L12 4l8 6.5z"/></svg>富山県社労士会所属</span>
-</div>
-</div>
-
-<aside class="home-startup-offer" id="startup-offer" aria-labelledby="home-startup-offer-title">
+<!-- ════ 9. 事務所案内 ════ -->
+<section class="home-sec" id="about" aria-labelledby="about-title">
 <div class="w">
-<div class="home-startup-offer-rail">
-<span>
-<span class="home-startup-offer-eyebrow">創業3年以内の会社さまへ</span>
-<span class="home-startup-offer-title" id="home-startup-offer-title">労務顧問 月25,000円から</span>
-<span class="home-startup-offer-text"><span class="home-startup-sentence">給与計算なし・<wbr><span class="nw">従業員5名までの</span><wbr><span class="nw">スタート顧問です。</span></span><span class="home-startup-sentence">給与計算と個別の労務相談まで含める場合は、<span class="nw">月45,000円から。</span></span></span>
-<span class="home-startup-offer-meta"><span>税抜</span><span>創業3周年まで・最低12か月間</span><span>割引終了後 月35,000円から</span></span>
-</span>
-<a class="home-startup-offer-link" href="startup-payroll.html?entry=home-hero-startup">詳しく見る <span aria-hidden="true">→</span></a>
-</div>
-</div>
-</aside>
-
-<!-- ════════════════════════════════
-WHY ― 存在理由・信念
-════════════════════════════════ -->
-
-<nav class="home-shortcuts" aria-label="このページのご案内">
-<div class="w"><p class="home-shortcuts-label">目的から探す</p><div class="home-shortcuts-links">
-<a href="#services">サービスを見る<span aria-hidden="true">↓</span></a>
-<a href="#pricing">料金を確認する<span aria-hidden="true">↓</span></a>
-<a href="#faq">よくある質問<span aria-hidden="true">↓</span></a>
-<a href="#about">事務所を知る<span aria-hidden="true">↓</span></a>
-</div></div>
-</nav>
-
-<!-- 01 理念 -->
-<section class="sec sec-white home-compact-section" id="why">
-<div class="w">
-<div class="sec-head has-photo home-why-head rv">
-<div class="sec-head-idx"><span class="idx-num">01</span><span class="idx-lat">MISSION</span><span class="idx-jp">理念</span></div>
-<div class="sec-head-body home-why-copy">
-<h2 class="sec-h">複雑に<wbr>なった<wbr>労務を、<br><strong>シンプルで、<wbr>使える<wbr>形に。</strong></h2>
-<div class="home-why-intro">
-<p>企業が<wbr>成長するに<wbr>つれて、<wbr>規程や<wbr>手続き、<wbr>勤怠・給与の<wbr>ルールは<wbr>継ぎ接ぎに<wbr>なり、<wbr>現場の<wbr>負担が<wbr>増えていきます。</p>
-<p>私たちは<wbr>複雑に<wbr>絡み合った<wbr>労務管理を<wbr>一つずつほどき、<wbr>本来の<wbr>目的を<wbr>残したまま、<wbr>現場で<wbr>続けられる<wbr>仕組みへ<wbr>整えます。</p>
-</div>
-</div>
-<div class="sec-photo home-why-photo"><div class="ph-frame"><image-slot id="home-why-main" src="assets/photos/why-main.webp" fit="contain" placeholder="複雑な労務を整理するイメージ"></image-slot></div></div>
-</div>
-<div class="why-beliefs home-why-beliefs rv d2" aria-label="3つの支援方針">
-<article class="belief-card">
-<div class="bc-num">01</div>
-<h3 class="bc-title">コストを<wbr>意識した<wbr>経営支援</h3>
-<p class="bc-desc">助成金の<wbr>活用と<wbr>手続きの<wbr>効率化を、<wbr>費用対効果も<wbr>見ながら<wbr>提案します。</p>
-</article>
-<article class="belief-card">
-<div class="bc-num">02</div>
-<h3 class="bc-title">一つずつほどく実務</h3>
-<p class="bc-desc">継ぎ接ぎに<wbr>なった<wbr>規程と<wbr>運用を<wbr>整理し、<wbr>本来の<wbr>意図を<wbr>残して<wbr>整え直します。</p>
-</article>
-<article class="belief-card">
-<div class="bc-num">03</div>
-<h3 class="bc-title">長く使える仕組み化</h3>
-<p class="bc-desc">法改正や<wbr>組織の<wbr>変化にも<wbr>対応しやすい、<wbr>現場で<wbr>続けられる<wbr>形を<wbr>目指します。</p>
-</article>
-</div>
-<div class="home-why-more rv d3"><a href="services.html#approach" class="link-more home-detail-link"><span>私たちの支援姿勢を見る</span><span class="detail-arrow" aria-hidden="true">→</span></a></div>
-</div>
-</section>
-
-<!-- 02 サービス -->
-<section class="svc-sec sec home-compact-section" id="services">
-<div class="w">
-<div class="sec-head rv">
-<div class="sec-head-idx"><span class="idx-num">02</span><span class="idx-lat">SERVICES</span><span class="idx-jp">サービス</span></div>
-<div class="sec-head-body"><h2 class="sec-h"><span class="nw">必要な支援を、</span><wbr><strong><span class="nw">一つの窓口で。</span></strong></h2><p class="sec-sub">手続き・給与計算・<wbr>助成金・<wbr>規程整備・労務相談・<wbr>DXを、<wbr>会社の<wbr>状況に<wbr>合わせて<wbr>組み合わせます。</p></div>
-</div>
-<div class="svc-list home-service-list">
-<a href="uploads/service-joseikin.html" class="svc-row rv">
-<span class="svc-num">01</span>
-<span class="svc-ill" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="home-svc-joseikin" src="assets/illustrations/service-subsidy.webp" fit="contain" placeholder="助成金申請サポートのイラスト"></image-slot></span>
-<span><span class="svc-info-name">助成金<wbr>申請サポート</span><span class="svc-info-desc">対象制度の<wbr>確認から<wbr>申請まで、<wbr>要件と<wbr>期限を<wbr>整理して<wbr>伴走します。</span></span>
-<span class="svc-arr" aria-hidden="true">→</span>
-</a>
-<a href="uploads/service-shugyo-kisoku.html" class="svc-row rv">
-<span class="svc-num">02</span>
-<span class="svc-ill" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="home-svc-kisoku" src="assets/illustrations/service-work-rules.webp" fit="contain" placeholder="就業規則の作成・見直しのイラスト"></image-slot></span>
-<span><span class="svc-info-name">就業規則の<wbr>作成・見直し</span><span class="svc-info-desc">会社の<wbr>実態と<wbr>法改正に<wbr>合う、<wbr>運用しやすい<wbr>規程へ<wbr>整えます。</span></span>
-<span class="svc-arr" aria-hidden="true">→</span>
-</a>
-<a href="uploads/service-shakai-hoken.html" class="svc-row rv">
-<span class="svc-num">03</span>
-<span class="svc-ill" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="home-svc-shaho" src="assets/illustrations/service-social-insurance.webp" fit="contain" placeholder="社会保険・労働保険手続き代行のイラスト"></image-slot></span>
-<span><span class="svc-info-name">社会保険・<wbr>労働保険<wbr>手続き代行</span><span class="svc-info-desc">入退社<wbr>や年度更新、算定基礎届な<wbr>どを<wbr>期限に<wbr>沿って<wbr>進めます。</span></span>
-<span class="svc-arr" aria-hidden="true">→</span>
-</a>
-<a href="uploads/service-kyuyo-keisan.html" class="svc-row rv">
-<span class="svc-num">04</span>
-<span class="svc-ill" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="home-svc-kyuyo" src="assets/illustrations/service-payroll.webp" fit="contain" placeholder="給与計算アウトソーシングのイラスト"></image-slot></span>
-<span><span class="svc-info-name">給与計算<wbr>アウトソーシング</span><span class="svc-info-desc">毎月の<wbr>給与・賞与計算を、<wbr>従業員1名規模から<wbr>支援します。</span></span>
-<span class="svc-arr" aria-hidden="true">→</span>
-</a>
-<a href="uploads/service-romu-sodan.html" class="svc-row rv">
-<span class="svc-num">05</span>
-<span class="svc-ill" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="home-svc-sodan" src="assets/illustrations/service-labor-consultation.webp" fit="contain" placeholder="労務トラブルのご相談のイラスト"></image-slot></span>
-<span><span class="svc-info-name">労務トラブルの<wbr>ご相談</span><span class="svc-info-desc">退職・残業代・<wbr>ハラスメントへの<wbr>対応と<wbr>予防策を<wbr>整理します。</span></span>
-<span class="svc-arr" aria-hidden="true">→</span>
-</a>
-<a href="uploads/service-dx.html" class="svc-row rv">
-<span class="svc-num">06</span>
-<span class="svc-ill" onclick="if(window.omelette&&window.omelette.writeFile){event.preventDefault();event.stopPropagation()}"><image-slot id="home-svc-dx" src="assets/illustrations/service-dx.webp" fit="contain" placeholder="労務システム導入・DX支援のイラスト"></image-slot></span>
-<span><span class="svc-info-name">労務システム導入・<wbr>DX支援</span><span class="svc-info-desc">勤怠・給与・<wbr>手続きの<wbr>情報を<wbr>つなぎ、<wbr>運用の<wbr>定着まで<wbr>支援します。</span></span>
-<span class="svc-arr" aria-hidden="true">→</span>
-</a>
-</div>
-<div class="home-section-more rv"><a href="services.html" class="link-more home-detail-link"><span>サービスを詳しく見る</span><span class="detail-arrow" aria-hidden="true">→</span></a></div>
-</div>
-</section>
-
-<!-- 03 支援の進め方 -->
-<section class="case-sec sec home-compact-section" id="cases">
-<div class="w">
-<div class="sec-head rv">
-<div class="sec-head-idx"><span class="idx-num">03</span><span class="idx-lat">SUPPORT</span><span class="idx-jp">支援の進め方</span></div>
-<div class="sec-head-body"><h2 class="sec-h">会社の<wbr>段階に<wbr>合う<wbr>順番で、<wbr><strong>労務を<wbr>整えます。</strong></h2><p class="sec-sub">創業期・<wbr>拡大期・<wbr>組織強化期で、<wbr>先に<wbr>整えるべきものは<wbr>変わります。</p></div>
-</div>
-<div class="home-phase-grid">
-<article class="home-phase-card rv"><div class="home-phase-media"><image-slot id="home-stage-startup" src="assets/illustrations/stage-startup-v2.webp" fit="contain" placeholder="創業期のイラスト"></image-slot></div><div class="home-phase-body"><p class="home-phase-label">PHASE 01</p><h3 class="home-phase-title">仕組みをつくる</h3><p class="home-phase-scale">従業員10名程度まで</p><p class="home-phase-desc">加入手続き、<wbr>雇用契約、<wbr>給与計算など、<wbr>最初の<wbr>土台を<wbr>整えます。</p></div></article>
-<article class="home-phase-card rv d1"><div class="home-phase-media"><image-slot id="home-stage-growth" src="assets/illustrations/stage-growth.webp" fit="contain" placeholder="拡大期のイラスト"></image-slot></div><div class="home-phase-body"><p class="home-phase-label">PHASE 02</p><h3 class="home-phase-title">仕組みを整える</h3><p class="home-phase-scale">従業員10〜50名程度</p><p class="home-phase-desc">規程、<wbr>勤怠、<wbr>育児・介護対応を<wbr>見直し、<wbr>運用の<wbr>ずれを<wbr>減らします。</p></div></article>
-<article class="home-phase-card rv d2"><div class="home-phase-media"><image-slot id="home-stage-org" src="assets/illustrations/stage-organization.webp" fit="contain" placeholder="組織強化期のイラスト"></image-slot></div><div class="home-phase-body"><p class="home-phase-label">PHASE 03</p><h3 class="home-phase-title">仕組みを強くする</h3><p class="home-phase-scale">従業員50名以上</p><p class="home-phase-desc">評価、<wbr>賃金、<wbr>管理職育成まで、<wbr>組織運営を<wbr>支える<wbr>制度へ<wbr>広げます。</p></div></article>
-</div>
-<div class="home-section-more rv"><a href="support.html" class="link-more home-detail-link"><span>支援の進め方・業種別事例を見る</span><span class="detail-arrow" aria-hidden="true">→</span></a></div>
-</div>
-</section>
-
-<!-- 04 料金 -->
-<section class="price-sec sec home-compact-section" id="pricing">
-<div class="w">
-<div class="sec-head rv">
-<div class="sec-head-idx"><span class="idx-num">04</span><span class="idx-lat">PRICING</span><span class="idx-jp">料金</span></div>
-<div class="sec-head-body"><h2 class="sec-h">業務範囲と<wbr>料金が<wbr>わかる、<wbr><strong>3つの<wbr>選び方。</strong></h2><p class="sec-sub">手続き中心、<wbr>給与計算込み、<wbr>31名以上・<wbr>個別設計。<wbr>主な<wbr>業務範囲と<wbr>料金を<wbr>掲載しています。</p></div>
-</div>
-<div class="home-once rv" id="once">
-<p class="home-once-h">顧問契約が<wbr>なくても、<wbr><strong>お受けします。</strong></p>
-<p class="home-once-sub">目の前の<wbr>1件だけを、<wbr>固定料金で<wbr>お受けします。<wbr>料金は<wbr>すべて<wbr>税抜です。</p>
-<ul class="home-once-grid">
-<li><span class="home-once-name">入社・退社の<wbr>手続き</span><span class="home-once-price"><span class="nw">初回限定</span> <span class="nw">¥5,000</span> / 1名</span><span class="home-once-days"><span class="nw">2回目以降は</span> <span class="nw">¥10,000</span> / 1名。<wbr>書類が<wbr>そろった<wbr>翌営業日から<wbr>3営業日以内に<wbr>申請</span></li>
-<li><span class="home-once-name">会社設立時の<wbr>新規適<wbr>用</span><span class="home-once-price"><span class="nw">¥60,000</span> / 事<wbr>業所<wbr>（5名ま<wbr>で）</span><span class="home-once-days">労働保険・<wbr>雇用保険・社会保険の<wbr>3保険一式</span></li>
-<li><span class="home-once-name">36協定の<wbr>作成・<wbr>届<wbr>出</span><span class="home-once-price"><span class="nw">¥20,000</span> / 事<wbr>業所</span><span class="home-once-days">協定書<wbr>の<wbr>作成から<wbr>労働基準監督署への<wbr>届出まで</span></li>
-<li><span class="home-once-name">就業規則の<wbr>作成・<wbr>改<wbr>定</span><span class="home-once-price"><span class="nw">¥90,000〜</span> / 事<wbr>業所</span><span class="home-once-days">全面<wbr>改<wbr>定 <span class="nw">¥90,000</span>、<wbr>新規<wbr>作<wbr>成 <span class="nw">¥180,000</span>。<wbr>届出まで<wbr>含みます</span></li>
-<li><span class="home-once-name">助成金の<wbr>申請代<wbr>行</span><span class="home-once-price">成功報酬 受給額<wbr>の<wbr>20％</span><span class="home-once-days">着手金0円。<wbr>受給できなければ<wbr>報酬は<wbr>いただきません</span></li>
-<li><span class="home-once-name">労務相談<wbr>（60分）</span><span class="home-once-price"><span class="nw">初回無料</span></span><span class="home-once-days"><span class="nw">2回目以降は</span> <span class="nw">¥10,000</span> / 回。<wbr>解雇・問題社員・<wbr>ハラスメント対応など</span></li>
+<div class="about-grid">
+<div class="about-copy">
+<div class="hs-head is-left"><h2 class="hs-h" id="about-title">事務所案内<small>富山とともに</small></h2><p class="hs-en">About us</p></div>
+<div id="why">
+<p>企業が<wbr>成長するに<wbr>つれて、<wbr>規程や<wbr>手続き、<wbr>勤怠・給与の<wbr>ルールは<wbr>継ぎ接ぎに<wbr>なり、<wbr>現場の<wbr>負担が<wbr>増えていきます。<wbr>私たちは<wbr>複雑に<wbr>絡み合った<wbr>労務管理を<wbr>一つずつほどき、<wbr>本来の<wbr>目的を<wbr>残したまま、<wbr>現場で<wbr>続けられる<wbr>仕組みへ<wbr>整えます。</p>
+<p>むずかしい<wbr>言葉を<wbr>そのまま<wbr>使わず、<wbr>明日からの<wbr>現場で<wbr>使える<wbr>形に<wbr>してお渡しします。<wbr>地域に<wbr>根ざした<wbr>相談相手と<wbr>して、<wbr>会社の<wbr>状況を<wbr>一緒に<wbr>整理します。</p>
+<ul class="about-mission">
+<li><b>01</b><strong>コストを<wbr>意識した<wbr>経営支援</strong><span>助成金の<wbr>活用と<wbr>手続きの<wbr>効率化を、<wbr>費用対効果も<wbr>見ながら<wbr>提案します。</span></li>
+<li><b>02</b><strong>一つずつほどく<wbr>実務</strong><span>継ぎ接ぎに<wbr>なった<wbr>規程と<wbr>運用を<wbr>整理し、<wbr>本来の<wbr>意図を<wbr>残して<wbr>整え直します。</span></li>
+<li><b>03</b><strong>長く<wbr>使える<wbr>仕組み化</strong><span>法改正や<wbr>組織の<wbr>変化にも<wbr>対応しやすい、<wbr>現場で<wbr>続けられる<wbr>形を<wbr>目指します。</span></li>
 </ul>
-<div class="home-once-actions">
-<a href="uploads/contact.html?from=once" class="link-more">単発のご依頼を相談する →</a>
-<a href="pricing.html#spot-fees" class="link-more">単発の料金をすべて見る →</a>
 </div>
-<p class="home-once-note">単発の<wbr>給与計算<wbr>（基<wbr>本 <span class="nw">¥20,000</span>＋<wbr>1名 <span class="nw">¥1,500</span>）<wbr>や<wbr>給付の<wbr>申請も<wbr>承ります。<wbr>ご利用後3か月以内に<wbr>顧問契約を<wbr>いただいた<wbr>場合、<wbr>スポット料金<wbr>（上<wbr>限 <span class="nw">¥30,000</span>）<wbr>を<wbr>初月の<wbr>顧問料に<wbr>充当します。</p>
+<ul class="about-facts"><li>従業員1名から対応</li><li>来所・訪問・オンライン</li><li>全国からご相談可</li><li>助成金は成功報酬制</li><li>富山県社<wbr>会保険労務士会所<wbr>属</li></ul>
+<address class="about-addr">みなの社会保険労務士事務所<br>〒931-8333 富山県富山市蓮町1丁目7-4　SCOP TOYAMA</address>
+<div class="about-actions"><a class="btn-arrow" href="about.html">事務所案内を見る</a><a class="btn-arrow" href="about.html#access">アクセス</a><a class="btn-arrow" href="support.html">支援の進め方</a></div>
 </div>
-<div class="home-plan-grid">
-<article class="home-plan-card">
-<p class="home-plan-en">BASIC</p><h3 class="home-plan-name">スタート顧問プラン</h3>
-<p class="home-plan-price">¥35,000<small>／月<wbr>（税抜）</small></p><p class="home-plan-unit">従業員5名まで</p>
-<p class="home-plan-founder">創業<wbr>3年以内：<wbr>¥25,000／月<wbr>（創業3周年まで・<wbr>最低12か月間）</p>
-<p class="home-plan-feature">年次手続きまで<wbr>顧問料に<wbr>含みます</p>
-<ul class="home-plan-list"><li>入退社・<wbr>月額変更・<wbr>扶養届・労使協定</li><li>年度更新・算定基礎届・賞与支払届</li><li>出産・育児・介護・<wbr>高年齢の<wbr>給付申請</li></ul>
-<a href="pricing.html#plan-basic" class="home-plan-link">詳しい内容を見る →</a>
-</article>
-<article class="home-plan-card is-main">
-<span class="home-plan-recommend">おすすめ</span><p class="home-plan-en">STANDARD</p><h3 class="home-plan-name">スタンダードプラン</h3>
-<p class="home-plan-price">¥55,000<small>／月<wbr>（税抜）</small></p><p class="home-plan-unit">従業員10名まで</p>
-<p class="home-plan-founder">創業<wbr>3年以内：<wbr>¥45,000／月<wbr>（創業3周年まで・<wbr>最低12か月間）</p>
-<p class="home-plan-feature">手続きに<wbr>加えて<wbr>給与・賞与計算まで</p>
-<ul class="home-plan-list"><li>スタート顧問プランの<wbr>全業務</li><li>給与・賞与計算と<wbr>個別労務相談</li><li>就業規則の改定提案</li></ul>
-<a href="pricing.html#plan-standard" class="home-plan-link">詳しい内容を見る →</a>
-</article>
-<article class="home-plan-card">
-<p class="home-plan-en">CUSTOM</p><h3 class="home-plan-name">カスタムプラン</h3>
-<p class="home-plan-price is-estimate">お見積もり</p><p class="home-plan-unit">内容・<wbr>規模に<wbr>応じて<wbr>ご提示</p>
-<p class="home-plan-founder">月額契約は<wbr>創業割<wbr>（創業3周年まで・<wbr>最低12か月間）の<wbr>対象</p>
-<p class="home-plan-feature">人数・<wbr>体制に<wbr>合わせて<wbr>月額業務を<wbr>設計</p>
-<ul class="home-plan-list"><li>従業員31名以上・<wbr>複数拠点での<wbr>ご依頼</li><li>複数の<wbr>定例業務を<wbr>組み合わせたい<wbr>場合</li><li>社内の<wbr>担当範囲に<wbr>合わせた<wbr>業務分担</li></ul>
-<a href="pricing.html#plan-custom" class="home-plan-link">詳しい内容を見る →</a>
-</article>
+<div class="about-photos">
+<figure><img src="assets/photos/about-scop-building.webp" width="960" height="720" alt="事務所が入るSCOP TOYAMAの外観" loading="lazy" decoding="async"><figcaption>SCOP TOYAMA<wbr>（富山市蓮町）</figcaption></figure>
+<figure><img src="assets/photos/hero-main-720.webp" width="720" height="641" alt="富岩運河環水公園の運河と観光船" loading="lazy" decoding="async"><figcaption>富岩運河環水公園</figcaption></figure>
+<figure><img src="assets/photos/about-scop-guide.webp" width="960" height="720" alt="SCOP TOYAMAの館内案内板" loading="lazy" decoding="async"><figcaption>館内の案内</figcaption></figure>
+<figure><img src="assets/illustrations/home/toyama-480.webp" srcset="assets/illustrations/home/toyama-480.webp 480w, assets/illustrations/home/toyama.webp 720w" sizes="(max-width:767px) 78vw, 300px" width="720" height="540" alt="" loading="lazy" decoding="async"><figcaption>富山の<wbr>会社に<wbr>近い相談相手と<wbr>して</figcaption></figure>
 </div>
-<p class="home-plan-note">表示価格は<wbr>税抜で<wbr>す。年度更新・算定基礎届・賞与支払届は<wbr>顧問料に<wbr>含<wbr>まれ<wbr>ます。傷病手当金・<wbr>労災の<wbr>初回申請、<wbr>年末調整用<wbr>データ整備・<wbr>税理士連携、<wbr>助成金申請は<wbr>別料金です。<wbr>固定額は<wbr>料金ページで<wbr>確認できます。</p>
-<div class="home-section-more rv"><a href="pricing.html" class="link-more home-detail-link"><span>料金・顧問プランを詳しく見る</span><span class="detail-arrow" aria-hidden="true">→</span></a></div>
+</div>
 </div>
 </section>
 
-<!-- 05 よくあるご質問 -->
-<section class="faq-sec sec home-compact-section" id="faq">
+<section class="faq-sec sec" id="faq" aria-labelledby="faq-title">
 <div class="w">
 <div class="faq-layout">
-<aside class="faq-aside rv">
-<div class="sec-head-idx"><span class="idx-num">05</span><span class="idx-lat">FAQ</span><span class="idx-jp">よくある質問</span></div>
-<h2 class="sec-h"><span class="nw">ご相談の、</span><wbr><strong><span class="nw">その前に。</span></strong></h2>
-<p class="sec-sub">よく<wbr>いただく<wbr>疑問を<wbr>まとめました。<wbr>ここに<wbr>ない<wbr>点も、<wbr>初回の<wbr>ご相談で<wbr>遠慮なく<wbr>お尋ねください。</p>
-</aside>
+<div class="hs-head"><h2 class="hs-h" id="faq-title">よくあるご質問</h2><p class="hs-en">FAQ</p><p class="hs-lead">ここに<wbr>ない<wbr>点も、<wbr>初回の<wbr>ご相談で<wbr>遠慮なく<wbr>お尋ねください。</p></div>
 <div class="faq-wrap rv d1">
 <div class="faq-item">
 <button class="faq-btn" onclick="faqToggle(this)" aria-expanded="false">
@@ -1588,146 +1305,98 @@ WHY ― 存在理由・信念
 </div>
 </section>
 
-<!-- PROCESS -->
-
-<!-- 06 お知らせ・コラム -->
-<section class="news-sec sec home-compact-section" id="news">
+<!-- ════ 11. インフォメーション（分野別。scripts/sync-home-topics.mjs が生成） ════ -->
+<section class="home-sec" id="news" aria-labelledby="news-title">
 <div class="w">
-<div class="sec-head rv">
-<div class="sec-head-idx"><span class="idx-num">06</span><span class="idx-lat">TOPICS</span><span class="idx-jp">お知らせ・コラム</span></div>
-<div class="sec-head-body">
-<h2 class="sec-h">法改正も<wbr>助成金も、<br class="sp-br"><wbr><strong>「いま」を<wbr>わかりやすく。</strong></h2>
-<p class="sec-sub">経営者の<wbr>方に<wbr>向けて、<wbr>労務の<wbr>最新情報を<wbr>かみくだいて<wbr>発信しています。</p>
+<div class="hs-head is-left"><h2 class="hs-h" id="news-title">インフォメーション</h2><p class="hs-en">Information</p><p class="hs-lead">法改正も<wbr>助成金も、<wbr>経営者の<wbr>方に<wbr>向けて<wbr>労務の<wbr>最新情報を<wbr>かみくだいて<wbr>発信しています。</p></div>
+<div class="news-grid" data-tabs>
+<!-- home-topics-tabs:start -->
+<div class="nt-tabs" role="tablist" aria-label="お知らせ・コラムの分野">
+<button class="nt-tab" type="button" role="tab" id="nt-tab-all" aria-controls="nt-all" aria-selected="true">新着</button>
+<button class="nt-tab" type="button" role="tab" id="nt-tab-kaisei" aria-controls="nt-kaisei" aria-selected="false">法改正情報</button>
+<button class="nt-tab" type="button" role="tab" id="nt-tab-hoken" aria-controls="nt-hoken" aria-selected="false">社会保険</button>
+<button class="nt-tab" type="button" role="tab" id="nt-tab-joseikin" aria-controls="nt-joseikin" aria-selected="false">助成金</button>
+<button class="nt-tab" type="button" role="tab" id="nt-tab-shugyo" aria-controls="nt-shugyo" aria-selected="false">就業規則</button>
+<button class="nt-tab" type="button" role="tab" id="nt-tab-trouble" aria-controls="nt-trouble" aria-selected="false">労務トラブル</button>
+<button class="nt-tab" type="button" role="tab" id="nt-tab-keiei" aria-controls="nt-keiei" aria-selected="false">経営・採用</button>
+<button class="nt-tab" type="button" role="tab" id="nt-tab-system" aria-controls="nt-system" aria-selected="false">システム導入</button>
 </div>
+<div class="nt-panels">
+<div class="nt-panel" role="tabpanel" id="nt-all" aria-labelledby="nt-tab-all" tabindex="0"><h3 class="nt-panel-h">新着</h3>
+<div class="nt-list" role="list">
+<div role="listitem"><time datetime="2026-10-05">2026.10.05</time><span class="nt-cat">社会保険</span><a href="blog/nourinsuisan-rousai-gimuka.html">農林水産業の<wbr>労災保険は<wbr>いつから<wbr>義務化されるのか</a></div>
+<div role="listitem"><time datetime="2026-10-03">2026.10.03</time><span class="nt-cat">社会保険</span><a href="blog/koyou-hoken-kanyu-more.html">雇用保険の<wbr>加入漏れに<wbr>気づいた<wbr>会社が<wbr>行う<wbr>手続き</a></div>
+<div role="listitem"><time datetime="2026-10-03">2026.10.03</time><span class="nt-cat">社会保険</span><a href="blog/tsukin-teate-shakai-hoken.html">非課税の<wbr>通勤手当も<wbr>社会保険に<wbr>含めて<wbr>計算します</a></div>
+<div role="listitem"><time datetime="2026-09-29">2026.09.29</time><span class="nt-cat">助成金</span><a href="blog/ai-reskilling-joseikin-2026.html">ホリエモンが<wbr>動画で<wbr>紹介！<wbr>富山で<wbr>使う<wbr>AI研修の<wbr>助成金</a></div>
+<div role="listitem"><time datetime="2026-09-13">2026.09.13</time><span class="nt-cat">法改正情報</span><a href="blog/shika-baseup-kitochu-2026.html">歯科<wbr>ベースアップ評価料は<wbr>今から<wbr>でも<wbr>届け出られる</a></div>
+<div role="listitem"><time datetime="2026-09-04">2026.09.04</time><span class="nt-cat">社会保険</span><a href="blog/hitori-shacho-kenko-hoken.html">ひとり社長の<wbr>社会保険は<wbr>義務？<wbr>未加入だと<wbr>どうなる・報酬ゼロは<wbr>不可</a></div>
+</div></div>
+<div class="nt-panel" role="tabpanel" id="nt-kaisei" aria-labelledby="nt-tab-kaisei" tabindex="0"><h3 class="nt-panel-h">法改正情報</h3>
+<div class="nt-list" role="list">
+<div role="listitem"><time datetime="2026-09-13">2026.09.13</time><span class="nt-cat">法改正情報</span><a href="blog/shika-baseup-kitochu-2026.html">歯科<wbr>ベースアップ評価料は<wbr>今から<wbr>でも<wbr>届け出られる</a></div>
+<div role="listitem"><time datetime="2026-08-24">2026.08.24</time><span class="nt-cat">法改正情報</span><a href="blog/saitei-chingin-kyuyo-keisan-2026.html">富山の<wbr>最低賃金<wbr>1,119円で<wbr>給与計算の<wbr>どこを<wbr>直すか</a></div>
+<div role="listitem"><time datetime="2026-08-09">2026.08.09</time><span class="nt-cat">法改正情報</span><a href="blog/shika-gikoujo-shienryo-2026.html">【令和8年度】<wbr>歯科技工所<wbr>ベースアップ支援料</a></div>
+<div role="listitem"><time datetime="2026-08-08">2026.08.08</time><span class="nt-cat">法改正情報</span><a href="blog/shika-baseup-hyokaryo-2026.html">歯科<wbr>ベースアップ評価料は<wbr>届出と<wbr>8月報告を<wbr>どう<wbr>進めるか</a></div>
+<div role="listitem"><time datetime="2026-07-28">2026.07.28</time><span class="nt-cat">法改正情報</span><a href="blog/kaigo-hoshu-kaitei-2027.html">2027年度<wbr>介護報酬改定<wbr>は<wbr>どう<wbr>進む？</a></div>
+<div role="listitem"><time datetime="2026-07-28">2026.07.28</time><span class="nt-cat">法改正情報</span><a href="blog/kaigo-shogu-new-services-2026.html">訪問看護等3<wbr>サービスの<wbr>処遇改善加算</a></div>
+</div></div>
+<div class="nt-panel" role="tabpanel" id="nt-hoken" aria-labelledby="nt-tab-hoken" tabindex="0"><h3 class="nt-panel-h">社会保険</h3>
+<div class="nt-list" role="list">
+<div role="listitem"><time datetime="2026-10-05">2026.10.05</time><span class="nt-cat">社会保険</span><a href="blog/nourinsuisan-rousai-gimuka.html">農林水産業の<wbr>労災保険は<wbr>いつから<wbr>義務化されるのか</a></div>
+<div role="listitem"><time datetime="2026-10-03">2026.10.03</time><span class="nt-cat">社会保険</span><a href="blog/koyou-hoken-kanyu-more.html">雇用保険の<wbr>加入漏れに<wbr>気づいた<wbr>会社が<wbr>行う<wbr>手続き</a></div>
+<div role="listitem"><time datetime="2026-10-03">2026.10.03</time><span class="nt-cat">社会保険</span><a href="blog/tsukin-teate-shakai-hoken.html">非課税の<wbr>通勤手当も<wbr>社会保険に<wbr>含めて<wbr>計算します</a></div>
+<div role="listitem"><time datetime="2026-09-04">2026.09.04</time><span class="nt-cat">社会保険</span><a href="blog/hitori-shacho-kenko-hoken.html">ひとり社長の<wbr>社会保険は<wbr>義務？<wbr>未加入だと<wbr>どうなる・報酬ゼロは<wbr>不可</a></div>
+<div role="listitem"><time datetime="2026-08-09">2026.08.09</time><span class="nt-cat">社会保険</span><a href="blog/kensetsu-kokuho-hojinnari.html">建設国保は<wbr>法人成り後も<wbr>続けられる</a></div>
+<div role="listitem"><time datetime="2026-07-28">2026.07.28</time><span class="nt-cat">社会保険</span><a href="blog/kodomo-kosodate-shienkin-2026.html">子ども・子育て<wbr>支援金とは</a></div>
+</div></div>
+<div class="nt-panel" role="tabpanel" id="nt-joseikin" aria-labelledby="nt-tab-joseikin" tabindex="0"><h3 class="nt-panel-h">助成金</h3>
+<div class="nt-list" role="list">
+<div role="listitem"><time datetime="2026-09-29">2026.09.29</time><span class="nt-cat">助成金</span><a href="blog/ai-reskilling-joseikin-2026.html">ホリエモンが<wbr>動画で<wbr>紹介！<wbr>富山で<wbr>使う<wbr>AI研修の<wbr>助成金</a></div>
+<div role="listitem"><time datetime="2026-08-16">2026.08.16</time><span class="nt-cat">助成金</span><a href="blog/gyomu-kaizen-toyama-2026.html">【令和8年度】<wbr>富山県の<wbr>業務改善助成金</a></div>
+<div role="listitem"><time datetime="2026-08-01">2026.08.01</time><span class="nt-cat">助成金</span><a href="blog/trial-koyo-joseikin-2026.html">【令和8年度】<wbr>トライアル雇用助成金</a></div>
+<div role="listitem"><time datetime="2026-08-01">2026.08.01</time><span class="nt-cat">助成金</span><a href="blog/jinzai-kaihatsu-joseikin-2026.html">【令和8年度】<wbr>人材開発支援助成金</a></div>
+<div role="listitem"><time datetime="2026-07-31">2026.07.31</time><span class="nt-cat">助成金</span><a href="blog/gyomu-kaizen-joseikin-2026.html">【令和8年度】<wbr>業務改善助成金</a></div>
+<div role="listitem"><time datetime="2026-04-01">2026.04.01</time><span class="nt-cat">助成金</span><a href="blog/joseikin-career-up-2026.html">キャリアアップ<wbr>助成金 2026年度<wbr>の<wbr>変更点まとめ</a></div>
+</div></div>
+<div class="nt-panel" role="tabpanel" id="nt-shugyo" aria-labelledby="nt-tab-shugyo" tabindex="0"><h3 class="nt-panel-h">就業規則</h3>
+<div class="nt-list" role="list">
+<div role="listitem"><time datetime="2026-07-28">2026.07.28</time><span class="nt-cat">就業規則</span><a href="blog/kaigo-shogu-career-path-2026.html">介護の<wbr>処遇改善加算と<wbr>就業規則</a></div>
+<div role="listitem"><time datetime="2026-07-28">2026.07.28</time><span class="nt-cat">就業規則</span><a href="blog/roudou-joken-tsuchisho-2024.html">2026年10月の<wbr>労働条件明示</a></div>
+<div role="listitem"><time datetime="2026-07-28">2026.07.28</time><span class="nt-cat">就業規則</span><a href="blog/nenkyu-5days-kanribo.html">年次有給休暇の<wbr>年5日取得義務</a></div>
+<div role="listitem"><time datetime="2026-06-24">2026.06.24</time><span class="nt-cat">就業規則</span><a href="blog/natsu-shoyo-tetsuzuki.html">夏の<wbr>ボーナス前に<wbr>確認。<wbr>賞与の<wbr>就業規則と<wbr>「支給後<wbr>5日以内」の<wbr>手続き</a></div>
+<div role="listitem"><time datetime="2026-03-22">2026.03.22</time><span class="nt-cat">就業規則</span><a href="blog/shugyo-kisoku-template-risk.html">就業規則の<wbr>「テンプレート<wbr>流用」が<wbr>招く<wbr>3つの<wbr>リスク</a></div>
+<div role="listitem"><time datetime="2026-01-25">2026.01.25</time><span class="nt-cat">就業規則</span><a href="blog/fukugyo-kengyo-kisoku.html">副業・兼業を<wbr>許可したい。<wbr>就業規則に<wbr>何を<wbr>書けば<wbr>いい？</a></div>
+</div></div>
+<div class="nt-panel" role="tabpanel" id="nt-trouble" aria-labelledby="nt-tab-trouble" tabindex="0"><h3 class="nt-panel-h">労務トラブル</h3>
+<div class="nt-list" role="list">
+<div role="listitem"><time datetime="2026-08-24">2026.08.24</time><span class="nt-cat">労務トラブル</span><a href="blog/mudan-kekkin-taio.html">無断欠勤で<wbr>連絡が<wbr>取れない<wbr>社員は<wbr>いつ自然退職に？<wbr>文例と<wbr>通知書</a></div>
+<div role="listitem"><time datetime="2026-07-28">2026.07.28</time><span class="nt-cat">労務トラブル</span><a href="blog/36kyotei-jogen-kanri.html">36協定の<wbr>残業上限は<wbr>月何時間？<wbr>100時間未満の<wbr>数え方と<wbr>勤怠管理</a></div>
+<div role="listitem"><time datetime="2026-05-13">2026.05.13</time><span class="nt-cat">労務トラブル</span><a href="blog/renkyu-ake-care.html">連休明けの<wbr>「なんとなく<wbr>不調」を<wbr>見逃さない。<wbr>離職を<wbr>防ぐ<wbr>5月の<wbr>ケア</a></div>
+<div role="listitem"><time datetime="2026-03-15">2026.03.15</time><span class="nt-cat">労務トラブル</span><a href="blog/taishoku-trouble-prevention.html">「突然の<wbr>退職」に<wbr>備える。<wbr>退職トラブルを<wbr>未然に<wbr>防ぐ職場づくり</a></div>
+<div role="listitem"><time datetime="2026-01-15">2026.01.15</time><span class="nt-cat">労務トラブル</span><a href="blog/harassment-madoguchi.html">ハラスメント<wbr>相談窓口の<wbr>設置義務と、<wbr>実効性ある<wbr>体制づくり</a></div>
+</div></div>
+<div class="nt-panel" role="tabpanel" id="nt-keiei" aria-labelledby="nt-tab-keiei" tabindex="0"><h3 class="nt-panel-h">経営・採用</h3>
+<div class="nt-list" role="list">
+<div role="listitem"><time datetime="2026-07-28">2026.07.28</time><span class="nt-cat">経営・採用</span><a href="blog/toyama-koyou-josei-2026-05.html">富山県の<wbr>有効求人倍率<wbr>1.46倍は<wbr>採用に<wbr>どう<wbr>響くか</a></div>
+<div role="listitem"><time datetime="2026-07-28">2026.07.28</time><span class="nt-cat">経営・採用</span><a href="blog/kaigo-shogu-haibun-rule-2026.html">介護の<wbr>処遇改善加算は<wbr>誰に<wbr>配分できる？</a></div>
+<div role="listitem"><time datetime="2026-07-28">2026.07.28</time><span class="nt-cat">経営・採用</span><a href="blog/toyama-shokushu-betsu-kyujin-bairitsu-2026.html">富山県で<wbr>採用が<wbr>難しい<wbr>職種は？</a></div>
+<div role="listitem"><time datetime="2026-07-28">2026.07.28</time><span class="nt-cat">経営・採用</span><a href="blog/toyama-kyujin-chingin-data-2026.html">富山県の<wbr>求人賃金データ活用法</a></div>
+<div role="listitem"><time datetime="2026-07-23">2026.07.23</time><span class="nt-cat">経営・採用</span><a href="blog/kyuyo-itaku-junbi.html">給与計算を<wbr>外注する<wbr>前に<wbr>準備したい<wbr>7項目</a></div>
+<div role="listitem"><time datetime="2026-02-20">2026.02.20</time><span class="nt-cat">経営・採用</span><a href="blog/saiyo-mieru-ka-2026.html">中小企業の<wbr>採用力を<wbr>上げる<wbr>「待遇の<wbr>見える<wbr>化」<wbr>戦略</a></div>
+</div></div>
+<div class="nt-panel" role="tabpanel" id="nt-system" aria-labelledby="nt-tab-system" tabindex="0"><h3 class="nt-panel-h">システム導入</h3>
+<div class="nt-list" role="list">
+<div role="listitem"><time datetime="2026-07-28">2026.07.28</time><span class="nt-cat">システム導入</span><a href="blog/kaigo-technology-jininhaichi-2027.html">介護テクノロジーで<wbr>人員基準は<wbr>変わる？</a></div>
+<div role="listitem"><time datetime="2026-07-23">2026.07.23</time><span class="nt-cat">システム導入</span><a href="blog/kintai-dx-donyu-junbi.html">勤怠システム導入前に<wbr>決める<wbr>ことは？<wbr>就業ルール6項目と<wbr>例外処理</a></div>
+</div></div>
 </div>
-<div class="pub-live rv d1">
-<!-- home-topics-stats:start --><span class="pub-live-txt">公開記事 <b>51</b>本 ／ <b>7</b>分野<span class="pub-live-latest"> ／ 最新記事 <b>2026.10.05</b></span></span><!-- home-topics-stats:end -->
+<!-- home-topics-tabs:end -->
 </div>
-<div class="tp-railwrap rv d1">
-<ul class="tp-rail" id="tp-rail" role="list" aria-label="最近公開した記事">
-<!-- home-topics-cards:start -->
-        <li class="tp-item"><a class="tp-card" href="blog/nourinsuisan-rousai-gimuka.html">
-          <span class="tp-thumb" data-cat="hoken">社会保険</span>
-          <span class="tp-title">農林水産業<wbr>の労災保険は<wbr>いつから<wbr>義務化されるのか</span>
-          <span class="tp-desc">農林水産業の労災保険の暫定任意適用廃止を、成立した改正法と施行期日の政令案に分けて解説。法人・個人、季節雇用、家族の確認から任意加入・成立届・年度更新まで、事業主が進める手順を図解します。</span>
-          <time class="tp-date" datetime="2026-10-05">2026.10.05</time>
-        </a></li>
-        <li class="tp-item"><a class="tp-card" href="blog/koyou-hoken-kanyu-more.html">
-          <span class="tp-thumb" data-cat="hoken">社会保険</span>
-          <span class="tp-title">雇用保険の<wbr>加入漏れに<wbr>気づいた<wbr>会社が<wbr>行う<wbr>手続き</span>
-          <span class="tp-desc">雇用保険の加入漏れを発見した事業主向けに、加入記録・給与控除・年度更新を分ける確認手順を解説。遡及手続きの資料、退職者への説明、再発防止の管理表を紹介します。まず確認しましょう。</span>
-          <time class="tp-date" datetime="2026-10-03">2026.10.03</time>
-        </a></li>
-        <li class="tp-item"><a class="tp-card" href="blog/tsukin-teate-shakai-hoken.html">
-          <span class="tp-thumb" data-cat="hoken">社会保険</span>
-          <span class="tp-title">非課税の<wbr>通勤手当も<wbr>社会保険に<wbr>含めて<wbr>計算します</span>
-          <span class="tp-desc">非課税の通勤手当と社会保険の報酬は別の扱いです。6か月定期代の月額換算例、車通勤の単価変更と出勤日数の区別、給与設定と算定基礎届・月額変更届を点検する手順を紹介します。</span>
-          <time class="tp-date" datetime="2026-10-03">2026.10.03</time>
-        </a></li>
-        <li class="tp-item"><a class="tp-card" href="blog/ai-reskilling-joseikin-2026.html">
-          <span class="tp-thumb" data-cat="joseikin">助成金</span>
-          <span class="tp-title">ホリエモンが<wbr>動画で<wbr>紹介！<wbr>富山で<wbr>使う<wbr>AI研修の<wbr>助成金</span>
-          <span class="tp-desc">ホリエモンの動画で紹介されたAI研修の助成金を、富山の企業向けに解説。最大75％助成の条件と負担額を図で確認できます。富山市のみなの社会保険労務士事務所が、契約前の確認から計画届・支給申請まで支援します。</span>
-          <time class="tp-date" datetime="2026-09-29">2026.09.29</time>
-        </a></li>
-        <li class="tp-item"><a class="tp-card" href="blog/shika-baseup-kitochu-2026.html">
-          <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
-          <span class="tp-title">歯科<wbr>ベースアップ評価料は<wbr>今から<wbr>でも<wbr>届け出られる</span>
-          <span class="tp-desc">5月の届出期限を過ぎても、歯科ベースアップ評価料は年度途中に届け出られます。月末までに受理されれば翌月1日から算定でき、8月の報告は算定していた期間だけが対象です。開始が1か月遅れると何が減るのかまで整理します。</span>
-          <time class="tp-date" datetime="2026-09-13">2026.09.13</time>
-        </a></li>
-        <li class="tp-item"><a class="tp-card" href="blog/hitori-shacho-kenko-hoken.html">
-          <span class="tp-thumb" data-cat="hoken">社会保険</span>
-          <span class="tp-title">ひとり社長の<wbr>社会保険は<wbr>義務？<wbr>未加入だと<wbr>どうなる・報酬ゼロは<wbr>不可</span>
-          <span class="tp-desc">法人は社長ひとりでも健康保険・厚生年金の加入が義務。役員報酬ゼロだと加入できず、月5万円でも年約26万円かかります。未加入で放置したときに年金事務所から何が来るか、遡る保険料、国保からの切替、業務中のケガの空白まで整理。</span>
-          <time class="tp-date" datetime="2026-09-04">2026.09.04</time>
-        </a></li>
-        <li class="tp-item"><a class="tp-card" href="blog/saitei-chingin-kyuyo-keisan-2026.html">
-          <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
-          <span class="tp-title">富山の<wbr>最低賃金<wbr>1,119円で<wbr>給与計算の<wbr>どこを<wbr>直すか</span>
-          <span class="tp-desc">富山県の最低賃金は令和8年10月1日発効で時間額1,119円（公示済み）。対象者の洗い出し、月給者の時間額換算、締め日をまたぐ計算、割増単価、支援制度の申請期限まで給与計算の実務を整理します。</span>
-          <time class="tp-date" datetime="2026-08-24">2026.08.24</time>
-        </a></li>
-        <li class="tp-item"><a class="tp-card" href="blog/mudan-kekkin-taio.html">
-          <span class="tp-thumb" data-cat="trouble">労務トラブル</span>
-          <span class="tp-title">無断欠勤で<wbr>連絡が<wbr>取れない<wbr>社員は<wbr>いつ自然退職に？<wbr>文例と<wbr>通知書</span>
-          <span class="tp-desc">無断欠勤で連絡が取れない従業員への対応を、安否確認のメール文例、出勤督促と退職扱いの通知書の雛形、自然退職の就業規則条文例つきで手順順に整理。解雇予告除外認定、離職票、資格喪失の期限まで。</span>
-          <time class="tp-date" datetime="2026-08-24">2026.08.24</time>
-        </a></li>
-        <li class="tp-item"><a class="tp-card" href="blog/gyomu-kaizen-toyama-2026.html">
-          <span class="tp-thumb" data-cat="joseikin">助成金</span>
-          <span class="tp-title">【令和8年度】<wbr>富山県の<wbr>業務改善助成金</span>
-          <span class="tp-desc">富山県の最低賃金は令和8年10月1日発効で1,119円（公示済み）。業務改善助成金の富山県の締切は9月30日必着。対象判定、申請・賃上げ・設備導入の順序、県の上乗せ補助2制度を図解で整理します。</span>
-          <time class="tp-date" datetime="2026-08-16">2026.08.16</time>
-        </a></li>
-        <li class="tp-item"><a class="tp-card" href="blog/kensetsu-kokuho-hojinnari.html">
-          <span class="tp-thumb" data-cat="hoken">社会保険</span>
-          <span class="tp-title">建設国保は<wbr>法人成り後も<wbr>続けられる</span>
-          <span class="tp-desc">適用除外承認を受ければ、建設国保は法人成り後も継続できます。事実発生日から14日以内の手続きと、令和8年度の富山県建設国保・協会けんぽの保険料を家族構成別に比較します。</span>
-          <time class="tp-date" datetime="2026-08-09">2026.08.09</time>
-        </a></li>
-        <li class="tp-item"><a class="tp-card" href="blog/shika-gikoujo-shienryo-2026.html">
-          <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
-          <span class="tp-title">【令和8年度】<wbr>歯科技工所<wbr>ベースアップ支援料</span>
-          <span class="tp-desc">歯科技工所ベースアップ支援料を図解で解説。1装置15点をなぜ医院が届け出るのか、委託費への上乗せ方、消費税の扱い、翌年8月の実績報告までを歯科医院向けに整理します。</span>
-          <time class="tp-date" datetime="2026-08-09">2026.08.09</time>
-        </a></li>
-        <li class="tp-item"><a class="tp-card" href="blog/shika-baseup-hyokaryo-2026.html">
-          <span class="tp-thumb" data-cat="kaisei">法改正情報</span>
-          <span class="tp-title">歯科<wbr>ベースアップ評価料は<wbr>届出と<wbr>8月報告を<wbr>どう<wbr>進めるか</span>
-          <span class="tp-desc">令和8年度の歯科外来・在宅ベースアップ評価料を図解。届出後の8月報告、継続的賃上げの点数、対象職員、賃金配分、様式95・96・98の選び方、収入実績額の計算まで歯科医院向けに整理します。</span>
-          <time class="tp-date" datetime="2026-08-08">2026.08.08</time>
-        </a></li>
-        <li class="tp-item"><a class="tp-card" href="blog/trial-koyo-joseikin-2026.html">
-          <span class="tp-thumb" data-cat="joseikin">助成金</span>
-          <span class="tp-title">【令和8年度】<wbr>トライアル雇用助成金</span>
-          <span class="tp-desc">令和8年度のトライアル雇用助成金（一般トライアルコース）は月額最大4万円（最長3か月）です。ハローワーク等の紹介を受けてから選考を始めることが前提で、自社応募や縁故採用は対象外です。要件と提出期限を解説します。</span>
-          <time class="tp-date" datetime="2026-08-01">2026.08.01</time>
-        </a></li>
-        <li class="tp-item"><a class="tp-card" href="blog/jinzai-kaihatsu-joseikin-2026.html">
-          <span class="tp-thumb" data-cat="joseikin">助成金</span>
-          <span class="tp-title">【令和8年度】<wbr>人材開発支援助成金</span>
-          <span class="tp-desc">令和8年度の人材開発支援助成金（人材育成支援コース）を解説します。中高年齢者実習型訓練の新設、賃金助成・経費助成の金額、計画届の提出期限など、申請前に押さえておきたい要点をまとめました。</span>
-          <time class="tp-date" datetime="2026-08-01">2026.08.01</time>
-        </a></li>
-      <!-- home-topics-cards:end -->
-</ul>
-<div class="tp-nav" id="tp-nav" hidden>
-<button type="button" class="tp-arrow" data-tp-dir="-1" aria-controls="tp-rail" aria-label="前の記事を見る">
-<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
-</button>
-<button type="button" class="tp-arrow" data-tp-dir="1" aria-controls="tp-rail" aria-label="次の記事を見る">
-<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
-</button>
-</div>
-</div>
-<div class="news-more rv d2">
-<a href="blog.html" class="link-more home-detail-link"><span>コラムの一覧を見る</span><span class="detail-arrow" aria-hidden="true">→</span></a>
-</div>
+<p class="nt-stats"><!-- home-topics-stats:start --><span class="nw">公開記事 <b>51</b>本</span> ／ <span class="nw"><b>7</b>分野</span> ／ <span class="nw">最新記事 <b>2026.10.05</b></span><!-- home-topics-stats:end --></p>
+<div class="home-more"><a class="btn-arrow" href="blog.html">お知らせ・コラムの一覧へ</a></div>
 </div>
 </section>
 
-
-<!-- ════════════════════════════════
-ABOUT ― 代表メッセージ・事務所・地域
-════════════════════════════════ -->
-
-<!-- 08 事務所案内 -->
-<section class="about-sec home-compact-section" id="about">
-<div class="about-inner">
-<div class="sec-head rv">
-<div class="sec-head-idx"><span class="idx-num">07</span><span class="idx-lat">ABOUT</span><span class="idx-jp">事務所案内</span></div>
-<div class="sec-head-body"><h2 class="sec-h">日々の<wbr>労務に、<wbr><strong>確かな<wbr>手続きを。</strong></h2><p class="sec-sub">業務内容や<wbr>ご希望に<wbr>合わせて、<wbr>相談方法と<wbr>進め方を<wbr>調整します。</p></div>
-</div>
-<div class="home-about-card">
-<figure class="home-office-photo rv"><img src="assets/photos/about-scop-building.webp" width="960" height="720" loading="lazy" decoding="async" alt="みなの社会保険労務士事務所が入るSCOP TOYAMAの外観"><figcaption>SCOP TOYAMA 外<wbr>観</figcaption></figure>
-<div class="home-about-copy rv d1"><h3 class="rep-h">複雑な<wbr>ルールを、<wbr><strong>運用しやすい形に。</strong></h3><p style="max-inline-size:none">むずかしい<wbr>言葉を<wbr>そのまま<wbr>使わず、<wbr>明日からの<wbr>現場で<wbr>使える<wbr>形に<wbr>してお渡しします。<wbr>地域に<wbr>根ざした<wbr>相談相手と<wbr>して、<wbr>会社の<wbr>状況を<wbr>一緒に<wbr>整理します。</p><div class="home-about-meta"><span>みなの社会保険労務士事務所</span><span>富山県富山市蓮町1丁目7-4　SCOP TOYAMA</span></div><div><a href="about.html" class="link-more home-detail-link"><span>代表・事務所情報を見る</span><span class="detail-arrow" aria-hidden="true">→</span></a></div></div>
-</div>
-</div>
-</section>
-
-
-<!-- FINAL CTA -->
 <section class="final-sec">
 <div class="final-aura" aria-hidden="true"></div>
 <div class="final-inner rv">
@@ -1743,8 +1412,8 @@ ABOUT ― 代表メッセージ・事務所・地域
 <p class="final-note">土日祝の<wbr>フォーム送信は<wbr>翌営業日に<wbr>ご返信</p>
 </div>
 </section>
-
 </main>
+
 <!-- FOOTER -->
 <footer class="footer">
 <div class="footer-inner">
@@ -1809,6 +1478,7 @@ ABOUT ― 代表メッセージ・事務所・地域
 </ul>
 </div>
 </div>
+<nav class="footer-links" aria-label="サイトの主な案内"><ul><li><a href="pricing.html">料金・顧問プラン</a></li><li><a href="about.html#access">アクセス</a></li><li><a href="./#faq">よくあるご質問</a></li><li><a href="portal.html">書式・窓口</a></li><li><a href="uploads/contact.html">お問い合わせ</a></li><li><a href="privacy-policy.html">プライバシーポリシー</a></li></ul></nav>
 <div class="footer-bottom">
 <p class="footer-copy">© 2026 みなの<wbr>社会保険労務士事務所<wbr>. All rights reserved.</p>
 <div class="footer-badges">
@@ -1895,7 +1565,7 @@ ABOUT ― 代表メッセージ・事務所・地域
 // Open modal handlers removed — 詳細モーダルは未使用のため削除済み
 
 
-// 固定相談ボタンの表示判定は page-enter.js（見出し .hero-overlay 基準）に一本化した。
+// 固定相談ボタンの表示判定は page-enter.js（写真の上の見出し .hero-overlay 基準）に一本化した。
 // 旧版の監視がSPAで残っていれば止める。
 if(window.__heroCtaObserver){window.__heroCtaObserver.disconnect();window.__heroCtaObserver=null;}
 var ticking=false;
@@ -1936,113 +1606,24 @@ var ro=new IntersectionObserver(function(entries){
 },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.rv,.rvl').forEach(function(el){ro.observe(el)});
 
-// 緑の太い蛍光ペンで、緩やかな速度の下線を一度だけ添える。
-(function(){
- if(window.__mnPenCleanup)window.__mnPenCleanup();
- var ns='http://www.w3.org/2000/svg',reduce=matchMedia('(prefers-reduced-motion: reduce)'),items=[],frames=new Set(),resizeTimer;
- function svg(tag,attrs){var e=document.createElementNS(ns,tag);Object.keys(attrs).forEach(function(k){e.setAttribute(k,attrs[k]);});return e;}
- function build(item){
-  if(!item.heading.isConnected)return;
-  if(item.layer)item.layer.remove();
-  var h=item.heading.getBoundingClientRect(),range=document.createRange();range.selectNodeContents(item.strong);
-  var lines=[];Array.from(range.getClientRects()).filter(function(r){return r.width>1&&r.height>1;}).forEach(function(r){var row=lines.find(function(x){return Math.abs(x.top-r.top)<4;});if(row){row.left=Math.min(row.left,r.left);row.right=Math.max(row.right,r.right);row.bottom=Math.max(row.bottom,r.bottom);}else lines.push({left:r.left,right:r.right,top:r.top,bottom:r.bottom});});
-  var layer=svg('svg',{'class':'pen-layer','aria-hidden':'true'});item.paths=[];
-  lines.sort(function(a,b){return a.top-b.top;}).forEach(function(r){var x=Math.max(1,r.left-h.left),y=r.bottom-h.top-5,w=Math.min(h.width-2,r.right-h.left)-x;var path=svg('path',{d:'M '+x+' '+y+' Q '+(x+w*.48)+' '+(y+3)+' '+(x+w)+' '+(y-1),fill:'none',stroke:'#57ba7f','stroke-width':Math.max(9,(r.bottom-r.top)*.26),'stroke-linecap':'round',opacity:'.45'});w=path.getTotalLength();path.style.strokeDasharray=w;path.style.strokeDashoffset=item.done||reduce.matches?0:w;layer.appendChild(path);item.paths.push({el:path,x:x,y:y,w:w});});
-  // 接地面を回転後の下線と平行にし、片側の角だけが線に触れない形にする。
-  var pen=svg('g',{'class':'pen-tip'});pen.appendChild(svg('path',{d:'M -7 -9 L -7 -32 Q -7 -36 -3 -36 L 3 -36 Q 7 -36 7 -32 L 7 -9 Z',fill:'#428660',stroke:'#315f47','stroke-width':'1.2'}));pen.appendChild(svg('path',{d:'M -7 -10 L 7 -10 L 5 -5 L -5 -5 Z',fill:'#18583b'}));pen.appendChild(svg('path',{d:'M -5 -5 L 5 -5 L 5 -2.2 L -5 2.2 Z',fill:'#55946c',stroke:'#315f47','stroke-width':'.8'}));layer.appendChild(pen);item.pen=pen;item.layer=layer;item.heading.appendChild(layer);item.heading.classList.add('pen-ready');
- }
- function draw(item){if(item.done)return;item.done=true;if(reduce.matches){build(item);return;}var began=null,duration=1100,total=item.paths.length*duration;
-  function tick(t){if(!item.heading.isConnected)return;if(began===null)began=t;var elapsed=t-began,index=Math.min(item.paths.length-1,Math.floor(elapsed/duration)),phase=Math.min(1,(elapsed-index*duration)/duration),linear=Math.min(1,phase/.86),part=linear*linear*(3-2*linear);item.paths.forEach(function(p,i){p.el.style.strokeDashoffset=i<index?0:i===index?p.w*(1-part):p.w;});var p=item.paths[index];if(p){var at=p.w*part,point=p.el.getPointAtLength(at),before=p.el.getPointAtLength(Math.max(0,at-3)),after=p.el.getPointAtLength(Math.min(p.w,at+3)),angle=Math.atan2(after.y-before.y,after.x-before.x)*180/Math.PI,fade=Math.min(1,phase/.12)*Math.max(0,Math.min(1,(1-phase)/.14));item.pen.style.opacity=elapsed<total?String(fade):'0';item.pen.setAttribute('transform','translate('+point.x+' '+(point.y-Math.max(0,phase-.86)*35)+') rotate('+(24+angle)+')');}if(elapsed<total){var id=requestAnimationFrame(function(t){frames.delete(id);tick(t);});frames.add(id);}}
-  var id=requestAnimationFrame(function(t){frames.delete(id);tick(t);});frames.add(id);
- }
- var observer=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var item=items.find(function(x){return x.strong===e.target;});if(item){build(item);draw(item);}observer.unobserve(e.target);}});},{threshold:.8,rootMargin:'0px 0px -12% 0px'});
- document.querySelectorAll('.sec-h strong,.why-h strong,.tools-h strong').forEach(function(strong){var heading=strong.closest('h2,h3');if(!heading)return;heading.classList.add('pen-heading');var item={strong:strong,heading:heading,done:false};items.push(item);build(item);observer.observe(strong);});
- function resize(){clearTimeout(resizeTimer);resizeTimer=setTimeout(function(){items.forEach(build);},150);}
- function preference(){frames.forEach(cancelAnimationFrame);frames.clear();items.forEach(function(item){if(reduce.matches)item.done=true;build(item);});}
- window.addEventListener('resize',resize,{passive:true});reduce.addEventListener('change',preference);
- window.__mnPenCleanup=function(){observer.disconnect();frames.forEach(cancelAnimationFrame);clearTimeout(resizeTimer);window.removeEventListener('resize',resize);reduce.removeEventListener('change',preference);};
-})();
 
 
-// Counter
-var co=new IntersectionObserver(function(entries){
-  entries.forEach(function(e){
-    if(!e.isIntersecting)return;
-    var el=e.target,t=+el.dataset.t,s=null;
-    function step(ts){
-      if(!s)s=ts;
-      var p=Math.min((ts-s)/1600,1),ease=1-Math.pow(1-p,4);
-      el.textContent=Math.floor(ease*t);
-      if(p<1)requestAnimationFrame(step);else el.textContent=t;
-    }
-    requestAnimationFrame(step);
-    co.unobserve(el);
-  });
-},{threshold:.6});
-document.querySelectorAll('.cnt').forEach(function(el){co.observe(el)});
 
-// 06 TOPICS の記事カード送り。送りはCSSのスクロールスナップに任せ、
-// ここは「1画面ぶん進める」と「端で止まったらボタンを無効にする」だけを担う。
-// SPAのbody差し替えで再実行されるため、リスナーは毎回張り直す（冪等）。
-(function(){
-  var rail=document.getElementById('tp-rail'),nav=document.getElementById('tp-nav');
-  if(!rail||!nav)return;
-  var arrows=Array.prototype.slice.call(nav.querySelectorAll('.tp-arrow'));
-  if(!arrows.length)return;
-  if(window.__tpRail){
-    window.removeEventListener('resize',window.__tpRail.sync);
-    rail.removeEventListener('scroll',window.__tpRail.sync);
-    arrows.forEach(function(b){b.removeEventListener('click',window.__tpRail.click)});
-  }
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function step(){
-    var first=rail.querySelector('.tp-item');
-    if(!first)return rail.clientWidth;
-    var gap=parseFloat(getComputedStyle(rail).columnGap)||0;
-    var one=first.getBoundingClientRect().width+gap;
-    var per=Math.max(1,Math.floor((rail.clientWidth+gap)/one));   // 見えている枚数ぶん送る
-    return one*per;
-  }
-  var queued=false;
-  function measure(){
-    queued=false;
-    var max=rail.scrollWidth-rail.clientWidth;
-    nav.hidden = max<=1;   // レール自体が収まりきるならボタンは出さない
-    arrows[0].disabled = rail.scrollLeft<=1;
-    arrows[1].disabled = rail.scrollLeft>=max-1;
-  }
-  function sync(){
-    if(queued)return;
-    queued=true;
-    requestAnimationFrame(measure);
-  }
-  function click(e){
-    var dir=Number(e.currentTarget.getAttribute('data-tp-dir'))||1;
-    rail.scrollBy({left:dir*step(),behavior:reduce?'auto':'smooth'});
-  }
-  window.__tpRail={sync:sync,click:click};
-  arrows.forEach(function(b){b.addEventListener('click',click)});
-  rail.addEventListener('scroll',sync,{passive:true});
-  window.addEventListener('resize',sync,{passive:true});
-  // 画像デコード後に幅が確定することがあるので、次フレームでも測り直す
-  measure();
-  requestAnimationFrame(measure);
-})();
 
 // 受付時間ブロックはJS不要（静的なリスト表示）
 </script>
-<script defer src="image-slot.js?v=20260722-crop1"></script>
+<script defer src="image-slot.js?v=20261013-white1"></script>
 <script defer src="link-keep.js?v=20260919-funnel1"></script>
 <script defer src="header-motion.js?v=20260809-nav1"></script>
 <script defer src="terms.js?v=20261008-design1"></script>
-<script defer src="nav-spy.js?v=20260812-navspy2"></script>
+<script defer src="nav-spy.js?v=20261013-stops1"></script>
 <script id="pf-hover">(function(){var d={};function pf(u){if(d[u])return;d[u]=1;var l=document.createElement("link");l.rel="prefetch";l.href=u;document.head.appendChild(l);}function h(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var hr=a.getAttribute("href");if(!hr||hr[0]==="#"||/^(mailto:|tel:|https?:)/.test(hr))return;if(a.target==="_blank")return;pf(a.href);}document.addEventListener("mouseover",h,{passive:true});document.addEventListener("touchstart",h,{passive:true});})();</script>
 
 <style id="brushup-2026">/* skin-v2.css に統合済み */</style>
 <script id="stg-highlight">/* CASE段階ハイライトは 2026-07 にユーザー判断で削除（復活させないこと） */</script>
 <script data-goatcounter="https://minano-sr.goatcounter.com/count" data-goatcounter-settings='{"path":"/"}' async src="//gc.zgo.at/count.js"></script>
 
-<script src="home-hero.js?v=20261008-defer1"></script>
-<script id="home-hero-init">if(window.mnInitHomeHero)window.mnInitHomeHero();</script>
+<script src="home.js?v=20261013-kansui2"></script>
+<script id="home-init">if(window.mnInitHome)window.mnInitHome();</script>
 </body>
 </html>
