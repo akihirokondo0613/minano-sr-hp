@@ -276,7 +276,7 @@ function recordConsoleError(target) {
     const joseikinAnchor = publicLinkPage.locator('#services a[href$="uploads/service-joseikin.html"]:visible').first();
     await joseikinAnchor.scrollIntoViewIfNeeded();
     await joseikinAnchor.click();
-    await publicLinkPage.waitForURL(/\/uploads\/service-joseikin\.html$/, { timeout: 10000 });
+    await publicLinkPage.waitForURL(/\/uploads\/service-joseikin\.html(?:[?#].*)?$/, { timeout: 10000 });
   }
   results.push({ serviceLinkPublic: joseikinLink.found });
   await publicLinkPage.close();
@@ -308,14 +308,18 @@ function recordConsoleError(target) {
       const style = getComputedStyle(title);
       const range = document.createRange();
       range.selectNodeContents(title);
-      const lineTops = new Set([...range.getClientRects()].filter(r => r.width > 0).map(r => Math.round(r.top)));
+      // 同じ行でも括弧や用語の装飾で矩形の上端が数pxずれるので、行の高さの半分未満の差は同じ行とみなす。
+      const lh = Number.parseFloat(style.lineHeight) || 20;
+      const lineTops = [];
+      [...range.getClientRects()].filter(r => r.width > 0).map(r => r.top).sort((a, b) => a - b)
+        .forEach(top => { if (!lineTops.length || top - lineTops[lineTops.length - 1] >= lh / 2) lineTops.push(top); });
       return {
         title: title.textContent.trim(),
         overflow: Math.round(title.scrollWidth - title.clientWidth),
         height: Math.round(title.getBoundingClientRect().height),
         lineHeight: Number.parseFloat(style.lineHeight) || 0,
         whiteSpace: style.whiteSpace,
-        lines: lineTops.size,
+        lines: lineTops.length,
       };
     }));
     const pageOverflow = await supportPage.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
@@ -1060,7 +1064,7 @@ function recordConsoleError(target) {
   page.on('pageerror', error => spaErrors.push(`pageerror: ${error.message}`));
   await page.goto(base, { waitUntil: 'load' });
   await page.click('.btn-primary');
-  await page.waitForURL(/\/uploads\/contact\.html$/, { timeout: 10000 });
+  await page.waitForURL(/\/uploads\/contact\.html(?:\?.*)?$/, { timeout: 10000 });
   await page.waitForFunction(() => !document.documentElement.matches('.pv-on,.pv-mark,.pv-lift'), null, { timeout: 10000 });
 
   await page.locator('.nav-burger').click();
@@ -1079,7 +1083,7 @@ function recordConsoleError(target) {
     if (/\/infographic\.html$/.test(new URL(page.url()).pathname) && scaleSamples.length && sample === null) break;
     await page.waitForTimeout(30);
   }
-  await page.waitForURL(/\/infographic\.html$/, { timeout: 10000 });
+  await page.waitForURL(/\/infographic\.html(?:[?#].*)?$/, { timeout: 10000 });
   await page.waitForFunction(() => !document.documentElement.matches('.pv-on,.pv-mark,.pv-lift'), null, { timeout: 10000 });
   const imageStyleState = await page.evaluate(() => {
     const slot = document.querySelector('image-slot[src]');
