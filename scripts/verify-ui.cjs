@@ -160,9 +160,10 @@ function recordConsoleError(target) {
       scrollTo(0, 0);
     });
     renderedHomeHeights[width] = await heightPage.evaluate(() => document.documentElement.scrollHeight);
-    // 目標 10200px。2026-09-06 に本人の依頼で「07 ツール・公式窓口」のカード節（390pxで約560px）を足したため 9500 から引き上げた。
-    // ヒーローの期間限定カード（.hero-spot・約130px）を外したら 10000 に戻してよい。
-    if (renderedHomeHeights[width] > 10200) failures.push(`${width}px: トップページ全長が目標超過 ${renderedHomeHeights[width]}px`);
+    // 2026-10-13 トップを用件別の入口型（新着・おすすめ・サービスのタブ・段階別・お困りごと・料金・書式・事務所・FAQ・インフォメーション）に
+    // 作り直した。実測 390px=15783 / 1440px=12745。章を足すときは既存の章を短くして、この上限内に収める。
+    const homeHeightLimit = width === 390 ? 16500 : 13500;
+    if (renderedHomeHeights[width] > homeHeightLimit) failures.push(`${width}px: トップページ全長が目標超過 ${renderedHomeHeights[width]}px（上限 ${homeHeightLimit}px）`);
     await heightPage.close();
   }
   results.push({ renderedHomeHeights });
