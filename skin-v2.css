@@ -1689,3 +1689,39 @@ main :is(.btn-primary,.btn-white,.btn-ghost,.startup-primary,.startup-secondary)
   .footer-links li + li::before { content: none; }
   .footer-links a { display: block; min-height: 40px; padding: 10px 0; }
 }
+
+/* ============================================================
+   2026-10-14 全ページ統一（本人指示「これまでの修正を全ページで統一」）
+   トップの型にそろえる：①冒頭は角丸の淡緑の面 ②強調は点線の下線（蛍光ペンはやめる）
+   ③英字ラベルは点つき。創業LPの冒頭（.startup-hero）も含める。求人票LP（uploads/lp-kyujinhyo.html）は独自設計のため対象外。
+   ============================================================ */
+/* ① 冒頭：イラストのない下層ページと記事も、角丸の面にする */
+.page-hero:not(.has-ill), .post-hero {
+  margin: calc(var(--nav-h) + 12px) max(clamp(12px, 1.6vw, 24px), calc((100% - 1680px) / 2)) 0;
+  padding-top: clamp(36px, 4.6vw, 60px);
+  border-radius: 20px;
+  background: linear-gradient(160deg, #EDF5F0 0%, #E6F0EA 60%, #E3EDF3 100%);
+}
+.page-hero::after, .post-hero::after { content: none; }
+@media (max-width: 640px) {
+  .page-hero:not(.has-ill), .post-hero { margin: calc(var(--nav-h) + 4px) 10px 0; padding-top: 28px; border-radius: 16px; }
+  .post-hero-inner { padding-inline: 16px; }
+}
+/* 角丸の面にした分だけ幅が狭くなるので、記事の見出しは収まらない語だけ途中で折る逃げ道を持たせる */
+.post-h1 { overflow-wrap: break-word; }
+/* ② 強調：蛍光ペンの帯をやめ、トップの見出しと同じ点線の下線にする */
+.sec-h strong, .why-h strong, .page-hero h1 strong {
+  color: var(--sugi);
+  background: none !important;
+  animation: none !important;
+  padding-bottom: .04em;
+  border-bottom: 2px dashed color-mix(in srgb, var(--moegi) 85%, transparent);
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+/* ③ 英字ラベル：横線ではなく、トップと同じ点つき */
+html body :is(.idx-lat, .page-kicker, .sec-kicker, .page-label, .hx-kicker) { display: inline-flex; align-items: center; gap: 8px; }
+html body :is(.idx-lat, .page-kicker, .sec-kicker, .page-label, .hx-kicker)::before {
+  content: ''; flex: 0 0 auto; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--moegi); box-shadow: 0 0 0 3px var(--moegi-l);
+}
+html body .sec-head-c .sec-kicker::before { display: block; }
