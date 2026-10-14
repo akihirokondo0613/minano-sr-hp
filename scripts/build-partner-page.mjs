@@ -172,7 +172,7 @@ function buildMain() {
       <a href="#contact">相談フォームへ<span aria-hidden="true">↓</span></a>
       <a class="ghost" href="shiryo.html">資料室を見る<span aria-hidden="true">→</span></a>
     </div>
-    <figure class="ph-ill"><img src="assets/illustrations/about-practical-support.webp" width="960" height="720" alt="" decoding="async"></figure>
+    <figure class="ph-ill"><img src="assets/illustrations/hero/partner.webp" width="960" height="720" alt="" decoding="async"></figure>
   </div>
 </header>
 

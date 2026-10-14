@@ -137,17 +137,8 @@ function buildMain(guide, meta, guides) {
   ].filter(Boolean).join('\n          ');
 
   // 冒頭のイラスト（ルート系の .page-hero.has-ill と同じ型）。制度の場面に近い絵を選ぶ。
-  const heroIll = {
-    'career-up': 'grant-career-up',
-    'ryoritsu': 'grant-parental-leave',
-    'jinzai-kaihatsu': 'grant-training',
-    'jinzai-kakuho': 'grant-overview',
-    'koyou-kaihatsu': 'grant-trial-employment',
-    '65sai-cho': 'grant-productivity',
-    'hatarakikata': 'grant-training',
-    'koyou-chosei': 'grant-overview',
-  }[guide.slug];
-  if (!heroIll) throw new Error('冒頭のイラストを決めてください: ' + guide.slug);
+  // 2026-10-14 制度ごとに描き分けた冒頭イラスト（assets/illustrations/hero/joseikin-<slug>.webp）を使う。
+  const heroIll = `hero/joseikin-${guide.slug}`;
   // 見出しは文言を変えず、制度を見分ける語（「助成金」の前）だけを強調する。
   const heroTitle = guide.name.split('・')
     .map((part) => {
