@@ -395,3 +395,61 @@ html body .sec-head-c .sec-kicker::before { display: block; }
   .page-hero.has-ill .page-hero-inner { grid-template-columns: minmax(0, 1fr) clamp(220px, 26vw, 380px); column-gap: clamp(24px, 3.6vw, 56px); }
 }
 .page-hero.has-ill :is(h1, .page-h) { font-size: clamp(26px, 2.9vw, 40px); line-height: 1.5; text-wrap: balance; }
+
+/* ============================================================
+   2026-10-14 デザイン統一（本人指示「全て対応」）
+   ① 章見出しをトップの型（中央・上に緑の短線・点つきラベル）へ
+   ② ボタンを2種類（主＝濃い緑の塗り／次へ＝白い角丸の枠）へ
+   ④ 波形・ギザギザの区切りをやめ、平らな区切りへ
+   ⑤ 差し色（朝日の黄）を「おすすめ」と料金の金額だけに
+   ============================================================ */
+/* ① 章見出し */
+html body .sec-head:not(.has-photo), html body .sec-head-c {
+  display: block; text-align: center; max-width: 46em; margin-left: auto; margin-right: auto;
+}
+html body .sec-head:not(.has-photo)::before, html body .sec-head-c::before {
+  content: ''; display: block; width: 48px; height: 3px; margin: 0 auto clamp(14px, 1.8vw, 20px); border-radius: 2px; background: var(--moegi);
+}
+html body .sec-head:not(.has-photo) .sec-head-idx {
+  display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px 12px; padding-top: 0; margin: 0 0 10px; min-height: 0;
+}
+html body .sec-head-idx::after { display: none; }
+html body .sec-head:not(.has-photo) .sec-head-body { text-align: center; }
+html body .sec-head:not(.has-photo) :is(.sec-sub, .sec-lead, p), html body .sec-head-c :is(.sec-sub, .sec-lead, p) { margin-left: auto; margin-right: auto; }
+html body :is(.sec-head, .sec-head-c) .sec-h { font-size: clamp(24px, 2.8vw, 36px); line-height: 1.5; text-wrap: balance; }
+html body .sec-head-c .sec-kicker { justify-content: center; }
+
+/* ② ボタン：次へ進むボタンは白い角丸の枠にそろえる */
+html body :is(.btn-secondary, .plan-btn:not(.plan-btn-main), .ac-ghost, .startup-secondary, .link-more, .home-plan-link, .rq-link) {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 48px; padding: 0 22px; margin-top: 18px;
+  border: 1px solid var(--line, #E0E4DE); border-radius: 10px; background: #fff;
+  color: var(--sugi, #123F30); font-family: inherit; font-size: 14px; font-weight: 700; letter-spacing: .03em;
+  text-decoration: none; box-shadow: none; transition: border-color .25s, box-shadow .25s, transform .15s;
+}
+html body :is(.btn-secondary, .plan-btn:not(.plan-btn-main), .ac-ghost, .startup-secondary, .link-more, .home-plan-link, .rq-link):hover {
+  border-color: var(--sugi, #123F30); background: #fff; color: var(--sugi, #123F30); box-shadow: 0 6px 18px -10px rgba(11,42,31,.35);
+}
+html body .plan-btn:not(.plan-btn-main) { display: flex; width: 100%; }
+/* 主ボタン：濃い緑の塗り・角丸10pxにそろえる */
+html body :is(.btn-primary, .plan-btn-main, .startup-primary, .ac-primary) { border-radius: 10px; }
+html body :is(.btn-secondary, .btn-primary, .plan-btn, .ac-ghost, .ac-primary, .startup-primary, .startup-secondary, .link-more, .home-plan-link, .rq-link):active { transform: scale(.98); }
+
+/* ④ 区切り：ギザギザ・波形の飾りをやめる */
+html body :is(.sec-alt, .final-cta, .cta-sec, .news-sec)::before { content: none; }
+
+/* ⑤ 差し色：おすすめの札と、料金の金額の下線にだけ朝日の黄を使う */
+html body :is(.plan-hot-label, .home-plan-recommend) { background: var(--asahi, #E5A63C) !important; color: #1E2721 !important; }
+html body .price-num {
+  text-decoration: underline 4px color-mix(in srgb, var(--asahi, #E5A63C) 70%, transparent); text-underline-offset: 6px; text-decoration-skip-ink: none;
+}
+
+/* ①補足：uploads の導入章（.sec-solo）も見出しだけ中央の型に。本文は読みやすさ優先で左揃えのまま中央に置く */
+html body .sec-solo > .rv::before { content: ''; display: block; width: 48px; height: 3px; margin: 0 auto clamp(14px, 1.8vw, 20px); border-radius: 2px; background: var(--moegi); }
+html body .sec-solo > .rv > .sec-kicker { display: flex; justify-content: center; }
+html body .sec-solo > .rv > .sec-h { text-align: center; font-size: clamp(24px, 2.8vw, 36px); line-height: 1.5; text-wrap: balance; }
+html body .sec-solo > .rv > .sec-sub { max-width: 46em; margin-left: auto; margin-right: auto; }
+html body .sec-solo { max-width: 46em; margin-left: auto !important; margin-right: auto !important; }
+html body :is(.page-hero-cta, .startup-hero-actions, .pg-hero-btns) :is(.btn-secondary, .startup-secondary) { min-height: 54px; margin-top: 0; font-size: 14.5px; padding: 0 26px; }
+html body :is(.page-hero-cta, .btn-row) { align-items: stretch; } html body :is(.page-hero-cta, .btn-row) > :is(.btn-primary, .btn-secondary) { display: inline-flex; align-items: center; justify-content: center; margin-top: 0; }
+@media (max-width: 640px) { html body .page-hero-cta > :is(.btn-primary, .btn-secondary) { min-height: 58px; padding-top: 0; padding-bottom: 0; } }
