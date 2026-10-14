@@ -453,3 +453,29 @@ html body .sec-solo { max-width: 46em; margin-left: auto !important; margin-righ
 html body :is(.page-hero-cta, .startup-hero-actions, .pg-hero-btns) :is(.btn-secondary, .startup-secondary) { min-height: 54px; margin-top: 0; font-size: 14.5px; padding: 0 26px; }
 html body :is(.page-hero-cta, .btn-row) { align-items: stretch; } html body :is(.page-hero-cta, .btn-row) > :is(.btn-primary, .btn-secondary) { display: inline-flex; align-items: center; justify-content: center; margin-top: 0; }
 @media (max-width: 640px) { html body .page-hero-cta > :is(.btn-primary, .btn-secondary) { min-height: 58px; padding-top: 0; padding-bottom: 0; } }
+
+/* 2026-10-14 デザイン第3弾 */
+/* ② 事務所案内などの楕円ラベル（.section-label .badge）も点つきの型に */
+html body .section-label { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: .1em; color: var(--moegi-t); }
+html body .section-label::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--moegi); box-shadow: 0 0 0 3px var(--moegi-l); }
+html body .section-label .badge { padding: 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; }
+html body .flow-head { text-align: center; max-width: 46em; margin-left: auto; margin-right: auto; }
+html body .flow-head::before { content: ''; display: block; width: 48px; height: 3px; margin: 0 auto 18px; border-radius: 2px; background: var(--moegi); }
+html body .flow-head .section-label { justify-content: center; }
+/* ① ブログ一覧：PCは3列・タブレット2列のカードに（スマホは従来の1列） */
+@media (min-width: 561px) {
+  html body .art-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+  html body .art-row { display: flex; flex-direction: column; align-items: stretch; gap: 12px; height: 100%; padding: 14px 14px 18px; }
+  html body .art-row:hover { transform: translateY(-2px); }
+  html body .art-thumb { width: 100%; }
+  html body .art-excerpt { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  html body .art-read { margin-top: auto; align-self: flex-end; }
+}
+@media (min-width: 561px) and (max-width: 960px) { html body .art-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+html body .art-more { display: flex; justify-content: center; margin-top: 24px; }
+html body .art-more[hidden] { display: none; }
+/* ④ スマホでは追従ボタンを「無料で相談する」1つにする（AIに聞くは隠す） */
+@media (max-width: 640px) { html body #fl .fl-mini { display: none; } }
+/* ⑤ お問い合わせの電話 */
+html body .contact-tel { margin-top: 16px; font-size: 14px; font-weight: 700; color: var(--iwa, #1E2721); }
+html body .contact-tel a { font-family: var(--mono); font-size: 20px; color: var(--sugi, #123F30); text-decoration: none; border-bottom: 2px dashed var(--moegi, #2E9E63); }
