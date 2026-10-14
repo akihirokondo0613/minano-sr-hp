@@ -208,7 +208,7 @@ function buildSaiteiMain(ctx) {
         <a href="contact.html?from=saitei-chingin" class="btn-primary">最低賃金の確認と給与計算について相談する →</a>
         <a href="service-kyuyo-keisan.html" class="btn-secondary">給与計算代行を見る</a>
       </div>
-      <figure class="ph-ill"><img src="../assets/illustrations/grant-overview.webp" width="960" height="720" alt="" decoding="async"></figure>
+      <figure class="ph-ill"><img src="../assets/illustrations/hero/toyama-saitei-chingin.webp" width="960" height="720" alt="" decoding="async"></figure>
     </div>
   </header>
 
@@ -392,7 +392,7 @@ function buildChinageMain(ctx) {
         <a href="contact.html?from=chinage-oen" class="btn-primary">無料で相談する →</a>
         <a href="service-joseikin.html" class="btn-secondary">助成金の申請代行を見る</a>
       </div>
-      <figure class="ph-ill"><img src="../assets/illustrations/22_subsidy_growth_profile_left.webp" width="1672" height="941" alt="" decoding="async"></figure>
+      <figure class="ph-ill"><img src="../assets/illustrations/hero/toyama-chinage-oen-hojokin.webp" width="960" height="720" alt="" decoding="async"></figure>
     </div>
   </header>
 

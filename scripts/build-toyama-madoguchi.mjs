@@ -236,7 +236,7 @@ ${g.offices.map((o) => officeBlock(o, common?.key)).join('\n')}
         <a href="contact.html?from=toyama-madoguchi" class="btn-primary">無料で相談する →</a>
         <a href="service-shakai-hoken.html" class="btn-secondary">手続き代行を見る</a>
       </div>
-      <figure class="ph-ill"><img src="../assets/illustrations/about-toyama-local-support.webp" width="960" height="720" alt="" decoding="async"></figure>
+      <figure class="ph-ill"><img src="../assets/illustrations/hero/toyama-madoguchi.webp" width="960" height="720" alt="" decoding="async"></figure>
     </div>
   </header>
 

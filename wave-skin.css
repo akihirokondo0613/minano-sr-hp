@@ -382,3 +382,10 @@ html body :is(.idx-lat, .page-kicker, .sec-kicker, .page-label, .hx-kicker)::bef
   background: var(--moegi); box-shadow: 0 0 0 3px var(--moegi-l);
 }
 html body .sec-head-c .sec-kicker::before { display: block; }
+
+/* 2026-10-14 冒頭のイラストを大きく、面になじむ角丸の白い台に（枠線をやめ、淡い影で浮かせる） */
+@media (min-width: 641px) {
+  .page-hero.has-ill .page-hero-inner { grid-template-columns: minmax(0, 1fr) clamp(260px, 31vw, 460px); column-gap: clamp(28px, 4.4vw, 64px); }
+  .page-hero.has-ill .ph-ill { aspect-ratio: 4 / 3; border: 0; border-radius: 20px; background: #fff; box-shadow: 0 18px 40px -24px rgba(11,42,31,.35); padding: 0; }
+  .page-hero.has-ill .ph-ill img { object-fit: contain; }
+}
