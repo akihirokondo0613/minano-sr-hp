@@ -81,7 +81,6 @@
   .hp-cta .btn-primary { flex: 0 1 300px; }
   .hp-tel { width: auto; }
 }
-}
 @media (max-width: 699px) {
   #top.hero { padding: calc(var(--nav-h) + 4px) 10px 0; }
   #top .hero-stage { height: clamp(380px, 104vw, 460px); border-radius: 16px; }
