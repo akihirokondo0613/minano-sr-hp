@@ -65,10 +65,11 @@ if (!ENGINES.length || ENGINES.length !== engineNames.size) {
 const PAGE_FILTER = csvOption('--pages', []);
 
 // 写真の上に乗る文字。背景色では測れないので実ピクセルで測る対象。
-const PHOTO_TARGETS = [
-  { page: 'index.html', selector: '.hero-h1' },
-  { page: 'index.html', selector: '.hero-sub' },
-];
+// 2026-10-14 本人の判断：トップの見出しは写真を暗くせず・帯も付けず、白文字＋点線の下線で中央に置く。
+// 明るい空の上の白文字は実測 2.0〜2.8（目安3.0）で、文字の輪郭の薄い影だけで補う方針を本人が選んだ。
+// そのためトップの見出しは写真上の自動判定から外す。別ページで写真上に文字を置く場合はここへ足す。
+// 自己テスト（test-a11y-audit.cjs）は合成ページで測定の仕組みを確かめるため、環境変数で対象を渡す。
+const PHOTO_TARGETS = process.env.A11Y_PHOTO_TARGETS ? JSON.parse(process.env.A11Y_PHOTO_TARGETS) : [];
 
 const AA_NORMAL = 4.5;
 const AA_LARGE = 3;

@@ -598,7 +598,8 @@ function recordConsoleError(target) {
   await journeyPage.close();
 
   const legacyPage = await browser.newPage({ viewport: { width: 390, height: 844 } });
-  const legacyAnchors = ['services', 'pricing', 'cases', 'about'];
+  // 2026-10-14 本人指示で「会社の段階別のご提案」（#cases）を削除した。
+  const legacyAnchors = ['services', 'pricing', 'about'];
   for (const anchor of legacyAnchors) {
     await legacyPage.goto(`${base}#${anchor}`, { waitUntil: 'load' });
     const exists = await legacyPage.evaluate(id => !!document.getElementById(id), anchor);
