@@ -27,27 +27,33 @@
 
 /* ---------- 1. ヒーロー（写真＋ご用件パネル） ---------- */
 #top.hero { position: relative; display: block; min-height: 0; height: auto; overflow: visible; max-width: calc(1680px + 2 * clamp(12px, 1.6vw, 24px)); margin-inline: auto; padding: calc(var(--nav-h) + 12px) clamp(12px, 1.6vw, 24px) 0; background: var(--yuki); }
-#top .hero-stage { position: relative; display: block; flex: none; max-width: none; margin-inline: 0; height: clamp(520px, 41vw, 640px); border-radius: 20px; overflow: hidden; background: #3d84c6 !important; isolation: isolate; }
+#top .hero-stage { position: relative; display: block; flex: none; max-width: none; margin-inline: 0; height: clamp(540px, 44vw, 680px); border-radius: 20px; overflow: hidden; background: #3d84c6 !important; isolation: isolate; }
 #top .hero-stage > .hero-media { position: absolute; inset: 0; z-index: 0; display: block; width: 100%; height: 100%; }
-#top .hero-media img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 64%; }
-#top .hero-overlay { position: absolute; z-index: 2; width: auto; min-height: 0; margin: 0; left: clamp(28px, 4.2vw, 72px); top: clamp(28px, 4.4vw, 64px); right: auto; bottom: auto; display: block; max-width: min(640px, 52%); padding: clamp(20px, 2.2vw, 30px) clamp(22px, 2.6vw, 36px) clamp(22px, 2.4vw, 32px); border-radius: 16px; background: rgba(13, 50, 39, .74); -webkit-backdrop-filter: blur(6px) saturate(1.1); backdrop-filter: blur(6px) saturate(1.1); box-shadow: 0 18px 40px -22px rgba(6, 30, 22, .6); text-align: left; }
-#top .hero-label { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 clamp(12px, 1.6vw, 18px); padding: 7px 16px; border-radius: 999px; background: rgba(255,255,255,.94); color: var(--sugi); font-size: 13px; font-weight: 700; letter-spacing: .1em; }
+#top .hero-media img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 58%; }
+/* 写真を主役にする。見出しの背後（左下の木と水面）だけを自然に沈め、空と建物はそのまま見せる。
+   2026-10-14 本人「デザインが微妙」→ 深緑の板（写真の半分を覆っていた）をやめた。 */
+#top .hero-stage::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(115% 100% at 0% 100%, rgba(6,32,25,.82) 0%, rgba(6,32,25,.6) 30%, rgba(6,32,25,.18) 55%, rgba(6,32,25,0) 70%); }
+#top .hero-overlay { position: absolute; z-index: 2; width: auto; min-height: 0; margin: 0; left: clamp(32px, 4.4vw, 76px); bottom: clamp(36px, 4.4vw, 72px); top: auto; right: auto; display: block; max-width: calc(100% - clamp(320px, 26vw, 380px) - clamp(110px, 10vw, 170px)); padding: 0; border-radius: 0; background: none; box-shadow: none; text-align: left; }
+/* 文字の背後だけに、輪郭の見えないぼかした影を敷く（板にはしない）。明るい空や建物に文字がかかっても読めるようにする */
+#top .hero-overlay::before { content: ''; position: absolute; z-index: -1; inset: -28px -48px -26px -36px; border-radius: 48px; background: rgba(6,32,25,.5); filter: blur(28px); pointer-events: none; }
+#top .hero-label { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 clamp(14px, 1.6vw, 20px); padding: 6px 15px; border-radius: 999px; background: rgba(255,255,255,.94); color: var(--sugi); font-size: 13px; font-weight: 700; letter-spacing: .1em; }
 #top .hero-label::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--moegi); }
-#top .hero-h1 { margin: 0; font-family: var(--disp); font-weight: 900; font-size: clamp(32px, 3.5vw, 52px); line-height: 1.5; letter-spacing: .1em; color: #fff; text-shadow: none; text-wrap: initial; }
-#top .hero-line { display: inline; padding-bottom: .08em; border-bottom: 2px dashed rgba(255,255,255,.85); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-#top .hero-line + br + .hero-line { margin-top: .18em; }
-#top .hero-sub { display: block; max-width: 100%; margin-top: clamp(14px, 1.8vw, 22px); padding: 0; border-radius: 0; background: none; color: #fff; font-size: clamp(14px, 1.15vw, 16px); font-weight: 600; line-height: 1.85; letter-spacing: .04em; }
+#top .hero-h1 { margin: 0; font-family: var(--disp); font-weight: 900; font-size: clamp(34px, 3.4vw, 56px); line-height: 1.55; letter-spacing: .08em; color: #fff; text-shadow: 0 2px 16px rgba(4,24,18,.45), 0 1px 3px rgba(4,24,18,.35); text-wrap: initial; }
+#top .hero-line { display: inline; padding-bottom: .06em; border-bottom: 2px dashed rgba(255,255,255,.8); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+#top .hero-sub { display: block; max-width: 100%; margin-top: clamp(14px, 1.6vw, 20px); padding: 0; border-radius: 0; background: none; color: #fff; font-size: clamp(15px, 1.15vw, 17px); font-weight: 700; line-height: 1.85; letter-spacing: .06em; text-shadow: 0 1px 10px rgba(4,24,18,.55), 0 1px 2px rgba(4,24,18,.4); }
+@media (min-width: 700px) { #top .hero-line { white-space: nowrap; } }
 
-.hero-panel { position: absolute; z-index: 3; top: calc(50% + (var(--nav-h) + 12px) / 2); right: calc(clamp(12px, 1.6vw, 24px) + clamp(20px, 2.6vw, 40px)); transform: translateY(-50%); width: clamp(340px, 29vw, 420px); padding: clamp(20px, 2vw, 26px); border-radius: 16px; background: rgba(255,255,255,.97); box-shadow: 0 18px 44px -18px rgba(11,42,31,.35); }
+.hero-panel { position: absolute; z-index: 3; top: calc(50% + (var(--nav-h) + 12px) / 2); right: calc(clamp(12px, 1.6vw, 24px) + clamp(20px, 2.4vw, 40px)); transform: translateY(-50%); width: clamp(320px, 26vw, 380px); padding: clamp(18px, 1.6vw, 22px); border-radius: 16px; background: rgba(255,255,255,.95); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); box-shadow: 0 20px 48px -20px rgba(11,42,31,.4); }
 .hp-title { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 0 14px; font-size: 15px; font-weight: 800; letter-spacing: .08em; color: var(--sugi); }
 .hp-title::before, .hp-title::after { content: ''; flex: 1; height: 1px; background: var(--line); }
 .hp-group + .hp-group { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--line); }
 .hp-group-h { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font-size: 13.5px; font-weight: 800; color: var(--iwa); }
 .hp-group-h::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--moegi); box-shadow: 0 0 0 3px var(--moegi-l); }
 .hp-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 0; padding: 0; list-style: none; }
-.hp-link { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 6px; height: 100%; min-height: 86px; padding: 10px 4px 8px; border-radius: 10px; color: var(--sugi); font-size: 12.5px; font-weight: 700; line-height: 1.45; text-align: center; text-decoration: none; transition: background var(--tr); }
+.hp-link { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 5px; height: 100%; min-height: 78px; padding: 8px 4px 6px; border-radius: 10px; color: var(--sugi); font-size: 12.5px; font-weight: 700; line-height: 1.45; text-align: center; text-decoration: none; transition: background var(--tr); }
 .hp-link:hover { background: var(--g50); }
-.hp-link svg { flex: 0 0 auto; width: 34px; height: 34px; color: var(--sugi); }
+.hp-link svg { flex: 0 0 auto; width: 30px; height: 30px; color: var(--sugi); }
 .hp-cta { display: flex; gap: 8px; margin-top: 16px; }
 .hp-cta .btn-primary { display: flex; align-items: center; flex: 1 1 auto; justify-content: center; min-height: 50px; padding: 0 16px; font-size: 14.5px; white-space: nowrap; }
 .hp-tel { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; gap: 6px; min-height: 50px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; color: var(--sugi); font-family: var(--mono); font-size: 13.5px; font-weight: 700; text-decoration: none; white-space: nowrap; }
@@ -55,8 +61,8 @@
 .hp-tel:hover { border-color: var(--sugi); }
 
 @media (max-width: 1099px) {
-  #top .hero-stage { height: clamp(420px, 56vw, 560px); }
-  #top .hero-overlay { max-width: 82%; }
+  #top .hero-stage { height: clamp(440px, 58vw, 580px); }
+  #top .hero-overlay { max-width: calc(100% - 64px); bottom: 88px; }
   .hero-panel { position: relative; top: auto; right: auto; transform: none; width: auto; max-width: 980px; margin: -56px auto 0; }
   .hp-groups { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 24px; }
   .hp-group + .hp-group { margin-top: 0; padding-top: 0; border-top: 0; padding-left: 24px; border-left: 1px dashed var(--line); }
@@ -64,11 +70,12 @@
 }
 @media (max-width: 699px) {
   #top.hero { padding: calc(var(--nav-h) + 4px) 10px 0; }
-  #top .hero-stage { height: clamp(360px, 100vw, 460px); border-radius: 16px; }
-  #top .hero-media img { object-position: 46% 70%; }
-  #top .hero-overlay { left: 14px; right: 14px; top: 16px; max-width: none; padding: 16px 16px 18px; border-radius: 12px; }
+  #top .hero-stage { height: clamp(420px, 112vw, 500px); border-radius: 16px; }
+  #top .hero-media img { object-position: 50% 60%; }
+  #top .hero-stage::after { background: linear-gradient(180deg, rgba(6,32,25,0) 30%, rgba(6,32,25,.45) 55%, rgba(6,32,25,.82) 100%); }
+  #top .hero-overlay { left: 18px; right: 18px; bottom: 58px; max-width: none; }
   #top .hero-label { font-size: 12px; padding: 6px 13px; margin-bottom: 14px; }
-  #top .hero-h1 { font-size: clamp(22px, 6.6vw, 30px); letter-spacing: .04em; }
+  #top .hero-h1 { font-size: clamp(25px, 7.4vw, 32px); letter-spacing: .05em; }
   #top .hero-sub { font-size: 13.5px; line-height: 1.75; }
   .hero-panel { margin: -36px 6px 0; padding: 18px 14px 16px; }
   .hp-groups { display: block; }
