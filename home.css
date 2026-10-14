@@ -189,7 +189,7 @@
 
 /* ---------- 6. お困りですか？ ---------- */
 #help { position: relative; padding-bottom: clamp(150px, 16vw, 230px); background: var(--g25); overflow: hidden; }
-#help::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: clamp(120px, 14vw, 210px); pointer-events: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 210' preserveAspectRatio='none'%3E%3Cpath d='M0 120 L90 92 L150 104 L230 58 L290 82 L360 40 L420 70 L470 52 L540 86 L610 46 L680 78 L760 30 L830 66 L900 50 L980 84 L1050 44 L1120 72 L1190 56 L1270 88 L1340 64 L1440 96 V210 H0Z' fill='%23d6e4ee'/%3E%3Cpath d='M260 66 L290 82 L320 72 Z M720 46 L760 30 L792 48 Z M1020 58 L1050 44 L1076 56Z' fill='%23fff' opacity='.9'/%3E%3Cpath d='M0 160 L120 140 L240 150 L380 126 L520 146 L660 132 L800 150 L960 128 L1100 146 L1260 132 L1440 150 V210 H0Z' fill='%23c9dccf'/%3E%3Cpath d='M0 188 L180 178 L360 186 L560 174 L760 186 L980 176 L1200 186 L1440 178 V210 H0Z' fill='%23F9FAF7'/%3E%3C/svg%3E") bottom / 100% 100% no-repeat; }
+#help::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: clamp(120px, 14vw, 210px); pointer-events: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 210' preserveAspectRatio='none'%3E%3Cpath d='M0 120 L90 92 L150 104 L230 58 L290 82 L360 40 L420 70 L470 52 L540 86 L610 46 L680 78 L760 30 L830 66 L900 50 L980 84 L1050 44 L1120 72 L1190 56 L1270 88 L1340 64 L1440 96 V210 H0Z' fill='%23d6e4ee'/%3E%3Cpath d='M260 66 L290 82 L320 72 Z M720 46 L760 30 L792 48 Z M1020 58 L1050 44 L1076 56Z' fill='%23fff' opacity='.9'/%3E%3Cpath d='M0 160 L120 140 L240 150 L380 126 L520 146 L660 132 L800 150 L960 128 L1100 146 L1260 132 L1440 150 V210 H0Z' fill='%23c9dccf'/%3E%3Cpath d='M0 188 L180 178 L360 186 L560 174 L760 186 L980 176 L1200 186 L1440 178 V210 H0Z' fill='%23EDF6F0'/%3E%3C/svg%3E") bottom / 100% 100% no-repeat; }
 #help > .w { position: relative; z-index: 1; }
 .help-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin: 0; padding: 0; list-style: none; }
 .help-card { position: relative; display: flex; flex-direction: column; height: 100%; border-radius: 14px; background: rgba(255,255,255,.96); box-shadow: var(--sh-xs); overflow: hidden; }
@@ -339,3 +339,15 @@
 #pricing .home-once-actions { margin-top: 20px; }
 @media (max-width: 899px) { #pricing .home-once-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 559px) { #pricing .home-once-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; } #pricing .home-once-grid li { padding: 14px 16px 16px; } }
+
+/* 2026-10-14 章の切り替わりが分かるよう、背景を白と淡い緑で交互にする */
+#pickup { background: #fff; }
+#services { background: var(--yuki); }
+#help { background: #fff; }
+#pricing.price-sec { background: var(--g50); }
+#tools.tool-sec { background: #fff; }
+#about.home-sec { background: var(--g50); }
+#faq.faq-sec { background: #fff; }
+#news.home-sec { background: var(--g50); }
+#news + .final-sec::before { background: var(--g50); }
+#pricing .home-once-grid li, #pricing .home-plan-card { background: #fff; }
