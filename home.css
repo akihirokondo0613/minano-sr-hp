@@ -58,15 +58,29 @@
 .hp-tel svg { width: 16px; height: 16px; }
 .hp-tel:hover { border-color: var(--sugi); }
 
+/* 768〜1099px：カードは写真の右に残し、見出しとカードを少し小さくして並べる（2026-10-14 本人指摘「幅によってカードが消える」） */
 @media (max-width: 1099px) {
-  #top .hero-stage { height: clamp(440px, 60vw, 600px); }
+  #top .hero-stage { height: clamp(460px, 56vw, 580px); }
+  #top .hero-overlay { left: clamp(24px, 3.2vw, 40px); max-width: calc(100% - 300px - clamp(64px, 7vw, 96px)); }
+  #top .hero-h1 { font-size: clamp(28px, 3.9vw, 42px); }
+  #top .hero-sub { font-size: 14.5px; }
+  .hero-panel { width: 290px; padding: 16px 14px; right: calc(clamp(12px, 1.6vw, 24px) + 18px); }
+  .hp-link { min-height: 70px; font-size: 11.5px; padding: 6px 2px; }
+  .hp-link svg { width: 26px; height: 26px; }
+  .hp-cta { flex-direction: column; }
+  .hp-tel { width: 100%; }
+}
+/* 767px以下：カードは写真の下（写真の角とは重ねない） */
+@media (max-width: 767px) {
   #top .hero-overlay { max-width: calc(100% - 64px); }
   .hero-panel { position: relative; top: auto; right: auto; transform: none; width: auto; max-width: 980px; margin: clamp(14px, 2vw, 20px) auto 0; padding: 18px 22px; background: var(--shiro); border: 1px solid var(--line2); box-shadow: var(--sh-xs); }
   .hp-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 24px; }
   .hp-groups { display: contents; }
   .hp-group + .hp-group { margin-top: 0; padding: 0 0 0 24px; border-top: 0; border-left: 1px dashed var(--line); }
-  .hp-cta { grid-column: 1 / -1; justify-content: center; padding-top: 14px; border-top: 1px dashed var(--line); }
+  .hp-cta { grid-column: 1 / -1; flex-direction: row; justify-content: center; padding-top: 14px; border-top: 1px dashed var(--line); }
   .hp-cta .btn-primary { flex: 0 1 300px; }
+  .hp-tel { width: auto; }
+}
 }
 @media (max-width: 699px) {
   #top.hero { padding: calc(var(--nav-h) + 4px) 10px 0; }

@@ -1732,3 +1732,9 @@ html body .sec-head-c .sec-kicker::before { display: block; }
   .page-hero.has-ill .ph-ill { aspect-ratio: 4 / 3; border: 0; border-radius: 20px; background: #fff; box-shadow: 0 18px 40px -24px rgba(11,42,31,.35); padding: 0; }
   .page-hero.has-ill .ph-ill img { object-fit: contain; }
 }
+
+/* 2026-10-14 冒頭の見出しが細かく折れすぎる対策：画像の列を細くし、見出しの大きさを下層で1つにそろえる */
+@media (min-width: 641px) {
+  .page-hero.has-ill .page-hero-inner { grid-template-columns: minmax(0, 1fr) clamp(220px, 26vw, 380px); column-gap: clamp(24px, 3.6vw, 56px); }
+}
+.page-hero.has-ill :is(h1, .page-h) { font-size: clamp(26px, 2.9vw, 40px); line-height: 1.5; text-wrap: balance; }
