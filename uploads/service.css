@@ -274,6 +274,7 @@ html.nav-menu-open .floating{opacity:0!important;pointer-events:none!important}
 .kyu-cmp{margin-top:clamp(20px,3vw,28px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
 .kyu-cmp-i{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff}
 .kyu-cmp-t{font-size:14.5px;font-weight:700;color:var(--g700);margin:0 0 8px;letter-spacing:.03em}
+.kyu-cmp-note{margin:10px 0 0;font-size:13px;line-height:1.8;color:var(--ink3,#5D6962)}
 .kyu-cmp-i ul{margin:0;padding-left:18px;display:grid;gap:5px}
 .kyu-cmp-i li{font-size:14px;color:var(--ink2);line-height:1.8;letter-spacing:.02em;text-wrap:pretty;word-break:auto-phrase}
 .kyu-table{margin-top:14px}
