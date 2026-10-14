@@ -27,11 +27,11 @@
 
 /* ---------- 1. ヒーロー（写真＋ご用件パネル） ---------- */
 #top.hero { position: relative; display: block; min-height: 0; height: auto; overflow: visible; max-width: calc(1680px + 2 * clamp(12px, 1.6vw, 24px)); margin-inline: auto; padding: calc(var(--nav-h) + 12px) clamp(12px, 1.6vw, 24px) 0; background: var(--yuki); }
-#top .hero-stage { position: relative; display: block; flex: none; max-width: none; margin-inline: 0; height: clamp(480px, 46vw, 720px); border-radius: 20px; overflow: hidden; background: #2f72b4 !important; isolation: isolate; }
+#top .hero-stage { position: relative; display: block; flex: none; max-width: none; margin-inline: 0; height: clamp(520px, 44vw, 680px); border-radius: 20px; overflow: hidden; background: #2f72b4 !important; isolation: isolate; }
 #top .hero-stage > .hero-media { position: absolute; inset: 0; z-index: 0; display: block; width: 100%; height: 100%; }
 #top .hero-media img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 56%; }
 /* 2026-10-14 本人指示：写真を暗くする処理はしない・見出しは中央。写真上部の濃い空に白文字で置く。 */
-#top .hero-overlay { display: block; position: absolute; z-index: 2; left: 50%; top: clamp(28px, 3.4vw, 60px); right: auto; bottom: auto; transform: translateX(-50%); width: min(92%, 960px); max-width: none; min-height: 0; margin: 0; padding: 0; background: none; box-shadow: none; text-align: center; }
+#top .hero-overlay { display: block; position: absolute; z-index: 2; left: clamp(32px, 4.4vw, 80px); top: 50%; right: auto; bottom: auto; transform: translateY(-50%); width: auto; max-width: calc(100% - clamp(320px, 26vw, 380px) - clamp(110px, 10vw, 170px)); min-height: 0; margin: 0; padding: 0; background: none; box-shadow: none; text-align: left; }
 #top .hero-label { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 clamp(14px, 1.6vw, 20px); padding: 6px 16px; border-radius: 999px; background: rgba(255,255,255,.94); color: var(--sugi); font-size: 13px; font-weight: 700; letter-spacing: .1em; }
 #top .hero-label::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--moegi); }
 #top .hero-h1 { margin: 0; font-family: var(--disp); font-weight: 900; font-size: clamp(32px, 3.3vw, 54px); line-height: 1.55; letter-spacing: .08em; color: #fff; text-shadow: 0 0 2px rgba(6,40,80,.45), 0 2px 14px rgba(6,40,80,.5); text-wrap: initial; }
@@ -40,44 +40,48 @@
 #top .hero-sub { display: block; max-width: 100%; margin-top: clamp(12px, 1.4vw, 18px); padding: 0; background: none; color: #fff; font-size: clamp(15px, 1.25vw, 19px); font-weight: 800; line-height: 1.8; letter-spacing: .06em; text-shadow: 0 0 2px rgba(6,40,80,.5), 0 1px 10px rgba(6,40,80,.55); }
 @media (min-width: 700px) { #top .hero-line { white-space: nowrap; } }
 
-/* ご用件から選ぶ：写真の下に置く（写真と重ねない） */
-.hero-panel { position: relative; z-index: 3; width: auto; max-width: 1160px; margin: clamp(16px, 2vw, 24px) auto 0; padding: clamp(18px, 2vw, 26px) clamp(18px, 2.4vw, 32px); border-radius: 16px; background: var(--shiro); border: 1px solid var(--line2); box-shadow: var(--sh-xs); }
+/* ご用件から選ぶ：PCは写真の右にカードとして重ねる。1099px以下は写真の下に置く（写真の角と重ねない） */
+.hero-panel { position: absolute; z-index: 3; top: calc(50% + (var(--nav-h) + 12px) / 2); right: calc(clamp(12px, 1.6vw, 24px) + clamp(20px, 2.4vw, 40px)); transform: translateY(-50%); width: clamp(320px, 26vw, 380px); margin: 0; padding: clamp(18px, 1.6vw, 22px); border-radius: 16px; background: rgba(255,255,255,.96); border: 0; box-shadow: 0 20px 48px -20px rgba(11,42,31,.4); }
 .hp-title { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0 0 12px; font-size: 15px; font-weight: 800; letter-spacing: .08em; color: var(--sugi); }
 .hp-title::before, .hp-title::after { content: ''; flex: 1; height: 1px; background: var(--line); }
-.hp-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: 0 clamp(18px, 2.4vw, 32px); align-items: center; }
-.hp-groups { display: contents; }
-.hp-group + .hp-group { padding-left: clamp(18px, 2.4vw, 32px); border-left: 1px dashed var(--line); }
+.hp-body { display: block; }
+.hp-group + .hp-group { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--line); }
 .hp-group-h { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; font-size: 13.5px; font-weight: 800; color: var(--iwa); }
 .hp-group-h::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--moegi); box-shadow: 0 0 0 3px var(--moegi-l); }
 .hp-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; margin: 0; padding: 0; list-style: none; }
 .hp-link { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 5px; height: 100%; min-height: 78px; padding: 8px 4px 6px; border-radius: 10px; color: var(--sugi); font-size: 12.5px; font-weight: 700; line-height: 1.45; text-align: center; text-decoration: none; transition: background var(--tr); }
 .hp-link:hover { background: var(--g50); }
 .hp-link svg { flex: 0 0 auto; width: 30px; height: 30px; color: var(--sugi); }
-.hp-cta { display: flex; flex-direction: column; gap: 8px; padding-left: clamp(18px, 2.4vw, 32px); border-left: 1px dashed var(--line); }
-.hp-cta .btn-primary { display: flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 24px; font-size: 14.5px; white-space: nowrap; }
+.hp-cta { display: flex; gap: 8px; margin-top: 14px; }
+.hp-cta .btn-primary { display: flex; flex: 1 1 auto; align-items: center; justify-content: center; min-height: 50px; padding: 0 16px; font-size: 14.5px; white-space: nowrap; }
 .hp-tel { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 46px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; color: var(--sugi); font-family: var(--mono); font-size: 13.5px; font-weight: 700; text-decoration: none; white-space: nowrap; }
 .hp-tel svg { width: 16px; height: 16px; }
 .hp-tel:hover { border-color: var(--sugi); }
 
 @media (max-width: 1099px) {
   #top .hero-stage { height: clamp(440px, 60vw, 600px); }
-  .hp-body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .hp-cta { grid-column: 1 / -1; flex-direction: row; justify-content: center; margin-top: 14px; padding: 14px 0 0; border-left: 0; border-top: 1px dashed var(--line); }
+  #top .hero-overlay { max-width: calc(100% - 64px); }
+  .hero-panel { position: relative; top: auto; right: auto; transform: none; width: auto; max-width: 980px; margin: clamp(14px, 2vw, 20px) auto 0; padding: 18px 22px; background: var(--shiro); border: 1px solid var(--line2); box-shadow: var(--sh-xs); }
+  .hp-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 24px; }
+  .hp-groups { display: contents; }
+  .hp-group + .hp-group { margin-top: 0; padding: 0 0 0 24px; border-top: 0; border-left: 1px dashed var(--line); }
+  .hp-cta { grid-column: 1 / -1; justify-content: center; padding-top: 14px; border-top: 1px dashed var(--line); }
   .hp-cta .btn-primary { flex: 0 1 300px; }
 }
 @media (max-width: 699px) {
   #top.hero { padding: calc(var(--nav-h) + 4px) 10px 0; }
   #top .hero-stage { height: clamp(380px, 104vw, 460px); border-radius: 16px; }
   #top .hero-media img { object-position: 50% 66%; }
-  #top .hero-overlay { top: 26px; width: calc(100% - 28px); }
+  #top .hero-overlay { left: 18px; right: 18px; max-width: none; }
   #top .hero-label { font-size: 12px; padding: 6px 13px; margin-bottom: 12px; }
   #top .hero-h1 { font-size: clamp(25px, 7.4vw, 32px); letter-spacing: .05em; line-height: 1.6; }
   #top .hero-sub { font-size: 13.5px; line-height: 1.75; }
   .hero-panel { margin-top: 12px; padding: 16px 14px; }
+  .hp-group + .hp-group { padding-left: 0; border-left: 0; }
   .hp-body { display: block; }
   .hp-group + .hp-group { margin-top: 12px; padding: 12px 0 0; border-left: 0; border-top: 1px dashed var(--line); }
   .hp-link { min-height: 76px; font-size: 12px; }
-  .hp-cta { flex-direction: column; margin-top: 12px; padding: 12px 0 0; }
+  .hp-cta { flex-direction: column; margin-top: 12px; padding: 12px 0 0; border-top: 0; }
   .hp-cta .btn-primary { flex: none; }
   .hp-tel { width: 100%; }
 }
@@ -311,3 +315,18 @@
   .pk-card:hover .pk-img img, .about-photos figure:hover img,
   .btn-arrow:hover::after, .pk-card:hover .pk-more::after, #services .svc-p-links a:hover::after { transform: none; }
 }
+
+/* ---------- 料金：顧問プランの下に、単発のご依頼を1項目1カードで並べる（2026-10-14 本人指示） ---------- */
+#pricing .home-once { margin: clamp(40px, 5vw, 64px) 0 0; padding: 0; border: 0; background: none; }
+#pricing .home-once-h { position: relative; padding-left: 16px; font-size: clamp(19px, 1.9vw, 23px); }
+#pricing .home-once-h::before { content: ''; position: absolute; left: 0; top: .2em; bottom: .2em; width: 4px; border-radius: 2px; background: var(--moegi); }
+#pricing .home-once-sub { margin-top: 8px; }
+#pricing .home-once-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 20px; }
+#pricing .home-once-grid li { display: flex; flex-direction: column; padding: 18px 20px 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--shiro); box-shadow: var(--sh-xs); transition: box-shadow var(--tr), border-color var(--tr); }
+#pricing .home-once-grid li:hover { border-color: var(--moegi); box-shadow: var(--sh-sm); }
+#pricing .home-once-name { font-size: 15.5px; font-weight: 800; line-height: 1.5; color: var(--iwa); }
+#pricing .home-once-price { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); font-size: 15px; color: var(--sugi); }
+#pricing .home-once-days { margin-top: 8px; font-size: 12.5px; line-height: 1.75; }
+#pricing .home-once-actions { margin-top: 20px; }
+@media (max-width: 899px) { #pricing .home-once-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 559px) { #pricing .home-once-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; } #pricing .home-once-grid li { padding: 14px 16px 16px; } }
