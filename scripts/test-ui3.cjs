@@ -31,7 +31,6 @@ const ENGINES = [
 ];
 const NAV_TARGETS = [
   { href: 'services.html', id: 'services' },
-  { href: 'support.html', id: 'cases' },
   { href: 'pricing.html', id: 'pricing' },
   { href: 'about.html', id: 'about' },
 ];

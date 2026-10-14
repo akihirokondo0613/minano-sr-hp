@@ -9,7 +9,6 @@
 
   var SECTION_BY_PAGE = {
     'services.html': 'services',
-    'support.html': 'cases',
     'pricing.html': 'pricing',
     'about.html': 'about'
   };

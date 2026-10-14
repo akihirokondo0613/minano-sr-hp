@@ -120,7 +120,8 @@ function runAudit(baseUrl, outputFile, checkFlag) {
   return new Promise((resolve, reject) => {
     const child = spawn(process.execPath, childArgs, {
       cwd: root,
-      env: process.env,
+      // 本番トップは写真上の判定対象を持たない（2026-10-14 本人判断）。測定の仕組みは合成ページの見出しで確かめる。
+      env: { ...process.env, A11Y_PHOTO_TARGETS: JSON.stringify([{ page: 'index.html', selector: '.hero-h1' }, { page: 'index.html', selector: '.hero-sub' }]) },
       stdio: ['ignore', 'pipe', 'pipe'],
     });
     let stdout = '';

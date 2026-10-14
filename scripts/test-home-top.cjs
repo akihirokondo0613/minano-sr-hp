@@ -8,8 +8,8 @@
  * 検査の約束事（マークアップ契約）:
  *   section.hero#top > .hero-stage > picture.hero-media（img は fetchpriority="high"）、
  *   .hero-overlay > .hero-label / h1.hero-h1 / p.hero-sub、nav.hero-panel（.hp-group×2・a.hp-link・a.btn-primary）、
- *   #notice / #pickup（#pk-rail・#pk-nav .pk-arrow）/ #services（タブ）/ #cases / #help / #pricing / #tools /
- *   #about（内に #why）/ #faq / #news（タブ）。旧アンカー #top #tools #why #services #cases #pricing #faq #news #about を維持。
+ *   #notice / #pickup（#pk-rail・#pk-nav .pk-arrow）/ #services（タブ）/ #help / #pricing / #tools /
+ *   #about（内に #why）/ #faq / #news（タブ）。旧アンカー #top #tools #why #services #pricing #faq #news #about を維持（#cases は2026-10-14に章ごと削除）。
  *
  * 判定の方針:
  *   - 幅 320/390/768/1024/1440/1920 × Chromium/WebKit。
@@ -39,7 +39,7 @@ const ENGINES = [
 const EPSILON = 1;
 const TARGET_MIN = 24; // WCAG 2.2 AA の最小ターゲットサイズ
 const EXPECTED_SERVICE_TABS = 6;
-const LEGACY_ANCHORS = ['top', 'tools', 'why', 'services', 'cases', 'pricing', 'faq', 'news', 'about'];
+const LEGACY_ANCHORS = ['top', 'tools', 'why', 'services', 'pricing', 'faq', 'news', 'about'];
 const CONTRACT_ANCHORS = ['notice', 'pickup', 'help'];
 // 廃止した旧トップの部品。再導入されたら失敗にする。
 const REMOVED_SELECTORS = [
