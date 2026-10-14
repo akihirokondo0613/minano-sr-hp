@@ -548,7 +548,8 @@ function recordConsoleError(target) {
       clearedBlogState.visible === expectedSystemArticles.length &&
       clearedBlogState.active === 'システム導入' &&
       resetBlogState.count === `全${expectedArticleCount}件` &&
-      resetBlogState.visible === expectedArticleCount &&
+      // 2026-10-14 一覧は最初の12件だけ見せ、「さらに表示」で残りを出す（本人指示のデザイン改善）。
+      resetBlogState.visible === Math.min(12, expectedArticleCount) &&
       resetBlogState.pressed === 1;
     const stickyBlogOk = !stickyBlogState.navHidden && stickyBlogState.overlap <= 1;
     const navUnderlineOk = navUnderlineState === null || (
