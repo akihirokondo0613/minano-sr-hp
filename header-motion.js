@@ -144,3 +144,97 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();
+
+/*
+ * カーソルに反応する演出（2026-10-15 本人指示「カーソルに合わせて動きを」）
+ *  ・カード：カーソル位置に淡い緑の光が付いてきて、わずかに傾く（最大3度）
+ *  ・主ボタン：カーソルが近づくと少し引き寄せられる（最大6px）
+ *  ・トップの写真：カーソルに合わせて奥行きを持ってわずかに動く
+ * マウス等の細かいポインター（hover:hover かつ pointer:fine）だけで動かし、
+ * 指で操作する端末と「動きを減らす」設定では何もしない。
+ * document に1回だけ委譲で登録するので、SPA の body 差し替え後もそのまま効く。
+ */
+(function () {
+  if (window.__pfxBound) return;
+  var mq = window.matchMedia;
+  if (!mq || !mq('(hover: hover) and (pointer: fine)').matches) return;
+  if (mq('(prefers-reduced-motion: reduce)').matches) return;
+  window.__pfxBound = true;
+
+  var CARD = '.pk-card, .help-card, .rq-card, .art-row, .home-plan-card, .plan-card, .hx-card, .rp-card, .ns-card, .home-once-grid > li, .svc-tab, .xcase-card, .tools-logo, .stage-card';
+  var MAG = '.btn-primary, .nav-cta, .plan-btn-main, .startup-primary, .ac-primary';
+  var css = ''
+    + '.pfx-card.pfx-card{position:relative;isolation:isolate;transform:perspective(900px) rotateX(var(--prx,0deg)) rotateY(var(--pry,0deg)) translateY(var(--pty,0px));transition:transform .45s cubic-bezier(.22,1,.36,1),box-shadow .3s,border-color .3s}'
+    + '.pfx-card.pfx-card.pfx-on{transition:transform .12s linear,box-shadow .3s,border-color .3s;--pty:-3px}'
+    + '.pfx-glow{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;opacity:0;transition:opacity .3s;'
+    + 'background:radial-gradient(260px circle at var(--pmx,50%) var(--pmy,50%),rgba(46,158,99,.13),rgba(46,158,99,0) 62%)}'
+    + '.pfx-card.pfx-on>.pfx-glow{opacity:1}'
+    + '.pfx-mag{transition:transform .35s cubic-bezier(.22,1,.36,1)!important}'
+    + '#top .hero-media img{transition:transform .9s cubic-bezier(.22,1,.36,1);will-change:transform}'
+    + '#top .hero-overlay{transition:translate .9s cubic-bezier(.22,1,.36,1)}';
+  var st = document.createElement('style'); st.id = 'pfx-css'; st.textContent = css;
+  (document.head || document.documentElement).appendChild(st);
+
+  var current = null, magEl = null, raf = 0, last = null;
+
+  function leaveCard(el) {
+    el.classList.remove('pfx-on');
+    el.style.setProperty('--prx', '0deg'); el.style.setProperty('--pry', '0deg');
+  }
+  function onCard(el, e) {
+    if (!el.classList.contains('pfx-card')) {
+      el.classList.add('pfx-card');
+      var g = document.createElement('span'); g.className = 'pfx-glow'; g.setAttribute('aria-hidden', 'true');
+      el.insertBefore(g, el.firstChild);
+    }
+    var r = el.getBoundingClientRect();
+    var x = e.clientX - r.left, y = e.clientY - r.top;
+    el.style.setProperty('--pmx', x + 'px'); el.style.setProperty('--pmy', y + 'px');
+    var tilt = r.width > 520 ? 1.2 : 3; // 大きいカードほど控えめに
+    el.style.setProperty('--pry', (((x / r.width) - .5) * 2 * tilt).toFixed(2) + 'deg');
+    el.style.setProperty('--prx', (-((y / r.height) - .5) * 2 * tilt).toFixed(2) + 'deg');
+    el.classList.add('pfx-on');
+  }
+  function onMag(el, e) {
+    var r = el.getBoundingClientRect();
+    var dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
+    el.classList.add('pfx-mag');
+    el.style.transform = 'translate(' + (dx / r.width * 10).toFixed(1) + 'px,' + (dy / r.height * 8).toFixed(1) + 'px)';
+  }
+  function heroMove(e) {
+    var stage = document.querySelector('#top .hero-stage');
+    if (!stage) return;
+    var r = stage.getBoundingClientRect();
+    var img = stage.querySelector('.hero-media img'), ov = stage.querySelector('.hero-overlay');
+    if (e && e.clientY >= r.top && e.clientY <= r.bottom) {
+      var nx = (e.clientX - r.left) / r.width - .5, ny = (e.clientY - r.top) / r.height - .5;
+      if (img) img.style.transform = 'scale(1.045) translate(' + (-nx * 14).toFixed(1) + 'px,' + (-ny * 10).toFixed(1) + 'px)';
+      if (ov) ov.style.translate = (nx * 8).toFixed(1) + 'px ' + (ny * 6).toFixed(1) + 'px';
+    } else {
+      if (img) img.style.transform = '';
+      if (ov) ov.style.translate = '';
+    }
+  }
+  function frame() {
+    raf = 0;
+    var e = last; if (!e) return;
+    var t = e.target && e.target.closest ? e.target : null;
+    var card = t && t.closest(CARD);
+    if (card !== current) { if (current) leaveCard(current); current = card; }
+    if (card) onCard(card, e);
+    var mag = t && t.closest(MAG);
+    if (mag !== magEl) { if (magEl) magEl.style.transform = ''; magEl = mag; }
+    if (mag) onMag(mag, e);
+    heroMove(e);
+  }
+  document.addEventListener('pointermove', function (e) {
+    if (e.pointerType && e.pointerType !== 'mouse') return;
+    last = e;
+    if (!raf) raf = requestAnimationFrame(frame);
+  }, { passive: true });
+  document.addEventListener('pointerleave', function () {
+    if (current) { leaveCard(current); current = null; }
+    if (magEl) { magEl.style.transform = ''; magEl = null; }
+    heroMove(null);
+  });
+})();
