@@ -149,7 +149,7 @@
  * カーソルに反応する演出（2026-10-15 本人指示「カーソルに合わせて動きを」）
  *  ・カード：カーソル位置に淡い緑の光が付いてきて、わずかに傾く（最大3度）
  *  ・主ボタン：カーソルが近づくと少し引き寄せられる（最大6px）
- *  ・トップの写真：カーソルに合わせて奥行きを持ってわずかに動く
+ *  ・トップの写真は動かさない（2026-10-15 本人指示で視差を外した）
  * マウス等の細かいポインター（hover:hover かつ pointer:fine）だけで動かし、
  * 指で操作する端末と「動きを減らす」設定では何もしない。
  * document に1回だけ委譲で登録するので、SPA の body 差し替え後もそのまま効く。
@@ -169,9 +169,7 @@
     + '.pfx-glow{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;opacity:0;transition:opacity .3s;'
     + 'background:radial-gradient(260px circle at var(--pmx,50%) var(--pmy,50%),rgba(46,158,99,.13),rgba(46,158,99,0) 62%)}'
     + '.pfx-card.pfx-on>.pfx-glow{opacity:1}'
-    + '.pfx-mag{transition:transform .35s cubic-bezier(.22,1,.36,1)!important}'
-    + '#top .hero-media img{transition:transform .9s cubic-bezier(.22,1,.36,1);will-change:transform}'
-    + '#top .hero-overlay{transition:translate .9s cubic-bezier(.22,1,.36,1)}';
+    + '.pfx-mag{transition:transform .35s cubic-bezier(.22,1,.36,1)!important}';
   var st = document.createElement('style'); st.id = 'pfx-css'; st.textContent = css;
   (document.head || document.documentElement).appendChild(st);
 
@@ -201,20 +199,6 @@
     el.classList.add('pfx-mag');
     el.style.transform = 'translate(' + (dx / r.width * 10).toFixed(1) + 'px,' + (dy / r.height * 8).toFixed(1) + 'px)';
   }
-  function heroMove(e) {
-    var stage = document.querySelector('#top .hero-stage');
-    if (!stage) return;
-    var r = stage.getBoundingClientRect();
-    var img = stage.querySelector('.hero-media img'), ov = stage.querySelector('.hero-overlay');
-    if (e && e.clientY >= r.top && e.clientY <= r.bottom) {
-      var nx = (e.clientX - r.left) / r.width - .5, ny = (e.clientY - r.top) / r.height - .5;
-      if (img) img.style.transform = 'scale(1.045) translate(' + (-nx * 14).toFixed(1) + 'px,' + (-ny * 10).toFixed(1) + 'px)';
-      if (ov) ov.style.translate = (nx * 8).toFixed(1) + 'px ' + (ny * 6).toFixed(1) + 'px';
-    } else {
-      if (img) img.style.transform = '';
-      if (ov) ov.style.translate = '';
-    }
-  }
   function frame() {
     raf = 0;
     var e = last; if (!e) return;
@@ -225,7 +209,6 @@
     var mag = t && t.closest(MAG);
     if (mag !== magEl) { if (magEl) magEl.style.transform = ''; magEl = mag; }
     if (mag) onMag(mag, e);
-    heroMove(e);
   }
   document.addEventListener('pointermove', function (e) {
     if (e.pointerType && e.pointerType !== 'mouse') return;
@@ -235,6 +218,5 @@
   document.addEventListener('pointerleave', function () {
     if (current) { leaveCard(current); current = null; }
     if (magEl) { magEl.style.transform = ''; magEl = null; }
-    heroMove(null);
   });
 })();
