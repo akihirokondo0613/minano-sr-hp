@@ -351,3 +351,22 @@
 #news.home-sec { background: var(--g50); }
 #news + .final-sec::before { background: var(--g50); }
 #pricing .home-once-grid li, #pricing .home-plan-card { background: #fff; }
+
+/* ご用件カード：PCは大きく、広い画面では項目名を1行に（2026-10-15 本人指示「もっと大きく・改行を少なく」） */
+@media (min-width: 1100px) {
+  .hero-panel { width: clamp(380px, 33vw, 540px); padding: clamp(20px, 1.7vw, 28px); border-radius: 18px; }
+  #top .hero-overlay { max-width: calc(100% - clamp(380px, 33vw, 540px) - clamp(110px, 9vw, 160px)); }
+  .hp-title { margin-bottom: 14px; font-size: 16.5px; }
+  .hp-group + .hp-group { margin-top: 14px; padding-top: 14px; }
+  .hp-group-h { margin-bottom: 10px; font-size: 15px; }
+  .hp-links { gap: 6px; }
+  .hp-link { min-height: 92px; gap: 7px; padding: 10px 2px 8px; font-size: 13.5px; }
+  .hp-link svg { width: 34px; height: 34px; }
+  .hp-cta { margin-top: 16px; gap: 10px; }
+  .hp-cta .btn-primary { min-height: 54px; font-size: 15.5px; }
+  .hp-tel { min-height: 54px; padding: 0 18px; font-size: 15px; }
+}
+@media (min-width: 1440px) {
+  .hp-br { display: none; }
+  .hp-link { min-height: 80px; white-space: nowrap; }
+}
