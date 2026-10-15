@@ -370,3 +370,5 @@
   .hp-br { display: none; }
   .hp-link { min-height: 80px; white-space: nowrap; }
 }
+/* WebKit が「ダウンロード」を語の途中で折るため、項目名は改行位置（br）だけで折る */
+.hp-link { word-break: keep-all; overflow-wrap: normal; }
