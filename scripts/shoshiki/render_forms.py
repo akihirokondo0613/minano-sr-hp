@@ -118,14 +118,14 @@ table.f td{min-height:8mm;height:8mm}
 # D-52 は20行の入力欄と切り取り欄をA4一枚に置く。
 # 文字サイズや内容を削らず、他の書式へ影響しない余白・行送りで収める。
 D52_CSS = """
-.page.form-d52{padding-top:12mm;padding-bottom:10mm}
+.page.form-d52{padding-top:10mm;padding-bottom:10mm}
 .form-d52 h1{margin-bottom:3mm}
 .form-d52 .to{margin-bottom:3mm}
 .form-d52 p{margin-bottom:1mm}
 .form-d52 table.f{margin:1.5mm 0 2mm}
-.form-d52 table.f th,.form-d52 table.f td{padding:1mm 2.2mm;line-height:1.45}
+.form-d52 table.f th,.form-d52 table.f td{padding:.7mm 2.2mm;line-height:1.4}
 .form-d52 table.f th.w{width:44mm}
-.form-d52 table.f td{height:7.5mm;min-height:7.5mm}
+.form-d52 table.f td{height:7mm;min-height:7mm}
 """
 
 JS = r"""
