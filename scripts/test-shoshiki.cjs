@@ -58,7 +58,7 @@ const DOCUMENT_PREVIEWS = [
   ['commute.pdf', 'assets/previews/onboarding-commute-sample.webp', 'assets/download/onboarding-kit/commute.pdf'],
   ['emergency.pdf', 'assets/previews/onboarding-emergency-sample-v2.webp', 'assets/download/onboarding-kit/emergency.pdf'],
   ['establishment', 'assets/previews/procedure-establishment-sample.webp', 'assets/download/procedure-establishment.pdf'],
-  ['onboarding', 'assets/previews/procedure-onboarding-sample.webp', 'assets/download/procedure-onboarding.pdf'],
+  ['onboarding', 'assets/previews/procedure-onboarding-sample-v2.webp', 'assets/download/procedure-onboarding.pdf'],
   ['retirement', 'assets/previews/procedure-retirement-sample.webp', 'assets/download/procedure-retirement.pdf'],
   ['leave', 'assets/previews/procedure-leave-sample.webp', 'assets/download/procedure-leave.pdf'],
 ];
@@ -71,7 +71,7 @@ const ONBOARDING_OFFICE_PATHS = [
 // 案内本文・操作は明示indexで検査し、公開ディレクトリURLは本番GETで照合する。
 const LEGACY_LANDING = 'shoshiki/dl/word-7kq3x9/index.html';
 // D-27 の離職経緯に3択を用意する改訂後の全50書式。
-const EXPECTED_CHECKBOX_COUNT = 380;
+const EXPECTED_CHECKBOX_COUNT = 395;
 const PDF_FORMS = ['D-04', 'D-18', 'D-27', 'D-40', 'D-45', 'D-52'];
 const COMPANY_PRINT_FORMS = [
   ['D-18', ['name', 'dept', 'tel']],
@@ -1368,6 +1368,20 @@ async function checkActualMobileViewport(browser, engine) {
       mobileResults.push({ engine, relative, physicalViewport: { width: 390, height: 844 },
         isMobile: true, viewport, controls });
     }
+    // 共通CSSの content-visibility:auto（仮の高さ900px）で、長い節へのページ内リンクが
+    // iPhoneで数千pxずれた（2026-10-18）。#付きURLの直接表示と移動リンクの両方で着地を測る。
+    const landing = [];
+    for (const id of ['common-forms', 'onboarding-kit', 'procedure-pdfs', 'dependent-forms', 'list', 'setting']) {
+      await page.goto(new URL(`shoshiki.html#${id}`, base).href, { waitUntil: 'load' });
+      await page.waitForTimeout(800);
+      landing.push({ id, via: 'url', top: await page.$eval(`#${id}`, (el) => el.getBoundingClientRect().top) });
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.locator(`.sh-jump a[href="#${id}"]`).click();
+      await page.waitForTimeout(1200);
+      landing.push({ id, via: 'link', top: await page.$eval(`#${id}`, (el) => el.getBoundingClientRect().top) });
+    }
+    check(landing.every((item) => item.top >= -EPSILON && item.top <= 160),
+      `${engine}:mobile390:shoshiki.html:ページ内リンクの着地がずれています ${JSON.stringify(landing.filter((item) => item.top < -EPSILON || item.top > 160))}`);
   } catch (error) {
     failures.push(`${engine}:実スマホviewport: ${error.message}`);
   } finally {

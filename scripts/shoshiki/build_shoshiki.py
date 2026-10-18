@@ -40,7 +40,9 @@ for form in COMMON_PREVIEWS:
         not source
         or form["title"] != source["title"]
         or form["category"] not in COMMON_CATEGORIES
-        or form["preview"] != f"assets/previews/common/{form['no']}.webp"
+        # 作り直した画像は D-xx-r2.webp のように名前を変える（本番は同じURLを7日キャッシュする）
+        or not re.fullmatch(rf"assets/previews/common/{form['no']}(-r\d+)?\.webp", form["preview"])
+        or not (REPO / form["preview"]).is_file()
         or not form["use"]
     ):
         raise ValueError(f"基本書式のプレビュー情報を確認してください：{form['no']}")
@@ -71,14 +73,14 @@ ONBOARDING_KIT = [
     },
     {
         "file": "personal.pdf",
-        "title": "従業員本人情報シート",
+        "title": "入社時 本人情報シート",
         "role": "従業員が記入",
         "use": "氏名・住所と、社会保険・雇用保険の手続きに使う番号をご記入ください。番号の確認資料も欄の近くに記載しています。",
         "contents": "本人情報、住所、基礎年金番号、雇用保険被保険者番号、マイナンバー。",
         "format": "入力欄・赤字の記入例付き／全2ページ",
-        "download": "従業員本人情報シート_入力用・記入例.pdf",
+        "download": "入社時 本人情報シート_入力用・記入例.pdf",
         "preview": "assets/previews/onboarding-personal-sample-v2.webp",
-        "preview_alt": "従業員本人情報シートの赤字の架空記入例",
+        "preview_alt": "入社時 本人情報シートの赤字の架空記入例",
         "preview_caption": "赤字の架空記入例",
     },
     {
@@ -132,6 +134,7 @@ PROCEDURE_PDFS = [
     {
         "slug": "onboarding",
         "title": "入社連絡票",
+        "preview": "assets/previews/procedure-onboarding-sample-v2.webp",
         "use": "従業員を採用し、社会保険・雇用保険の加入手続きを依頼するとき。",
         "contents": "本人の情報、入社日、勤務時間、給与見込・現物支給、扶養家族の有無。",
     },
@@ -300,7 +303,7 @@ CSS = """
 .sh-scene-h{display:flex;align-items:center;gap:12px}
 .sh-scene-h .kmono{width:44px;height:44px;font-size:14px;border-radius:10px}
 .sh-scene-t{min-width:0;flex:1}
-.sh-scene-t h3{margin:0;font-size:16.5px;letter-spacing:.02em;font-family:var(--disp);font-weight:800;color:var(--iwa);line-height:1.4}
+.sh-scene-t h3{word-break:keep-all;overflow-wrap:anywhere;margin:0;font-size:16.5px;letter-spacing:.02em;font-family:var(--disp);font-weight:800;color:var(--iwa);line-height:1.4}
 .sh-scene-t p{margin:2px 0 0;font-size:12.5px;line-height:1.6;color:var(--ink3)}
 .sh-cnt{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--sugi);background:var(--moegi-l);padding:3px 9px;border-radius:999px;line-height:1.4;letter-spacing:.06em;white-space:nowrap;align-self:flex-start}
 .sh-scene-l{display:flex;flex-wrap:wrap;gap:8px 6px;padding-top:10px;padding-bottom:4px;border-top:1px dashed var(--line2)}
@@ -362,6 +365,8 @@ CSS = """
 @media(max-width:600px){.sh-pdf{grid-template-columns:minmax(0,1fr);padding:16px}.sh-pdf-action{align-items:flex-start}}
 .sh-jump{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 28px;padding:16px;background:var(--moegi-l);border-radius:14px}
 .sh-jump .qk{min-height:44px}
+/* 共通CSSの content-visibility:auto は仮の高さ900pxで着地位置を計算するため、長い節が並ぶこのページでは外す（iPhoneでページ内リンクがずれる） */
+main#main>section{content-visibility:visible}
 .sh-common-group{margin-top:28px}
 .sh-common-group>h3{margin:0 0 12px;font-family:var(--disp);font-size:20px;line-height:1.5;color:var(--iwa)}
 .sh-common-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
@@ -414,7 +419,20 @@ CSS = """
 
 def scene_label(title):
     """長い書式名は意味の区切りで折り返す。"""
-    return e(title).replace("に関する", "に関する<wbr>")
+    return e(title).replace("に関する", "に関する<wbr>").replace("（", "<wbr>（")
+
+
+# 場面の見出しは短く文節の自動印が入らないので、折ってよい位置を明示する（320pxで語の途中で折れていた）
+SCENE_BREAKS = {
+    "住所・氏名・扶養・口座が変わった": "住所・氏名・<wbr>扶養・口座が<wbr>変わった",
+    "副業をしたいと言われた": "副業を<wbr>したいと<wbr>言われた",
+    "病気で長く休む・復帰する": "病気で<wbr>長く休む・<wbr>復帰する",
+    "退職する・辞めてもらう": "退職する・<wbr>辞めてもらう",
+    "定年を迎える人がいる": "定年を<wbr>迎える人が<wbr>いる",
+    "36協定・就業規則を出す": "36協定・<wbr>就業規則を<wbr>出す",
+    "給与の支払い方を決める": "給与の<wbr>支払い方を<wbr>決める",
+    "証明書を求められた": "証明書を<wbr>求められた",
+}
 
 
 def scene_block():
@@ -428,12 +446,19 @@ def scene_block():
         out.append(
             '<div class="sh-scene">'
             f'<div class="sh-scene-h"><span class="kmono" aria-hidden="true">{e(icon)}</span>'
-            f'<div class="sh-scene-t"><h3>{e(name)}</h3><p>{e(lead)}</p></div>'
+            f'<div class="sh-scene-t"><h3 class="sh-scene-name">{SCENE_BREAKS.get(name, e(name))}</h3><p>{e(lead)}</p></div>'
             f'<span class="sh-cnt">{len(fs)}本</span></div>'
             f'<div class="sh-scene-l">{links}</div></div>'
         )
     out.append("</div>")
     return "".join(out)
+
+
+# 入社書類セットに入力できるPDF版がある書式は、一覧からそちらへも案内する
+PDF_VERSION = {
+    no: '<br><a href="#onboarding-kit">入力できるPDF版：<wbr>入社書類セット</a>'
+    for no in ("D-06", "D-07", "D-39", "D-52")
+}
 
 
 def cat_blocks():
@@ -454,8 +479,8 @@ def cat_blocks():
         for f in fs:
             go = "記入する →"
             out.append(
-                f'<tr><td class="no">{e(f["no"])}</td><td class="nm"><a{link_attrs(f)}>{e(f["title"])}</a></td>'
-                f'<td class="use">{e(f["guide"]["use"])}</td><td class="go"><a{link_attrs(f)}>{go}</a></td></tr>'
+                f'<tr><td class="no">{e(f["no"])}</td><td class="nm"><a{link_attrs(f)}>{scene_label(f["title"])}</a></td>'
+                f'<td class="use">{e(f["guide"]["use"])}{PDF_VERSION.get(f["no"], "")}</td><td class="go"><a{link_attrs(f)}>{go}</a></td></tr>'
             )
         out.append("</tbody></table></div></div>")
     return "".join(out)
@@ -493,7 +518,7 @@ def procedure_pdf_block():
         preview = preview_block(
             {
                 **form,
-                "preview": f"assets/previews/procedure-{form['slug']}-sample.webp",
+                "preview": form.get("preview") or f"assets/previews/procedure-{form['slug']}-sample.webp",
                 "preview_alt": f"{form['title']}の赤字の架空記入例",
                 "preview_caption": "赤字の架空記入例",
             },
@@ -609,7 +634,8 @@ def main_html():
     <a class="qk" href="#onboarding-kit">入社書類セット</a>
     <a class="qk" href="#procedure-pdfs">手続き連絡票PDF</a>
     <a class="qk" href="#dependent-forms">扶養の公式書式</a>
-    <a class="qk" href="#list">社内書式 {N_FORMS}点の一覧</a>
+    <a class="qk" href="#list">社内書式 {N_FORMS}本の一覧</a>
+    <a class="qk" href="#setting">会社情報を入れる</a>
   </nav>
 
   <section class="cat" id="common-forms" aria-labelledby="common-forms-title">
@@ -618,7 +644,7 @@ def main_html():
       <h2 class="cat-title" id="common-forms-title">よく使う基本書式</h2>
     </div>
     <p class="cat-desc">入社、勤務・休暇、休職・退職、証明など、日常の労務管理で使う{len(COMMON_PREVIEWS)}点を並べました。用紙の画像をクリックすると、ブラウザで記入・印刷できるHTML書式を開きます。</p>
-    <p class="sh-pdf-note">プレビューは入力前の1ページ目です。全文と入力欄は各書式を開いてご確認ください。会社情報をまとめて入れる場合は、<a href="#setting">会社情報の設定</a>をご利用ください。その他の書式は<a href="#list">社内書式{N_FORMS}点の一覧</a>から探せます。</p>
+    <p class="sh-pdf-note">プレビューは入力前の1ページ目です。全文と入力欄は各書式を開いてご確認ください。会社情報をまとめて入れる場合は、<a href="#setting">会社情報の設定</a>をご利用ください。その他の書式は<a href="#list">社内書式{N_FORMS}本の一覧</a>から探せます。</p>
     {common_forms_block()}
   </section>
 
@@ -630,7 +656,7 @@ def main_html():
     <p class="cat-desc">会社が作成する労働条件通知書と、従業員が記入する4つの書式をまとめました。準備ガイドで、必要な書類と提出先・期限を案内できます。</p>
     <article class="sh-pdf" data-kit-file="onboarding-kit.zip">
       <div><h3>8点をまとめてダウンロード</h3><p>準備ガイド、労働条件通知書、従業員が記入する4書式に、会社から当事務所へ送る入社連絡票・事業所基本情報シートを同梱しています。会社で必要なものを選んで、従業員へお渡しください。</p></div>
-      <div class="sh-pdf-action"><a class="qk" href="assets/download/onboarding-kit.zip" download="入社書類セット.zip" aria-label="入社書類セット8点をまとめてダウンロード（PDF7点・Excel1点のZIP）">一式をダウンロード ↓</a><small>PDF7点・Excel1点／ZIP・約40MB</small></div>
+      <div class="sh-pdf-action"><a class="qk" href="assets/download/onboarding-kit.zip" download="入社書類セット.zip" aria-label="入社書類セット8点をまとめてダウンロード（PDF7点・Excel1点のZIP）">一式をダウンロード ↓</a><small>PDF7点・Excel1点／ZIP・約14MB</small></div>
     </article>
     <ol class="sh-pdf-guide" aria-label="入社書類を準備する4つの手順">
       <li><strong>会社：</strong>雇用条件を決め、労働条件通知書を作成して本人へ交付します。</li>
@@ -642,7 +668,7 @@ def main_html():
     {onboarding_kit_block()}
     <article class="sh-pdf sh-pdf-official">
       <div><h3>税の扶養控除等申告書</h3><p>扶養家族がいない方も、主な給与の支払先へ提出する書類です。給与の支給年に合う国税庁の公式様式を選び、会社の給与担当者へ提出してください。</p><p class="sh-pdf-fields">健康保険の扶養届とは別の書類です。健康保険の扶養を申請する方は、下の<a href="#dependent-forms">扶養の公式書式</a>もご確認ください。</p></div>
-      <div class="sh-pdf-action"><a class="qk" href="{e(TAX_DECLARATION_URL)}" target="_blank" rel="noopener noreferrer">支給年の公式書式を選ぶ ↗</a><small>国税庁／入力用PDF・記載例</small></div>
+      <div class="sh-pdf-action"><a class="qk" href="{e(TAX_DECLARATION_URL)}" target="_blank" rel="noopener noreferrer">支給年の公式書式を選ぶ ↗</a><small>国税庁／記載例あり。入力用PDFは保存してから開く</small></div>
     </article>
   </section>
 

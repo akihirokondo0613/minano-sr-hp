@@ -147,6 +147,7 @@ def main():
                 "cat": f["cat"],
                 "title": f["title"],
                 "to": f["to"],
+                **({"sig": f["sig"]} if "sig" in f else {}),
                 "intro": [fix_text(s) for s in f["intro"]],
                 "blocks": conv_blocks(f["blocks"], f["no"])
                 + EXTRA_BLOCKS.get(f["no"], []),
