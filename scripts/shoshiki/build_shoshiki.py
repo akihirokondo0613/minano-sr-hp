@@ -32,6 +32,17 @@ COMMON_PREVIEWS = json.loads(
     (REPO / "data" / "shoshiki" / "common_previews.json").read_text(encoding="utf-8")
 )
 COMMON_CATEGORIES = ["入社", "勤務・休暇", "休職・退職", "証明・その他"]
+# 書式の本文・解説に、照合に使った他事務所名や作業ツール名が混ざらないようにする
+# （2026-10-18、D-29 の解説に他事務所の書式名が残っていた）。リポジトリは公開されている。
+INTERNAL_WORDS = ["とよひら", "ハーモニー", "アクエルド", "Manus", "Codex", "Claude", "社労夢"]
+_leaks = [
+    (f["no"], w)
+    for f in FORMS
+    for w in INTERNAL_WORDS
+    if w in json.dumps(f, ensure_ascii=False)
+]
+if _leaks:
+    raise ValueError(f"書式に内部向けの語が残っています：{_leaks}")
 if len({form["no"] for form in COMMON_PREVIEWS}) != len(COMMON_PREVIEWS):
     raise ValueError("基本書式のプレビュー番号が重複しています。")
 for form in COMMON_PREVIEWS:
@@ -308,7 +319,17 @@ CSS = """
 .sh-cnt{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--sugi);background:var(--moegi-l);padding:3px 9px;border-radius:999px;line-height:1.4;letter-spacing:.06em;white-space:nowrap;align-self:flex-start}
 .sh-scene-l{display:flex;flex-wrap:wrap;gap:8px 6px;padding-top:10px;padding-bottom:4px;border-top:1px dashed var(--line2)}
 @media(max-width:760px){.qk{font-size:13px;padding:8px 14px}}
-.sh-cat{margin-top:22px}
+.sh-cat{margin-top:10px;border:1px solid var(--line);border-radius:12px;background:var(--shiro)}
+.sh-cat>summary{list-style:none;cursor:pointer;min-height:44px;padding:12px 44px 12px 16px;position:relative;border-radius:12px}
+.sh-cat>summary::-webkit-details-marker{display:none}
+.sh-cat>summary::after{content:"";position:absolute;right:18px;top:50%;width:9px;height:9px;border-right:2px solid var(--sugi);border-bottom:2px solid var(--sugi);transform:translateY(-70%) rotate(45deg);transition:transform .2s}
+.sh-cat[open]>summary::after{transform:translateY(-30%) rotate(-135deg)}
+.sh-cat>summary:hover{background:var(--moegi-l)}
+.sh-cat>summary:focus-visible{outline:2px solid var(--sugi);outline-offset:2px}
+.sh-cat-h{display:flex;align-items:baseline;gap:10px}
+.sh-cat-n{font-family:var(--mono);font-size:12px;color:var(--ink4)}
+.sh-cat[open]>.sh-tblwrap{padding:0 12px 12px}
+.sh-cat>summary .note{margin:2px 0 0}
 .sh-cat h3{margin:0 0 2px;font-size:15.5px;font-family:var(--disp);font-weight:800;color:var(--iwa)}
 .sh-cat .note{margin:0 0 8px;font-size:12.5px;color:var(--ink4)}
 .sh-tblwrap{overflow-x:auto}
@@ -471,7 +492,9 @@ def cat_blocks():
         if not fs:
             continue
         out.append(
-            f'<div class="sh-cat"><h3>{e(cat.split("_", 1)[1].replace("_", "・"))}</h3><p class="note">{e(CAT_NOTE.get(cat, ""))}</p>'
+            # 50本の表を全部並べるとスマホで約6,500pxになるため、分類ごとに開閉する（2026-10-18）
+            f'<details class="sh-cat"><summary><span class="sh-cat-h"><h3>{e(cat.split("_", 1)[1].replace("_", "・"))}</h3>'
+            f'<span class="sh-cat-n">{len(fs)}本</span></span><p class="note">{e(CAT_NOTE.get(cat, ""))}</p></summary>'
         )
         out.append(
             '<div class="sh-tblwrap"><table class="sh-tbl"><thead><tr><th>番号</th><th>書式</th><th>用途</th><th></th></tr></thead><tbody>'
@@ -482,7 +505,7 @@ def cat_blocks():
                 f'<tr><td class="no">{e(f["no"])}</td><td class="nm"><a{link_attrs(f)}>{scene_label(f["title"])}</a></td>'
                 f'<td class="use">{e(f["guide"]["use"])}{PDF_VERSION.get(f["no"], "")}</td><td class="go"><a{link_attrs(f)}>{go}</a></td></tr>'
             )
-        out.append("</tbody></table></div></div>")
+        out.append("</tbody></table></div></details>")
     return "".join(out)
 
 
@@ -654,10 +677,6 @@ def main_html():
       <h2 class="cat-title" id="onboarding-kit-title">入社時に渡す・集める書類セット</h2>
     </div>
     <p class="cat-desc">会社が作成する労働条件通知書と、従業員が記入する4つの書式をまとめました。準備ガイドで、必要な書類と提出先・期限を案内できます。</p>
-    <article class="sh-pdf" data-kit-file="onboarding-kit.zip">
-      <div><h3>8点をまとめてダウンロード</h3><p>準備ガイド、労働条件通知書、従業員が記入する4書式に、会社から当事務所へ送る入社連絡票・事業所基本情報シートを同梱しています。会社で必要なものを選んで、従業員へお渡しください。</p></div>
-      <div class="sh-pdf-action"><a class="qk" href="assets/download/onboarding-kit.zip" download="入社書類セット.zip" aria-label="入社書類セット8点をまとめてダウンロード（PDF7点・Excel1点のZIP）">一式をダウンロード ↓</a><small>PDF7点・Excel1点／ZIP・約14MB</small></div>
-    </article>
     <ol class="sh-pdf-guide" aria-label="入社書類を準備する4つの手順">
       <li><strong>会社：</strong>雇用条件を決め、労働条件通知書を作成して本人へ交付します。</li>
       <li><strong>会社：</strong>準備ガイドに提出先・提出期限を入力し、本人が記入する書式と一緒に渡します。</li>
@@ -721,7 +740,7 @@ def main_html():
       <div class="cat-icon kmono" aria-hidden="true">一覧</div>
       <h2 class="cat-title">分類から探す</h2>
     </div>
-    <p class="cat-desc">ブラウザで記入・印刷できる書式{N_FORMS}本。用途の欄に、その書式が要る理由を一行で書いています。</p>
+    <p class="cat-desc">ブラウザで記入・印刷できる書式{N_FORMS}本。分類を押すと、書式名と用途の一覧が開きます。</p>
     {cat_blocks()}
   </section>
 
@@ -978,7 +997,93 @@ def mark_phrases(text):
     return r.stdout
 
 
+# 法令ごとの逆引き表（docs/shoshiki-law-index.md）。改正があったとき、直す書式をここで引く。
+# 法令名は各書式の guide.law の表記から拾う。新しい略称を使ったら LAWS に足す。
+LAWS = [
+    ("労働基準法", ["労基法", "労基則"], "322AC0000000049"),
+    ("労働契約法", ["労契法"], "419AC0000000128"),
+    ("育児・介護休業法", ["育介法", "育介則"], "403AC0000000076"),
+    ("健康保険法", ["健保法", "健保則"], "211AC0000000070"),
+    ("厚生年金保険法", ["厚年法", "厚年則"], "329AC0000000115"),
+    ("雇用保険法", ["雇保法", "雇保則"], "349AC0000000116"),
+    ("労働安全衛生法", ["安衛法", "安衛則"], "347AC0000000057"),
+    ("個人情報保護法", ["個情法", "個人情報保護法"], "415AC0000000057"),
+    ("番号法", ["番号法"], "425AC0000000027"),
+    ("所得税法", ["所得税法"], "340AC0000000033"),
+    ("民法", ["民法"], "129AC0000000089"),
+    ("身元保証に関する法律", ["身元保証法"], "308AC1000000042"),
+    ("高年齢者雇用安定法", ["高年齢者雇用安定法", "高年法"], "346AC0000000068"),
+    ("パートタイム・有期雇用労働法", ["パート有期法"], "405AC0000000076"),
+    ("労働者災害補償保険法", ["労災法"], "322AC0000000050"),
+    ("不正競争防止法", ["不正競争防止法"], "405AC0000000047"),
+]
+# guide.law に略称が無いが、改正の影響を受ける書式（法令名 → 書式番号）
+LAW_TAGS = {
+    "育児・介護休業法": ["D-13"],  # 子の看護等休暇・介護休暇の選択肢
+    "個人情報保護法": ["D-06"],
+    "健康保険法": ["D-17", "D-29"],
+    "雇用保険法": ["D-26", "D-27"],
+    "所得税法": ["D-27"],
+    "労働基準法": ["D-25"],
+    "労働契約法": ["D-22", "D-46"],
+    "不正競争防止法": ["D-28"],
+}
+# 法令の直接の根拠が無く、就業規則の定めによる書式（法改正の見直し対象外。就業規則の改定時に見直す）
+RULES_ONLY = ["D-14", "D-19", "D-20", "D-21", "D-51"]
+# 法改正の施行が集中する時期。この時期の後に見直し、forms_base.py の DATE（meta.as_of）を更新する。
+REVIEW_MONTHS = "毎年4月・10月（施行日が集中する4月1日・10月1日の後）"
+REVIEW_WARN_DAYS = 200
+
+
+def build_law_index():
+    rows = []
+    def cites(f, name, abbrs):
+        return any(a in f["guide"]["law"] for a in abbrs) or f["no"] in LAW_TAGS.get(name, [])
+
+    unmatched = [
+        f["no"]
+        for f in FORMS
+        if f["no"] not in RULES_ONLY and not any(cites(f, n, a) for n, a, _ in LAWS)
+    ]
+    for name, abbrs, law_id in LAWS:
+        hits = [f for f in FORMS if cites(f, name, abbrs)]
+        if not hits:
+            continue
+        forms = "、".join(f"{f['no']} {f['title']}" for f in hits)
+        rows.append(f"| {name}（{'・'.join(abbrs)}） | {len(hits)} | {forms} | https://laws.e-gov.go.jp/law/{law_id} |")
+    lines = [
+        "# 社内書式の根拠法令 逆引き表",
+        "",
+        "このファイルは `python3 scripts/shoshiki/build_shoshiki.py` が生成する。手で直さない。",
+        f"法改正があったら、その法令の行の書式を開き、本文（hints.py・forms_base.py・forms_extra.py）と解説（guide.law）を一次資料で確かめて直す。見直しの目安は{REVIEW_MONTHS}。見直したら forms_base.py の `DATE` を更新する（現在 {AS_OF}）。",
+        "通達・告示・ガイドラインだけを根拠にする書式は、法令の行から漏れるので、各書式の guide.law も読む。",
+        "",
+        "| 法令 | 書式数 | 書式 | 条文（e-Gov） |",
+        "|---|---|---|---|",
+        *rows,
+        "",
+    ]
+    rules = "、".join(f"{f['no']} {f['title']}" for f in FORMS if f["no"] in RULES_ONLY)
+    lines += [f"就業規則の定めによる書式（法改正ではなく就業規則の改定時に見直す）：{rules}", ""]
+    if unmatched:
+        lines += [f"根拠法令が未登録の書式（LAW_TAGS か RULES_ONLY に足す）：{'、'.join(unmatched)}", ""]
+    return "\n".join(lines)
+
+
+def warn_stale_review():
+    import datetime
+
+    days = (datetime.date.today() - datetime.date.fromisoformat(AS_OF)).days
+    if days > REVIEW_WARN_DAYS:
+        print(
+            f"注意：社内書式の法令確認日（meta.as_of={AS_OF}）から{days}日たっています。"
+            f"docs/shoshiki-law-index.md で直す書式を引き、見直して forms_base.py の DATE を更新してください。",
+            file=sys.stderr,
+        )
+
+
 def main():
+    warn_stale_review()
     check = "--check" in sys.argv
     office_files = sorted(
         p.relative_to(REPO).as_posix()
@@ -995,6 +1100,7 @@ def main():
     outputs = {
         REPO / PAGE: mark_phrases(build_index()),
         REPO / DL_PATH / "index.html": build_dl_page(),
+        REPO / "docs" / "shoshiki-law-index.md": build_law_index(),
     }
     for f in FORMS:
         if f.get("kind") == "xlsx":

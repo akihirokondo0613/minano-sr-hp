@@ -1,6 +1,6 @@
 # 社内書式ページ（shoshiki.html）の直し方
 
-会社と従業員の間で使う社内書式50本のひな形を、ブラウザで記入・印刷できるHTML版で公開しているページ。先頭の `#common-forms` では、よく使う22点を4つの用途に分け、実際の未記入用紙のプレビューとHTMLへのリンクを並べる。`#onboarding-kit` では、会社用の準備ガイド・労働条件通知書Excelと、従業員用の入力できるPDF4点を入社書類セットとして配布する。`#procedure-pdfs` では、社労士への入社・退職・休職連絡票PDF3種と、初回・変更時の事業所基本情報シートを案内する。旧社内書式のWord・Excel配布と登録案内は終了したままとし、新しい入社セットとは分けて管理する。正本と生成器はすべてこのリポジトリにある。デスクトップ側の旧生成器（顧問先用書式ページ_作業/04_書式生成）は 2026-09-06 以降は使わない。
+会社と従業員の間で使う社内書式50本のひな形を、ブラウザで記入・印刷できるHTML版で公開しているページ。先頭の `#common-forms` では、よく使う22点を4つの用途に分け、実際の未記入用紙のプレビューとHTMLへのリンクを並べる。`#onboarding-kit` では、会社用の準備ガイド・労働条件通知書Excelと、従業員用の入力できるPDF4点を入社書類セット（6点・1点ずつダウンロード）として配布する。`#procedure-pdfs` では、社労士への入社・退職・休職連絡票PDF3種と、初回・変更時の事業所基本情報シートを案内する。旧社内書式のWord・Excel配布と登録案内は終了したままとし、新しい入社セットとは分けて管理する。正本と生成器はすべてこのリポジトリにある。デスクトップ側の旧生成器（顧問先用書式ページ_作業/04_書式生成）は 2026-09-06 以降は使わない。
 
 ## 何がどこにあるか
 
@@ -19,7 +19,6 @@
 | preflight の検査 | `scripts/build-shoshiki-page.mjs --check`（HTML が最新か） |
 | 入社書類セットの掲載文・リンク | `scripts/shoshiki/build_shoshiki.py` の `ONBOARDING_KIT` と `onboarding_kit_block()` |
 | 入社書類セットの6ファイル | `assets/download/onboarding-kit/` の `guide.pdf`、`labor-notice.xlsx`、`personal.pdf`、`bank.pdf`、`commute.pdf`、`emergency.pdf` |
-| 入社書類セットの一括配布 | `assets/download/onboarding-kit.zip`（上の6点と入社連絡票・事業所基本情報シートの計8点。登録不要） |
 | 労働条件通知書の公開見本 | `assets/previews/labor-notice-sample.webp`（一般労働者用の架空記入例。トップと書式一覧で共用） |
 | 入社セットPDFのプレビュー | `assets/previews/onboarding-guide-preview.webp`（準備ガイド1ページ目）と `onboarding-{bank,commute}-sample.webp`・`onboarding-{personal,emergency}-sample-v2.webp`（各PDF2ページ目の架空記入例） |
 | 税の扶養控除等申告書の年別公式案内 | `scripts/shoshiki/build_shoshiki.py` の `TAX_DECLARATION_URL`（国税庁の様式・入力用PDF・記載例一覧） |
@@ -94,7 +93,7 @@ D-52は入力欄と個人番号の切り取り欄をA4一枚に収めるため�
 
 従業員用PDFは各2ページ（入力用と赤字の架空記入例）で、準備ガイドは案内2ページ。労働条件通知書Excelは現行の厚生労働省モデルを基準とする入力・一般労働者用・短時間労働者用の3シート。通知書を従業員自身が決める書式として案内しない。通勤届・緊急連絡先届は会社の運用に応じて使用し、一律の法定提出物として扱わない。番号・住所・資料の重複記入を減らす方針とし、書類本文と掲載文の担当・対象を一致させる。
 
-個別6ファイルとZIPの内容を同期する。ZIPには既存の入社連絡票・事業所基本情報シートも同梱し、会社から当事務所への依頼資料を含む8点（PDF7点・Excel1点）で配布する。公開前にはPDFの全ページ・入力保存・再表示・長い住所、Excelの空欄・入力反映・A4印刷を確認し、記入例は架空と明示する。記入済みファイルをサイトへ送信する仕組みは設けない。PDFとExcelの作者情報を含め、代表者氏名の非公開方針を維持する。
+一括ZIP（onboarding-kit.zip）は 2026-10-18 に配布を終了した（本人判断「不要」）。個別の6ファイルだけを配布し、旧URLはルートの `.htaccess` で `shoshiki.html#onboarding-kit` へ301で転送する。ZIPを作り直さない。公開前にはPDFの全ページ・入力保存・再表示・長い住所、Excelの空欄・入力反映・A4印刷を確認し、記入例は架空と明示する。記入済みファイルをサイトへ送信する仕組みは設けない。PDFとExcelの作者情報を含め、代表者氏名の非公開方針を維持する。
 
 書式一覧では入社セットの個別6点と、手続き連絡票・基本情報PDF4点の全10点にプレビューを表示する。準備ガイドは1ページ目、その他のPDFは2ページ目の赤字の架空記入例を実ファイルから画像にする。PDFの画像リンクはダウンロードとは分け、同じファイルの全2ページを別タブで開く。画像は840×1189のWebPとし、原稿変更時は該当プレビューも更新する。
 
@@ -104,14 +103,16 @@ D-52は入力欄と個人番号の切り取り欄をA4一枚に収めるため�
 
 ## 公開HTMLの検査とOffice版の保管
 
-対象変更のPerformance CIでは `scripts/test-shoshiki.cjs` を実行し、全50書式の画面・印刷、設定・キーボード・戻る進む・横スクロールをChromium/WebKitで検査する。基本書式22点の分類・HTML表示先・画像の読み込みと実表示を、320・390・768・1280pxと実スマホ390pxで確認する。入社セットの7リンク、記入担当・対象、4段フロー、各ファイルの取得、全10点のプレビュー画像の実表示とPDF表示先も検査する。基本書式の節追加に合わせ、一覧はmain直下の8節を実表示する。Office配布リンクの例外は新しい `assets/download/onboarding-kit/labor-notice.xlsx` と `assets/download/onboarding-kit.zip` の2つだけとする（扶養届の日本年金機構公式Excelリンクは従来どおり別扱い）。旧4ファイルが提供されないこと、旧配布URLからHTML一覧へ到達できることを引き続き検査する。
+対象変更のPerformance CIでは `scripts/test-shoshiki.cjs` を実行し、全50書式の画面・印刷、設定・キーボード・戻る進む・横スクロールをChromium/WebKitで検査する。基本書式22点の分類・HTML表示先・画像の読み込みと実表示を、320・390・768・1280pxと実スマホ390pxで確認する。入社セットの7リンク、記入担当・対象、4段フロー、各ファイルの取得、全10点のプレビュー画像の実表示とPDF表示先も検査する。基本書式の節追加に合わせ、一覧はmain直下の8節を実表示する。Office配布リンクの例外は `assets/download/onboarding-kit/labor-notice.xlsx` の1つだけとする（一括ZIPは配布終了。旧URLが404であることも検査する）（扶養届の日本年金機構公式Excelリンクは従来どおり別扱い）。旧4ファイルが提供されないこと、旧配布URLからHTML一覧へ到達できることを引き続き検査する。
 
-元データのD-31/D-32、Word描画機能、Office用検査スクリプトは保持する。`data/shoshiki/forms.json` は従来どおり公開対象で、Office版の生成物だけを非公開で保管する。必要な場合だけ `python3 scripts/shoshiki/build_zip.py` を実行する。出力先はGit管理対象外の `scripts/shoshiki/_build/office-*/` で、既存成果物を削除・上書きしない。deployは `scripts/` を公開から除外する。公開ディレクトリ `shoshiki/` にxlsx/docx/zip等が置かれた場合、HTML生成・preflightは失敗する。
+元データのD-31/D-32、Word描画機能、Office用検査スクリプトは保持する。`data/shoshiki/` は生成元で、2026-10-18 から配信しない（deploy-public.yml の「非公開ファイルを除外」で削除。解説の guide には内部向けの判断材料が入るため）。ただしGitHubのリポジトリは公開なので、他事務所名・作業ツール名は書かない。build_shoshiki.py の `INTERNAL_WORDS` に当たると生成が止まる。Office版の生成物は非公開で保管する。必要な場合だけ `python3 scripts/shoshiki/build_zip.py` を実行する。出力先はGit管理対象外の `scripts/shoshiki/_build/office-*/` で、既存成果物を削除・上書きしない。deployは `scripts/` を公開から除外する。公開ディレクトリ `shoshiki/` にxlsx/docx/zip等が置かれた場合、HTML生成・preflightは失敗する。
 
 ## 旧配布URL
 
 `shoshiki/dl/word-7kq3x9/` は配布終了と登録不要のHTML版を案内するページとして残す。同ディレクトリの既存 `.htaccess` は404をこの案内へ向ける。過去のZIP・Excelは公開対象から削除し、Git履歴で復元できる。Googleフォーム自体の閉鎖や文言変更は所有者側で行い、サイトの変更だけで閉鎖したとは扱わない。`robots.txt` で `/shoshiki/dl/` は Disallow、書式ページは `noindex`、sitemap には一覧だけ載る。IndexNow は `scripts/lib/indexnow-changes.mjs` で `shoshiki/` 配下を通知対象外にしている。
 
 ## 法令の確認
+
+法改正があったら、生成物の [shoshiki-law-index.md](shoshiki-law-index.md)（法令→書式の逆引き表）でその法令の行の書式を引き、本文と guide.law を一次資料で確かめて直す。見直しの目安は毎年4月・10月（施行日が集中する4月1日・10月1日の後）。見直したら `forms_base.py` の `DATE`（meta.as_of）を更新する。as_of から200日を過ぎると、build_shoshiki.py（preflight）が注意を出す。guide.law に略称が無い書式の対応は `build_shoshiki.py` の `LAW_TAGS`、就業規則だけが根拠の書式は `RULES_ONLY` に登録する。どちらにも無い書式は逆引き表の末尾に「未登録」と出る。
 
 各書式の `guide.law` は `meta.as_of` 時点の理解で書いてある。`guide.law/ops` は公開HTMLに出力していないため、公開本文の修正と生成元だけの修正を区別する。法改正で直すときは `forms_base.py`／`forms_extra.py` の `guide` と、必要なら本文を直し、`meta.as_of`（`forms_base.py` の `DATE`）を更新する。過去の登録者への更新案内を行う場合は、その希望とプライバシーポリシーに従う。

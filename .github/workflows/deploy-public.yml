@@ -170,6 +170,8 @@ jobs:
         run: |
           rm -f AGENTS.md CLAUDE.md admin-post.html assets-version.json icon-catalog.html .maintenance
           rm -rf _backup_* docs .github scripts
+          # 社内書式の正本（解説の内部メモを含む）は生成元なので配信しない。HTMLは生成済み（2026-10-18）
+          rm -rf data/shoshiki
           rm -f *.zip
           find . -name ".image-slots.state.json" -delete
           find . -name ".DS_Store" -delete

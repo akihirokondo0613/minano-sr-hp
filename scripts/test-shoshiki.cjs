@@ -23,6 +23,7 @@ const WIDTHS = [320, 390, 768, 1280];
 const PORTAL_WIDTHS = [320, 360, 361, 390, 768, 1280];
 const ENGINES = [['chromium', chromium], ['webkit', webkit]];
 const EPSILON = 1;
+const MIN_PRINT_SLACK = 24;
 const EXPECTED_FORM_COUNT = 50;
 const EXPECTED_COMMON_FORM_COUNT = 22;
 const COMMON_PREVIEWS = JSON.parse(require('node:fs').readFileSync(
@@ -34,6 +35,7 @@ const RETIRED_OFFICE_FILES = [
   'shoshiki/D-31_shukkinbo.xlsx', 'shoshiki/D-32_nenkyu-kanribo.xlsx',
   'shoshiki/dl/word-7kq3x9/shanai-shoshiki-word-202609.zip',
   'shoshiki/dl/word-7kq3x9/shanai-shoshiki-word-202610.zip',
+  'assets/download/onboarding-kit.zip',
 ];
 const PROCEDURE_PDFS = [
   'assets/download/procedure-establishment.pdf',
@@ -48,7 +50,6 @@ const ONBOARDING_KIT_FILES = [
   ['assets/download/onboarding-kit/bank.pdf', '口座振込同意書'],
   ['assets/download/onboarding-kit/commute.pdf', '通勤経路'],
   ['assets/download/onboarding-kit/emergency.pdf', '緊急連絡先'],
-  ['assets/download/onboarding-kit.zip', '入社書類セット8点'],
 ];
 const DOCUMENT_PREVIEWS = [
   ['guide.pdf', 'assets/previews/onboarding-guide-preview.webp', 'assets/download/onboarding-kit/guide.pdf'],
@@ -62,10 +63,9 @@ const DOCUMENT_PREVIEWS = [
   ['retirement', 'assets/previews/procedure-retirement-sample.webp', 'assets/download/procedure-retirement.pdf'],
   ['leave', 'assets/previews/procedure-leave-sample.webp', 'assets/download/procedure-leave.pdf'],
 ];
-// 入社セットのExcel・ZIPだけを例外とし、旧Office配布の再開は認めない。
+// 入社セットのExcelだけを例外とし、旧Office配布の再開は認めない（一括ZIPは2026-10-18に配布終了）。
 const ONBOARDING_OFFICE_PATHS = [
   '/assets/download/onboarding-kit/labor-notice.xlsx',
-  '/assets/download/onboarding-kit.zip',
 ];
 // CIの静的サーバーは下位ディレクトリのindexを補完しない。
 // 案内本文・操作は明示indexで検査し、公開ディレクトリURLは本番GETで照合する。
@@ -490,7 +490,14 @@ async function measureIndex(page) {
   }, { epsilon: EPSILON });
 }
 
+// 「分類から探す」は分類ごとの開閉式（2026-10-18）。表の実測の前に全分類を開く。
+async function openCategoryLists(page) {
+  await page.evaluate(() => document.querySelectorAll('#list details.sh-cat').forEach((element) => { element.open = true; }));
+  await settle(page);
+}
+
 async function checkTableNameTypography(page, engine, width) {
+  await openCategoryLists(page);
   const links = page.locator('.sh-tbl td.nm a');
   const count = await links.count();
   check(count === EXPECTED_FORM_COUNT,
@@ -585,6 +592,7 @@ async function checkTableNameTypography(page, engine, width) {
 async function checkCategoryTableScroll(page, engine, width) {
   // スマホ幅では表を1書式1行のカード状に組み替え、横スクロールなしで全列を読める。
   // 各カテゴリ表の最終行の「記入する →」が、表・画面内で44px以上の高さで押せることを確かめる。
+  await openCategoryLists(page);
   const wrappers = page.locator('.sh-tblwrap');
   const count = await wrappers.count();
   check(count === EXPECTED_TABLE_CATEGORIES,
@@ -1490,7 +1498,22 @@ async function runEngine(browser, engine, forms) {
         check(print.measuredElements > 10 && print.measuredTextRects > 10 && print.editables > 0, `${engine}:${id}:印刷の実測が不足しています`);
         check(print.hidden.length >= 2 && print.hidden.every((item) => item.hidden), `${engine}:${id}:印刷時に操作欄が残ります`);
         check(print.offenders.length === 0, `${engine}:${id}:印刷用紙から逸脱 ${JSON.stringify(print.offenders.slice(0, 6))}`);
-        printResults.push({ engine, id, metrics: print });
+        // 手元のMacとCIのLinuxでは字形の高さが違い、D-52 は手元で収まってもCIで約9pxはみ出した（2026-10-18）。
+        // 環境差を吸収できるよう、印刷時の下余白を最低24px（約6mm）残す。
+        const printSlack = await page.evaluate(() => {
+          const paper = document.querySelector('.page');
+          const cut = paper.querySelector('.cut');
+          if (cut) return cut.getBoundingClientRect().top - cut.previousElementSibling.getBoundingClientRect().bottom;
+          const inner = paper.getBoundingClientRect().bottom - parseFloat(getComputedStyle(paper).paddingBottom);
+          let bottom = 0;
+          for (const element of paper.querySelectorAll('*')) {
+            const rect = element.getBoundingClientRect();
+            if (rect.height) bottom = Math.max(bottom, rect.bottom);
+          }
+          return inner - bottom;
+        });
+        check(printSlack >= MIN_PRINT_SLACK, `${engine}:${id}:印刷の下余白が${Math.round(printSlack)}pxしかありません（${MIN_PRINT_SLACK}px以上）`);
+        printResults.push({ engine, id, metrics: { ...print, printSlack } });
         if (PDF_FORMS.includes(id)) {
           await screenshot(page, `${engine}-${id}-print`, true);
           if (engine === 'chromium') {
