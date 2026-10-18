@@ -55,16 +55,16 @@ const FORM_GALLERY_KEYS = [
   ...COMMON_FORM_PREVIEWS.map((form) => form.no),
 ];
 const FORM_GALLERY_PREVIEWS = [
-  'assets/previews/procedure-onboarding-sample-v2.webp',
+  'assets/previews/procedure-onboarding-sample-v3.webp',
   'assets/previews/labor-notice-sample.webp',
-  'assets/previews/procedure-retirement-sample.webp',
-  'assets/previews/procedure-leave-sample.webp',
-  'assets/previews/onboarding-guide-preview.webp',
-  'assets/previews/onboarding-personal-sample-v2.webp',
+  'assets/previews/procedure-retirement-sample-v2.webp',
+  'assets/previews/procedure-leave-sample-v2.webp',
+  'assets/previews/onboarding-guide-preview-v2.webp',
+  'assets/previews/onboarding-personal-sample-v3.webp',
   'assets/previews/onboarding-bank-sample.webp',
   'assets/previews/onboarding-commute-sample.webp',
-  'assets/previews/onboarding-emergency-sample-v2.webp',
-  'assets/previews/procedure-establishment-sample.webp',
+  'assets/previews/onboarding-emergency-sample-v3.webp',
+  'assets/previews/procedure-establishment-sample-v2.webp',
   ...COMMON_FORM_PREVIEWS.map((form) => form.preview),
 ];
 const FORM_GALLERY_DOWNLOADS = [

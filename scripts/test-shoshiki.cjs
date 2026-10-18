@@ -52,16 +52,16 @@ const ONBOARDING_KIT_FILES = [
   ['assets/download/onboarding-kit/emergency.pdf', '緊急連絡先'],
 ];
 const DOCUMENT_PREVIEWS = [
-  ['guide.pdf', 'assets/previews/onboarding-guide-preview.webp', 'assets/download/onboarding-kit/guide.pdf'],
+  ['guide.pdf', 'assets/previews/onboarding-guide-preview-v2.webp', 'assets/download/onboarding-kit/guide.pdf'],
   ['labor-notice.xlsx', 'assets/previews/labor-notice-sample.webp', null],
-  ['personal.pdf', 'assets/previews/onboarding-personal-sample-v2.webp', 'assets/download/onboarding-kit/personal.pdf'],
+  ['personal.pdf', 'assets/previews/onboarding-personal-sample-v3.webp', 'assets/download/onboarding-kit/personal.pdf'],
   ['bank.pdf', 'assets/previews/onboarding-bank-sample.webp', 'assets/download/onboarding-kit/bank.pdf'],
   ['commute.pdf', 'assets/previews/onboarding-commute-sample.webp', 'assets/download/onboarding-kit/commute.pdf'],
-  ['emergency.pdf', 'assets/previews/onboarding-emergency-sample-v2.webp', 'assets/download/onboarding-kit/emergency.pdf'],
-  ['establishment', 'assets/previews/procedure-establishment-sample.webp', 'assets/download/procedure-establishment.pdf'],
-  ['onboarding', 'assets/previews/procedure-onboarding-sample-v2.webp', 'assets/download/procedure-onboarding.pdf'],
-  ['retirement', 'assets/previews/procedure-retirement-sample.webp', 'assets/download/procedure-retirement.pdf'],
-  ['leave', 'assets/previews/procedure-leave-sample.webp', 'assets/download/procedure-leave.pdf'],
+  ['emergency.pdf', 'assets/previews/onboarding-emergency-sample-v3.webp', 'assets/download/onboarding-kit/emergency.pdf'],
+  ['establishment', 'assets/previews/procedure-establishment-sample-v2.webp', 'assets/download/procedure-establishment.pdf'],
+  ['onboarding', 'assets/previews/procedure-onboarding-sample-v3.webp', 'assets/download/procedure-onboarding.pdf'],
+  ['retirement', 'assets/previews/procedure-retirement-sample-v2.webp', 'assets/download/procedure-retirement.pdf'],
+  ['leave', 'assets/previews/procedure-leave-sample-v2.webp', 'assets/download/procedure-leave.pdf'],
 ];
 // 入社セットのExcelだけを例外とし、旧Office配布の再開は認めない（一括ZIPは2026-10-18に配布終了）。
 const ONBOARDING_OFFICE_PATHS = [
