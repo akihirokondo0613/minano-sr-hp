@@ -1,0 +1,695 @@
+[
+  {
+    "slug": "personal",
+    "title": "入社時 本人情報シート",
+    "subtitle": "従業員記入｜社会保険・雇用保険・給与事務に使う情報",
+    "filename": "入社時 本人情報シート_入力用・記入例.pdf",
+    "company_rows": [
+      {
+        "fields": [
+          {
+            "name": "company",
+            "label": "会社名（会社が先に入力）",
+            "example": "株式会社サンプル"
+          }
+        ],
+        "box": 21
+      }
+    ],
+    "input_intro": "枠をクリックして入力・保存し、会社の担当者へ提出してください。記入例は2ページ目へ。",
+    "sections": [
+      {
+        "title": "本人の情報",
+        "rows": [
+          {
+            "fields": [
+              {
+                "name": "name",
+                "label": "氏名",
+                "example": "佐藤 太郎"
+              },
+              {
+                "name": "kana",
+                "label": "フリガナ",
+                "example": "サトウ タロウ"
+              }
+            ],
+            "box": 21
+          },
+          {
+            "fields": [
+              {
+                "name": "birth",
+                "label": "生年月日（西暦 年/月/日）",
+                "example": "1995/06/15",
+                "ratio": 0.42
+              },
+              {
+                "name": "sex",
+                "label": "性別（男・女）",
+                "example": "男",
+                "ratio": 0.22
+              },
+              {
+                "name": "nationality",
+                "label": "国籍",
+                "example": "日本",
+                "ratio": 0.36
+              }
+            ],
+            "box": 21
+          },
+          {
+            "fields": [
+              {
+                "name": "phone",
+                "label": "電話番号",
+                "example": "090-0000-0000",
+                "ratio": 0.4
+              },
+              {
+                "name": "email",
+                "label": "メールアドレス",
+                "example": "taro@example.com",
+                "ratio": 0.6
+              }
+            ],
+            "box": 21
+          }
+        ]
+      },
+      {
+        "title": "住民票の住所（現住所が異なる場合は「緊急連絡先届」の住所欄へ）",
+        "rows": [
+          {
+            "fields": [
+              {
+                "name": "postal",
+                "label": "郵便番号",
+                "example": "000-0000",
+                "ratio": 0.23
+              },
+              {
+                "name": "prefecture",
+                "label": "都道府県",
+                "example": "富山県",
+                "ratio": 0.23
+              },
+              {
+                "name": "city",
+                "label": "市区町村",
+                "example": "富山市",
+                "ratio": 0.54
+              }
+            ],
+            "box": 21
+          },
+          {
+            "fields": [
+              {
+                "name": "street",
+                "label": "町名・番地",
+                "example": "○○町一丁目１番１号",
+                "multiline": true
+              }
+            ],
+            "box": 30
+          },
+          {
+            "fields": [
+              {
+                "name": "building",
+                "label": "建物名",
+                "example": "サクラレジデンス富山駅前",
+                "multiline": true,
+                "ratio": 0.8
+              },
+              {
+                "name": "room",
+                "label": "部屋番号",
+                "example": "0101号室",
+                "ratio": 0.2
+              }
+            ],
+            "box": 30
+          }
+        ]
+      },
+      {
+        "title": "番号・加入状況（番号は資料を見て正確に記入）",
+        "rows": [
+          {
+            "fields": [
+              {
+                "name": "pension_number",
+                "label": "基礎年金番号①（10桁）",
+                "example": "0001-012345",
+                "maxlen": 11,
+                "ratio": 0.5
+              },
+              {
+                "name": "pension_status",
+                "label": "初加入・未付番の場合（「未付番」と記入）",
+                "example": "―",
+                "tooltip": "まだ番号が発行されていない場合は「初加入・未付番」と記入",
+                "ratio": 0.5
+              }
+            ],
+            "box": 21
+          },
+          {
+            "fields": [
+              {
+                "name": "employment_number",
+                "label": "雇用保険番号②（11桁）",
+                "example": "0000-012345-0",
+                "maxlen": 13,
+                "ratio": 0.5
+              },
+              {
+                "name": "employment_status",
+                "label": "雇用保険の加入経験（有・初めて）",
+                "example": "有",
+                "ratio": 0.5
+              }
+            ],
+            "box": 21
+          },
+          {
+            "fields": [
+              {
+                "name": "my_number",
+                "label": "本人のマイナンバー③（12桁）",
+                "example": "000000001234",
+                "maxlen": 12,
+                "ratio": 0.5
+              },
+              {
+                "name": "student",
+                "label": "学生区分（昼間・夜間/通信・非学生）",
+                "example": "非学生",
+                "ratio": 0.5
+              }
+            ],
+            "box": 21
+          },
+          {
+            "fields": [
+              {
+                "name": "other_insurance",
+                "label": "他社での社会保険加入（有・無）",
+                "example": "無"
+              },
+              {
+                "name": "dependents",
+                "label": "健康保険の扶養申請（有・無）",
+                "example": "無"
+              }
+            ],
+            "box": 21
+          }
+        ]
+      }
+    ],
+    "documents": [
+      "①基礎年金番号通知書（代替：年金手帳等）。既に番号がある方は必ず記入。初加入で未付番の方は右欄へ。",
+      "②雇用保険被保険者証。加入歴があり番号不明の場合は、前職の会社名・勤務期間を担当者へ連絡。",
+      "③マイナンバーカード等。会社が指定する方法で番号・本人確認を受けてください。"
+    ],
+    "example_notes": [
+      "①通知書の「基礎年金番号」欄。10桁の番号で、資格確認書の記号・番号とは異なります。",
+      "②雇用保険被保険者証の「被保険者番号」欄。4桁−6桁−1桁をそのまま記入します。",
+      "③マイナンバーカード裏面の「個人番号」欄（12桁）。記入例の番号はすべて架空です。"
+    ],
+    "note": "マイナンバーの利用目的：給与の源泉徴収事務、健康保険・厚生年金保険・雇用保険の届出事務。扶養申請がある方は、会社から案内する公式届書もご用意ください。",
+    "example_intro": "赤字は架空の記入例です。1ページ目に実際の情報を入力して、会社へ提出してください。"
+  },
+  {
+    "slug": "bank",
+    "title": "給与口座振込同意書",
+    "subtitle": "従業員記入｜本人が指定する本人名義の口座",
+    "filename": "給与口座振込同意書_入力用・記入例.pdf",
+    "company_rows": [],
+    "input_intro": "枠をクリックして入力・保存し、会社の担当者へ提出してください。記入例は2ページ目へ。",
+    "sections": [
+      {
+        "title": "提出先・本人",
+        "rows": [
+          {
+            "fields": [
+              {
+                "name": "company",
+                "label": "会社名",
+                "example": "株式会社サンプル"
+              },
+              {
+                "name": "name",
+                "label": "本人氏名",
+                "example": "佐藤 太郎"
+              }
+            ],
+            "box": 21
+          }
+        ]
+      },
+      {
+        "title": "口座振込を希望する範囲・開始時期",
+        "rows": [
+          {
+            "fields": [
+              {
+                "name": "regular",
+                "label": "定期賃金（希望する・しない）",
+                "example": "希望する"
+              },
+              {
+                "name": "regular_excluded",
+                "label": "定期賃金から除く額（なければ0円）",
+                "example": "0円"
+              }
+            ],
+            "box": 21
+          },
+          {
+            "fields": [
+              {
+                "name": "bonus",
+                "label": "賞与（希望する・しない）",
+                "example": "希望する"
+              },
+              {
+                "name": "bonus_excluded",
+                "label": "賞与から除く額（なければ0円）",
+                "example": "0円"
+              }
+            ],
+            "box": 21
+          },
+          {
+            "fields": [
+              {
+                "name": "retirement",
+                "label": "退職金（希望する・しない）",
+                "example": "希望する"
+              },
+              {
+                "name": "start",
+                "label": "開始希望（西暦 年/月分の給与から）",
+                "example": "2027/04分から"
+              }
+            ],
+            "box": 21
+          }
+        ]
+      },
+      {
+        "title": "振込先口座",
+        "rows": [
+          {
+            "fields": [
+              {
+                "name": "bank",
+                "label": "金融機関名",
+                "example": "サンプル銀行"
+              },
+              {
+                "name": "branch",
+                "label": "支店名",
+                "example": "富山駅前支店"
+              }
+            ],
+            "box": 21
+          },
+          {
+            "fields": [
+              {
+                "name": "type",
+                "label": "預金種別（普通・当座）",
+                "example": "普通",
+                "ratio": 0.3
+              },
+              {
+                "name": "account",
+                "label": "口座番号（先頭の0も記入）",
+                "example": "0012345",
+                "maxlen": 8,
+                "ratio": 0.7
+              }
+            ],
+            "box": 21
+          },
+          {
+            "fields": [
+              {
+                "name": "holder",
+                "label": "口座名義（カタカナ）",
+                "example": "サトウ タロウ"
+              }
+            ],
+            "box": 21
+          }
+        ]
+      },
+      {
+        "title": "本人の同意",
+        "rows": [
+          {
+            "fields": [
+              {
+                "name": "consent_name",
+                "label": "上記の範囲・口座への振込に同意する本人氏名",
+                "example": "佐藤 太郎",
+                "ratio": 0.6
+              },
+              {
+                "name": "consent_date",
+                "label": "同意日（西暦 年/月/日）",
+                "example": "2027/03/20",
+                "ratio": 0.4
+              }
+            ],
+            "box": 21
+          }
+        ]
+      }
+    ],
+    "documents": [
+      "通帳の口座情報ページ（代替：銀行アプリ・ネット銀行の口座情報画面）。残高・取引明細は不要です。"
+    ],
+    "example_notes": [
+      "銀行名・支店名・種別・番号・名義は、通帳や銀行アプリの「口座情報」で確認します。",
+      "ゆうちょ銀行は「他の金融機関からの振込用」の店名・預金種目・口座番号を記入。通常の記号・番号とは異なります。",
+      "開始希望時期と除く金額を記入し、本人が同意欄を入力してください。"
+    ],
+    "note": "福井労働局「口座振込同意書」をもとに、みなの社会保険労務士事務所が編集。会社は賃金支払日に払い出せる取扱いを確認してください。",
+    "link": [
+      "参考：福井労働局の公式様式（PDF）",
+      "https://jsite.mhlw.go.jp/fukui-roudoukyoku/content/contents/001677560.pdf"
+    ],
+    "example_intro": "赤字は架空の記入例です。1ページ目に実際の情報を入力して、会社へ提出してください。"
+  },
+  {
+    "slug": "commute",
+    "title": "通勤経路・通勤手当申請書",
+    "subtitle": "従業員記入｜通勤手当を申請する方・会社から案内された方",
+    "filename": "通勤経路・通勤手当申請書_入力用・記入例.pdf",
+    "company_rows": [],
+    "input_intro": "枠をクリックして入力・保存し、会社の担当者へ提出してください。記入例は2ページ目へ。",
+    "sections": [
+      {
+        "title": "本人・通勤先",
+        "rows": [
+          {
+            "fields": [
+              {
+                "name": "company",
+                "label": "会社名",
+                "example": "株式会社サンプル"
+              },
+              {
+                "name": "name",
+                "label": "本人氏名",
+                "example": "佐藤 太郎"
+              }
+            ],
+            "box": 21
+          },
+          {
+            "fields": [
+              {
+                "name": "destination",
+                "label": "勤務先・事業所名",
+                "example": "富山本社",
+                "ratio": 0.6
+              },
+              {
+                "name": "start",
+                "label": "利用開始日（西暦 年/月/日）",
+                "example": "2027/04/01",
+                "ratio": 0.4
+              }
+            ],
+            "box": 21
+          },
+          {
+            "fields": [
+              {
+                "name": "method",
+                "label": "通勤方法（電車・バス・車・自転車・徒歩等）",
+                "example": "電車・徒歩"
+              },
+              {
+                "name": "days",
+                "label": "通勤予定（月何日程度）",
+                "example": "月20日"
+              }
+            ],
+            "box": 21
+          }
+        ]
+      },
+      {
+        "title": "通常の通勤経路（自宅住所は本人情報シート・緊急連絡先届を参照）",
+        "rows": [
+          {
+            "fields": [
+              {
+                "name": "route",
+                "label": "経路（自宅→駅・停留所→乗換→勤務先）",
+                "example": "自宅→富山駅→あいの風とやま鉄道→小杉駅→勤務先",
+                "multiline": true
+              }
+            ],
+            "box": 58
+          },
+          {
+            "fields": [
+              {
+                "name": "distance",
+                "label": "片道距離（車等を利用する場合・km）",
+                "example": "―"
+              },
+              {
+                "name": "time",
+                "label": "片道所要時間（分）",
+                "example": "35分"
+              }
+            ],
+            "box": 21
+          }
+        ]
+      },
+      {
+        "title": "公共交通機関の運賃（利用する場合）",
+        "rows": [
+          {
+            "fields": [
+              {
+                "name": "fare",
+                "label": "片道運賃（円）",
+                "example": "300円"
+              },
+              {
+                "name": "pass",
+                "label": "1か月定期券の金額（円）",
+                "example": "12,000円"
+              }
+            ],
+            "box": 21
+          },
+          {
+            "fields": [
+              {
+                "name": "fare_notes",
+                "label": "経路・運賃の補足（バス併用など）",
+                "example": "駅から勤務先までは徒歩10分",
+                "multiline": true
+              }
+            ],
+            "box": 34
+          }
+        ]
+      },
+      {
+        "title": "会社確認欄（従業員の記入は不要）",
+        "rows": [
+          {
+            "fields": [
+              {
+                "name": "approved",
+                "label": "承認した経路・支給額等",
+                "example": "会社が確認して記入",
+                "multiline": true
+              }
+            ],
+            "box": 34
+          }
+        ]
+      }
+    ],
+    "documents": [
+      "公共交通機関：経路・運賃が分かる検索結果等。車通勤：免許証・任意保険等は会社の許可基準に応じて案内します。"
+    ],
+    "example_notes": [
+      "経路は乗換や徒歩区間も含めて記入します。住所をもう一度書く必要はありません。",
+      "例の距離・運賃は架空です。会社の通勤手当規程に沿って担当者が確認します。"
+    ],
+    "example_intro": "赤字は架空の記入例です。1ページ目に実際の情報を入力して、会社へ提出してください。",
+    "example_heading": "記入のポイント"
+  },
+  {
+    "slug": "emergency",
+    "title": "緊急連絡先届",
+    "subtitle": "従業員記入｜緊急時の連絡先・住民票と異なる現住所",
+    "filename": "緊急連絡先届_入力用・記入例.pdf",
+    "company_rows": [],
+    "input_intro": "枠をクリックして入力・保存し、会社の担当者へ提出してください。記入例は2ページ目へ。",
+    "sections": [
+      {
+        "title": "本人",
+        "rows": [
+          {
+            "fields": [
+              {
+                "name": "company",
+                "label": "会社名",
+                "example": "株式会社サンプル"
+              },
+              {
+                "name": "name",
+                "label": "本人氏名",
+                "example": "佐藤 太郎"
+              }
+            ],
+            "box": 21
+          }
+        ]
+      },
+      {
+        "title": "現住所（住民票と同じなら、この住所欄は記入不要）",
+        "rows": [
+          {
+            "fields": [
+              {
+                "name": "same",
+                "label": "住民票住所との関係（同じ・異なる）",
+                "example": "異なる"
+              }
+            ],
+            "box": 21
+          },
+          {
+            "fields": [
+              {
+                "name": "postal",
+                "label": "郵便番号",
+                "example": "000-0000",
+                "ratio": 0.23
+              },
+              {
+                "name": "prefecture",
+                "label": "都道府県",
+                "example": "富山県",
+                "ratio": 0.23
+              },
+              {
+                "name": "city",
+                "label": "市区町村",
+                "example": "富山市",
+                "ratio": 0.54
+              }
+            ],
+            "box": 21
+          },
+          {
+            "fields": [
+              {
+                "name": "street",
+                "label": "町名・番地",
+                "example": "○○町一丁目１番１号",
+                "multiline": true
+              }
+            ],
+            "box": 34
+          },
+          {
+            "fields": [
+              {
+                "name": "building",
+                "label": "建物名",
+                "example": "シンマチレジデンス富山中央",
+                "multiline": true,
+                "ratio": 0.8
+              },
+              {
+                "name": "room",
+                "label": "部屋番号",
+                "example": "0201号室",
+                "ratio": 0.2
+              }
+            ],
+            "box": 34
+          }
+        ]
+      },
+      {
+        "title": "緊急連絡先（連絡先の方へ利用目的を伝えてから記入）",
+        "rows": [
+          {
+            "fields": [
+              {
+                "name": "contact_name",
+                "label": "氏名",
+                "example": "佐藤 花子",
+                "ratio": 0.7
+              },
+              {
+                "name": "relationship",
+                "label": "本人との関係",
+                "example": "配偶者",
+                "ratio": 0.3
+              }
+            ],
+            "box": 21
+          },
+          {
+            "fields": [
+              {
+                "name": "contact_phone",
+                "label": "電話番号（最初に連絡する番号）",
+                "example": "090-0000-1111"
+              },
+              {
+                "name": "alternate_phone",
+                "label": "別の電話番号（任意）",
+                "example": "―"
+              }
+            ],
+            "box": 21
+          },
+          {
+            "fields": [
+              {
+                "name": "contact_notes",
+                "label": "連絡時の補足（時間帯など・任意）",
+                "example": "平日日中も携帯電話へ連絡可",
+                "multiline": true
+              }
+            ],
+            "box": 42
+          }
+        ]
+      }
+    ],
+    "documents": [
+      "添付資料は原則不要です。会社から指定がある場合は、その案内に従ってください。"
+    ],
+    "example_notes": [
+      "現住所が住民票と同じ場合は「同じ」と記入し、住所欄は空欄で構いません。",
+      "緊急連絡先は、事故・急病などの緊急時に会社が連絡するために使います。"
+    ],
+    "note": "利用目的：緊急時の連絡、会社が行う従業員管理・必要な住所関連の届出。住所・連絡先が変わったときは担当者へご連絡ください。",
+    "example_intro": "赤字は架空の記入例です。1ページ目に実際の情報を入力して、会社へ提出してください。",
+    "example_heading": "記入のポイント"
+  }
+]
