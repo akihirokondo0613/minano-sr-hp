@@ -82,9 +82,9 @@ def form_meta(product):
 
 def draw_form(product, raw):
     c = new_canvas(raw, form_meta(product))
-    L.page(c, product, False)
-    L.page(c, product, True)
+    spare = [L.page(c, product, False), L.page(c, product, True)]
     c.save()
+    return spare
 
 
 def _guide_header(c, title, page, label):
@@ -130,6 +130,7 @@ def draw_guide(guide, raw):
         top = _link(c, text, url, top)
     if top <= 42:
         raise ValueError(("準備ガイド1ページ目がはみ出す", top))
+    spare = [top - 42]
     c.showPage()
     top = _guide_header(c, p2["heading"], 2, guide["footer_label"])
     top -= L.paragraph(c, p2["intro"], L.LEFT, top, L.WIDTH, "body") + 12
@@ -143,8 +144,10 @@ def draw_guide(guide, raw):
         top = _link(c, text, url, top)
     if top <= 42:
         raise ValueError(("準備ガイド2ページ目がはみ出す", top))
+    spare.append(top - 42)
     c.showPage()
     c.save()
+    return spare
 
 
 def finish(raw, work, target, tabs):
@@ -210,17 +213,17 @@ def main():
     }
     guide = load("guide.json")
     reports = []
-    with tempfile.TemporaryDirectory(
-        prefix="onboarding-kit-work-", dir=None
-    ) as tmp:
+    with tempfile.TemporaryDirectory(prefix="onboarding-kit-work-", dir=None) as tmp:
         work = Path(tmp)
         for slug in args.only or TARGETS:
             raw = work / (slug + "_raw.pdf")
             if slug == "guide":
-                draw_guide(guide, raw)
+                spare = draw_guide(guide, raw)
             else:
-                draw_form(products[slug], raw)
-            reports.append(finish(raw, work, out / TARGETS[slug], not args.no_tabs))
+                spare = draw_form(products[slug], raw)
+            report = finish(raw, work, out / TARGETS[slug], not args.no_tabs)
+            report["spare_pt"] = [round(x, 1) for x in spare]  # 各ページ下端の余白
+            reports.append(report)
     print(json.dumps(reports, ensure_ascii=False, indent=1))
     print("出力先:", out)
 

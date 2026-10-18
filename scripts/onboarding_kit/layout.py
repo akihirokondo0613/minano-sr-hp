@@ -216,3 +216,4 @@ def page(c, product, example):
     c.drawString(LEFT, 21, FOOTER)
     c.drawRightString(A4[0] - LEFT, 21, "2 / 2　記入例" if example else "1 / 2　入力用")
     c.showPage()
+    return top - 42  # フッター上端（y=42）までの余白（pt）
