@@ -55,16 +55,16 @@ const FORM_GALLERY_KEYS = [
   ...COMMON_FORM_PREVIEWS.map((form) => form.no),
 ];
 const FORM_GALLERY_PREVIEWS = [
-  'assets/previews/procedure-onboarding-sample-v2.webp',
+  'assets/previews/procedure-onboarding-sample-v3.webp',
   'assets/previews/labor-notice-sample.webp',
-  'assets/previews/procedure-retirement-sample.webp',
-  'assets/previews/procedure-leave-sample.webp',
-  'assets/previews/onboarding-guide-preview.webp',
-  'assets/previews/onboarding-personal-sample-v2.webp',
+  'assets/previews/procedure-retirement-sample-v2.webp',
+  'assets/previews/procedure-leave-sample-v2.webp',
+  'assets/previews/onboarding-guide-preview-v2.webp',
+  'assets/previews/onboarding-personal-sample-v3.webp',
   'assets/previews/onboarding-bank-sample.webp',
   'assets/previews/onboarding-commute-sample.webp',
-  'assets/previews/onboarding-emergency-sample-v2.webp',
-  'assets/previews/procedure-establishment-sample.webp',
+  'assets/previews/onboarding-emergency-sample-v3.webp',
+  'assets/previews/procedure-establishment-sample-v2.webp',
   ...COMMON_FORM_PREVIEWS.map((form) => form.preview),
 ];
 const FORM_GALLERY_DOWNLOADS = [
@@ -695,11 +695,10 @@ function judgeGalleryContent(label, gallery, width, viewportWidth, failures) {
       || card.left < -EPSILON || card.right > gallery.railWidth + EPSILON))) {
     failures.push(`${label}: PCの初期位置で先頭3枚の見本が収まりません (${JSON.stringify(gallery.firstThreeAtStart)})`);
   }
-  if (gallery.kitCount !== 1 || !gallery.kitText?.replace(/\s+/g, '').includes('入社書類8点セット')
+  if (gallery.kitCount !== 1 || !gallery.kitText?.replace(/\s+/g, '').includes('入社書類6点セット')
     || gallery.kitLinkCount !== 1 || gallery.kitHref !== 'shoshiki.html#onboarding-kit'
-    || gallery.kitDownloadCount !== 1 || gallery.downloadHref !== 'assets/download/onboarding-kit.zip'
-    || gallery.downloadAttribute === null || gallery.downloadAttribute === undefined) {
-    failures.push(`${label}: 書式見本内の入社書類セット案内・ZIP導線が一致しません (${JSON.stringify(gallery)})`);
+    || gallery.kitDownloadCount !== 0) {
+    failures.push(`${label}: 書式見本内の入社書類セット案内が一致しません（一括ZIPは配布終了） (${JSON.stringify(gallery)})`);
   }
 }
 

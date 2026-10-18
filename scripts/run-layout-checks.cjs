@@ -440,6 +440,14 @@ async function runTaskPool(tasks, limit = 2) {
         isolated: true,
       },
       {
+        // 共通CSSの content-visibility:auto で、ページ内リンクの着地が数千pxずれた（2026-10-18）
+        name: 'ページ内リンクの着地',
+        command: process.execPath,
+        args: ['scripts/test-anchor-landing.cjs', base, '--json'],
+        output: 'anchor-landing.json',
+        timeoutMs: 4 * 60 * 1000,
+      },
+      {
         name: '最終CTA 40条件',
         command: process.execPath,
         args: ['scripts/test-final-copy.cjs', base, '--json'],

@@ -88,6 +88,7 @@
 - トップのLCP画像はnative`<picture>`、レスポンシブ形式、`preload`、`fetchpriority`、寸法指定を維持する。公開トップを編集用画像要素へ戻さない。
 - `skin-v2.css`を正本とするCritical CSSと、後から適用する全量CSSの構造を維持する。
 - 画面外の`content-visibility:auto`は、アンカー・SPA遷移・測定前スクロールとセットで扱う。未描画の要素を測れなかった場合は合格にしない。
+- ページ内リンクの着地は、`skin-v2.css`の`:root:has(:target) main > section`（#付きURL・同じページ内のリンク）と`page-enter.js`の`holdAnchor()`（読み込み完了後とSPA遷移後の合わせ直し）の組で守る。どちらかを外すと仮の高さ900pxで移動先を計算し、数千pxずれる。`node scripts/test-anchor-landing.cjs <base>`で代表例、`--all`で全公開ページのリンクを測る。
 - CSS／JS変更時はキャッシュ版を同期する。画像を差し替える場合は寸法を含む別名または参照更新で旧キャッシュとの混同を防ぐ。
 - `node scripts/check-performance-budget.mjs`で静的条件を確認し、CIのLighthouseは`.github/workflows/performance.yml`と`scripts/assert-lighthouse-budget.mjs`の現行条件で判定する。文書の古い数値を使わない。
 - レイアウトアニメーションでは`padding`、`width`、`margin`を動かさず、`transform`と`opacity`を使う。

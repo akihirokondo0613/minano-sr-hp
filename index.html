@@ -5,7 +5,7 @@
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta name="msvalidate.01" content="77FD18A4932A50E35E3C40CFA2EA7804">
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-<script defer src="page-enter.js?v=20261008-flow1"></script>
+<script defer src="page-enter.js?v=20261018-anchor1"></script>
 <style id="vt-transition">@view-transition{navigation:none}::view-transition-old(root),::view-transition-new(root){animation-duration:.5s;animation-timing-function:cubic-bezier(.22,1,.36,1)}@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="preload" as="image" type="image/avif" imagesrcset="assets/photos/hero-main-720.avif 720w, assets/photos/hero-main-1200.avif 1200w, assets/photos/hero-main-1600.avif 1600w" imagesizes="(max-width:1680px) 100vw, 1680px" fetchpriority="high">
@@ -400,6 +400,10 @@ main > section:not(.hero) {
   content-visibility: auto;
   contain-intrinsic-size: auto 900px;
 }
+/* #付きURL・ページ内リンクで移動先があるときだけ、全節を描画する。仮の高さ900pxのまま移動先を計算すると、
+   スクロール中に通過した節が実寸へ伸び縮みし、トップ#faqで約3,200pxずれた（2026-10-18、iPhone・Androidとも）。
+   .hub-page > section も main 直下なのでこの1行で外れる。#の無い通常表示は省略したまま（Lighthouseに影響しない）。 */
+:root:has(:target) main > section { content-visibility: visible; }
 
 /* スマホ: ヒーローの帯・補助ピルを省いて要素を絞る */
 @media (max-width: 640px) {
@@ -494,8 +498,8 @@ main > section:not(.hero) {
 .home-once-actions{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:16px}
 .home-once-note{font-size:11.5px;color:var(--ink3);margin:10px 0 0;line-height:1.7;max-width:44em}
 </style>
-<link rel="stylesheet" href="skin-v2.css?v=20261014-r3a" media="print" data-async-style onload="this.media='all';this.onload=null">
-<noscript><link rel="stylesheet" href="skin-v2.css?v=20261014-r3a"></noscript>
+<link rel="stylesheet" href="skin-v2.css?v=20261018-anchor1" media="print" data-async-style onload="this.media='all';this.onload=null">
+<noscript><link rel="stylesheet" href="skin-v2.css?v=20261018-anchor1"></noscript>
 
 
 <style id="home-form-gallery-base">
@@ -707,8 +711,8 @@ main > section:not(.hero) {
 <span class="pk-more">料金を見る</span></a></li>
 <li class="pk-item"><a class="pk-card" href="shoshiki.html#onboarding-kit">
 <span class="pk-img is-doc"><img src="assets/illustrations/home/onboarding-guide-420.webp" width="420" height="594" alt="" loading="lazy" decoding="async"><span class="pk-tag">無料・登録不要</span></span>
-<span class="pk-title">入社書類 8点セット</span>
-<span class="pk-desc">会社用・従業員用の入力PDFと、労働条件通知書のExcelをまとめてダウンロードできます。</span>
+<span class="pk-title">入社書類 6点セット</span>
+<span class="pk-desc">会社用・従業員用の入力PDFと、労働条件通知書のExcelを1点ずつダウンロードできます。</span>
 <span class="pk-more">内容を見る</span></a></li>
 <li class="pk-item"><a class="pk-card" href="uploads/lp-kyujinhyo.html">
 <span class="pk-img"><img src="assets/illustrations/home/svc2-kisoku-240.webp" srcset="assets/illustrations/home/svc2-kisoku-240.webp 240w, assets/illustrations/home/svc2-kisoku-480.webp 480w" sizes="(max-width:899px) 30vw, 150px" width="720" height="540" alt="" loading="lazy" decoding="async"><span class="pk-tag">無料点検 受付中</span></span>
@@ -890,8 +894,8 @@ main > section:not(.hero) {
 <div class="w">
 <div class="hs-head"><h2 class="hs-h" id="tools-title">会社で使う書式</h2><p class="hs-en">Forms</p><p class="hs-lead">よく<wbr>使う<wbr>32書式の<wbr>内容を<wbr>プレビューできます。<wbr>PDF・Excelの<wbr>ダウンロードと、<wbr>画面で<wbr>記入・印刷できる<wbr>HTML書式を<wbr>用意しています<wbr>（無料・登録不要）。</p></div>
 <div class="fg-kit">
-<div class="fg-kit-copy"><h3>入社書類 8点セット</h3><p>会社用・従業員用の<wbr>入力<wbr>PDF<wbr>と、労働条件通知書の<wbr>Excelを<wbr>まとめて<wbr>準備。</p></div>
-<div class="fg-kit-actions"><a class="fg-kit-link" href="shoshiki.html#onboarding-kit">8点の内容・プレビューを見る <span aria-hidden="true">→</span></a><a class="fg-kit-download" href="assets/download/onboarding-kit.zip" download>まとめてダウンロード <span>ZIP・約14MB</span></a></div>
+<div class="fg-kit-copy"><h3>入社書類 6点セット</h3><p>会社用・従業員用の<wbr>入力<wbr>PDF<wbr>と、労働条件通知書の<wbr>Excelを<wbr>1点ずつ準備。</p></div>
+<div class="fg-kit-actions"><a class="fg-kit-link" href="shoshiki.html#onboarding-kit">6点の内容・プレビューを見る <span aria-hidden="true">→</span></a></div>
 </div>
 <div class="fg-gallery">
 <nav class="fg-picker" aria-label="基本書式のプレビューを選ぶ">
@@ -951,7 +955,7 @@ main > section:not(.hero) {
 <li class="fg-item" id="fg-preview-onboarding" data-fg-key="onboarding">
 <a class="fg-card" href="assets/download/procedure-onboarding.pdf" target="_blank" rel="noopener" aria-label="入社連絡票 入力用PDF・記入例を見る（PDF・新しいタブで開きます）">
 <div class="fg-heading"><h3>入社連絡票</h3><span>01 / 入社</span></div>
-<div class="fg-paper"><img data-src="assets/previews/procedure-onboarding-sample-v2.webp" width="840" height="1189" loading="lazy" decoding="async" alt="入社日・勤務時間・給与・保険加入の欄がある入社連絡票の赤字記入例"><noscript><img src="assets/previews/procedure-onboarding-sample-v2.webp" width="840" height="1189" loading="lazy" alt="入社連絡票の赤字記入例"></noscript></div>
+<div class="fg-paper"><img data-src="assets/previews/procedure-onboarding-sample-v3.webp" width="840" height="1189" loading="lazy" decoding="async" alt="入社日・勤務時間・給与・保険加入の欄がある入社連絡票の赤字記入例"><noscript><img src="assets/previews/procedure-onboarding-sample-v3.webp" width="840" height="1189" loading="lazy" alt="入社連絡票の赤字記入例"></noscript></div>
 <p class="fg-purpose">採用が<wbr>決まったら。<wbr><span class="fg-fields">入社日・給与・<wbr>保険加入の<wbr>情報を<br>ひと<wbr>まとめに。</span></p>
 <span class="fg-open"><span>入力用PDF・記入例を見る</span><span aria-hidden="true">↗</span></span>
 </a>
@@ -967,7 +971,7 @@ main > section:not(.hero) {
 <li class="fg-item" id="fg-preview-retirement" data-fg-key="retirement">
 <a class="fg-card" href="assets/download/procedure-retirement.pdf" target="_blank" rel="noopener" aria-label="退職連絡票 入力用PDF・記入例を見る（PDF・新しいタブで開きます）">
 <div class="fg-heading"><h3>退職連絡票</h3><span>03 / 退職</span></div>
-<div class="fg-paper"><img data-src="assets/previews/procedure-retirement-sample.webp" width="840" height="1189" loading="lazy" decoding="async" alt="退職日・退職理由・離職票の希望・回収書類の欄がある退職連絡票の赤字記入例"><noscript><img src="assets/previews/procedure-retirement-sample.webp" width="840" height="1189" loading="lazy" alt="退職連絡票の赤字記入例"></noscript></div>
+<div class="fg-paper"><img data-src="assets/previews/procedure-retirement-sample-v2.webp" width="840" height="1189" loading="lazy" decoding="async" alt="退職日・退職理由・離職票の希望・回収書類の欄がある退職連絡票の赤字記入例"><noscript><img src="assets/previews/procedure-retirement-sample-v2.webp" width="840" height="1189" loading="lazy" alt="退職連絡票の赤字記入例"></noscript></div>
 <p class="fg-purpose">退職の<wbr>連絡を<wbr>受けたら。<wbr><span class="fg-fields">退職日・離職票の<wbr>希望・必要書類を<br>まとめて<wbr>確認。</span></p>
 <span class="fg-open"><span>入力用PDF・記入例を見る</span><span aria-hidden="true">↗</span></span>
 </a>
@@ -975,7 +979,7 @@ main > section:not(.hero) {
 <li class="fg-item" id="fg-preview-leave" data-fg-key="leave">
 <a class="fg-card" href="assets/download/procedure-leave.pdf" target="_blank" rel="noopener" aria-label="休職連絡票 入力用PDF・記入例を見る（PDF・新しいタブで開きます）">
 <div class="fg-heading"><h3>休職連絡票</h3><span>04 / 休職</span></div>
-<div class="fg-paper"><img data-src="assets/previews/procedure-leave-sample.webp" width="840" height="1189" loading="lazy" decoding="async" alt="休職期間・休職中の給与・保険料の支払方法の欄がある休職連絡票の赤字記入例"><noscript><img src="assets/previews/procedure-leave-sample.webp" width="840" height="1189" loading="lazy" alt="休職連絡票の赤字記入例"></noscript></div>
+<div class="fg-paper"><img data-src="assets/previews/procedure-leave-sample-v2.webp" width="840" height="1189" loading="lazy" decoding="async" alt="休職期間・休職中の給与・保険料の支払方法の欄がある休職連絡票の赤字記入例"><noscript><img src="assets/previews/procedure-leave-sample-v2.webp" width="840" height="1189" loading="lazy" alt="休職連絡票の赤字記入例"></noscript></div>
 <p class="fg-purpose">休職の<wbr>開始・<wbr>延長に。<wbr><span class="fg-fields">休職期間・給与・<wbr>保険料の<wbr>扱いを<br>会社から<wbr>共有。</span></p>
 <span class="fg-open"><span>入力用PDF・記入例を見る</span><span aria-hidden="true">↗</span></span>
 </a>
@@ -983,7 +987,7 @@ main > section:not(.hero) {
 <li class="fg-item" id="fg-preview-guide" data-fg-key="guide">
 <a class="fg-card" href="assets/download/onboarding-kit/guide.pdf" target="_blank" rel="noopener" aria-label="入社書類の準備ガイド 準備ガイドの全2ページを見る（PDF・新しいタブで開きます）">
 <div class="fg-heading"><h3>入社書類の準備ガイド</h3><span>05 / 会社</span></div>
-<div class="fg-paper"><img data-src="assets/previews/onboarding-guide-preview.webp" width="840" height="1189" loading="lazy" decoding="async" alt="入社書類を用意する順番と提出先・期限の欄がある準備ガイドの1ページ目"><noscript><img src="assets/illustrations/home/onboarding-guide-420.webp" width="420" height="594" loading="lazy" alt="入社書類を用意する順番と提出先・期限の欄がある準備ガイドの1ページ目"></noscript></div>
+<div class="fg-paper"><img data-src="assets/previews/onboarding-guide-preview-v2.webp" width="840" height="1189" loading="lazy" decoding="async" alt="入社書類を用意する順番と提出先・期限の欄がある準備ガイドの1ページ目"><noscript><img src="assets/illustrations/home/onboarding-guide-420.webp" width="420" height="594" loading="lazy" alt="入社書類を用意する順番と提出先・期限の欄がある準備ガイドの1ページ目"></noscript></div>
 <p class="fg-purpose">入社書類を<wbr>渡す前に。<wbr><span class="fg-fields">準備する<wbr>順番と、<wbr>提出先・期限を<br>会社から<wbr>案内。</span></p>
 <span class="fg-open"><span>準備ガイドの全2ページを見る</span><span aria-hidden="true">↗</span></span>
 </a>
@@ -991,7 +995,7 @@ main > section:not(.hero) {
 <li class="fg-item" id="fg-preview-personal" data-fg-key="personal">
 <a class="fg-card" href="assets/download/onboarding-kit/personal.pdf" target="_blank" rel="noopener" aria-label="本人情報シート 入力用PDF・記入例を見る（PDF・新しいタブで開きます）">
 <div class="fg-heading"><h3>本人情報シート</h3><span>06 / 本人</span></div>
-<div class="fg-paper"><img data-src="assets/previews/onboarding-personal-sample-v2.webp" width="840" height="1189" loading="lazy" decoding="async" alt="氏名・住民票の住所・基礎年金番号・雇用保険番号・マイナンバーの欄がある本人情報シートの赤字の架空記入例"><noscript><img src="assets/previews/onboarding-personal-sample-v2.webp" width="840" height="1189" loading="lazy" alt="氏名・住民票の住所・基礎年金番号・雇用保険番号・マイナンバーの欄がある本人情報シートの赤字の架空記入例"></noscript></div>
+<div class="fg-paper"><img data-src="assets/previews/onboarding-personal-sample-v3.webp" width="840" height="1189" loading="lazy" decoding="async" alt="氏名・住民票の住所・基礎年金番号・雇用保険番号・マイナンバーの欄がある本人情報シートの赤字の架空記入例"><noscript><img src="assets/previews/onboarding-personal-sample-v3.webp" width="840" height="1189" loading="lazy" alt="氏名・住民票の住所・基礎年金番号・雇用保険番号・マイナンバーの欄がある本人情報シートの赤字の架空記入例"></noscript></div>
 <p class="fg-purpose">入社する<wbr>本人が<wbr>記入。<wbr><span class="fg-fields">氏名・住所・保険の<wbr>番号を<br>確認資料を<wbr>見ながら入力。</span></p>
 <span class="fg-open"><span>入力用PDF・記入例を見る</span><span aria-hidden="true">↗</span></span>
 </a>
@@ -1015,7 +1019,7 @@ main > section:not(.hero) {
 <li class="fg-item" id="fg-preview-emergency" data-fg-key="emergency">
 <a class="fg-card" href="assets/download/onboarding-kit/emergency.pdf" target="_blank" rel="noopener" aria-label="緊急連絡先届 入力用PDF・記入例を見る（PDF・新しいタブで開きます）">
 <div class="fg-heading"><h3>緊急連絡先届</h3><span>09 / 本人</span></div>
-<div class="fg-paper"><img data-src="assets/previews/onboarding-emergency-sample-v2.webp" width="840" height="1189" loading="lazy" decoding="async" alt="緊急連絡先と住民票とは異なる現住所の欄がある緊急連絡先届の赤字の架空記入例"><noscript><img src="assets/previews/onboarding-emergency-sample-v2.webp" width="840" height="1189" loading="lazy" alt="緊急連絡先と住民票とは異なる現住所の欄がある緊急連絡先届の赤字の架空記入例"></noscript></div>
+<div class="fg-paper"><img data-src="assets/previews/onboarding-emergency-sample-v3.webp" width="840" height="1189" loading="lazy" decoding="async" alt="緊急連絡先と住民票とは異なる現住所の欄がある緊急連絡先届の赤字の架空記入例"><noscript><img src="assets/previews/onboarding-emergency-sample-v3.webp" width="840" height="1189" loading="lazy" alt="緊急連絡先と住民票とは異なる現住所の欄がある緊急連絡先届の赤字の架空記入例"></noscript></div>
 <p class="fg-purpose">緊急時の<wbr>連絡に<wbr>備えて。<wbr><span class="fg-fields">連絡先の<wbr>氏名・電話と、<br>住民票と<wbr>異なる<wbr>現住所を<wbr>記入。</span></p>
 <span class="fg-open"><span>入力用PDF・記入例を見る</span><span aria-hidden="true">↗</span></span>
 </a>
@@ -1023,7 +1027,7 @@ main > section:not(.hero) {
 <li class="fg-item" id="fg-preview-establishment" data-fg-key="establishment">
 <a class="fg-card" href="assets/download/procedure-establishment.pdf" target="_blank" rel="noopener" aria-label="事業所基本情報シート 入力用PDF・記入例を見る（PDF・新しいタブで開きます）">
 <div class="fg-heading"><h3>事業所基本情報シート</h3><span>10 / 共通</span></div>
-<div class="fg-paper"><img data-src="assets/previews/procedure-establishment-sample.webp" width="840" height="1189" loading="lazy" decoding="async" alt="会社名・所在地・代表者・社会保険と雇用保険の事業所番号の欄がある事業所基本情報シートの赤字の架空記入例"><noscript><img src="assets/previews/procedure-establishment-sample.webp" width="840" height="1189" loading="lazy" alt="会社名・所在地・代表者・社会保険と雇用保険の事業所番号の欄がある事業所基本情報シートの赤字の架空記入例"></noscript></div>
+<div class="fg-paper"><img data-src="assets/previews/procedure-establishment-sample-v2.webp" width="840" height="1189" loading="lazy" decoding="async" alt="会社名・所在地・代表者・社会保険と雇用保険の事業所番号の欄がある事業所基本情報シートの赤字の架空記入例"><noscript><img src="assets/previews/procedure-establishment-sample-v2.webp" width="840" height="1189" loading="lazy" alt="会社名・所在地・代表者・社会保険と雇用保険の事業所番号の欄がある事業所基本情報シートの赤字の架空記入例"></noscript></div>
 <p class="fg-purpose">初回の<wbr>依頼・情報の<wbr>変更時に。<wbr><span class="fg-fields">会社の<wbr>住所・<wbr>連絡先・保険番号を<br>共通の<wbr>シートで<wbr>共有。</span></p>
 <span class="fg-open"><span>入力用PDF・記入例を見る</span><span aria-hidden="true">↗</span></span>
 </a>

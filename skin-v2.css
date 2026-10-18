@@ -363,6 +363,10 @@ main > section:not(.hero) {
   content-visibility: auto;
   contain-intrinsic-size: auto 900px;
 }
+/* #付きURL・ページ内リンクで移動先があるときだけ、全節を描画する。仮の高さ900pxのまま移動先を計算すると、
+   スクロール中に通過した節が実寸へ伸び縮みし、トップ#faqで約3,200pxずれた（2026-10-18、iPhone・Androidとも）。
+   .hub-page > section も main 直下なのでこの1行で外れる。#の無い通常表示は省略したまま（Lighthouseに影響しない）。 */
+:root:has(:target) main > section { content-visibility: visible; }
 
 /* スマホ: ヒーローの帯・補助ピルを省いて要素を絞る */
 @media (max-width: 640px) {
