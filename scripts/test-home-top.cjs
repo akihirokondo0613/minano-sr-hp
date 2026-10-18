@@ -55,7 +55,7 @@ const FORM_GALLERY_KEYS = [
   ...COMMON_FORM_PREVIEWS.map((form) => form.no),
 ];
 const FORM_GALLERY_PREVIEWS = [
-  'assets/previews/procedure-onboarding-sample.webp',
+  'assets/previews/procedure-onboarding-sample-v2.webp',
   'assets/previews/labor-notice-sample.webp',
   'assets/previews/procedure-retirement-sample.webp',
   'assets/previews/procedure-leave-sample.webp',

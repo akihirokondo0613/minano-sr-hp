@@ -11,49 +11,49 @@
     "title": "入社承諾書",
     "category": "入社",
     "use": "内定者の入社意思を確認します。",
-    "preview": "assets/previews/common/D-02.webp"
+    "preview": "assets/previews/common/D-02-r2.webp"
   },
   {
     "no": "D-04",
     "title": "入社誓約書",
     "category": "入社",
     "use": "入社時の基本的な遵守事項を確認します。",
-    "preview": "assets/previews/common/D-04.webp"
+    "preview": "assets/previews/common/D-04-r2.webp"
   },
   {
     "no": "D-08",
     "title": "秘密保持誓約書",
     "category": "入社",
     "use": "入社時に秘密情報の範囲と取扱いを確認します。",
-    "preview": "assets/previews/common/D-08.webp"
+    "preview": "assets/previews/common/D-08-r2.webp"
   },
   {
     "no": "D-09",
     "title": "個人情報の取得及び利用に関する同意書",
     "category": "入社",
     "use": "個人情報・個人番号の利用目的を示し、取得の同意を受けます。",
-    "preview": "assets/previews/common/D-09.webp"
+    "preview": "assets/previews/common/D-09-r2.webp"
   },
   {
     "no": "D-11",
     "title": "時間外・休日労働申請書",
     "category": "勤務・休暇",
     "use": "時間外・休日労働の事前申請と承認に使います。",
-    "preview": "assets/previews/common/D-11.webp"
+    "preview": "assets/previews/common/D-11-r2.webp"
   },
   {
     "no": "D-12",
     "title": "年次有給休暇申請書",
     "category": "勤務・休暇",
     "use": "年次有給休暇を取得する日を申請します。",
-    "preview": "assets/previews/common/D-12.webp"
+    "preview": "assets/previews/common/D-12-r2.webp"
   },
   {
     "no": "D-13",
     "title": "欠勤・遅刻・早退届",
     "category": "勤務・休暇",
     "use": "欠勤・遅刻・早退の事実と理由を届けます。",
-    "preview": "assets/previews/common/D-13.webp"
+    "preview": "assets/previews/common/D-13-r2.webp"
   },
   {
     "no": "D-14",
@@ -67,7 +67,7 @@
     "title": "副業・兼業届",
     "category": "勤務・休暇",
     "use": "副業・兼業の届出と労働時間の確認に使います。",
-    "preview": "assets/previews/common/D-15.webp"
+    "preview": "assets/previews/common/D-15-r2.webp"
   },
   {
     "no": "D-50",
@@ -81,7 +81,7 @@
     "title": "休職届",
     "category": "休職・退職",
     "use": "休職の申出と会社の休職命令を記録します。",
-    "preview": "assets/previews/common/D-17.webp"
+    "preview": "assets/previews/common/D-17-r2.webp"
   },
   {
     "no": "D-20",
@@ -102,28 +102,28 @@
     "title": "退職届",
     "category": "休職・退職",
     "use": "自己都合による退職の意思を届けます。",
-    "preview": "assets/previews/common/D-24.webp"
+    "preview": "assets/previews/common/D-24-r2.webp"
   },
   {
     "no": "D-26",
     "title": "契約期間満了通知書",
     "category": "休職・退職",
     "use": "有期契約を更新しないことを本人へ通知します。",
-    "preview": "assets/previews/common/D-26.webp"
+    "preview": "assets/previews/common/D-26-r2.webp"
   },
   {
     "no": "D-28",
     "title": "秘密保持誓約書（退職時）",
     "category": "休職・退職",
     "use": "退職時に秘密保持と資料の返還を確認します。",
-    "preview": "assets/previews/common/D-28.webp"
+    "preview": "assets/previews/common/D-28-r2.webp"
   },
   {
     "no": "D-29",
     "title": "健康保険 資格喪失証明書",
     "category": "休職・退職",
     "use": "国民健康保険の加入等に使う資格喪失の証明を発行します。",
-    "preview": "assets/previews/common/D-29.webp"
+    "preview": "assets/previews/common/D-29-r2.webp"
   },
   {
     "no": "D-51",
@@ -137,7 +137,7 @@
     "title": "身上異動届",
     "category": "証明・その他",
     "use": "住所・氏名・扶養・口座・通勤経路の変更を届けます。",
-    "preview": "assets/previews/common/D-16.webp"
+    "preview": "assets/previews/common/D-16-r2.webp"
   },
   {
     "no": "D-33",

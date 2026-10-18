@@ -81,12 +81,15 @@ function isStructuredLink(attrs) {
     || /\bstyle\s*=\s*["'][^"']*(?:display\s*:|white-space\s*:\s*nowrap)/i.test(attrs);
 }
 
+const MANUAL_BREAK_CLASSES = new Set(['svc-info-name', 'sh-scene-name']);
+
 function isTarget(name, attrs) {
   // svc-info-name（サービス一覧カードの題）は h3 でも処理しない。
   // 漢字連続の題は文節境界が全部禁止され、10文字上限の強制分割が
   // 「サ/ポート」のような語中に落ちるため、印は手置きで管理する
   // （syncの対象にすると手置きの印も剥がされる）。
-  if (classesOf(attrs).includes('svc-info-name')) return false;
+  // 書式一覧の場面見出し（sh-scene-name）も12字未満で自動印が付かないため手置き（2026-10-18）。
+  if (classesOf(attrs).some((c) => MANUAL_BREAK_CLASSES.has(c))) return false;
   if (TARGET_TAGS.has(name)) return true;
   return classesOf(attrs).some((c) => DISPLAY_CLASSES.has(c));
 }

@@ -8,7 +8,7 @@
 |---|---|
 | 書式の文面（正本） | `data/shoshiki/forms.json` |
 | よく使う基本書式22点の掲載情報 | `data/shoshiki/common_previews.json`（番号・正本と一致するタイトル・分類・短い用途・プレビュー） |
-| 基本書式22点の用紙プレビュー | `assets/previews/common/D-xx.webp`（公開HTMLの未記入用紙の1ページ目。840×1189） |
+| 基本書式22点の用紙プレビュー | `assets/previews/common/D-xx.webp`（公開HTMLの未記入用紙の1ページ目。840×1189。本文を直して作り直したものは `D-xx-r2.webp` のように名前を変える＝本番は同じURLを7日キャッシュする） |
 | 文面の元（記法版） | `scripts/shoshiki/hints.py`（`{(番号, ラベル): 記法}`）と `TEXT_FIX`（文の置換） |
 | 書式の骨組み | `scripts/shoshiki/forms_base.py`（D-01〜D-32・E）、`forms_extra.py`（D-33〜D-52） |
 | forms.json を作る | `scripts/shoshiki/make_json.py` |
@@ -21,11 +21,11 @@
 | 入社書類セットの6ファイル | `assets/download/onboarding-kit/` の `guide.pdf`、`labor-notice.xlsx`、`personal.pdf`、`bank.pdf`、`commute.pdf`、`emergency.pdf` |
 | 入社書類セットの一括配布 | `assets/download/onboarding-kit.zip`（上の6点と入社連絡票・事業所基本情報シートの計8点。登録不要） |
 | 労働条件通知書の公開見本 | `assets/previews/labor-notice-sample.webp`（一般労働者用の架空記入例。トップと書式一覧で共用） |
-| 入社セットPDFのプレビュー | `assets/previews/onboarding-guide-preview.webp`（準備ガイド1ページ目）と `onboarding-{personal,bank,commute,emergency}-sample.webp`（各PDF2ページ目の架空記入例） |
+| 入社セットPDFのプレビュー | `assets/previews/onboarding-guide-preview.webp`（準備ガイド1ページ目）と `onboarding-{bank,commute}-sample.webp`・`onboarding-{personal,emergency}-sample-v2.webp`（各PDF2ページ目の架空記入例） |
 | 税の扶養控除等申告書の年別公式案内 | `scripts/shoshiki/build_shoshiki.py` の `TAX_DECLARATION_URL`（国税庁の様式・入力用PDF・記載例一覧） |
 | 手続き連絡票PDFの掲載文・リンク | `scripts/shoshiki/build_shoshiki.py` の `PROCEDURE_PDFS` と `procedure_pdf_block()` |
 | 手続き連絡票・基本情報PDF（各2ページ） | `assets/download/procedure-establishment.pdf`、`procedure-onboarding.pdf`、`procedure-retirement.pdf`、`procedure-leave.pdf` |
-| 手続き連絡票・基本情報PDFのプレビュー | `assets/previews/procedure-{establishment,onboarding,retirement,leave}-sample.webp`（各PDF2ページ目の架空記入例） |
+| 手続き連絡票・基本情報PDFのプレビュー | `assets/previews/procedure-{establishment,retirement,leave}-sample.webp`・`procedure-onboarding-sample-v2.webp`（各PDF2ページ目の架空記入例。中身を変えたら名前を変える＝本番は同じURLを7日キャッシュする） |
 | 扶養届の公式書式・記入例リンク | `scripts/shoshiki/build_shoshiki.py` の `DEPENDENT_OFFICIAL` と `dependent_official_block()` |
 | 旧メール登録フォーム | Googleフォーム https://forms.gle/vFUpB3fqzetNHQQKA（所有者側の管理対象。サイトからの申込リンクは置かない） |
 
@@ -80,7 +80,7 @@ node scripts/preflight.mjs
 
 ## 手続き連絡票PDFの更新
 
-入力欄付きの空欄ページを1枚目、赤字の架空の記入例を2枚目にまとめた4ファイルだけを `assets/download/` に置く。住所は郵便番号・都道府県・市区町村・町名番地・建物名等の入力欄に分け、保険の識別番号には確認資料の案内を添える。利用者の記入済みPDFをサイトへアップロード・保存する機能は設けない。掲載前に全ページの表示、フォームの入力・保存・再表示、住所など長文の収まり、架空例表示、公開用ファイルに実際の顧客情報が入っていないことを確認する。現行の代表者氏名非公開方針を維持する。
+入力欄付きの空欄ページを1枚目、赤字の架空の記入例を2枚目にまとめた4ファイルだけを `assets/download/` に置く。入力欄用のフォント（AcroForm `/DR` のメイリオ）は、CP932で表せる文字だけを残し、グリフ番号を保ったままサブセット化して埋め込む（2026-10-18。全字埋め込みでは1本約6.4MB・ZIP約41MBだった）。PDFKit（Macのプレビュー）とPDFium（Chrome）は入力時に自前のフォントで外観を作るので見え方は変わらない。埋め込みフォントで外観を作るAcrobatでは、CP932外の字（𠮷など）が表示されないことがある。PDFを作り直したときも `scripts/shoshiki/subset_form_font.py` で同じサブセット化をかける。住所は郵便番号・都道府県・市区町村・町名番地・建物名等の入力欄に分け、保険の識別番号には確認資料の案内を添える。利用者の記入済みPDFをサイトへアップロード・保存する機能は設けない。掲載前に全ページの表示、フォームの入力・保存・再表示、住所など長文の収まり、架空例表示、公開用ファイルに実際の顧客情報が入っていないことを確認する。現行の代表者氏名非公開方針を維持する。
 
 原稿の内容とWebの用途・主な記入内容が一致するかを確認し、必要なら `PROCEDURE_PDFS` を直してHTMLを再生成する。`portal.html` の入口、`uploads/service-shakai-hoken.html` の連絡票リンク、`data/llms.json` も同期する。基本情報シートは初回・変更時のみ提出する共通情報として、入社・退職・休職連絡票の直前に置く。PDF4種は既存のHTML50本に加算しない。公開は実PDFの確認後に [release.md](release.md) の手順で進め、4つの本番URLからPDFを取得できることを確認する。
 
