@@ -23,8 +23,9 @@
  *     広告クリックとコンバージョンが結び付かない。
  *
  * ■ どのページに載せるか
- *   広告の着地ページ（startup-payroll.html / uploads/service-shugyo-kisoku.html）と、
- *   コンバージョンが起きるページ（uploads/contact.html）の3枚だけ。
+ *   広告の着地ページ（startup-payroll・uploads/service-shugyo-kisoku・uploads/lp-kyujinhyo）、
+ *   サイトリンク先（pricing・support・about と、その生成物 partner・shiryo）、
+ *   コンバージョンが起きるページ（uploads/contact）の9枚（2026-10-19 時点）。
  *   着地ページで gtag が動くと gclid から _gcl_aw クッキーが書かれるので、
  *   その場で申し込まず後日ブックマークや自然検索で戻ってきた人も広告に紐づく。
  *   着地ページにタグが無いと、この経路の申込は取りこぼす。
