@@ -308,7 +308,7 @@ function buildPages({ rows, plans }) {
       file: 'uploads/service-shugyo-kisoku.html',
       html: section({
         heading: '就業規則の料金（税抜）',
-        sub: 'いずれも労働基準監督署への届出まで含んだ固定額です。追加請求はありません。',
+        sub: 'いずれも労働基準監督署への届出まで含んだ固定額（税抜）です。実費（郵送費・県外の交通費など）を除き、ご相談なしに追加請求はしません。',
         alt: true,
         body: [
           spot('就業規則の作成（本則）'),
