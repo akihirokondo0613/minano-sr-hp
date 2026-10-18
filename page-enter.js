@@ -544,6 +544,32 @@ function mnSplitLabel(el, text) {
     step();
     holdTimer = setInterval(step, 100);
   }
+  // アンカーの移動先へ合わせ続ける（最大2秒）。holdScroll と違い、毎回移動先の位置を測り直す。
+  // 着地後に画像・部品の初期化で上の節の高さが変わると、スクロールアンカーの無いWebKitでは
+  // 移動先がずれたまま残る（トップ#faqで約100px、SPA遷移の料金#retainer-extra-feesで約3,400px。2026-10-18）。
+  // SPA遷移は pushState のため :target が付かず、CSSの全節描画（skin-v2.css）が効かないので、
+  // 合わせている間は mn-scroll-restore で全節を描画させる。利用者が動かしたらすぐやめる。
+  function holdAnchor(id) {
+    stopHold();
+    userMoved = false;
+    de.classList.add('mn-scroll-restore');
+    var until = Date.now() + 2000;
+    function step() {
+      if (userMoved || Date.now() > until) { stopHold(); return; }
+      var el = document.getElementById(id);
+      if (!el) { stopHold(); return; }
+      var y = anchorY(el);
+      if (Math.abs((window.scrollY || 0) - y) <= 4) return;
+      de.style.scrollBehavior = 'auto';
+      window.scrollTo(0, y);
+      requestAnimationFrame(function () { de.style.scrollBehavior = ''; });
+    }
+    step();
+    holdTimer = setInterval(step, 100);
+  }
+  function hashId(h) {
+    try { return h && h.length > 1 ? decodeURIComponent(h.slice(1)) : ''; } catch (e) { return ''; }
+  }
 
   /* ---- 遷移本体：文字を読む時間とページの準備がそろってから開く ---- */
   var busy = false;
@@ -654,8 +680,9 @@ function mnSplitLabel(el, text) {
           // スクロール位置：通常は先頭／戻る・進むは記憶位置／アンカーはその位置（カーテンの裏で済ませる）
           var y = opts.scrollY || 0;
           if (hash) {
-            var tg = document.getElementById(decodeURIComponent(hash.slice(1)));
-            if (tg) y = anchorY(tg);
+            var tg = document.getElementById(hashId(hash));
+            // 画面外の節は仮の高さのままでページが短く、移動先まで届かない（WebKit）。先に全節を描画させてから測る。
+            if (tg) { de.classList.add('mn-scroll-restore'); y = anchorY(tg); }
           }
           // scroll-behavior:smooth だと位置リセットがめくり後まで続く「見えるスクロール」になる。裏で即時に。
           de.style.scrollBehavior = 'auto';
@@ -666,17 +693,8 @@ function mnSplitLabel(el, text) {
             // バグ修正（サービス詳細→トップ#services 等）：トップのヒーロー画像のcap3.5s遅延読み込みで、
             // readiness()待機中にレイアウトが伸びて hash ターゲットの絶対位置がズレる（最悪フッター付近までズレる）。
             // readiness()完了（＝レイアウト確定後）に同じ計算をやり直して微調整する。
-            if (hash) {
-              var tg2 = document.getElementById(decodeURIComponent(hash.slice(1)));
-              if (tg2) {
-                var y2 = anchorY(tg2);
-                if (Math.abs(y2 - window.scrollY) > 4) {
-                  de.style.scrollBehavior = 'auto';
-                  window.scrollTo(0, y2);
-                  requestAnimationFrame(function () { de.style.scrollBehavior = ''; });
-                }
-              }
-            }
+            // めくり後も画像・部品の初期化で高さが動くため、2秒間は移動先へ合わせ続ける。
+            if (hash && document.getElementById(hashId(hash))) holdAnchor(hashId(hash));
           });
         });
       });
@@ -869,6 +887,12 @@ function mnSplitLabel(el, text) {
       }
     } else {
       try { history.replaceState({ mn: 1, y: window.scrollY || 0 }, '', location.href); } catch (e) {}
+      // #付きURLで開いたとき：ブラウザーの初回の移動は読み込み途中の高さで決まる。読み込み完了後に移動先へ合わせ直す。
+      var hid = hashId(location.hash);
+      if (hid && navType !== 'back_forward' && document.getElementById(hid)) {
+        if (document.readyState === 'complete') holdAnchor(hid);
+        else window.addEventListener('load', function () { if (!userMoved) holdAnchor(hid); }, { once: true });
+      }
     }
     var saveTimer = null;
     if (window.__mnHistScroll) window.removeEventListener('scroll', window.__mnHistScroll);
