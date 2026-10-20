@@ -162,7 +162,8 @@ function officeBlock(office, commonKey) {
       : '',
     office.notes ? `          <p class="mdg-note">${esc(office.notes)}</p>` : '',
     office.source
-      ? `          <p class="mdg-src">出典 <a href="${esc(office.source)}" target="_blank" rel="noopener">${esc(hostOf(office.source))}</a></p>`
+      // 出典が「URL ／ URL」の形で複数あるときは、リンクを分けて並べる
+      ? `          <p class="mdg-src">出典 ${office.source.split(/\s*／\s*/).map((u) => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(hostOf(u))}</a>`).join(' ／ ')}</p>`
       : '',
     '        </div>',
   ].filter(Boolean).join('\n');
