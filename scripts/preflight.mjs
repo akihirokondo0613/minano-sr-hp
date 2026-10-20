@@ -142,6 +142,11 @@ const tasks = [
     args: ['scripts/check-duplicate-ids.mjs'],
   },
   {
+    // 相談の入口はフォーム。電話番号は文字で載せるだけにする（2026-09-23 方針、#435 の再発防止）。
+    name: '電話発信リンクの検査',
+    args: ['scripts/check-no-tel-links.mjs'],
+  },
+  {
     name: '静的な性能検査',
     args: ['scripts/check-performance-budget.mjs'],
   },
