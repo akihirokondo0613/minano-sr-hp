@@ -165,10 +165,23 @@ jobs:
             printf 'User-agent: *\nDisallow: /\n' > robots.txt
           fi
 
+      - name: 簡素トップモード判定・適用
+        if: steps.publish_gate.outputs.publish == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          # .simple-home があれば、トップを1ページ版に差し替え、他ページを noindex にする（中身は残す）。
+          # メンテナンスモードが優先。解除は .simple-home を消して main へマージするだけ。
+          if [ -f .simple-home ] && [ ! -f .maintenance ]; then
+            node .github/apply-simple-home.mjs
+          else
+            echo "簡素トップモードは無効（通常公開）"
+          fi
+
       - name: 非公開ファイルを除外
         if: steps.publish_gate.outputs.publish == 'true'
         run: |
-          rm -f AGENTS.md CLAUDE.md admin-post.html assets-version.json icon-catalog.html .maintenance
+          rm -f AGENTS.md CLAUDE.md admin-post.html assets-version.json icon-catalog.html .maintenance .simple-home
           rm -rf _backup_* docs .github scripts
           # 社内書式の正本（解説の内部メモを含む）は生成元なので配信しない。HTMLは生成済み（2026-10-18）
           rm -rf data/shoshiki
