@@ -6,6 +6,8 @@
 //   2. index.html 以外の公開HTMLすべての robots meta を noindex,nofollow にする
 //      （ページ自体は残るので、URLを知っている人には今までどおり表示される）
 //   3. sitemap.xml をトップ1件だけにし、llms.txt を事務所概要だけにする
+//   4. .htaccess の末尾に「トップ以外のページ要求はトップへ 302（一時）」を足す
+//      （画像・CSS・PDF・ZIP などのファイル、削除済み記事の 410、顧問先向け /shoshiki/ は対象外）
 // robots.txt は触らない（Disallow にすると Google が noindex を読めず、URLだけ検索に残る）。
 // 解除は `.simple-home` を削除して main へマージするだけ。次の公開で全ページが元に戻る。
 //
@@ -90,6 +92,27 @@ fs.writeFileSync(path.join(root, 'llms.txt'), [
   '',
 ].join('\n'));
 
+// 4. 下層URLを知っている人もトップへ（302＝一時。解除後に検索エンジンが元URLを再評価できる）
+const htaccessPath = path.join(root, '.htaccess');
+const REDIRECT_MARK = '# ===== 簡素トップモード: トップ以外はトップへ（公開工程が自動で付与） =====';
+const redirectBlock = [
+  '',
+  REDIRECT_MARK,
+  '# ファイル（画像・CSS・JS・PDF・ZIP・txt・xml 等）はそのまま配信し、ページ要求だけをトップへ返す。',
+  '# 上の 410（取り下げ記事）は [L] で先に確定するので対象外。顧問先向けの書式ページ /shoshiki/ も対象外。',
+  'RewriteCond %{REQUEST_URI} !^/$',
+  'RewriteCond %{REQUEST_URI} !^/shoshiki/',
+  'RewriteCond %{REQUEST_URI} !\\.(css|js|mjs|json|xml|txt|ico|png|jpe?g|gif|webp|avif|svg|woff2?|ttf|pdf|zip|csv|mp4|webm|vtt)$ [NC]',
+  'RewriteRule ^ / [R=302,L]',
+  '# ===== 簡素トップモード ここまで =====',
+  '',
+].join('\n');
+let htaccess = fs.existsSync(htaccessPath) ? fs.readFileSync(htaccessPath, 'utf8') : 'RewriteEngine On\n';
+if (!htaccess.includes(REDIRECT_MARK)) {
+  if (!/^RewriteEngine On/m.test(htaccess)) htaccess = `RewriteEngine On\n${htaccess}`;
+  fs.writeFileSync(htaccessPath, htaccess.replace(/\s*$/, '\n') + redirectBlock);
+}
+
 // 確認: index.html 以外に noindex でない公開HTMLが残っていないこと
 const leftover = pages.filter((rel) => !/<meta\s+name=["']robots["']\s+content=["']noindex,nofollow["']>/i.test(fs.readFileSync(path.join(root, rel), 'utf8')));
 if (leftover.length) {
@@ -97,4 +120,4 @@ if (leftover.length) {
   process.exit(1);
 }
 
-console.log(`簡素トップモードを適用: index.html を差し替え、${pages.length}ページを noindex（書き換え${changed}件）、sitemap.xml はトップ1件、llms.txt は概要のみ`);
+console.log(`簡素トップモードを適用: index.html を差し替え、${pages.length}ページを noindex（書き換え${changed}件）、sitemap.xml はトップ1件、llms.txt は概要のみ、.htaccess に下層→トップの302を付与`);
