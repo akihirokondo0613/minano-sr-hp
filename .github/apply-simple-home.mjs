@@ -7,7 +7,7 @@
 //      （ページ自体は残るので、URLを知っている人には今までどおり表示される）
 //   3. sitemap.xml をトップ1件だけにし、llms.txt を事務所概要だけにする
 //   4. .htaccess の末尾に「トップ以外のページ要求はトップへ 302（一時）」を足す
-//      （画像・CSS・PDF・ZIP などのファイル、削除済み記事の 410、顧問先向け /shoshiki/ は対象外）
+//      （画像・CSS・PDF・ZIP などのファイル、削除済み記事の 410、顧問先向け /shoshiki.html・/shoshiki/ は対象外）
 // robots.txt は触らない（Disallow にすると Google が noindex を読めず、URLだけ検索に残る）。
 // 解除は `.simple-home` を削除して main へマージするだけ。次の公開で全ページが元に戻る。
 //
@@ -99,8 +99,9 @@ const redirectBlock = [
   '',
   REDIRECT_MARK,
   '# ファイル（画像・CSS・JS・PDF・ZIP・txt・xml 等）はそのまま配信し、ページ要求だけをトップへ返す。',
-  '# 上の 410（取り下げ記事）は [L] で先に確定するので対象外。顧問先向けの書式ページ /shoshiki/ も対象外。',
+  '# 上の 410（取り下げ記事）は [L] で先に確定するので対象外。顧問先向けの書式ページ /shoshiki.html と /shoshiki/ も対象外。',
   'RewriteCond %{REQUEST_URI} !^/$',
+  'RewriteCond %{REQUEST_URI} !^/shoshiki\\.html$',
   'RewriteCond %{REQUEST_URI} !^/shoshiki/',
   'RewriteCond %{REQUEST_URI} !\\.(css|js|mjs|json|xml|txt|ico|png|jpe?g|gif|webp|avif|svg|woff2?|ttf|pdf|zip|csv|mp4|webm|vtt)$ [NC]',
   'RewriteRule ^ / [R=302,L]',
