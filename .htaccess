@@ -23,3 +23,13 @@ RewriteRule ^blog/google-business-profile-kaisetsu\.html$ - [R=410,L]
 RewriteRule ^blog/google-workspace-dokujidomain-mail\.html$ - [R=410,L]
 RewriteRule ^blog/kaigyo-domain-shutoku\.html$ - [R=410,L]
 RewriteRule ^blog/website-search-console-kokai\.html$ - [R=410,L]
+
+# ===== 簡素トップモード: トップ以外はトップへ（公開工程が自動で付与） =====
+# ファイル（画像・CSS・JS・PDF・ZIP・txt・xml 等）はそのまま配信し、ページ要求だけをトップへ返す。
+# 上の 410（取り下げ記事）は [L] で先に確定するので対象外。顧問先向けの書式ページ /shoshiki.html と /shoshiki/ も対象外。
+RewriteCond %{REQUEST_URI} !^/$
+RewriteCond %{REQUEST_URI} !^/shoshiki\.html$
+RewriteCond %{REQUEST_URI} !^/shoshiki/
+RewriteCond %{REQUEST_URI} !\.(css|js|mjs|json|xml|txt|ico|png|jpe?g|gif|webp|avif|svg|woff2?|ttf|pdf|zip|csv|mp4|webm|vtt)$ [NC]
+RewriteRule ^ / [R=302,L]
+# ===== 簡素トップモード ここまで =====
